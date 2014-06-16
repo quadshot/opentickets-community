@@ -1,0 +1,3 @@
+RewriteEngine On
+
+RewriteRule (.*).dy.js $1.php [QSA,L]

@@ -1,0 +1,142 @@
+html .ui-dialog { z-index:400000; }
+html .qsot-price-helper-modal { z-index:500000; }
+
+body div.opentickets-error { color:#ffffff; background:#770000; border-color:#550000; }
+body div.opentickets-error a { color:#FFEBE8; }
+body div.opentickets-error a:hover { color:#DD9990; }
+.activation-nag { color:#880000; font-weight:bold; }
+.activation-nag-mb { padding:6px 8px; }
+
+#adminmenu #toplevel_page_opentickets .wp-menu-image,
+#adminmenu #menu-posts-qsot-event .wp-menu-image,
+#adminmenu #menu-posts-qsot-seating-chart .wp-menu-image,
+#adminmenu #menu-posts-qsot-venue .wp-menu-image,
+#adminmenu #menu-posts-qsot-people .wp-menu-image { background-image:url("../../imgs/open-tickets-icon-sprite.png") !important; background-size:auto auto; width:30px; height:31px;
+	margin-right:2px; margin-left:4px; }
+
+#adminmenu #toplevel_page_opentickets .wp-menu-image:before,
+#adminmenu #menu-posts-qsot-event .wp-menu-image:before,
+#adminmenu #menu-posts-qsot-seating-chart .wp-menu-image:before,
+#adminmenu #menu-posts-qsot-venue .wp-menu-image:before,
+#adminmenu #menu-posts-qsot-people .wp-menu-image:before { content:""; }
+
+#adminmenu #toplevel_page_opentickets .wp-menu-image { background-position:-26px 0; }
+#adminmenu #toplevel_page_opentickets.wp-menu-open .wp-menu-image,
+#adminmenu #toplevel_page_opentickets.opensub .wp-menu-image,
+#adminmenu #toplevel_page_opentickets:hover .wp-menu-image { background-position:-2px 0; }
+
+#adminmenu #menu-posts-qsot-event .wp-menu-image { background-position:-26px -24px; }
+#adminmenu #menu-posts-qsot-event.wp-menu-open .wp-menu-image,
+#adminmenu #menu-posts-qsot-event.opensub .wp-menu-image,
+#adminmenu #menu-posts-qsot-event:hover .wp-menu-image { background-position:-2px -24px; }
+
+#adminmenu #menu-posts-qsot-seating-chart .wp-menu-image { background-position:-26px -72px; }
+#adminmenu #menu-posts-qsot-seating-chart.wp-menu-open .wp-menu-image,
+#adminmenu #menu-posts-qsot-seating-chart.opensub .wp-menu-image,
+#adminmenu #menu-posts-qsot-seating-chart:hover .wp-menu-image { background-position:-2px -72px; }
+
+#adminmenu #menu-posts-qsot-venue .wp-menu-image { background-position:-26px -96px; }
+#adminmenu #menu-posts-qsot-venue.wp-menu-open .wp-menu-image,
+#adminmenu #menu-posts-qsot-venue.opensub .wp-menu-image,
+#adminmenu #menu-posts-qsot-venue:hover .wp-menu-image { background-position:-2px -96px; }
+
+#adminmenu #menu-posts-qsot-people .wp-menu-image { background-position:-26px -48px; }
+#adminmenu #menu-posts-qsot-people.wp-menu-open .wp-menu-image,
+#adminmenu #menu-posts-qsot-people.opensub .wp-menu-image,
+#adminmenu #menu-posts-qsot-people:hover .wp-menu-image { background-position:-2px -48px; }
+
+.icon32-opentickets-reports { background-image:url("../../imgs/open-tickets-icon-sprite.png") !important; background-size:auto auto; background-position:2px -126px; }
+.icon32-opentickets-settings { background-image:url("../../imgs/open-tickets-icon-sprite.png") !important; background-size:auto auto; background-position:2px -166px; }
+.icon32-opentickets { display:block; float:left; height:36px; margin-right:2px; margin-top:8px; width:36px; }
+
+#woocommerce-order-items .item .ticket-info { border:2px solid #888888; border-radius:5px; background-color:#f0f0f0; padding:0.5em; margin:0.5em 0; line-height:1.3em; }
+#woocommerce-order-items .item .ticket-info.updated { border-color:#008800; background-color:#eeffee; color:#008800; }
+#woocommerce-order-items .item.invalid > td { background-color:#f4e4e4; }
+#woocommerce-order-items .item.invalid .ticket-info { border-color:#880000; color:#880000; background-color:#f4d4d4; }
+
+.ticket-selection-dialog { font-size:12px; }
+.ticket-selection-dialog .errors .error { margin:0 0 1.5em 0; }
+.ticket-selection-dialog .actions { border-bottom:1px dotted #888888; padding:0 0 0.65em; margin-bottom:0.6em; }
+.ticket-selection-dialog .ts-section { border:1px solid #888888; padding:0.7em; background-color:#dfdfdf; margin-bottom:0.6em; }
+.ticket-selection-dialog .event-info .field { margin-right:1em; }
+.ticket-selection-dialog .event-info .label { font-weight:bold; }
+.ticket-selection-dialog .event-info .value { font-style:italic; }
+.ticket-selection-dialog .event-area-image { background-color:#efefef; border-color:1px dashed #888888; }
+.ticket-selection-dialog .event-area-image img { max-width:100%; height:auto; }
+
+.ticket-selection-dialog .ticket-form .ticket-name { font-weight:bold; margin-right:5px; }
+
+#woocommerce-product-data h3.hndle label { border-right:1px solid #dfdfdf; margin-right:1em; }
+
+.my-account { border:2px solid #777777; border-radius:6px; padding:4px 15px 15px; background-color:#f4f4f4; }
+.my-account h2 { text-decoration:underline; font-weight:bold; }
+
+.my-account .extra-before-table { margin-bottom:6px; }
+.my-account .extra-before-table ul { margin:0; padding:0; list-style:none outside none; }
+.my-account .extra-before-table ul li { padding:2px 5px; }
+
+.formatted-table thead tr th { border-bottom:1px dotted #676767; border-left:1px dotted #a8a8a8; background-color:#d4d4d4; padding:4px 10px; }
+.formatted-table thead tr th:first-child { border-left:0; }
+.formatted-table tbody tr td { border-width:0; border-bottom-width:1px; border-left-width:1px; border-style:dotted; border-color: #d0d0d0; vertical-align:top; padding:2px 5px; }
+.formatted-table tbody tr td:first-child { border-left:0; }
+.formatted-table tbody tr.odd td { background-color:#e4e4e4; }
+.formatted-table tbody tr td.primary { border-style:solid; border-right-width:1px; border-color:#c0c0c0; }
+
+.formatted-table tbody tr td.positive { color:#009900; }
+.formatted-table tbody tr td.negative { color:#990000; }
+
+#qsot-purchased-coupons .inside { padding:0; margin:0; border:0; }
+#qsot-purchased-coupons .inside p { padding-left:10px; padding-right:10px; }
+.column-coupon_code .with-actions { line-height:1.2; }
+
+.messages .errmsg { border:1px solid #880000; border-radius:5px; background-color:#ffeeee; color:#880000; padding:2px 5px 1px; margin-bottom:3px; }
+.messages .posmsg { border:1px solid #000088; border-radius:5px; background-color:#eeeeff; color:#000088; padding:2px 5px 1px; margin-bottom:3px; }
+
+#waiting-list-wrap h3 { margin-bottom:3px; }
+.wait-list-actions { margin-bottom:8px; }
+
+.add-user-dialog .form-field label { display:block; }
+.add-user-dialog .form-field select,
+.add-user-dialog .form-field .chzn-container { width:100% !important; }
+
+#report_result .ticket-list td.status { white-space:nowrap; }
+
+.type_box label { white-space:nowrap; }
+.type_box label:after { content: " "; display:inline; clear:both; white-space:normal; }
+
+#audit-trail-box .inside,
+#split-payments-box .inside { padding:0; margin:0; background:none repeat scroll 0 0 #FEFEFE; }
+.postbox .inside .nav-wrap { padding:4px 8px; }
+table.mbtable { border-spacing:0; clear:both; margin:0; width:100%; }
+table.mbtable tfoot th,
+table.mbtable thead th { line-height:1.4em; font-size:11px; padding:8px; background-color:#ececec; text-align:center; }
+table.mbtable tfoot th.right,
+table.mbtable thead th.right { text-align:right; }
+table.mbtable tfoot th.left,
+table.mbtable thead th.left { text-align:left; }
+table.mbtable tfoot th.count,
+table.mbtable thead th.count { width:1%; }
+table.mbtable tfoot th.time,
+table.mbtable thead th.time { width:20%; }
+table.mbtable tfoot th.user,
+table.mbtable thead th.user { width:15%; }
+table.mbtable tbody td { border-bottom:1px dotted #ECECEC; line-height:1.1em; font-size:11px; padding:8px; text-align:left; }
+table.mbtable tbody td.currency.positive { font-weight:bold; color:#008800; }
+table.mbtable tbody td.currency.negative { font-weight:bold; color:#880000; }
+
+#order_data .order_data_column .form-field._shipping_sync_customer_address,
+#order_data .order_data_column .form-field._billing_sync_customer_address { clear:both; width:100%; }
+#order_data .order_data_column .form-field._shipping_sync_customer_address span,
+#order_data .order_data_column .form-field._billing_sync_customer_address span { vertical-align:text-top; }
+#order_data .order_data_column .form-field input[type="checkbox"],
+#order_data .order_data_column .form-field input[type="radio"] { width:auto; margin-right:5px; }
+
+.ticket-count-wrapper { float:right; height:25px; line-height:25px; }
+
+.search-settings-list li { border-top:1px dotted #dddddd; }
+.search-settings-list li:first-child { border-top:0; }
+.search-settings-list li .settings { margin:0 8px 8px 18px; border:1px solid #888888; border-radius:6px; background-color:#eeeeee; padding:8px; }
+
+.ot-settings-page .forminp-textarea { font-style:italic; font-size:0.9em; }
+
+.bulk-edit-settings .setting-group .setting-name { font-style:italic; text-decoration:underline; }

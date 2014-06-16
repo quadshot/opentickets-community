@@ -1,0 +1,4 @@
+.qsot-waiting-list { vertical-align:baseline; }
+.qsot-waiting-list span,
+.qsot-waiting-list input { vertical-align:baseline; }
+.qsot-waiting-list input[type="number"] { width:50px; }
