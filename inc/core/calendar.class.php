@@ -27,7 +27,14 @@ class qsot_frontend_calendar {
 			add_action('qsot-calendar-settings', array(__CLASS__, 'calendar_settings'), 10, 3);
 			add_filter('qsot-calendar-event', array(__CLASS__, 'get_calendar_event'), 10, 2);
 			add_shortcode(self::$shortcode, array(__CLASS__, 'shortcode'));
+
+			add_filter('qsot-templates-page-templates', array(__CLASS__, 'add_calendar_template'));
 		}
+	}
+
+	public static function add_calendar_template($list) {
+		$list['qsot-calendar.php'] = 'OpenTickets Calendar';
+		return $list;
 	}
 
 	public static function register_assets() {
@@ -192,7 +199,7 @@ class qsot_frontend_calendar {
 			);
 			$page_id = wp_insert_post($data);
 			if (is_numeric($page_id) && !empty($page_id)) {
-				update_post_meta($page_id, '_wp_page_template', 'calendar.php');
+				update_post_meta($page_id, '_wp_page_template', 'qsot-calendar.php');
 				update_option('qsot_calendar_page_id', $page_id);
 			}
 		}

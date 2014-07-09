@@ -16,6 +16,63 @@ class qsot_templates {
 
 		// similar to above, only specifically for templates that we may have overriden from woo.... like admin templates
 		add_filter('qsot-woo-template', array(__CLASS__, 'locate_woo_template'), 10, 2);
+
+		add_filter('init', array(__CLASS__, 'rig_theme_page_template_cache'), 0);
+		add_filter('theme_page_templates', array(__CLASS__, 'add_extra_templates'), 10, 1);
+		add_filter('template_include', array(__CLASS__, 'intercept_page_template_request'), 100, 1);
+	}
+
+	public static function rig_theme_page_template_cache() {
+		// get a list of page templates not in the theme
+		$extras = apply_filters('qsot-templates-page-templates', array());
+		// load the theme
+		$theme = wp_get_theme();
+		// build the cache hash, used for the cache keys
+		$cache_hash = md5($theme->get_theme_root().'/'.$theme->get_stylesheet());
+		// force the cache key to generate, in case it hasn't already
+		$theme->get_page_templates();
+		// fetch the current list of templates
+		$list = wp_cache_get('page_templates-'.$cache_hash, 'themes');
+		// add our list
+		$list = array_merge($list, $extras);
+		// save the list again
+		wp_cache_set('page_templates-'.$cache_hash, $list, 'themes', 1800);
+		// profit!
+	}
+
+	public static function add_extra_templates($list) {
+		$extras = apply_filters('qsot-templates-page-templates', array());
+		return array_merge($list, $extras);
+	}
+
+	public static function intercept_page_template_request($current) {
+		if (is_page()) {
+			$id = get_queried_object_id();
+			$template = get_page_template_slug();
+			$pagename = get_query_var('pagename');
+
+			if ( ! $pagename && $id ) {
+				// If a static page is set as the front page, $pagename will not be set. Retrieve it from the queried object
+				$post = get_queried_object();
+				if ( $post )
+					$pagename = $post->post_name;
+			}
+
+			$templates = array();
+			if ( $template && 0 === validate_file( $template ) )
+				$templates[] = $template;
+			$current = apply_filters('qsot-locate-template', $current, $templates);
+
+			if (empty($current)) {
+				if ( $pagename )
+					$templates[] = "page-$pagename.php";
+				if ( $id )
+					$templates[] = "page-$id.php";
+				$templates[] = 'page.php';
+			}
+		}
+
+		return $current;
 	}
 
 	public static function locate_template($current='', $files=array(), $load=false, $require_once=false) {
@@ -27,9 +84,9 @@ class qsot_templates {
 					get_template_directory().'/templates/',
 					self::$o->core_dir.'templates/',
 				));
-				foreach ($dirs as $dir) {
-					$dir = trailingslashit($dir);
-					foreach ($files as $file) {
+				foreach ($files as $file) {
+					foreach ($dirs as $dir) {
+						$dir = trailingslashit($dir);
 						if (file_exists($dir.$file) && is_readable($dir.$file)) {
 							$templ = $dir.$file;
 							break 2;

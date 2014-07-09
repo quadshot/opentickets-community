@@ -1,5 +1,6 @@
 var QS = QS || {};
 QS.EventUI = (function($, EventUI_Callbacks, undefined) {
+	var qt = QS.Tools;
 	function NewEventDateTimeForm() {
 		var t = this;
 
@@ -346,7 +347,7 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 		},
 		fctm:'fc',
 		calendar:undefined,
-		events:{},
+		events:[],
 		first:false,
 		initialized:false,
 
@@ -536,11 +537,11 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 		},
 
 		loadSettings: function() {
-			if (typeof _qsot_settings == 'object') {
-				if (typeof _qsot_settings.events == 'object') {
+			if (qt.isO(_qsot_settings)) {
+				if (qt.isO(_qsot_settings.events)) {
 					this.events = _qsot_settings.events;
 				}
-				if (typeof _qsot_settings.templates == 'object') {
+				if (qt.isO(_qsot_settings.templates)) {
 					this.templates = _qsot_settings.templates;
 				}
 				this.first = typeof _qsot_settings.first == 'string' && _qsot_settings.first != '' ? new XDate(_qsot_settings.first) : new XDate();

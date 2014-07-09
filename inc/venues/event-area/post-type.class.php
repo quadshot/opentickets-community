@@ -113,16 +113,21 @@ class qsot_event_area {
 	public static function register_assets() {
 		wp_register_style('qsot-event-frontend', self::$o->core_url.'assets/css/frontend/event.css', array(), '0.1.0');
 		wp_register_script('qsot-event-frontend', self::$o->core_url.'assets/js/features/event-area/ui.js', array('qsot-tools'), '0.1.0');
-		wp_register_script('event-area-admin', self::$o->core_url.'assets/js/admin/event-area/ui.js', array('qsot-tools'), '0.1.0-beta');
+		wp_register_script('event-area-admin', self::$o->core_url.'assets/js/admin/event-area/ui.js', array('qsot-tools'), '0.1.0-beta', true);
 		wp_register_script('qsot-event-event-area-settings', self::$o->core_url.'assets/js/admin/event-area/event-settings.js', array('qsot-event-ui'), self::$o->version);
 	}
 
 	public static function load_admin_assets($exists, $post_id) {
 		wp_enqueue_script('event-area-admin');
+		add_action('admin_footer', array(__CLASS__, 'footer_load_admin_assets_settings'));
+	}
+
+	public static function footer_load_admin_assets_settings() {
+		global $post_ID;
 		wp_localize_script('event-area-admin', '_qsot_event_area_settings', array(
-			'nonce' => wp_create_nonce('event-areas-for-'.$post_id),
-			'venue_id' => $post_id,
-			'templates' => apply_filters('qsot-event-area-admin-templates', array(), $post_id),
+			'nonce' => wp_create_nonce('event-areas-for-'.$post_ID),
+			'venue_id' => $post_ID,
+			'templates' => apply_filters('qsot-event-area-admin-templates', array(), $post_ID),
 			'tickets' => apply_filters('qsot-get-all-ticket-products', array()),
 			'ajaxurl' => admin_url('admin-ajax.php'),
 		));

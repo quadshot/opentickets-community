@@ -13,12 +13,12 @@ class QSOT {
 		self::$o =& $settings_class_name::instance();
 
 		// locale fix
-		add_action('plugins_loaded', array(__CLASS__, 'locale'), 1);
+		add_action('plugins_loaded', array(__CLASS__, 'locale'), 4);
 		// inject our own autoloader before all others in case we need to overtake some woocommerce autoloaded classes down the line. this may not work with 100% of all classes
 		// because we dont actually control the plugin load order, but it should suffice for what we may use it for. if it does not suffice at any time, then we will rethink this
-		add_action('plugins_laoded', array(__CLASS__, 'prepend_overtake_autoloader'), 1);
+		add_action('plugins_loaded', array(__CLASS__, 'prepend_overtake_autoloader'), 4);
 		// load emails when doing ajax request. woocommerce workaround
-		add_action('plugins_loaded', array(__CLASS__, 'why_do_i_have_to_do_this'), 1);
+		add_action('plugins_loaded', array(__CLASS__, 'why_do_i_have_to_do_this'), 4);
 
 		// declare the includes loader function
 		add_action('qsot-load-includes', array(__CLASS__, 'load_includes'), 10, 2);
@@ -29,11 +29,12 @@ class QSOT {
 		do_action('qsot-load-includes', 'sys');
 		// load all other core features
 		do_action('qsot-load-includes', 'core');
-		// load core post types. required for most stuff
-		do_action('qsot-load-includes', '', '#^.*post-type\.class\.php$#i');
-		do_action('qsot-after-core-includes'); // injection point by sub/external plugins to load their stuff, or stuff that is required to be loaded first, or whatever
-		// load everything else
-		do_action('qsot-load-includes');
+		// injection point by sub/external plugins to load their stuff, or stuff that is required to be loaded first, or whatever
+		// NOTE: this would require that the code that makes use of this hook, loads before this plugin is loaded at all
+		do_action('qsot-after-core-includes');
+
+		// load all plugins and modules later on
+		add_action('plugins_loaded', array(__CLASS__, 'load_plugins_and_modules'), 5);
 
 		// register the activation function, so that when the plugin is activated, it does some magic described in the activation function
 		register_activation_hook(self::$o->core_file, array(__CLASS__, 'activation'));
@@ -54,6 +55,18 @@ class QSOT {
 
 		add_action('load-post.php', array(__CLASS__, 'load_assets'), 999);
 		add_action('load-post-new.php', array(__CLASS__, 'load_assets'), 999);
+	}
+	
+	// defer loading non-core modules and plugins, til after all plugins have loaded, since most of the plugins will not know
+	public static function load_plugins_and_modules() {
+		do_action('qsot-before-loading-modules-and-plugins');
+
+		// load core post types. required for most stuff
+		do_action('qsot-load-includes', '', '#^.*post-type\.class\.php$#i');
+		// load everything else
+		do_action('qsot-load-includes');
+
+		do_action('qsot-after-loading-modules-and-plugins');
 	}
 
 	public static function register_base_admin_assets() {
