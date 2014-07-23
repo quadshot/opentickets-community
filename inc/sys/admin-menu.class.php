@@ -109,6 +109,8 @@ class qsot_admin_menu {
 			self::$menu_slugs['settings'],
 			array(__CLASS__, 'ap_settings_page')
 		);
+
+		add_action('load-'.self::$menu_page_hooks['settings'], array(__CLASS__, 'ap_settings_page_head'));
 	}
 
 	public static function rename_first_menu_item() {
@@ -210,6 +212,22 @@ class qsot_admin_menu {
 	public static function ap_settings_page() {
 		require_once 'admin-settings.php';
 		qsot_admin_settings::output();
+	}
+
+	public static function ap_settings_page_head() {
+		global $current_tab, $current_section;
+		require_once 'admin-settings.php';
+
+		// Include settings pages
+		qsot_admin_settings::get_settings_pages();
+
+		// Get current tab/section
+		$current_tab     = empty( $_GET['tab'] ) ? 'general' : sanitize_title( $_GET['tab'] );
+		$current_section = empty( $_REQUEST['section'] ) ? '' : sanitize_title( $_REQUEST['section'] );
+
+		if (empty($_POST)) return;
+
+		qsot_admin_settings::save();
 	}
 
 	protected static function _get_reports_charts() {

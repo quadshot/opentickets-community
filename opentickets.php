@@ -12,6 +12,10 @@ class QSOT {
 		if (empty($settings_class_name)) return;
 		self::$o =& $settings_class_name::instance();
 
+		// allow for registering addons
+		add_action('qsot-add-addon', array(__CLASS__, 'add_addon'), 100, 1);
+		add_action('qsot-get-addons', array(__CLASS__, 'get_addons'), 100, 1);
+
 		// locale fix
 		add_action('plugins_loaded', array(__CLASS__, 'locale'), 4);
 		// inject our own autoloader before all others in case we need to overtake some woocommerce autoloaded classes down the line. this may not work with 100% of all classes
@@ -152,7 +156,29 @@ class QSOT {
 		}
 	}
 
-	public static function overtake_some_woocommerce_core_templates($template, $template_name, $template_path) {
+	public static function add_addon($args) {
+		$args = wp_parse_args($args, array(
+			'name' => '',
+			'path' => '',
+			'prefix' => '',
+			'slug' => '',
+			'code' => '',
+		));
+		$args['slug'] = sanitize_title_with_dashes($args['slug']);
+		if (!empty($args['slug'])) {
+			$args = wp_parse_args($args, array(
+				'name' => $args['slug'],
+				'prefix' => $args['slug'],
+			));
+			self::$o->{'addons.'.$args['slug']} = $args;
+		}
+	}
+
+	public static function get_addons() {
+		return self::$o->addons;
+	}
+
+	public static function overtake_some_woocommerce_core_templates($template, $template_name, $template_path='') {
 		global $woocommerce;
 
 		$default_path = $woocommerce->plugin_path().'/templates/';

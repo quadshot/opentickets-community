@@ -15,8 +15,9 @@ class qsot_admin_settings extends WC_Admin_Settings {
 			include_once( $GLOBALS['woocommerce']->plugin_path.'/includes/admin/settings/class-wc-settings-page.php' );
 
 			$settings[] = include( 'settings/general.php' );
+			$settings[] = include( 'settings/lics.php' );
 
-			self::$settings = apply_filters( 'qsot_get_settings_pages', $settings );
+			self::$settings = apply_filters( 'qsot_get_settings_pages', array_filter($settings) );
 		}
 		return self::$settings;
 	}
@@ -36,6 +37,9 @@ class qsot_admin_settings extends WC_Admin_Settings {
 		self::check_download_folder_protection();
 
 		do_action( 'qsot_settings_saved' );
+
+		wp_safe_redirect(add_query_arg(array('updated' => 1)));
+		exit;
 	}
 
 	/**
@@ -79,15 +83,15 @@ class qsot_admin_settings extends WC_Admin_Settings {
 		) );
 
 		// Include settings pages
-		self::get_settings_pages();
+		//self::get_settings_pages();
 
 		// Get current tab/section
-		$current_tab     = empty( $_GET['tab'] ) ? 'general' : sanitize_title( $_GET['tab'] );
-		$current_section = empty( $_REQUEST['section'] ) ? '' : sanitize_title( $_REQUEST['section'] );
+		//$current_tab     = empty( $_GET['tab'] ) ? 'general' : sanitize_title( $_GET['tab'] );
+		//$current_section = empty( $_REQUEST['section'] ) ? '' : sanitize_title( $_REQUEST['section'] );
 
 		// Save settings if data has been posted
-		if ( ! empty( $_POST ) )
-			self::save();
+		//if ( ! empty( $_POST ) )
+			//self::save();
 
 		// Add any posted messages
 		if ( ! empty( $_GET['wc_error'] ) )

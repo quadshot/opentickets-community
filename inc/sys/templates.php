@@ -16,6 +16,7 @@ class qsot_templates {
 
 		// similar to above, only specifically for templates that we may have overriden from woo.... like admin templates
 		add_filter('qsot-woo-template', array(__CLASS__, 'locate_woo_template'), 10, 2);
+		add_filter('woocommerce_locate_template', array(__CLASS__, 'wc_locate_template'), 10, 3);
 
 		add_filter('init', array(__CLASS__, 'rig_theme_page_template_cache'), 0);
 		add_filter('theme_page_templates', array(__CLASS__, 'add_extra_templates'), 10, 1);
@@ -80,10 +81,11 @@ class qsot_templates {
 			$templ = locate_template($files, $load, $require_once);
 			if (empty($templ)) {
 				$dirs = apply_filters('qsot-template-dirs', array(
-					get_stylesheet_directory().'/templates/',
-					get_template_directory().'/templates/',
+					//get_stylesheet_directory().'/templates/',
+					//get_template_directory().'/templates/',
 					self::$o->core_dir.'templates/',
 				));
+				array_unshift($dirs, get_stylesheet_directory().'/'.$qsot_path, get_template_directory().'/'.$qsot_path);
 				foreach ($files as $file) {
 					foreach ($dirs as $dir) {
 						$dir = trailingslashit($dir);
@@ -104,6 +106,12 @@ class qsot_templates {
 		return $current;
 	}
 
+	public static function wc_locate_template($current, $template_name, $template_path) {
+		$name = $template_name;
+		$found = apply_filters('qsot-woo-template', $name);
+		return $found ? $found : $current;
+	}
+
 	public static function locate_woo_template($name, $type=false) {
 		global $woocommerce;
 
@@ -116,11 +124,12 @@ class qsot_templates {
 			}
 
 			$dirs = apply_filters('qsot-template-dirs', array(
-				get_stylesheet_directory().'/'.$qsot_path,
-				get_template_directory().'/'.$qsot_path,
+				//get_stylesheet_directory().'/templates/',
+				//get_template_directory().'/templates/',
 				self::$o->core_dir.$qsot_path,
 				$woodir.$woo_path,
-			), $qsot_path, $woo_path);
+			), $qsot_path, $woo_path, 'woocommerce');
+			array_unshift($dirs, get_stylesheet_directory().'/'.$qsot_path, get_template_directory().'/'.$qsot_path);
 
 			foreach ($dirs as $dir) {
 				if (file_exists(($file = trailingslashit($dir).$name))) {
