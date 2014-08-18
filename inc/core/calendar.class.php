@@ -85,6 +85,8 @@ class qsot_frontend_calendar {
 		$post = get_post();
 		$needs_calendar = ($post->post_type == 'page' && $post->ID == get_option('qsot_calendar_page_id', ''));
 
+		if (!$needs_calendar) $needs_calendar = (bool)preg_match('#qsot-calendar\.php$#', get_post_meta($post->ID, '_wp_page_template', true));
+
 		if (!$needs_calendar) $needs_calendar = (bool)preg_match('#\['.self::$shortcode.'[^\[\]]*\]#', $post->post_content);
 
 		if ($needs_calendar) {

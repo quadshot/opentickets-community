@@ -24,6 +24,7 @@ class opentickets_community_launcher {
 		require_once 'inc/sys/settings.php';
 		require_once 'inc/sys/options.php';
 		require_once 'inc/sys/templates.php';
+		require_once 'inc/sys/registry.php';
 
 		// load the settings object
 		$settings_class_name = apply_filters('qsot-settings-class-name', '');

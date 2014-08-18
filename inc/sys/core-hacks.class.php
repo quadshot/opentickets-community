@@ -122,6 +122,7 @@ class qsot_core_hacks {
 	public static function order_add_late_meta_boxes($post_type, $post) {
 		if ($post_type !== 'shop_order') return;
 
+/*
 		remove_meta_box('woocommerce-order-totals', 'shop_order', 'side', 'default');
 		add_meta_box(
 			'woocommerce-order-totals',
@@ -131,6 +132,7 @@ class qsot_core_hacks {
 			'side',
 			'default'
 		);
+*/
 	}
 
 	public static function add_view_customer_facing_emails($list) {

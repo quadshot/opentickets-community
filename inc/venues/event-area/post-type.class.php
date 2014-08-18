@@ -363,23 +363,45 @@ class qsot_event_area {
 				'ticket_type_id' => $event->meta->_event_area_obj->ticket->id,
 				'state' => self::$o->{'z.states.r'},
 			);
-			$set = array(
-				'qty' => 0,
-				'_delete' => true,
-			);
+			if ($data['quantity'] <= 0) {
+				$set = array(
+					'qty' => 0,
+					'_delete' => true,
+				);
+			} else {
+				$set = array(
+					'qty' => $data['quantity'],
+				);
+			}
 			$res = apply_filters('qsot-zoner-update-reservation', false, $where, $set);
 			$owns = apply_filters('qsot-zoner-owns-current-user', 0, $event, $event->meta->_event_area_obj->ticket->id, self::$o->{'z.states.r'});
-			if (!$owns && $res) {
-				$resp['s'] = true;
-				$resp['m'] = array('Updated your reservations successfully.');
-				$resp['data'] = array(
-					'owns' => $owns,
-					'available' => $event->meta->available,
-				);
-				$resp['data']['available_more'] = $resp['data']['available'] - $resp['data']['owns'];
+
+			if ($data['quantity'] <= 0) {
+				if (!$owns && $res) {
+					$resp['s'] = true;
+					$resp['m'] = array('Updated your reservations successfully.');
+					$resp['data'] = array(
+						'owns' => $owns,
+						'available' => $event->meta->available,
+					);
+					$resp['data']['available_more'] = $resp['data']['available'] - $resp['data']['owns'];
+				} else {
+					if ($owns) $resp['e'][] = 'A problem occurred when trying to remove your reservations.';
+					else $resp['e'][] = 'Could not update your reservations.';
+				}
 			} else {
-				if ($owns) $resp['e'][] = 'A problem occurred when trying to remove your reservations.';
-				else $resp['e'][] = 'Could not update your reservations.';
+				if (!$res || !$owns) {
+					if ($owns) $resp['e'][] = 'A problem occurred when trying to update your reservations.';
+					else $resp['e'][] = 'Could not update your reservations.';
+				} else {
+					$resp['s'] = true;
+					$resp['m'] = array('Updated your reservations successfully.');
+					$resp['data'] = array(
+						'owns' => $owns,
+						'available' => $event->meta->available,
+					);
+					$resp['data']['available_more'] = $resp['data']['available'] - $resp['data']['owns'];
+				}
 			}
 		} else {
 			if (!is_object($event)) $resp['e'][] = 'Could not load that event.';

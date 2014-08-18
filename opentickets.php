@@ -5,6 +5,7 @@ if (!class_exists('QSOT')):
 class QSOT {
 	protected static $o = null; // holder for all options of the events plugin
 	protected static $ajax = false;
+	protected static $me = '';
 
 	public static function pre_init() {
 		// load the settings. theya re required for everything past this point
@@ -12,9 +13,7 @@ class QSOT {
 		if (empty($settings_class_name)) return;
 		self::$o =& $settings_class_name::instance();
 
-		// allow for registering addons
-		add_action('qsot-add-addon', array(__CLASS__, 'add_addon'), 100, 1);
-		add_action('qsot-get-addons', array(__CLASS__, 'get_addons'), 100, 1);
+		self::$me = plugin_basename(self::$o->core_file);
 
 		// locale fix
 		add_action('plugins_loaded', array(__CLASS__, 'locale'), 4);
@@ -59,6 +58,24 @@ class QSOT {
 
 		add_action('load-post.php', array(__CLASS__, 'load_assets'), 999);
 		add_action('load-post-new.php', array(__CLASS__, 'load_assets'), 999);
+
+		add_filter('plugin_action_links', array(__CLASS__, 'plugins_page_actions'), 10, 4);
+	}
+
+	// add the settings page link to the plugins page
+	public static function plugins_page_actions($actions, $plugin_file, $plugin_data, $context) {
+		if ($plugin_file == self::$me && isset($actions['deactivate'])) {
+			$new = array(
+				'settings' => sprintf(
+					'<a href="%s" title="Visit the License Key settings page">%s</a>',
+					esc_attr(apply_filters('qsot-get-menu-page-uri', '', 'settings', true)),
+					'Settings'
+				),
+			);
+			$actions = array_merge($new, $actions);
+		}
+
+		return $actions;
 	}
 	
 	// defer loading non-core modules and plugins, til after all plugins have loaded, since most of the plugins will not know
@@ -120,62 +137,63 @@ class QSOT {
 		$class = strtolower($class);
 
 		if (strpos($class, 'wc_gateway_') === 0) {
-			$path = self::$o->core_dir.'/woocommerce/classes/gateways/'.trailingslashit(substr(str_replace('_', '-', $class), 11));
+			$paths = array(self::$o->core_dir.'/woocommerce/includes/gateways/'.trailingslashit(substr(str_replace('_', '-', $class), 11)));
+			$paths = apply_filters('qsot-woocommerce-gateway-paths', $paths, $paths, $class);
 			$file = 'class-'.str_replace('_', '-', $class).'.php';
 
-			if (is_readable($path.$file)) {
-				include_once($path.$file);
-				return;
+			foreach ($paths as $path) {
+				if (is_readable($path.$file)) {
+					include_once($path.$file);
+					return;
+				}
 			}
 		} elseif (strpos($class, 'wc_shipping_') === 0) {
-			$path = self::$o->core_dir.'/woocommerce/classes/shipping/'.trailingslashit(substr(str_replace('_', '-', $class), 12));
+			$paths = array(self::$o->core_dir.'/woocommerce/includes/shipping/'.trailingslashit(substr(str_replace('_', '-', $class), 12)));
+			$paths = apply_filters('qsot-woocommerce-shipping-paths', $paths, $paths, $class);
 			$file = 'class-'.str_replace('_', '-', $class).'.php';
 
-			if (is_readable($path.$file)) {
-				include_once($path.$file);
-				return;
+			foreach ($paths as $path) {
+				if (is_readable($path.$file)) {
+					include_once($path.$file);
+					return;
+				}
 			}
 		} elseif (strpos($class, 'wc_shortcode_') === 0) {
-			$path = self::$o->core_dir.'/woocommerce/classes/shortcodes/';
+			$paths = array(self::$o->core_dir.'/woocommerce/includes/shortcodes/');
+			$paths = apply_filters('qsot-woocommerce-shortcode-paths', $paths, $paths, $class);
 			$file = 'class-'.str_replace('_', '-', $class).'.php';
 
-			if (is_readable($path.$file)) {
-				include_once($path.$file);
-				return;
+			foreach ($paths as $path) {
+				if (is_readable($path.$file)) {
+					include_once($path.$file);
+					return;
+				}
+			}
+		} elseif (strpos($class, 'wc_meta_box_') === 0) {
+			$paths = array(self::$o->core_dir.'/woocommerce/includes/admin/post-types/meta-boxes/');
+			$paths = apply_filters('qsot-woocommerce-meta-box-paths', $paths, $paths, $class);
+			$file = 'class-'.str_replace('_', '-', $class).'.php';
+
+			foreach ($paths as $path) {
+				if (is_readable($path.$file)) {
+					include_once($path.$file);
+					return;
+				}
 			}
 		}
 
 		if (strpos($class, 'wc_') === 0) {
-			$path = self::$o->core_dir.'/woocommerce/classes/';
+			$paths = array(self::$o->core_dir.'/woocommerce/includes/');
+			$paths = apply_filters('qsot-woocommerce-class-paths', $paths, $paths, $class);
 			$file = 'class-'.str_replace('_', '-', $class).'.php';
 
-			if (is_readable($path.$file)) {
-				include_once($path.$file);
-				return;
+			foreach ($paths as $path) {
+				if (is_readable($path.$file)) {
+					include_once($path.$file);
+					return;
+				}
 			}
 		}
-	}
-
-	public static function add_addon($args) {
-		$args = wp_parse_args($args, array(
-			'name' => '',
-			'path' => '',
-			'prefix' => '',
-			'slug' => '',
-			'code' => '',
-		));
-		$args['slug'] = sanitize_title_with_dashes($args['slug']);
-		if (!empty($args['slug'])) {
-			$args = wp_parse_args($args, array(
-				'name' => $args['slug'],
-				'prefix' => $args['slug'],
-			));
-			self::$o->{'addons.'.$args['slug']} = $args;
-		}
-	}
-
-	public static function get_addons() {
-		return self::$o->addons;
 	}
 
 	public static function overtake_some_woocommerce_core_templates($template, $template_name, $template_path='') {
@@ -256,6 +274,25 @@ class QSOT {
 	// do magic - as yet to be determined the need of
 	public static function activation() {
 		do_action('qsot-activate');
+	}
+}
+
+// loads a core woo class equivalent of a class this plugin takes over, under a different name, so that it can be extended by this plugin's versions and still use the same original name
+if (!function_exists('qsot_underload_core_class')) {
+	function qsot_underload_core_class($path, $class_name='') {
+		global $woocommerce;
+
+		// eval load WooCommerce Core WC_Coupon class, so that we can change the name, so that we can extend it
+		$content = file_get_contents($woocommerce->plugin_path.$path);
+		if ($class_name) {
+			$content = preg_replace('#class\s+('.preg_quote($class_name, '#').')(\s|\{)#si', 'class _WooCommerce_Core_\1\2', $content);
+		} else {
+			preg_match_all('#class\s+([a-z_][a-z0-9_]*)(\s|\{)#si', $content, $matches, PREG_SET_ORDER);
+			if (is_array($matches) && count($matches)) foreach ($matches as $match)
+				$content = preg_replace('#class\s+('.preg_quote($match[1], '#').')(\s|\{)#si', 'class _WooCommerce_Core_\1\2', $content);
+		}
+		$content = preg_replace('#^<\?php.*?/\*#s', '/*', $content);
+		eval($content);
 	}
 }
 
