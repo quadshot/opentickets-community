@@ -3,7 +3,7 @@
  * Plugin Name: OpenTickets Community
  * Plugin URI:  http://opentickets.com/
  * Description: Event Management and Online Ticket Sales Platform
- * Version:     1.1.0
+ * Version:     1.1.2
  * Author:      Quadshot Software LLC
  * Author URI:  http://quadshot.com/
  * License: OpenTickets Software License Agreement
