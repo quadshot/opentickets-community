@@ -28,7 +28,7 @@
 							<?php break; ?>
 							<?php case 'order_id': ?>
 								<td>
-									<?php $out = !empty($row['order_id']) ? 'Order #'.$row['order_id'] : '-' ?>
+									<?php $out = !empty($row['order_id']) ? '#'.$row['order_id'] : '-' ?>
 									<?php if (!empty($row['_order_link'])): ?>
 										<a href="<?php echo esc_attr($row['_order_link']) ?>" title="Edit Order"><?php echo $out ?></a>
 									<?php else: ?>

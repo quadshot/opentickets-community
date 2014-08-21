@@ -382,6 +382,9 @@ class qsot_seating_report extends qsot_admin_report {
 			$row['quantity'] = $ticket['_qty'];
 			$row['note'] = $order->seating_report_note->comment_content;
 			$row['state'] = self::_state_text($ticket['state']);
+      $row['email'] = $order->billing_email;
+      $row['phone'] = $order->billing_phone;
+      $row['address'] = self::_get_address($order);
 
 			$row['_user_link'] = get_edit_user_link($order->customer_user);
 			$row['_order_link'] = get_edit_post_link($ticket['_order_id']);
@@ -401,6 +404,9 @@ class qsot_seating_report extends qsot_admin_report {
 			$row['quantity'] = $capacity - $cnt;
 			$row['note'] = '-';
 			$row['state'] = '-';
+      $row['email'] = '-';
+      $row['phone'] = '-';
+      $row['address'] = '-';
 
 			$row['_user_link'] = '';
 			$row['_order_link'] = '';
@@ -453,6 +459,9 @@ class qsot_seating_report extends qsot_admin_report {
 			'order_id' => __('Order #'),
 			'ticket_type' => __('Ticket Type'),
 			'quantity' => __('Quantity'),
+      'email' => __('Email'),
+      'phone' => __('Phone'),
+      'address' => __('Address'),
 			'note' => __('Note'),
 			'state' => __('Status'),
 		);
@@ -462,6 +471,13 @@ class qsot_seating_report extends qsot_admin_report {
 		}
 		return apply_filters('qsot-seating-report-fields', $basic);
 	}
+
+  protected static function _get_address($order) {
+    $addr = $order->billing_address_1;
+    if (!empty($order->billing_address_2)) $addr .= '<br/>'.$order->billing_address_2;
+    $addr .= '<br/>'.$order->billing_city.', '.$order->billing_state.' '.$order->billing_postcode.', '.$order->billing_country;
+    return $addr;
+  }
 
 	protected static function _nice_csv_data($tickets, $event, $orders, $ticket_types) {
 		$out = array();
@@ -479,6 +495,9 @@ class qsot_seating_report extends qsot_admin_report {
 					case 'ticket_type': $row[$label] = apply_filters('the_title', $ticket_types[$ticket['_product_id']]->post->post_title); break;
 					case 'quantity': $row[$label] = $ticket['_qty']; break;
 					case 'ticket_link': $row[$label] = site_url($ticket['_ticket_link']); break;
+          case 'email': $row[$label] = $orders[$ticket['_order_id']]->billing_email; break;
+          case 'phone': $row[$label] = $orders[$ticket['_order_id']]->billing_phone; break;
+          case 'address': $row[$label] = self::_get_address($orders[$ticket['_order_id']]); break;
 					case 'note': $row[$label] = is_object($orders[$ticket['_order_id']]->seating_report_note) ? $orders[$ticket['_order_id']]->seating_report_note->comment_content : ''; break;
 					default: $row = apply_filters('qsotc-seating-report-csv-row', $row, $field, $label, $ticket, $event, $orders, $ticket_types);
 				}

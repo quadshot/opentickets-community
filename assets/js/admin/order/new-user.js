@@ -80,8 +80,10 @@ if (typeof jQuery != 'undefined') (function($, undefined) {
 
 	$(function() {
 		d.on('liszt:updated, chosen:updated, change', '#customer_user', function() { 
-			$('._billing_first_name_field').closest('.order_data_column').find('a.edit_address').click();//.closest('.order_data_column').find('button.load_customer_billing').click();
-			load_customer_billing_information();
+			if ($(this).val() != '') {
+				$('._billing_first_name_field').closest('.order_data_column').find('a.edit_address').click();//.closest('.order_data_column').find('button.load_customer_billing').click();
+				load_customer_billing_information();
+			}
 		});
 	});
 	
