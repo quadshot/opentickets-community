@@ -47,7 +47,7 @@ if (!class_exists('lou_media_box_anywhere')):
 		public function pre_init() {
 			// first thing, load all the options, and share them with all other parts of the plugin
 			$settings_class_name = apply_filters('qsot-settings-class-name', '');
-			self::$o =& $settings_class_name::instance();
+			self::$o =& call_user_func_array(array($settings_class_name, "instance"), array());
 
 			// calculate and store the urls to our basic resources for this plugin
 			self::$_base_url = self::$o->core_url;

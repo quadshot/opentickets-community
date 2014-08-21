@@ -196,7 +196,7 @@ abstract class qsot_events_base_widget extends WP_Widget {
 	protected function _setup_widget($class, $file) {
 		// first thing, load all the options, and share them with all other parts of the plugin
 		$settings_class_name = apply_filters('qsot-settings-class-name', '');
-		$this->o =& $settings_class_name::instance();
+		$this->o =& call_user_func_array(array($settings_class_name, "instance"), array());
 		// used for templates and for assets like js/css/imgs
 		$this->_base_dir = $this->o->core_dir;
 		$this->_base_url = $this->o->core_url;

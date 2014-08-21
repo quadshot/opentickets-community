@@ -10,13 +10,13 @@ class qsot_frontend_calendar {
 		// load all the options, and share them with all other parts of the plugin
 		$options_class_name = apply_filters('qsot-options-class-name', '');
 		if (!empty($options_class_name)) {
-			self::$options =& $options_class_name::instance();
+			self::$options =& call_user_func_array(array($options_class_name, "instance"), array());
 			//self::_setup_admin_options();
 		}
 
 		$settings_class_name = apply_filters('qsot-settings-class-name', '');
 		if (!empty($settings_class_name)) {
-			self::$o =& $settings_class_name::instance();
+			self::$o =& call_user_func_array(array($settings_class_name, "instance"), array());
 
 			add_filter('woocommerce_page_settings', array(__CLASS__, 'add_pages'), 10, 1);
 			add_filter('init', array(__CLASS__, 'register_assets'), 10);

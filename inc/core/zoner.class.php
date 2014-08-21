@@ -9,7 +9,7 @@ class qsot_zoner {
 	public static function pre_init() {
 		$settings_class_name = apply_filters('qsot-settings-class-name', '');
 		if (empty($settings_class_name) || !class_exists($settings_class_name)) return;
-		self::$o =& $settings_class_name::instance();
+		self::$o =& call_user_func_array(array($settings_class_name, "instance"), array());
 		
 		self::$o->z = apply_filters('qsot-zoner-settings', array(
 			'states' => array(

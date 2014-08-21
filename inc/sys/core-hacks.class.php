@@ -8,13 +8,13 @@ class qsot_core_hacks {
 		// load all the options, and share them with all other parts of the plugin
 		$options_class_name = apply_filters('qsot-options-class-name', '');
 		if (!empty($options_class_name)) {
-			self::$options =& $options_class_name::instance();
+			self::$options =& call_user_func_array(array($options_class_name, "instance"), array());
 			//self::_setup_admin_options();
 		}
 
 		$settings_class_name = apply_filters('qsot-settings-class-name', '');
 		if (!empty($settings_class_name)) {
-			self::$o =& $settings_class_name::instance();
+			self::$o =& call_user_func_array(array($settings_class_name, "instance"), array());
 			add_action('qsot-draw-page-template-list', array(__CLASS__, 'page_draw_page_template_list'), 10, 1);
 			add_filter('qsot-page-templates-list', array(__CLASS__, 'page_templates_list'), 10, 2);
 			add_filter('qsot-get-page-template-list', array(__CLASS__, 'page_get_page_template_list'), 10, 1);

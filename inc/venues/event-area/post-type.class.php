@@ -13,7 +13,7 @@ class qsot_event_area {
 		// first thing, load all the options, and share them with all other parts of the plugin
 		$settings_class_name = apply_filters('qsot-settings-class-name', '');
 		if (!class_exists($settings_class_name)) return false;
-		self::$o =& $settings_class_name::instance();
+		self::$o =& call_user_func_array(array($settings_class_name, "instance"), array());
 
 		self::$o->event_area = apply_filters('qsot-event-area-options', array(
 			'post_type' => 'qsot-event-area',
