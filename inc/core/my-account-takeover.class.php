@@ -165,12 +165,22 @@ class qsot_my_account_takeover {
 		if ( ! is_user_logged_in() ) {
 			woocommerce_get_template( 'myaccount/form-login.php' );
 		} else {
+			$cu = wp_get_current_user();
+			$GLOBALS['qsot_my_acct'] = array(
+				'current_user' => $cu,
+				'can_edit_orders' => current_user_can('edit_shop_orders'),
+			);
+			$GLOBALS['current_user'] = $userprofile;
+			$cu2 = wp_get_current_user();
+			$GLOBALS['qsot_my_acct']['swapin_user'] = $cu2;
 			?><div class="my-account"><?php
 				woocommerce_get_template( 'myaccount/my-account.php', array(
-					'current_user' 	=> $userprofile,
+					'current_user' 	=> $cu2,
 					'order_count' 	=> -1,
 				) );
 			?></div><?php
+			$GLOBALS['current_user'] = $cu;
+			wp_get_current_user();
 		}
 	}
 
@@ -216,6 +226,7 @@ class qsot_my_account_takeover {
 			'post_type' => self::$o->core_post_type,
 			'start_date_after' => date('Y-m-d H:i:s'),
 			'post__in' => array_keys($groups),
+			'special_order' => 'qssda.meta_value asc',
 		));
 		if (!is_array($events) || empty($events)) return;
 		$events = array_map('absint', $events);
@@ -234,7 +245,7 @@ class qsot_my_account_takeover {
 		$pairs = array();
 		foreach ($raw_pairs as $raw_row) $pairs[$raw_row->order_item_id.''] = $raw_row->order_id;
 
-		$event_data = $ticket_data = array();
+		$e_data = $event_data = $ticket_data = array();
 		foreach ($raw_data as $row) {
 			if (!isset($ticket_data["{$row->order_item_id}"]) || !is_array($ticket_data["{$row->order_item_id}"]))
 				$ticket_data["{$row->order_item_id}"] = array('__order_item_id' => $row->order_item_id, '__order_id' => isset($pairs[$row->order_item_id]) ? $pairs[$row->order_item_id] : 0);
@@ -255,12 +266,14 @@ class qsot_my_account_takeover {
 			$ticket->zone = apply_filters('qsot-get-seating-zone', null, $ticket->_zone_id);
 			$ticket_data[$ind] = $ticket;
 
-			if (is_object($ticket->event) && (!isset($event_data["{$ticket->_event_id}"]) || !is_object($event_data["{$ticket->_event_id}"])))
-				$event_data["{$ticket->_event_id}"] = $ticket->event;
-			if (!isset($event_data["{$ticket->_event_id}"]->tickets) || !is_array($event_data["{$ticket->_event_id}"]->tickets))
-				$event_data["{$ticket->_event_id}"]->tickets = array();
-			$event_data["{$ticket->_event_id}"]->tickets[] = $ticket;
+			if (is_object($ticket->event) && (!isset($e_data["{$ticket->_event_id}"]) || !is_object($e_data["{$ticket->_event_id}"])))
+				$e_data["{$ticket->_event_id}"] = $ticket->event;
+			if (!isset($e_data["{$ticket->_event_id}"]->tickets) || !is_array($e_data["{$ticket->_event_id}"]->tickets))
+				$e_data["{$ticket->_event_id}"]->tickets = array();
+			$e_data["{$ticket->_event_id}"]->tickets[] = $ticket;
 		}
+
+		foreach ($events as $eid) if (isset($e_data[$eid.''])) $event_data[$eid.''] = $e_data[$eid.''];
 
 		woocommerce_get_template('myaccount/my-upcoming-tickets.php', array(
 			'user' => $current_user,
