@@ -54,6 +54,7 @@ class qsot_reporting {
 	public static function process_ajax() {
 		$report = $_POST['report'];
 		$action = 'qsot-ajax-report-ajax'.(empty($report) ? '' : '-'.$report);
+		if (has_action($action)) ini_set('max_execution_time', 1500);
 		do_action($action);
 	}
 
@@ -300,6 +301,33 @@ abstract class qsot_admin_report {
 		}
 	}
 }
+
+if (!function_exists('qsot_datepicker_js')):
+function qsot_datepicker_js() {
+	global $woocommerce;
+	?>
+	var dates = jQuery( "#from, #to" ).datepicker({
+		defaultDate: "",
+		dateFormat: "yy-mm-dd",
+		numberOfMonths: 1,
+		maxDate: "+0D",
+		showButtonPanel: true,
+		showOn: "button",
+		buttonImage: "<?php echo $woocommerce->plugin_url(); ?>/assets/images/calendar.png",
+		buttonImageOnly: true,
+		onSelect: function( selectedDate ) {
+			var option = this.id == "from" ? "minDate" : "maxDate",
+				instance = jQuery( this ).data( "datepicker" ),
+				date = jQuery.datepicker.parseDate(
+					instance.settings.dateFormat ||
+					jQuery.datepicker._defaults.dateFormat,
+					selectedDate, instance.settings );
+			dates.not( this ).datepicker( "option", option, date );
+		}
+	});
+	<?php
+}
+endif;
 
 if (defined('ABSPATH') && function_exists('add_action')) {
 	qsot_reporting::pre_init();
