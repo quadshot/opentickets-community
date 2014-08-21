@@ -161,6 +161,7 @@ class qsot_my_account_takeover {
 
 	public static function add_my_account_to_user_profile($userprofile) {
 		global $woocommerce;
+		if (!is_object($woocommerce->customer)) $woocommerce->customer = new WC_Customer();
 
 		if ( ! is_user_logged_in() ) {
 			woocommerce_get_template( 'myaccount/form-login.php' );
