@@ -240,6 +240,16 @@ abstract class qsot_admin_report {
 		return $res;
 	}
 
+	protected static $bad_path = '';
+	public static function csv_path_notice() {
+		if (self::$bad_path) {
+			?><div class="error">
+				Could not create the report cache directory.
+				Make sure that the permissions for '<?php echo $path ?>' allow the webserver to create a directory, and try again.
+			</div><?php
+		}
+	}
+
 	protected static function _csv_location_check() {
 		$res = self::$csv_settings['enabled'];
 
@@ -248,9 +258,8 @@ abstract class qsot_admin_report {
 			$path = $uploads['basedir'].'/report-cache/';
 			if (!file_exists($path)) {
 				if (!mkdir($path)) {
-					add_action('admin_notices', function() {
-						echo '<div class="error">Could not create the report cache directory. Make sure that the permissions for '.$path.' allow the webserver to create a directory, and try again.</div>';
-					});
+					self::$bad_path = $path;
+					add_action('admin_notices', array(__CLASS__, 'csv_path_notice'));
 				} else $res = true;
 			} else if (is_writable($path)) $res = true;
 			if ($res) {
