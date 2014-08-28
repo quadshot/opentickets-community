@@ -914,6 +914,7 @@ class qsot_event_area {
 
 			$area = apply_filters('qsot-get-event-event-area', false, $event->ID);
 			$reserved = apply_filters('qsot-zoner-owns-current-user', 0, $event->ID, $area->ticket->post->ID, self::$o->{'z.states.r'});
+			$interests = array();
 
 			if (is_object($area)) {
 				ob_start();

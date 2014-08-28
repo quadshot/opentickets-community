@@ -402,6 +402,13 @@ class qsot_venue_post_type {
 
 	public static function mb_venue_social_information($post, $mb) {
 		$info = apply_filters('qsot-get-venue-meta', array(), $post->ID, 'info');
+		$info = wp_parse_args($info, array(
+			'phone' => '',
+			'website' => '',
+			'facebook' => '',
+			'twitter' => '',
+			'contact_email' => ''
+		));
 		?>
 			<style>
 				table.venue-social-information-table { width:100%; margin:0; }
