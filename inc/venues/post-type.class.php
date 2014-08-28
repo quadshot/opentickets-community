@@ -62,7 +62,7 @@ class qsot_venue_post_type {
 		// special event query stuff
 		add_action('pre_get_posts', array(__CLASS__, 'include_exclude_based_on_venue'), 10, 1);
 
-		add_filter('qsot-ticket-data', array(__CLASS__, 'add_venue_data'), 10, 5);
+		add_filter('qsot-compile-ticket-info', array(__CLASS__, 'add_venue_data'), 2000, 3);
 
 		add_filter('single_template', array(__CLASS__, 'venue_template_default'), 10, 1);
 		add_filter('qsot-venue-map-string', array(__CLASS__, 'map_string'), 10, 3);
@@ -79,17 +79,19 @@ class qsot_venue_post_type {
 		return apply_filters('qsot-maybe-override-theme_default', $template, 'single-qsot-venue.php', 'single.php');
 	}
 
-	public static function add_venue_data($ticket, $event, $chart, $zone, $ticket_type) {
-		$venue = get_post($chart->post_parent);
+	public static function add_venue_data($current, $oiid, $order_id) {
+		if (!is_object($current)) return $current;
+		if (!isset($current->event, $current->event->meta)) return $current;
 
+		$venue = get_post($current->event->meta->venue);
 		if (is_object($venue) && isset($venue->ID)) {
 			$venue->meta = apply_filters('qsot-get-all-venue-meta', array(), $venue->ID);
 			$venue->image_id = get_post_thumbnail_id($venue->ID);
-			$ticket->venue = $venue;
 			$venue->map_image = apply_filters('qsot-venue-map-string', '', $venue->meta['info']);
+			$current->venue = $venue;
 		}
 
-		return $ticket;
+		return $current;
 	}
 
 	public static function get_map($current, $venue) {

@@ -76,6 +76,9 @@ class qsot_event_area {
 		// allow external access to errors on non-js submissions
 		add_filter('qsot-zoner-non-js-error-messages', array(__CLASS__, 'get_no_js_errors'), 10, 1);
 
+		// add event area to ticket information
+		add_filter('qsot-compile-ticket-info', array(__CLASS__, 'add_event_area_data'), 2000, 3);
+
 		if (is_admin()) {
 			// add the metabox to control this post type
 			add_action('add_meta_boxes', array(__CLASS__, 'setup_meta_boxes'), 4);
@@ -158,6 +161,16 @@ class qsot_event_area {
 
 	public static function load_event_settings_assets($exists, $post_id) {
 		wp_enqueue_script('qsot-event-event-area-settings');
+	}
+
+	public static function add_event_area_data($current, $oiid, $order_id) {
+		if (!is_object($current)) return $current;
+		if (!isset($current->event, $current->event->meta, $current->event->meta->_event_area_obj)) return $current;
+
+		$current->event_area = $current->event->meta->_event_area_obj;
+		unset($current->event->meta->_event_area_obj);
+
+		return $current;
 	}
 
 	protected static function _get_frontend_event_data($event) {

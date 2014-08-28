@@ -82,7 +82,23 @@ class qsot_post_type {
 			add_filter('social_broadcasting_enabled_post_types', array(__CLASS__, 'enable_social_sharing'), 10, 1);
 
 			do_action('qsot-restrict-usage', self::$o->core_post_type);
+
+			// add event name to emails
+			add_action('qsot-order-item-list-ticket-info', array(__CLASS__, 'add_event_name_to_emails'), 10, 3);
 		}
+	}
+
+	public static function add_event_name_to_emails($item_id, $item, $order) {
+		if (!isset($item['event_id']) || empty($item['event_id'])) return;
+		$event = apply_filters('qsot-get-event', false, $item['event_id']);
+		if (!is_object($event)) return;
+
+		echo sprintf(
+			'<br/><small> - <a class="event-link" href="%s" target="_blank" title="%s">%s</a></small>',
+			get_permalink($event->ID),
+			'View this event',
+			apply_filters('the_title', $event->post_title)
+		);
 	}
 
 	public static function patch_menu() {
@@ -332,7 +348,15 @@ class qsot_post_type {
 				default: $m['availability'] = 'low'; break;
 			}
 			$m = apply_filters('qsot-event-meta', $m, $event, $meta);
+			if (isset($m['_event_area_obj'], $m['_event_area_obj']->ticket, $m['_event_area_obj']->ticket->id))
+				$m['reserved'] = apply_filters('qsot-zoner-owns', 0, $event, $m['_event_area_obj']->ticket->id, self::$o->{'z.states.r'});
+			else
+				$m['reserved'] = 0;
 			$event->meta = (object)$m;
+
+			$image_id = get_post_thumbnail_id($event->ID);
+			$image_id = empty($image_id) ? get_post_thumbnail_id($event->post_parent) : $image_id;
+			$event->image_id = $image_id;
 		}
 
 		return $event;

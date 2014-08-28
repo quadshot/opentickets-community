@@ -9,7 +9,7 @@ class qsot_zoner {
 	public static function pre_init() {
 		$settings_class_name = apply_filters('qsot-settings-class-name', '');
 		if (empty($settings_class_name) || !class_exists($settings_class_name)) return;
-		self::$o =& call_user_func_array(array($settings_class_name, "instance"), array());
+		self::$o =& call_user_func_array(array($settings_class_name, 'instance'), array());
 		
 		self::$o->z = apply_filters('qsot-zoner-settings', array(
 			'states' => array(
@@ -39,14 +39,18 @@ class qsot_zoner {
 		add_filter('qsot-zoner-reserve-current-user', array(__CLASS__, 'reserve_current_user'), 10, 4);
 		add_filter('qsot-zoner-reserve', array(__CLASS__, 'reserve'), 10, 6);
 		add_filter('qsot-zoner-owns-current-user', array(__CLASS__, 'owns_current_user'), 10, 4);
-		add_filter('qsot-zoner-owns', array(__CLASS__, 'owns'), 10, 6);
+		add_filter('qsot-zoner-owns', array(__CLASS__, 'owns'), 10, 7);
 		add_filter('qsot-zoner-ownerships-current-user', array(__CLASS__, 'ownerships_current_user'), 10, 4);
-		add_filter('qsot-zoner-ownerships', array(__CLASS__, 'ownerships'), 10, 5);
+		add_filter('qsot-zoner-ownerships', array(__CLASS__, 'ownerships'), 10, 7);
 		add_filter('qsot-zoner-update-reservation', array(__CLASS__, 'update_reservation'), 10, 3);
 		add_filter('qsot-zoner-current-user', array(__CLASS__, 'current_user'), 10, 3);
 
 		// determine if the item could be a ticket
 		add_filter('qsot-item-is-ticket', array(__CLASS__, 'item_is_ticket'), 10, 2);
+
+		// checkin code
+		add_filter('qsot-is-already-occupied', array(__CLASS__, 'is_occupied'), 1000, 4);
+		add_filter('qsot-occupy-sold', array(__CLASS__, 'occupy_sold'), 1000, 5);
 	}
 
 	// list of 'states' (db table field) that are considered temporary, and expire
@@ -71,6 +75,72 @@ class qsot_zoner {
 					$ours[] = self::$o->{'z.states.'.$k};
 		}
 		return is_array($list) ? array_unique(array_merge($list, $ours)) : $ours;
+	}
+
+	// determine if all of a given ticket have been marked as occupied or not
+	public static function is_occupied($current, $order_id, $event_id, $oiid) {
+		$order = new WC_Order($order_id);
+		$event = apply_filters('qsot-get-event', false, $event_id);
+		if (!is_object($order) || !is_object($event) || !isset($order->id)) return false;
+
+		$order_items = $order->get_items();
+		$oi = isset($order_items[$oiid]) ? $order_items[$oiid] : false;
+		if (!is_array($oi) || !isset($oi['event_id'])) return false;
+
+		$confirms = apply_filters('qsot-zoner-owns', array(), $event, $oi['product_id'], self::$o->{'z.states.c'}, false, $order_id, $oiid);
+		
+		return !!$confirms;
+	}
+
+	// if there are 'confirmed' seats that are not checked in yet (occupied) that match the given criteria, then check them in
+	public static function occupy_sold($current, $order_id, $event_id, $oiid, $qty) {
+		$order = new WC_Order($order_id);
+		$event = apply_filters('qsot-get-event', false, $event_id);
+		if (!is_object($order) || !is_object($event) || !isset($order->id)) return false;
+
+		$order_items = $order->get_items();
+		$oi = isset($order_items[$oiid]) ? $order_items[$oiid] : false;
+		if (!is_array($oi) || !isset($oi['event_id'])) return false;
+
+		// get a list of all states that have entries for this ticket purchase
+		$all = apply_filters('qsot-zoner-owns', array(), $event, $oi['product_id'], '*', false, $order_id, $oiid);
+
+		// if there are none in the 'confirm' category, then either we have a non-ticket (unlikely) or they are all checked in already. either way, fail.
+		if (!isset($all[self::$o->{'z.states.c'}]) || (int)$all[self::$o->{'z.states.c'}] < $qty) return false;
+		$confirms = apply_filters('qsot-zoner-ownerships', array(), $event, $oi['product_id'], self::$o->{'z.states.c'}, false, $order_id, $oiid);
+		if (empty($confirms)) return false;
+
+		// if there a none already checked in, then insert a row to be updated
+		if (!isset($all[self::$o->{'z.states.o'}])) {
+			global $wpdb;
+			$wpdb->insert(
+				$wpdb->qsot_event_zone_to_order,
+				array(
+					'event_id' => $event_id,
+					'ticket_type_id' => $oi['product_id'],
+					'quantity' => 0,
+					'state' => self::$o->{'z.states.o'},
+					'session_customer_id' => $confirms[0]->session_customer_id,
+					'order_id' => $order_id,
+					'order_item_id' => $oiid,
+				)
+			);
+			$all[self::$o->{'z.states.o'}] = 0;
+		}
+
+		$res_dec = apply_filters(
+			'qsot-zoner-update-reservation',
+			false,
+			array('event_id' => $event_id, 'qty' => (int)$all[self::$o->{'z.states.c'}], 'state' => self::$o->{'z.states.c'}, 'order_id' => $order_id, 'order_item_id' => $oiid),
+			array('qty' => '::DEC::')
+		);
+
+		$res_inc = apply_filters(
+			'qsot-zoner-update-reservation',
+			false,
+			array('event_id' => $event_id, 'qty' => (int)$all[self::$o->{'z.states.o'}], 'state' => self::$o->{'z.states.o'}, 'order_id' => $order_id, 'order_item_id' => $oiid),
+			array('qty' => '::INC::')
+		);
 	}
 
 	// is the order item marked as a ticket would be marked?
@@ -232,7 +302,7 @@ class qsot_zoner {
 	}
 
 	// get the total reservations for each zone that a given user owns (based on event, ticket type, state, customer_id or order)
-	public static function owns($current, $event, $ticket_type_id, $state=false, $customer_id=false, $order_id=false) {
+	public static function owns($current, $event, $ticket_type_id, $state=false, $customer_id=false, $order_id=false, $order_item_id=false) {
 		global $wpdb;
 
 		// event is required information here
@@ -246,24 +316,26 @@ class qsot_zoner {
 			if (is_array($state)) $q .= ' and state in (\''.implode('\',\'', array_map('esc_sql', $state)).'\')';
 			else $q .= $wpdb->prepare(' and state = %s', $state);
 		}
-		// if the user information was supplied and order_id was supplied
-		if (!empty($customer_id) && !empty($order_id)) {
-			$q .= ' and (';
-			// becasue both are supplied we need to do an 'or' on them. typically we use one or the other, but in a rare case we use both
-			if (is_array($customer_id)) $q .= 'session_customer_id in(\''.implode('\',\'', array_map('esc_sql', $customer_id)).'\')';
-			else $q .= $wpdb->prepare('session_customer_id = %s', $customer_id);
-			if (is_array($order_id)) $q .= ' or order_id in(\''.implode('\',\'', array_map('esc_sql', $order_id)).'\')';
-			else $q .= $wpdb->prepare(' or order_id = %s', $order_id);
-			$q .= ')';
-		// if just customer_id is supplied, add it to the query
-		} else if (!empty($customer_id)) {
-			if (is_array($customer_id)) $q .= ' and session_customer_id in(\''.implode('\',\'', array_map('esc_sql', $customer_id)).'\')';
-			else $q .= $wpdb->prepare(' and session_customer_id = %s', $customer_id);
-		// if just order_id is supplied, add it to the query
-		} else if (!empty($order_id)) {
-			if (is_array($order_id)) $q .= ' and order_id in(\''.implode('\',\'', array_map('esc_sql', $order_id)).'\')';
-			else $q .= $wpdb->prepare(' and order_id = %s', $order_id);
+
+		$subs = array();
+		// if customer_id is supplied, add it to the query
+		if (!empty($customer_id)) {
+			if (is_array($customer_id)) $subs[] = 'session_customer_id in(\''.implode('\',\'', array_map('esc_sql', $customer_id)).'\')';
+			else $subs[] = $wpdb->prepare('session_customer_id = %s', $customer_id);
 		}
+		// if order_id is supplied, add it to the query
+		if (!empty($order_id)) {
+			if (is_array($order_id)) $subs[] = 'order_id in(\''.implode('\',\'', array_map('esc_sql', $order_id)).'\')';
+			else $subs[] = $wpdb->prepare('order_id = %s', $order_id);
+		}
+		// if order_item_id is supplied, add it to the query
+		if (!empty($order_item_id)) {
+			if (is_array($order_item_id)) $subs[] = 'order_item_id in(\''.implode('\',\'', array_map('esc_sql', $order_item_id)).'\')';
+			else $subs[] = $wpdb->prepare('order_item_id = %s', $order_item_id);
+		}
+		
+		if (!empty($subs)) $q .= ' and ('.implode(' or ', $subs).') ';
+
 		$q .= ' group by state';
 
 		// allow other plugins to add their logic
@@ -284,14 +356,14 @@ class qsot_zoner {
 
 	// get the list of actual zones that the current user has reservations for (based on event, ticket type, and state)
 	public static function ownerships_current_user($current, $event=0, $ticket_type_id=0, $state=false) {
-		// determin current user
+		// determine current user
 		$customer_id = apply_filters('qsot-zoner-current-user', md5(isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : time()));
 		// get the zone list
 		return apply_filters('qsot-zoner-ownerships', $current, $event, $ticket_type_id, $state, $customer_id);
 	}
 
-	// get the list of actual zones that the _given_ user has reservations for (based on event, ticket type, and state)
-	public static function ownerships($current, $event=0, $ticket_type_id=0, $state=false, $customer_id=false) {
+	// get the list of actual zones that the _given_ user (and/or order_id, and/or order_item_id) has reservations for (based on event, ticket type, and state)
+	public static function ownerships($current, $event=0, $ticket_type_id=0, $state=false, $customer_id=false, $order_id=false, $order_item_id=false) {
 		global $wpdb;
 
 		$event = is_numeric($event) && $event > 0 ? get_post($event) : $event;
@@ -316,9 +388,19 @@ class qsot_zoner {
 			if (is_array($customer_id)) $q .= ' and session_customer_id in(\''.implode('\',\'', array_map('esc_sql', $customer_id)).'\')';
 			else $q .= $wpdb->prepare(' and session_customer_id = %s', $customer_id);
 		}
+		// if for specific order_id, add it to query....
+		if (!empty($order_id)) {
+			if (is_array($order_id)) $q .= ' and order_id in(\''.implode('\',\'', array_map('esc_sql', $order_id)).'\')';
+			else $q .= $wpdb->prepare(' and order_id = %s', $order_id);
+		}
+		// if for specific order_item_id, add it to query....
+		if (!empty($order_item_id)) {
+			if (is_array($order_item_id)) $q .= ' and order_item_id in(\''.implode('\',\'', array_map('esc_sql', $order_item_id)).'\')';
+			else $q .= $wpdb->prepare(' and order_item_id = %s', $order_item_id);
+		}
 
 		// allow external plugins to add their logic here
-		$q = apply_filters('qsot-zoner-ownerships-query', $q, $event, $ticket_type_id, $state, $customer_id);
+		$q = apply_filters('qsot-zoner-ownerships-query', $q, $event, $ticket_type_id, $state, $customer_id, $order_id, $order_item_id);
 
 		// fetch the list
 		$raw = $wpdb->get_results($q);
@@ -343,6 +425,11 @@ class qsot_zoner {
 
 		// generate the 'where statement' pieces for the sql query to perform the actual update
 		$wheres = array();
+		// if the order id was given, add it
+		if (isset($where['order_item_id'])) {
+			if (is_array($where['order_item_id'])) $wheres[] = ' and order_item_id in('.implode(',', $where['order_item_id']).')';
+			else $wheres['order_item_id'] = $wpdb->prepare(' and order_item_id = %d', $where['order_item_id']);
+		}
 		// if the order id was given, add it
 		if (isset($where['order_id'])) {
 			if (is_array($where['order_id'])) $wheres[] = ' and order_id in('.implode(',', $where['order_id']).')';
@@ -378,6 +465,11 @@ class qsot_zoner {
 
 		// generate the 'where statement' pieces for the sql query to perform the removal of existing records, prior to the actual update
 		$set_wheres = array();
+		// if the order id was given, add it
+		if (isset($set['order_item_id'])) {
+			if (is_array($set['order_item_id'])) $set_wheres[] = ' and order_item_id in('.implode(',', $set['order_item_id']).')';
+			else $set_wheres['order_item_id'] = $wpdb->prepare(' and order_item_id = %d', $set['order_item_id']);
+		}
 		// if the order id was given, add it
 		if (isset($set['order_id'])) {
 			if (is_array($set['order_id'])) $set_wheres[] = ' and order_id in('.implode(',', $set['order_id']).')';
@@ -424,12 +516,17 @@ class qsot_zoner {
 			$q = 'update '.$wpdb->qsot_event_zone_to_order.' set ';
 			// create the update sql
 			$pairs = array();
+			if (isset($set['order_item_id'])) $pairs[] = $wpdb->prepare(' order_item_id = %d', $set['order_item_id']);
 			if (isset($set['order_id'])) $pairs[] = $wpdb->prepare(' order_id = %d', $set['order_id']);
 			if (isset($set['customer_id'])) $pairs[] = $wpdb->prepare(' session_customer_id = %s', $set['customer_id']);
 			if (isset($set['state'])) $pairs[] = $wpdb->prepare(' state = %s', $set['state']);
 			if (isset($set['event_id'])) $pairs[] = $wpdb->prepare(' event_id = %d', $set['event_id']);
 			if (isset($set['ticket_type_id'])) $pairs[] = $wpdb->prepare(' ticket_type_id = %d', $set['ticket_type_id']);
-			if (isset($set['qty'])) $pairs[] = $wpdb->prepare(' quantity = %d', $set['qty']);
+			if (isset($set['qty'])) {
+				if ($set['qty'] == '::DEC::') $pairs[] = ' quantity = quantity - 1 ';
+				else if ($set['qty'] == '::INC::') $pairs[] = ' quantity = quantity + 1 ';
+				else $pairs[] = $wpdb->prepare(' quantity = %d', $set['qty']);
+			}
 			// allow other plugins to add their own update stuff
 			$pairs = apply_filters('qsot-zoner-update-reservation-sets', $pairs, $set, $where);
 			// glue it all together
@@ -478,7 +575,7 @@ class qsot_zoner {
 	public static function setup_tables($tables) {
     global $wpdb;
     $tables[$wpdb->qsot_event_zone_to_order] = array(
-      'version' => '0.1.4',
+      'version' => '0.1.5',
       'fields' => array(
 				'event_id' => array('type' => 'bigint(20) unsigned'), // post of type qsot-event
 				'order_id' => array('type' => 'bigint(20) unsigned'), // post of type shop_order (woocommerce)
@@ -487,10 +584,12 @@ class qsot_zoner {
 				'since' => array('type' => 'timestamp', 'default' => 'CONST:|CURRENT_TIMESTAMP|'), // when the last action took place. used for lockout clearing
 				'session_customer_id' => array('type' => 'varchar(150)'), // woo session id for linking a ticket to a user, before the order is actually created (like interest and reserve statuses)
 				'ticket_type_id' => array('type' => 'bigint(20) unsigned', 'default' => '0'), // product_id of the woo product that represents the ticket that was purchased/reserved
+				'order_item_id' => array('type' => 'bigint(20) unsigned', 'default' => '0'), // order_item_id of the order item that represents this ticket. present after order creation
       ),   
       'keys' => array(
         'KEY evt_id (event_id)',
         'KEY ord_id (order_id)',
+        'KEY oiid (order_item_id)',
 				'KEY stt (state)',
       )    
     );   
