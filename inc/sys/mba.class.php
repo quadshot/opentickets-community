@@ -44,10 +44,10 @@ if (!class_exists('lou_media_box_anywhere')):
 
 		// setup the basic actions that are needed to get this plugin going. sets up hooks that occur later in the wordpress loading process, as well as
 		// registers our needed js, adding our special logic hook, and setting a default logic set that should cover most cases.
-		public function pre_init() {
+		public static function pre_init() {
 			// first thing, load all the options, and share them with all other parts of the plugin
 			$settings_class_name = apply_filters('qsot-settings-class-name', '');
-			self::$o =& call_user_func_array(array($settings_class_name, "instance"), array());
+			self::$o = call_user_func_array(array($settings_class_name, "instance"), array());
 
 			// calculate and store the urls to our basic resources for this plugin
 			self::$_base_url = self::$o->core_url;
@@ -72,7 +72,7 @@ if (!class_exists('lou_media_box_anywhere')):
 		}
 
 		// register all actions and filters that should only be available for use if we are in the admin section of the site.
-		public function a_admin_init() {
+		public static function a_admin_init() {
 			// the hook used to draw the actual buttons or get the code for the buttons
 			add_action('mba-mediabox-button', array(__CLASS__, 'a_create_mediabox_button'), 10, 2);
 			add_filter('get-mba-mediabox-button', array(__CLASS__, 'f_get_create_mediabox_button'), 10, 3);

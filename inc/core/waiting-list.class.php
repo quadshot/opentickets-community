@@ -9,13 +9,13 @@ class qsot_waiting_list {
 		// load all the options, and share them with all other parts of the plugin
 		$options_class_name = apply_filters('qsot-options-class-name', '');
 		if (!empty($options_class_name)) {
-			self::$options =& call_user_func_array(array($options_class_name, "instance"), array());
+			self::$options = call_user_func_array(array($options_class_name, "instance"), array());
 			//self::_setup_admin_options();
 		}
 
 		$settings_class_name = apply_filters('qsot-settings-class-name', '');
 		if (!empty($settings_class_name)) {
-			self::$o =& call_user_func_array(array($settings_class_name, "instance"), array());
+			self::$o = call_user_func_array(array($settings_class_name, "instance"), array());
 
 			add_filter('qsot-waiting-list-templates', array(__CLASS__, 'templates_waiting_list'), 10, 2);
 

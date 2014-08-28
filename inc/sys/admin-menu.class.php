@@ -16,11 +16,11 @@ class qsot_admin_menu {
 	public static function pre_init() {
 		$settings_class_name = apply_filters('qsot-settings-class-name', '');
 		if (!empty($settings_class_name)) {
-			self::$o =& call_user_func_array(array($settings_class_name, "instance"), array());
+			self::$o = call_user_func_array(array($settings_class_name, "instance"), array());
 
 			$options_class_name = apply_filters('qsot-options-class-name', '');
 			if (!empty($options_class_name)) {
-				self::$options =& call_user_func_array(array($options_class_name, "instance"), array());
+				self::$options = call_user_func_array(array($options_class_name, "instance"), array());
 				//self::_setup_admin_options();
 			}
 

@@ -7,11 +7,11 @@ class qsot_my_account_takeover {
 	public static function pre_init() {
 		$settings_class_name = apply_filters('qsot-settings-class-name', '');
 		if (!empty($settings_class_name)) {
-			self::$o =& call_user_func_array(array($settings_class_name, "instance"), array());
+			self::$o = call_user_func_array(array($settings_class_name, "instance"), array());
 			// load all the options, and share them with all other parts of the plugin
 			$options_class_name = apply_filters('qsot-options-class-name', '');
 			if (!empty($options_class_name)) {
-				self::$options =& call_user_func_array(array($options_class_name, "instance"), array());
+				self::$options = call_user_func_array(array($options_class_name, "instance"), array());
 				self::_setup_admin_options();
 			}
 
@@ -199,7 +199,7 @@ class qsot_my_account_takeover {
 		if (!is_array($orders) || empty($orders)) return;
 		$orders = array_map('absint', $orders);
 
-		$q = $wpdb->prepare('select distinct order_item_id from '.$wpdb->base_prefix.'woocommerce_order_items where order_id in ('.implode(',', $orders).')', true);
+		$q = 'select distinct order_item_id from '.$wpdb->base_prefix.'woocommerce_order_items where order_id in ('.implode(',', $orders).')';
 		$order_item_ids = $wpdb->get_col($q);
 		if (!is_array($order_item_ids) || empty($order_item_ids)) return;
 		$order_item_ids = array_map('absint', $order_item_ids);
@@ -238,10 +238,10 @@ class qsot_my_account_takeover {
 				$ticket_ids = array_merge($ticket_ids, $groups["{$eid}"]);
 		$ticket_ids = array_unique($ticket_ids);
 
-		$q = $wpdb->prepare('select * from '.$wpdb->base_prefix.'woocommerce_order_itemmeta where order_item_id in ('.implode(',', $ticket_ids).')', true);
+		$q = 'select * from '.$wpdb->base_prefix.'woocommerce_order_itemmeta where order_item_id in ('.implode(',', $ticket_ids).')';
 		$raw_data = $wpdb->get_results($q);
 
-		$q = $wpdb->prepare('select order_id, order_item_id from '.$wpdb->base_prefix.'woocommerce_order_items where order_item_id in ('.implode(',', $ticket_ids).')', true);
+		$q = 'select order_id, order_item_id from '.$wpdb->base_prefix.'woocommerce_order_items where order_item_id in ('.implode(',', $ticket_ids).')';
 		$raw_pairs = $wpdb->get_results($q);
 		$pairs = array();
 		foreach ($raw_pairs as $raw_row) $pairs[$raw_row->order_item_id.''] = $raw_row->order_id;

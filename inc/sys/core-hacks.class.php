@@ -8,13 +8,13 @@ class qsot_core_hacks {
 		// load all the options, and share them with all other parts of the plugin
 		$options_class_name = apply_filters('qsot-options-class-name', '');
 		if (!empty($options_class_name)) {
-			self::$options =& call_user_func_array(array($options_class_name, "instance"), array());
+			self::$options = call_user_func_array(array($options_class_name, "instance"), array());
 			//self::_setup_admin_options();
 		}
 
 		$settings_class_name = apply_filters('qsot-settings-class-name', '');
 		if (!empty($settings_class_name)) {
-			self::$o =& call_user_func_array(array($settings_class_name, "instance"), array());
+			self::$o = call_user_func_array(array($settings_class_name, "instance"), array());
 			add_action('qsot-draw-page-template-list', array(__CLASS__, 'page_draw_page_template_list'), 10, 1);
 			add_filter('qsot-page-templates-list', array(__CLASS__, 'page_templates_list'), 10, 2);
 			add_filter('qsot-get-page-template-list', array(__CLASS__, 'page_get_page_template_list'), 10, 1);
@@ -866,6 +866,7 @@ class qsot_core_hacks {
 	}
 
 	public static function or_display_name_user_query(&$query) {
+		if (!isset($_GET['term'], $_REQUEST['s'])) return;
 		global $wpdb;
 		$term = preg_replace('#\s+#', '%', urldecode( stripslashes( strip_tags( $_GET['term'] ) ) ));
 		$term = empty($term) && is_admin() ? preg_replace('#\s+#', '%', urldecode( stripslashes( strip_tags( $_REQUEST['s'] ) ) )) : $term;
@@ -886,7 +887,7 @@ class qsot_core_hacks {
 	}
 
 	public static function page_get_page_template_list($current) {
-		$templates = apply_filters('qsot-page-templates-list', get_page_templates(), $template);
+		$templates = apply_filters('qsot-page-templates-list', get_page_templates(), $current);
 		return $templates;
 	}
 
@@ -908,7 +909,7 @@ class qsot_core_hacks {
 		);
 		if (!isset($defaults[$template])) return $template;
 
-		$dirs = apply_filters('qsot-theme-template-dirs', array(self::$o->core_dir.'templates/theme/'), $list, $selected);
+		$dirs = apply_filters('qsot-theme-template-dirs', array(self::$o->core_dir.'templates/theme/'), $template, $possible_plugin_filename, $theme_filename);
 		
 		foreach ($dirs as $dir) {
 			$dir = trailingslashit($dir);
@@ -989,7 +990,7 @@ class qsot_core_hacks {
 	 *
 	 * @param object $post
 	 */
-	function page_attributes_meta_box($post) {
+	public static function page_attributes_meta_box($post) {
 		$post_type_object = get_post_type_object($post->post_type);
 		if ( $post_type_object->hierarchical ):
 			$dropdown_args = array(
@@ -1011,7 +1012,7 @@ class qsot_core_hacks {
 				<?php echo $pages; ?>
 			<?php endif; // pages ?>
 		<?php endif; // hierarchial ?>
-		<?php if ( 'page' == $post->post_type && 0 != count( apply_filters('qsot-page-templates-list', get_page_templates(), $template) ) ): ?>
+		<?php if ( 'page' == $post->post_type && 0 != count( apply_filters('qsot-page-templates-list', get_page_templates(), $post->page_template) ) ): ?>
 			<?php $template = !empty($post->page_template) ? $post->page_template : false; ?>
 			<p><strong><?php _e('Template') ?></strong></p>
 			<label class="screen-reader-text" for="page_template"><?php _e('Page Template') ?></label>
