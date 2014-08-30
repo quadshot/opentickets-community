@@ -51,6 +51,29 @@ class qsot_zoner {
 		// checkin code
 		add_filter('qsot-is-already-occupied', array(__CLASS__, 'is_occupied'), 1000, 4);
 		add_filter('qsot-occupy-sold', array(__CLASS__, 'occupy_sold'), 1000, 5);
+
+		// stats
+		add_filter('qsot-count-tickets', array(__CLASS__, 'count_tickets'), 1000, 2);
+	}
+
+	public static function count_tickets($current, $args='') {
+		$args = wp_parse_args($args, array(
+			'state' => '*',
+		));
+
+		global $wpdb;
+
+		$q = 'select state, sum(quantity) tot from '.$wpdb->qsot_event_zone_to_order.' where 1=1 group by state';
+		$rows = $wpdb->get_results($q);
+		$out = array();
+
+		if (empty($rows)) return $out;
+
+		foreach ($rows as $row) $out[$row->state] = $row->tot;
+
+		if (!empty($args['state']) && $args['state'] != '*') return isset($out[$args['state']]) ? $out[$args['state']] : 0;
+
+		return $out;
 	}
 
 	// list of 'states' (db table field) that are considered temporary, and expire

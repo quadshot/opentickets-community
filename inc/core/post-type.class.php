@@ -83,9 +83,24 @@ class qsot_post_type {
 
 			do_action('qsot-restrict-usage', self::$o->core_post_type);
 
-			// add event name to emails
+			// add event name to item lists
 			add_action('qsot-order-item-list-ticket-info', array(__CLASS__, 'add_event_name_to_emails'), 10, 3);
+			add_action('woocommerce_get_item_data', array(__CLASS__, 'add_event_name_to_cart'), 10, 2);
 		}
+	}
+
+	public static function add_event_name_to_cart($list, $item) {
+		if (isset($item['event_id'])) {
+			$event = apply_filters('qsot-get-event', false, $item['event_id']);
+			if (is_object($event)) {
+				$list[] = array(
+					'name' => __('Event'),
+					'display' => apply_filters('the_title', $event->post_title),
+				);
+			}
+		}
+
+		return $list;
 	}
 
 	public static function add_event_name_to_emails($item_id, $item, $order) {
@@ -1232,12 +1247,14 @@ class qsot_post_type {
 		self::$options->def('qsot-stop-sales-before-show', '');
 
 		self::$options->add(array(
+			'order' => 100,
 			'type' => 'title',
 			'title' => __('General Settings', 'qsot'),
 			'id' => 'heading-general-1',
 		));
 
 		self::$options->add(array(
+			'order' => 105,
 			'id' => 'qsot-stop-sales-before-show',
 			'type' => 'text',
 			'title' => __('Stop Sales Before Show', 'qsot'),
@@ -1246,6 +1263,7 @@ class qsot_post_type {
 		));
 
 		self::$options->add(array(
+			'order' => 110,
 			'id' => 'qsot-single-synopsis',
 			'type' => 'checkbox',
 			'title' => __('Single Event Synopsis', 'qsot'),
@@ -1255,6 +1273,7 @@ class qsot_post_type {
 		));
 
 		self::$options->add(array(
+			'order' => 199,
 			'type' => 'sectionend',
 			'id' => 'heading-general-1',
 		));

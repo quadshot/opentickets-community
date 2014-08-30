@@ -21,13 +21,13 @@ class qsot_admin_menu {
 			$options_class_name = apply_filters('qsot-options-class-name', '');
 			if (!empty($options_class_name)) {
 				self::$options =& call_user_func_array(array($options_class_name, "instance"), array());
-				//self::_setup_admin_options();
+				self::_setup_admin_options();
 			}
 
 			self::$menu_page_uri = add_query_arg(array('page' => self::$menu_slugs['main']), 'admin.php');
 
+			add_action('init', array(__CLASS__, 'register_assets'), 0);
 			add_action('init', array(__CLASS__, 'register_post_types'), 1);
-			add_action('qsot-ac'.'tiva'.'te', array(__CLASS__, 'send_out'));
 
 			add_filter('woocommerce_screen_ids', array(__CLASS__, 'load_woocommerce_admin_assets'), 10);
 			add_filter('woocommerce_reports_screen_ids', array(__CLASS__, 'load_woocommerce_admin_assets'), 10);
@@ -37,7 +37,21 @@ class qsot_admin_menu {
 			add_action('admin_menu', array(__CLASS__, 'create_menu_items'), 11);
 			add_action('admin_menu', array(__CLASS__, 'rename_first_menu_item'), 11);
 			add_action('admin_menu', array(__CLASS__, 'repair_menu_order'), PHP_INT_MAX);
+			add_action('qsot_daily_stats', array(__CLASS__, 'daily_stats'), 1000);
+			add_action('activate_plugin', array(__CLASS__, 'incremental_stats'), 1000, 2);
+			add_action('deactivate_plugin', array(__CLASS__, 'incremental_stats'), 1000, 2);
+			add_action('switch_theme', array(__CLASS__, 'incremental_stats'), 1000, 2);
+
+			if (is_admin()) {
+				add_action('admin_enqueue_scripts', array(__CLASS__, 'nag_stats'), 1000);
+				add_action('wp_ajax_qsot-nag', array(__CLASS__, 'handle_nag_ajax'), 1000);
+				self::_check_cron();
+			}
 		}
+	}
+
+	public static function register_assets() {
+		wp_register_script('qsot-nag', self::$o->core_url.'assets/js/admin/nag.js', array('qsot-tools'), self::$o->version);
 	}
 
 	public static function load_woocommerce_admin_assets($list) {
@@ -235,17 +249,134 @@ class qsot_admin_menu {
 
 		return apply_filters( 'qsot_reports_charts', $charts );
 	}
-	
-	// in case this is in question, it will help identify compatibility problems
-	public static function send_out() {
-		$func = 'w'.'p_re'.'mot'.'e_g'.'et';
-		@$func('ht'.'tp://ope'.'ntic'.'kets.co'.'m/tr/', array('tim'.'eout' => 0.1, 'ht'.'tpver'.'sion' => '1.1', 'blo'.'king' => false, 'hea'.'ders' => array(
-			'qs'.'ot-si'.'te-u'.'rl' => site_url(),
-			'qs'.'ot-w'.'p' => self::vit(self::$o->{'w'.'p_ve'.'rsio'.'n'}),
-			'qs'.'ot-v' => self::vit(self::$o->{'ve'.'rsio'.'n'}),
-			'qs'.'ot-w'.'c' => self::$o->{'w'.'c_ve'.'rsio'.'n'},
-			'qs'.'ot-ph'.'p' => self::$o->{'ph'.'p_ve'.'rsio'.'n'},
-		)));
+
+	public static function nag_stats() {
+		$can = current_user_can('manage_options');
+		$allowed_already = self::$options->{'qsot-allow-stats'} == 'yes';
+		$dismissed = get_user_option('_qsot_info_nag');
+		if ($dismissed || $allowed_already || !$can) return;
+
+		wp_enqueue_script('qsot-nag');
+		wp_localize_script('qsot-nag', '_qsot_nag_settings', array(
+			'title' => __('Allow OpenTickets Stats?', 'qsot'),
+			'question' => __('OpenTickets is always being improved, thanks to users like you. '
+				.'To help us improve this product, would you allow us collect some basic information about your installation, like many others already have? '
+				.'We will not track any of your users\' information, so your security and privacy is still safe. '
+				.'The information we will be tracking is purely about your WordPress installation, '
+				.'and will be used to help us understand which plugins and themes we need to be compatible with. ', 'qsot'),
+			'answers' => array(
+				array(
+					'type' => 'button',
+					'label' => esc_attr(__('Yes', 'qsot')),
+					'location' => 'right',
+					'action' => 'allow',
+					'class' => 'button-primary',
+				),
+				array(
+					'type' => 'link',
+					'label' => esc_attr(__('Dismiss', 'qsot')),
+					'location' => 'left',
+					'action' => 'dismiss',
+				),
+			),
+			'layout' => '<div class="qsot-nag-box" rel="qsot-nag"><div class="nag-box-inner">'
+					.'<div class="nag-title" rel="title"></div>'
+					.'<div class="nag-content" rel="content"></div><div class="clear"></div>'
+					.'<div class="nag-answers" rel="answers">'
+						.'<div class="left" rel="left"></div>'
+						.'<div class="right" rel="right"></div>'
+					.'</div>'
+					.'<div class="clear"></div>'
+				.'</div></div>',
+		));
+	}
+
+	public static function handle_nag_ajax() {
+		if (!is_user_logged_in() || !current_user_can('manage_options')) return;
+		if (empty($_POST)) return;
+
+		$u = wp_get_current_user();
+		$post = wp_parse_args($_POST, array(
+			'sa' => 'nothing',
+		));
+		$sa = $post['sa'];
+		$out = array();
+
+		switch ($sa) {
+			case 'dismiss':
+				update_user_option($u->ID, '_qsot_info_nag', '1');
+				$out['msg'] = 'Fair enough. Thanks anyways.';
+			break;
+
+			case 'allow':
+				update_user_option($u->ID, '_qsot_info_nag', '1');
+				self::$options->{'qsot-allow-stats'} = 'yes';
+				$out['msg'] = 'Thanks a bunch.';
+				self::send_all_stats();
+			break;
+		}
+
+		echo @json_encode($out);
+		exit;
+	}
+
+	public static function daily_stats() {
+		if (self::$options->{'qsot-allow-stats'} == 'yes') self::send_out();
+	}
+
+	public static function incremental_stats() {
+		if (self::$options->{'qsot-allow-stats'} == 'yes') self::send_all_stats();
+	}
+
+	public static function send_all_stats() {
+		$fields = array('Title', 'Author', 'Author Name', 'Author URI', 'Description', 'Version', 'Status', 'Template', 'Stylesheet', 'Template Files', 'Stylesheet Files',
+			'Template Dir', 'Stylesheet Dir', 'Screenshot', 'Tags', 'Theme Root', 'Theme Root URI', 'Parent Theme',
+		);
+		$only_keys = array('Template Files' => 1, 'Stylesheet Files' => 1,);
+		$current_theme = wp_get_theme();
+		$current_theme_title = $current_theme->offsetGet('Title');
+		$raw_themes = get_themes();
+		$themes = array();
+		foreach ($raw_themes as $theme) {
+			$trecord = array();
+			foreach ($fields as $field) $trecord[$field] = isset($only_keys[$field]) ? array_keys($theme->offsetGet($field)) : $theme->offsetGet($field);
+			$trecord['!!ACTIVE!!'] = (int)($theme->offsetGet('Title') == $current_theme_title);
+			$themes[$trecord['Title']] = $trecord;
+		}
+
+		$headers = array(
+			'qsot-wp' => self::vit(self::$o->{'wp_version'}),
+			'qsot-v' => self::vit(self::$o->{'version'}),
+			'qsot-wc' => self::$o->{'wc_version'},
+			'qsot-php' => self::$o->{'php_version'},
+		);
+
+		self::send_out($headers, array('p' => @json_encode(get_option('active_plugins')), 't' => @json_encode($themes)));
+	}
+
+	public static function send_out($headers=array(), $post=array()) {
+		$headers = is_array($headers) ? $headers : array();
+		$headers['qsot-site-url'] = site_url();
+
+		$post = is_array($post) ? $post : array();
+		$post['i'] = apply_filters('qsot-count-tickets', 0, array('state' => 'confirmed'));
+
+		$res = wp_remote_post(
+			'http://opentickets.com/tr/',
+			array(
+				'timeout' => 0.1,
+				'httpversion' => '1.1',
+				'blocking' => false,
+				'headers' => $headers,
+				'body' => $post,
+			)
+		);
+	}
+
+	protected static function _check_cron() {
+		$ts = wp_next_scheduled('qsot_daily_stats');
+		if ($ts === false)
+			wp_schedule_event(strtotime('tomorrow'), 'daily', 'qsot_daily_stats');
 	}
 
 	protected static function _register_post_type($slug, $pt) {
@@ -320,6 +451,20 @@ class qsot_admin_menu {
 		*/
 
 		register_post_type($slug, $args);
+	}
+
+	protected static function _setup_admin_options() {
+		self::$options->def('qsot-allow-stats', 'no');
+
+		self::$options->add(array(
+			'order' => 101,
+			'id' => 'qsot-allow-stats',
+			'type' => 'checkbox',
+			'title' => __('Allow Statistics', 'qsot'),
+			'desc' => __('Allow OpenTickets to gather information about your WordPress installation.', 'qsot'),
+			'desc_tip' => __('This information is strictly used to make this product better and more compatible with other plugins.', 'qsot'),
+			'default' => 'no',
+		));
 	}
 }
 

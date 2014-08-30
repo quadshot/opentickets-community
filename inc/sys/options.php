@@ -57,7 +57,7 @@ class qsot_options {
 			$key = key($oarray[$option_name]);
 			$pairs[$option_name][$key] = $value;
 		} else {
-			$pairs[$option_name] = $value;
+			$pairs[$name] = $value;
 		}
 
 		foreach ($pairs as $k => $v) update_option($k, $v);

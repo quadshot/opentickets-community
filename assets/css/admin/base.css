@@ -143,3 +143,17 @@ table.mbtable tbody td.currency.negative { font-weight:bold; color:#880000; }
 
 #poststuff #woocommerce-order-totals .totals_group #_order_subtotal,
 #poststuff #woocommerce-order-totals .totals_group #_items_discount { margin:6px 0 10px; }
+
+.qsot-nag-box { background-color:#333; position:absolute; max-width:350px; width:100%; font-size:14px; box-shadow:0 3px 5px rgba(0, 0, 0, 0.5); z-index:9999; }
+.qsot-nag-box .nag-box-inner { padding:1em; min-height:100px; }
+.qsot-nag-box .nag-title { font-weight:bold; color:#DF8127; }
+.qsot-nag-box .nag-content { font-size:12px; color:#eeeeee; }
+.qsot-nag-box .nag-answers { height:40px; position:relative; line-height:30px; }
+.qsot-nag-box .nag-answers .right { position:absolute; right:0; bottom:0; }
+.qsot-nag-box .nag-answers .left { position:absolute; left:0; bottom:0; }
+
+ul#adminmenu a.qsot-special-arrow:after {
+	-moz-border-bottom-colors:none; -moz-border-left-colors:none; -moz-border-right-colors:none; -moz-border-top-colors:none;
+	border-color:transparent #333 transparent transparent; border-image:none; border-style:solid; border-width:8px;
+	content:" "; height:0; margin-top:-8px; pointer-events:none; position:absolute; right:0; top:50%; width:0;
+}
