@@ -13,7 +13,7 @@ class QSOT_checkin {
 		// load the plugin settings
 		$settings_class_name = apply_filters('qsot-settings-class-name', '');
 		if (empty($settings_class_name) || !class_exists($settings_class_name)) return;
-		self::$o =& call_user_func_array(array($settings_class_name, 'instance'), array());
+		self::$o = call_user_func_array(array($settings_class_name, 'instance'), array());
 
 		// add rewrite rules handling
 		add_action('wp', array(__CLASS__, 'intercept_checkin_request'), 15);

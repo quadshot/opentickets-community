@@ -10,7 +10,7 @@ class qsot_event_tickets {
 	public static function pre_init() {
 		// first thing, load all the options, and share them with all other parts of the plugin
 		$settings_class_name = apply_filters('qsot-settings-class-name', '');
-		self::$o =& $settings_class_name::instance();
+		self::$o = $settings_class_name::instance();
 
 		self::$o->tk = array(
 			'mk' => array(

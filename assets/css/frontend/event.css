@@ -13,7 +13,7 @@
 .qsot-event-area-ticket-selection .field select { margin-bottom:0; }
 .qsot-event-area-ticket-selection .field input { vertical-align:baseline; margin-bottom:0; }
 .qsot-event-area-ticket-selection .field input.short { width:90px; }
-.qsot-event-area-ticket-selection .field input.very-short { width:50px; margin:0 3px; }
+.qsot-event-area-ticket-selection .field input.very-short { width:4.5em; margin:0 3px; }
 .qsot-event-area-ticket-selection .field input[type="radio"],
 .qsot-event-area-ticket-selection .field input[type="checkbox"] { vertical-align:top; }
 .qsot-event-area-ticket-selection .helper { font-size:10px; display:block; color:#757575; }

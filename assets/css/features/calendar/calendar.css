@@ -13,3 +13,11 @@ a.in-the-past { background-color:#7F929B; border-color:#7F929B; }
 .fc-event, a.fc-event:link, a.fc-event:visited { color:#e8e8e8; }
 a.fc-event:hover { color:#ffffff; }
 .fc-event.in-the-past { background-color:#a9a9a9; }
+
+.calendar-content-wrap { padding-left:1em; padding-right:1em; }
+
+table.fc-header,
+table.fc-header td,
+table.fc-header th { border-width:0; }
+
+table.fc-header select { margin-right:0.5em; font-size:14px; height:2.2em; line-height:2.2em; }

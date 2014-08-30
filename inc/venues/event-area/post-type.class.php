@@ -13,7 +13,7 @@ class qsot_event_area {
 		// first thing, load all the options, and share them with all other parts of the plugin
 		$settings_class_name = apply_filters('qsot-settings-class-name', '');
 		if (!class_exists($settings_class_name)) return false;
-		self::$o =& call_user_func_array(array($settings_class_name, "instance"), array());
+		self::$o = call_user_func_array(array($settings_class_name, "instance"), array());
 
 		self::$o->event_area = apply_filters('qsot-event-area-options', array(
 			'post_type' => 'qsot-event-area',
@@ -914,6 +914,7 @@ class qsot_event_area {
 
 			$area = apply_filters('qsot-get-event-event-area', false, $event->ID);
 			$reserved = apply_filters('qsot-zoner-owns-current-user', 0, $event->ID, $area->ticket->post->ID, self::$o->{'z.states.r'});
+			$interests = array();
 
 			if (is_object($area)) {
 				ob_start();
@@ -943,7 +944,7 @@ class qsot_event_area {
 	}
 
 	public static function post_has_price(&$q) {
-		if (!in_array(self::$o->core_post_type, (array)$q->query_vars['post_type'])) return;
+		if (!isset($q->query_vars['post_type']) || !in_array(self::$o->core_post_type, (array)$q->query_vars['post_type'])) return;
 		if (!isset($q->query_vars['has_price'])) return;
 		$q->query_vars['has_price'] = array_filter(array_map('absint', (array)$q->query_vars['has_price']));
 		if (empty($q->query_vars['has_price'])) return;
@@ -986,7 +987,7 @@ class qsot_event_area {
 	}
 
 	public static function post_priced_like(&$q) {
-		if (!in_array(self::$o->core_post_type, (array)$q->query_vars['post_type'])) return;
+		if (!isset($q->query_vars['post_type']) || !in_array(self::$o->core_post_type, (array)$q->query_vars['post_type'])) return;
 		if (!isset($q->query_vars['priced_like']) || (int)$q->query_vars['priced_like'] <= 0) return;
 
 		$event = get_post((int)$q->query_vars['priced_like']);

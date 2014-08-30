@@ -9,7 +9,7 @@ class qsot_venue_post_type {
 		// first thing, load all the options, and share them with all other parts of the plugin
 		$settings_class_name = apply_filters('qsot-settings-class-name', '');
 		if (!class_exists($settings_class_name)) return false;
-		self::$o =& call_user_func_array(array($settings_class_name, "instance"), array());
+		self::$o = call_user_func_array(array($settings_class_name, "instance"), array());
 
 		self::$o->venue = apply_filters('qsot-venue-options', array(
 			'post_type' => 'qsot-venue',
@@ -402,6 +402,13 @@ class qsot_venue_post_type {
 
 	public static function mb_venue_social_information($post, $mb) {
 		$info = apply_filters('qsot-get-venue-meta', array(), $post->ID, 'info');
+		$info = wp_parse_args($info, array(
+			'phone' => '',
+			'website' => '',
+			'facebook' => '',
+			'twitter' => '',
+			'contact_email' => ''
+		));
 		?>
 			<style>
 				table.venue-social-information-table { width:100%; margin:0; }

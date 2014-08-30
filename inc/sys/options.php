@@ -37,7 +37,7 @@ class qsot_options {
 	}
 
 	public static function get_option_value($current, $option_name) {
-		$o =& qsot_options::instance();
+		$o = qsot_options::instance();
 		return $o->{$option_name};
 	}
 
@@ -160,14 +160,14 @@ class qsot_options {
 	public static function woo_settings_tab() {
 		global $qsot_settings;
 
-		$options =& qsot_options::instance();
+		$options = qsot_options::instance();
 		$o = $options->get_ordered();
 		
 		$qsot_settings[self::$tab_slug] = apply_filters('qsot-woocommerce-settings', $o);
 	}
 
 	public static function get_all_general_settings($settings) {
-		$options =& qsot_options::instance();
+		$options = qsot_options::instance();
 		$o = $options->get_ordered();
 		
 		$settings = array_merge($settings, apply_filters('qsot-woocommerce-settings', $o));

@@ -9,7 +9,7 @@ class qsot_templates {
 		// load the settings. theya re required for everything past this point
 		$settings_class_name = apply_filters('qsot-settings-class-name', '');
 		if (empty($settings_class_name)) return;
-		self::$o =& call_user_func_array(array($settings_class_name, "instance"), array());
+		self::$o = call_user_func_array(array($settings_class_name, "instance"), array());
 
 		// qsot template locator. checks theme first, then our templates dir
 		add_filter('qsot-locate-template', array(__CLASS__, 'locate_template'), 10, 4);
@@ -85,6 +85,7 @@ class qsot_templates {
 					//get_template_directory().'/templates/',
 					self::$o->core_dir.'templates/',
 				));
+				$qsot_path = '';
 				array_unshift($dirs, get_stylesheet_directory().'/'.$qsot_path, get_template_directory().'/'.$qsot_path);
 				foreach ($files as $file) {
 					foreach ($dirs as $dir) {

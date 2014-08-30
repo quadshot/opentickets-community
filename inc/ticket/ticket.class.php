@@ -20,7 +20,7 @@ class QSOT_tickets {
 		// load the plugin settings
 		$settings_class_name = apply_filters('qsot-settings-class-name', '');
 		if (empty($settings_class_name) || !class_exists($settings_class_name)) return;
-		self::$o =& call_user_func_array(array($settings_class_name, 'instance'), array());
+		self::$o = call_user_func_array(array($settings_class_name, 'instance'), array());
 
 		// setup the db tables for the ticket code lookup
 		// we offload this to a different table so that we can index the ticket codes for lookup speed

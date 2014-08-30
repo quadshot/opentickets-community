@@ -9,7 +9,7 @@ class qsot_post_type {
 	public static function pre_init() {
 		$settings_class_name = apply_filters('qsot-settings-class-name', '');
 		if (!empty($settings_class_name)) {
-			self::$o =& call_user_func_array(array($settings_class_name, "instance"), array());
+			self::$o = call_user_func_array(array($settings_class_name, "instance"), array());
 
 			$mk = self::$o->meta_key;
 			self::$o->meta_key = array_merge(is_array($mk) ? $mk : array(), array(
@@ -21,7 +21,7 @@ class qsot_post_type {
 			// load all the options, and share them with all other parts of the plugin
 			$options_class_name = apply_filters('qsot-options-class-name', '');
 			if (!empty($options_class_name)) {
-				self::$options =& call_user_func_array(array($options_class_name, "instance"), array());
+				self::$options = call_user_func_array(array($options_class_name, "instance"), array());
 				self::_setup_admin_options();
 			}
 
@@ -120,7 +120,7 @@ class qsot_post_type {
 		global $menu, $submenu;
 
 		foreach ($menu as $ind => $mitem) {
-			if ($mitem[5] == 'menu-posts-'.self::$o->core_post_type) {
+			if (isset($mitem[5]) && $mitem[5] == 'menu-posts-'.self::$o->core_post_type) {
 				$key = $menu[$ind][2];
 				$new_key = $menu[$ind][2] = add_query_arg(array('post_parent' => 0), $key);
 				if (isset($submenu[$key])) {
@@ -354,7 +354,7 @@ class qsot_post_type {
 				if (($pos = array_search($k, $km)) !== false) $k = $pos;
 				$m[$k] = maybe_unserialize(array_shift($v));
 			}
-			$m = wp_parse_args($m, array('purchases' => 0));
+			$m = wp_parse_args($m, array('purchases' => 0, 'capacity' => 0));
 			$m['available'] = $m['capacity'] - $m['purchases'];
 			switch (true) {
 				case $m['available'] >= ($m['capacity'] - self::$o->always_reserve) * 0.65: $m['availability'] = 'high'; break;
@@ -618,7 +618,7 @@ class qsot_post_type {
 		wp_enqueue_style('qsot-admin-styles');
 
 		// use the loacalize script trick to send misc settings to the event ui script, based on the current post, and allow sub/external plugins to modify this
-		list($events, $first) = self::_child_event_settings($post_id);
+		@list($events, $first) = self::_child_event_settings($post_id);
 		wp_localize_script('qsot-events-admin-edit-page', '_qsot_settings', apply_filters('qsot-event-admin-edit-page-settings', array(
 			'first' => $first,
 			'events' => $events, // all children events
@@ -974,8 +974,8 @@ class qsot_post_type {
 	}
 
 	public static function mb_event_run_date_range($post, $mb) {
-		list($start, $start_time) = explode(' ', get_post_meta($post->ID, '_start', true));
-		list($end, $end_time) = explode(' ', get_post_meta($post->ID, '_end', true));
+		@list($start, $start_time) = explode(' ', get_post_meta($post->ID, '_start', true));
+		@list($end, $end_time) = explode(' ', get_post_meta($post->ID, '_end', true));
 		
 		?>
 			<style>
