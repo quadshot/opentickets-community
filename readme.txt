@@ -42,10 +42,10 @@ OT-CE is licensed under GPLv3.
 These instructions are pretty universal, standard methods employed when you install any plugin. If you have ever installed one for your WordPress installation, you can probably skip this part.
 
 The below instructions assume that you have:
-1. Downloaded the OpenTickets software from WordPress.org
-2. Have already installed WooCommerce, and set it up to your liking
-3. Possess a basic understanding of WooCommerce concepts, as well as how to create products
-4. Have either some basic knowledge of the WordPress admin screen or some basic ftp and ssh knowledge,
+1. Downloaded the OpenTickets software from WordPress.org.
+2. Have already installed WooCommerce, and set it up to your liking.
+3. Possess a basic understanding of WooCommerce concepts, as well as how to create products.
+4. Have either some basic knowledge of the WordPress admin screen or some basic ftp and ssh knowledge.
 5. The ability to follow an outlined list of instructions. ;-)
 
 Via the WordPress Admin:
@@ -58,17 +58,17 @@ Via the WordPress Admin:
 6.a. Depending on your server setup, you may need to enter some FTP credentials, which you should have handy.
 7. If all goes well, you will see a link that reads 'Activate Plugin'. Click it.
 8. Once you see the 'Activated' confirmation, you will see new icons in the menu.
-9. Start using OpenTickets.
+9. Start using OpenTickets Community Edition.
 
 Via SSH:
 1. FTP the file you downloaded from http://WordPress.org/ to your server. (We assume you know how to do this)
 2. Login to your server via ssh. (.... you know this too).
 3. Issue the command 'cd /path/to/your/website/installation/wp-content/plugins/', where /path/to/your/website/installation/wp-content/plugins/ is the plugins directory on your site.
-4. 'cp /path/to/opentickets.zip .', to copy the downloaded file to your plugins directory.
-5. 'unzip opentickets.zip', to unzip the downloaded file, creating an opentickets directory inside your plugins directory.
+4. 'cp /path/to/opentickets-community.zip .', to copy the downloaded file to your plugins directory.
+5. 'unzip opentickets-community.zip', to unzip the downloaded file, creating an opentickets directory inside your plugins directory.
 6. Open a browser, and follow steps 1-2 under 'Via the WordPress Admin' above, to get to your 'plugins' page.
 7. Find OpenTickets on your plugins list, click 'Activate' which is located directly below the name of the plugin.
-8. Start using OpenTickets
+8. Start using OpenTickets Community Edition.
 
 = Start using it =
 
