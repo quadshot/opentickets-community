@@ -60,13 +60,18 @@ class QSOT_tickets {
 		// email - add ticket download links
 		add_action('qsot-order-item-list-ticket-info', array(__CLASS__, 'add_view_ticket_link_to_emails'), 2000, 3);
 
+		// ticket flush rewrite rules
+		add_action('qsot-activate', array(__CLASS__, 'on_activate'), 1000);
+
 		if (is_admin()) {
 			add_action('admin_footer-options-permalink.php', array(__CLASS__, 'debug_rewrite_rules'));
 		}
 	}
 
 	public static function debug_rewrite_rules() {
+		/*
 		?><pre style="font-size:11px; color:#000000; background-color:#ffffff;"><?php print_r($GLOBALS['wp_rewrite']->rules) ?></pre><?php
+		*/
 	}
 
 	public static function add_view_ticket_link_to_emails($item_id, $item, $order) {
@@ -358,6 +363,10 @@ class QSOT_tickets {
     );   
 
     return $tables;
+	}
+
+	public static function on_activate() {
+		flush_rewrite_rules();
 	}
 }
 

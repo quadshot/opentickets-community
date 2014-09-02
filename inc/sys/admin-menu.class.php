@@ -21,7 +21,7 @@ class qsot_admin_menu {
 			$options_class_name = apply_filters('qsot-options-class-name', '');
 			if (!empty($options_class_name)) {
 				self::$options = call_user_func_array(array($options_class_name, "instance"), array());
-				//self::_setup_admin_options();
+				self::_setup_admin_options();
 			}
 
 			self::$menu_page_uri = add_query_arg(array('page' => self::$menu_slugs['main']), 'admin.php');
