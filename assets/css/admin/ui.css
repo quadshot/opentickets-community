@@ -40,8 +40,10 @@ table.settings-table .setting { margin-bottom:5px; }
 .fc-event-item .remove:hover { border-radius:3px; background-color:#ff0000; color:#000000; }
 .fc-event-item .fc-section { white-space:nowrap; }
 
+
+.cb-wrap { white-space:nowrap; padding-right:0.5em; }
 .cb-wrap input[type="checkbox"],
-.cb-wrap input[type="radio"] { vertical-align:baseline; }
+.cb-wrap input[type="radio"] { vertical-align:baseline; margin-right:0; }
 .cb-wrap .cb-text { vertical-align:baseline; }
 
 .option-scope .actions { padding-top:8px; text-align:center; }
@@ -52,7 +54,7 @@ table.settings-table .setting { margin-bottom:5px; }
 .option-sub.above { border-bottom:1px dotted #b2b2b2; padding-bottom:8px; margin-bottom:8px; border-top:0; padding-top:0; margin-top:0; }
 .option-sub.no-border { border:0; padding:0; margin:0; margin-bottom:8px; }
 
-.date-text { width:75px; }
-.time-text { width:60px; }
+.date-text { width:90px; }
+.time-text { width:75px; }
 
 .clear { clear:both; }
