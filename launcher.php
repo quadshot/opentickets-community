@@ -8,7 +8,9 @@
  * Author URI:  http://quadshot.com/
  * License: GNU General Public License, version 3 (GPL-3.0)
  * License URI: http://opensource.org/licenses/gpl-3.0.html
- * Copyright Quadshot Software LLC 2009-2014
+ * Copyright:   Copyright (C) 2009-2014 Quadshot Software LLC
+ *
+ * An event managment and online ticket sales platform, built on top of WooCommerce.
  */
 
 /* Primary class for controlling the events post type. Loads all pieces of the Events puzzle. */

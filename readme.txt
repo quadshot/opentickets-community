@@ -4,9 +4,10 @@ Donate link: http://opentickets.com/
 Tags: events, event management, tickets, ticket sales, ecommerce
 Requires at least: 3.6.1
 Tested up to: 3.9.2
+Stable tag: trunk
 License: GNU General Public License, version 3 (GPL-3.0)
 License URI: http://opensource.org/licenses/gpl-3.0.html
-Copyright Quadshot Software LLC 2009-2014
+Copyright: Copyright (C) 2009-2014 Quadshot Software LLC
 
 An event managment and online ticket sales platform, built on top of WooCommerce.
 
