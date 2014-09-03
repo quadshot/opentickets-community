@@ -672,9 +672,9 @@ class qsot_core_hacks {
 
 		// changing required permission for viewing comments to the 'edit_shop_order' permissiosn instead of manage_woocommerce, because manage_woocommerce gives access to 
 		// woocommerce settings, which some users who need access to order notes may not have (like box-office and box-office-manager)
-		if (current_user_can('edit_shop_order')) remove_filter('comments_clauses', 'woocommerce_exclude_order_comments');
+		if (current_user_can('edit_shop_order', $post->ID)) remove_filter('comments_clauses', 'woocommerce_exclude_order_comments');
 		$notes = get_comments( $args );
-		if (current_user_can('edit_shop_order')) add_filter('comments_clauses', 'woocommerce_exclude_order_comments');
+		if (current_user_can('edit_shop_order', $post->ID)) add_filter('comments_clauses', 'woocommerce_exclude_order_comments');
 
 		echo '<ul class="order_notes">';
 
@@ -1107,7 +1107,7 @@ class qsot_core_hacks {
 							<?php
 
 							// Ajax Chosen Customer Selectors JS
-							$woocommerce->add_inline_js( "
+							wc_enqueue_js( "
 								jQuery('select.ajax_chosen_select_customer').ajaxChosen({
 										method: 		'GET',
 										url: 			'" . admin_url('admin-ajax.php') . "',
@@ -1131,7 +1131,7 @@ class qsot_core_hacks {
 							" );
 							?>
 
-							<?php do_action('woocommerce_after_customer_user', $customer_user, $post, $post_id) ?>
+							<?php do_action('woocommerce_after_customer_user', $customer_user, $post, $post->ID) ?>
 						</p>
 
 						<?php if ( get_option( 'woocommerce_enable_order_comments' ) != 'no' ) : ?>
