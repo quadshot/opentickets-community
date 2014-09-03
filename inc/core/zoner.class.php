@@ -430,7 +430,7 @@ class qsot_zoner {
 		$indexed = array();
 		// organize the list
 		foreach ($raw as $row) {
-			$indexed[$row->state] = is_array($indexed[$row->state]) ? $indexed[$row->state] : array();
+			$indexed[$row->state] = isset($indexed[$row->state]) && is_array($indexed[$row->state]) ? $indexed[$row->state] : array();
 			$indexed[$row->state][] = $row;
 		}
 
@@ -559,6 +559,7 @@ class qsot_zoner {
 
 		// if we actually have updates to make, because we actually have data to filter our updated set by (in other words, do not delete all records accidentally)
 		if (is_array($wheres) && count($wheres)) { // safegaurd against deleting all records
+			$set['qty'] = isset($set['qty']) ? $set['qty'] : 0;
 			// pull out the existing reservations, and pass them on to external plugins, notifying them that they will be updated
 			$wheres = array_values($wheres);
 			$cur = $wpdb->get_results('select * from '.$wpdb->qsot_event_zone_to_order.' where 1=1'.implode('', $wheres));
@@ -572,7 +573,7 @@ class qsot_zoner {
 			// if for some reason we have some duplicate entries with close to the same data represented as the data we are coming _from_, then delete all but one of them
 			if (count($cur) > 1) {
 				// remove any weird duplicate entries.
-				$wpdb->query($wpdb->prepare('delete from '.$wpdb->qsot_event_zone_to_order.' where 1=1'.implode('', $wheres).' limit %d offset 1', count($cur) - 1));
+				$wpdb->query($wpdb->prepare('delete from '.$wpdb->qsot_event_zone_to_order.' where 1=1'.implode('', $wheres).' limit %d order by since desc', count($cur) - 1));
 			}
 
 			// if this is an update, remove any data that looks like the data we are going _to_

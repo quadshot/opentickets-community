@@ -81,8 +81,10 @@ class qsot_frontend_calendar {
 		}
 	}
 
-	public static function add_assets() {
+	public static function add_assets($wp) {
 		$post = get_post();
+		if (!is_object($post)) return;
+
 		$needs_calendar = ($post->post_type == 'page' && $post->ID == get_option('qsot_calendar_page_id', ''));
 
 		if (!$needs_calendar) $needs_calendar = (bool)preg_match('#qsot-calendar\.php$#', get_post_meta($post->ID, '_wp_page_template', true));

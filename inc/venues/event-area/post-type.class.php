@@ -366,6 +366,7 @@ class qsot_event_area {
 	public static function faj_delete($resp, $data) {
 		$resp['s'] = false;
 		$resp['e'] = array();
+		$data = wp_parse_args($data, array('quantity' => 0));
 
 		$event = apply_filters('qsot-get-event', false, $data['event_id']);
 		if (is_object($event) && is_object($event->meta) && is_object($event->meta->_event_area_obj) && is_object($event->meta->_event_area_obj->ticket)) {

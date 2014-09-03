@@ -71,6 +71,7 @@ class qsot_core_hacks {
 			'default'
 		);
 
+/*
 		remove_meta_box('woocommerce-order-data', 'shop_order', 'normal', 'high');
 		add_meta_box(
 			'woocommerce-order-data',
@@ -80,6 +81,7 @@ class qsot_core_hacks {
 			'normal',
 			'high'
 		);
+*/
 
 		remove_meta_box('woocommerce-order-items', 'shop_order', 'normal', 'high');
 		add_meta_box(

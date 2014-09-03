@@ -71,7 +71,7 @@ class qsot_seat_pricing {
 	// executes AFTER the zoner::reserve_current_user method, and adds the ticket to the cart on a reported success (or removes it on $count = 0)
 	public static function reserve_current_user($success, $event, $ticket_type_id, $count) {
 		if (!$success) return $success;
-		$event = (int)$event ? get_post($event) : $event;
+		$event = !is_object($event) && (int)$event ? get_post($event) : $event;
 		if (!is_object($event)) return $success;
 		
 		global $woocommerce;
@@ -100,7 +100,7 @@ class qsot_seat_pricing {
 	}
 
 	public static function reserve_admin($order, $event, $ticket_type_id, $count) {
-		$event = (int)$event ? get_post($event) : $event;
+		$event = !is_object($event) && (int)$event ? get_post($event) : $event;
 		if (!is_object($event)) return $success;
 
 		$current_item_id = 0;
@@ -224,7 +224,7 @@ class qsot_seat_pricing {
 
 	protected static function _unconfirm_tickets($order, $oiids, $modify_meta=false, $modify_meta_extra=array()) {
 		foreach ($order->get_items() as $oiid => $item) {
-			if (!in_array(absint($oiid), $oiids) || $oiids === '*') continue;
+			if ( (is_array($oiids) && !in_array(absint($oiid), $oiids)) || $oiids === '*') continue;
 			if (!apply_filters('qsot-item-is-ticket', false, $item)) continue;
 			$res = apply_filters(
 				'qsot-zoner-update-reservation',
@@ -271,8 +271,10 @@ class qsot_seat_pricing {
 
 			foreach ($ownerships as $state => $state_ownerships) {
 				foreach ($state_ownerships as $ownership) {
-					$indexed[$ownership->event_id] = is_array($indexed[$ownership->event_id]) ? $indexed[$ownership->event_id] : array();
-					$indexed[$ownership->event_id][$ownership->ticket_type_id] = is_array($indexed[$ownership->event_id][$state][$ownership->ticket_type_id])
+					$indexed[$ownership->event_id] = isset($indexed[$ownership->event_id]) && is_array($indexed[$ownership->event_id]) ? $indexed[$ownership->event_id] : array();
+					$indexed[$ownership->event_id][$ownership->ticket_type_id] = 
+						isset($indexed[$ownership->event_id], $indexed[$ownership->event_id][$state], $indexed[$ownership->event_id][$state][$ownership->ticket_type_id])
+								&& is_array($indexed[$ownership->event_id][$state][$ownership->ticket_type_id])
 							? $indexed[$ownership->event_id][$state][$ownership->ticket_type_id]
 							: array();
 					$indexed[$ownership->event_id][$ownership->ticket_type_id][] = $ownership;
@@ -296,14 +298,14 @@ class qsot_seat_pricing {
 
 		$cuids = array();
 		if (($customer_id = is_object($woocommerce->session) ? $woocommerce->session->get_customer_id() : '')) $cuids[] = $customer_id;
-		if (($ocuid = get_post_meta($order_id, '_customer_user', true))) $cuids[] = $ocuid;
+		if (is_user_logged_in()) $cuids[] = get_current_user_id();
 		if (empty($cuids)) return; // required. otherwise ALL reserved tickets for this event will be updated to confirmed... which is wrong
 
 		if (isset($item['event_id'])) {
 			$res = apply_filters(
 				'qsot-zoner-update-reservation',
 				false,
-				array('event_id' => $item['event_id'], 'qty' => $item['qty'], 'state' => '*', 'customer_id' => $cuids),
+				array('event_id' => $item['event_id'], 'qty' => $item['quantity'], 'state' => '*', 'customer_id' => $cuids),
 				array('qty' => 0, '_delete' => true)
 			);
 		}

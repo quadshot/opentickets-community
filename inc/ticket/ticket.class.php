@@ -120,7 +120,7 @@ class QSOT_tickets {
 		self::$order_id = $order_id;
 	}
 
-	public static function add_ticket_code_for_order_item($item_id, $values, $key) {
+	public static function add_ticket_code_for_order_item($item_id, $values, $key='') {
 		if (empty(self::$order_id)) return;
 
 		global $wpdb;

@@ -90,7 +90,7 @@
 												$ticket->venue->meta['info']['postal_code'],
 												$ticket->venue->meta['info']['country']
 											); ?></li>
-											<li>Area: <?php echo $ticket->seating_chart->post_title ?></li>
+											<li>Area: <?php echo $ticket->event_area->post_title ?></li>
 										</ul>
 
 										<div class="venue-notes">
