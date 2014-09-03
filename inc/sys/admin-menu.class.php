@@ -335,7 +335,7 @@ class qsot_admin_menu {
 		$only_keys = array('Template Files' => 1, 'Stylesheet Files' => 1,);
 		$current_theme = wp_get_theme();
 		$current_theme_title = $current_theme->offsetGet('Title');
-		$raw_themes = get_themes();
+		$raw_themes = wp_get_themes();
 		$themes = array();
 		foreach ($raw_themes as $theme) {
 			$trecord = array();

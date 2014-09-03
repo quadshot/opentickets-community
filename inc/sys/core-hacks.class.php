@@ -33,7 +33,6 @@ class qsot_core_hacks {
 
 			add_action('save_post', array(__CLASS__, 'update_order_user_addresses'), 1000000, 2);
 
-			add_action('pre_user_query', array(__CLASS__, 'or_user_meta_query'), 100, 1);
 			add_action('pre_user_query', array(__CLASS__, 'or_display_name_user_query'), 101, 1);
 
 			add_filter('product_type_options', array(__CLASS__, 'add_no_processing_option'), 999);
@@ -857,12 +856,6 @@ class qsot_core_hacks {
 
 		echo json_encode( $found_customers );
 		die();
-	}
-
-	public static function or_user_meta_query(&$query) {
-		global $wpdb;
-		//dont remember why i did this , but i just had to fix it to not modify wp_capabilities
-		$query->query_where = preg_replace('#^(.*)(and\s*\(\s*\(\s*'.$wpdb->usermeta.'\.(?!meta_key = \'wp_capabilities))(.*)$#si', '\1or (('.$wpdb->usermeta.'.\3', $query->query_where);
 	}
 
 	public static function or_display_name_user_query(&$query) {
