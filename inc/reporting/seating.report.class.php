@@ -18,9 +18,9 @@ class qsot_seating_report extends qsot_admin_report {
 		if (!empty($settings_class_name)) {
 			self::$o = call_user_func_array(array($settings_class_name, "instance"), array());
 			self::$s2w = array(
-				self::$o->{'sc.states.r'} => 'Not Paid',
-				self::$o->{'sc.states.c'} => 'Paid',
-				self::$o->{'sc.states.o'} => 'Checked In',
+				self::$o->{'z.states.r'} => 'Not Paid',
+				self::$o->{'z.states.c'} => 'Paid',
+				self::$o->{'z.states.o'} => 'Checked In',
 			);
 
 			// load all the options, and share them with all other parts of the plugin
@@ -265,6 +265,20 @@ class qsot_seating_report extends qsot_admin_report {
 	protected static function _get_order_info($tickets, $order_ids) {
 		global $wpdb;
 		$orders = array();
+		$fields = array(
+			'billing_first_name',
+			'billing_last_name',
+			'seating_report_note',
+			'billing_email',
+			'billing_phone',
+			'billing_city',
+			'billing_state',
+			'billing_address_1',
+			'billing_address_2',
+			'billing_postcode',
+			'billing_country',
+			'customer_user',
+		);
 
 		remove_action('comments_clauses', 'woocommerce_exclude_order_comments');
 		foreach ($order_ids as $order_id) {
@@ -284,19 +298,15 @@ class qsot_seating_report extends qsot_admin_report {
 				'number' => 1,
 			));
 			if (is_array($comments) && count($comments)) $order->seating_report_note = array_shift($comments);
-			$orders[$order_id] = (object)array(
-				'id' => $id,
-				'seating_report_note' => $order->seating_report_note,
-				'billing_first_name' => $order->billing_first_name,
-				'billing_last_name' => $order->billing_last_name,
-			);
+			$orders[$order_id] = (object)array( 'id' => $order_id );
+			foreach ($fields as $field) $orders[$order_id]->$field = $order->$field;
 		}
 
 		foreach ($tickets as $id => $ticket) {
 			if (isset($ticket['_order_id'], $orders[$ticket['_order_id']]) && !empty($orders[$ticket['_order_id']]->id)) {
 				$ticket['billing_first_name'] = $orders[$ticket['_order_id']]->billing_first_name;
 				$ticket['billing_last_name'] = $orders[$ticket['_order_id']]->billing_last_name;
-				$ticket['state'] = apply_filters('qsot-get-zone-states', array(), $ticket['_order_id'], $ticket['_event_id'], $ticket['_zone_id']);
+				$ticket['state'] = apply_filters('qsot-zoner-owns', array(), $ticket['_event_id'], $ticket['_product_id'], false, false, $ticket['_order_id']);
 				$tickets[$id] = $ticket;
 			}
 		}
@@ -358,6 +368,11 @@ class qsot_seating_report extends qsot_admin_report {
 		}
 	}
 
+	protected static function _state_text($state) {
+		return isset(self::$s2w[$state]) ? self::$s2w[$state].' ('.$state.')' : $state;
+	}
+
+/*
 	protected static function _state_text($states) {
 		$states = (array)$states;
 		$words = array();
@@ -366,30 +381,39 @@ class qsot_seating_report extends qsot_admin_report {
 		}
 		return empty($words) ? '-' : implode(',', $words);
 	}
+*/
 
 	protected static function _compile_rows($tickets, $orders, $ticket_types, $event) {
 		$final = array();
 		$fields = self::_report_fields();
 	
 		$cnt = 0;
-		foreach ($tickets as $ticket) {
+		foreach ($tickets as $oiid => $ticket) {
 			$order = $orders[$ticket['_order_id']];
 			$ticket_name = isset($ticket_types[$ticket['_product_id']]) && is_object($ticket_types[$ticket['_product_id']]) ? $ticket_types[$ticket['_product_id']]->get_title() : $ticket['_order_item_name'];
 			$row = array();
 			$row['purchaser'] = $order->billing_last_name.', '.$order->billing_first_name;
 			$row['order_id'] = $ticket['_order_id'];
 			$row['ticket_type'] = $ticket_name;
-			$row['quantity'] = $ticket['_qty'];
-			$row['note'] = $order->seating_report_note->comment_content;
-			$row['state'] = self::_state_text($ticket['state']);
+			$row['note'] = isset($order->seating_report_note) && is_object($order->seating_report_note) ? $order->seating_report_note->comment_content : '';
       $row['email'] = $order->billing_email;
       $row['phone'] = $order->billing_phone;
       $row['address'] = self::_get_address($order);
 
 			$row['_user_link'] = get_edit_user_link($order->customer_user);
 			$row['_order_link'] = get_edit_post_link($ticket['_order_id']);
-			$row['_ticket_link'] = site_url($ticket['_ticket_link']);
+			$row['_ticket_link'] = apply_filters('qsot-get-ticket-link', '', $oiid);
 			$row['_product_link'] = get_edit_post_link($ticket['_product_id']);
+
+			if (is_array($ticket['state']) && !empty($ticket['state'])) {
+				foreach ($ticket['state'] as $state => $qty) {
+					$row['quantity'] = $qty;
+					$row['state'] = self::_state_text($state);
+				}
+			} else {
+				$row['quantity'] = $ticket['_qty'];
+				$row['state'] = self::_state_text('-');
+			}
 
 			$final[] = apply_filters('qsotc-seating-report-compile-rows-occupied', $row, $ticket, $event, $orders, $ticket_types, $fields);
 			$cnt += $ticket['_qty'];
@@ -413,7 +437,7 @@ class qsot_seating_report extends qsot_admin_report {
 			$row['_ticket_link'] = '';
 			$row['_product_link'] = '';
 
-			$final[] = apply_filters('qsotc-seating-report-compile-rows-available', $row, $zone_id, $count, $event, $orders, $ticket_types, $fields);
+			$final[] = apply_filters('qsotc-seating-report-compile-rows-available', $row, $cnt, $event, $orders, $ticket_types, $fields);
 		}
 
 		$final = self::_process_sort($final);
@@ -484,7 +508,7 @@ class qsot_seating_report extends qsot_admin_report {
 
 		$fields = self::_report_fields(true);
 
-		foreach ($tickets as $ticket) {
+		foreach ($tickets as $oiid => $ticket) {
 			$row = array();
 
 			foreach ($fields as $field => $label) {
@@ -494,7 +518,7 @@ class qsot_seating_report extends qsot_admin_report {
 					case 'event': $row[$label] = apply_filters('the_title', $event->post_title); break;
 					case 'ticket_type': $row[$label] = apply_filters('the_title', $ticket_types[$ticket['_product_id']]->post->post_title); break;
 					case 'quantity': $row[$label] = $ticket['_qty']; break;
-					case 'ticket_link': $row[$label] = site_url($ticket['_ticket_link']); break;
+					case 'ticket_link': $row[$label] = apply_filters('qsot-get-ticket-link', '', $oiid); break;
           case 'email': $row[$label] = $orders[$ticket['_order_id']]->billing_email; break;
           case 'phone': $row[$label] = $orders[$ticket['_order_id']]->billing_phone; break;
           case 'address': $row[$label] = self::_get_address($orders[$ticket['_order_id']]); break;

@@ -106,7 +106,7 @@ class qsot_frontend_calendar {
 				'qscal' => 'events',
 				't' => strrev($time),
 				'v' => md5($time.NONCE_KEY),
-			), is_admin() ? admin_url('/admin-ajax.php') : site_url('/wp-load.php')),
+			), admin_url('/admin-ajax.php')),
 			'event_template' => self::_get_event_template(),
 		), $post));
 	}

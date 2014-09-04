@@ -218,7 +218,7 @@ class qsot_admin_menu {
 
 	public static function vit($v) {
 		$p = explode('.', preg_replace('#[^\d]+#', '.', preg_replace('#[a-z]#i', '', $v)));
-		return sprintf('%s%03s%03s', 10*array_shift($p), 100*array_shift($p), 100*array_shift($p));
+		return sprintf('%03s%03s%03s', array_shift($p), array_shift($p), array_shift($p));
 	}
 
 	// parts of this are copied directly from woocommerce/admin/woocommerce-admin-settings.php

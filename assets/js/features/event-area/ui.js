@@ -1,5 +1,5 @@
 var QS = QS || {},
-		_qsot_ea_tickets = _qsot_ea_tickets || { ajaxurl:'/wp-load.php' };
+		_qsot_ea_tickets = _qsot_ea_tickets || { ajaxurl:'/wp-admin/admin-ajax.php' };
 
 QS.EATicketSelection = (function($, q, qt) {
 	var S = $.extend({}, _qsot_ea_tickets),

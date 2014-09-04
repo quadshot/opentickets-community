@@ -42,14 +42,6 @@ class QSOT {
 		// register the activation function, so that when the plugin is activated, it does some magic described in the activation function
 		register_activation_hook(self::$o->core_file, array(__CLASS__, 'activation'));
 
-		// handle ajax
-		self::$ajax = is_ajax();
-		if (self::$ajax) {
-			add_action('init', array(__CLASS__, 'handle_ajax'), 9, 1);
-		}
-		add_action('wp_head', array(__CLASS__, 'ajax_url'), 1);
-		add_action('admin_head', array(__CLASS__, 'ajax_url'), 1);
-
 		add_action('woocommerce_email_classes', array(__CLASS__, 'load_custom_emails'), 2);
 
 		add_filter('woocommerce_locate_template', array(__CLASS__, 'overtake_some_woocommerce_core_templates'), 10, 3);
@@ -220,24 +212,6 @@ class QSOT {
 	public static function locale() {
 		$locale = apply_filters('plugin_locale', get_locale(), 'woocommerce');
 		setlocale(LC_MONETARY, $locale);
-	}
-
-	public static function ajax_url() {
-		?><script language="javascript" type="text/javascript" id="sc-ajax-url">var _qsot_ajax_url = '<?php echo site_url('/wp-load.php') ?>';</script><?php
-	}
-
-	public static function handle_ajax() {
-		if (isset($_POST['action'])) {
-			$action = 'qsot-ajax-'.$_POST['action'];
-			$sa = isset($_POST['sa']) ? '-'.$_POST['sa'] : '';
-			if (has_action($action.$sa)) {
-				do_action($action.$sa);
-				exit;
-			} elseif (has_action($action)) {
-				do_action($action);
-				exit;
-			}
-		}
 	}
 
 	// load all *.class.php files in the inc/ dir, and any other includes dirs that are specified by external plugins (which may or may not be useful, since external plugins

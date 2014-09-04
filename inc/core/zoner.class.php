@@ -44,6 +44,7 @@ class qsot_zoner {
 		add_filter('qsot-zoner-ownerships', array(__CLASS__, 'ownerships'), 10, 7);
 		add_filter('qsot-zoner-update-reservation', array(__CLASS__, 'update_reservation'), 10, 3);
 		add_filter('qsot-zoner-current-user', array(__CLASS__, 'current_user'), 10, 3);
+		add_filter('qsot-zoner-order-event-qty-state', array(__CLASS__, 'get_state_from_order_event_quantity'), 10, 4);
 
 		// determine if the item could be a ticket
 		add_filter('qsot-item-is-ticket', array(__CLASS__, 'item_is_ticket'), 10, 2);
@@ -54,6 +55,15 @@ class qsot_zoner {
 
 		// stats
 		add_filter('qsot-count-tickets', array(__CLASS__, 'count_tickets'), 1000, 2);
+	}
+
+	public static function get_state_from_order_event_quantity($state, $order_id, $event_id, $qty) {
+		global $wpdb;
+
+		$q = $wpdb->prepare('select `state` from '.$wpdb->qsot_event_zone_to_order.' where order_id = %d and event_id = %d and quantity = %d limit 1', $order_id, $event_id, $qty);
+		$res = $wpdb->get_var($q);
+
+		return $res ? $res : $state;
 	}
 
 	public static function count_tickets($current, $args='') {

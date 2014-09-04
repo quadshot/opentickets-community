@@ -69,7 +69,8 @@ class qsot_event_area {
 		add_filter('template_include', array(__CLASS__, 'intercept_no_js_form_submission'), 10, 1);
 
 		// frontend ajax
-		add_action('qsot-ajax-qsot-frontend-ticket-selection', array(__CLASS__, 'handle_frontend_ajax'), 10);
+		add_action('wp_ajax_qsot-frontend-ticket-selection', array(__CLASS__, 'handle_frontend_ajax'), 10);
+		add_action('wp_ajax_nopriv_qsot-frontend-ticket-selection', array(__CLASS__, 'handle_frontend_ajax'), 10);
 		add_action('qsot-ticket-selection-frontend-ajax-r', array(__CLASS__, 'faj_reserve'), 10, 2);
 		add_action('qsot-ticket-selection-frontend-ajax-d', array(__CLASS__, 'faj_delete'), 10, 2);
 
@@ -145,7 +146,7 @@ class qsot_event_area {
 			wp_localize_script('qsot-event-frontend', '_qsot_ea_tickets', array(
 				'nonce' => wp_create_nonce('frontend-events-ticket-selection-'.$event->ID),
 				'edata' => self::_get_frontend_event_data($event),
-				'ajaxurl' => site_url('/wp-load.php'),
+				'ajaxurl' => admin_url('admin-ajax.php'),
 				'templates' => apply_filters('qsot-event-frontend-templates', array(), $event),
 				'messages' => array(
 					'available' => array('msg' => 'There are currently <span class="available"></span> <span rel="tt"></span> available.', 'type' => 'msg'),

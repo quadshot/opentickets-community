@@ -50,6 +50,9 @@
 									<?php endif; ?>
 								</td>
 							<?php break; ?>
+							<?php case 'email': ?><td><a href="mailto:<?php echo esc_attr($row['email']) ?>"><?php echo $row['email'] ?></a></td><?php break; ?>
+							<?php case 'phone': ?><td><?php echo $row['phone'] ?></td><?php break; ?>
+							<?php case 'address': ?><td><?php echo $row['address'] ?></td><?php break; ?>
 							<?php case 'note': ?>
 								<td>
 									<?php echo $row['note'] ?>

@@ -228,7 +228,7 @@ abstract class qsot_admin_report {
 			$res['file'] = $filepath;
 			$res['url'] = $fileurl;
 
-			$first = array_shift(array_values($data));
+			$first = current(array_values($data));
 			$headers = array_keys($first);
 			fputcsv($f, $headers);
 
