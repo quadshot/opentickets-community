@@ -6,9 +6,9 @@
  * Version:     1.3.1
  * Author:      Quadshot Software LLC
  * Author URI:  http://quadshot.com/
+ * Copyright:   Copyright (C) 2009-2014 Quadshot Software LLC
  * License: GNU General Public License, version 3 (GPL-3.0)
  * License URI: http://www.gnu.org/copyleft/gpl.html
- * Copyright:   Copyright (C) 2009-2014 Quadshot Software LLC
  *
  * An event managment and online ticket sales platform, built on top of WooCommerce.
  */
