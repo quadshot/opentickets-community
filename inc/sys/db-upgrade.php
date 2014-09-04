@@ -81,7 +81,7 @@ class qsot_db_upgrader {
 				$fields = $table_desc['fields'];
 				$keys = $table_desc['keys'];
 
-				$res = $wpdb->get_results($wpdb->prepare('describe '.$table_name, true));
+				$res = $wpdb->get_results('describe '.$table_name);
 				if (!is_array($res)) return;
 				$readable = array();
 				foreach ($res as $row) $readable[$row->Field] = $row;
