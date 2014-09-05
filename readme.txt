@@ -124,6 +124,29 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.3.2 =
+* removed more php notices
+* changed the 'inifinite login' feature, so that it works with 4.0 and does not prevent 4.0 from handling sessions properly
+* added plugin icons
+
+= 1.3.1 =
+* removed 'web interfaces' from included packages, for wp.org compliance
+* changed how frontend ajax is handled
+* repairing seating report for recent changes
+
+= 1.3.0 =
+* corrected more php notices
+* changed how the order details metabox is overtaken, to preserve WC methodology
+* fixed edge case with zoner entry removal
+* fixed ticket display area name issue
+
+= 1.2.7 =
+* removed deprecated user query filtering
+* corrected php notice issues
+
+= 1.2.6 =
+* ticket permalinks automatically work on installation now
+
 = 1.2.5 =
 * initial public release
 
