@@ -1,5 +1,5 @@
 === OpenTickets Community Edition ===
-Contributors: quadshot, loushou, camu
+Contributors: quadshot, loushou, coolmann
 Donate link: http://opentickets.com/
 Tags: events, event management, tickets, ticket sales, ecommerce
 Requires at least: 3.6.1
