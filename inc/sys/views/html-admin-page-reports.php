@@ -47,7 +47,7 @@
 		if ( $report['description'] )
 			echo '<p>' . $report['description'] . '</p>';
 
-		if ( $report['callback'] && ( is_callable( $report['callback'] ) ) )
+		if ( $report['function'] && ( is_callable( $report['function'] ) ) )
 			call_user_func( $report['function'], $current_report );
 	}
 	?>

@@ -6,6 +6,7 @@ class QSOT {
 	protected static $o = null; // holder for all options of the events plugin
 	protected static $ajax = false;
 	protected static $me = '';
+	protected static $memory_error = '';
 
 	public static function pre_init() {
 		// load the settings. theya re required for everything past this point
@@ -14,6 +15,8 @@ class QSOT {
 		self::$o = call_user_func_array(array($settings_class_name, "instance"), array());
 
 		self::$me = plugin_basename(self::$o->core_file);
+
+		if (!self::_memory_check()) return;
 
 		// locale fix
 		add_action('plugins_loaded', array(__CLASS__, 'locale'), 4);
@@ -219,12 +222,14 @@ class QSOT {
 	// then $group should equal 'core'. equally, if we want to load all *.class.php files in the inc/core/super-special/top-secret/ dir then the $group variable should be
 	// set to equal 'core/super-special/top-secret'. NOTE: leaving $group blank, DOES load all *.class.php files in the includes dirs.
 	public static function load_includes($group='', $regex='#^.+\.class\.php$#i') {
+		//$includer = new QSOT_includer();
 		// aggregate a list of includes dirs that will contain files that we need to load
 		$dirs = apply_filters('qsot-load-includes-dirs', array(trailingslashit(self::$o->core_dir).'inc/'));
 		// cycle through the top-level include folder list
 		foreach ($dirs as $dir) {
 			// does the subdir $group exist below this context?
 			if (file_exists($dir) && ($sdir = trailingslashit($dir).$group) && file_exists($sdir)) {
+				//$includer->inc_match($sdir, $regex);
 				// if the subdir exists, then recursively generate a list of all *.class.php files below the given subdir
 				$iter = new RegexIterator(
 					new RecursiveIteratorIterator(
@@ -243,6 +248,94 @@ class QSOT {
 				}
 			}
 		}
+		unset($dirs, $iter);
+	}
+
+	public static function memory_limit_problem() {
+		if (empty(self::$memory_error)) return;
+
+		$msg = str_replace(
+			array(
+				'%%PRODUCT%%',
+			),
+			array(
+				sprintf('<em><a href="%s" target="_blank">%s</a></em>', esc_attr(self::$o->product_url), force_balance_tags(self::$o->product_name)),
+			),
+			self::$memory_error
+		);
+
+		?>
+			<div class="error errors">
+				<p class="error">
+					<u><strong>Memory Requirement Problem</strong></u><br/>
+					<?php echo $msg ?>
+				</p>
+			</div>
+		<?php
+	}
+
+	// minimum mmeory required is 48MB
+	// attempt to obtain a minimum of 64MB
+	// if cannot obtain at least 48MB, then fail with a notice and prevent loading of OpenTickets
+	protected static function _memory_check($min=50331648, $recommend=67108864) {
+		$allow = true;
+		$current_limit = self::memory_limit();
+
+		if ($current_limit < $min && function_exists('ini_set')) {
+			ini_set('memory_limit', $recommend);
+			$current_limit = self::memory_limit(true);
+			if ($current_limit < $min) {
+				ini_set('memory_limit', $min);
+				$current_limit = self::memory_limit(true);
+			}
+		}
+
+		if ($current_limit < $min) {
+			$allow = false;
+			$hmin = '<em><strong>'.round($min / 1048576, 2).'MB</strong></em>';
+			$hrec = '<em><strong>'.round($recommend / 1048576, 2).'MB</strong></em>';
+			$hcur = '<em><strong>'.round($current_limit / 1048576, 2).'MB</strong></em>';
+			self::$memory_error = 'The %%PRODUCT%% plugin <strong>requires</strong> that your server allow at least '.$hmin.' of memory to WordPress. '
+				.'We recommend at least '.$hrec.' for optimum performance (as does WooCommerce). '
+				.'We tried to raise the memory limit to the minimum for your automatically, but your server settings do not allow it. '
+				.'Your server currently only allows '.$hcur.', which is below the minimum. '
+				.'We have stopped loading OpenTickets, in an effort maintain access to your site. '
+				.'Once you have raised your server settings to at least the minimum memory requirement, we will turn OpenTickets back on automatically.';
+		} else if ($current_limit < $recommend) {
+			$hmin = '<em><strong>'.round($min / 1048576, 2).'MB</strong></em>';
+			$hrec = '<em><strong>'.round($recommend / 1048576, 2).'MB</strong></em>';
+			$hcur = '<em><strong>'.round($current_limit / 1048576, 2).'MB</strong></em>';
+			self::$memory_error = 'The %%PRODUCT%% plugin <strong>requires</strong> that your server allow at least '.$hmin.' of memory to WordPress. '
+				.'Currently, yoru server is set to allow '.$hcur.', which is above the minimum. '
+				.'We recommend at least '.$hrec.' for optimum performance (as does WooCommerce). '
+				.'If you cannot raise the limit to the recommended amount, or do not wish to, then simply ignore this message.';
+		}
+
+		if (!empty(self::$memory_error)) add_action('admin_notices', array(__CLASS__, 'memory_limit_problem'), 100);
+
+		return $allow;
+	}
+
+	public static function memory_limit($force=false) {
+		static $max = false;
+
+		if ($force || $max === false) {
+			$raw = strtolower(ini_get('memory_limit'));
+			preg_match_all('#^(\d+)(\w*)?$#', $raw, $matches, PREG_SET_ORDER);
+			if (isset($matches[0])) {
+				$max = $matches[0][1];
+				$unit = $matches[0][2];
+				switch ($unit) {
+					case 'k': $max *= 1024; break;
+					case 'm': $max *= 1048576; break;
+					case 'g': $max *= 1073741824; break;
+				}
+			} else {
+				$max = 32 * 1048576;
+			}
+		}
+
+		return $max;
 	}
 
 	// do magic - as yet to be determined the need of
@@ -252,12 +345,43 @@ class QSOT {
 	}
 }
 
+class QSOT_includer {
+	public function inc_match($dir, $regex='#^.*\.php$#i', $require=true, $once=true) {
+		if (!file_exists($dir) || !is_dir($dir)) return;
+		$m = ($require ? 'require' : 'include').($once ? '_once' : '');
+		$d = opendir($dir);
+		$subs = array();
+
+		while (false !== ($fname = readdir($d))) {
+			if ($fname == '.' || $fname == '..') continue;
+			$fullname = $dir.DIRECTORY_SEPARATOR.$fname;
+			if (is_dir($fullname)) {
+				$subs[] = $fullname;
+				continue;
+			}
+			if (!preg_match($regex, $fname)) continue;
+			if ($require) {
+				if ($once) require_once($fullname);
+				else require($fullname);
+			} else {
+				if ($once) include_once($fullname);
+				else include($fullname);
+			}
+		}
+
+		if (!empty($subs))
+			foreach ($subs as $sub)
+				$this->inc_match($sub, $regex, $require, $once);
+	}
+}
+
 // loads a core woo class equivalent of a class this plugin takes over, under a different name, so that it can be extended by this plugin's versions and still use the same original name
 if (!function_exists('qsot_underload_core_class')) {
 	function qsot_underload_core_class($path, $class_name='') {
 		global $woocommerce;
 
 		// eval load WooCommerce Core WC_Coupon class, so that we can change the name, so that we can extend it
+		/*
 		$content = file_get_contents($woocommerce->plugin_path.$path);
 		if ($class_name) {
 			$content = preg_replace('#class\s+('.preg_quote($class_name, '#').')(\s|\{)#si', 'class _WooCommerce_Core_\1\2', $content);
@@ -267,8 +391,35 @@ if (!function_exists('qsot_underload_core_class')) {
 				$content = preg_replace('#class\s+('.preg_quote($match[1], '#').')(\s|\{)#si', 'class _WooCommerce_Core_\1\2', $content);
 		}
 		$content = preg_replace('#^<\?php.*?/\*#s', '/*', $content);
-		eval($content);
+		*/
+		$f = fopen($woocommerce->plugin_path.$path, 'r');
+		stream_filter_append($f, 'qsot_underload');
+		eval(stream_get_contents($f));
+		fclose($f);
+		unset($content);
 	}
+
+	class QSOT_underload_filter extends php_user_filter {
+		public static $find = '';
+
+		public function filter($in, $out, &$consumed, $closing) {
+			while ($bucket = stream_bucket_make_writeable($in)) {
+				$read = $bucket->datalen;
+				if (strpos($bucket->data, 'class') !== false) {
+					if (empty(self::$find)) $bucket->data = preg_replace('#class\s+([a-z])#si', 'class _WooCommerce_Core_\1', $bucket->data);
+					else $bucket->data = preg_replace('#class\s+('.preg_quote(self::$find, '#').')(\s|\{)#si', 'class _WooCommerce_Core_\1\2', $bucket->data);
+				}
+				if ($consumed == 0) {
+					$bucket->data = preg_replace('#^<\?(php)?\s+#s', '', $bucket->data);
+				}
+				$consumed += $read; //$bucket->datalen;
+				stream_bucket_append($out, $bucket);
+			}
+			return PSFS_PASS_ON;
+		}
+	}
+	if (function_exists('stream_filter_register'))
+		stream_filter_register('qsot_underload', 'QSOT_underload_filter');
 }
 
 if (!function_exists('is_ajax')) {

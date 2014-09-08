@@ -131,6 +131,12 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.3.5 =
+* adding a minimum memory limit check/auto adjust if possible
+* changing API for reporting to be more flexible
+* add better event date range function
+* repairing event date range calculation
+
 = 1.3.2 =
 * removed more php notices
 * changed the 'inifinite login' feature, so that it works with 4.0 and does not prevent 4.0 from handling sessions properly

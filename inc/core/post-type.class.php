@@ -44,6 +44,9 @@ class qsot_post_type {
 			// handle saving of the parent event post
 			add_action('save_post', array(__CLASS__, 'save_event'), 999, 2);
 
+			// obtain start and end date range based on criteria
+			add_filter('qsot-event-date-range', array(__CLASS__, 'get_date_range'), 100, 2);
+
 			// filter to add the metadata to an event post object
 			add_filter('qsot-get-event', array(__CLASS__, 'get_event'), 10, 2);
 			add_filter('qsot-event-add-meta', array(__CLASS__, 'add_meta'), 10, 1);
@@ -142,6 +145,73 @@ class qsot_post_type {
 		global $parent_file;
 
 		if ($parent_file == 'edit.php?post_type='.self::$o->core_post_type) $parent_file = add_query_arg(array('post_parent' => 0), $parent_file);
+	}
+
+	// based on $args, determine the start and ending date of a set of events
+	public static function get_date_range($current, $args='') {
+		$args = wp_parse_args( apply_filters('qsot-event-date-range-args', $args), array(
+			'event_id' => 0,
+			'with__self' => false,
+			'year__only' => false,
+			'include__only' => array(),
+		));
+
+		extract($args);
+
+		$event_id = absint($event_id);
+		$with__self = !!$with__self;
+		$year__only = !!$year__only;
+		$include__only = wp_parse_id_list($include__only);
+
+		global $wpdb;
+
+		$fields = array();
+		$join = array();
+		$where = array();
+		$fmt = 'Y-m-d H:i:s';
+
+		if ($year__only) {
+			$fields[] = 'min(year(cast(pm.meta_value as datetime))) as min_val';
+			$fields[] = 'max(year(cast(pm.meta_value as datetime))) as max_val';
+			$fmt = 'Y';
+		} else {
+			$fields[] = 'min(cast(pm.meta_value as datetime)) as min_val';
+			$fields[] = 'max(cast(pm.meta_value as datetime)) as max_val';
+		}
+
+		$join[] = $wpdb->prepare($wpdb->postmeta.' pm on pm.post_id = p.id and (pm.meta_key = %s or pm.meta_key = %s)', self::$o->{'meta_key.start'}, self::$o->{'meta_key.end'});
+
+		if ($event_id) {
+			if ($with__self) $where[] = $wpdb->prepare('and ( p.id = %d or p.post_parent = %d )', $event_id, $event_id);
+			else $where[] = $where[] = $wpdb->prepare('and p.post_parent = %d', $event_id);
+		} else if (!empty($include__only)) {
+			$where[] = 'p.id in ('.implode(',', $include__only).')';
+		}
+
+		$pieces = array( 'where', 'fields', 'join' );
+
+		foreach ($pieces as $piece)
+			$$piece = apply_filters('qsot-event-date-range-'.$piece, $$piece);
+
+		$clauses = (array) apply_filters('qsot-event-date-range-clauses', compact( $pieces ), $args);
+		foreach ($pieces as $piece)
+			$$piece = isset($clauses[$piece]) ? $clauses[$piece] : '';
+
+		$fields  = !empty($fields) ? ( is_array($fields) ? implode(', ', $fields) : $fields ) : '*';
+		$where  = !empty($where) ? $wpdb->prepare(' where p.post_type = %s ', self::$o->core_post_type).( is_array($where) ? implode(' ', $where) : $where ) : '';
+		$join  = !empty($join) ? ' join '.( is_array($join) ? implode(' ', $join) : $join ) : '';
+
+		$query = apply_filters(
+			'qsot-event-date-range-request',
+			'select '.$fields.' from '.$wpdb->posts.' p '.$join.' '.$where,
+			compact($pieces),
+			$args
+		);
+
+		$results = $wpdb->get_row($query, ARRAY_N);
+		$today = date_i18n($fmt);
+
+		return is_array($results) && count($results) == 2 ? $results : array($today, $today);
 	}
 
 	public static function check_event_sale_time($current, $event_id) {
@@ -877,7 +947,6 @@ class qsot_post_type {
 				if (is_array($delete)) foreach ($delete as $del) wp_delete_post($del->ID, true); // delete all posts in the list
 			}
 
-			$start_date = $end_date = 0;
 			// for every item in the update list, either update or create a subevent
 			foreach ($updates as $update) {
 				$update = apply_filters('qsot-events-save-sub-event-settings', $update, $post_id, $post);
@@ -896,6 +965,12 @@ class qsot_post_type {
 				}
 			}
 
+			// update the start and end time fo the parent event
+			$current_start = get_post_meta($post_id, self::$o->{'meta_key.start'}, true);
+			$current_end = get_post_meta($post_id, self::$o->{'meta_key.end'}, true);
+			
+			@list($actual_start, $actual_end) = apply_filters('qsot-event-date-range', array(), array('event_id' => $post_id));
+
 			$submit_start_date = $submit_end_date = array();
 			if (isset($_POST['_qsot_start_date']) && !empty($_POST['_qsot_start_date'])) $submit_start_date[] = $_POST['_qsot_start_date'];
 			if (isset($_POST['_qsot_start_time']) && !empty($_POST['_qsot_start_time'])) $submit_start_date[] = $_POST['_qsot_start_time'];
@@ -905,16 +980,19 @@ class qsot_post_type {
 			$submit_start_date = count($submit_start_date) == 2 ? implode(' ', $submit_start_date) : '';
 			$submit_end_date = count($submit_end_date) == 2 ? implode(' ', $submit_end_date) : '';
 
+			if ($submit_start_date == $current_start && $current_start != $actual_start) $submit_start_date = $actual_start;
+			if ($submit_end_date == $current_end && $current_end != $actual_end) $submit_end_date = $actual_end;
+
 			// if we have a min start time and max end time, then save them to the main parent event, for use in lookup of the featured event ordering
 			if (!empty($submit_start_date))
 				update_post_meta($post_id, self::$o->{'meta_key.start'}, $submit_start_date);
-			else if (!empty($start_date))
-				update_post_meta($post_id, self::$o->{'meta_key.start'}, date('Y-m-d H:i:s', $start_date));
+			else if (!empty($actual_start))
+				update_post_meta($post_id, self::$o->{'meta_key.start'}, $actual_start);
 
 			if (!empty($submit_end_date))
 				update_post_meta($post_id, self::$o->{'meta_key.end'}, $submit_end_date);
-			else if (!empty($end_date))
-				update_post_meta($post_id, self::$o->{'meta_key.end'}, date('Y-m-d H:i:s', $end_date));
+			else if (!empty($actual_end))
+				update_post_meta($post_id, self::$o->{'meta_key.end'}, $actual_end);
 
 			// save the stop selling formula
 			$formula = $_POST['_qsot_stop_sales_before_show'];

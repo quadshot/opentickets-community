@@ -67,12 +67,14 @@ class qsot_reporting {
 	}
 
 	public static function extra_reports($reports) {
-		$event_reports = apply_filters('qsot-reports', array());
-		foreach ($event_reports as $name => $charts) {
-			$slug = sanitize_title_with_dashes($name);
+		$event_reports = (array)apply_filters('qsot-reports', array());
+		foreach ($event_reports as $slug => $settings) {
+			if (!isset($settings['charts']) || empty($settings['charts'])) continue;
+			$name = isset($settings['title']) ? $settings['title'] : $slug;
+			$slug = sanitize_title_with_dashes($slug);
 			$reports[$slug] = array(
 				'title' => $name,
-				'charts' => $charts,
+				'charts' => $settings['charts'],
 			);
 		}
 
@@ -282,26 +284,29 @@ abstract class qsot_admin_report {
 		}
 	}
 
+  protected function _address($order) {
+		$order = array_merge(array(
+			'_billing_address_1' => '',
+			'_billing_address_2' => '',
+			'_billing_city' => '',
+			'_billing_state' => '',
+			'_billing_postcode' => '',
+			'_billing_country' => '',
+		), $order);
+    $addr = $order['_billing_address_1'];
+    if (!empty($order['_billing_address_2'])) $addr .= "\n".$order['_billing_address_2'];
+    $addr .= "\n".$order['_billing_city'].', '.$order['_billing_state'].' '.$order['_billing_postcode'].', '.$order['_billing_country'];
+    return $addr;
+  }
+
+	protected function _check_memory($flush_percent_range=80) { self::_memory_check($flush_percent_range); }
+
 	protected static function _memory_check($flush_percent_range=80) {
 		global $wpdb;
 		static $max = false;
 		$dec = $flush_percent_range / 100;
 
-		if ($max === false) {
-			$raw = ini_get('memory_limit');
-			preg_match_all('#^(\d+)(\s*)?$#', $raw, $matches, PREG_SET_ORDER);
-			if (isset($matches[0])) {
-				$max = $matches[0][1];
-				$unit = $matches[0][2];
-				switch (strtolower($unit)) {
-					case 'k': $max *= 1024; break;
-					case 'm': $max *= 1048576; break;
-					case 'g': $max *= 1073741824; break;
-				}
-			} else {
-				$max = 32 * 1048576;
-			}
-		}
+		if ($max === false) $max = QSOT::memory_limit(true);
 
 		$usage = memory_get_usage();
 		if ($usage > $max * $dec) {

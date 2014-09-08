@@ -91,8 +91,8 @@ class qsot_seating_report extends qsot_admin_report {
 	}
 
 	public static function add_report($list) {
-		$list['Seating'] = isset($list['Seating']) ? $list['Seating'] : array();
-		$list['Seating'][] = array(
+		$list['seating'] = isset($list['seating']) ? $list['seating'] : array('title' => __('Seating', 'qsot'), 'charts' => array());
+		$list['seating']['charts'][] = array(
 			'title' => self::get('name'),
 			'description' => self::get('desc'),
 			'function' => array(__CLASS__, 'report'),
