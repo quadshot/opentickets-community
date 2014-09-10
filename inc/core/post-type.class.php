@@ -89,7 +89,40 @@ class qsot_post_type {
 			// add event name to item lists
 			add_action('qsot-order-item-list-ticket-info', array(__CLASS__, 'add_event_name_to_emails'), 10, 3);
 			add_action('woocommerce_get_item_data', array(__CLASS__, 'add_event_name_to_cart'), 10, 2);
+
+			// work around for core hierarchical permalink bug - loushou
+			// https://core.trac.wordpress.org/ticket/29615
+			add_filter('post_type_link', array(__CLASS__, 'qsot_event_link'), 1000, 4);
 		}
+	}
+
+	// work around for non-page hierarchical post type 'default permalink' bug i found - loushou
+	// https://core.trac.wordpress.org/ticket/29615
+	public static function qsot_event_link($permalink, $post, $leavename, $sample) {
+		$post_type = get_post_type_object($post->post_type);
+
+		if (!$post_type->hierarchical) return $permalink;
+
+		// copied and slightly modified to actually work with WP_Query() from wp-includes/link-template.php @ get_post_permalink()
+		global $wp_rewrite;
+
+		$post_link = $wp_rewrite->get_extra_permastruct($post->post_type);
+		$draft_or_pending = isset($post->post_status) && in_array( $post->post_status, array( 'draft', 'pending', 'auto-draft' ) );
+		$slug = get_page_uri($post->ID);
+
+		if ( !empty($post_link) && ( !$draft_or_pending || $sample ) ) {
+			if ( ! $leavename )
+				$post_link = str_replace("%$post->post_type%", $slug, $post_link);
+			$post_link = home_url( user_trailingslashit($post_link) );
+		} else {
+			if ( $post_type->query_var && ( isset($post->post_status) && !$draft_or_pending ) )
+				$post_link = add_query_arg($post_type->query_var, $slug, '');
+			else
+				$post_link = add_query_arg(array('post_type' => $post->post_type, 'p' => $post->ID), '');
+			$post_link = home_url($post_link);
+		}
+
+		return $post_link;
 	}
 
 	public static function add_event_name_to_cart($list, $item) {

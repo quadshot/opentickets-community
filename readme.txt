@@ -131,6 +131,13 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.4.0 =
+* fixing event permalinks problem when using 'default permalinks' - Core WP Bug
+* allowing ticket permalinks to work with 'default permalinks'
+* adding functionality to base reporting class for easier extension
+* fixing reporting page tab selection bug
+* adding upcoming tickets panel to my-account page
+
 = 1.3.5 =
 * adding a minimum memory limit check/auto adjust if possible
 * changing API for reporting to be more flexible

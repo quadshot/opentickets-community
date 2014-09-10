@@ -345,36 +345,6 @@ class QSOT {
 	}
 }
 
-class QSOT_includer {
-	public function inc_match($dir, $regex='#^.*\.php$#i', $require=true, $once=true) {
-		if (!file_exists($dir) || !is_dir($dir)) return;
-		$m = ($require ? 'require' : 'include').($once ? '_once' : '');
-		$d = opendir($dir);
-		$subs = array();
-
-		while (false !== ($fname = readdir($d))) {
-			if ($fname == '.' || $fname == '..') continue;
-			$fullname = $dir.DIRECTORY_SEPARATOR.$fname;
-			if (is_dir($fullname)) {
-				$subs[] = $fullname;
-				continue;
-			}
-			if (!preg_match($regex, $fname)) continue;
-			if ($require) {
-				if ($once) require_once($fullname);
-				else require($fullname);
-			} else {
-				if ($once) include_once($fullname);
-				else include($fullname);
-			}
-		}
-
-		if (!empty($subs))
-			foreach ($subs as $sub)
-				$this->inc_match($sub, $regex, $require, $once);
-	}
-}
-
 // loads a core woo class equivalent of a class this plugin takes over, under a different name, so that it can be extended by this plugin's versions and still use the same original name
 if (!function_exists('qsot_underload_core_class')) {
 	function qsot_underload_core_class($path, $class_name='') {

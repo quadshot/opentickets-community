@@ -161,3 +161,8 @@ ul#adminmenu a.qsot-special-arrow:after {
 .ot-reports-page form label { font-size:14px; font-weight:bold; font-style:italic; }
 .ot-reports-page form .field { margin-right:1em; margin-bottom:1em; }
 .ot-reports-page form span.field { display:inline-block; vertical-align:top; }
+.ot-reports-page .result-table-wrap { padding:1em 0; }
+.ot-reports-page .result-table-wrap h3 { margin:0; padding:0.5em 0; }
+.ot-reports-page .result-table-wrap .report-foot-col { font-weight:bold; }
+.ot-reports-page .range_datepicker { cursor:pointer; border-color:#aaaaaa; }
+.ot-reports-page .time-display { font-style:italic; text-decoration:underline; color:#888888; }

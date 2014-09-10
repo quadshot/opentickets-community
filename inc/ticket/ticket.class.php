@@ -110,10 +110,25 @@ class QSOT_tickets {
 	}
 
 	public static function get_ticket_link($current, $item_id) {
-		global $wpdb;
+		global $wpdb, $wp_rewrite;
+
 		$q = $wpdb->prepare('select ticket_code from '.$wpdb->qsot_ticket_codes.' where order_item_id = %d', $item_id);
 		$code = $wpdb->get_var($q);
-		return empty($code) ? $current : site_url('/ticket/'.$code.'/');
+
+		if ( empty($code) ) return $current;
+
+		$post_link = $wp_rewrite->get_extra_permastruct('post');
+
+		if ( !empty($post_link) ) {
+			$post_link = site_url('/ticket/'.$code.'/');
+		} else {
+			$post_link = add_query_arg(array(
+				'qsot-ticket' => 1,
+				'qsot-ticket-id' => $code,
+			), site_url());
+		}
+
+		return $post_link;
 	}
 
 	public static function sniff_order_id($order_id) {

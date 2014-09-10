@@ -77,6 +77,7 @@ class qsot_templates {
 	}
 
 	public static function locate_template($current='', $files=array(), $load=false, $require_once=false) {
+		$files = !empty($files) ? (array) $files : $files;
 		if (is_array($files) && count($files)) {
 			$templ = locate_template($files, $load, $require_once);
 			if (empty($templ)) {

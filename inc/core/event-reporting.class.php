@@ -284,6 +284,132 @@ abstract class qsot_admin_report {
 		}
 	}
 
+	protected static function _memory_check($flush_percent_range=80) {
+		global $wpdb;
+		static $max = false;
+		$dec = $flush_percent_range / 100;
+
+		if ($max === false) $max = QSOT::memory_limit(true);
+
+		$usage = memory_get_usage();
+		if ($usage > $max * $dec) {
+			wp_cache_flush();
+			$wpdb->queries = array();
+		}
+	}
+
+	// instance version of report info, used in inheritance
+	protected $rep_slug = '';
+	protected $rep_name = '';
+	protected $rep_desc = '';
+
+	// actually register the report, using the report api format
+	public function add_report($reports) {
+		$reports[$this->rep_slug] = isset($reports[$this->rep_slug]) ? $reports[$this->rep_slug] : array('title' => $this->rep_name, 'charts' => array());
+		$reports[$this->rep_slug]['charts'][] = array(
+			'title' => $this->rep_name,
+			'description' => $this->rep_desc,
+			'function' => array(&$this, 'report'),
+		);
+		return $reports;
+	}
+
+	// display a generic report error
+	protected function _report_error($msg='') {
+		$msg = $msg ? $msg : 'An un expected error occurred during report generation.';
+
+		?>
+			<div class="report-error">
+				<p><?php echo $msg ?></p>
+			</div>
+		<?php
+	}
+
+	// actually display the results of the ran report
+	protected function _draw_results($template, $tallies, $csvs, $events, $errors) {
+		if (!empty($template)) {
+			// if there is a template then send all the needed information to the template for rendering
+			$columns = $this->get_display_columns();
+			include $template;
+		} else {
+			// if there is not template (unlikely) then display something for all our hard work
+			echo '<p>Could not find the report result template. '
+				.'Below is the list of raw CSV results.</p><ul>';
+			foreach ($csvs as $event_id => $csv) {
+				echo sprintf(
+					'<li><a href="%s" title="%s">%s</a></li>',
+					esc_attr($csv['url']),
+					esc_attr(__('View report for ', 'qsot').$events[$event_id.'']['title']),
+					__('Report for ', 'qsot').$events[$event_id.'']['title']
+				);
+			}
+			echo '</ul>';
+		}
+	}
+
+	// list columns for display in the breakdown summary tables
+	abstract public function get_display_columns();
+
+	// list columns to add to the csv output file
+	abstract public function get_csv_columns();
+
+	// aggregate a list of product names based on sold order items
+	protected function _get_product_names($ois) {
+		global $wpdb;
+
+		$product_ids = wp_list_pluck($ois, '_product_id');
+		$q = 'select id, post_title from '.$wpdb->posts.' where id in ('.implode(',', $product_ids).')';
+
+		return $wpdb->get_results($q, OBJECT_K);
+	}
+
+	// create a sane payment method value
+	protected function _payment_method($order, $fallback='') {
+		return isset($order['_payment_method']) && !empty($order['_payment_method'])
+			? $order['_payment_method']
+			: ( isset($order['_order_total']) && $order['_order_total'] > 0 ? '(unknown)' : '-free-' );
+	}
+
+	// if the billing information does not exist for an order, but their is an owning user for the order, attempt to pull billing information from user information
+	protected function _maybe_fill_from_user($order) {
+		$u = get_user_by('id', $order['_customer_user']);
+		$meta = get_user_meta($order['_customer_user']);
+		$user = array();
+		foreach ($order as $k => $v) {
+			if (substr($k, 0, 8) != '_billing') continue;
+			$k2 = substr($k, 1);
+			if (isset($meta[$k2])) $user[$k] = current($meta[$k2]);
+		}
+
+		if (!isset($user['_billing_email']) || empty($user['_billing_email'])) $user['_billing_email'] = $u->user_email;
+		if (!isset($user['_billing_first_name']) || empty($user['_billing_first_name']))
+			$user['_billing_first_name'] = !empty($u->display_name) ? $u->display_name : $u->user_login;
+
+		return array_merge($user, $order);
+	}
+
+	// create a sane purchaser entry
+	protected function _purchaser($order, $fallback='') {
+		$names = array_filter(array(
+			isset($order['_billing_first_name']) ? $order['_billing_first_name'] : '',
+			isset($order['_billing_last_name']) ? $order['_billing_last_name'] : '',
+		));
+		$names = $names ? $names : (array)$fallback;
+		return implode(' ', $names);
+	}
+
+	// pull the email value from order info
+	protected function _email($order, $fallback='') {
+		return isset($order['_billing_email']) ? $order['_billing_email'] : '';
+	}
+
+	// pull the phone number from the order information
+	protected function _phone($order, $fallback='') {
+		return isset($order['_billing_phone']) ? preg_replace('#[^\d\.x]#i', '', $order['_billing_phone']) : $fallback;
+	}
+
+	protected function _check_memory($flush_percent_range=80) { self::_memory_check($flush_percent_range); }
+
   protected function _address($order) {
 		$order = array_merge(array(
 			'_billing_address_1' => '',
@@ -298,22 +424,6 @@ abstract class qsot_admin_report {
     $addr .= "\n".$order['_billing_city'].', '.$order['_billing_state'].' '.$order['_billing_postcode'].', '.$order['_billing_country'];
     return $addr;
   }
-
-	protected function _check_memory($flush_percent_range=80) { self::_memory_check($flush_percent_range); }
-
-	protected static function _memory_check($flush_percent_range=80) {
-		global $wpdb;
-		static $max = false;
-		$dec = $flush_percent_range / 100;
-
-		if ($max === false) $max = QSOT::memory_limit(true);
-
-		$usage = memory_get_usage();
-		if ($usage > $max * $dec) {
-			wp_cache_flush();
-			$wpdb->queries = array();
-		}
-	}
 }
 
 if (!function_exists('qsot_datepicker_js')):

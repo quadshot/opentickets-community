@@ -30,7 +30,7 @@ class qsot_seating_report extends qsot_admin_report {
 				//self::_setup_admin_options();
 			}
 
-			add_filter('qsot-reports', array(__CLASS__, 'add_report'), 10);
+			add_filter('qsot-reports', array(__CLASS__, 'add_me_as_report'), 10);
 			add_filter('woocommerce_order_note_types', array(__CLASS__, 'add_order_note_types'), 10, 2);
 			add_action('woocommerce_ajax_save_order_note', array(__CLASS__, 'save_new_order_note_types'), 10, 4);
 			add_filter('woocommerce_get_order_note_type', array(__CLASS__, 'get_order_note_type'), 10, 2);
@@ -90,7 +90,7 @@ class qsot_seating_report extends qsot_admin_report {
 		update_comment_meta($comment_id, 'is_seating_report_note', $note_type == 'seating-report-note' ? 1 : 0);
 	}
 
-	public static function add_report($list) {
+	public static function add_me_as_report($list) {
 		$list['seating'] = isset($list['seating']) ? $list['seating'] : array('title' => __('Seating', 'qsot'), 'charts' => array());
 		$list['seating']['charts'][] = array(
 			'title' => self::get('name'),
@@ -167,7 +167,7 @@ class qsot_seating_report extends qsot_admin_report {
 		?>
 			<div class="form-container" style="margin-bottom:15px;">
 				<form method="post" action="">
-					<label for="range">Year</label>
+					<label for="range">Year:</label>
 					<input type="hidden" name ="old-range" value="<?php echo esc_attr($range) ?>" />
 					<select name="range" id="range" class="filter-list" limit="#event">
 						<option value="all">[All Years]</option>
@@ -476,6 +476,10 @@ class qsot_seating_report extends qsot_admin_report {
 
 		return $list;
 	}
+
+	// forward compat for new repor tapi
+	public function get_display_columns() { return array(); }
+	public function get_csv_columns() { return array(); }
 
 	protected static function _report_fields($csv=false) {
 		$basic = array(

@@ -118,12 +118,12 @@ class qsot_my_account_takeover {
 		$order 			= new WC_Order( $order_id );
 
 		if ( $order_id == 0 ) {
-			woocommerce_get_template( 'myaccount/my-orders.php', array( 'order_count' => 'all' == $order_count ? -1 : $order_count ) );
+			wc_get_template( 'myaccount/my-orders.php', array( 'order_count' => 'all' == $order_count ? -1 : $order_count ) );
 			return;
 		}
 
 		if ( !current_user_can('delete_users') && $order->user_id != $user_id ) {
-			echo '<div class="woocommerce-error">' . __( 'Invalid order.', 'woocommerce' ) . ' <a href="'.get_permalink( woocommerce_get_page_id('myaccount') ).'">'. __( 'My Account &rarr;', 'woocommerce' ) .'</a>' . '</div>';
+			echo '<div class="woocommerce-error">' . __( 'Invalid order.', 'woocommerce' ) . ' <a href="'.get_permalink( wc_get_page_id('myaccount') ).'">'. __( 'My Account &rarr;', 'woocommerce' ) .'</a>' . '</div>';
 			return;
 		}
 
@@ -165,7 +165,7 @@ class qsot_my_account_takeover {
 		if (!is_object($woocommerce->customer)) $woocommerce->customer = new WC_Customer();
 
 		if ( ! is_user_logged_in() ) {
-			woocommerce_get_template( 'myaccount/form-login.php' );
+			wc_get_template( 'myaccount/form-login.php' );
 		} else {
 			$cu = wp_get_current_user();
 			$GLOBALS['qsot_my_acct'] = array(
@@ -176,7 +176,7 @@ class qsot_my_account_takeover {
 			$cu2 = wp_get_current_user();
 			$GLOBALS['qsot_my_acct']['swapin_user'] = $cu2;
 			?><div class="my-account"><?php
-				woocommerce_get_template( 'myaccount/my-account.php', array(
+				wc_get_template( 'myaccount/my-account.php', array(
 					'current_user' 	=> $cu2,
 					'order_count' 	=> -1,
 				) );
@@ -263,6 +263,7 @@ class qsot_my_account_takeover {
 				'_zone_id' => 0,
 				'__order_id' => 0,
 			));
+			$ticket->permalink = apply_filters('qsot-get-ticket-link', '', $ticket->__order_item_id);
 			$ticket->product = get_product($ticket->_product_id);
 			$ticket->event = apply_filters('qsot-event-add-meta', get_post($ticket->_event_id));
 			$ticket->zone = apply_filters('qsot-get-seating-zone', null, $ticket->_zone_id);
@@ -277,7 +278,7 @@ class qsot_my_account_takeover {
 
 		foreach ($events as $eid) if (isset($e_data[$eid.''])) $event_data[$eid.''] = $e_data[$eid.''];
 
-		woocommerce_get_template('myaccount/my-upcoming-tickets.php', array(
+		wc_get_template('myaccount/my-upcoming-tickets.php', array(
 			'user' => $current_user,
 			'tickets' => $ticket_data,
 			'by_event' => $event_data,
