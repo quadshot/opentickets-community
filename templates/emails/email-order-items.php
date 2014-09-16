@@ -52,7 +52,7 @@ foreach ( $items as $item_id => $item ) :
 				}
 			}
 
-			// OpenTickets!!!! add ticket information
+			//@@@@LOUSHOU - OpenTickets!!!! add ticket information
 			do_action('qsot-order-item-list-ticket-info', $item_id, $item, $order);
 
 			// Variation

@@ -75,6 +75,9 @@ class QSOT_tickets {
 	}
 
 	public static function add_view_ticket_link_to_emails($item_id, $item, $order) {
+		$status = is_callable(array(&$order, 'get_status')) ? $order->get_status() : $order->status;
+		if (!in_array($status, apply_filters('qsot-ticket-link-allow-by-order-status', array('completed')))) return;
+
 		$auth = apply_filters('qsot-email-link-auth', '', $order->id);
 		$link = apply_filters('qsot-get-ticket-link', '', $item_id);
 		$link = $link ? add_query_arg(array('n' => $auth), $link) : $link;

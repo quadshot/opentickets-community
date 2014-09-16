@@ -52,7 +52,7 @@ $order = new WC_Order( $order_id );
 
 							echo apply_filters( 'woocommerce_order_item_quantity_html', ' <strong class="product-quantity">' . sprintf( '&times; %s', $item['qty'] ) . '</strong>', $item );
 
-							// OpenTickets!!!! add ticket information
+							//@@@@LOUSHOU - OpenTickets!!!! add ticket information
 							do_action('qsot-order-item-list-ticket-info', $item_id, $item, $order);
 
 							$item_meta->display();
