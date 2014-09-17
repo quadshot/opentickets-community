@@ -193,7 +193,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php
 				echo ( isset( $item['qty'] ) ) ? esc_html( $item['qty'] ) : '';
 
-				if ( $refunded_qty = $order->get_qty_refunded_for_item( $item_id ) ) {
+				/*@@@@LOUSHOU - backwards compatibility */
+				if ( is_callable(array(&$order, 'get_qty_refunded_for_item')) && $refunded_qty = $order->get_qty_refunded_for_item( $item_id ) ) {
 					echo '<small class="refunded">-' . $refunded_qty . '</small>';
 				}
 			?>
@@ -218,7 +219,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 					echo wc_price( $item['line_total'] );
 				}
 
-				if ( $refunded = $order->get_total_refunded_for_item( $item_id ) ) {
+				/*@@@@LOUSHOU - backwards compatibility */
+				if ( is_callable(array(&$order, 'get_total_refunded_for_item')) && $refunded = $order->get_total_refunded_for_item( $item_id ) ) {
 					echo '<small class="refunded">-' . wc_price( $refunded ) . '</small>';
 				}
 			?>
@@ -287,7 +289,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<?php do_action( 'woocommerce_admin_after_order_item_values', $_product, $item, absint( $item_id ) ); /*@@@@LOUSHOU - add columns at the end of the values list */ ?>
 
 	<td class="wc-order-edit-line-item">
-		<?php if ( $order->is_editable() ) : ?>
+		<?php if ( !is_callable(array(&$order, 'is_editable')) ): /*@@@@LOUSHOU - backwards compatibility */ ?>
+			<a class="edit_order_item" href="#"><img src="<?php echo WC()->plugin_url(); ?>/assets/images/icons/edit.png" alt="Edit" width="14" /></a>
+		<?php elseif ( $order->is_editable() ) : ?>
 			<div class="wc-order-edit-line-item-actions">
 				<a class="edit-order-item" href="#"></a><a class="delete-order-item" href="#"></a>
 			</div>

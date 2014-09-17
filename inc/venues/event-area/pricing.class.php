@@ -681,6 +681,9 @@ class qsot_seat_pricing {
 	public static function save_product_meta($post_id, $post) {
 		$is_ticket = isset($_POST['_ticket']) ? 'yes' : 'no';
 		update_post_meta($post_id, '_ticket', $is_ticket);
+		// auto hide all tickets. they should not be purchasable without an event
+		if ($is_ticket == 'yes')
+			update_post_meta($post_id, '_visibility', 'hidden');
 	}
 
 	public static function tickets_dont_need_processing($is, $product, $order_id) {

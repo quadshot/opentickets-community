@@ -141,6 +141,8 @@ class WC_Meta_Box_Order_Data extends _WooCommerce_Core_WC_Meta_Box_Order_Data {
 		}
 
 		$payment_method = ! empty( $order->payment_method ) ? $order->payment_method : '';
+		//@@@@LOUSHOU - backwards compatibility
+		$ostatus = is_callable(array(&$order, 'get_status')) ? $order->get_status() : $order->status;
 
 		wp_nonce_field( 'woocommerce_save_data', 'woocommerce_meta_nonce' );
 		?>
@@ -149,7 +151,7 @@ class WC_Meta_Box_Order_Data extends _WooCommerce_Core_WC_Meta_Box_Order_Data {
 		</style>
 		<div class="panel-wrap woocommerce">
 			<input name="post_title" type="hidden" value="<?php echo empty( $post->post_title ) ? 'Order' : esc_attr( $post->post_title ); ?>" />
-			<input name="post_status" type="hidden" value="<?php echo esc_attr( $order->get_status() ); ?>" />
+			<input name="post_status" type="hidden" value="<?php echo esc_attr( $ostatus ); ?>" />
 			<div id="order_data" class="panel">
 
 				<h2><?php printf( __( 'Order %s details', 'woocommerce' ), esc_html( $order->get_order_number() ) ); ?></h2>
@@ -158,7 +160,7 @@ class WC_Meta_Box_Order_Data extends _WooCommerce_Core_WC_Meta_Box_Order_Data {
 					if ( $payment_method ) {
 						printf( __( 'Payment via %s', 'woocommerce' ), ( isset( $payment_gateways[ $payment_method ] ) ? esc_html( $payment_gateways[ $payment_method ]->get_title() ) : esc_html( $payment_method ) ) );
 
-						if ( $transaction_id = $order->get_transaction_id() ) {
+						if ( is_callable(array(&$order, 'get_transaction_id')) && $transaction_id = $order->get_transaction_id() ) {
 								if ( isset( $payment_gateways[ $payment_method ] ) && ( $url = $payment_gateways[ $payment_method ]->get_transaction_url( $order ) ) ) {
 								echo ' (<a href="' . esc_url( $url ) . '" target="_blank">' . esc_html( $transaction_id ) . '</a>)';
 							} else {
@@ -184,9 +186,17 @@ class WC_Meta_Box_Order_Data extends _WooCommerce_Core_WC_Meta_Box_Order_Data {
 						<p class="form-field form-field-wide"><label for="order_status"><?php _e( 'Order status:', 'woocommerce' ) ?></label>
 						<select id="order_status" name="order_status" class="chosen_select">
 							<?php
-								$statuses = wc_get_order_statuses();
-								foreach ( $statuses as $status => $status_name ) {
-									echo '<option value="' . esc_attr( $status ) . '" ' . selected( $status, 'wc-' . $order->get_status(), false ) . '>' . esc_html( $status_name ) . '</option>';
+								//@@@@LOUSHOU - backwards compatibility
+								if (is_callable('wc_get_order_statuses')) {
+									$statuses = wc_get_order_statuses();
+									foreach ( $statuses as $status => $status_name ) {
+										echo '<option value="' . esc_attr( $status ) . '" ' . selected( $status, 'wc-' . $ostatus, false ) . '>' . esc_html( $status_name ) . '</option>';
+									}
+								} else {
+									$statuses = (array) get_terms( 'shop_order_status', array( 'hide_empty' => 0, 'orderby' => 'id' ) );
+									foreach ( $statuses as $status ) {
+										echo '<option value="' . esc_attr( $status->slug ) . '" ' . selected( $status->slug, $ostatus, false ) . '>' . esc_html__( $status->name, 'woocommerce' ) . '</option>';
+									}
 								}
 							?>
 						</select></p>
