@@ -29,6 +29,8 @@ class qsot_admin_menu {
 			add_action('init', array(__CLASS__, 'register_assets'), 0);
 			add_action('init', array(__CLASS__, 'register_post_types'), 1);
 
+			add_action('qsot-activate', array(__CLASS__, 'on_activation'), 10);
+
 			add_filter('woocommerce_screen_ids', array(__CLASS__, 'load_woocommerce_admin_assets'), 10);
 			add_filter('woocommerce_reports_screen_ids', array(__CLASS__, 'load_woocommerce_admin_assets'), 10);
 			add_filter('qsot-get-menu-page-uri', array(__CLASS__, 'menu_page_uri'), 10, 3);
@@ -465,6 +467,10 @@ class qsot_admin_menu {
 			'desc_tip' => __('This information is strictly used to make this product better and more compatible with other plugins.', 'qsot'),
 			'default' => 'no',
 		));
+	}
+
+	public static function on_activation() {
+		self::register_post_types();
 	}
 }
 

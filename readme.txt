@@ -131,6 +131,10 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.5.1 =
+* removing new WooCommerce stati from event stati list
+* fixing installation bug where event links are not immediately available
+
 = 1.5.0 =
 * woocommerce 2.2.0+ compatibility patches
 * updated all edit order metaboxes in admin

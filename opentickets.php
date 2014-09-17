@@ -357,6 +357,7 @@ class QSOT {
 	public static function activation() {
 		self::load_plugins_and_modules();
 		do_action('qsot-activate');
+		flush_rewrite_rules();
 	}
 }
 
