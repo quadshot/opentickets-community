@@ -23,12 +23,20 @@ class qsot_frontend_calendar {
 
 			add_action('init', array(__CLASS__, 'add_sidebar'), 11);
 			add_filter('init', array(__CLASS__, 'intercept_cal_ajax'), 1000, 1);
-			add_filter('wp', array(__CLASS__, 'add_assets'), 10000);
+			add_filter('wp_enqueue_scripts', array(__CLASS__, 'add_assets'), 10000);
 			add_action('qsot-calendar-settings', array(__CLASS__, 'calendar_settings'), 10, 3);
 			add_filter('qsot-calendar-event', array(__CLASS__, 'get_calendar_event'), 10, 2);
 			add_shortcode(self::$shortcode, array(__CLASS__, 'shortcode'));
 
 			add_filter('qsot-templates-page-templates', array(__CLASS__, 'add_calendar_template'));
+
+			// add the admin metabox to control the calendar settings
+			add_action('add_meta_boxes', array(__CLASS__, 'add_meta_boxes'), 1000);
+			add_action('postbox_classes_page_qsot-calendar-settings-box', array(__CLASS__, 'mb_calendar_settings_classes'), 1000, 1);
+			add_action('save_post', array(__CLASS__, 'save_page_calendar_settings'), 1000, 2);
+
+			// load admin js and css
+			add_action('qsot-admin-load-assets-page', array(__CLASS__, 'load_admin_assets'), 1000, 2);
 		}
 	}
 
@@ -41,6 +49,13 @@ class qsot_frontend_calendar {
 		$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
 		wp_register_script('qsot-frontend-calendar', self::$o->core_url.'assets/js/features/calendar/calendar.js', array('fullcalendar'), '0.1.0-beta');
 		wp_register_style('qsot-frontend-calendar-style', self::$o->core_url.'assets/css/features/calendar/calendar.css', array('fullcalendar'), '0.1.0-beta');
+		wp_register_script('qsot-admin-calendar', self::$o->core_url.'assets/js/features/calendar/admin.js', array('jquery-ui-datepicker'), '0.1.0-beta');
+	}
+
+	// load the admin js and css
+	public static function load_admin_assets($exists, $post_id) {
+		wp_enqueue_script('qsot-admin-calendar');
+		wp_enqueue_style('qsot-admin-styles');
 	}
 
 	public static function add_sidebar() {
@@ -81,7 +96,7 @@ class qsot_frontend_calendar {
 		}
 	}
 
-	public static function add_assets($wp) {
+	public static function add_assets() {
 		$post = get_post();
 		if (!is_object($post)) return;
 
@@ -99,6 +114,21 @@ class qsot_frontend_calendar {
 		}
 	}
 
+	// create a metabox that holds the extended settings for the calendar page
+	public static function add_meta_boxes() {
+		$screens = array('page');
+		foreach ($screens as $screen) {
+			add_meta_box(
+				'qsot-calendar-settings-box',
+				__('Calendar Settings', 'qsot'),
+				array(__CLASS__, 'mb_calendar_settings'),
+				$screen,
+				'side',
+				'core'
+			);
+		}
+	}
+
 	public static function calendar_settings($post, $needs_calendar=true, $shortcode='') {
 		$time = microtime(true);
 		wp_localize_script('qsot-frontend-calendar', '_qsot_event_calendar_ui_settings', apply_filters('qsot-event-calendar-ui-settings', array(
@@ -108,6 +138,7 @@ class qsot_frontend_calendar {
 				'v' => md5($time.NONCE_KEY),
 			), admin_url('/admin-ajax.php')),
 			'event_template' => self::_get_event_template(),
+			'gotoDate' => self::_get_calendar_start_date($post),
 		), $post));
 	}
 
@@ -190,6 +221,124 @@ class qsot_frontend_calendar {
 		return $e;
 	}
 
+	// actually save the calendar settings
+	public static function save_page_calendar_settings($post_id, $post) {
+		if (isset($_POST['_calendar_start_method'])) {
+			update_post_meta($post_id, '_calendar_start_method', $_POST['_calendar_start_method']);
+		}
+
+		if (isset($_POST['_calendar_start_manual'])) {
+			update_post_meta($post_id, '_calendar_start_manual', $_POST['_calendar_start_manual']);
+		}
+	}
+
+	// hide the metabox by default if the qsot-calendar.php template is not the selected template
+	public static function mb_calendar_settings_classes($classes) {
+		$template = get_page_template_slug( get_queried_object_id() );
+		if ($template == 'qsot-calendar.php') $classes[] = 'hide-if-js';
+		return $classes;
+	}
+
+	// actually draw the settings metabox for the calendar page
+	public static function mb_calendar_settings($post, $mb) {
+		// generate a list of valid options for the calendar starting date modes
+		$valid = apply_filters('qsot-calendar-modes', array(
+			'today' => __('Today', 'qsot'), // starts the calendar at today, when the calendar page is loaded
+			'first' => __('Date of next Event', 'qsot'), // starts the calendar at the date of the first event, when calendar is loaded
+			'manual' => __('Manually entered date', 'qsot'), // uses a manually entered date as the start date of the calendar when it is loaded
+		));
+
+		// get the current settings
+		$method = get_post_meta($post->ID, '_calendar_start_method', true);
+		$date = get_post_meta($post->ID, '_calendar_start_manual', true);
+
+		// default the settings to 'today' (above)
+		$method = isset($valid[$method]) ? $method : 'today';
+
+		// draw the form
+		?>
+			<p><strong><?php _e('Starting Date Method', 'qsot') ?></strong></p>
+
+			<p>
+				<?php foreach ($valid as $meth => $label): ?>
+					<input type="radio" name="_calendar_start_method" class="qsot-cal-meth" id="qsot-cal-meth-<?php echo esc_attr($meth) ?>"
+						value="<?php echo esc_attr($meth) ?>" <?php checked($method, $meth) ?> />
+					<label class="screen-reader-text" for="qsot-cal-meth-<?php echo esc_attr($meth) ?>"><?php echo force_balance_tags($label) ?></label>
+					<span class="cb-display"><?php echo force_balance_tags($label) ?></span></br>
+				<?php endforeach; ?>
+			</p>
+
+			<div class="hide-if-js extra-box" rel="extra-manual">
+				<p><strong><?php _e('Manually entered date', 'qsot') ?></strong></p>
+				<label class="screen-reader-text" for="qsot-cal-start-manual"><?php _e('Manually entered date', 'qsot') ?></label>
+				<input size="11" type="text" class="use-datepicker" id="qsot-cal-start-manual" name="_calendar_start_manual" value="<?php echo esc_attr($date) ?>" />
+			</div>
+
+			<?php
+				// allow plugins to add to this
+				do_action('qsot-calendar-settings-metabox-extra', $post, $mb);
+			?>
+		<?php
+	}
+
+	protected static function _get_calendar_start_date($post) {
+		// generate a list of valid options for the calendar starting date modes
+		$valid = apply_filters('qsot-calendar-modes', array(
+			'today' => __('Today', 'qsot'), // starts the calendar at today, when the calendar page is loaded
+			'first' => __('Date of next Event', 'qsot'), // starts the calendar at the date of the first event, when calendar is loaded
+			'manual' => __('Manually entered date', 'qsot'), // uses a manually entered date as the start date of the calendar when it is loaded
+		));
+
+		// get the current settings
+		$method = get_post_meta($post->ID, '_calendar_start_method', true);
+		$date = get_post_meta($post->ID, '_calendar_start_manual', true);
+
+		// default the settings to 'today' (above)
+		$method = isset($valid[$method]) ? $method : 'today';
+
+		switch ($method) {
+			case 'first': $out = self::_next_event_date(); break;
+			case 'manual': $out = strtotime($date) < strtotime('today') ? current_time('mysql') : $date; break;
+			default:
+			case 'today': $out = date('Y-m-d'); break;
+		}
+
+		return $out;
+	}
+
+	// determine the date of the next event, after today
+	protected static function _next_event_date() {
+		// get the next event id 
+		$posts = get_posts(array(
+			'post_type' => self::$o->core_post_type,
+			'post_status' => 'publish',
+			'post_parent__not' => 0,
+			'posts_per_page' => 1,
+			'meta_query' => array(
+				array(
+					'key' => self::$o->{'meta_key.start'},
+					'value' => current_time('mysql'),
+					'type' => 'DATETIME',
+					'compare' => '>=',
+				),
+			),
+			'meta_key' => self::$o->{'meta_key.start'},
+			'orderby' => 'meta_value_date',
+			'order' => 'asc',
+			'fields' => 'ids',
+			'suppress_filters' => false,
+		));
+
+		// get the id if it exists
+		$post_id = !empty($posts) ? current($posts) : 0;
+
+		// fetch the start date of the found event, and default it to today if it does not exist or has no start date
+		$start = get_post_meta($post_id, self::$o->{'meta_key.start'}, true);
+		$start = empty($start) || $start == '0000-00-00 00:00:00' ? current_time('mysql') : $start;
+
+		return $start;
+	}
+
 	public static function create_calendar_page() {
 		$page_id = get_option('qsot_calendar_page_id', 0);
 		if (empty($page_id)) {
@@ -204,6 +353,7 @@ class qsot_frontend_calendar {
 			$page_id = wp_insert_post($data);
 			if (is_numeric($page_id) && !empty($page_id)) {
 				update_post_meta($page_id, '_wp_page_template', 'qsot-calendar.php');
+				update_post_meta($page_id, '_calendar_start_method', 'today');
 				update_option('qsot_calendar_page_id', $page_id);
 			}
 		}

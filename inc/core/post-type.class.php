@@ -90,6 +90,9 @@ class qsot_post_type {
 			add_action('qsot-order-item-list-ticket-info', array(__CLASS__, 'add_event_name_to_emails'), 10, 3);
 			add_action('woocommerce_get_item_data', array(__CLASS__, 'add_event_name_to_cart'), 10, 2);
 
+			// order by meta_value cast to date
+			add_filter('posts_orderby', array(__CLASS__, 'wp_query_orderby_meta_value_date'), 10, 2);
+
 			// work around for core hierarchical permalink bug - loushou
 			// https://core.trac.wordpress.org/ticket/29615
 			add_filter('post_type_link', array(__CLASS__, 'qsot_event_link'), 1000, 4);
@@ -357,6 +360,19 @@ class qsot_post_type {
 		}
 
 		return $content;
+	}
+
+	public static function wp_query_orderby_meta_value_date($orderby, $query) {
+		if (
+				isset($query->query_vars['orderby'], $query->query_vars['meta_key'])
+				&& $query->query_vars['orderby'] == 'meta_value_date'
+				&& !empty($query->query_vars['meta_key'])
+		) {
+			$order = strtolower(isset($query->query_vars['order']) ? $query->query_vars['order'] : 'asc');
+			$order = in_array($order, array('asc', 'desc')) ? $order : 'asc';
+			$orderby = 'cast(mt1.meta_value as datetime) '.$order;
+		}
+		return $orderby;
 	}
 
 	public static function events_query_where($where, $q) {

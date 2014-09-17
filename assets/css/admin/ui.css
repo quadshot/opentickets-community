@@ -58,3 +58,5 @@ table.settings-table .setting { margin-bottom:5px; }
 .time-text { width:75px; }
 
 .clear { clear:both; }
+
+#qsot-calendar-settings-box.show { display:block; }

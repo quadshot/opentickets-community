@@ -37,7 +37,7 @@ var QSEventsEventCalendar = (function($, w, d, undefined) {
 						//eventAfterAllRender: _image_render_fix,
 						loading: _loading
 					});
-					if (typeof t.o.gotoDate == 'object' && t.o.gotoDate != null) t.cal.fullCalendar('gotoDate', t.o.gotoDate);
+					if (typeof t.o.gotoDate != 'undefined' && t.o.gotoDate != null) t.cal.fullCalendar('gotoDate', (new XDate(t.o.gotoDate)).toDate());
 				}
 			}
 		};
@@ -61,12 +61,21 @@ var QSEventsEventCalendar = (function($, w, d, undefined) {
 			view.calendar.trigger('headerRender', view.calendar, header, view);
 		};
 
+		function _current_date() {
+			if (
+					(typeof t.o.gotoDate == 'object' && t.o.gotoDate != null)
+					|| typeof t.o.gotoDate == 'string'
+			) {
+				return new XDate(t.o.gotoDate);
+			} else {
+				return new XDate();
+			}
+		};
+
 		function _setup_goto_form(calendar, appendTo) {
 			if (typeof gotoForm != 'object') {
 				gotoForm = $('<div class="goto-form"></div>');
-				var curDate = new XDate();
-				var curY = curDate.getFullYear();
-				var curM = curDate.getMonth();
+				var curDate = _current_date(), curY = curDate.getFullYear(), curM = curDate.getMonth();
 				var yearSelect = $('<select rel="year" style="width:auto;"></select>').appendTo(gotoForm);
 				for (var i=curDate.getFullYear()-5; i<=curDate.getFullYear()+15; i++) $('<option value="'+i+'"'+(curY == i ? ' selected="selected"' : '')+'>'+i+'</option>').appendTo(yearSelect);
 				var monthSelect = $('<select rel="month" style="width:auto;"></select>').appendTo(gotoForm);
