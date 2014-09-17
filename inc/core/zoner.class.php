@@ -47,7 +47,7 @@ class qsot_zoner {
 		add_filter('qsot-zoner-order-event-qty-state', array(__CLASS__, 'get_state_from_order_event_quantity'), 10, 4);
 
 		// determine if the item could be a ticket
-		add_filter('qsot-item-is-ticket', array(__CLASS__, 'item_is_ticket'), 10, 2);
+		add_filter('qsot-item-is-ticket', array(__CLASS__, 'item_is_ticket'), 100, 2);
 
 		// checkin code
 		add_filter('qsot-is-already-occupied', array(__CLASS__, 'is_occupied'), 1000, 4);
@@ -178,7 +178,7 @@ class qsot_zoner {
 
 	// is the order item marked as a ticket would be marked?
 	public static function item_is_ticket($is, $item) {
-		if (!isset($item['event_id'])) return false;
+		if (!isset($item['event_id']) || empty($item['event_id'])) return false;
 		return $is;
 	}
 
@@ -587,10 +587,12 @@ class qsot_zoner {
 			}
 
 			// if this is an update, remove any data that looks like the data we are going _to_
+			/*@@@@LOUSHOU - removed because it causes problems. possible rethink needed
 			if (!empty($set_wheres) && !$is_delete) {
 				$set_wheres = array_values($set_wheres);
-				$wpdb->query('delete from '.$wpdb->qsot_event_zone_to_order.' where 1=1'.implode('', $set_wheres));
+				//$wpdb->query('delete from '.$wpdb->qsot_event_zone_to_order.' where 1=1'.implode('', $set_wheres));
 			}
+			*/
 
 			// glue the query
 			$q .= implode('', $wheres).$limit;

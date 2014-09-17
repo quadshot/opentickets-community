@@ -99,6 +99,8 @@ class QSOT_tickets {
 	}
 
 	public static function order_item_ticket_link($item_id, $item, $product) {
+		if (!apply_filters('qsot-item-is-ticket', false, $item)) return;
+
 		$url = apply_filters('qsot-get-ticket-link', '', $item_id);
 		if (empty($url)) return;
 

@@ -127,7 +127,13 @@ class qsot_my_account_takeover {
 			return;
 		}
 
-		$status = get_term_by('slug', $order->status, 'shop_order_status');
+		if (is_callable(array(&$order, 'get_status'))) {
+			$status = $order->get_status();
+			$stati = get_post_stati();
+			die(__log($stati));
+		} else {
+			$status = get_term_by('slug', $order->status, 'shop_order_status');
+		}
 
 		echo '<p class="order-info">'
 		. sprintf( __( 'Order <mark class="order-number">%s</mark> made on <mark class="order-date">%s</mark>', 'woocommerce'), $order->get_order_number(), date_i18n( get_option( 'date_format' ), strtotime( $order->order_date ) ) )
@@ -194,7 +200,7 @@ class qsot_my_account_takeover {
 			'meta_key' => '_customer_user',
 			'meta_value' => is_object($current_user) && isset($current_user->ID) ? $current_user->ID : get_current_user_id(),
 			'post_type' => 'shop_order',
-			'post_status' => 'publish',
+			'post_status' => 'any',
 			'fields' => 'ids',
 		));
 		if (!is_array($orders) || empty($orders)) return;
@@ -224,11 +230,20 @@ class qsot_my_account_takeover {
 			'posts_per_page' => -1,
 			'fields' => 'ids',
 			'suppress_filters' => false,
-			'post_status' => 'publish',
+			'post_status' => array('publish', 'hidden', 'private'),
 			'post_type' => self::$o->core_post_type,
-			'start_date_after' => date('Y-m-d H:i:s'),
 			'post__in' => array_keys($groups),
-			'special_order' => 'qssda.meta_value asc',
+			'meta_query' => array(
+				array(
+					'key' => self::$o->{'meta_key.start'},
+					'value' => date('Y-m-d H:i:s'),
+					'type' => 'DATETIME',
+					'compare' => '>=',
+				),
+			),
+			'meta_key' => self::$o->{'meta_key.start'},
+			'orderby' => 'meta_value_date',
+			'order' => 'asc',
 		));
 		if (!is_array($events) || empty($events)) return;
 		$events = array_map('absint', $events);
@@ -260,13 +275,11 @@ class qsot_my_account_takeover {
 				'_ticket_link' => '',
 				'_product_id' => 0,
 				'_event_id' => 0,
-				'_zone_id' => 0,
 				'__order_id' => 0,
 			));
 			$ticket->permalink = apply_filters('qsot-get-ticket-link', '', $ticket->__order_item_id);
 			$ticket->product = get_product($ticket->_product_id);
 			$ticket->event = apply_filters('qsot-event-add-meta', get_post($ticket->_event_id));
-			$ticket->zone = apply_filters('qsot-get-seating-zone', null, $ticket->_zone_id);
 			$ticket_data[$ind] = $ticket;
 
 			if (is_object($ticket->event) && (!isset($e_data["{$ticket->_event_id}"]) || !is_object($e_data["{$ticket->_event_id}"])))

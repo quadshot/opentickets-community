@@ -7,8 +7,7 @@
 			<?php foreach ($tickets as $ticket): ?>
 				<?php
 					$name = sprintf(
-						'%s (%s @ %s)',
-						$ticket->zone->fullname,
+						'%s @ %s',
 						$ticket->product->post->post_title,
 						money_format('%.2n', $ticket->_line_subtotal)
 					);

@@ -43,6 +43,7 @@ QS.adminTicketSelection = (function($, qs, qt) {
 
 			t.e = { scope: $(e) };
 			t.e.oi = $('#order_items_list', t.e.scope);
+			t.e.oi = t.e.oi.length ? t.e.oi : $('#order_line_items', t.e.scope);
 
 			_setup_elements();
 			_setup_events();

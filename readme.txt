@@ -131,6 +131,13 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.5.0 =
+* woocommerce 2.2.0+ compatibility patches
+* updated all edit order metaboxes in admin
+* converted all order status checkes to WC2.2.x method
+* repaired new order status change bug where reservations were getting cancelled
+* added backward compatibility for WC2.1.x
+
 = 1.4.1 =
 * fixed bug where ticket links become available before order is completed
 * adding the ability to choose the date the event calendar opens to

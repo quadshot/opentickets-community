@@ -61,39 +61,30 @@ class qsot_core_hacks {
 	public static function order_add_meta_boxes($post_type, $post) {
 		if ($post_type !== 'shop_order') return;
 
-		remove_meta_box('woocommerce-order-notes', 'shop_order', 'side');
-		add_meta_box(
-			'qsotcommerce-order-notes',
-			__('Order Notes', 'woocommerce'),
-			array(__CLASS__, 'woocommerce_order_notes_meta_box'),
-			'shop_order',
-			'side',
-			'default'
-		);
+		// if we are on less than WC2.2.0
+		if (version_compare(WC()->version, '2.2.0') < 0) {
+			remove_meta_box('woocommerce-order-notes', 'shop_order', 'side');
+			add_meta_box(
+				'qsotcommerce-order-notes',
+				__('Order Notes', 'woocommerce'),
+				array(__CLASS__, 'woocommerce_order_notes_meta_box'),
+				'shop_order',
+				'side',
+				'default'
+			);
 
-/*
-		remove_meta_box('woocommerce-order-data', 'shop_order', 'normal', 'high');
-		add_meta_box(
-			'woocommerce-order-data',
-			__('Order Data', 'woocommerce'),
-			array(__CLASS__, 'woocommerce_order_data_meta_box'),
-			'shop_order',
-			'normal',
-			'high'
-		);
-*/
-
-		remove_meta_box('woocommerce-order-items', 'shop_order', 'normal', 'high');
-		add_meta_box(
-			'woocommerce-order-items',
-			__( 'Order Items', 'woocommerce' )
-					.' <span class="tips" data-tip="'.__('Note: if you edit quantities or remove items from the order you will need to manually update stock levels.', 'woocommerce')
-					.'">[?]</span>',
-			array(__CLASS__, 'woocommerce_order_items_meta_box'),
-			'shop_order',
-			'normal',
-			'high'
-		);
+			remove_meta_box('woocommerce-order-items', 'shop_order', 'normal', 'high');
+			add_meta_box(
+				'woocommerce-order-items',
+				__( 'Order Items', 'woocommerce' )
+						.' <span class="tips" data-tip="'.__('Note: if you edit quantities or remove items from the order you will need to manually update stock levels.', 'woocommerce')
+						.'">[?]</span>',
+				array(__CLASS__, 'woocommerce_order_items_meta_box'),
+				'shop_order',
+				'normal',
+				'high'
+			);
+		}
 	}
 
 	// effort to work around the new wp core page template existence validation, which prohibits page templates not in the theme
@@ -536,6 +527,7 @@ class qsot_core_hacks {
 			$theorder = new WC_Order( $thepostid );
 
 		$order = $theorder;
+		$legacy_order = true;
 
 		$data = get_post_meta( $post->ID );
 		do_action('woocommerce_admin_before_order_items', $post, $order, $data);
@@ -581,12 +573,12 @@ class qsot_core_hacks {
 
 									//include( $writepanel_path.'order-item-html.php' );
 									//@@@@LOUSHOU - allow overtake of template
-									include(apply_filters('qsot-woo-template', 'post-types/meta-boxes/views/html-order-item.php', 'admin'));
+									include(apply_filters('qsot-woo-template', 'meta-boxes/views/html-order-item.php', 'admin'));
 								break;
 								case 'fee' :
 									//include( $writepanel_path.'order-fee-html.php' );
 									//@@@@LOUSHOU - allow overtake of template
-									include(apply_filters('qsot-woo-template', 'post-types/meta-boxes/views/html-order-fee.php', 'admin'));
+									include(apply_filters('qsot-woo-template', 'meta-boxes/views/html-order-fee.php', 'admin'));
 								break;
 							}
 
@@ -1027,6 +1019,7 @@ class qsot_core_hacks {
 
 	// copied from woocommerce/admin/post-types/writepanels/writepanel-order_data.php
 	// modified to allow defaults
+	//@@@@LOUSHOU - deprecated from WC2.2.0
 	public static function woocommerce_order_data_meta_box($post) {
 		global $post, $wpdb, $thepostid, $theorder, $order_status, $woocommerce;
 

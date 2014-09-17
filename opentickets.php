@@ -7,6 +7,8 @@ class QSOT {
 	protected static $ajax = false;
 	protected static $me = '';
 	protected static $memory_error = '';
+	protected static $wc_latest = '2.2.0';
+	protected static $wc_back_one = '2.1.0';
 
 	public static function pre_init() {
 		// load the settings. theya re required for everything past this point
@@ -55,6 +57,16 @@ class QSOT {
 		add_action('load-post-new.php', array(__CLASS__, 'load_assets'), 999);
 
 		add_filter('plugin_action_links', array(__CLASS__, 'plugins_page_actions'), 10, 4);
+	}
+
+	public static function is_wc_latest() {
+		static $answer = null;
+		return $answer !== null ? $answer : ($answer = version_compare(self::$wc_latest, WC()->version) <= 0);
+	}
+
+	public static function is_wc_back_one() {
+		static $answer = null;
+		return $answer !== null ? $answer : ($answer = version_compare(self::$wc_back_one, WC()->version) <= 0);
 	}
 
 	// add the settings page link to the plugins page
@@ -165,7 +177,10 @@ class QSOT {
 				}
 			}
 		} elseif (strpos($class, 'wc_meta_box_') === 0) {
-			$paths = array(self::$o->core_dir.'/woocommerce/includes/admin/post-types/meta-boxes/');
+			if (self::is_wc_latest())
+				$paths = array(self::$o->core_dir.'/woocommerce/includes/admin/meta-boxes/');
+			else
+				$paths = array(self::$o->core_dir.'/woocommerce/includes/admin/post-types/meta-boxes/');
 			$paths = apply_filters('qsot-woocommerce-meta-box-paths', $paths, $paths, $class);
 			$file = 'class-'.str_replace('_', '-', $class).'.php';
 
