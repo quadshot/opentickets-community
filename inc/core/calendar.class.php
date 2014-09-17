@@ -97,6 +97,8 @@ class qsot_frontend_calendar {
 	}
 
 	public static function add_assets() {
+		if (is_admin()) return;
+
 		$post = get_post();
 		if (!is_object($post)) return;
 
@@ -282,6 +284,10 @@ class qsot_frontend_calendar {
 	}
 
 	protected static function _get_calendar_start_date($post) {
+		// only process this for posts we can find
+		if (!is_object($post)) $post = get_post();
+		if (!is_object($post)) return;
+
 		// generate a list of valid options for the calendar starting date modes
 		$valid = apply_filters('qsot-calendar-modes', array(
 			'today' => __('Today', 'qsot'), // starts the calendar at today, when the calendar page is loaded
