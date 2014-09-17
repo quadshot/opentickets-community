@@ -1322,6 +1322,7 @@ class qsot_post_type {
 													</div>
 													<div class="setting-edit-form hide-if-js" rel="setting-form">
 														<?php foreach (get_post_stati(array('show_in_admin_status_list' => true, 'exclude_from_search' => false), 'objects') as $ptype): ?>
+															<?php if (substr($ptype->name, 0, 3) == 'wc-') continue; ?>
 															<div class="cb-wrap">
 																<input type="radio" value="<?php echo esc_attr($ptype->name) ?>" name="visibility" />
 																<span class="cb-text"><?php echo $ptype->label ?></span>
