@@ -57,7 +57,6 @@ var QSEventsEventCalendar = (function($, w, d, undefined) {
 
 		function _header_render_hook(view) {
 			var header = $(view.element).closest('.fc').find('.fc-header');
-			console.log('header hook', $.extend({}, $(view.element).closest('.fc')), header, $.extend({}, view));
 			view.calendar.trigger('headerRender', view.calendar, header, view);
 		};
 
