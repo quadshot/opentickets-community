@@ -156,6 +156,8 @@ ul#adminmenu a.qsot-special-arrow:after {
 	content:" "; height:0; margin-top:-8px; pointer-events:none; position:absolute; right:0; top:50%; width:0;
 }
 
+.new-user-btn { float:right; clear:none; }
+
 /* reporting */
 #report_result .ticket-list td.status { white-space:nowrap; }
 .ot-reports-page form label { font-size:14px; font-weight:bold; font-style:italic; }

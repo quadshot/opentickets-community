@@ -41,25 +41,34 @@ class qsot_order_admin {
 	public static function plugins_loaded() {
 		if (current_user_can('create_users')) {
 			add_action('woocommerce_after_customer_user', array(__CLASS__, 'add_new_user_button'), 10, 3);
+			add_action('woocommerce_admin_order_data_after_order_details', array(__CLASS__, 'new_user_btn'), 10, 1);
 			add_action('wp_ajax_qsot-new-user', array(__CLASS__, 'admin_new_user_handle_ajax'), 10);
 		}
 	}
 
 	public static function register_assets() {
-		if (current_user_can('create_users')) {
+		if (QSOT::is_wc_latest()) {
+			wp_register_script('qsot-new-user', self::$o->core_url.'assets/js/admin/order/new-user.js', array('jquery-ui-dialog', 'qsot-tools', 'wc-admin-meta-boxes'), self::$o->version);
+		} else {
 			wp_register_script('qsot-new-user', self::$o->core_url.'assets/js/admin/order/new-user.js', array('jquery-ui-dialog', 'qsot-tools', 'woocommerce_admin_meta_boxes'), self::$o->version);
 		}
 	}
 
 	public static function load_assets($exists, $post_id) {
 		// load the eit page js, which also loads all it's dependencies
-		if (current_user_can('create_users')) {
-			wp_enqueue_script('qsot-new-user');
-			wp_localize_script('qsot-new-user', '_qsot_new_user', apply_filters('qsot-new-user-settings', array(
-				'order_id' => $post_id,
-				'templates' => self::_new_user_ui_templates($post_id), // all templates used by the ui js
-			), $post_id));
-		}
+		wp_enqueue_script('qsot-new-user');
+		wp_localize_script('qsot-new-user', '_qsot_new_user', apply_filters('qsot-new-user-settings', array(
+			'order_id' => $post_id,
+			'templates' => self::_new_user_ui_templates($post_id), // all templates used by the ui js
+		), $post_id));
+	}
+
+	// draw the new user button as soon as possible on the order data metabox
+	public static function new_user_btn($order) {
+		?><script language="javascript" type="text/javascript">
+			if (typeof jQuery == 'object' || typeof jQuery == 'function')
+				(function($) { $('<a href="#" class="new-user-btn" rel="new-user-btn">new</a>').appendTo('.order_data_column .form-field label[for="customer_user"]'); })(jQuery);
+		</script><?php
 	}
 
 	public static function add_default_country_state($data) {

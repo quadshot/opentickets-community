@@ -69,15 +69,27 @@ class qsot_zoner {
 	public static function count_tickets($current, $args='') {
 		$args = wp_parse_args($args, array(
 			'state' => '*',
+			'event_id' => '',
 		));
 
 		global $wpdb;
 
-		$q = 'select state, sum(quantity) tot from '.$wpdb->qsot_event_zone_to_order.' where 1=1 group by state';
+		$q = 'select state, sum(quantity) tot from '.$wpdb->qsot_event_zone_to_order.' where 1=1';
+		if ( !empty( $args['event_id'] ) ) {
+			if ( is_array( $args['event_id'] ) ) {
+				$ids = array_filter( array_map( 'absint', $args['event_id'] ) );
+				if ( ! empty( $ids ) )
+					$q .= ' and event_id in (' . implode(',', $ids) . ')';
+			} else if ( (int)$args['event_id'] > 0 ) {
+				$q .= $wpdb->prepare( ' and event_id = %d', $args['event_id'] );
+			}
+		}
+		$q .= ' group by state';
+
 		$rows = $wpdb->get_results($q);
 		$out = array();
 
-		if (empty($rows)) return $out;
+		if (empty($rows)) return (!empty($args['state']) && $args['state'] != '*') ? 0 : $out;
 
 		foreach ($rows as $row) $out[$row->state] = $row->tot;
 

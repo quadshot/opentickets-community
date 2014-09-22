@@ -54,8 +54,8 @@ class qsot_event_area {
 		add_filter('qsot-event-frontend-templates', array(__CLASS__, 'frontend_templates'), 10, 2);
 
 		// update the purchase counts for a given event
-		add_action('qsot-confirmed-ticket', array(__CLASS__, 'increment_purchase_count'), 10, 3);
-		add_action('qsot-unconfirmed-ticket', array(__CLASS__, 'decrement_purchase_count'), 10, 3);
+		add_action('qsot-confirmed-ticket', array(__CLASS__, 'update_purchase_count'), 10, 3);
+		add_action('qsot-unconfirmed-ticket', array(__CLASS__, 'update_purchase_count'), 10, 3);
 		add_action('qsot-ticket-selection-update-ticket-after-meta-update', array(__CLASS__, 'maybe_update_purchases'), 10, 4);
 		// obtain the appropriate counts for an event. purchased ticket count or available ticket count
 		add_filter('qsot-get-event-purchased-tickets', array(__CLASS__, 'get_purchased_tickets'), 100, 3);
@@ -830,16 +830,10 @@ class qsot_event_area {
 		}
 	}
 
-	public static function increment_purchase_count($order, $item, $item_id) {
+	public static function update_purchase_count($order, $item, $item_id) {
 		if (!isset($item['event_id'])) return;
-		$current = get_post_meta($item['event_id'], self::$o->{'meta_key.ea_purchased'}, true);
-		update_post_meta($item['event_id'], self::$o->{'meta_key.ea_purchased'}, $current + $item['qty']);
-	}
-
-	public static function decrement_purchase_count($order, $item, $item_id) {
-		if (!isset($item['event_id'])) return;
-		$current = get_post_meta($item['event_id'], self::$o->{'meta_key.ea_purchased'}, true);
-		update_post_meta($item['event_id'], self::$o->{'meta_key.ea_purchased'}, $current - $item['qty'] < 0 ? 0 : $current - $item['qty']);
+		$total = apply_filters( 'qsot-count-tickets', 0, array( 'state' => self::$o->{'z.states.c'}, 'event_id' => $item['event_id'] ) );
+		update_post_meta( $item['event_id'], self::$o->{'meta_key.ea_purchased'}, $total );
 	}
 
 	public static function get_purchased_tickets($current, $event_id, $ttid) {

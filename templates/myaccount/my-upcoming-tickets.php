@@ -13,10 +13,24 @@
 					);
 				?>
 				<li>
-					<a href="<?php echo esc_attr(site_url($ticket->_ticket_link)) ?>" title="View your ticket"><?php echo $name ?></a>
-					for <a href="<?php echo get_permalink($ticket->event->ID) ?>" title="Visit the Event page"><?php echo apply_filters('the_title', $ticket->event->post_title); ?></a>
+					<?php if ( isset( $ticket->permalink ) && $ticket->permalink ): ?>
+						<a href="<?php echo esc_attr($ticket->permalink) ?>" title="<?php echo esc_attr( __( 'View your ticket', 'qsot' ) ) ?>"><?php echo $name ?></a>
+					<?php else: ?>
+						<?php echo $name . ' (' . __( 'pending payment', 'qsot' ) . ')' ?>
+					<?php endif; ?>
+					<?php echo sprintf(
+						__( 'for <a href="%s" title="%s">%s</a>' ),
+						esc_attr( get_permalink( $ticket->event->ID ) ),
+						esc_attr( __( 'Visit the Event page', 'qsot' ) ),
+						apply_filters( 'the_title', $ticket->event->post_title )
+					) ?>
 					<?php if (is_admin() && isset($ticket->__order_id) && !empty($ticket->__order_id)): ?>
-						(order <a href="<?php echo esc_attr(get_edit_post_link($ticket->__order_id)) ?>" title="Edit order #<?php echo $ticket->__order_id ?>">#<?php echo $ticket->__order_id ?></a>)
+						<?php echo sprintf(
+							__( '(order <a href="%s" title="%s">#%s<a/>)' ),
+							esc_attr( get_edit_post_link( $ticket->__order_id ) ),
+							esc_attr( __( 'Edit order', 'qsot' ) ) . ' #' . $ticket->__order_id,
+							$ticket->__order_id
+						) ?>
 					<?php endif; ?>
 				</li>
 			<?php endforeach; ?>
@@ -34,11 +48,12 @@
                 order_id="<?php echo isset($ticket->__order_id) && !empty($ticket->__order_id) ? $ticket->__order_id : '0' ?>">
 							<span class="nobr">
 								<?php echo apply_filters('the_title', $event->post_title); ?>
-								<a href="<?php echo get_permalink($event->ID) ?>" title="Visit the Event page">(View Show Page)</a>
-								<?php $link = apply_filters('qsot-get-all-event-tickets-link', '', $event->ID, is_admin() ? $user->ID : 0) ?>
-								<?php if (!empty($link)): ?>
-									<a href="<?php echo esc_attr($link) ?>" title="Visit all event tickets">(Print ALL Event Tickets)</a>
-								<?php endif; ?>
+								<?php echo sprintf(
+									__( '<a href="%s" title="%s">%s</a>' ),
+									esc_attr( get_permalink( $event->ID ) ),
+									__( 'Visit the Event page', 'qsot' ),
+									__( '(View Show Page)', 'qsot' )
+								) ?>
 							</span>
 						</th>
 					</tr>
@@ -53,11 +68,22 @@
 							);
 						?>
 						<tr>
-							<td><a href="<?php echo esc_attr($ticket->permalink) ?>" title="View your ticket"><?php echo $name ?></a></td>
+							<td>
+								<?php if ( isset( $ticket->permalink ) && $ticket->permalink ): ?>
+									<a href="<?php echo esc_attr($ticket->permalink) ?>" title="View your ticket"><?php echo $name ?></a>
+								<?php else: ?>
+									<?php echo $name . ' (' . __( 'pending payment', 'qsot' ) . ')' ?>
+								<?php endif; ?>
+							</td>
 							<td> x <?php echo $ticket->_qty ?></td>
 							<?php if (is_admin() && isset($ticket->__order_id) && !empty($ticket->__order_id)): ?>
 								<td>
-									(order <a href="<?php echo esc_attr(get_edit_post_link($ticket->__order_id)) ?>" title="Edit order #<?php echo $ticket->__order_id ?>">#<?php echo $ticket->__order_id ?></a>)
+									<?php echo sprintf(
+										__( '(order <a href="%s" title="%s">#%s<a/>)' ),
+										esc_attr( get_edit_post_link( $ticket->__order_id ) ),
+										esc_attr( __( 'Edit order', 'qsot' ) ) . ' #' . $ticket->__order_id,
+										$ticket->__order_id
+									) ?>
 								</td>
 							<?php endif; ?>
 						</tr>

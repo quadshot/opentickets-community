@@ -131,6 +131,13 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.5.2 =
+* repairing 'new user' funcitonality on the edit order screen
+* repairing auto loading of user information when user is selected during admin order creation
+* fixing the issue where ticket purchases were getting tallied multiple times (thanks Robert Trevellyan) 
+* adjusting WC ajax takeovers so that our metaboxes are loaded on save/load order items
+* updating myaccount page to not show ticket links until order is complete
+
 = 1.5.1 =
 * removing new WooCommerce stati from event stati list
 * fixing installation bug where event links are not immediately available

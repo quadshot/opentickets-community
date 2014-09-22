@@ -114,8 +114,28 @@ class QSOT_tickets {
 		?><a target="_blank" href="<?php echo esc_attr($url) ?>" title="<?php echo esc_attr(__($title)) ?>"><?php echo __($display) ?></a><?php
 	}
 
+	protected static function _order_item_order_status( $item_id ) {
+		global $wpdb;
+
+		$q = $wpdb->prepare( 'select order_id from ' . $wpdb->prefix . 'woocommerce_order_items where order_item_id = %d', $item_id );
+		$order_id = (int) $wpdb->get_var($q);
+		if ( $order_id <= 0 ) return 'does-not-exist';
+
+		if ( QSOT::is_wc_latest() ) {
+			$status = preg_replace( '#^wc-#', '', get_post_status( $order_id ) );
+		} else {
+			$status = wp_get_object_terms( array( $order_id ), array( 'shop_order_status' ), 'slugs' );
+			$status = is_array( $status ) ? ( in_array( 'completed', $status ) ? 'completed' : current( $status ) ) : 'does-no-exist';
+		}
+
+		return $status;
+	}
+
 	public static function get_ticket_link($current, $item_id) {
 		global $wpdb, $wp_rewrite;
+
+		$order_status = self::_order_item_order_status( $item_id );
+		if ( ! in_array( $order_status, array( 'completed' ) ) ) return '';
 
 		$q = $wpdb->prepare('select ticket_code from '.$wpdb->qsot_ticket_codes.' where order_item_id = %d', $item_id);
 		$code = $wpdb->get_var($q);

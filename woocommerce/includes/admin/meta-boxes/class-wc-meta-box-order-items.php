@@ -34,4 +34,14 @@ class WC_Meta_Box_Order_Items extends _WooCommerce_Core_WC_Meta_Box_Order_Items 
 		include(apply_filters('qsot-woo-template', 'meta-boxes/views/html-order-items.php', 'admin'));
 	}
 
+	/**
+	 * Save meta box data
+	 */
+	public static function save( $post_id, $post ) {
+		wc_save_order_items( $post_id, $_POST );
+
+		// tell plugins order items were saved
+		do_action( 'woocommerce_saved_order_items', $post_id, $_POST );
+	}
+
 }

@@ -20,6 +20,8 @@ class QSOT_order_admin_ajax {
 	public static function setup_ajax_overrides() {
 		$ajax_events = array(
 			'add_order_item' => false, //@@@@LOUSHOU - only needed because of the lack of WC admin template functions
+			'save_order_items' => false, //@@@@LOUSHOU - only needed because of the lack of WC admin template functions
+			'load_order_items' => false, //@@@@LOUSHOU - only needed because of the lack of WC admin template functions
 			'add_order_fee' => false, //@@@@LOUSHOU - only needed because of the lack of WC admin template functions
 			'add_order_shipping' => false, //@@@@LOUSHOU - only needed because of the lack of WC admin template functions
 		);
@@ -119,6 +121,57 @@ class QSOT_order_admin_ajax {
 		include(apply_filters('qsot-woo-template', 'meta-boxes/views/html-order-item.php', 'admin'));
 
 		// Quit out
+		die();
+	}
+
+	/**
+	 * Save order items via ajax
+	 * exact copy from /wp-content/plugins/woocommerce/includes/class-wc-ajax.php, with change to template selection
+	 */
+	public static function save_order_items() {
+		check_ajax_referer( 'order-item', 'security' );
+
+		if ( isset( $_POST['order_id'] ) && isset( $_POST['items'] ) ) {
+			$order_id = absint( $_POST['order_id'] );
+
+			// Parse the jQuery serialized items
+			$items = array();
+			parse_str( $_POST['items'], $items );
+
+			// Save order items
+			wc_save_order_items( $order_id, $items );
+
+			// Return HTML items
+			$order = new WC_Order( $order_id );
+			$data  = get_post_meta( $order_id );
+
+			// tell plugins order items were saved
+			do_action( 'woocommerce_saved_order_items', $order_id, $items );
+
+			//include( 'admin/meta-boxes/views/html-order-items.php' );
+			//@@@@LOUSHOU - allow overtake of template
+			include(apply_filters('qsot-woo-template', 'meta-boxes/views/html-order-items.php', 'admin'));
+		}
+
+		die();
+	}
+
+	/**
+	 * Load order items via ajax
+	 * exact copy from /wp-content/plugins/woocommerce/includes/class-wc-ajax.php, with change to template selection
+	 */
+	public static function load_order_items() {
+		check_ajax_referer( 'order-item', 'security' );
+
+		// Return HTML items
+		$order_id = absint( $_POST['order_id'] );
+		$order    = new WC_Order( $order_id );
+		$data     = get_post_meta( $order_id );
+
+		//include( 'admin/meta-boxes/views/html-order-items.php' );
+		//@@@@LOUSHOU - allow overtake of template
+		include(apply_filters('qsot-woo-template', 'meta-boxes/views/html-order-items.php', 'admin'));
+
 		die();
 	}
 
