@@ -65,8 +65,8 @@ class qsot_frontend_calendar {
 			if (!isset($wp_registered_sidebars[$slug])) {
 				$a = array(
 					'id' => $slug,
-					'name' => 'Non-JS Calendar Page',
-					'description' => 'Widget area on calendar template that shows when a user does not have javascript enabled.',
+					'name' => __('Non-JS Calendar Page', 'opentickets'),
+					'description' => __('Widget area on calendar template that shows when a user does not have javascript enabled.', 'opentickets'),
 					'before_widget' => '<div id="%1$s" class="widget %SPAN% %2$s"><div class="widget-inner">',
 					'after_widget' => '</div><div class="clear"></div></div>',
 					'before_title' => '<h3 class="widgettitle">',
