@@ -57,6 +57,8 @@ class QSOT {
 		add_action('load-post-new.php', array(__CLASS__, 'load_assets'), 999);
 
 		add_filter('plugin_action_links', array(__CLASS__, 'plugins_page_actions'), 10, 4);
+		
+		load_plugin_textdomain( 'qsot', false, dirname( plugin_basename( __FILE__ ) ) . '/langs/' );
 	}
 
 	public static function is_wc_latest() {

@@ -133,7 +133,7 @@ class qsot_post_type {
 			$event = apply_filters('qsot-get-event', false, $item['event_id']);
 			if (is_object($event)) {
 				$list[] = array(
-					'name' => __('Event'),
+					'name' => __('Event','qsot'),
 					'display' => apply_filters('the_title', $event->post_title),
 				);
 			}
@@ -150,7 +150,7 @@ class qsot_post_type {
 		echo sprintf(
 			'<br/><small> - <a class="event-link" href="%s" target="_blank" title="%s">%s</a></small>',
 			get_permalink($event->ID),
-			'View this event',
+			__('View this event','qsot'),
 			apply_filters('the_title', $event->post_title)
 		);
 	}
@@ -290,7 +290,7 @@ class qsot_post_type {
 			$final = array();
 			foreach ($columns as $col => $val) {
 				$final[$col] = $val;
-				if ($col == 'title') $final['child-event-count'] = 'Events';
+				if ($col == 'title') $final['child-event-count'] = __('Events','qsot');
 			}
 			$columns = $final;
 		}
@@ -318,7 +318,7 @@ class qsot_post_type {
 			'only-parents' => sprintf(
 				'<a href="%s"'.$current.'>%s (%d)</a>',
 				'edit.php?post_type='.self::$o->core_post_type.'&post_parent=0',
-				'Top Level Events',
+				__('Top Level Events','qsot'),
 				$post_counts["0"]
 			),
 		);
@@ -689,8 +689,8 @@ class qsot_post_type {
 
 		$list[self::$o->core_post_type] = array(
 			'label_replacements' => array(
-				'plural' => 'Events', // plural version of the proper name, used in the slightly modified labels in my _register_post_type method
-				'singular' => 'Event', // singular version of the proper name, used in the slightly modified labels in my _register_post_type method
+				'plural' => __('Events','qsot'), // plural version of the proper name, used in the slightly modified labels in my _register_post_type method
+				'singular' => __('Event','qsot'), // singular version of the proper name, used in the slightly modified labels in my _register_post_type method
 			),
 			'args' => array( // almost all of these are passed through to the core regsiter_post_type function, and follow the same guidelines defined on wordpress.org
 				'public' => true, 
@@ -845,10 +845,10 @@ class qsot_post_type {
 						.'<span class="'.self::$o->fctm.'-event-title"></span>' // event title
 					.'</div>'
 					.'<div class="'.self::$o->fctm.'-section">'
-						.'<span>Max: </span><span class="'.self::$o->fctm.'-capacity"></span>' // event max occupants
+						.'<span>'.__('Max','qsot').': </span><span class="'.self::$o->fctm.'-capacity"></span>' // event max occupants
 					.'</div>'
 					.'<div class="'.self::$o->fctm.'-section">'
-						.'<span>Status: </span><span class="'.self::$o->fctm.'-visibility"></span>' // status
+						.'<span>'.__('Status','qsot').': </span><span class="'.self::$o->fctm.'-visibility"></span>' // status
 					.'</div>'
 					.apply_filters('qsot-render-event-agendaWeek-template-details', '', $post_id)
 				.'</div>'
@@ -893,7 +893,7 @@ class qsot_post_type {
 						$updates[] = array(
 							'post_arr' => wp_parse_args(array(
 								'ID' => $tmp->post_id, // be sure to set the id of the post to update, otherwise we get a completely new post
-								'post_title' => sprintf('%s on %s @ %s', $post->post_title, date('Y-m-d', $d), date('g:ia', $d)), // create a pretty proper title
+								'post_title' => sprintf(__('%s on %s @ %s','qsot'), $post->post_title, date('Y-m-d', $d), date('g:ia', $d)), // create a pretty proper title
 								'post_status' => $tmp->visibility, // set the post status of the event
 								'post_name' => $tmp->title, // use that normalized title we made earlier, as to create a pretty url
 							), $defs),
@@ -941,7 +941,7 @@ class qsot_post_type {
 							$updates[] = array(
 								'post_arr' => wp_parse_args(array(
 									'ID' => $exist->ID, // be sure to set the post_id so that we don't create a new post 
-									'post_title' => sprintf('%s on %s @ %s', $post->post_title, date('Y-m-d', $d), date('g:ia', $d)), // make a pretty title to describe the event
+									'post_title' => sprintf(__('%s on %s @ %s','qsot'), $post->post_title, date('Y-m-d', $d), date('g:ia', $d)), // make a pretty title to describe the event
 									'post_name' => $tmp->title, // use the normalized event slug for pretty urls
 									'post_status' => $tmp->visibility, // set the status
 								), $defs),
@@ -966,7 +966,7 @@ class qsot_post_type {
 						// add the settings to the list of posts to update/insert
 						$updates[] = array(
 							'post_arr' => wp_parse_args(array( // will INSERT because there is no post_id
-								'post_title' => sprintf('%s on %s @ %s', $post->post_title, date('Y-m-d', $d), date('g:ia', $d)), // create a pretty title
+								'post_title' => sprintf(__('%s on %s @ %s','qsot'), $post->post_title, date('Y-m-d', $d), date('g:ia', $d)), // create a pretty title
 								'post_name' => $data->title, // user pretty url slug
 								'post_status' => $data->visibility, // set tstatus
 							), $defs),
@@ -1054,7 +1054,7 @@ class qsot_post_type {
 		if ($post->post_parent == 0) {
 			add_meta_box(
 				'event-date-time',
-				'Event Date Time Settings',
+				__('Event Date Time Settings','qsot'),
 				array(__CLASS__, 'mb_event_date_time_settings'),
 				self::$o->core_post_type,
 				'normal',
@@ -1064,7 +1064,7 @@ class qsot_post_type {
 
 		add_meta_box(
 			'stop-sales-before-show',
-			'Stop Sales Before Show',
+			__('Stop Sales Before Show','qsot'),
 			array(__CLASS__, 'mb_stop_sales_before_show'),
 			self::$o->core_post_type,
 			'side',
@@ -1073,7 +1073,7 @@ class qsot_post_type {
 
 		add_meta_box(
 			'event-run-date-range',
-			'Event Run Date Range',
+			__('Event Run Date Range','qsot'),
 			array(__CLASS__, 'mb_event_run_date_range'),
 			self::$o->core_post_type,
 			'side',
@@ -1085,17 +1085,14 @@ class qsot_post_type {
 		$formula = get_post_meta($post->ID, '_stop_sales_before_show', true);
 		?>
 			<div class="field-wrap">
-				<div class="label"><label>Formula:</label></div>
+				<div class="label"><label><?php echo __('Formula','qsot'); ?>:</label></div>
 				<div class="field">
 					<input type="text" class="widefat" name="_qsot_stop_sales_before_show" value="<?php echo esc_attr($formula) ?>" />
 				</div>
 			</div>
 
 			<p>
-				This is the formula to calculate when tickets should stop being sold on the frontend for this show.
-				For example, if you wish to stop selling tickets 2 hours and 30 minutes before the show, use: <code>2 hours 30 minutes</code>.
-				Valid units include: hour, hours, minute, minutes, second, seconds, day, days, week, weeks, month, months, year, years.
-				Leave the formula empty to just use the Global Setting for this formula.
+				<?php _e('This is the formula to calculate when tickets should stop being sold on the frontend for this show. For example, if you wish to stop selling tickets 2 hours and 30 minutes before the show, use: <code>2 hours 30 minutes</code>. Valid units include: hour, hours, minute, minutes, second, seconds, day, days, week, weeks, month, months, year, years. Leave the formula empty to just use the Global Setting for this formula.','qsot'); ?>
 			</p>
 		<?php
 	}
@@ -1111,7 +1108,7 @@ class qsot_post_type {
 			</style>
 
 			<div class="field-wrap">
-				<label>Start Date/Time:</label>
+				<label><?php _e('Start Date/Time','qsot') ?>:</label>
 				<div class="field">
 					<table cellspacing="0">
 						<tbody>
@@ -1129,7 +1126,7 @@ class qsot_post_type {
 				</div>
 			</div>
 			<div class="field-wrap">
-				<label>End Date/Time:</label>
+				<label><?php _e('End Date/Time:','qsot') ?></label>
 				<div class="field">
 					<table cellspacing="0">
 						<tbody>
@@ -1159,12 +1156,12 @@ class qsot_post_type {
 							<tbody>
 								<tr>
 									<td width="50%">
-										<h4>Basic Settings</h4>
+										<h4><?php _e('Basic Settings','qsot') ?></h4>
 										<div class="date-time-block subsub">
 											<?php $now = strtotime(current_time('mysql')) ?>
 											<input type="text" class="use-datepicker date-text" name="start-date" value="<?php echo date('Y-m-d', $now) ?>" title="Start Date" />
 											<input type="text" class="time-text" name="start-time" value="<?php echo date('h:ia', $now) ?>" title="Start Time" />
-											to
+											<?php _e('to','qsot') ?>
 											<?php $end = strtotime('+1 hour', $now); ?>
 											<input type="text" class="use-datepicker date-text" name="end-date" value="<?php echo date('Y-m-d', $end) ?>" title="End Date" />
 											<input type="text" class="time-text" name="end-time" value="<?php echo date('h:ia', $end) ?>" title="End Time" />
@@ -1173,7 +1170,7 @@ class qsot_post_type {
 										<div class="event-settings-block subsub">
 											<span class="cb-wrap">
 												<input type="checkbox" name="repeat" value="1" class="togvis" tar=".repeat-options" scope=".option-sub" auto="auto" />
-												<span class="cb-text">Repeat...</span>
+												<span class="cb-text"><?php _e('Repeat','qsot') ?>...</span>
 											</span>
 										</div>
 
@@ -1182,92 +1179,92 @@ class qsot_post_type {
 
 									<td>
 										<div class="repeat-options hide-if-js">
-											<h4>Repeat</h4>
+											<h4><?php _e('Repeat','qsot') ?></h4>
 											<div class="repeat-settings subsub">
 												<table class="repeat-settings-wrapper settings-list">
 													<tbody>
 														<tr>
-															<th>Repeats:</th>
+															<th><?php _e('Repeats','qsot') ?>:</th>
 															<td>
 																<select name="repeats" class="togvis" tar=".repeat-options-%VAL%" scope=".repeat-settings" auto="auto">
 																	<?php /* <option value="daily">Daily</option> */ ?>
-																	<option value="weekly" <?php selected(true, true) ?>>Weekly</option>
+																	<option value="weekly" <?php selected(true, true) ?>><?php _e('Weekly','qsot') ?></option>
 																</select>
 															</td>
 														</tr>
 
 														<tr>
-															<th>Repeats Every:</th>
+															<th><?php _e('Repeats Every','qsot') ?>:</th>
 															<td>
 																<select name="repeat-every">
 																	<?php for ($i=1; $i<=30; $i++): ?>
 																		<option value="<?php echo $i; ?>"><?php echo $i; ?></option>
 																	<?php endfor; ?>
 																</select>
-																<span class="every-descriptor repeat-options-daily hide-if-js">days</span>
-																<span class="every-descriptor repeat-options-weekly hide-if-js">weeks</span>
+																<span class="every-descriptor repeat-options-daily hide-if-js"><?php _e('days','qsot') ?></span>
+																<span class="every-descriptor repeat-options-weekly hide-if-js"><?php _e('weeks','qsot') ?></span>
 															</td>
 														</tr>
 
 														<tr class="hide-if-js repeat-options-weekly">
-															<th>Repeat on:</th>
+															<th><?php _e('Repeat on','qsot') ?>:</th>
 															<td>
 																<span class="cb-wrap">
 																	<input type="checkbox" name="repeat-on[]" value="0" <?php selected(date('w', $now), 0) ?> />
-																	<span class="cb-text">Su</span>
+																	<span class="cb-text"><?php _e('Su','qsot') ?></span>
 																</span>
 																<span class="cb-wrap">
 																	<input type="checkbox" name="repeat-on[]" value="1" <?php selected(date('w', $now), 1) ?> />
-																	<span class="cb-text">M</span>
+																	<span class="cb-text"><?php _e('Mo','qsot') ?></span>
 																</span>
 																<span class="cb-wrap">
 																	<input type="checkbox" name="repeat-on[]" value="2" <?php selected(date('w', $now), 2) ?> />
-																	<span class="cb-text">Tu</span>
+																	<span class="cb-text"><?php _e('Tu','qsot') ?></span>
 																</span>
 																<span class="cb-wrap">
 																	<input type="checkbox" name="repeat-on[]" value="3" <?php selected(date('w', $now), 3) ?> />
-																	<span class="cb-text">W</span>
+																	<span class="cb-text"><?php _e('W','qsot') ?></span>
 																</span>
 																<span class="cb-wrap">
 																	<input type="checkbox" name="repeat-on[]" value="4" <?php selected(date('w', $now), 4) ?> />
-																	<span class="cb-text">Th</span>
+																	<span class="cb-text"><?php _e('Th','qsot') ?></span>
 																</span>
 																<span class="cb-wrap">
 																	<input type="checkbox" name="repeat-on[]" value="5" <?php selected(date('w', $now), 5) ?> />
-																	<span class="cb-text">F</span>
+																	<span class="cb-text"><?php _e('F','qsot') ?></span>
 																</span>
 																<span class="cb-wrap">
 																	<input type="checkbox" name="repeat-on[]" value="6" <?php selected(date('w', $now), 6) ?> />
-																	<span class="cb-text">Sa</span>
+																	<span class="cb-text"><?php _e('Sa','qsot') ?></span>
 																</span>
 															</td>
 														</tr>
 
 														<tr>
-															<th>Starts on:</th>
+															<th><?php _e('Starts on','qsot') ?>:</th>
 															<td>
 																<input type="text" class="widefat date-text use-datepicker" name="repeat-starts" value="<?php echo date('Y-m-d', $now) ?>" />
 															</td>
 														</tr>
 
 														<tr>
-															<th>Ends:</th>
+															<th><?php _e('Ends','qsot') ?>:</th>
 															<td>
 																<ul>
 																	<li>
 																		<span class="cb-wrap">
 																			<input type="radio" name="repeat-ends-type" value="on" checked="checked" />
-																			<span class="cb-text">On:</span>
+																			<span class="cb-text"><?php _e('On','qsot') ?>:</span>
 																		</span>
 																		<input type="text" class="widefat date-text use-datepicker" name="repeat-ends-on" value="<?php echo date('Y-m-d', $now) ?>" />
 																	</li>
 																	<li>
 																		<span class="cb-wrap">
 																			<input type="radio" name="repeat-ends-type" value="after" />
-																			<span class="cb-text">After:</span>
+																			<span class="cb-text"><?php _e('After','qsot') ?>:</span>
 																		</span>
 																		<input type="number" class="widefat date-text" name="repeat-ends-after" value="15" />
-																		<span> occurences</span>
+																		<span> <?php _e('occurences','qsot') ?></span>
 																	</li>
 																	<?php do_action('qsot-events-repeat-ends-type', $post, $mb) ?>
 																</ul>
@@ -1288,7 +1285,7 @@ class qsot_post_type {
 
 						<div class="clear"></div>
 						<div class="actions">
-							<input type="button" value="Add to Calendar" class="action button button-primary" rel="add-btn" />
+							<input type="button" value="<?php _e('Add to Calendar','qsot') ?>" class="action button button-primary" rel="add-btn" />
 						</div>
 						<ul class="messages" rel="messages">
 						</ul>
@@ -1304,20 +1301,20 @@ class qsot_post_type {
 						<tbody>
 							<tr>
 								<td width="1%" class="date-selection-column">
-									<h4>Event Date/Times</h4>
+									<h4><?php _e('Event Date/Times','qsot') ?></h4>
 									<div class="event-date-time-list-view" rel="event-list"></div>
 								</td>
 
 								<td>
 									<div class="bulk-edit-settings hide-if-js" rel="settings-main-form">
-										<h4>Settings</h4>
+										<h4><?php _e('Settings','qsot') ?></h4>
 										<div class="settings-form">
 											<div class="setting-group">
 												<div class="setting" rel="setting-main" tag="visibility">
 													<div class="setting-current">
-														<span class="setting-name">Visibility:</span>
+														<span class="setting-name"><?php _e('Visibility','qsot') ?>:</span>
 														<span class="setting-current-value" rel="setting-display"></span>
-														<a href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]">Edit</a>
+														<a href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]"><?php _e('Edit','qsot') ?></a>
 														<input type="hidden" name="settings[visibility]" value="" scope="[rel=setting-main]" rel="visibility" />
 													</div>
 													<div class="setting-edit-form hide-if-js" rel="setting-form">
@@ -1329,8 +1326,8 @@ class qsot_post_type {
 															</div>
 														<?php endforeach; ?>
 														<div class="edit-setting-actions">
-															<input type="button" class="button" rel="setting-save" value="OK" />
-															<a href="#" rel="setting-cancel">Cancel</a>
+															<input type="button" class="button" rel="setting-save" value="<?php _e('OK','qsot') ?>" />
+															<a href="#" rel="setting-cancel"><?php _e('Cancel','qsot') ?></a>
 														</div>
 													</div>
 												</div>
