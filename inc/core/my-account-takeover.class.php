@@ -129,8 +129,6 @@ class qsot_my_account_takeover {
 
 		if (is_callable(array(&$order, 'get_status'))) {
 			$status = $order->get_status();
-			$stati = get_post_stati();
-			die(__log($stati));
 		} else {
 			$status = get_term_by('slug', $order->status, 'shop_order_status');
 		}
@@ -230,7 +228,7 @@ class qsot_my_account_takeover {
 			'posts_per_page' => -1,
 			'fields' => 'ids',
 			'suppress_filters' => false,
-			'post_status' => array('publish', 'hidden', 'private'),
+			'post_status' => current_user_can( 'read_private_posts' ) ? array('publish', 'hidden', 'private') : array( 'publish' ),
 			'post_type' => self::$o->core_post_type,
 			'post__in' => array_keys($groups),
 			'meta_query' => array(
