@@ -35,6 +35,10 @@ The OT-CE plugin empowers functionality to:
 
 OT-CE is licensed under GPLv3.
 
+= Get Involved =
+
+Are you developer? Want to contribute to the source code? Check us out on the [OpenTickets Community Edition GitHub Repository](https://github.com/quadshot/opentickets-community).
+
 == Installation ==
 
 = Basic Installation =
@@ -130,6 +134,11 @@ Setup an 'Event':
 1. Click the blue 'Publish' button in the upper right metabox
 
 == Changelog ==
+
+= 1.5.3 =
+* tweaking woocommerce checker to check for github-generated plugin directories
+* repairing email ticket link auth code verification
+* repairing a my-account event visibility bug
 
 = 1.5.2 =
 * repairing 'new user' funcitonality on the edit order screen
