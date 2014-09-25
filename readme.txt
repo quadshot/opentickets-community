@@ -35,6 +35,10 @@ The OT-CE plugin empowers functionality to:
 
 OT-CE is licensed under GPLv3.
 
+= Your first Event =
+
+Need help setting up your first event? Visit the [OpenTickets Community Edition Basic Help](http://opentickets.com/community-edition/#your-first-event) and follow the steps under _Creating your first Event, Start to Finish_.
+
 = Get Involved =
 
 Are you developer? Want to contribute to the source code? Check us out on the [OpenTickets Community Edition GitHub Repository](https://github.com/quadshot/opentickets-community).
