@@ -139,11 +139,15 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.5.4 =
+* repairing the empty cart issue (thanks @regenbauma) for anonymous users
+* changed image format of map so it always shows in PDF tickets (thanks @bradleysp)
+
 = 1.5.3 =
 * tweaking woocommerce checker to check for github-generated plugin directories
 * repairing email ticket link auth code verification
 * repairing a my-account event visibility bug
-* changed image format of barcode so it shows in PDF always
+* changed image format of barcode so it always shows in PDF tickets (thanks @bradleysp)
 
 = 1.5.2 =
 * repairing 'new user' funcitonality on the edit order screen
