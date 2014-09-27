@@ -56,8 +56,6 @@ class qsot_post_type {
 			add_action('init', array(__CLASS__, 'register_post_statuses'), 1);
 			// blcok all searching
 			add_filter('posts_where', array(__CLASS__, 'hide_hidden_posts_where'), 10000, 2);
-			// ensure that only logged in users can view single pages
-			add_filter('the_posts', array(__CLASS__, 'hide_hidden_single'), 10, 2);
 
 			// automatically use the parent event thumbnail if one is not defined for the child event
 			add_filter('post_thumbnail_html', array(__CLASS__, 'cascade_thumbnail'), 10, 5);
@@ -641,7 +639,7 @@ class qsot_post_type {
 		foreach ($parts as $part) if (preg_match('#post_type\s+(in|=)\s+.*'.self::$o->core_post_type.'#i', $part)) $querying_events = true;
 
 		// our only other check is whether the current user can read_private_pages. if we are querying for our event post type, and the current user does not have our special capability
-		if ($querying_events && is_user_logged_in() && !current_user_can('see_hidden_events')) {
+		if ($querying_events && is_user_logged_in() && !apply_filters( 'qsot-show-hidden-events', current_user_can( 'edit_posts' ) )) {
 			// then craft a new where statement that is identical to the old one, minus our special status, based on how WP3.5.1 currently constructs the query
 			$new_parts = array();
 			// for each of the parts of the where statement, that we made above
@@ -661,25 +659,6 @@ class qsot_post_type {
 
 		// return the either unmodified or filtered where statement
 		return $where;
-	}
-
-	// as discussed above in the post status registration method, marked @WHY-PUBLIC, we need to manually filter single event pages, based on the primise that only logged in users can
-	// see the page. we do this by allowing WP_Query to find the post using the normal querying method, and then between the time that it finds the results and the time that it displays the 
-	// page containing the single event, we filter out the event for those who cannot see it, and make it seem like that event does not exist at all.
-	public static function hide_hidden_single($posts, &$query) {
-		// if we have a list of posts (which could be events), and this is a single page (could be event)
-		if (!empty($posts) && ($query->is_single || $query->is_page)) {
-			// check the status of the only post in the post list
-			$status = get_post_status($posts[0]);
-			// if that status is 'hidden' (our special post_status) and the user is not logged in (ergo they cannot see the post [event])
-			if ($status == 'hidden' && is_user_logged_in() && !current_user_can('see_hidden_events')) {
-				// pretend that post (event) deos not exist at all
-				$posts = array();
-			}
-		}
-
-		// return the either unmodified or completely obliterated list of posts (events)
-		return $posts;
 	}
 
 	// register our events post type
