@@ -102,7 +102,11 @@
 								<td class="column column-right">
 									<div class="inner">
 										<?php if (isset($ticket->venue->map_image)): ?>
-											<div class="map-wrap"><?php echo $ticket->venue->map_image ?></div>
+											<?php if (!isset($_GET['frmt']) || $_GET['frmt'] != 'pdf'): ?>
+												<div class="map-wrap"><?php echo $ticket->venue->map_image ?></div>
+											<?php else: ?>
+												<div class="map-wrap"><?php echo $ticket->venue->map_image_only ?></div>
+											<?php endif; ?>
 											<div class="map-extra-instructions"><?php echo $ticket->venue->meta['info']['instructions'] ?></div>
 										<?php endif; ?>
 									</div>

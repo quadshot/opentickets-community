@@ -287,6 +287,8 @@ class QSOT_tickets {
 		$current->order_item = $order_item;
 		$current->product = $product;
 		$current->event = $event;
+		$current->event->image_id = get_post_thumbnail_id($current->event->ID);
+		$current->event->image_id = empty($current->event->image_id) ? get_post_thumbnail_id($current->event->post_parent) : $current->event->image_id;
 
 		return $current;
 	}
