@@ -350,6 +350,7 @@ class qsot_event_area {
 					'available' => $event->meta->available,
 				);
 				$resp['data']['available_more'] = $resp['data']['available'] - $resp['data']['owns'];
+				WC()->cart->maybe_set_cart_cookies();
 			} else {
 				$resp['e'][] = 'Could not update your reservations.';
 			}
