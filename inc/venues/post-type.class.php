@@ -234,12 +234,12 @@ class qsot_venue_post_type {
 					<div class="setting-current">
 						<span class="setting-name">Venue:</span>
 						<span class="setting-current-value" rel="setting-display"></span>
-						<a href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]">Edit</a>
+						<a class="edit-btn" href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]">Edit</a>
 						<input type="hidden" name="settings[venue]" value="" scope="[rel=setting-main]" rel="venue" />
 					</div>
-					<div class="setting-edit-form hide-if-js" rel="setting-form">
-						<select name="venue" class="widefat">
-							<option value="0">-None-</option>
+					<div class="setting-edit-form" rel="setting-form">
+						<select name="venue">
+							<option value="0">- None -</option>
 							<?php foreach ($venues as $venue): ?>
 								<option value="<?php echo esc_attr($venue->ID) ?>"><?php echo esc_attr($venue->post_title) ?></option>
 							<?php endforeach; ?>

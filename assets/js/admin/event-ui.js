@@ -5,7 +5,6 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 		var t = this;
 
 		if (!t.calendar) return;
-		console.log('adding form handler');
 
 		t.form = {};
 		t.callback('add_repeat_functions');
@@ -18,6 +17,24 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 		t.elements.form.end_date = $('input[name="end-date"]', t.elements.form.main_form);
 		t.elements.form.starts_on = $('input[name="repeat-starts"]', t.elements.form.main_form);
 		t.elements.form.ends_on = $('input[name="repeat-ends-on"]', t.elements.form.main_form);
+
+		var current = undefined;
+		$(window).on( 'scroll', function(e) {
+			var last = (new Date()).getTime() + ' ' + (Math.random() * 10000);
+			current = last;
+			setTimeout( function() {
+				console.log('test', last == current);
+				if ( last != current ) return;
+				var wintop = $( window ).scrollTop(), opt = $( '.option-sub[rel="settings"]', t.elements.main || 'body' ), opttop = opt.offset().top, opthei = opt.outerHeight(),
+				    bulk = opt.find( '.bulk-edit-settings' ), bulkhei = bulk.outerHeight(), bump = 100;
+				if ( wintop > opttop - bump && wintop < opttop + opthei - bulkhei - bump )
+					bulk.finish().animate( { top:wintop - opttop + bump }, { duration:500 } );
+				else if ( wintop < opttop - bump )
+					bulk.finish().animate( { top:0 }, { duration:500 } );
+				else if ( wintop > opttop + opthei - bulkhei - bump )
+					bulk.finish().animate( { top:opthei - bulkhei }, { duration:500 } );
+			}, 100 );
+		} );
 
 		t.elements.form.start_date.bind('change', function() {
 			var val = $(this).val();
@@ -222,6 +239,7 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 						if (setting_main.length > 0) {
 							var updateArgs = {};
 							updateArgs[i] = settings[i];
+							setting_main.qsEditSetting('update', settings, false);
 							setting_main.qsEditSetting('update', updateArgs, true);
 						}
 					}
@@ -611,7 +629,10 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 			for (i in events) {
 				var ev = $.extend({
 					post_id:-1,
-					visibility:'pending',
+					status:'pending',
+					visibility:'public',
+					password:'',
+					'pub-date':'',
 					capacity:0
 				}, {
 					_id: events[i]._id,
@@ -619,7 +640,10 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 					end: events[i].end instanceof Date || events[i].end instanceof XDate ? (new XDate(events[i].end)).toString('yyyy-MM-dd HH:mm:ss') : events[i].end,
 					title: events[i].title,
 					post_id: events[i].post_id,
+					status: events[i].status,
 					visibility: events[i].visibility,
+					password: events[i].password,
+					'pub-date': events[i]['pub-date'],
 					capacity: events[i].capacity
 				});
 				this.callback('before_submit_event_item', [ev, events[i]]);

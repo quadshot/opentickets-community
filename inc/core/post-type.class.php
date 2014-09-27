@@ -763,7 +763,10 @@ class qsot_post_type {
 			'start' => '0000-00-00 00:00:00',
 			'allDay' => false,
 			'editable' => true,
-			'visibility' => 'pending', // status
+			'status' => 'pending', // status
+			'visibility' => 'public', // visibiltiy
+			'password' => '', // protected password
+			'pub_date' => '', // date to publish
 			'capacity' => 0, // max occupants
 			'post_id' => -1, // sub event post_id used for lookup during save process
 			'edit_link' => '', // edit individual event link
@@ -800,7 +803,10 @@ class qsot_post_type {
 			// to add their own settings for the interface.
 			$list[] = apply_filters('qsot-load-child-event-settings', wp_parse_args(array(
 				'start' => $start,
-				'visibility' => $event->post_status,
+				'status' => in_array( $event->post_status, array( 'hidden', 'private' ) ) ? 'publish' : $event->post_status,
+				'visibility' => in_array( $event->post_status, array( 'hidden', 'private' ) ) ? $event->post_status : ( $event->post_password ? 'protected' : 'public' ),
+				'password' => $event->post_password,
+				'pub_date' => $event->post_date,
 				'capacity' => isset($meta[self::$o->{'meta_key.capacity'}]) ? $meta[self::$o->{'meta_key.capacity'}] : 0,
 				'end' => $end,
 				'post_id' => $event->ID,
@@ -872,10 +878,11 @@ class qsot_post_type {
 			$defs = array(
 				'post_type' => self::$o->core_post_type,
 				'post_status' => 'pending',
+				'post_password' => '',
 				'post_parent' => $post_id,
 			);
 
-			// cycle through all the subevent settings that were sent. some will be new, some will be modified, some will be modified, but have lost their post id. determine what each is,
+			// cycle through all the subevent settings that were sent. some will be new, some will be modified, some will be modified but have lost their post id. determine what each is,
 			// and properly group them for possible later processing
 			foreach ($_POST['_event_settings'] as $item) {
 				// expand the settings
@@ -894,8 +901,10 @@ class qsot_post_type {
 							'post_arr' => wp_parse_args(array(
 								'ID' => $tmp->post_id, // be sure to set the id of the post to update, otherwise we get a completely new post
 								'post_title' => sprintf('%s on %s @ %s', $post->post_title, date('Y-m-d', $d), date('g:ia', $d)), // create a pretty proper title
-								'post_status' => $tmp->visibility, // set the post status of the event
+								'post_status' => in_array( $tmp->visibility, array( 'hidden', 'private' ) ) ? $tmp->visibility : $tmp->status, // set the post status of the event
+								'post_password' => $tmp->password, // protected events have passwords
 								'post_name' => $tmp->title, // use that normalized title we made earlier, as to create a pretty url
+								'post_date' => $tmp->pub_date == '' || $tmp->pub_date == 'now' ? '' : date_i18n( 'Y-m-d H:i:s', strtotime( $tmp->pub_date ) ),
 							), $defs),
 							'meta' => array( // setup the meta to save
 								self::$o->{'meta_key.capacity'} => $tmp->capacity, // max occupants
@@ -943,7 +952,9 @@ class qsot_post_type {
 									'ID' => $exist->ID, // be sure to set the post_id so that we don't create a new post 
 									'post_title' => sprintf('%s on %s @ %s', $post->post_title, date('Y-m-d', $d), date('g:ia', $d)), // make a pretty title to describe the event
 									'post_name' => $tmp->title, // use the normalized event slug for pretty urls
-									'post_status' => $tmp->visibility, // set the status
+									'post_status' => in_array( $tmp->visibility, array( 'hidden', 'private' ) ) ? $tmp->visibility : $tmp->status, // set the post status of the event
+									'post_password' => $tmp->password, // protected events have passwords
+									'post_date' => $tmp->pub_date == '' || $tmp->pub_date == 'now' ? '' : date_i18n( 'Y-m-d H:i:s', strtotime( $tmp->pub_date ) ),
 								), $defs),
 								'meta' => array( // set the meta
 									self::$o->{'meta_key.capacity'} => $tmp->capacity, // occupant capacity
@@ -968,7 +979,9 @@ class qsot_post_type {
 							'post_arr' => wp_parse_args(array( // will INSERT because there is no post_id
 								'post_title' => sprintf('%s on %s @ %s', $post->post_title, date('Y-m-d', $d), date('g:ia', $d)), // create a pretty title
 								'post_name' => $data->title, // user pretty url slug
-								'post_status' => $data->visibility, // set tstatus
+								'post_status' => in_array( $data->visibility, array( 'hidden', 'private' ) ) ? $data->visibility : $data->status, // set the post status of the event
+								'post_password' => $data->password, // protected events have passwords
+								'post_date' => $data->pub_date == '' || $data->pub_date == 'now' ? '' : date_i18n( 'Y-m-d H:i:s', strtotime( $data->pub_date ) ),
 							), $defs),
 							'meta' => array( // set meta
 								self::$o->{'meta_key.capacity'} => $data->capacity, // occupant copacity
@@ -1313,40 +1326,93 @@ class qsot_post_type {
 										<h4>Settings</h4>
 										<div class="settings-form">
 											<div class="setting-group">
+												<div class="setting" rel="setting-main" tag="status">
+													<div class="setting-current">
+														<span class="setting-name">Status:</span>
+														<span class="setting-current-value" rel="setting-display"></span>
+														<a class="edit-btn" href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]">Edit</a>
+														<input type="hidden" name="settings[status]" value="" scope="[rel=setting-main]" rel="status" />
+													</div>
+													<div class="setting-edit-form" rel="setting-form">
+														<select name="status">
+															<option value="publish" data-only-if="status=,publish,pending,draft,hidden,private"><?php _e( 'Published' ) ?></option>
+															<option value="private" data-only-if="status=private"><?php _e( 'Privately Published' ) ?></option>
+															<option value="future" data-only-if="status=future"><?php _e( 'Scheduled' ) ?></option>
+															<?php do_action( 'qsot-event-setting-custom-status', $post, $mb ) ?>
+															<option value="pending"><?php _e( 'Pending Review' ) ?></option>
+															<option value="draft"><?php _e( 'Draft' ) ?></option>
+														</select>
+														<div class="edit-setting-actions">
+															<input type="button" class="button" rel="setting-save" value="OK" />
+															<a href="#" rel="setting-cancel">Cancel</a>
+														</div>
+													</div>
+												</div>
+
 												<div class="setting" rel="setting-main" tag="visibility">
 													<div class="setting-current">
 														<span class="setting-name">Visibility:</span>
 														<span class="setting-current-value" rel="setting-display"></span>
-														<a href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]">Edit</a>
+														<a class="edit-btn" href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]">Edit</a>
 														<input type="hidden" name="settings[visibility]" value="" scope="[rel=setting-main]" rel="visibility" />
 													</div>
-													<div class="setting-edit-form hide-if-js" rel="setting-form">
-														<?php foreach (get_post_stati(array('show_in_admin_status_list' => true, 'exclude_from_search' => false), 'objects') as $ptype): ?>
-															<?php if (substr($ptype->name, 0, 3) == 'wc-') continue; ?>
-															<div class="cb-wrap">
-																<input type="radio" value="<?php echo esc_attr($ptype->name) ?>" name="visibility" />
-																<span class="cb-text"><?php echo $ptype->label ?></span>
+													<div class="setting-edit-form" rel="setting-form">
+														<div class="cb-wrap" title="<?php _e( 'Viewable to the public', 'qsot' ) ?>">
+															<input type="radio" name="visibility" value="public" />
+															<span class="cb-text"><?php _e( 'Public' ) ?></span>
+														</div>
+														<div class="cb-wrap" title="<?php _e( 'Visible on the calendar, but only those with the password can view to make reservations', 'qsot' ) ?>">
+															<input type="radio" name="visibility" value="protected" />
+															<span class="cb-text"><?php _e( 'Password Protected' ) ?></span>
+															<div class="extra" data-only-if="visibility=protected">
+																<label>Password:</label><br/>
+																<input type="text" name="password" value="" rel="password" />
 															</div>
-														<?php endforeach; ?>
+														</div>
+														<div class="cb-wrap" title="<?php _e( 'Hidden from the calendar, but open to anyone with the url', 'qsot' ) ?>">
+															<input type="radio" name="visibility" value="hidden" />
+															<span class="cb-text"><?php _e( 'Hidden' ) ?></span>
+														</div>
+														<div class="cb-wrap" title="<?php _e( 'Only logged in admin users or the event author can view it', 'qsot' ) ?>">
+															<input type="radio" name="visibility" value="private" />
+															<span class="cb-text"><?php _e( 'Private' ) ?></span>
+														</div>
 														<div class="edit-setting-actions">
 															<input type="button" class="button" rel="setting-save" value="OK" />
 															<a href="#" rel="setting-cancel">Cancel</a>
 														</div>
 													</div>
 												</div>
-											</div>
 
-											<?php /* ?>
-											<div class="setting-group">
-												<div class="setting" rel="setting-main" tag="capacity">
+												<div class="setting" rel="setting-main" tag="pub_date">
 													<div class="setting-current">
-														<span class="setting-name">Capacity:</span>
+														<span class="setting-name">Publish Date:</span>
 														<span class="setting-current-value" rel="setting-display"></span>
-														<a href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]">Edit</a>
-														<input type="hidden" name="settings[capacity]" value="" scope="[rel=setting-main]" rel="capacity" />
+														<a class="edit-btn" href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]">Edit</a>
+														<input type="hidden" name="settings[pub_date]" value="" scope="[rel=setting-main]" rel="pub_date" />
 													</div>
-													<div class="setting-edit-form hide-if-js" rel="setting-form">
-														<input type="text" class="widefat" name="capacity" value="" autocomplete="off" />
+													<div class="setting-edit-form" rel="setting-form">
+														<input type="hidden" name="pub_date"  value="" />
+														<div class="date-edit" tar="[name='pub_date']" rel="[rel='setting-form']">
+															<select rel="month">
+																<option value="01">01 - <?php _e( 'Januaray', 'qsot' ) ?></option>
+																<option value="02">02 - <?php _e( 'February', 'qsot' ) ?></option>
+																<option value="03">03 - <?php _e( 'March', 'qsot' ) ?></option>
+																<option value="04">04 - <?php _e( 'April', 'qsot' ) ?></option>
+																<option value="05">05 - <?php _e( 'May', 'qsot' ) ?></option>
+																<option value="06">06 - <?php _e( 'June', 'qsot' ) ?></option>
+																<option value="07">07 - <?php _e( 'July', 'qsot' ) ?></option>
+																<option value="08">08 - <?php _e( 'August', 'qsot' ) ?></option>
+																<option value="09">09 - <?php _e( 'September', 'qsot' ) ?></option>
+																<option value="10">10 - <?php _e( 'October', 'qsot' ) ?></option>
+																<option value="11">11 - <?php _e( 'November', 'qsot' ) ?></option>
+																<option value="12">12 - <?php _e( 'December', 'qsot' ) ?></option>
+															</select>
+															<input type="text" rel="day" value="" size="2" />, 
+															<input type="text" rel="year" value="" size="4" class="year" /> @ 
+															<input type="text" rel="hour" value="" size="2" /> : 
+															<input type="text" rel="minute" value="" size="2" />
+														</div>
 														<div class="edit-setting-actions">
 															<input type="button" class="button" rel="setting-save" value="OK" />
 															<a href="#" rel="setting-cancel">Cancel</a>
@@ -1354,7 +1420,6 @@ class qsot_post_type {
 													</div>
 												</div>
 											</div>
-											<?php */ ?>
 
 											<?php do_action('qsot-events-bulk-edit-settings', $post, $mb); ?>
 										</div>

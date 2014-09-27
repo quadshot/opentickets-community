@@ -8,6 +8,18 @@ table.settings-table td { vertical-align:top; }
 table.settings-table h4 { font-size:14px; margin:0 0 5px 0; white-space:nowrap; }
 table.settings-table .setting { margin-bottom:5px; }
 
+.setting .setting-edit-form { max-height:0; overflow-y:hidden; }
+.setting .setting-edit-form select { min-width:200px; }
+.setting .edit-setting-actions { padding-top:0.5em; }
+.setting .date-edit select { font-size:12px; line-height:14px; height:21px; width:auto; padding:0; min-width:0; position:relative; top:-1px; }
+.setting .date-edit input[type="text"] { font-size:12px; padding:1px; width:2em; }
+.setting .date-edit input[type="text"].year { width:4em; }
+
+.setting.open .setting-edit-form { max-height:1000px; padding-left:0.7em; margin-bottom:1em; -webkit-transition:max-height 0.75s ease-in-out; -moz-transition:max-height 0.75s ease-in-out;
+	-o-transition:max-height 0.75s ease-in-out; transition:max-height 0.75s ease-in-out; }
+.setting.open .edit-btn { display:none; }
+.setting.open .setting-current { margin-bottom:0.5em; }
+
 .date-selection-column { padding-right:8px; }
 
 .event-date-time-list-view { border:1px solid #888888; }
@@ -50,9 +62,10 @@ table.settings-table .setting { margin-bottom:5px; }
 .option-scope ul.messages { margin:5px 0 0 0; }
 .option-scope ul.messages li { background-color:#ffffee; border:1px solid #cccc00; padding:2px 5px; text-align:center; margin:0 0 3px 0; display:none; }
 .events-ui { position:relative; }
-.option-sub { border-top:1px dotted #b2b2b2; padding-top:8px; }
+.option-sub { border-top:1px dotted #b2b2b2; padding-top:8px; position:relative; }
 .option-sub.above { border-bottom:1px dotted #b2b2b2; padding-bottom:8px; margin-bottom:8px; border-top:0; padding-top:0; margin-top:0; }
 .option-sub.no-border { border:0; padding:0; margin:0; margin-bottom:8px; }
+.option-sub .bulk-edit-settings { position:absolute; top:0; padding:1em 1.5em; background-color:#FFFFFF; border:1px solid #dddddd; }
 
 .date-text { width:90px; }
 .time-text { width:75px; }

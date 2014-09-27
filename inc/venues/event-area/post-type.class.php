@@ -442,11 +442,11 @@ class qsot_event_area {
 					<div class="setting-current">
 						<span class="setting-name">Area / Price:</span>
 						<span class="setting-current-value" rel="setting-display"></span>
-						<a href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]">Edit</a>
+						<a class="edit-btn" href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]">Edit</a>
 						<input type="hidden" name="settings[event-area]" value="" scope="[rel=setting-main]" rel="event-area" />
 					</div>
-					<div class="setting-edit-form hide-if-js" rel="setting-form">
-						<select name="event-area" class="widefat">
+					<div class="setting-edit-form" rel="setting-form">
+						<select name="event-area">
 							<option value="0">-None-</option>
 							<?php foreach ($areas as $area): ?>
 								<?php
