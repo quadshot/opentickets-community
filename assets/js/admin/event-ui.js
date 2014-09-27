@@ -632,7 +632,7 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 					status:'pending',
 					visibility:'public',
 					password:'',
-					'pub-date':'',
+					pub_date:'',
 					capacity:0
 				}, {
 					_id: events[i]._id,
@@ -643,7 +643,7 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 					status: events[i].status,
 					visibility: events[i].visibility,
 					password: events[i].password,
-					'pub-date': events[i]['pub-date'],
+					pub_date: events[i].pub_date,
 					capacity: events[i].capacity
 				});
 				this.callback('before_submit_event_item', [ev, events[i]]);

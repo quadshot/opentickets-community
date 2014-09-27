@@ -12,7 +12,10 @@ a.in-the-past { background-color:#7F929B; border-color:#7F929B; }
 .fc-event { background-color:#577483; }
 .fc-event, a.fc-event:link, a.fc-event:visited { color:#e8e8e8; }
 a.fc-event:hover { color:#ffffff; }
-.fc-event.in-the-past { background-color:#a9a9a9; }
+.calendar .fc-event.status-hidden { background-color:rgba(87, 116, 131, 0.5); color:rgba(33, 78, 99, 1); border:1px dashed rgb(33, 78, 99); }
+.calendar .fc-event.status-private { border:1px dashed rgb(255, 255, 255); font-style:italic; color:#c0c0c0; }
+.calendar .fc-event.in-the-past { background-color:#cecece; color:#747474; border-color:#747474; }
+
 
 .calendar-content-wrap { padding-left:1em; padding-right:1em; }
 

@@ -344,6 +344,9 @@ class qsot_post_type {
 	}
 
 	public static function the_content($content) {
+		$post = get_post();
+		if ( post_password_required( $post ) ) return $content;
+
 		if (($event = get_post()) && is_object($event) && $event->post_type == self::$o->core_post_type && $event->post_parent != 0) {
 			if (self::$options->{'qsot-single-synopsis'} && self::$options->{'qsot-single-synopsis'} != 'no') {
 				$p = clone $GLOBALS['post'];

@@ -171,7 +171,7 @@ class qsot_frontend_calendar {
 
 		$args = array(
 			'post_type' => self::$o->core_post_type,
-			'post_status' => 'publish',
+			'post_status' => array( 'publish' ),
 			'posts_per_page' => -1,
 			'post_parent__not' => 0,
 			'suppress_filters' => false,
@@ -180,10 +180,9 @@ class qsot_frontend_calendar {
 		if (isset($_REQUEST['end'])) $args['start_date_before'] = date('Y-m-d H:i:s', $_REQUEST['end']);
 		if (isset($_REQUEST['priced_like'])) $args['priced_like'] = (int)$_REQUEST['priced_like'];
 		if (isset($_REQUEST['has_price'])) $args['has_price'] = $_REQUEST['has_price'];
-		if (current_user_can('see_hidden_events')) $args['post_status'] = array('hidden', 'publish');
+		if ( apply_filters( 'qsot-show-hidden-events', current_user_can( 'edit_posts' ) ) ) $args['post_status'][] = 'hidden';
+		if ( current_user_can( 'read_private_posts' ) ) $args['post_status'][] = 'private';
 
-		//add_action('pre_get_posts', function(&$q) { die(__log('aldkjfalj', $q)); }, PHP_INT_MAX);
-		//add_filter('posts_request', function($R) { die(__log($R)); }, 10);
 		$events = get_posts($args);
 		foreach ($events as $event) {
 			$tmp = apply_filters('qsot-calendar-event', false, $event);
@@ -209,6 +208,8 @@ class qsot_frontend_calendar {
 			'available' => $event->meta->available,
 			'capacity' => $event->meta->capacity,
 			'avail-words' => $event->meta->availability,
+			'status' => $event->post_status,
+			'protected' => $event->post_password ? 1 : 0,
 			'passed' => false,
 		);
 		$e['_start'] = strtotime($e['start']);

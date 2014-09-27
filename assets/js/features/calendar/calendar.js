@@ -156,8 +156,23 @@ var QSEventsEventCalendar = (function($, w, d, undefined) {
 		};
 
 		function _draw_event(evt, ele, view) {
-			var e = $(t.o.event_template);
-			$('<span class="event-name">'+evt.title+'</span>').appendTo(e.find('.heading'));
+			ele.addClass( 'status-' + evt.status );
+			var e = $(t.o.event_template), extra = '';
+
+			if ( $.inArray( evt.status, [ 'private', 'hidden' ] ) != -1 ) {
+				extra = ' [' + evt.status + ']';
+				title = ele.attr( 'title' ) || '';
+				ele.attr( 'title', title + 'This event is hidden from the public. ' );
+			}
+
+			if ( evt.protected ) {
+				ele.addClass( 'is-protected' );
+				extra += ' *';
+				title = ele.attr( 'title' ) || '';
+				ele.attr( 'title', title + 'This event requires a password.' );
+			}
+
+			$('<span class="event-name">' + evt.title + extra + '</span>').appendTo(e.find('.heading'));
 			$('<span class="event-availability">Availability: '+evt['avail-words']+' ('+evt.available+')</span>').appendTo(e.find('.meta'));
 			var img = $(evt.img).appendTo(e.find('.img'));
 			var key = view.name+'-'+view.title;
