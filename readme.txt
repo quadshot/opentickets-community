@@ -35,6 +35,14 @@ The OT-CE plugin empowers functionality to:
 
 OT-CE is licensed under GPLv3.
 
+= Your first Event =
+
+Need help setting up your first event? Visit the [OpenTickets Community Edition Basic Help](http://opentickets.com/community-edition/#your-first-event) and follow the steps under _Creating your first Event, Start to Finish_.
+
+= Get Involved =
+
+Are you developer? Want to contribute to the source code? Check us out on the [OpenTickets Community Edition GitHub Repository](https://github.com/quadshot/opentickets-community).
+
 == Installation ==
 
 = Basic Installation =
@@ -130,6 +138,22 @@ Setup an 'Event':
 1. Click the blue 'Publish' button in the upper right metabox
 
 == Changelog ==
+
+= 1.6.0 =
+* repaired 'hidden event' functionality so that those users with the link can view the event (thanks @bradleysp)
+* added the ability to 'password protect' events like you would normally do for a regular post (thanks @bradleysp)
+* updated the 'event settings' ui to handle new funcitonality and to be better organized
+* updated calendar styling to have visual markers depending on event status
+
+= 1.5.4 =
+* repairing the empty cart issue (thanks @regenbauma) for anonymous users
+* changed image format of map so it always shows in PDF tickets (thanks @bradleysp)
+
+= 1.5.3 =
+* tweaking woocommerce checker to check for github-generated plugin directories
+* repairing email ticket link auth code verification
+* repairing a my-account event visibility bug
+* changed image format of barcode so it always shows in PDF tickets (thanks @bradleysp)
 
 = 1.5.2 =
 * repairing 'new user' funcitonality on the edit order screen

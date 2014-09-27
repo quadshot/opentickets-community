@@ -88,6 +88,7 @@ class qsot_venue_post_type {
 			$venue->meta = apply_filters('qsot-get-all-venue-meta', array(), $venue->ID);
 			$venue->image_id = get_post_thumbnail_id($venue->ID);
 			$venue->map_image = apply_filters('qsot-venue-map-string', '', $venue->meta['info']);
+			$venue->map_image_only = apply_filters('qsot-venue-map-string', '', $venue->meta['info'], array('type' => 'img'));
 			$current->venue = $venue;
 		}
 
@@ -156,7 +157,7 @@ class qsot_venue_post_type {
 		);
 
 		$map_uri = 'http://maps.googleapis.com/maps/api/staticmap?'.htmlentities2(sprintf(
-			'center=%s&zoom=%s&size=%sx%s&maptype=roadmap&markers=%s&sensor=false',
+			'center=%s&zoom=%s&size=%sx%s&maptype=roadmap&markers=%s&sensor=false&format=jpg',
 			urlencode($string),
 			urlencode($settings['zoom']),
 			urlencode($settings['width']),
@@ -167,6 +168,14 @@ class qsot_venue_post_type {
 		$out = '';
 		switch ($settings['type']) {
 			case 'url': $out = $url; break;
+
+			case 'img':
+				$out = sprintf(
+					'<img id="%s" src="%s" />',
+					'venue-map-'.$settings['id'],
+					$map_uri
+				);
+			break;
 
 			default:
 			case 'map':
@@ -225,12 +234,12 @@ class qsot_venue_post_type {
 					<div class="setting-current">
 						<span class="setting-name">Venue:</span>
 						<span class="setting-current-value" rel="setting-display"></span>
-						<a href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]">Edit</a>
+						<a class="edit-btn" href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]">Edit</a>
 						<input type="hidden" name="settings[venue]" value="" scope="[rel=setting-main]" rel="venue" />
 					</div>
-					<div class="setting-edit-form hide-if-js" rel="setting-form">
-						<select name="venue" class="widefat">
-							<option value="0">-None-</option>
+					<div class="setting-edit-form" rel="setting-form">
+						<select name="venue">
+							<option value="0">- None -</option>
 							<?php foreach ($venues as $venue): ?>
 								<option value="<?php echo esc_attr($venue->ID) ?>"><?php echo esc_attr($venue->post_title) ?></option>
 							<?php endforeach; ?>

@@ -3953,7 +3953,7 @@ EOT;
     }
 
     // Use PECL imagick + ImageMagic to process transparent PNG images
-    elseif (extension_loaded("imagick")) {
+    elseif (extension_loaded("imagick") && DOMPDF_ENABLE_IMAGICK) {
       // Native cloning was added to pecl-imagick in svn commit 263814
       // the first version containing it was 3.0.1RC1
       static $imagickClonable = null;

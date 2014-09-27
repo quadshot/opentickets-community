@@ -324,7 +324,13 @@ class qsot_event_area {
 		$post['event_id'] = (int)$post['event_id'];
 		$resp = array();
 		if ($post['event_id'] > 0 && wp_verify_nonce($post['nonce'], 'frontend-events-ticket-selection-'.$post['event_id'])) {
-			if (!empty($post['sa'])) $resp = apply_filters('qsot-ticket-selection-frontend-ajax-'.$post['sa'], $resp, $post);
+			$event = get_post( $post['event_id'] );
+			if ( post_password_required( $event ) ) {
+				$resp['s'] = false;
+				$resp['e'] = array( 'This event is password protected.' );
+			} else if ( ! empty( $post['sa'] ) ) {
+				$resp = apply_filters('qsot-ticket-selection-frontend-ajax-'.$post['sa'], $resp, $post);
+			}
 		} else {
 			$resp['s'] = false;
 			$resp['e'] = array('Invalid request. Please refresh the page and try again.');
@@ -350,6 +356,7 @@ class qsot_event_area {
 					'available' => $event->meta->available,
 				);
 				$resp['data']['available_more'] = $resp['data']['available'] - $resp['data']['owns'];
+				WC()->cart->maybe_set_cart_cookies();
 			} else {
 				$resp['e'][] = 'Could not update your reservations.';
 			}
@@ -441,11 +448,11 @@ class qsot_event_area {
 					<div class="setting-current">
 						<span class="setting-name">Area / Price:</span>
 						<span class="setting-current-value" rel="setting-display"></span>
-						<a href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]">Edit</a>
+						<a class="edit-btn" href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]">Edit</a>
 						<input type="hidden" name="settings[event-area]" value="" scope="[rel=setting-main]" rel="event-area" />
 					</div>
-					<div class="setting-edit-form hide-if-js" rel="setting-form">
-						<select name="event-area" class="widefat">
+					<div class="setting-edit-form" rel="setting-form">
+						<select name="event-area">
 							<option value="0">-None-</option>
 							<?php foreach ($areas as $area): ?>
 								<?php
@@ -1052,6 +1059,8 @@ class qsot_event_area {
 
 		switch ($_POST['qsot-step']) {
 			case 1:
+				if ( post_password_required( $event ) )
+					return get_the_password_form( $event );
 				if (!wp_verify_nonce($_POST['submission'], 'ticket-selection-step-one')) break;
 				$requested_count = $_POST['ticket-count'];
 				if ($requested_count > 0) {
@@ -1081,6 +1090,8 @@ class qsot_event_area {
 			break;
 
 			case 2:
+				if ( post_password_required( $event ) )
+					return get_the_password_form( $event );
 				if (!wp_verify_nonce($_POST['submission'], 'ticket-selection-step-two')) break;
 				$requested_count = $_POST['ticket-count'];
 				if ($requested_count > 0) {

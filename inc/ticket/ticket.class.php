@@ -53,7 +53,7 @@ class QSOT_tickets {
 		add_filter('qsot-compile-ticket-info', array(__CLASS__, 'compile_ticket_info'), 1000, 3);
 		// one-click-email link auth
 		add_filter('qsot-email-link-auth', array(__CLASS__, 'email_link_auth'), 1000, 2);
-		add_filter('qsot-verify-email-link-auth', array(__CLASS__, 'verify_email_link_auth'), 1000, 3);
+		add_filter('qsot-verify-email-link-auth', array(__CLASS__, 'validate_email_link_auth'), 1000, 3);
 		// guest checkout verification
 		add_filter('qsot-ticket-verification-form-check', array(__CLASS__, 'validate_guest_verification'), 1000, 2);
 
@@ -287,6 +287,8 @@ class QSOT_tickets {
 		$current->order_item = $order_item;
 		$current->product = $product;
 		$current->event = $event;
+		$current->event->image_id = get_post_thumbnail_id($current->event->ID);
+		$current->event->image_id = empty($current->event->image_id) ? get_post_thumbnail_id($current->event->post_parent) : $current->event->image_id;
 
 		return $current;
 	}
@@ -333,7 +335,7 @@ class QSOT_tickets {
 				self::_no_access();
 			}
 		} else {
-			if (isset($_GET['n']) && apply_filters('qsot-verify-email-link-auth', false, $args['order_id'])) {
+			if (isset($_GET['n']) && apply_filters('qsot-verify-email-link-auth', false, $_GET['n'], $args['order_id'])) {
 				$can = true;
 			} else {
 				self::_login_form();

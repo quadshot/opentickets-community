@@ -45,6 +45,22 @@ QS.Tools = (function($, q, qt, w, d, undefined) {
 	qt.dashSane = function(str) {
 		str = str.toLowerCase().replace(/[^\d\w]+/g, '-'); str = str.substr(-1) == '-' ? str.substr(0, str.length - 1) : str; str = str.substr(0, 1) == '-' ? str.substr(1) : str; return str;
 	};
+	qt.arrayIntersect = function(a, b) {
+		var ai=0, bi=0;
+		var result = new Array();
+
+		while( ai < a.length && bi < b.length ) {
+			if (a[ai] < b[bi] ) ai++;
+			else if (a[ai] > b[bi] ) bi++;
+			else {
+				result.push(a[ai]);
+				ai++;
+				bi++;
+			}
+		}
+
+		return result;
+	}
 	var fix = {};
 	var funclist = {};
 	qt.ilt = function(src, func, pk) { // Image Load Trick
@@ -590,6 +606,7 @@ QS.EditSetting = (function($, EventUI_Callbacks, undefined) {
 		var e = $(e);
 		var exists = e.data('qsot-edit-setting');
 		var ret = undefined;
+		var qt = QS.Tools;
 
 		if (exists instanceof EditSetting && typeof exists.initialized == 'boolean' && exists.initialized) {
 			ret = exists;
@@ -633,10 +650,18 @@ QS.EditSetting = (function($, EventUI_Callbacks, undefined) {
 
 		_setup_events: function() {
 			var self = this;
-			this.elements.edit.click(function(e) { e.preventDefault(); self.open(); });
-			this.elements.cancel.click(function(e) { e.preventDefault(); self.close(); });
-			this.elements.save.click(function(e) { e.preventDefault(); self.save(); });
-			this.elements.main_form.bind('clear', function(e) { e.preventDefault(); self.clear(); });
+			this.elements.edit.on( 'click', function( e ) { e.preventDefault(); self.open(); } );
+			this.elements.cancel.on( 'click', function( e ) { e.preventDefault(); self.close(); } );
+			this.elements.save.on( 'click', function( e ) { e.preventDefault(); self.save(); } );
+			this.elements.main_form.on( 'clear', function( e ) { e.preventDefault(); self.clear(); } );
+
+			// only ifs updating
+			this.elements.form.find( 'input, select, textarea' ).on( 'change', function( e ) {
+				var me = $( this ), data = {}, name = me.attr( 'name' );
+				data[name] = me.val();
+				self._only_ifs_update( data, name );
+			} );
+
 			this.callback('setup_events');
 		},
 
@@ -651,13 +676,13 @@ QS.EditSetting = (function($, EventUI_Callbacks, undefined) {
 
 		open: function() {
 			var self = this;
-			this.elements.form.slideDown({duration:this.options.speed, complete:function() { self.elements.edit.hide(); self.callback('open_slideDown_complete', [$(this)]); }});
+			this.elements.main.addClass('open');
 			this.callback('open');
 		},
 
 		close: function() {
 			var self = this;
-			this.elements.form.slideUp({duration:this.options.speed, complete:function() { self.elements.edit.show(); self.callback('open_slideUp_complete', [$(this)]); }});
+			this.elements.main.removeClass('open');
 			this.callback('close');
 		},
 
@@ -705,9 +730,33 @@ QS.EditSetting = (function($, EventUI_Callbacks, undefined) {
 			}
 		},
 
+		_only_ifs_update: function( data, only ) {
+			var sel = only && ( typeof only == 'string' || typeof only == 'number' ) ? '[data-only-if^="' + only + '="]' : '[data-only-if]';
+			this.elements.form.find( sel ).each(function() {
+				var me = $( this ),
+				    oif = me.attr( 'data-only-if' ),
+				    oif_parts = oif.split('='),
+				    key = oif_parts.shift(),
+						values = oif_parts.join('=').split(/\s*,\s*/);
+				if ( data[key] instanceof Array ) {
+					var matches = qt.arrayIntersect( data[key], values );
+					if ( matches.length ) {
+						me.show();
+					} else {
+						me.hide();
+					}
+				} else if ( typeof data[key] != 'object' && $.inArray( data[key], values ) != -1 ) {
+					me.show();
+				} else {
+					me.hide();
+				}
+			});
+		},
+
 		update: function(data, adjust) {
 			var label = '';
 			var adjust = adjust || false;
+			this._only_ifs_update(data);
 
 			if (typeof EditSetting.labels[this.tag] == 'function') label = EditSetting.labels[this.tag].apply(this, [data]);
 			else label = EditSetting.labels._default.apply(this, [data]);
@@ -718,14 +767,15 @@ QS.EditSetting = (function($, EventUI_Callbacks, undefined) {
 
 			for (i in data) {
 				var val = '';
+				if ( i == 'source' ) continue; // recursive protection
 				if (typeof data[i] == 'object') val = JSON.stringify(data[i]);
 				else if (typeof data[i] == 'string') val = data[i];
 				else if (typeof data[i] == 'undefined' || data[i] == null) val = '';
 				else val = data[i].toString();
 				this.elements.main.find('[rel="'+i+'"]').val(val);
 				if (adjust) {
-					var field = this.elements.form.find('[name="'+i+'"]:eq(0)');
-					if (field.get(0).tagName.toLowerCase() == 'input') {
+					var field = this.elements.form.find('[name="'+i+'"]:eq(0)'), tag = field.get(0).tagName.toLowerCase();
+					if (tag == 'input') {
 						switch (field.attr('type').toLowerCase()) {
 							case 'checkbox':
 							case 'radio':
@@ -741,9 +791,9 @@ QS.EditSetting = (function($, EventUI_Callbacks, undefined) {
 								field.val(val);
 							break;
 						}
-					} else if (field.get(0).tagName.toLowerCase() == 'select') {
+					} else if (tag == 'select') {
 						$('option', field).removeAttr('selected').filter('[value="'+val+'"]').filter(function() { return $(this).css('display').toLowerCase() != 'none'; }).attr('selected', 'selected');
-					} else if (field.get(0).tagName.toLowerCase() == 'textarea') {
+					} else if (tag == 'textarea') {
 						field.val(val);
 					}
 				}
@@ -775,10 +825,10 @@ QS.EditSetting = (function($, EventUI_Callbacks, undefined) {
 	EditSetting.labels = $.extend({}, EditSetting.labels, {
 		_default: function(data) {
 			var ret = '';
-			console.log(data);
 			for (i in data) {
 				var d = '';
 				var ele = $('[name="'+i+'"]', this.elements.main);
+				if ( ele.length == 0 ) continue;
 				switch (ele.get(0).tagName.toLowerCase()) {
 					case 'select':
 						d = data[i];
