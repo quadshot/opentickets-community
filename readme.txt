@@ -140,8 +140,8 @@ Setup an 'Event':
 == Changelog ==
 
 = 1.6.0 =
-* repaired 'hidden event' functionality so that those users with the link can view the event
-* added the ability to 'password protect' events like you would normally do for a regular post
+* repaired 'hidden event' functionality so that those users with the link can view the event (thanks @bradleysp)
+* added the ability to 'password protect' events like you would normally do for a regular post (thanks @bradleysp)
 * updated the 'event settings' ui to handle new funcitonality and to be better organized
 * updated calendar styling to have visual markers depending on event status
 
