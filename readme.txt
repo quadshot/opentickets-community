@@ -139,6 +139,21 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.6.4 =
+* repairing the checkin process (thanks @bradleysp)
+* adding ticket checked in count to checkin status screens
+
+= 1.6.3 =
+* repairing edge case infinite loop on admin order save
+* updated admin order save billing information validation
+* updated qrcode declaration to account for possible different server setups (thanks @bradleysp & @regenbauma)
+
+= 1.6.2 =
+* repairing the event date editor so that it proper handles empty dates
+
+= 1.6.1 =
+* repairing the event date editor in the 'event settings' ui
+
 = 1.6.0 =
 * repaired 'hidden event' functionality so that those users with the link can view the event (thanks @bradleysp)
 * added the ability to 'password protect' events like you would normally do for a regular post (thanks @bradleysp)

@@ -863,6 +863,7 @@ class qsot_post_type {
 				'post_password' => '',
 				'post_parent' => $post_id,
 			);
+			$now = time();
 
 			// cycle through all the subevent settings that were sent. some will be new, some will be modified, some will be modified but have lost their post id. determine what each is,
 			// and properly group them for possible later processing
@@ -878,6 +879,9 @@ class qsot_post_type {
 					if (isset($tmp->post_id) && is_numeric($tmp->post_id) && $tmp->post_id > 0) {
 						// parse the date so that we can use it to make a proper post_title
 						$d = strtotime($tmp->start);
+						// if the post is set to publish in the future, then adjust the status
+						$pub = strtotime( $tmp->pub_date );
+						if ( $pub > $now ) $tmp->status = 'future';
 						// add the settings to the list of posts to update
 						$updates[] = array(
 							'post_arr' => wp_parse_args(array(
@@ -926,6 +930,9 @@ class qsot_post_type {
 							$tmp = $need_lookup[$exist->post_name];
 							// get the date in timestamp form so that we can use it to make a pretty title
 							$d = strtotime($tmp->start);
+							// if the post is set to publish in the future, then adjust the status
+							$pub = strtotime( $tmp->pub_date );
+							if ( $pub > $now ) $tmp->status = 'future';
 							// remove the settings from the list that needs a match up, since we just matched it
 							unset($need_lookup[$exist->post_name]);
 							// add the settings to the list of posts to update
@@ -956,6 +963,9 @@ class qsot_post_type {
 					foreach ($need_lookup as $k => $data) {
 						// get the date in timestamp form so that we can use it to make a pretty title
 						$d = strtotime($data->start);
+						// if the post is set to publish in the future, then adjust the status
+						$pub = strtotime( $data->pub_date );
+						if ( $pub > $now ) $data->status = 'future';
 						// add the settings to the list of posts to update/insert
 						$updates[] = array(
 							'post_arr' => wp_parse_args(array( // will INSERT because there is no post_id
@@ -1371,18 +1381,18 @@ class qsot_post_type {
 														<input type="hidden" name="settings[pub_date]" value="" scope="[rel=setting-main]" rel="pub_date" />
 													</div>
 													<div class="setting-edit-form" rel="setting-form">
-														<input type="hidden" name="pub_date"  value="" />
-														<div class="date-edit" tar="[name='pub_date']" rel="[rel='setting-form']">
+														<input type="hidden" name="pub_date" value="" />
+														<div class="date-edit" tar="[name='pub_date']" scope="[rel='setting-form']">
 															<select rel="month">
-																<option value="01">01 - <?php _e( 'Januaray', 'qsot' ) ?></option>
-																<option value="02">02 - <?php _e( 'February', 'qsot' ) ?></option>
-																<option value="03">03 - <?php _e( 'March', 'qsot' ) ?></option>
-																<option value="04">04 - <?php _e( 'April', 'qsot' ) ?></option>
-																<option value="05">05 - <?php _e( 'May', 'qsot' ) ?></option>
-																<option value="06">06 - <?php _e( 'June', 'qsot' ) ?></option>
-																<option value="07">07 - <?php _e( 'July', 'qsot' ) ?></option>
-																<option value="08">08 - <?php _e( 'August', 'qsot' ) ?></option>
-																<option value="09">09 - <?php _e( 'September', 'qsot' ) ?></option>
+																<option value="1">01 - <?php _e( 'Januaray', 'qsot' ) ?></option>
+																<option value="2">02 - <?php _e( 'February', 'qsot' ) ?></option>
+																<option value="3">03 - <?php _e( 'March', 'qsot' ) ?></option>
+																<option value="4">04 - <?php _e( 'April', 'qsot' ) ?></option>
+																<option value="5">05 - <?php _e( 'May', 'qsot' ) ?></option>
+																<option value="6">06 - <?php _e( 'June', 'qsot' ) ?></option>
+																<option value="7">07 - <?php _e( 'July', 'qsot' ) ?></option>
+																<option value="8">08 - <?php _e( 'August', 'qsot' ) ?></option>
+																<option value="9">09 - <?php _e( 'September', 'qsot' ) ?></option>
 																<option value="10">10 - <?php _e( 'October', 'qsot' ) ?></option>
 																<option value="11">11 - <?php _e( 'November', 'qsot' ) ?></option>
 																<option value="12">12 - <?php _e( 'December', 'qsot' ) ?></option>

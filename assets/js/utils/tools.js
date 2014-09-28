@@ -36,6 +36,7 @@ QS.Tools = (function($, q, qt, w, d, undefined) {
 	qt.toFloat = function(val) { var n = parseFloat(val); return isNaN(n) ? 0 : n; };
 	qt.ufm = function(val) { return val.replace(/^(-|\+)?(\$)/, '$1'); };
 	qt.pl = function(n, p) { return qt.toFloat(n).toFixed(p); };
+	qt.dig = function(n, w, p) { p = p || '0'; n = n + ''; return n.length >= w ? n : ( new Array( w - n.length + 1 ) ).join( p ) + n; };
 	qt.isNodeType = function(obj, type) { type = type || ''; return typeof obj == 'object' && obj !== null && typeof obj.nodeType == 'string' && obj.nodeType == type; };
 	qt.sanePts = function(pts) { for (var i=0; i<pts.length; i++) for (var j=0; j<pts[i].length; j++) pts[i][j] = parseFloat(pts[i][j]); };
 	qt._del = function(o) { delete(o); };
@@ -662,6 +663,35 @@ QS.EditSetting = (function($, EventUI_Callbacks, undefined) {
 				self._only_ifs_update( data, name );
 			} );
 
+			this.elements.form.find( '.date-edit' ).each( function() {
+				var self = $(this), tar = self.attr('tar'), scope = self.closest( self.attr( 'scope' ) ), tar = $( tar, scope ), main = self.closest( '[rel="setting-main"]' ), edit_btn = main.find( '.edit-btn' );
+				var m = self.find( '[rel=month]' ), y = self.find( '[rel=year]' ), a = self.find( '[rel=day]' ), h = self.find( '[rel=hour]' ), n = self.find( '[rel=minute]' );
+
+				function init() {
+					function update_from_val() {
+						var val = tar.val(), d = val ? new XDate( val ) : new XDate();
+						console.log( val, d );
+						y.val( d.getFullYear() );
+						m.find( 'option' ).removeAttr( 'selected' ).filter( '[value=' + ( d.getMonth() + 1 ) + ']' ).attr( 'selected', 'selected' );
+						a.val( d.getDate() );
+						h.val( d.getHours() );
+						n.val( d.getMinutes() );
+					}
+					tar.on( 'change update', update_from_val );
+
+					function update_from_boxes() {
+						tar.val( ( new XDate( y.val(), m.val() - 1, a.val(), h.val(), n.val(), 0, 0 ) ).toString( 'yyyy-MM-dd HH:mm:ss' ) );
+					}
+					m.add( y ).add( a ).add( h ).add( n ).on( 'change keyup update', update_from_boxes );
+				}
+				init();
+
+				edit_btn.on( 'click', function() {
+					if ( ! main.hasClass( '.edit-btn' ) )
+						tar.trigger( 'change' );
+				});
+			} );
+
 			this.callback('setup_events');
 		},
 
@@ -779,7 +809,7 @@ QS.EditSetting = (function($, EventUI_Callbacks, undefined) {
 						switch (field.attr('type').toLowerCase()) {
 							case 'checkbox':
 							case 'radio':
-								this.elements.form.find('[name="'+i+'"]').removeAttr('checked').filter('[value="'+val+'"]').attr('checked', 'checked');
+								this.elements.form.find('[name="'+i+'"]').removeAttr('checked').filter('[value="'+val+'"]').attr('checked', 'checked').trigger('change');
 							break;
 
 							case 'file':
@@ -788,13 +818,14 @@ QS.EditSetting = (function($, EventUI_Callbacks, undefined) {
 							case 'submit': break;
 
 							default:
-								field.val(val);
+								field.val(val).trigger('change');
 							break;
 						}
 					} else if (tag == 'select') {
 						$('option', field).removeAttr('selected').filter('[value="'+val+'"]').filter(function() { return $(this).css('display').toLowerCase() != 'none'; }).attr('selected', 'selected');
+						field.trigger('change')
 					} else if (tag == 'textarea') {
-						field.val(val);
+						field.val(val).trigger('change');;
 					}
 				}
 			}

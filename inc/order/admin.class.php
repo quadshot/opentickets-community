@@ -198,9 +198,13 @@ class qsot_order_admin {
 
 				remove_action('woocommerce_process_shop_order_meta', 'woocommerce_process_shop_order_meta', 10);
 				remove_action('save_post', array(__CLASS__, 'enforce_non_guest_orders'), PHP_INT_MAX);
+				remove_action('save_post', array(__CLASS__, 'require_billing_information'), 9999);
 				do_action('qsot-before-guest-check-update-order-status', $post);
 				$order = new WC_Order($post_id);
 				$order->update_status('pending', 'You cannot use "Guest" as the owner of the order, due to current Woocommerce settings.');
+				add_action('woocommerce_process_shop_order_meta', 'woocommerce_process_shop_order_meta', 10, 2);
+				add_action('save_post', array(__CLASS__, 'enforce_non_guest_orders'), PHP_INT_MAX, 2);
+				add_action('save_post', array(__CLASS__, 'require_billing_information'), 9999, 2);
 			} else {
 				update_post_meta($post_id, '_use_guest_attempted', 0);
 			}
@@ -232,14 +236,16 @@ class qsot_order_admin {
 				'#^([\w\d][\w\d\s]{2,}[\w\d])$#' => 'must be at least 4 letters, numbers, or spaces', // at least 4 letters numbers and spaces, beginning and ending with letter or number
 			),
 			'_billing_postcode' => array(
-				'#^([\w\d][\w\d\-]{3,}[\w\d])$#' => 'must be at least 5 letters, numbers, or spaces', // at least 5 letters numbers and dashes, beginning and ending with letter or number
+				'#^([\w\d][\w\d\-]{5,}[\w\d])$#' => 'must be at least 5 letters, numbers, or spaces', // at least 5 letters numbers and dashes, beginning and ending with letter or number
 			),
 			'_billing_country' => array(
 				'#^([\w\d][\w\d\s]*?[\w\d])$#' => 'must be at least 2 letters, numbers, or spaces', // at least 3 letters numbers and spaces, beginning and ending with letter or number
 			),
+			/* not valid for international
 			'_billing_state' => array(
 				'#^([\w\d][\w\d\s]*?[\w\d])$#' => 'must be at least 2 letters, numbers, or spaces', // at least 2 letters numbers and spaces, beginning and ending with letter or number
 			),
+			*/
 			'_billing_email' => array(
 				'#^([\w\d].+[\w])$#' => 'must be at least 3 letters, numbers, or spaces', // at least 3 characters long, beginning with letter or number and ending with letter
 				'functions' => array(
@@ -270,17 +276,16 @@ class qsot_order_admin {
 					foreach ($msg as $rule) {
 						$func = $rule['func'];
 						$m = $rule['msg'];
-						if (is_callable($func) && !call_user_func($func, $value)) $msgs[] = $m;
+						if (is_callable($func) && !call_user_func($func, $value)) $msgs[] = $m.' '.$value;
 					}
 				} else {
-					if (!preg_match($rule_key, $value)) $msgs[] = $msg;
+					if (!preg_match($rule_key, $value)) $msgs[] = $msg.' '.$value;
 				}
 			}
 
 			if ($msgs) {
 				$errors[] = '- '.$name.' '.implode(', ', $msgs);
 			}
-
 		}
 
 		if (!empty($errors)) {
@@ -288,9 +293,13 @@ class qsot_order_admin {
 
 			remove_action('woocommerce_process_shop_order_meta', 'woocommerce_process_shop_order_meta', 10);
 			remove_action('save_post', array(__CLASS__, 'enforce_non_guest_orders'), PHP_INT_MAX);
+			remove_action('save_post', array(__CLASS__, 'require_billing_information'), 9999);
 			do_action('qsot-before-guest-check-update-order-status', $post);
 			$order = new WC_Order($post_id);
 			$order->update_status('pending', 'Your current settings require you to provide most billing information for each order.');
+			add_action('woocommerce_process_shop_order_meta', 'woocommerce_process_shop_order_meta', 10, 2);
+			add_action('save_post', array(__CLASS__, 'enforce_non_guest_orders'), PHP_INT_MAX, 2);
+			add_action('save_post', array(__CLASS__, 'require_billing_information'), 9999, 2);
 		}
 	}
 
