@@ -90,11 +90,16 @@ class QSOT_checkin {
 			'price' => $ticket->product->get_price(),
 			'uniq' => md5(sha1(microtime(true).rand(0, PHP_INT_MAX))),
 		);
-		$data = site_url('/event-checkin/'.self::_create_checkin_packet($info).'/');
+		$url = site_url('/event-checkin/'.self::_create_checkin_packet($info).'/');
+
+		$data = array( 'd' => $url, 'p' => site_url() );
+		ksort( $data );
+		$data['sig'] = sha1( NONCE_KEY . @json_encode( $data ) . NONCE_SALT );
+		$data = @json_encode( $data );
 
 		$ticket->qr_code = sprintf(
 			'<img src="%s%s" alt="%s" />',
-			self::$o->core_url.'libs/phpqrcode/?d=',
+			self::$o->core_url.'libs/phpqrcode/index.php?d=',
 			//base64_encode(@json_encode($data)),
 			base64_encode(strrev($data)),
 			$ticket->product->get_title().' ('.$ticket->product->get_price().')'
