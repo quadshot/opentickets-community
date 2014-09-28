@@ -139,6 +139,9 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.6.2 =
+* repairing the event date editor so that it proper handles empty dates
+
 = 1.6.1 =
 * repairing the event date editor in the 'event settings' ui
 
