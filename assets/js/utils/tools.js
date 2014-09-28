@@ -664,23 +664,32 @@ QS.EditSetting = (function($, EventUI_Callbacks, undefined) {
 			} );
 
 			this.elements.form.find( '.date-edit' ).each( function() {
-				var self = $(this), tar = self.attr('tar'), scope = self.closest( self.attr( 'scope' ) ), tar = $( tar, scope );
+				var self = $(this), tar = self.attr('tar'), scope = self.closest( self.attr( 'scope' ) ), tar = $( tar, scope ), main = self.closest( '[rel="setting-main"]' ), edit_btn = main.find( '.edit-btn' );
 				var m = self.find( '[rel=month]' ), y = self.find( '[rel=year]' ), a = self.find( '[rel=day]' ), h = self.find( '[rel=hour]' ), n = self.find( '[rel=minute]' );
 
-				function update_from_val() {
-					var d = new XDate( tar.val() );
-					y.val( d.getFullYear() );
-					m.find( 'option' ).removeAttr( 'selected' ).filter( '[value=' + ( d.getMonth() + 1 ) + ']' ).attr( 'selected', 'selected' );
-					a.val( d.getDate() );
-					h.val( d.getHours() );
-					n.val( d.getMinutes() );
-				}
-				tar.on( 'change update', update_from_val );
+				function init() {
+					function update_from_val() {
+						var val = tar.val(), d = val ? new XDate( val ) : new XDate();
+						console.log( val, d );
+						y.val( d.getFullYear() );
+						m.find( 'option' ).removeAttr( 'selected' ).filter( '[value=' + ( d.getMonth() + 1 ) + ']' ).attr( 'selected', 'selected' );
+						a.val( d.getDate() );
+						h.val( d.getHours() );
+						n.val( d.getMinutes() );
+					}
+					tar.on( 'change update', update_from_val );
 
-				function update_from_boxes() {
-					tar.val( ( new XDate( y.val(), m.val() - 1, a.val(), h.val(), n.val(), 0, 0 ) ).toString( 'yyyy-MM-dd HH:mm:ss' ) );
+					function update_from_boxes() {
+						tar.val( ( new XDate( y.val(), m.val() - 1, a.val(), h.val(), n.val(), 0, 0 ) ).toString( 'yyyy-MM-dd HH:mm:ss' ) );
+					}
+					m.add( y ).add( a ).add( h ).add( n ).on( 'change keyup update', update_from_boxes );
 				}
-				m.add( y ).add( a ).add( h ).add( n ).on( 'change keyup update', update_from_boxes );
+				init();
+
+				edit_btn.on( 'click', function() {
+					if ( ! main.hasClass( '.edit-btn' ) )
+						tar.trigger( 'change' );
+				});
 			} );
 
 			this.callback('setup_events');
