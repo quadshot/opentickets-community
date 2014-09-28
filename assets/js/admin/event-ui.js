@@ -23,7 +23,6 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 			var last = (new Date()).getTime() + ' ' + (Math.random() * 10000);
 			current = last;
 			setTimeout( function() {
-				console.log('test', last == current);
 				if ( last != current ) return;
 				var wintop = $( window ).scrollTop(), opt = $( '.option-sub[rel="settings"]', t.elements.main || 'body' ), opttop = opt.offset().top, opthei = opt.outerHeight(),
 				    bulk = opt.find( '.bulk-edit-settings' ), bulkhei = bulk.outerHeight(), bump = 100;
