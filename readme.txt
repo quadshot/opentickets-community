@@ -140,13 +140,13 @@ Setup an 'Event':
 == Changelog ==
 
 = 1.6.4 =
-* repairing the checkin process
+* repairing the checkin process (thanks @bradleysp)
 * adding ticket checked in count to checkin status screens
 
 = 1.6.3 =
 * repairing edge case infinite loop on admin order save
 * updated admin order save billing information validation
-* updated qrcode declaration to account for possible different server setups
+* updated qrcode declaration to account for possible different server setups (thanks @bradleysp & @regenbauma)
 
 = 1.6.2 =
 * repairing the event date editor so that it proper handles empty dates
