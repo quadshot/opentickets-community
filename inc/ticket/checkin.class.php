@@ -48,7 +48,8 @@ class QSOT_checkin {
 			else $template = 'checkin/occupy-failure.php';
 		}
 
-		$ticket = apply_filters('qsot-compile-ticket-info', false, $args['order_item_id'], $args['order_id']);
+		$ticket = apply_filters('qsot-compile-ticket-info', false, $data['order_item_id'], $data['order_id']);
+		$ticket->owns = apply_filters('qsot-zoner-owns', array(), $ticket->event, $ticket->order_item['product_id'], '*', false, $data['order_id'], $data['order_item_id']);
 		$stylesheet = apply_filters('qsot-locate-template', '', array('checkin/style.css'), false, false);
 		$stylesheet = str_replace(DIRECTORY_SEPARATOR, '/', str_replace(ABSPATH, '/', $stylesheet));
 		$stylesheet = site_url($stylesheet);

@@ -4,7 +4,8 @@ Checkin Page: Previously Checked In
 */
 //get_header();
 
-$owner = $order->billing_first_name.' '.$order->billing_last_name.' ('.$order->billing_email.')';
+$owner = $ticket->order->billing_first_name . ' ' . $ticket->order->billing_last_name . ' (' . $ticket->order->billing_email . ')';
+$index = '[' . $ticket->owns['occupied'] . ' / ' . array_sum( array_values( $ticket->owns ) ) . ']';
 $msg = 'Ticket has PREVIOUSLY checked in!';
 ?><html><head><title><?php echo $msg.' - '.get_bloginfo('name') ?></title>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
@@ -21,8 +22,8 @@ $msg = 'Ticket has PREVIOUSLY checked in!';
 						<h1 class="page-title"><?php echo $msg ?></h1>
 						<ul class="ticket-info">
 							<li class="owner"><strong>Owner:</strong> <?php echo $owner ?></li>
-							<li class="event"><strong>Event:</strong> <?php echo $event->post_title ?></li>
-							<li class="zone"><strong>Seat:</strong> <?php echo $zone->fullname ?></li>
+							<li class="event"><strong>Event:</strong> <?php echo $ticket->event->post_title ?></li>
+							<li class="checked"><strong>Checked-In:</strong> <?php echo $index ?></li>
 						</ul>
 					</div>
 

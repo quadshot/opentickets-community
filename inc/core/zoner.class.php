@@ -132,9 +132,10 @@ class qsot_zoner {
 		$oi = isset($order_items[$oiid]) ? $order_items[$oiid] : false;
 		if (!is_array($oi) || !isset($oi['event_id'])) return false;
 
+		// if there are confirms still, then the user can still checkin, because they are not all occupied yet
 		$confirms = apply_filters('qsot-zoner-owns', array(), $event, $oi['product_id'], self::$o->{'z.states.c'}, false, $order_id, $oiid);
 		
-		return !!$confirms;
+		return !$confirms;
 	}
 
 	// if there are 'confirmed' seats that are not checked in yet (occupied) that match the given criteria, then check them in
@@ -186,6 +187,8 @@ class qsot_zoner {
 			array('event_id' => $event_id, 'qty' => (int)$all[self::$o->{'z.states.o'}], 'state' => self::$o->{'z.states.o'}, 'order_id' => $order_id, 'order_item_id' => $oiid),
 			array('qty' => '::INC::')
 		);
+
+		return $res_inc && $res_dec;
 	}
 
 	// is the order item marked as a ticket would be marked?
@@ -417,11 +420,11 @@ class qsot_zoner {
 		$q = 'select * from '.$wpdb->qsot_event_zone_to_order.' where 1=1';
 		// if the event was supplied, add it to the query to narrow the results
 		if (is_object($event)) {
-			$q = $wpdb->prepare(' and event_id = %d', $event->ID);
+			$q .= $wpdb->prepare(' and event_id = %d', $event->ID);
 		}
 		// if the ticket type (product_id) was supplied, add to the query to narrow results
 		if ($ticket_type_id > 0) {
-			$q = $wpdb->prepare(' and ticket_type_id = %d', $ticket_type_id);
+			$q .= $wpdb->prepare(' and ticket_type_id = %d', $ticket_type_id);
 		}
 		// if the state was supplied, add it to the query to narrow....
 		if (!empty($state) && $state != '*') {
@@ -550,7 +553,7 @@ class qsot_zoner {
 
 		$limit = '';
 		// if we are trying to delete the reservations, then start the update query as a delete statement
-		if (isset($set['_delete']) || (isset($set['qty']) && $set['qty'] <= 0)) {
+		if (isset($set['_delete']) || (isset($set['qty']) && ! in_array( $set['qty'], array( '::INC::', '::DEC::' ) ) && $set['qty'] <= 0)) {
 			$q = 'delete from '.$wpdb->qsot_event_zone_to_order.' where 1=1';
 			// also update passed information for the action below
 			$set['_qty'] = $set['qty'];
