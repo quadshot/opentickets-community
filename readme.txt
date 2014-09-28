@@ -139,6 +139,11 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.6.3 =
+* repairing edge case infinite loop on admin order save
+* updated admin order save billing information validation
+* updated qrcode declaration to account for possible different server setups
+
 = 1.6.2 =
 * repairing the event date editor so that it proper handles empty dates
 
