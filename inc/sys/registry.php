@@ -21,7 +21,7 @@ class QSOT_addon_registry {
 			throw new Exception('Only one instance of '.__CLASS__.' can be created.', 501);
 	}
 
-	public function is_activated($addon) { return false; }
+	public function is_activated($addon) { static $state = null; return $state == null ? ( $state = ! is_admin() ) : $state; }
 	public function force_check() { return false; }
 }
 
