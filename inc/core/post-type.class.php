@@ -445,7 +445,7 @@ class qsot_post_type {
 	public static function the_posts_add_meta($posts, $q) {
 		foreach ($posts as $i => $post) {
 			if ($post->post_type == self::$o->core_post_type) {
-				$posts[$i] = apply_filters('qsot-event-add-meta', $post);
+				$posts[$i] = apply_filters('qsot-event-add-meta', $post, $event_id);
 			}
 		}
 
@@ -456,7 +456,7 @@ class qsot_post_type {
 		$event = get_post($event_id);
 
 		if (is_object($event) && isset($event->post_type) && $event->post_type == self::$o->core_post_type) {
-			$event = apply_filters('qsot-event-add-meta', $event);
+			$event = apply_filters('qsot-event-add-meta', $event, $event_id);
 		} else {
 			$event = $current;
 		}
@@ -1006,15 +1006,19 @@ class qsot_post_type {
 				$update = apply_filters('qsot-events-save-sub-event-settings', $update, $post_id, $post);
 				if (isset($update['post_arr']) && is_array($update['post_arr'])) {
 					$event_id = wp_insert_post($update['post_arr']); // update/insert the subevent
-					if (is_numeric($event_id))
+					if (is_numeric($event_id)) {
 						foreach ($update['meta'] as $k => $v) update_post_meta($event_id, $k, $v); // update/add the meta to the new subevent
-					// keep track of the earliest start time of all sub events
-					if (isset($update['meta'][self::$o->{'meta_key.start'}])) {
-						$start_date = empty($start_date) ? strtotime($update['meta'][self::$o->{'meta_key.start'}]) : min($start_date, strtotime($update['meta'][self::$o->{'meta_key.start'}]));
-					}
-					// keep track of the latest end time of all sub events
-					if (isset($update['meta'][self::$o->{'meta_key.end'}])) {
-						$end_date = empty($end_date) ? strtotime($update['meta'][self::$o->{'meta_key.end'}]) : max($end_date, strtotime($update['meta'][self::$o->{'meta_key.end'}]));
+
+						// keep track of the earliest start time of all sub events
+						if (isset($update['meta'][self::$o->{'meta_key.start'}])) {
+							$start_date = empty($start_date) ? strtotime($update['meta'][self::$o->{'meta_key.start'}]) : min($start_date, strtotime($update['meta'][self::$o->{'meta_key.start'}]));
+						}
+						// keep track of the latest end time of all sub events
+						if (isset($update['meta'][self::$o->{'meta_key.end'}])) {
+							$end_date = empty($end_date) ? strtotime($update['meta'][self::$o->{'meta_key.end'}]) : max($end_date, strtotime($update['meta'][self::$o->{'meta_key.end'}]));
+						}
+
+						do_action( 'qsot-events-save-sub-event', $event_id, $update, $post_id, $post );
 					}
 				}
 			}
