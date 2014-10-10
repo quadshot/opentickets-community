@@ -60,9 +60,6 @@ QS.EventAreaUICB = new QS.EventUI_Callbacks();
 		return res;
 	}
 
-	function save_event_area() {
-	}
-
 	function update_field(sel, item, val) {
 		$(sel, item).each(function() {
 			switch (this.tagName.toLowerCase()) {
