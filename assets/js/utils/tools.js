@@ -670,17 +670,20 @@ QS.EditSetting = (function($, EventUI_Callbacks, undefined) {
 				function init() {
 					function update_from_val() {
 						var val = tar.val(), d = val ? new XDate( val ) : new XDate();
-						console.log( val, d );
+						d = d.valid() ? d : new XDate();
 						y.val( d.getFullYear() );
 						m.find( 'option' ).removeAttr( 'selected' ).filter( '[value=' + ( d.getMonth() + 1 ) + ']' ).attr( 'selected', 'selected' );
 						a.val( d.getDate() );
 						h.val( d.getHours() );
 						n.val( d.getMinutes() );
+						update_from_boxes();
 					}
 					tar.on( 'change update', update_from_val );
 
 					function update_from_boxes() {
-						tar.val( ( new XDate( y.val(), m.val() - 1, a.val(), h.val(), n.val(), 0, 0 ) ).toString( 'yyyy-MM-dd HH:mm:ss' ) );
+						var d = new XDate( y.val(), m.val() - 1, a.val(), h.val(), n.val(), 0, 0 );
+						if ( d.valid() )
+							tar.val( d.toString( 'yyyy-MM-dd HH:mm:ss' ) );
 					}
 					m.add( y ).add( a ).add( h ).add( n ).on( 'change keyup update', update_from_boxes );
 				}
@@ -796,9 +799,10 @@ QS.EditSetting = (function($, EventUI_Callbacks, undefined) {
 			this.elements.display.html(label);
 
 			for (i in data) {
-				var val = '';
+				var val = '', multi = false;
 				if ( i == 'source' ) continue; // recursive protection
-				if (typeof data[i] == 'object') val = JSON.stringify(data[i]);
+				if ( typeof data[i] == 'object' && typeof data[i].isMultiple != 'undefined' && data[i].isMultiple ) { multi = true; val = ''; }
+				else if (typeof data[i] == 'object') val = JSON.stringify(data[i]);
 				else if (typeof data[i] == 'string') val = data[i];
 				else if (typeof data[i] == 'undefined' || data[i] == null) val = '';
 				else val = data[i].toString();
@@ -809,7 +813,8 @@ QS.EditSetting = (function($, EventUI_Callbacks, undefined) {
 						switch (field.attr('type').toLowerCase()) {
 							case 'checkbox':
 							case 'radio':
-								this.elements.form.find('[name="'+i+'"]').removeAttr('checked').filter('[value="'+val+'"]').attr('checked', 'checked').trigger('change');
+								var ele = this.elements.form.find('[name="'+i+'"]').removeAttr('checked').filter('[value="'+escape(val)+'"]').attr('checked', 'checked');
+								if ( !multi ) ele.trigger('change');
 							break;
 
 							case 'file':
@@ -818,14 +823,18 @@ QS.EditSetting = (function($, EventUI_Callbacks, undefined) {
 							case 'submit': break;
 
 							default:
-								field.val(val).trigger('change');
+								field.val(val);
+								if ( !multi ) field.trigger('change');
 							break;
 						}
 					} else if (tag == 'select') {
-						$('option', field).removeAttr('selected').filter('[value="'+val+'"]').filter(function() { return $(this).css('display').toLowerCase() != 'none'; }).attr('selected', 'selected');
-						field.trigger('change')
+						$('option', field).removeAttr('selected').filter('[value="'+escape(val)+'"]').filter(function() { return $(this).css('display').toLowerCase() != 'none'; }).attr('selected', 'selected');
+						if ( !multi )
+							field.trigger('change')
 					} else if (tag == 'textarea') {
-						field.val(val).trigger('change');;
+						field.val(val);
+						if ( !multi )
+							field.trigger('change')
 					}
 				}
 			}
@@ -837,6 +846,7 @@ QS.EditSetting = (function($, EventUI_Callbacks, undefined) {
 	};
 
 	$.fn.qsEditSetting = function(o) {
+		try {
 		if (typeof o == 'string') {
 			var es = startEditSetting($(this));
 			if (typeof es[o] == 'function') {
@@ -845,6 +855,9 @@ QS.EditSetting = (function($, EventUI_Callbacks, undefined) {
 			}
 		} else {
 			return this.each(function() { return startEditSetting($(this), o); });
+		}
+		} catch(e) {
+			console.log( 'ERROR', o, e, e.lineNumber, e.fileName, e.stack.split(/\n/) );
 		}
 	};
 
@@ -909,6 +922,16 @@ QS.EditSetting = (function($, EventUI_Callbacks, undefined) {
 	});
 
 	EditSetting.callbacks = new EventUI_Callbacks();
+
+	function update_min_height() {
+		var opt = $( '.option-sub[rel="settings"]' ), bulk = opt.find( '.bulk-edit-settings' ), h = bulk.css('display') == 'none', bulkhei = bulk.show().outerHeight( true );
+		if ( h ) bulk.hide();
+		opt.css( { minHeight:bulkhei } );
+	}
+	function delay_update() { setTimeout(update_min_height, 500); }
+	EditSetting.callbacks.add( 'open', delay_update );
+	EditSetting.callbacks.add( 'close', delay_update );
+	$(update_min_height);
 
 	return EditSetting;
 })(jQuery, QS.EventUI_Callbacks);
@@ -1101,31 +1124,33 @@ QS.EditSetting = (function($, EventUI_Callbacks, undefined) {
 	// custom date parser
 	function yyyy_mm_dd__hh_iitt(str) {
 		var m = str.match(/(\d{4})-(\d{1,2})-(\d{1,2})(\s+(\d{1,2})(:(\d{2})(:(\d{2}))?)?\s*((p|a)m?)?)?/i);
-		// new XDate(year, month, date, hours, minutes, seconds, milliseconds)
-		var args = {
-			year: parseInt(forParse(m[1])),
-			month: parseInt(forParse(m[2])) - 1, // retarded native date 0 indexing of months... retards
-			day: parseInt(forParse(m[3])),
-			hours: parseInt(forParse(m[5])),
-			minutes: parseInt(forParse(m[7])),
-			seconds: parseInt(forParse(m[9]))
-		};
-		args.hours = m[11].toLowerCase() == 'p' && args.hours != 12
-				? args.hours + 12
-				: ( m[11].toLowerCase() == 'a' && args.hours == 12
-						? 0
-						: args.hours);
-		for (i in args) if (isNaN(args[i])) args[i] = i == 'month' ? -1 : 0;
+		if ( QS.Tools.isA( m ) ) {
+			// new XDate(year, month, date, hours, minutes, seconds, milliseconds)
+			var args = {
+				year: parseInt(forParse(m[1])),
+				month: parseInt(forParse(m[2])) - 1, // retarded native date 0 indexing of months... retards
+				day: parseInt(forParse(m[3])),
+				hours: parseInt(forParse(m[5])),
+				minutes: parseInt(forParse(m[7])),
+				seconds: parseInt(forParse(m[9]))
+			};
+			args.hours = m[11].toLowerCase() == 'p' && args.hours != 12
+					? args.hours + 12
+					: ( m[11].toLowerCase() == 'a' && args.hours == 12
+							? 0
+							: args.hours);
+			for (i in args) if (isNaN(args[i])) args[i] = i == 'month' ? -1 : 0;
 
-		if (args.year > 0 && args.month > -1 && args.day > 0) {
-			return new XDate(
-				args.year,
-				args.month,
-				args.day,
-				args.hours,
-				args.minutes,
-				args.seconds
-			);
+			if (args.year > 0 && args.month > -1 && args.day > 0) {
+				return new XDate(
+					args.year,
+					args.month,
+					args.day,
+					args.hours,
+					args.minutes,
+					args.seconds
+				);
+			}
 		}
 	}
 

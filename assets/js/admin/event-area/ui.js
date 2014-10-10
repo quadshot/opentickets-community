@@ -1,5 +1,7 @@
 var _qsot_event_area_settings = _qsot_event_area_settings || {};
-var qcon = console;
+var QS = QS || {};
+QS.EventAreaUICB = new QS.EventUI_Callbacks();
+
 (function($, qt) {
 	var S = $.extend({ ajaxurl:'/wp-admin/admin-ajax.php', nonce:false, venue_id:false }, _qsot_event_area_settings),
 			els = {}, next_id = -1;
@@ -97,12 +99,10 @@ var qcon = console;
 	}
 
 	function update_display(item) {
-		console.log('update', item, item.data('item'));
 		var data = item.data('item'),
 				ticket = qt.is(S.tickets[data.meta._pricing_options])
 					? S.tickets[data.meta._pricing_options].post
 					: { ID:0, post_title:'(none)', meta:{ price:'<span class="amount">0</span>' } };
-		qcon.log('item', item, data);
 		update_field('[rel="area-id"]', item, data.ID);
 		update_field('[rel="area-name"]', item, data.post_title);
 		update_field('[rel="img-id"]', item, data.meta._thumbnail_id);
@@ -117,6 +117,8 @@ var qcon = console;
 			if (data.imgs[size][0])
 				$('<img src="'+data.imgs[size][0]+'" />').appendTo($(this).empty());
 		});
+
+		QS.EventAreaUICB.trigger( 'updated-display', [ update_field, item, data, ticket ] );
 	}
 
 	function toggle_edit_item(e) {
