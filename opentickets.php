@@ -5,10 +5,15 @@ if (!class_exists('QSOT')):
 class QSOT {
 	protected static $o = null; // holder for all options of the events plugin
 	protected static $ajax = false;
-	protected static $me = '';
 	protected static $memory_error = '';
 	protected static $wc_latest = '2.2.0';
 	protected static $wc_back_one = '2.1.0';
+
+	protected static $me = '';
+	protected static $version = '';
+	protected static $plugin_url = '';
+	protected static $plugin_dir = '';
+	protected static $product_url = '';
 
 	public static function pre_init() {
 		// load the settings. theya re required for everything past this point
@@ -17,6 +22,10 @@ class QSOT {
 		self::$o = call_user_func_array(array($settings_class_name, "instance"), array());
 
 		self::$me = plugin_basename(self::$o->core_file);
+		self::$version = self::$o->version;
+		self::$plugin_dir = self::$o->core_dir;
+		self::$plugin_url = self::$o->core_url;
+		self::$product_url = self::$o->product_url;
 
 		if (!self::_memory_check()) return;
 
@@ -58,6 +67,12 @@ class QSOT {
 
 		add_filter('plugin_action_links', array(__CLASS__, 'plugins_page_actions'), 10, 4);
 	}
+
+	public static function me() { return self::$me; }
+	public static function version() { return self::$version; }
+	public static function plugin_dir() { return self::$plugin_dir; }
+	public static function plugin_url() { return self::$plugin_url; }
+	public static function product_url() { return self::$product_url; }
 
 	public static function is_wc_latest() {
 		static $answer = null;

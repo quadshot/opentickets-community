@@ -456,6 +456,7 @@ class qsot_post_type {
 		$event = get_post($event_id);
 
 		if (is_object($event) && isset($event->post_type) && $event->post_type == self::$o->core_post_type) {
+			$event->parent_post_title = get_the_title( $event->post_parent );
 			$event = apply_filters('qsot-event-add-meta', $event, $event_id);
 		} else {
 			$event = $current;

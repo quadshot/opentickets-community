@@ -12,9 +12,10 @@ body { margin:0; background-color:white; }
 .page-wrap { width:700px; font-family:Helvetica, Arial, sans-serif; }
 .page-wrap .venue-info,
 .page-wrap .ticket-wrap { padding:20px 0; margin:0 20px; page-break-inside:avoid; }
-.page-wrap .ticket-wrap .inner-wrap { border:1px solid #555555; padding:10px; }
+.page-wrap .ticket-wrap .inner-wrap { border:1px solid #555555; padding:10px 10px 17px; position:relative; }
 .page-wrap table { width:100%; }
 .page-wrap table td { vertical-align:top; padding:0; margin:0; border:0; }
+.page-wrap .ot-tiny-logo { position:absolute; bottom:2px; left:2px; }
 
 .page-wrap h2 { margin:0 0 3px 0; padding:0; }
 
