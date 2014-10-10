@@ -83,18 +83,21 @@ class QSOT_tickets {
 		$link = $link ? add_query_arg(array('n' => $auth), $link) : $link;
 		if (empty($link)) return;
 
-		$title = 'View your ticket';
-		$display = 'View this ticket';
+		$label = __( 'Ticket', 'qsot' );
+		$title = __( 'View your ticket', 'qsot' );
+		$display = __( 'View this ticket', 'qsot' );
 		if ($item['qty'] > 1) {
-			$title .= 's';
-			$display = 'View these tickets';
+			$label = __( 'Tickets', 'qsot' );
+			$title = __( 'View your tickets', 'qsot' );
+			$display = __( 'View these tickets', 'qsot' );
 		}
 
 		echo sprintf(
-			'<br/><small> - <a class="ticket-link" href="%s" target="_blank" title="%s">%s</a></small>',
+			'<br/><small><strong>%s:</strong> <a class="ticket-link" href="%s" target="_blank" title="%s">%s</a></small>',
+			$label,
 			$link,
-			__($title),
-			__($display)
+			$title,
+			$display
 		);
 	}
 
