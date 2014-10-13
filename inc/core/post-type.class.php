@@ -25,6 +25,8 @@ class qsot_post_type {
 				self::_setup_admin_options();
 			}
 
+			add_action( 'load-options-permalink.php', array( __CLASS__, 'permalink_settings_page' ), 1000 );
+
 			// setup the post type at the appropriate time
 			//add_action('init', array(__CLASS__, 'register_post_type'), 1);
 			add_filter('qsot-events-core-post-types', array(__CLASS__, 'register_post_type'), 1, 1);
@@ -669,8 +671,10 @@ class qsot_post_type {
 	public static function register_post_type( $list) {
 		// needs to be it's own local variable, so that we can pass it as a 'used' variable to the anonymous function we make later
 		$corept = self::$o->core_post_type;
+		$rwslug = get_option( 'qsot_event_permalink_slug' );
+		$rwslug = empty( $rwslug ) ? $corept : $rwslug;
 
-		$list[self::$o->core_post_type] = array(
+		$list[$corept] = array(
 			'label_replacements' => array(
 				'plural' => 'Events', // plural version of the proper name, used in the slightly modified labels in my _register_post_type method
 				'singular' => 'Event', // singular version of the proper name, used in the slightly modified labels in my _register_post_type method
@@ -687,11 +691,11 @@ class qsot_post_type {
 					'custom-fields',
 				),
 				'hierarchical' => true,
-				'rewrite' => array('slug' => self::$o->core_post_rewrite_slug),
+				'rewrite' => array( 'slug' => $rwslug ),
 				//'register_meta_box_cb' => array(__CLASS__, 'core_setup_meta_boxes'),
 				//'capability_type' => 'event',
 				'show_ui' => true,
-				'taxonomies' => array('category', 'post_tag'),
+				'taxonomies' => array( 'category', 'post_tag' ),
 				'permalink_epmask' => EP_PAGES,
 			),
 		);
@@ -1430,6 +1434,47 @@ class qsot_post_type {
 				<?php do_action('qsot-events-more-settings') ?>
 			</div>
 		<?php
+	}
+
+	public static function add_permalinks_settings_page_settings() {
+		$current = array(
+			'permalink_slug' => get_option( 'qsot_event_permalink_slug' ),
+		);
+		?>
+			<table class="form-table">
+				<tbody>
+					<tr>
+						<th scope="row"><label for="qsot_event_permalink_slug"><?php _e( 'Event base', 'qsot' ) ?></label></th>
+						<td>
+							<input id="qsot_event_permalink_slug" class="widefat" type="text" name="qsot_event_permalink_slug" value="<?php echo esc_attr( $current['permalink_slug'] ) ?>" /><br/>
+							<span class="description">Enter a custom base to use. This url segment will prefix the event name in the url.<br/>
+								<code>example: <?php echo site_url( '/<strong>event</strong>/my-event_' . date_i18n( 'Y-m-d_H00a' ) . '/' ) ?></code></span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<input type="hidden" name="qsot_event_permalinks_settings" value="<?php echo esc_attr( wp_create_nonce( 'qsot-permalink-settings' ) ) ?>" />
+		<?php
+	}
+
+	public static function permalink_settings_page() {
+		self::_maybe_save_permalink_settings();
+		global $wp_settings_sections, $wp_settings_fields;
+
+		$wp_settings_sections['permalink']['opentickets-permalink'] = array(
+			'id' => 'opentickets-permalink',
+			'title' => 'Event permalink base',
+			'callback' => array(
+				__CLASS__,
+				'add_permalinks_settings_page_settings',
+			),
+		);
+	}
+
+	protected static function _maybe_save_permalink_settings() {
+		if ( isset( $_POST['qsot_event_permalinks_settings'] ) && wp_verify_nonce( $_POST['qsot_event_permalinks_settings'], 'qsot-permalink-settings' ) ) {
+			update_option( 'qsot_event_permalink_slug', $_POST['qsot_event_permalink_slug'] );
+		}
 	}
 
 	protected static function _setup_admin_options() {
