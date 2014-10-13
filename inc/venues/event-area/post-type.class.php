@@ -539,9 +539,9 @@ class qsot_event_area {
 	}
 
 	public static function handle_ajax_admin() {
-		$post = wp_parse_args($_POST, array('sa' => '', 'venue_id' => 0, 'nonce' => ''));
+		$post = wp_parse_args($_POST, array('sa' => '', 'venue_id' => 0, 'check_venue_id' => 0, 'nonce' => ''));
 		$resp = array();
-		if (wp_verify_nonce($post['nonce'], 'event-areas-for-'.$post['venue_id'])) {
+		if (wp_verify_nonce($post['nonce'], 'event-areas-for-'.$post['check_venue_id'])) {
 			if (!empty($post['sa'])) $resp = apply_filters('qsot-event-area-admin-ajax-'.$post['sa'], $resp, $post);
 		} else {
 			$resp['s'] = false;

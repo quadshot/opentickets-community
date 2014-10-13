@@ -3,11 +3,11 @@ var QS = QS || {};
 QS.EventAreaUICB = new QS.EventUI_Callbacks();
 
 (function($, qt) {
-	var S = $.extend({ ajaxurl:'/wp-admin/admin-ajax.php', nonce:false, venue_id:false }, _qsot_event_area_settings),
+	var S = $.extend({ ajaxurl:'/wp-admin/admin-ajax.php', nonce:false, venue_id:0 }, _qsot_event_area_settings),
 			els = {}, next_id = -1;
 
 	function aj(sa, data, func, efunc) {
-		var data = $.extend({}, data, { action:'qsot-event-area', sa:sa, nonce:S.nonce, venue_id:S.venue_id }),
+		var data = $.extend({}, data, { action:'qsot-event-area', sa:sa, nonce:S.nonce, venue_id:$( '#post_ID' ).val(), check_venue_id:S.venue_id }),
 				func = func || function(){},
 				efunc = efunc || function(){};
 
