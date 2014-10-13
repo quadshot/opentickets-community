@@ -139,6 +139,11 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.6.6 =
+* added setting to customize the event base url (@Temitayo Akeem)
+* repaired 'user profile'/'edit user' page php errors
+* repaired 'new event area' on 'new venue' bug (@cbell)
+
 = 1.6.5 =
 * added filter to inform other plugins of sub-event save
 * added more javascript hooks
