@@ -88,7 +88,7 @@ class qsot_event_area {
 			// load admin assets for the event edit page
 			add_action('qsot-events-edit-page-assets', array(__CLASS__, 'load_event_settings_assets'), 10, 2);
 			// laod assets for venue edit page
-			add_action('qsot-admin-load-assets-'.self::$o->{'venue.post_type'}, array(__CLASS__, 'load_admin_assets'), 10, 2);
+			add_action('qsot-admin-load-assets-qsot-venue', array(__CLASS__, 'load_admin_assets'), 10, 2);
 			// js templates for the admin
 			add_filter('qsot-event-area-admin-templates', array(__CLASS__, 'admin_templates'), 10, 2);
 

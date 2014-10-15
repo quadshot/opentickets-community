@@ -65,6 +65,9 @@ class QSOT {
 		add_action('load-post.php', array(__CLASS__, 'load_assets'), 999);
 		add_action('load-post-new.php', array(__CLASS__, 'load_assets'), 999);
 
+		// register js and css assets at the appropriate time
+		add_action('init', array(__CLASS__, 'register_assets'), 2);
+
 		add_filter('plugin_action_links', array(__CLASS__, 'plugins_page_actions'), 10, 4);
 	}
 
@@ -139,6 +142,28 @@ class QSOT {
 
 		// allow sub/external plugins to load their own stuff right now
 		do_action('qsot-admin-load-assets-'.$post_type, $existing, $post_id);
+	}
+
+	// always register our scripts and styles before using them. it is good practice for future proofing, but more importantly, it allows other plugins to use our js if needed.
+	// for instance, if an external plugin wants to load something after our js, like a takeover js, they will have access to see our js before we actually use it, and will 
+	// actually be able to use it as a dependency to their js. if the js is not yet declared, you cannot use it as a dependency.
+	public static function register_assets() {
+		$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
+
+		// XDate 0.7. used for date calculations when using the FullCalendar plugin. http://arshaw.com/xdate/
+		wp_register_script('xdate', self::$o->core_url.'assets/js/utils/third-party/xdate/xdate.dev.js', array('jquery'), '0.7');
+		// FullCalendar 1.5.4 jQuery plugin. used for all calendar related interfaces. http://arshaw.com/fullcalendar/
+		wp_register_script('fullcalendar', self::$o->core_url.'assets/js/libs/fullcalendar/fullcalendar'.$suffix.'.js', array('jquery','xdate'), '1.5.4');
+		wp_register_style('fullcalendar', self::$o->core_url.'assets/css/libs/fullcalendar/fullcalendar.css', array(), '1.5.4');
+		// json2 library to add JSON window object in case it does not exist
+		wp_register_script('json2', self::$o->core_url.'assets/js/utils/json2.js', array(), 'commit-17');
+		// colorpicker
+		wp_register_script('jqcolorpicker', self::$o->core_url.'assets/js/libs/cp/colorpicker.js', array('jquery'), '23.05.2009');
+		wp_register_style('jqcolorpicker', self::$o->core_url.'assets/css/libs/cp/colorpicker.css', array(), '23.05.2009');
+		// generic set of tools for our js work. almost all written by Loushou
+		wp_register_script('qsot-tools', self::$o->core_url.'assets/js/utils/tools.js', array('jquery', 'json2', 'xdate'), '0.2-beta');
+		// jQueryUI theme for the admin
+		wp_register_style('qsot-jquery-ui', self::$o->core_url.'assets/css/libs/jquery/jquery-ui-1.10.1.custom.min.css', array(), '1.10.1');
 	}
 
 	public static function prepend_overtake_autoloader() {
@@ -236,8 +261,13 @@ class QSOT {
 	}
 
 	public static function only_search_parent_events($query, $group, $search_term, $page) {
-		if ($query['post_type'] == self::$o->core_post_type) {
-			$query['post_parent'] = 0;
+		if ( isset( $query['post_type'] ) ) {
+			if ( ! isset( $query['post_type'] ) && (
+				( is_array( $query['post_type'] ) && in_array( self::$o->core_post_type, $query['post_type'] ) ) ||
+				( is_scalar( $query['post_type'] ) && $query['post_type'] == self::$o->core_post_type )
+			) ) {
+				$query['post_parent'] = 0;
+			}
 		}
 		return $query;
 	}

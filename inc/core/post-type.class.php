@@ -565,24 +565,10 @@ class qsot_post_type {
 	public static function register_assets() {
 		$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
 
-		// XDate 0.7. used for date calculations when using the FullCalendar plugin. http://arshaw.com/xdate/
-		wp_register_script('xdate', self::$o->core_url.'assets/js/utils/third-party/xdate/xdate.dev.js', array('jquery'), '0.7');
-		// FullCalendar 1.5.4 jQuery plugin. used for all calendar related interfaces. http://arshaw.com/fullcalendar/
-		wp_register_script('fullcalendar', self::$o->core_url.'assets/js/libs/fullcalendar/fullcalendar'.$suffix.'.js', array('jquery','xdate'), '1.5.4');
-		wp_register_style('fullcalendar', self::$o->core_url.'assets/css/libs/fullcalendar/fullcalendar.css', array(), '1.5.4');
-		// json2 library to add JSON window object in case it does not exist
-		wp_register_script('json2', self::$o->core_url.'assets/js/utils/json2.js', array(), 'commit-17');
-		// colorpicker
-		wp_register_script('jqcolorpicker', self::$o->core_url.'assets/js/libs/cp/colorpicker.js', array('jquery'), '23.05.2009');
-		wp_register_style('jqcolorpicker', self::$o->core_url.'assets/css/libs/cp/colorpicker.css', array(), '23.05.2009');
-		// generic set of tools for our js work. almost all written by Loushou
-		wp_register_script('qsot-tools', self::$o->core_url.'assets/js/utils/tools.js', array('jquery', 'json2', 'xdate'), '0.2-beta');
 		// main event ui js. combines all the moving parts to make the date/time selection process more user friendly than other crappy event plugins
 		wp_register_script('qsot-event-ui', self::$o->core_url.'assets/js/admin/event-ui.js', array('qsot-tools', 'fullcalendar'), self::$o->version);
 		// initialization js. initializes all the moving parts. called at the top of the edit event page
 		wp_register_script('qsot-events-admin-edit-page', self::$o->core_url.'assets/js/admin/edit-page.js', array('qsot-event-ui', 'jquery-ui-datepicker'), self::$o->version);
-		// jQueryUI theme for the admin
-		wp_register_style('qsot-jquery-ui', self::$o->core_url.'assets/css/libs/jquery/jquery-ui-1.10.1.custom.min.css', array(), '1.10.1');
 		// general additional styles for the event ui interface
 		wp_register_style('qsot-admin-styles', self::$o->core_url.'assets/css/admin/ui.css', array('qsot-jquery-ui'), self::$o->version);
 		// ajax js
