@@ -140,7 +140,7 @@ Setup an 'Event':
 == Changelog ==
 
 = 1.6.7 =
-* updated javasript declaration locations in an attempt to resolve event area add button bug
+* updated javasript declaration locations which resolves the event area add button bug
 
 = 1.6.6 =
 * added setting to customize the event base url (@Temitayo Akeem)
