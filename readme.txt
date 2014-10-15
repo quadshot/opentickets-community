@@ -139,6 +139,9 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.6.7 =
+* updated javasript declaration locations in an attempt to resolve event area add button bug
+
 = 1.6.6 =
 * added setting to customize the event base url (@Temitayo Akeem)
 * repaired 'user profile'/'edit user' page php errors
