@@ -176,7 +176,7 @@ QS.adminTicketSelection = (function($, qs, qt) {
 					_load_calendar(new XDate(), ['There was a problem loading the requested Event. Switching to calendar view.']);
 					return;
 				}
-				console.log('event', r);
+				//console.log('event', r);
 
 				t.ev = r.data;
 
@@ -195,6 +195,8 @@ QS.adminTicketSelection = (function($, qs, qt) {
 				if (qt.isO(r.data._imgs) && qt.isO(r.data._imgs.full) && typeof r.data._imgs.full.url)
 					$('<div class="event-area-image"><img src="'+r.data._imgs.full.url+'" title="'+r.data.name+'" /></div>').appendTo(t.e.ev.find('[rel="image-wrap"]').empty());
 
+				ui.callbacks.trigger( 'load-event', [ r, t.e ] );
+
 				t.e.all.hide();
 				$(t.e.info).add(t.e.actions).add(t.e.ev).fadeIn(200);
 			});
@@ -211,6 +213,8 @@ QS.adminTicketSelection = (function($, qs, qt) {
 
 			var dt = new XDate(dt);
 			t.cal.cal.fullCalendar('gotoDate', dt.getFullYear(), dt.getMonth());
+
+			ui.callbacks.trigger( 'load-calendar', [ dt, t.e ] );
 		}
 
 		function _select_event(e, calEvent) {
@@ -283,6 +287,8 @@ QS.adminTicketSelection = (function($, qs, qt) {
 			});
 			t.cal = new QSEventsEventCalendar(args);
 			t.cal.cal.fullCalendar('gotoDate', today.getFullYear(), today.getMonth());
+
+			ui.callbacks.trigger( 'setup-elements', [ t.e ] );
 		}
 
 		function _setup_events() {
@@ -295,6 +301,9 @@ QS.adminTicketSelection = (function($, qs, qt) {
 
 		_init();
 	}
+
+	ui.aj = aj;
+	ui.callbacks = new QS.EventUI_Callbacks();
 
 	return ui;
 })(jQuery, QS, QS.Tools);

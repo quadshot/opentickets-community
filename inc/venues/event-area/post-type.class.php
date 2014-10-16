@@ -621,13 +621,16 @@ class qsot_event_area {
 				'post_status' => 'inherit',
 			);
 			if ($item['id'] > 0) $args['ID'] = $item['id'];
+
 			$old_id = $item['id'];
 			$id = wp_insert_post($args);
+
 			if ($id) {
 				$resp['s'] = true;
 				update_post_meta($id, self::$o->{'event_area.mk.cap'}, $item['capacity']);
 				update_post_meta($id, self::$o->{'event_area.mk.img'}, $item['image_id']);
 				update_post_meta($id, self::$o->{'event_area.mk.po'}, $item['ttid']);
+				do_action( 'qsot-save-event-area', $old_id, $id, $item );
 				$resp['items'][$old_id] = apply_filters('qsot-get-venue-event-areas', array(), $venue_id, $id);
 			} else {
 				$resp['e'][] = 'There was a problem saving the area ['.$item['area-name'].'].';

@@ -28,6 +28,7 @@ QS.EventAreaUICB = new QS.EventUI_Callbacks();
 
 	function refresh_event_areas() {
 		els.mb.qsBlock();
+		QS.EventAreaUICB.trigger( 'before-load', [] );
 		aj(
 			'load',
 			{},
@@ -45,6 +46,7 @@ QS.EventAreaUICB = new QS.EventUI_Callbacks();
 						update_display(item);
 					}
 				}
+				QS.EventAreaUICB.trigger( 'after-load', [ update_field, r, els.al ] );
 				els.mb.qsUnblock();
 			},
 			function() { els.eaa.qsUnblock(); }
@@ -137,6 +139,7 @@ QS.EventAreaUICB = new QS.EventUI_Callbacks();
 	function save_item(e) {
 		var t = this, btn = $(t), item = btn.closest('[rel="item"]'), data = item.louSerialize();
 		item.qsBlock({ msg:'<h1>Saving...</h1>' });
+		QS.EventAreaUICB.trigger( 'before-save', [ update_field, item, data ] );
 		aj(
 			'save-item',
 			data,
@@ -159,6 +162,7 @@ QS.EventAreaUICB = new QS.EventUI_Callbacks();
 					var el = item.find('.edit [rel="error-list"]').empty();
 					$('<div class="error">An unknown error occured.</div>').appendTo(el);
 				}
+				QS.EventAreaUICB.trigger( 'after-save', [ update_field, r, item, data ] );
 				item.qsUnblock();
 			},
 			function() {
@@ -179,6 +183,7 @@ QS.EventAreaUICB = new QS.EventUI_Callbacks();
 		}
 
 		if (confirm('Are you sure you want to delete the Event Area ['+iobj.post_title+'] ?')) {
+			QS.EventAreaUICB.trigger( 'before-delete', [ update_field, item, data ] );
 			aj('delete-item', data, function(r) {
 				if (r.s) {
 					alert('Successfully removed the event area ['+iobj.post_title+'].');
@@ -186,6 +191,7 @@ QS.EventAreaUICB = new QS.EventUI_Callbacks();
 				} else {
 					alert('ERROR: There was a problem removing that event area.');
 				}
+				QS.EventAreaUICB.trigger( 'after-delete', [ update_field, item, data ] );
 			});
 		}
 	}
@@ -198,6 +204,7 @@ QS.EventAreaUICB = new QS.EventUI_Callbacks();
 		panels.edit.find('input, select, textarea').removeAttr('disabled');
 		item.data({ item:data, panels:panels });
 		update_ticket_list(item, false);
+		update_display(item);
 	}
 
 	function maybe_none_msg() {
