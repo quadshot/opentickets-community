@@ -139,6 +139,10 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.6.8 =
+* added multiple hooks to help support new multi price plugin
+* fixed bug with event area image selection, when adding multiple EAs
+
 = 1.6.7 =
 * updated javasript declaration locations which resolves the event area add button bug
 
