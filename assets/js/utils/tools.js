@@ -120,7 +120,6 @@ QS.popMediaBox = (function($, qt) {
 				preview_cont = qt.is(args.pc) ? ( qt.isO(args.pc) ? args.pc : par.find(args.pc) ) : ( (preview_cont = par.find('[rel="image-preview"]')) ? preview_cont : $() ),
 				on_select = qt.isF(args.on_select) ? args.on_select : function() {
 					var attachment = custom.state().get('selection').first().attributes;
-					console.log('attachment', attachment);
 					if (id_field.length) id_field.val(attachment.id);
 					if (preview_cont.length) {
 						preview_cont.each(function() {
@@ -129,15 +128,13 @@ QS.popMediaBox = (function($, qt) {
 									size = qt.is(args.size) ? args.size : ( ( size = t.attr('size') ) ? size : 'thumb')
 									size = size == 'thumb' ? 'thumbnail' : size;
 							if (qt.is(attachment.sizes[size]) && qt.is(attachment.sizes[size].url)) url = attachment.sizes[size].url;
-							console.log('size', t.attr('size'), size, attachment.sizes);
-							console.log('size extended', qt.is(attachment.sizes[size]), qt.is(attachment.sizes[size].url), url, attachment.sizes);
 							$('<img src="'+url+'" class="preview-image" />').appendTo(t.empty());
 						});
 					}
 				};
 
     if ( custom ) {
-      custom.state('select-image').on('select', on_select);
+      custom.state('select-image').off('select').on('select', on_select);
       custom.open();
       return;
     } else {
@@ -164,7 +161,7 @@ QS.popMediaBox = (function($, qt) {
         }),
       ]);
 
-      custom.state('select-image').on('select', on_select);
+      custom.state('select-image').off('select').on('select', on_select);
       custom.open();
     }
   }
