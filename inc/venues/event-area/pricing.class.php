@@ -141,7 +141,7 @@ class qsot_seat_pricing {
 				'line_tax' => $tax,
 			);
 			$item = apply_filters('qsot-reserve-admin-item-meta', $item, $product, $event, $order, $ticket_type_id, $count);
-			self::_add_order_item($order->id, $item);
+			$current_item_id = self::_add_order_item($order->id, $item);
 		} else {
 			wc_update_order_item_meta($current_item_id, '_qty', $count);
 			wc_update_order_item_meta($current_item_id, '_line_subtotal', wc_format_decimal($pex));
@@ -149,6 +149,8 @@ class qsot_seat_pricing {
 			wc_update_order_item_meta($current_item_id, '_line_subtotal_tax', wc_format_decimal($stax));
 			wc_update_order_item_meta($current_item_id, '_line_tax', wc_format_decimal($tax));
 		}
+
+		do_action( 'qsot-reserve-admin-order-item', $current_item_id, $item, $order->id, $event, $product, $count );
 	}
 
 	protected static function _add_order_item($order_id, $item) {
@@ -172,7 +174,9 @@ class qsot_seat_pricing {
 		 	wc_update_order_item_meta( $item_id, '_line_tax', $item['line_tax'] );
 	 	}
 
-		do_action( 'woocommerce_ajax_add_order_item_meta', $item_id, $item );
+		do_action( 'woocommerce_ajax_add_order_item_meta', $item_id, $item, $order_id );
+
+		return $item_id;
 	}
 
 	public static function before_delete_order($order_id) {

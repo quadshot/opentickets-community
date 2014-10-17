@@ -692,8 +692,10 @@ class qsot_event_area {
 				}
 			}
 			$resp['data']['_owns'] = 0;
-			$owns = apply_filters('qsot-zoner-owns', 0, $event, $event->meta->_event_area_obj->ticket->id, false, false, $order->id);
-			if (is_array($owns)) foreach ($owns as $state => $cnt) $resp['data']['_owns'] += $cnt;
+			if ( isset( $event->meta, $event->meta->_event_area_obj, $event->meta->_event_area_obj->ticket ) && $event->meta->_event_area_obj->ticket->id > 0 ) {
+				$owns = apply_filters('qsot-zoner-owns', 0, $event, $event->meta->_event_area_obj->ticket->id, false, false, $order->id);
+				if (is_array($owns)) foreach ($owns as $state => $cnt) $resp['data']['_owns'] += $cnt;
+			}
 		}
 
 		return $resp;

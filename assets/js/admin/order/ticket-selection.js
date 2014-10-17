@@ -296,8 +296,13 @@ QS.adminTicketSelection = (function($, qs, qt) {
 			t.e.scope.on('click', '.change-ticket', _start_change_ui);
 			t.e.actions.on('click', '[rel="change-btn"]', _start_change_event);
 			t.e.actions.on('click', '[rel="use-btn"]', _update_ticket);
-			t.e.ev.on('click', '[rel="add-btn"]', _add_tickets);
+			t.e.ev.on('click', '[rel="add-btn"]', t.add_tickets);
 		}
+
+		t.add_tickets = _add_tickets;
+		t._dia_error = _dia_error;
+		t._dia_msgs = _dia_msgs;
+		t._update_order_items = _update_order_items;
 
 		_init();
 	}
@@ -305,10 +310,15 @@ QS.adminTicketSelection = (function($, qs, qt) {
 	ui.aj = aj;
 	ui.callbacks = new QS.EventUI_Callbacks();
 
+	var instance = undefined;
+	ui.start = function( o, e ) {
+		if ( instance instanceof ui ) return instance;
+		return ( instance = new QS.adminTicketSelection( o, e ) );
+	};
+
 	return ui;
 })(jQuery, QS, QS.Tools);
 
 jQuery(function($) {
-	var ts = new QS.adminTicketSelection({
-	}, 'body');
+	var ts = QS.adminTicketSelection.start( {}, 'body' );
 });
