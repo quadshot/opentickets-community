@@ -210,7 +210,7 @@ class qsot_seat_pricing {
 			if (($ocuid = get_post_meta($order_id, '_customer_user', true))) $cuids[] = $ocuid;
 			if (empty($cuids)) return; // required. otherwise ALL reserved tickets for this event will be updated to confirmed... which is wrong
 
-			$order = new WC_Order($order_id);
+			$order = wc_get_order($order_id);
 			
 			foreach ($order->get_items() as $item_id => $item) {
 				if (!apply_filters('qsot-item-is-ticket', false, $item)) continue;
@@ -219,13 +219,26 @@ class qsot_seat_pricing {
 					false,
 					// completed or reserved, because we may be going from a confirmed status to a confirmed status.
 					// if only reserved is used, then any already confirmed tickets get deleted
-					array('event_id' => $item['event_id'], 'qty' => $item['qty'], 'state' => array(self::$o->{'z.states.r'}, self::$o->{'z.states.c'}), 'order_id' => array(0, $order_id), 'customer_id' => $cuids),
-					array('state' => self::$o->{'z.states.c'}, 'order_id' => $order_id, 'customer_id' => empty($ocuid) ? $customer_id : $ocuid, 'order_item_id' => $item_id)
+					array(
+						'event_id' => $item['event_id'],
+						'qty' => $item['qty'],
+						'state' => array( self::$o->{'z.states.r'}, self::$o->{'z.states.c'} ),
+						'order_id' => array( 0, $order_id ),
+						'ticket_type_id' => $item['product_id'],
+						'customer_id' => $cuids,
+					),
+					array(
+						'state' => self::$o->{'z.states.c'},
+						'order_id' => $order_id,
+						'customer_id' => empty( $ocuid ) ? $customer_id : $ocuid,
+						'order_item_id' => $item_id
+					)
 				);
+
 				do_action('qsot-confirmed-ticket', $order, $item, $item_id);
 			}
 		} else if (in_array($new_status, apply_filters('qsot-zoner-unconfirm-statuses', array('cancelled')))) {
-			$order = new WC_Order($order_id);
+			$order = wc_get_order($order_id);
 			$ocuid = get_post_meta($order_id, '_customer_user', true);
 
 			self::_unconfirm_tickets($order, '*', true, array('new_status' => $new_status, 'old_status' => $old_status));
