@@ -139,6 +139,9 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.6.9 =
+* added more filters and hooks for extensions
+
 = 1.6.8 =
 * added multiple hooks to help support new multi price plugin
 * fixed bug with event area image selection, when adding multiple EAs
