@@ -139,6 +139,9 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.6.10 =
+* repaired ticket confirmation code to be more universal
+
 = 1.6.9 =
 * added more filters and hooks for extensions
 
