@@ -139,6 +139,9 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.6.11 =
+* repaired 'my-orders' section of the my account printout on the edit user page in the admin (thanks @rjh1990)
+
 = 1.6.10 =
 * repaired ticket confirmation code to be more universal
 
