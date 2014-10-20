@@ -173,7 +173,7 @@ class qsot_my_account_takeover {
 		$woocommerce->session = isset( $woocommerce->session ) && $woocommerce->session instanceof $session_class ? $woocommerce->session : new $session_class();
 
 		if (!is_object($woocommerce->customer)) $woocommerce->customer = new WC_Customer();
-		query_posts(array('post_type' => 'shop_order', 'posts_per_page' => 1));
+		query_posts(array('post_type' => 'shop_order', 'posts_per_page' => 1, 'post_status' => 'any'));
 		if ( have_posts() ) the_post();
 
 		if ( ! is_user_logged_in() ) {
