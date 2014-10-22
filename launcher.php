@@ -76,6 +76,11 @@ class opentickets_community_launcher {
 
 	protected static function _is_woocommerce_active() {
 		$active = get_option('active_plugins');
+		$network = defined( 'MULTISITE' ) && MULTISITE ? get_site_option( 'active_sitewide_plugins' ) : array();
+		$active = is_array( $active ) ? $active : array();
+		$network = is_array( $network ) ? $network : array();
+		$active = array_merge( array_keys( $network ), $active );
+
 		$is_active = in_array('woocommerce/woocommerce.php', $active);
 		// search for github-zip versions
 		if ( ! $is_active ) {
