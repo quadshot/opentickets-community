@@ -139,6 +139,10 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.6.13 =
+* added code to update internal table names when switching blogs
+* improved woocommerce check to include network plugins
+
 = 1.6.12 =
 * added better error handling on ticket reservation form
 * improved 'qsBlock' code to adjust properly to covered element size 

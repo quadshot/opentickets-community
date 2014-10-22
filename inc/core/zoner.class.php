@@ -25,8 +25,8 @@ class qsot_zoner {
 		));
 
 		// setup the db tables for the zone reserver
-		global $wpdb;
-		$wpdb->qsot_event_zone_to_order = $wpdb->prefix.'qsot_event_zone_to_order';
+		self::setup_table_names();
+		add_action( 'switch_blog', array( __CLASS__, 'setup_table_names' ), PHP_INT_MAX, 2 );
 		add_filter('qsot-upgrader-table-descriptions', array(__CLASS__, 'setup_tables'), 10);
 
 		// state timeouts
@@ -643,6 +643,11 @@ class qsot_zoner {
 		}
 
 		return $success;
+	}
+
+	public static function setup_table_names() {
+		global $wpdb;
+		$wpdb->qsot_event_zone_to_order = $wpdb->prefix.'qsot_event_zone_to_order';
 	}
 
 	public static function setup_tables($tables) {
