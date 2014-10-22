@@ -206,7 +206,7 @@ class qsot_event_area {
 					.'<div class="field">'
 						.'<label class="section-heading">Reserve some tickets:</label>'
 						.'<div class="availability-message helper"></div>'
-						.'<span rel="tt_edit"></span>'
+						.'<span rel="tt"></span>'
 						.'<input type="number" step="1" min="0" max="'.$max.'" rel="qty" name="quantity" value="1" class="very-short" />'
 						.'<input type="button" value="Reserve" rel="reserve-btn" class="button" />'
 					.'</div>'
