@@ -24,8 +24,8 @@ class QSOT_tickets {
 
 		// setup the db tables for the ticket code lookup
 		// we offload this to a different table so that we can index the ticket codes for lookup speed
-		global $wpdb;
-		$wpdb->qsot_ticket_codes = $wpdb->prefix.'qsot_ticket_codes';
+		self::setup_table_names();
+		add_action( 'switch_blog', array( __CLASS__, 'setup_table_names' ), PHP_INT_MAX, 2 );
 		add_filter('qsot-upgrader-table-descriptions', array(__CLASS__, 'setup_tables'), 10);
 
 		// handle incoming urls that are for ticket functions
@@ -391,6 +391,11 @@ class QSOT_tickets {
 		}
 
 		return $extra + $current;
+	}
+
+	public static function setup_table_names() {
+		global $wpdb;
+		$wpdb->qsot_ticket_codes = $wpdb->prefix.'qsot_ticket_codes';
 	}
 
 	public static function setup_tables($tables) {
