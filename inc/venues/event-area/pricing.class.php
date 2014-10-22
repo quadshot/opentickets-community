@@ -36,7 +36,6 @@ class qsot_seat_pricing {
 			add_action( 'qsot-sync-cart', array(__CLASS__, 'sync_cart_tickets'), 10 );
 			add_action('woocommerce_order_status_changed', array(__CLASS__, 'order_status_changed'), 100, 3);
 			add_action('woocommerce_before_cart_item_quantity_zero', array(__CLASS__, 'delete_cart_ticket'), 10, 1);
-			add_action('woocommerce_after_cart_item_quantity_update', array(__CLASS__, 'not_more_than_available'), 10, 2);
 			add_filter('woocommerce_get_cart_item_from_session', array(__CLASS__, 'load_item_data'), 20, 3);
 			add_action('woocommerce_add_order_item_meta', array(__CLASS__, 'add_item_meta'), 10, 3);
 			add_action('woocommerce_ajax_add_order_item_meta', array(__CLASS__, 'add_item_meta'), 10, 3);
@@ -49,6 +48,10 @@ class qsot_seat_pricing {
 			add_action('before_delete_post', array(__CLASS__, 'before_delete_order'), 5, 1);
 
 			add_filter('qsot-item-is-ticket', array(__CLASS__, 'item_is_ticket'), 10, 2);
+
+			if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
+				add_action('woocommerce_after_cart_item_quantity_update', array(__CLASS__, 'not_more_than_available'), 10, 2);
+			}
 
 			if (is_admin()) {
 				// admin order editing

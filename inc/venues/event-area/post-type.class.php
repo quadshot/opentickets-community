@@ -356,7 +356,7 @@ class qsot_event_area {
 		$qty = $data['quantity'];
 		if ($qty > 0 && is_object($event) && is_object($event->meta) && is_object($event->meta->_event_area_obj) && is_object($event->meta->_event_area_obj->ticket)) {
 			$res = apply_filters('qsot-zoner-reserve-current-user', false, $event, $event->meta->_event_area_obj->ticket->id, $qty);
-			if ($res) {
+			if ($res && ! is_wp_error( $res ) ) {
 				$resp['s'] = true;
 				$resp['m'] = array('Updated your reservations successfully.');
 				$resp['data'] = array(
@@ -365,6 +365,8 @@ class qsot_event_area {
 				);
 				$resp['data']['available_more'] = $resp['data']['available'] - $resp['data']['owns'];
 				WC()->cart->maybe_set_cart_cookies();
+			} else if ( is_wp_error( $res ) ) {
+				$resp['e'] = array_merge( $res['e'], $res->get_error_messages() );
 			} else {
 				$resp['e'][] = 'Could not update your reservations.';
 			}
@@ -387,51 +389,69 @@ class qsot_event_area {
 		$event = apply_filters('qsot-get-event', false, $data['event_id']);
 		if (is_object($event) && is_object($event->meta) && is_object($event->meta->_event_area_obj) && is_object($event->meta->_event_area_obj->ticket)) {
 			$customer_id = apply_filters('qsot-zoner-current-user', md5(isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : time()));
-			$where = array(
-				'customer_id' => $customer_id,
-				'event_id' => $event->ID,
-				'ticket_type_id' => $event->meta->_event_area_obj->ticket->id,
-				'state' => self::$o->{'z.states.r'},
-			);
-			if ($data['quantity'] <= 0) {
-				$set = array(
-					'qty' => 0,
-					'_delete' => true,
-				);
-			} else {
-				$set = array(
-					'qty' => $data['quantity'],
-				);
-			}
-			$res = apply_filters('qsot-zoner-update-reservation', false, $where, $set);
-			$owns = apply_filters('qsot-zoner-owns-current-user', 0, $event, $event->meta->_event_area_obj->ticket->id, self::$o->{'z.states.r'});
 
-			if ($data['quantity'] <= 0) {
-				if (!$owns && $res) {
-					$resp['s'] = true;
-					$resp['m'] = array('Updated your reservations successfully.');
-					$resp['data'] = array(
-						'owns' => $owns,
-						'available' => $event->meta->available,
+			// get the available occupancy of the event
+			$available = apply_filters('qsot-get-event-available-tickets', 0, $event);
+			// determine how many this person already has reserved
+			$owns = apply_filters( 'qsot-zoner-owns', 0, $event, 0, self::$o->{'z.states.r'}, $customer_id );
+			$owns_all = array_sum( array_values( $owns ) );
+
+			$quantity = $data['quantity'];
+
+			if ( $quantity <= $available ) {
+				$where = array(
+					'customer_id' => $customer_id,
+					'event_id' => $event->ID,
+					'ticket_type_id' => $event->meta->_event_area_obj->ticket->id,
+					'state' => self::$o->{'z.states.r'},
+				);
+				if ($data['quantity'] <= 0) {
+					$set = array(
+						'qty' => 0,
+						'_delete' => true,
 					);
-					$resp['data']['available_more'] = $resp['data']['available'] - $resp['data']['owns'];
 				} else {
-					if ($owns) $resp['e'][] = 'A problem occurred when trying to remove your reservations.';
-					else $resp['e'][] = 'Could not update your reservations.';
+					$set = array(
+						'qty' => $data['quantity'],
+					);
+				}
+				$res = apply_filters('qsot-zoner-update-reservation', false, $where, $set);
+				$owns = apply_filters('qsot-zoner-owns-current-user', 0, $event, $event->meta->_event_area_obj->ticket->id, self::$o->{'z.states.r'});
+
+				if ($data['quantity'] <= 0) {
+					if (!$owns && $res) {
+						$resp['s'] = true;
+						$resp['m'] = array('Updated your reservations successfully.');
+						$resp['data'] = array(
+							'owns' => $owns,
+							'available' => $event->meta->available,
+						);
+						$resp['data']['available_more'] = $resp['data']['available'] - $resp['data']['owns'];
+					} else {
+						if ($owns) $resp['e'][] = 'A problem occurred when trying to remove your reservations.';
+						else $resp['e'][] = 'Could not update your reservations.';
+					}
+				} else {
+					if (!$res || !$owns) {
+						if ($owns) $resp['e'][] = 'A problem occurred when trying to update your reservations.';
+						else $resp['e'][] = 'Could not update your reservations.';
+					} else {
+						$resp['s'] = true;
+						$resp['m'] = array('Updated your reservations successfully.');
+						$resp['data'] = array(
+							'owns' => $owns,
+							'available' => $event->meta->available,
+						);
+						$resp['data']['available_more'] = $resp['data']['available'] - $resp['data']['owns'];
+					}
 				}
 			} else {
-				if (!$res || !$owns) {
-					if ($owns) $resp['e'][] = 'A problem occurred when trying to update your reservations.';
-					else $resp['e'][] = 'Could not update your reservations.';
-				} else {
-					$resp['s'] = true;
-					$resp['m'] = array('Updated your reservations successfully.');
-					$resp['data'] = array(
-						'owns' => $owns,
-						'available' => $event->meta->available,
-					);
-					$resp['data']['available_more'] = $resp['data']['available'] - $resp['data']['owns'];
-				}
+				$resp['e'][] = __( sprintf(
+					'There are not enough available tickets to increase the quantity of %s to %d. There are only %d available.',
+					$event->meta->_event_area_obj->ticket->get_title(),
+					$quantity,
+					$available
+				), 'qsot' );
 			}
 		} else {
 			if (!is_object($event)) $resp['e'][] = 'Could not load that event.';
@@ -716,7 +736,7 @@ class qsot_event_area {
 			if (empty($customer_id)) $customer_id = get_post_meta($order->id, '_customer_id', true);
 			if (empty($customer_id)) $customer_id = md5($order->id);
 			$res = apply_filters('qsot-zoner-reserve', false, $event, $event->meta->_event_area_obj->ticket->id, $qty, $customer_id, $oid);
-			if ($res) {
+			if ( $res && ! is_wp_error( $res ) ) {
 				do_action('qsot-order-admin-added-tickets', $order, $event, $event->meta->_event_area_obj->ticket->id, $qty);
 				$resp['s'] = true;
 			}
@@ -1113,7 +1133,7 @@ class qsot_event_area {
 				$requested_count = $_POST['ticket-count'];
 				if ($requested_count > 0) {
 					$success = apply_filters('qsot-zoner-reserve-current-user', false, $event, $ticket_type_id, $requested_count);
-					if (!$success) {
+					if ( ! $success || is_wp_error( $success ) ) {
 						$available = apply_filters('qsot-get-event-available-tickets', 0, $event, $ticket_type_id);
 						$ticket = get_product($ticket_type_id);
 						$ticket_name = sprintf(
@@ -1145,7 +1165,7 @@ class qsot_event_area {
 				if ($requested_count > 0) {
 					$owns = apply_filters('qsot-zoner-owns-current-user', 0, $event, $ticket_type_id, self::$o->{'z.states.r'});
 					$success = apply_filters('qsot-zoner-reserve-current-user', false, $event, $ticket_type_id, $requested_count);
-					if (!$success) {
+					if ( ! $success | is_wp_error( $success ) ) {
 						$available = apply_filters('qsot-get-event-available-tickets', 0, $event, $ticket_type_id);
 						$ticket = get_product($ticket_type_id);
 						$ticket_name = sprintf(
