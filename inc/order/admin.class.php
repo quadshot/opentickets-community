@@ -21,17 +21,16 @@ class qsot_order_admin {
 			add_action('qsot-admin-load-assets-shop_order', array(__CLASS__, 'load_assets'), 5000, 2);
 			add_filter('woocommerce_found_customer_details', array(__CLASS__, 'add_default_country_state'), 10, 1);
 
-			add_action('save_post', array(__CLASS__, 'enforce_non_guest_orders'), PHP_INT_MAX - 1, 2);
-			add_action('admin_notices', array(__CLASS__, 'cannot_use_guest'), 10);
-
 			add_action('plugins_loaded', array(__CLASS__, 'plugins_loaded'), 10000);
 
 			add_action('admin_notices', array(__CLASS__, 'generic_errors'), 10);
 			add_filter('qsot-order-can-accept-payments', array(__CLASS__, 'block_payments_for_generic_errors'), 10, 2);
 			add_filter('qsot-admin-payments-error', array(__CLASS__, 'block_payments_generic_error_message'), 10, 2);
 
-			add_action('save_post', array(__CLASS__, 'require_billing_information'), 9999, 2);
 			add_action('save_post', array(__CLASS__, 'reset_generic_errors'), 0, 2);
+			add_action('save_post', array(__CLASS__, 'require_billing_information'), 999999, 2);
+			add_action('save_post', array(__CLASS__, 'enforce_non_guest_orders'), PHP_INT_MAX - 1, 2);
+			add_action('admin_notices', array(__CLASS__, 'cannot_use_guest'), 10);
 
 			add_action('woocommerce_completed_order_email_after_address', array(__CLASS__, 'print_custom_email_message'), 1);
 			add_filter('qsot-order-has-tickets', array(__CLASS__, 'has_tickets'), 10, 2);
@@ -92,6 +91,9 @@ class qsot_order_admin {
 
 	public static function reset_generic_errors($post_id, $post) {
 		if ($post->post_type != 'shop_order') return;
+		static $called_for = array();
+		if ( isset( $called_for[$post_id.''] ) ) return;
+		$called_for[$post_id.''] = 1;
 		update_post_meta($post_id, '_generic_errors', '');
 	}
 
@@ -196,15 +198,25 @@ class qsot_order_admin {
 			if (empty($current)) {
 				update_post_meta($post_id, '_use_guest_attempted', 1);
 
-				remove_action('woocommerce_process_shop_order_meta', 'woocommerce_process_shop_order_meta', 10);
-				remove_action('save_post', array(__CLASS__, 'enforce_non_guest_orders'), PHP_INT_MAX);
-				remove_action('save_post', array(__CLASS__, 'require_billing_information'), 9999);
+				self::_remove_recursive_filters();
+				self::_disable_emails();
+
 				do_action('qsot-before-guest-check-update-order-status', $post);
-				$order = new WC_Order($post_id);
-				$order->update_status('pending', 'You cannot use "Guest" as the owner of the order, due to current Woocommerce settings.');
-				add_action('woocommerce_process_shop_order_meta', 'woocommerce_process_shop_order_meta', 10, 2);
-				add_action('save_post', array(__CLASS__, 'enforce_non_guest_orders'), PHP_INT_MAX, 2);
-				add_action('save_post', array(__CLASS__, 'require_billing_information'), 9999, 2);
+				if ( QSOT::is_wc_latest() ) {
+					$order = wc_get_order( $post_id );
+					$ostatus = $order->get_status();
+				} else {
+					$order = new WC_Order($post_id);
+					$stati = wp_get_object_terms( array( $post_id ), array( 'shop_order_status' ), 'slugs' );
+					$ostatus = substr( $ostatus = current( $stati ), 0, 3 ) == 'wc-' ? substr( $ostatus, 3 ) : $ostatus;
+				}
+				if ( $ostatus != 'pending' ) {
+					$order->update_status('pending', 'You cannot use "Guest" as the owner of the order, due to current Woocommerce settings.');
+				} else {
+					$order->add_order_note( 'You cannot use "Guest" as the owner of the order, due to current Woocommerce settings.' );
+				}
+
+				self::_enable_emails();
 			} else {
 				update_post_meta($post_id, '_use_guest_attempted', 0);
 			}
@@ -236,7 +248,12 @@ class qsot_order_admin {
 				'#^([\w\d][\w\d\s]{2,}[\w\d])$#' => 'must be at least 4 letters, numbers, or spaces', // at least 4 letters numbers and spaces, beginning and ending with letter or number
 			),
 			'_billing_postcode' => array(
-				'#^([\w\d][\w\d\-]{5,}[\w\d])$#' => 'must be at least 5 letters, numbers, or spaces', // at least 5 letters numbers and dashes, beginning and ending with letter or number
+				'functions' => array(
+					array(
+						'func' => array(__CLASS__, 'is_postcode'),
+						'msg' => __('must be at least 5 letters, numbers, or spaces', 'qsot'), // at least 5 letters numbers and dashes, beginning and ending with letter or number
+					),
+				),
 			),
 			'_billing_country' => array(
 				'#^([\w\d][\w\d\s]*?[\w\d])$#' => 'must be at least 2 letters, numbers, or spaces', // at least 3 letters numbers and spaces, beginning and ending with letter or number
@@ -291,16 +308,52 @@ class qsot_order_admin {
 		if (!empty($errors)) {
 			self::_update_errors($errors, $post_id);
 
-			remove_action('woocommerce_process_shop_order_meta', 'woocommerce_process_shop_order_meta', 10);
-			remove_action('save_post', array(__CLASS__, 'enforce_non_guest_orders'), PHP_INT_MAX);
-			remove_action('save_post', array(__CLASS__, 'require_billing_information'), 9999);
+			self::_remove_recursive_filters();
+			self::_disable_emails();
+
 			do_action('qsot-before-guest-check-update-order-status', $post);
-			$order = new WC_Order($post_id);
-			$order->update_status('pending', 'Your current settings require you to provide most billing information for each order.');
-			add_action('woocommerce_process_shop_order_meta', 'woocommerce_process_shop_order_meta', 10, 2);
+			if ( QSOT::is_wc_latest() ) {
+				$order = wc_get_order( $post_id );
+				$ostatus = $order->get_status();
+			} else {
+				$order = new WC_Order($post_id);
+				$stati = wp_get_object_terms( array( $post_id ), array( 'shop_order_status' ), 'slugs' );
+				$ostatus = substr( $ostatus = current( $stati ), 0, 3 ) == 'wc-' ? substr( $ostatus, 3 ) : $ostatus;
+			}
+			if ( $ostatus != 'pending' ) {
+				$order->update_status('pending', 'Your current settings require you to provide most billing information for each order.');
+			} else {
+				$order->add_order_note( 'Your current settings require you to provide most billing information for each order.', false );
+			}
+
+			self::_enable_emails();
 			add_action('save_post', array(__CLASS__, 'enforce_non_guest_orders'), PHP_INT_MAX, 2);
-			add_action('save_post', array(__CLASS__, 'require_billing_information'), 9999, 2);
 		}
+	}
+
+	protected static function _remove_recursive_filters() {
+		remove_action('woocommerce_process_shop_order_meta', 'woocommerce_process_shop_order_meta', 10);
+		remove_action('save_post', array(__CLASS__, 'enforce_non_guest_orders'), PHP_INT_MAX);
+		remove_action('save_post', array(__CLASS__, 'require_billing_information'), 999999);
+		foreach ( $GLOBALS['wp_filter']['save_post'] as $priority => $func_group )
+			foreach ( $func_group as $name => $func_settings )
+				if ( is_array( $func = $func_settings['function'] ) && $func[0] instanceof WC_Admin_Meta_Boxes )
+					remove_action( 'save_post', $func, $priority );
+	}
+
+	// needed for CLI jobs so we can reset the filters that can cause infinite loops, when running batch jobs
+	public static function reset_filters() {
+		remove_action('woocommerce_process_shop_order_meta', 'woocommerce_process_shop_order_meta', 10);
+		remove_action('save_post', array(__CLASS__, 'enforce_non_guest_orders'), PHP_INT_MAX);
+		remove_action('save_post', array(__CLASS__, 'require_billing_information'), 999999);
+		add_action('woocommerce_process_shop_order_meta', 'woocommerce_process_shop_order_meta', 10, 2);
+		add_action('save_post', array(__CLASS__, 'enforce_non_guest_orders'), PHP_INT_MAX, 2);
+		add_action('save_post', array(__CLASS__, 'require_billing_information'), 999999, 2);
+	}
+
+	public static function is_postcode($code) {
+		$compare = preg_replace('#[^0-9a-zA-Z]+#', '', $code);
+		return !!preg_match('#^([\w\d][\w\d\-]{3,}[\w\d])$#', $compare);
 	}
 
 	public static function is_phone($number) {
@@ -492,6 +545,35 @@ class qsot_order_admin {
 		}
 
 		return $res;
+	}
+
+	protected static function _disable_emails() {
+		$emails = WC_Emails::instance();
+
+		remove_action( 'woocommerce_order_status_pending_to_processing_notification', array( $emails->emails['WC_Email_Customer_Processing_Order'], 'trigger' ), 10 );
+		remove_action( 'woocommerce_order_status_pending_to_on-hold_notification', array( $emails->emails['WC_Email_Customer_Processing_Order'], 'trigger' ), 10 );
+		remove_action( 'woocommerce_order_status_completed_notification', array( $emails->emails['WC_Email_Customer_Completed_Order'], 'trigger' ), 10 );
+		remove_action( 'woocommerce_order_status_pending_to_processing_notification', array( $emails->emails['WC_Email_New_Order'], 'trigger' ), 10 );
+		remove_action( 'woocommerce_order_status_pending_to_completed_notification', array( $emails->emails['WC_Email_New_Order'], 'trigger' ), 10 );
+		remove_action( 'woocommerce_order_status_pending_to_on-hold_notification', array( $emails->emails['WC_Email_New_Order'], 'trigger' ), 10 );
+		remove_action( 'woocommerce_order_status_failed_to_processing_notification', array( $emails->emails['WC_Email_New_Order'], 'trigger' ), 10 );
+		remove_action( 'woocommerce_order_status_failed_to_completed_notification', array( $emails->emails['WC_Email_New_Order'], 'trigger' ), 10 );
+		remove_action( 'woocommerce_order_status_failed_to_on-hold_notification', array( $emails->emails['WC_Email_New_Order'], 'trigger' ), 10 );
+	}
+
+	protected static function _enable_emails() {
+		self::_disable_emails();
+		$emails = WC_Emails::instance();
+
+		add_action( 'woocommerce_order_status_pending_to_processing_notification', array( $emails->emails['WC_Email_Customer_Processing_Order'], 'trigger' ), 10 );
+		add_action( 'woocommerce_order_status_pending_to_on-hold_notification', array( $emails->emails['WC_Email_Customer_Processing_Order'], 'trigger' ), 10 );
+		add_action( 'woocommerce_order_status_completed_notification', array( $emails->emails['WC_Email_Customer_Completed_Order'], 'trigger' ), 10 );
+		add_action( 'woocommerce_order_status_pending_to_processing_notification', array( $emails->emails['WC_Email_New_Order'], 'trigger' ), 10 );
+		add_action( 'woocommerce_order_status_pending_to_completed_notification', array( $emails->emails['WC_Email_New_Order'], 'trigger' ), 10 );
+		add_action( 'woocommerce_order_status_pending_to_on-hold_notification', array( $emails->emails['WC_Email_New_Order'], 'trigger' ), 10 );
+		add_action( 'woocommerce_order_status_failed_to_processing_notification', array( $emails->emails['WC_Email_New_Order'], 'trigger' ), 10 );
+		add_action( 'woocommerce_order_status_failed_to_completed_notification', array( $emails->emails['WC_Email_New_Order'], 'trigger' ), 10 );
+		add_action( 'woocommerce_order_status_failed_to_on-hold_notification', array( $emails->emails['WC_Email_New_Order'], 'trigger' ), 10 );
 	}
 
 	protected static function _setup_admin_options() {

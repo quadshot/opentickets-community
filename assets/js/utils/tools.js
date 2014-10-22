@@ -120,7 +120,6 @@ QS.popMediaBox = (function($, qt) {
 				preview_cont = qt.is(args.pc) ? ( qt.isO(args.pc) ? args.pc : par.find(args.pc) ) : ( (preview_cont = par.find('[rel="image-preview"]')) ? preview_cont : $() ),
 				on_select = qt.isF(args.on_select) ? args.on_select : function() {
 					var attachment = custom.state().get('selection').first().attributes;
-					console.log('attachment', attachment);
 					if (id_field.length) id_field.val(attachment.id);
 					if (preview_cont.length) {
 						preview_cont.each(function() {
@@ -129,15 +128,13 @@ QS.popMediaBox = (function($, qt) {
 									size = qt.is(args.size) ? args.size : ( ( size = t.attr('size') ) ? size : 'thumb')
 									size = size == 'thumb' ? 'thumbnail' : size;
 							if (qt.is(attachment.sizes[size]) && qt.is(attachment.sizes[size].url)) url = attachment.sizes[size].url;
-							console.log('size', t.attr('size'), size, attachment.sizes);
-							console.log('size extended', qt.is(attachment.sizes[size]), qt.is(attachment.sizes[size].url), url, attachment.sizes);
 							$('<img src="'+url+'" class="preview-image" />').appendTo(t.empty());
 						});
 					}
 				};
 
     if ( custom ) {
-      custom.state('select-image').on('select', on_select);
+      custom.state('select-image').off('select').on('select', on_select);
       custom.open();
       return;
     } else {
@@ -164,7 +161,7 @@ QS.popMediaBox = (function($, qt) {
         }),
       ]);
 
-      custom.state('select-image').on('select', on_select);
+      custom.state('select-image').off('select').on('select', on_select);
       custom.open();
     }
   }
@@ -173,6 +170,7 @@ QS.popMediaBox = (function($, qt) {
 })(jQuery, QS.Tools);
 
 (function($) {
+	/*
   $.fn.qsBlock = function(settings) {
     return this.each(function() {
       var element = $(this), off = element.offset(),
@@ -198,6 +196,40 @@ QS.popMediaBox = (function($, qt) {
 			msg.find('h1').css({ fontSize: dims.height > 30 ? 28 : '100%' });
 
       var ublock = function() { bd.remove(); msg.remove(); element.off('unblock', ublock); }
+      element.on('unblock', ublock);
+    }); 
+  };  
+
+  $.fn.qsUnblock = function(element) { return this.each(function() { $(this).trigger('unblock'); }); };
+	*/
+  $.fn.qsBlock = function(settings) {
+    return this.each(function() {
+      var element = $(this), position = element.css( 'position' ),
+          sets = $.extend(true, { msg:'<h1>Loading...</h1>', css:{ backgroundColor:'#000000', opacity:0.5 }, msgcss:{ color:'#ffffff' } }, settings),
+          bd = $('<div class="block-backdrop"></div>').appendTo( element ), msg = $('<div class="block-msg"></div>').appendTo( element ),
+					dims = { width:element.outerWidth(), height:element.outerHeight() };
+			if ( position == 'static' )
+				element.css( { position:'relative' } );
+			$(sets.msg).css({ color:'inherit' }).appendTo(msg);
+      var mhei = msg.height();
+      bd.css($.extend({
+        position: 'absolute',
+        width: 'auto',
+        height: 'auto',
+        top: 0, bottom:0,
+        left: 0, right:0
+      }, sets.css));
+      msg.css($.extend({
+        textAlign: 'center',
+        position: 'absolute',
+        width: dims.width,
+        top: '50%',
+        left: 0,
+				marginTop: -mhei
+      }, sets.msgcss));
+			msg.find('h1').css({ fontSize: dims.height > 30 ? 28 : '100%' });
+
+      var ublock = function() { element.css( { position:position } ); bd.remove(); msg.remove(); element.off('unblock', ublock); }
       element.on('unblock', ublock);
     }); 
   };  
@@ -670,17 +702,20 @@ QS.EditSetting = (function($, EventUI_Callbacks, undefined) {
 				function init() {
 					function update_from_val() {
 						var val = tar.val(), d = val ? new XDate( val ) : new XDate();
-						console.log( val, d );
+						d = d.valid() ? d : new XDate();
 						y.val( d.getFullYear() );
 						m.find( 'option' ).removeAttr( 'selected' ).filter( '[value=' + ( d.getMonth() + 1 ) + ']' ).attr( 'selected', 'selected' );
 						a.val( d.getDate() );
 						h.val( d.getHours() );
 						n.val( d.getMinutes() );
+						update_from_boxes();
 					}
 					tar.on( 'change update', update_from_val );
 
 					function update_from_boxes() {
-						tar.val( ( new XDate( y.val(), m.val() - 1, a.val(), h.val(), n.val(), 0, 0 ) ).toString( 'yyyy-MM-dd HH:mm:ss' ) );
+						var d = new XDate( y.val(), m.val() - 1, a.val(), h.val(), n.val(), 0, 0 );
+						if ( d.valid() )
+							tar.val( d.toString( 'yyyy-MM-dd HH:mm:ss' ) );
 					}
 					m.add( y ).add( a ).add( h ).add( n ).on( 'change keyup update', update_from_boxes );
 				}
@@ -796,9 +831,10 @@ QS.EditSetting = (function($, EventUI_Callbacks, undefined) {
 			this.elements.display.html(label);
 
 			for (i in data) {
-				var val = '';
+				var val = '', multi = false;
 				if ( i == 'source' ) continue; // recursive protection
-				if (typeof data[i] == 'object') val = JSON.stringify(data[i]);
+				if ( typeof data[i] == 'object' && typeof data[i].isMultiple != 'undefined' && data[i].isMultiple ) { multi = true; val = ''; }
+				else if (typeof data[i] == 'object') val = JSON.stringify(data[i]);
 				else if (typeof data[i] == 'string') val = data[i];
 				else if (typeof data[i] == 'undefined' || data[i] == null) val = '';
 				else val = data[i].toString();
@@ -809,7 +845,8 @@ QS.EditSetting = (function($, EventUI_Callbacks, undefined) {
 						switch (field.attr('type').toLowerCase()) {
 							case 'checkbox':
 							case 'radio':
-								this.elements.form.find('[name="'+i+'"]').removeAttr('checked').filter('[value="'+val+'"]').attr('checked', 'checked').trigger('change');
+								var ele = this.elements.form.find('[name="'+i+'"]').removeAttr('checked').filter('[value="'+escape(val)+'"]').attr('checked', 'checked');
+								if ( !multi ) ele.trigger('change');
 							break;
 
 							case 'file':
@@ -818,14 +855,18 @@ QS.EditSetting = (function($, EventUI_Callbacks, undefined) {
 							case 'submit': break;
 
 							default:
-								field.val(val).trigger('change');
+								field.val(val);
+								if ( !multi ) field.trigger('change');
 							break;
 						}
 					} else if (tag == 'select') {
-						$('option', field).removeAttr('selected').filter('[value="'+val+'"]').filter(function() { return $(this).css('display').toLowerCase() != 'none'; }).attr('selected', 'selected');
-						field.trigger('change')
+						$('option', field).removeAttr('selected').filter('[value="'+escape(val)+'"]').filter(function() { return $(this).css('display').toLowerCase() != 'none'; }).attr('selected', 'selected');
+						if ( !multi )
+							field.trigger('change')
 					} else if (tag == 'textarea') {
-						field.val(val).trigger('change');;
+						field.val(val);
+						if ( !multi )
+							field.trigger('change')
 					}
 				}
 			}
@@ -837,6 +878,7 @@ QS.EditSetting = (function($, EventUI_Callbacks, undefined) {
 	};
 
 	$.fn.qsEditSetting = function(o) {
+		try {
 		if (typeof o == 'string') {
 			var es = startEditSetting($(this));
 			if (typeof es[o] == 'function') {
@@ -845,6 +887,9 @@ QS.EditSetting = (function($, EventUI_Callbacks, undefined) {
 			}
 		} else {
 			return this.each(function() { return startEditSetting($(this), o); });
+		}
+		} catch(e) {
+			console.log( 'ERROR', o, e, e.lineNumber, e.fileName, e.stack.split(/\n/) );
 		}
 	};
 
@@ -909,6 +954,16 @@ QS.EditSetting = (function($, EventUI_Callbacks, undefined) {
 	});
 
 	EditSetting.callbacks = new EventUI_Callbacks();
+
+	function update_min_height() {
+		var opt = $( '.option-sub[rel="settings"]' ), bulk = opt.find( '.bulk-edit-settings' ), h = bulk.css('display') == 'none', bulkhei = bulk.show().outerHeight( true );
+		if ( h ) bulk.hide();
+		opt.css( { minHeight:bulkhei } );
+	}
+	function delay_update() { setTimeout(update_min_height, 500); }
+	EditSetting.callbacks.add( 'open', delay_update );
+	EditSetting.callbacks.add( 'close', delay_update );
+	$(update_min_height);
 
 	return EditSetting;
 })(jQuery, QS.EventUI_Callbacks);
@@ -1101,31 +1156,33 @@ QS.EditSetting = (function($, EventUI_Callbacks, undefined) {
 	// custom date parser
 	function yyyy_mm_dd__hh_iitt(str) {
 		var m = str.match(/(\d{4})-(\d{1,2})-(\d{1,2})(\s+(\d{1,2})(:(\d{2})(:(\d{2}))?)?\s*((p|a)m?)?)?/i);
-		// new XDate(year, month, date, hours, minutes, seconds, milliseconds)
-		var args = {
-			year: parseInt(forParse(m[1])),
-			month: parseInt(forParse(m[2])) - 1, // retarded native date 0 indexing of months... retards
-			day: parseInt(forParse(m[3])),
-			hours: parseInt(forParse(m[5])),
-			minutes: parseInt(forParse(m[7])),
-			seconds: parseInt(forParse(m[9]))
-		};
-		args.hours = m[11].toLowerCase() == 'p' && args.hours != 12
-				? args.hours + 12
-				: ( m[11].toLowerCase() == 'a' && args.hours == 12
-						? 0
-						: args.hours);
-		for (i in args) if (isNaN(args[i])) args[i] = i == 'month' ? -1 : 0;
+		if ( QS.Tools.isA( m ) ) {
+			// new XDate(year, month, date, hours, minutes, seconds, milliseconds)
+			var args = {
+				year: parseInt(forParse(m[1])),
+				month: parseInt(forParse(m[2])) - 1, // retarded native date 0 indexing of months... retards
+				day: parseInt(forParse(m[3])),
+				hours: parseInt(forParse(m[5])),
+				minutes: parseInt(forParse(m[7])),
+				seconds: parseInt(forParse(m[9]))
+			};
+			args.hours = m[11].toLowerCase() == 'p' && args.hours != 12
+					? args.hours + 12
+					: ( m[11].toLowerCase() == 'a' && args.hours == 12
+							? 0
+							: args.hours);
+			for (i in args) if (isNaN(args[i])) args[i] = i == 'month' ? -1 : 0;
 
-		if (args.year > 0 && args.month > -1 && args.day > 0) {
-			return new XDate(
-				args.year,
-				args.month,
-				args.day,
-				args.hours,
-				args.minutes,
-				args.seconds
-			);
+			if (args.year > 0 && args.month > -1 && args.day > 0) {
+				return new XDate(
+					args.year,
+					args.month,
+					args.day,
+					args.hours,
+					args.minutes,
+					args.seconds
+				);
+			}
 		}
 	}
 

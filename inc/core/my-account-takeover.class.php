@@ -166,7 +166,15 @@ class qsot_my_account_takeover {
 
 	public static function add_my_account_to_user_profile($userprofile) {
 		global $woocommerce;
+
+		$woocommerce->frontend_includes();
+
+		$session_class = apply_filters( 'woocommerce_session_handler', 'WC_Session_Handler' );
+		$woocommerce->session = isset( $woocommerce->session ) && $woocommerce->session instanceof $session_class ? $woocommerce->session : new $session_class();
+
 		if (!is_object($woocommerce->customer)) $woocommerce->customer = new WC_Customer();
+		query_posts(array('post_type' => 'shop_order', 'posts_per_page' => 1, 'post_status' => 'any'));
+		if ( have_posts() ) the_post();
 
 		if ( ! is_user_logged_in() ) {
 			wc_get_template( 'myaccount/form-login.php' );

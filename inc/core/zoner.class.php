@@ -304,14 +304,15 @@ class qsot_zoner {
 		// if count is > 0 then
 		} else {
 			// get the available occupancy of the event
-			$available = apply_filters('qsot-get-event-available-tickets', 0, $event, $ticket_type_id);
+			$available = apply_filters('qsot-get-event-available-tickets', 0, $event);
 			// determine how many this person already has reserved
-			$owns = apply_filters('qsot-zoner-owns', 0, $event, $ticket_type_id, self::$o->{'z.states.r'}, $customer_id);
+			$owns = array_sum( array_values( apply_filters('qsot-zoner-owns', 0, $event, 0, self::$o->{'z.states.r'}, $customer_id) ) );
+			//$owns_tt = apply_filters('qsot-zoner-owns', 0, $event, $ticket_type_id, self::$o->{'z.states.r'}, $customer_id);
 
 			// if this user already owns some seats for this event, then 
 			if ($owns) {
 				// if they are requesting more than is available, then just fail
-				if ($count > ($available + $owns)) return false;
+				if ($count > ($available + $owns)) return new WP_Error( 'There are not ' . $count . ' tickets available to reserve.' );
 				// otherwise update the reservation count for this user for this event
 				$res = $wpdb->update(
 					$wpdb->qsot_event_zone_to_order,
@@ -322,7 +323,7 @@ class qsot_zoner {
 			// if the user does not already have reservations for this event, then
 			} else {
 				// if the user is requesting more than what is currently available, then just fail
-				if ($count > $available) return false;
+				if ($count > $available) return new WP_Error( 'There are not ' . $count . ' tickets available to reserve.' );
 				// oterhwise, insert the reservations for these seats now
 				$res = $wpdb->insert(
 					$wpdb->qsot_event_zone_to_order,
@@ -350,7 +351,7 @@ class qsot_zoner {
 	}
 
 	// get the total reservations for each zone that a given user owns (based on event, ticket type, state, customer_id or order)
-	public static function owns($current, $event, $ticket_type_id, $state=false, $customer_id=false, $order_id=false, $order_item_id=false) {
+	public static function owns($current, $event, $ticket_type_id=false, $state=false, $customer_id=false, $order_id=false, $order_item_id=false) {
 		global $wpdb;
 
 		// event is required information here
@@ -358,7 +359,14 @@ class qsot_zoner {
 		if (!is_object($event)) return 0;
 		
 		// generate an sql statement that will pull out the reservation list based on the supplied information
-		$q = $wpdb->prepare('select sum(quantity) as cnt, state from '.$wpdb->qsot_event_zone_to_order.' where event_id = %d and ticket_type_id = %d', $event->ID, $ticket_type_id);
+		$q = $wpdb->prepare('select sum(quantity) as cnt, state, ticket_type_id from '.$wpdb->qsot_event_zone_to_order.' where event_id = %d', $event->ID);
+
+		// if the ticket type was supplied, then only get the tickets of that type for the event
+		if ( ! empty( $ticket_type_id ) && $ticket_type_id != '*' ) {
+			if ( is_array( $ticket_type_id ) ) $q .= ' and ticket_type_id in (' . implode( ',', array_map( 'absint', $ticket_type_id ) ) . ')';
+			else $q .= $wpdb->prepare( ' and ticket_type_id = %d', $ticket_type_id );
+		}
+
 		// if the state was supplied, or it is 'all' states (*) then, add that to the query
 		if (!empty($state) && $state != '*') {
 			if (is_array($state)) $q .= ' and state in (\''.implode('\',\'', array_map('esc_sql', $state)).'\')';
@@ -384,7 +392,7 @@ class qsot_zoner {
 		
 		if (!empty($subs)) $q .= ' and ('.implode(' or ', $subs).') ';
 
-		$q .= ' group by state';
+		$q .= ' group by state, ticket_type_id';
 
 		// allow other plugins to add their logic
 		$q = apply_filters('qsot-zoner-owns-query', $q, $event, $ticket_type_id, $state, $customer_id);
@@ -393,13 +401,27 @@ class qsot_zoner {
 		$counts = $wpdb->get_results($q);
 		$indexed = array();
 		// format the results in a useable form
-		foreach ($counts as $count) $indexed[$count->state] = $count->cnt;
+		foreach ($counts as $count) {
+			$indexed[$count->state] = isset( $indexed[$count->state] ) ? $indexed[$count->state] : array();
+			$indexed[$count->state][$count->ticket_type_id] = $count->cnt;
+		}
 
-		// if all results were requested, or if there are no results, then just return the whole list
-		if (empty($state) || $state == '*' || is_array($state)) return $indexed;
+		if ( ! is_array($ticket_type_id) && ! empty( $ticket_type_id ) && $ticket_type_id != '*' ) {
+			foreach ( $indexed as $st => $cnts )
+				$indexed[$st] = array_sum( array_values( $cnts ) );
 
-		// otherwise, we need to only return a specific resultset, based on requested state
-		return isset($indexed[$state]) ? $indexed[$state] : 0;
+			// if all results were requested, or if there are no results, then just return the whole list
+			if (empty($state) || $state == '*' || is_array($state)) return $indexed;
+
+			// otherwise, we need to only return a specific resultset, based on requested state
+			return isset($indexed[$state]) ? $indexed[$state] : 0;
+		} else {
+			// if all results were requested, or if there are no results, then just return the whole list
+			if (empty($state) || $state == '*' || is_array($state)) return $indexed;
+
+			// otherwise, we need to only return a specific resultset, based on requested state
+			return isset($indexed[$state]) ? $indexed[$state] : array();
+		}
 	}
 
 	// get the list of actual zones that the current user has reservations for (based on event, ticket type, and state)

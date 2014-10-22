@@ -25,11 +25,11 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 			setTimeout( function() {
 				if ( last != current ) return;
 				var wintop = $( window ).scrollTop(), opt = $( '.option-sub[rel="settings"]', t.elements.main || 'body' ), opttop = opt.offset().top, opthei = opt.outerHeight(),
-				    bulk = opt.find( '.bulk-edit-settings' ), bulkhei = bulk.outerHeight(), bump = 100;
+				    bulk = opt.find( '.bulk-edit-settings' ), bulkhei = bulk.outerHeight(), bump = 100, off = 10;
 				if ( wintop > opttop - bump && wintop < opttop + opthei - bulkhei - bump )
-					bulk.finish().animate( { top:wintop - opttop + bump }, { duration:500 } );
+					bulk.finish().animate( { top:wintop - opttop + bump + off }, { duration:500 } );
 				else if ( wintop < opttop - bump )
-					bulk.finish().animate( { top:0 }, { duration:500 } );
+					bulk.finish().animate( { top:off }, { duration:500 } );
 				else if ( wintop > opttop + opthei - bulkhei - bump )
 					bulk.finish().animate( { top:opthei - bulkhei }, { duration:500 } );
 			}, 100 );
@@ -87,8 +87,6 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 			};
 			var events = [];
 
-			//console.log('data', data, base);
-
 			if (typeof data.repeat != 'undefined' && data.repeat) {
 				var funcName = 'repeat'+QS.ucFirst(data.repeats);
 				if (typeof t.form[funcName] == 'function') t.form[funcName](events, base, data);
@@ -124,8 +122,8 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 			var inRange = function() { return false; };
 
 			switch (data['repeat-ends-type']) {
-				case 'on': inRange = (function() { var e = XDate(data['repeat-ends-on']); return function() { console.log('on', d.getTime(), e.getTime()); return d.getTime() <= e.getTime(); }; })(); break;
-				case 'after': inRange = (function() { var e = data['repeat-ends-after']; return function() { console.log('after', cnt, e); return cnt < e; }; })(); break;
+				case 'on': inRange = (function() { var e = XDate(data['repeat-ends-on']); return function() { return d.getTime() <= e.getTime(); }; })(); break;
+				case 'after': inRange = (function() { var e = data['repeat-ends-after']; return function() { return cnt < e; }; })(); break;
 				default:
 					// pass params as an object, so that the function inRange can be modified by callbacks, and then returned by reference. that way we can actually accept the changed function
 					var pkg = {
@@ -157,7 +155,6 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 				}
 				incWeeks();
 			}
-			console.log(events);
 
 			return events;
 		};
@@ -171,7 +168,6 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 
 		if (!t.calendar) return;
 		if (!t.elements.event_list || t.elements.event_list.length == 0) return;
-		console.log('adding event list handler');
 
 		t.elements.bulk_edit = {
 			settings_form: $('.bulk-edit-settings', t.elements.main)
@@ -192,13 +188,14 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 		}
 
 		t.event_list.updateSettingsForm = function() {
+			// SAVE EVENT SETTINGS FROM FORM
 			t.elements.bulk_edit.settings_form.unbind('updated.update-settings').bind('updated.update-settings', function(e, data) {
 				var selected = t.event_list.getSelection();
 
 				selected.each(function() {
 					var ev = $(this).data('event');
 					for (i in data) {
-						if (data[i] !== '') {
+						if ( !( typeof data[i].isMultiple && data[i].isMultiple ) && data[i] !== '' ) {
 							ev[i] = data[i];
 						}
 					}
@@ -212,6 +209,7 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 			function Multiple() {
 				this.toString = function() { return ''; };
 				this.toLabel = function() { return '(Multiple)'; };
+				this.isMultiple = true;
 			};
 
 			if (selected.length) {
@@ -221,10 +219,12 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 					var ev = $(this).data('event');
 					if (typeof ev == 'object') {
 						for (i in ev) {
+							if ( i == 'source' ) continue;
+							var val = ev[i];
 							if (typeof settings[i] != 'undefined') {
-								if (settings[i] != ev[i]) settings[i] = new Multiple();
+								if (settings[i] != val) settings[i] = new Multiple();
 							} else {
-								settings[i] = typeof ev[i] != 'undefined' ? ev[i] : '';
+								settings[i] = typeof val != 'undefined' ? val : '';
 							}
 						}
 					}
@@ -325,7 +325,6 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 			if (ele.length)
 				ele.appendTo(t.elements.event_list);
 		};
-
 	}
 
 	function startEventUI(e, o) {
@@ -370,7 +369,6 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 
 		init: function() {
 			var self = this;
-			//console.log(this, this.options);
 
 			this.calendar = this.elements.calendar.fullCalendar({
 				header: {
@@ -389,8 +387,7 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 			NewEventDateTimeForm.call(this);
 			EventList.call(this);
 
-			this.calendar.closest('form').submit(function(e) {
-				//e.preventDefault();
+			this.calendar.closest('form').on('submit', function(e) {
 				return self.beforeFormSubmit($(this));
 			});
 
@@ -410,7 +407,6 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 			function _toNum(data) { var d = parseInt(data); return isNaN(d) ? 0 : d; };
 
 			var tmpl = this.template(['render_event_'+view.name, 'render_event']);
-			//console.log('rendering event on view', view.name, view, tmpl);
 
 			if (tmpl) {
 				if (typeof tmpl == 'function') tmpl = tmpl();
@@ -455,7 +451,8 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 			if (typeof title == 'object') {
 				obj = $.extend({}, title);
 				args = $.extend({
-					visibility:'pending',
+					status:'pending',
+					visibility:'public',
 					capacity:0,
 					post_id:-1
 				}, obj);
@@ -468,7 +465,8 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 					start:start instanceof XDate ? start.toDate() : start
 				}, extra);
 				args = $.extend({
-					visibility:'pending',
+					status:'pending',
+					visibility:'public',
 					capacity:0,
 					post_id:-1
 				}, obj);
@@ -570,7 +568,6 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 			this.calendar.fullCalendar('refetchEvents');
 			var events = this.calendar.fullCalendar('clientEvents');
 
-			//console.log('update', events, this.events);
 			if (this.elements.event_list.length) {
 				this.elements.event_list.empty();
 				events.sort(function(a, b) {
@@ -589,7 +586,6 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 
 		calendarAfterRender: function(ev, element, view) {
 			element = $(element);
-			//console.log('after render', ev, element, view);
 		},
 
 		addButtons: function(view) {
@@ -624,16 +620,18 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 
 		beforeFormSubmit: function(form) {
 			var events = this.calendar.fullCalendar('clientEvents');
+			var defaults = {
+				post_id:-1,
+				status:'pending',
+				visibility:'public',
+				password:'',
+				pub_date:'',
+				capacity:0
+			};
+			this.callback( 'before-submit-defaults', [ defaults ] );
 
-			for (i in events) {
-				var ev = $.extend({
-					post_id:-1,
-					status:'pending',
-					visibility:'public',
-					password:'',
-					pub_date:'',
-					capacity:0
-				}, {
+			for (var i = 0; i < events.length; i++) {
+				var ev = {
 					_id: events[i]._id,
 					start: (new XDate(events[i].start)).toString('yyyy-MM-dd HH:mm:ss'),
 					end: events[i].end instanceof Date || events[i].end instanceof XDate ? (new XDate(events[i].end)).toString('yyyy-MM-dd HH:mm:ss') : events[i].end,
@@ -644,8 +642,9 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 					password: events[i].password,
 					pub_date: events[i].pub_date,
 					capacity: events[i].capacity
-				});
-				this.callback('before_submit_event_item', [ev, events[i]]);
+				};
+				ev = $.extend({}, defaults, ev);
+				this.callback('before_submit_event_item', [ ev, events[i], defaults ]);
 				var txt = JSON.stringify(ev);
 				$('<input type="hidden" name="_event_settings['+i+']" value=""/>').val(txt).appendTo(form);
 			}

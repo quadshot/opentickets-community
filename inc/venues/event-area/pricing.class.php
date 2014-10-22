@@ -33,9 +33,9 @@ class qsot_seat_pricing {
 			// cart/order control
 			add_filter('qsot-zoner-reserve-current-user', array(__CLASS__, 'reserve_current_user'), 100, 4);
 			add_action('init', array(__CLASS__, 'sync_cart_tickets'), 6);
+			add_action( 'qsot-sync-cart', array(__CLASS__, 'sync_cart_tickets'), 10 );
 			add_action('woocommerce_order_status_changed', array(__CLASS__, 'order_status_changed'), 100, 3);
 			add_action('woocommerce_before_cart_item_quantity_zero', array(__CLASS__, 'delete_cart_ticket'), 10, 1);
-			add_action('woocommerce_after_cart_item_quantity_update', array(__CLASS__, 'not_more_than_available'), 10, 2);
 			add_filter('woocommerce_get_cart_item_from_session', array(__CLASS__, 'load_item_data'), 20, 3);
 			add_action('woocommerce_add_order_item_meta', array(__CLASS__, 'add_item_meta'), 10, 3);
 			add_action('woocommerce_ajax_add_order_item_meta', array(__CLASS__, 'add_item_meta'), 10, 3);
@@ -48,6 +48,10 @@ class qsot_seat_pricing {
 			add_action('before_delete_post', array(__CLASS__, 'before_delete_order'), 5, 1);
 
 			add_filter('qsot-item-is-ticket', array(__CLASS__, 'item_is_ticket'), 10, 2);
+
+			if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
+				add_action('woocommerce_after_cart_item_quantity_update', array(__CLASS__, 'not_more_than_available'), 10, 2);
+			}
 
 			if (is_admin()) {
 				// admin order editing
@@ -69,10 +73,10 @@ class qsot_seat_pricing {
 	}
 
 	// executes AFTER the zoner::reserve_current_user method, and adds the ticket to the cart on a reported success (or removes it on $count = 0)
-	public static function reserve_current_user($success, $event, $ticket_type_id, $count) {
-		if (!$success) return $success;
-		$event = !is_object($event) && (int)$event ? get_post($event) : $event;
-		if (!is_object($event)) return $success;
+	public static function reserve_current_user( $success, $event, $ticket_type_id, $count ) {
+		if ( ! $success ) return $success;
+		$event = ! is_object( $event ) && (int) $event ? get_post( $event ) : $event;
+		if ( ! is_object( $event ) ) return $success;
 		
 		global $woocommerce;
 		
@@ -80,19 +84,23 @@ class qsot_seat_pricing {
 			'event_id' => $event->ID,
 		);
 
-		if (is_object($woocommerce->cart)) {
-			if ($count == 0) {
-				// Generate a ID based on product ID, variation ID, variation data, and other cart item data
-				$cart_id = $woocommerce->cart->generate_cart_id( $ticket_type_id, '', '', $data );
-				
-				// See if this product and its options is already in the cart
-				$cart_item_key = $woocommerce->cart->find_product_in_cart( $cart_id );
+		if ( is_object( $woocommerce->cart ) ) {
+			// Generate a ID based on product ID, variation ID, variation data, and other cart item data
+			$cart_id = $woocommerce->cart->generate_cart_id( $ticket_type_id, '', '', $data );
+			
+			// See if this product and its options is already in the cart
+			$cart_item_key = $woocommerce->cart->find_product_in_cart( $cart_id );
 
+			if ($count == 0) {
 				if ($cart_item_key) {
-					$woocommerce->cart->set_quantity($cart_item_key, 0);
+					$woocommerce->cart->set_quantity( $cart_item_key, 0 );
 				}
 			} else {
-				$woocommerce->cart->add_to_cart($ticket_type_id, $count, '', '', $data);
+				if ($cart_item_key) {
+					$woocommerce->cart->set_quantity( $cart_item_key, $count );
+				} else {
+					$woocommerce->cart->add_to_cart( $ticket_type_id, $count, '', '', $data );
+				}
 			}
 		}
 
@@ -136,7 +144,7 @@ class qsot_seat_pricing {
 				'line_tax' => $tax,
 			);
 			$item = apply_filters('qsot-reserve-admin-item-meta', $item, $product, $event, $order, $ticket_type_id, $count);
-			self::_add_order_item($order->id, $item);
+			$current_item_id = self::_add_order_item($order->id, $item);
 		} else {
 			wc_update_order_item_meta($current_item_id, '_qty', $count);
 			wc_update_order_item_meta($current_item_id, '_line_subtotal', wc_format_decimal($pex));
@@ -144,6 +152,8 @@ class qsot_seat_pricing {
 			wc_update_order_item_meta($current_item_id, '_line_subtotal_tax', wc_format_decimal($stax));
 			wc_update_order_item_meta($current_item_id, '_line_tax', wc_format_decimal($tax));
 		}
+
+		do_action( 'qsot-reserve-admin-order-item', $current_item_id, $item, $order->id, $event, $product, $count );
 	}
 
 	protected static function _add_order_item($order_id, $item) {
@@ -167,7 +177,9 @@ class qsot_seat_pricing {
 		 	wc_update_order_item_meta( $item_id, '_line_tax', $item['line_tax'] );
 	 	}
 
-		do_action( 'woocommerce_ajax_add_order_item_meta', $item_id, $item );
+		do_action( 'woocommerce_ajax_add_order_item_meta', $item_id, $item, $order_id );
+
+		return $item_id;
 	}
 
 	public static function before_delete_order($order_id) {
@@ -201,7 +213,7 @@ class qsot_seat_pricing {
 			if (($ocuid = get_post_meta($order_id, '_customer_user', true))) $cuids[] = $ocuid;
 			if (empty($cuids)) return; // required. otherwise ALL reserved tickets for this event will be updated to confirmed... which is wrong
 
-			$order = new WC_Order($order_id);
+			$order = wc_get_order($order_id);
 			
 			foreach ($order->get_items() as $item_id => $item) {
 				if (!apply_filters('qsot-item-is-ticket', false, $item)) continue;
@@ -210,13 +222,26 @@ class qsot_seat_pricing {
 					false,
 					// completed or reserved, because we may be going from a confirmed status to a confirmed status.
 					// if only reserved is used, then any already confirmed tickets get deleted
-					array('event_id' => $item['event_id'], 'qty' => $item['qty'], 'state' => array(self::$o->{'z.states.r'}, self::$o->{'z.states.c'}), 'order_id' => array(0, $order_id), 'customer_id' => $cuids),
-					array('state' => self::$o->{'z.states.c'}, 'order_id' => $order_id, 'customer_id' => empty($ocuid) ? $customer_id : $ocuid, 'order_item_id' => $item_id)
+					array(
+						'event_id' => $item['event_id'],
+						'qty' => $item['qty'],
+						'state' => array( self::$o->{'z.states.r'}, self::$o->{'z.states.c'} ),
+						'order_id' => array( 0, $order_id ),
+						'ticket_type_id' => $item['product_id'],
+						'customer_id' => $cuids,
+					),
+					array(
+						'state' => self::$o->{'z.states.c'},
+						'order_id' => $order_id,
+						'customer_id' => empty( $ocuid ) ? $customer_id : $ocuid,
+						'order_item_id' => $item_id
+					)
 				);
+
 				do_action('qsot-confirmed-ticket', $order, $item, $item_id);
 			}
 		} else if (in_array($new_status, apply_filters('qsot-zoner-unconfirm-statuses', array('cancelled')))) {
-			$order = new WC_Order($order_id);
+			$order = wc_get_order($order_id);
 			$ocuid = get_post_meta($order_id, '_customer_user', true);
 
 			self::_unconfirm_tickets($order, '*', true, array('new_status' => $new_status, 'old_status' => $old_status));
@@ -261,8 +286,8 @@ class qsot_seat_pricing {
 	}
 
 	public static function item_is_ticket($is, $item) {
-		if (!isset($item['product_id'], $item['qty'])) return false;
-		$ticket = get_post_meta($item['product_id'], '_ticket', true);
+		if ( ! isset( $item['product_id'] ) || ( ! isset( $item['qty'] ) && ! isset( $item['quantity'] ) ) ) return false;
+		$ticket = get_post_meta( $item['product_id'], '_ticket', true );
 		return $ticket == 'yes';
 	}
 
@@ -274,7 +299,7 @@ class qsot_seat_pricing {
 			do_action('qsot-zoner-clear-locks', 0, $customer_id);
 		}
 
-		if (!is_admin() && is_object($woocommerce) && is_object($woocommerce->cart)) {
+		if ( ( ( defined( 'DOING_AJAX' ) && DOING_AJAX ) || !is_admin() ) && is_object($woocommerce) && is_object($woocommerce->cart)) {
 			$indexed = array();
 			$ownerships = apply_filters('qsot-zoner-ownerships-current-user', array(), 0, 0, apply_filters('qsot-temporary-zone-states', array(self::$o->{'z.states.r'})));
 
@@ -291,9 +316,14 @@ class qsot_seat_pricing {
 			}
 
 			foreach ($woocommerce->cart->cart_contents as $key => $item) {
-				if (isset($item['event_id']) && ($eid = $item['event_id']) && !isset($indexed[$eid])) {
-					$woocommerce->cart->set_quantity($key, 0);
-				}
+				if ( ! isset( $item['event_id'] ) ) continue;
+				$eid = $item['event_id'];
+				$pid = $item['product_id'];
+
+				if ( ! isset( $indexed[$eid], $indexed[$eid][$pid] ) )
+					$woocommerce->cart->set_quantity( $key, 0 );
+				else
+					$woocommerce->cart->set_quantity( $key, array_sum( wp_list_pluck( $indexed[$eid][$pid], 'quantity' ) ) );
 			}
 		}
 	}
@@ -325,40 +355,55 @@ class qsot_seat_pricing {
 
 		$starting_quantity = $woocommerce->cart->cart_contents[$item_key]['_starting_quantity'];
 		$add_qty = $quantity - $starting_quantity;
+		$needs_change = false;
 
 		$event_id = isset($woocommerce->cart->cart_contents[$item_key]['event_id']) ? $woocommerce->cart->cart_contents[$item_key]['event_id'] : false;
 		if (!$event_id) return;
 		$event = apply_filters('qsot-get-event', false, $event_id);
 		if (!is_object($event) || !isset($event->meta, $event->meta->available, $event->meta->reserved)) return;
 
-		if ($add_qty > 0 && $event->meta->available - $event->meta->reserved - $add_qty <= 0) {
-			$woocommerce->cart->cart_contents[$item_key]['quantity'] = $event->meta->available - $event->meta->reserved > 0
-				? $event->meta->available - $event->meta->reserved
+		if ($add_qty > 0 && $event->meta->available - $event->meta->reserved - $add_qty < 0) {
+			$needs_change = true;
+
+			$woocommerce->cart->cart_contents[$item_key]['quantity'] = $event->meta->available - $event->meta->reserved + $starting_quantity > 0
+				? $event->meta->available - $event->meta->reserved + $starting_quantity
 				: 0;
-			$product = get_product($woocommerce->cart->cart_contents[$item_key]['product_id']);
-			if ($woocommerce->cart->cart_contents[$item_key]['quantity']) {
-				wc_add_notice('There were only '.$woocommerce->cart->cart_contents[$item_key]['quantity'].' of the '.$product->get_title().' for '.$event->post_title.' available. '
-						.'We reserved all of them for you instead of the '.$quantity.' you requested.', 'error');
+			$product = wc_get_product( $woocommerce->cart->cart_contents[$item_key]['product_id'] );
+
+			if ( $woocommerce->cart->cart_contents[$item_key]['quantity'] > 0 ) {
+				wc_add_notice( sprintf(
+					'There were only %d of the %s for %s available. We reserved all of them for you instead of the %d you requested.',
+					$woocommerce->cart->cart_contents[$item_key]['quantity'],
+					$product->get_title(),
+					$event->post_title,
+					$quantity
+				), 'error' );
 			} else {
-				wc_add_notice('There were no '.$product->get_title().' for '.$event->post_title.' available to give you. We have removed it from your cart.', 'error');
+				wc_add_notice( sprintf(
+					'There were no %s for %s available to give you. We have removed it from your cart.',
+					$product->get_title(),
+					$event->post_title
+				), 'error' );
 			}
 		}
 
-		if ($woocommerce->cart->cart_contents[$item_key]['quantity'] <= 0) {
-			$woocommerce->cart->set_quantity($item_key, 0);
-		} else {
-			$cuids = array();
-			if (($customer_id = is_object($woocommerce->session) ? $woocommerce->session->get_customer_id() : '')) $cuids[] = $customer_id;
-			if (($ocuid = get_post_meta($order_id, '_customer_user', true))) $cuids[] = $ocuid;
+		if ( $needs_change ) {
+			if ($woocommerce->cart->cart_contents[$item_key]['quantity'] <= 0) {
+				$woocommerce->cart->set_quantity($item_key, 0);
+			} else {
+				$cuids = array();
+				if (($customer_id = is_object($woocommerce->session) ? $woocommerce->session->get_customer_id() : '')) $cuids[] = $customer_id;
+				if (($ocuid = get_post_meta($order_id, '_customer_user', true))) $cuids[] = $ocuid;
 
-			// required. otherwise ALL reserved tickets for this event will be updated to confirmed... which is wrong
-			if (!empty($cuids)) {
-				$res = apply_filters(
-					'qsot-zoner-update-reservation',
-					false,
-					array('event_id' => $event_id, 'order_id' => 0, 'state' => '*', 'customer_id' => $cuids),
-					array('qty' => $quantity)
-				);
+				// required. otherwise ALL reserved tickets for this event will be updated to confirmed... which is wrong
+				if (!empty($cuids)) {
+					$res = apply_filters(
+						'qsot-zoner-update-reservation',
+						false,
+						array('event_id' => $event_id, 'order_id' => 0, 'state' => '*', 'customer_id' => $cuids),
+						array('qty' => $quantity)
+					);
+				}
 			}
 		}
 	}
@@ -438,9 +483,10 @@ class qsot_seat_pricing {
 			$ticket = get_product($id);
 			if (!is_object($ticket)) continue;
 			$ticket->post->meta = array();
-			$ticket->post->meta['price_raw'] = $ticket->get_price();
+			$ticket->post->meta['price_raw'] = $ticket->price;
 			$ticket->post->meta['price_html'] = wc_price($ticket->post->meta['price_raw']);
 			$ticket->post->meta['price'] = apply_filters('qsot-price-formatted', $ticket->post->meta['price_raw']);
+			$ticket->post->proper_name = $ticket->get_title();
 			$tickets[''.$ticket->post->ID] = $ticket;
 		}
 

@@ -34,8 +34,8 @@
 								<tr>
 									<td colspan="2" class="event-information">
 										<ul>
-											<li><h2><?php echo $ticket->event->post_title ?></h2></li>
-											<li><?php echo date('D, F jS, Y @ h:ia ', strtotime($ticket->event->meta->start)); ?></li>
+											<li><h2><?php echo $ticket->event->parent_post_title ?></h2></li>
+											<li>Date: <?php echo date('D, F jS, Y @ h:ia ', strtotime($ticket->event->meta->start)); ?></li>
 											<li>Area: <?php echo $ticket->event_area->post_title ?></li>
 										</ul>
 									</td>
@@ -65,6 +65,9 @@
 								</tr>
 							</tbody>
 						</table>
+						<a href="<?php echo esc_attr( QSOT::product_url() ) ?>" title="Who is OpenTickets?">
+							<img src="<?php echo esc_attr( QSOT::plugin_url() . 'assets/imgs/opentickets-tiny.png' ) ?>" class="ot-tiny-logo" />
+						</a>
 					</div>
 				</div>
 			<?php endfor; ?>

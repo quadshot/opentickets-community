@@ -25,6 +25,8 @@ class qsot_post_type {
 				self::_setup_admin_options();
 			}
 
+			add_action( 'load-options-permalink.php', array( __CLASS__, 'permalink_settings_page' ), 1000 );
+
 			// setup the post type at the appropriate time
 			//add_action('init', array(__CLASS__, 'register_post_type'), 1);
 			add_filter('qsot-events-core-post-types', array(__CLASS__, 'register_post_type'), 1, 1);
@@ -445,7 +447,7 @@ class qsot_post_type {
 	public static function the_posts_add_meta($posts, $q) {
 		foreach ($posts as $i => $post) {
 			if ($post->post_type == self::$o->core_post_type) {
-				$posts[$i] = apply_filters('qsot-event-add-meta', $post);
+				$posts[$i] = apply_filters('qsot-event-add-meta', $post, $event_id);
 			}
 		}
 
@@ -456,7 +458,8 @@ class qsot_post_type {
 		$event = get_post($event_id);
 
 		if (is_object($event) && isset($event->post_type) && $event->post_type == self::$o->core_post_type) {
-			$event = apply_filters('qsot-event-add-meta', $event);
+			$event->parent_post_title = get_the_title( $event->post_parent );
+			$event = apply_filters('qsot-event-add-meta', $event, $event_id);
 		} else {
 			$event = $current;
 		}
@@ -562,24 +565,10 @@ class qsot_post_type {
 	public static function register_assets() {
 		$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
 
-		// XDate 0.7. used for date calculations when using the FullCalendar plugin. http://arshaw.com/xdate/
-		wp_register_script('xdate', self::$o->core_url.'assets/js/utils/third-party/xdate/xdate.dev.js', array('jquery'), '0.7');
-		// FullCalendar 1.5.4 jQuery plugin. used for all calendar related interfaces. http://arshaw.com/fullcalendar/
-		wp_register_script('fullcalendar', self::$o->core_url.'assets/js/libs/fullcalendar/fullcalendar'.$suffix.'.js', array('jquery','xdate'), '1.5.4');
-		wp_register_style('fullcalendar', self::$o->core_url.'assets/css/libs/fullcalendar/fullcalendar.css', array(), '1.5.4');
-		// json2 library to add JSON window object in case it does not exist
-		wp_register_script('json2', self::$o->core_url.'assets/js/utils/json2.js', array(), 'commit-17');
-		// colorpicker
-		wp_register_script('jqcolorpicker', self::$o->core_url.'assets/js/libs/cp/colorpicker.js', array('jquery'), '23.05.2009');
-		wp_register_style('jqcolorpicker', self::$o->core_url.'assets/css/libs/cp/colorpicker.css', array(), '23.05.2009');
-		// generic set of tools for our js work. almost all written by Loushou
-		wp_register_script('qsot-tools', self::$o->core_url.'assets/js/utils/tools.js', array('jquery', 'json2', 'xdate'), '0.2-beta');
 		// main event ui js. combines all the moving parts to make the date/time selection process more user friendly than other crappy event plugins
 		wp_register_script('qsot-event-ui', self::$o->core_url.'assets/js/admin/event-ui.js', array('qsot-tools', 'fullcalendar'), self::$o->version);
 		// initialization js. initializes all the moving parts. called at the top of the edit event page
 		wp_register_script('qsot-events-admin-edit-page', self::$o->core_url.'assets/js/admin/edit-page.js', array('qsot-event-ui', 'jquery-ui-datepicker'), self::$o->version);
-		// jQueryUI theme for the admin
-		wp_register_style('qsot-jquery-ui', self::$o->core_url.'assets/css/libs/jquery/jquery-ui-1.10.1.custom.min.css', array(), '1.10.1');
 		// general additional styles for the event ui interface
 		wp_register_style('qsot-admin-styles', self::$o->core_url.'assets/css/admin/ui.css', array('qsot-jquery-ui'), self::$o->version);
 		// ajax js
@@ -668,8 +657,10 @@ class qsot_post_type {
 	public static function register_post_type( $list) {
 		// needs to be it's own local variable, so that we can pass it as a 'used' variable to the anonymous function we make later
 		$corept = self::$o->core_post_type;
+		$rwslug = get_option( 'qsot_event_permalink_slug' );
+		$rwslug = empty( $rwslug ) ? $corept : $rwslug;
 
-		$list[self::$o->core_post_type] = array(
+		$list[$corept] = array(
 			'label_replacements' => array(
 				'plural' => __('Events','qsot'), // plural version of the proper name, used in the slightly modified labels in my _register_post_type method
 				'singular' => __('Event','qsot'), // singular version of the proper name, used in the slightly modified labels in my _register_post_type method
@@ -686,11 +677,11 @@ class qsot_post_type {
 					'custom-fields',
 				),
 				'hierarchical' => true,
-				'rewrite' => array('slug' => self::$o->core_post_rewrite_slug),
+				'rewrite' => array( 'slug' => $rwslug ),
 				//'register_meta_box_cb' => array(__CLASS__, 'core_setup_meta_boxes'),
 				//'capability_type' => 'event',
 				'show_ui' => true,
-				'taxonomies' => array('category', 'post_tag'),
+				'taxonomies' => array( 'category', 'post_tag' ),
 				'permalink_epmask' => EP_PAGES,
 			),
 		);
@@ -1006,15 +997,19 @@ class qsot_post_type {
 				$update = apply_filters('qsot-events-save-sub-event-settings', $update, $post_id, $post);
 				if (isset($update['post_arr']) && is_array($update['post_arr'])) {
 					$event_id = wp_insert_post($update['post_arr']); // update/insert the subevent
-					if (is_numeric($event_id))
+					if (is_numeric($event_id)) {
 						foreach ($update['meta'] as $k => $v) update_post_meta($event_id, $k, $v); // update/add the meta to the new subevent
-					// keep track of the earliest start time of all sub events
-					if (isset($update['meta'][self::$o->{'meta_key.start'}])) {
-						$start_date = empty($start_date) ? strtotime($update['meta'][self::$o->{'meta_key.start'}]) : min($start_date, strtotime($update['meta'][self::$o->{'meta_key.start'}]));
-					}
-					// keep track of the latest end time of all sub events
-					if (isset($update['meta'][self::$o->{'meta_key.end'}])) {
-						$end_date = empty($end_date) ? strtotime($update['meta'][self::$o->{'meta_key.end'}]) : max($end_date, strtotime($update['meta'][self::$o->{'meta_key.end'}]));
+
+						// keep track of the earliest start time of all sub events
+						if (isset($update['meta'][self::$o->{'meta_key.start'}])) {
+							$start_date = empty($start_date) ? strtotime($update['meta'][self::$o->{'meta_key.start'}]) : min($start_date, strtotime($update['meta'][self::$o->{'meta_key.start'}]));
+						}
+						// keep track of the latest end time of all sub events
+						if (isset($update['meta'][self::$o->{'meta_key.end'}])) {
+							$end_date = empty($end_date) ? strtotime($update['meta'][self::$o->{'meta_key.end'}]) : max($end_date, strtotime($update['meta'][self::$o->{'meta_key.end'}]));
+						}
+
+						do_action( 'qsot-events-save-sub-event', $event_id, $update, $post_id, $post );
 					}
 				}
 			}
@@ -1422,6 +1417,47 @@ class qsot_post_type {
 				<?php do_action('qsot-events-more-settings') ?>
 			</div>
 		<?php
+	}
+
+	public static function add_permalinks_settings_page_settings() {
+		$current = array(
+			'permalink_slug' => get_option( 'qsot_event_permalink_slug' ),
+		);
+		?>
+			<table class="form-table">
+				<tbody>
+					<tr>
+						<th scope="row"><label for="qsot_event_permalink_slug"><?php _e( 'Event base', 'qsot' ) ?></label></th>
+						<td>
+							<input id="qsot_event_permalink_slug" class="widefat" type="text" name="qsot_event_permalink_slug" value="<?php echo esc_attr( $current['permalink_slug'] ) ?>" /><br/>
+							<span class="description">Enter a custom base to use. This url segment will prefix the event name in the url.<br/>
+								<code>example: <?php echo site_url( '/<strong>event</strong>/my-event_' . date_i18n( 'Y-m-d_H00a' ) . '/' ) ?></code></span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<input type="hidden" name="qsot_event_permalinks_settings" value="<?php echo esc_attr( wp_create_nonce( 'qsot-permalink-settings' ) ) ?>" />
+		<?php
+	}
+
+	public static function permalink_settings_page() {
+		self::_maybe_save_permalink_settings();
+		global $wp_settings_sections, $wp_settings_fields;
+
+		$wp_settings_sections['permalink']['opentickets-permalink'] = array(
+			'id' => 'opentickets-permalink',
+			'title' => 'Event permalink base',
+			'callback' => array(
+				__CLASS__,
+				'add_permalinks_settings_page_settings',
+			),
+		);
+	}
+
+	protected static function _maybe_save_permalink_settings() {
+		if ( isset( $_POST['qsot_event_permalinks_settings'] ) && wp_verify_nonce( $_POST['qsot_event_permalinks_settings'], 'qsot-permalink-settings' ) ) {
+			update_option( 'qsot_event_permalink_slug', $_POST['qsot_event_permalink_slug'] );
+		}
 	}
 
 	protected static function _setup_admin_options() {

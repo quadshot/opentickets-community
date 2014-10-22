@@ -1,11 +1,13 @@
 var _qsot_event_area_settings = _qsot_event_area_settings || {};
-var qcon = console;
+var QS = QS || {};
+QS.EventAreaUICB = new QS.EventUI_Callbacks();
+
 (function($, qt) {
-	var S = $.extend({ ajaxurl:'/wp-admin/admin-ajax.php', nonce:false, venue_id:false }, _qsot_event_area_settings),
+	var S = $.extend({ ajaxurl:'/wp-admin/admin-ajax.php', nonce:false, venue_id:0 }, _qsot_event_area_settings),
 			els = {}, next_id = -1;
 
 	function aj(sa, data, func, efunc) {
-		var data = $.extend({}, data, { action:'qsot-event-area', sa:sa, nonce:S.nonce, venue_id:S.venue_id }),
+		var data = $.extend({}, data, { action:'qsot-event-area', sa:sa, nonce:S.nonce, venue_id:$( '#post_ID' ).val(), check_venue_id:S.venue_id }),
 				func = func || function(){},
 				efunc = efunc || function(){};
 
@@ -26,6 +28,7 @@ var qcon = console;
 
 	function refresh_event_areas() {
 		els.mb.qsBlock();
+		QS.EventAreaUICB.trigger( 'before-load', [] );
 		aj(
 			'load',
 			{},
@@ -43,6 +46,7 @@ var qcon = console;
 						update_display(item);
 					}
 				}
+				QS.EventAreaUICB.trigger( 'after-load', [ update_field, r, els.al ] );
 				els.mb.qsUnblock();
 			},
 			function() { els.eaa.qsUnblock(); }
@@ -56,9 +60,6 @@ var qcon = console;
 			res = res.replace(new RegExp('\{\{'+i+'\}\}', 'g'), v);
 		}
 		return res;
-	}
-
-	function save_event_area() {
 	}
 
 	function update_field(sel, item, val) {
@@ -97,12 +98,10 @@ var qcon = console;
 	}
 
 	function update_display(item) {
-		console.log('update', item, item.data('item'));
 		var data = item.data('item'),
 				ticket = qt.is(S.tickets[data.meta._pricing_options])
 					? S.tickets[data.meta._pricing_options].post
 					: { ID:0, post_title:'(none)', meta:{ price:'<span class="amount">0</span>' } };
-		qcon.log('item', item, data);
 		update_field('[rel="area-id"]', item, data.ID);
 		update_field('[rel="area-name"]', item, data.post_title);
 		update_field('[rel="img-id"]', item, data.meta._thumbnail_id);
@@ -117,6 +116,8 @@ var qcon = console;
 			if (data.imgs[size][0])
 				$('<img src="'+data.imgs[size][0]+'" />').appendTo($(this).empty());
 		});
+
+		QS.EventAreaUICB.trigger( 'updated-display', [ update_field, item, data, ticket ] );
 	}
 
 	function toggle_edit_item(e) {
@@ -138,6 +139,7 @@ var qcon = console;
 	function save_item(e) {
 		var t = this, btn = $(t), item = btn.closest('[rel="item"]'), data = item.louSerialize();
 		item.qsBlock({ msg:'<h1>Saving...</h1>' });
+		QS.EventAreaUICB.trigger( 'before-save', [ update_field, item, data ] );
 		aj(
 			'save-item',
 			data,
@@ -160,6 +162,7 @@ var qcon = console;
 					var el = item.find('.edit [rel="error-list"]').empty();
 					$('<div class="error">An unknown error occured.</div>').appendTo(el);
 				}
+				QS.EventAreaUICB.trigger( 'after-save', [ update_field, r, item, data ] );
 				item.qsUnblock();
 			},
 			function() {
@@ -180,6 +183,7 @@ var qcon = console;
 		}
 
 		if (confirm('Are you sure you want to delete the Event Area ['+iobj.post_title+'] ?')) {
+			QS.EventAreaUICB.trigger( 'before-delete', [ update_field, item, data ] );
 			aj('delete-item', data, function(r) {
 				if (r.s) {
 					alert('Successfully removed the event area ['+iobj.post_title+'].');
@@ -187,6 +191,7 @@ var qcon = console;
 				} else {
 					alert('ERROR: There was a problem removing that event area.');
 				}
+				QS.EventAreaUICB.trigger( 'after-delete', [ update_field, item, data ] );
 			});
 		}
 	}
@@ -199,6 +204,7 @@ var qcon = console;
 		panels.edit.find('input, select, textarea').removeAttr('disabled');
 		item.data({ item:data, panels:panels });
 		update_ticket_list(item, false);
+		update_display(item);
 	}
 
 	function maybe_none_msg() {

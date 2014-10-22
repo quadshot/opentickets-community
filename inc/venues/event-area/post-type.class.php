@@ -73,6 +73,7 @@ class qsot_event_area {
 		add_action('wp_ajax_nopriv_qsot-frontend-ticket-selection', array(__CLASS__, 'handle_frontend_ajax'), 10);
 		add_action('qsot-ticket-selection-frontend-ajax-r', array(__CLASS__, 'faj_reserve'), 10, 2);
 		add_action('qsot-ticket-selection-frontend-ajax-d', array(__CLASS__, 'faj_delete'), 10, 2);
+		add_action( 'woocommerce_update_cart_action_cart_updated', array( __CLASS__, 'update_reservations_from_cart' ), 0, 1 );
 
 		// allow external access to errors on non-js submissions
 		add_filter('qsot-zoner-non-js-error-messages', array(__CLASS__, 'get_no_js_errors'), 10, 1);
@@ -105,7 +106,7 @@ class qsot_event_area {
 			add_filter('qsot-ticket-selection-admin-ajax-add-tickets', array(__CLASS__, 'aaj_ts_add_tickets'), 10, 2);
 
 			// sub event bulk edit stuff
-			add_action('qsot-events-bulk-edit-settings', array(__CLASS__, 'venue_bulk_edit_settings'), 20, 2);
+			add_action('qsot-events-bulk-edit-settings', array(__CLASS__, 'event_area_bulk_edit_settings'), 20, 2);
 			add_filter('qsot-events-save-sub-event-settings', array(__CLASS__, 'save_sub_event_settings'), 10, 3);
 			add_filter('qsot-load-child-event-settings', array(__CLASS__, 'load_child_event_settings'), 10, 3);
 
@@ -123,15 +124,10 @@ class qsot_event_area {
 
 	public static function load_admin_assets($exists, $post_id) {
 		wp_enqueue_script('event-area-admin');
-		add_action('admin_footer', array(__CLASS__, 'footer_load_admin_assets_settings'));
-	}
-
-	public static function footer_load_admin_assets_settings() {
-		global $post_ID;
 		wp_localize_script('event-area-admin', '_qsot_event_area_settings', array(
-			'nonce' => wp_create_nonce('event-areas-for-'.$post_ID),
-			'venue_id' => $post_ID,
-			'templates' => apply_filters('qsot-event-area-admin-templates', array(), $post_ID),
+			'nonce' => wp_create_nonce('event-areas-for-'.$post_id),
+			'venue_id' => $post_id,
+			'templates' => apply_filters('qsot-event-area-admin-templates', array(), $post_id),
 			'tickets' => apply_filters('qsot-get-all-ticket-products', array()),
 			'ajaxurl' => admin_url('admin-ajax.php'),
 		));
@@ -143,7 +139,7 @@ class qsot_event_area {
 			$event = apply_filters('qsot-get-event', $post, $post);
 			$ticket_id = is_object($event->meta) && is_object($event->meta->_event_area_obj) && is_object($event->meta->_event_area_obj->ticket) ? $event->meta->_event_area_obj->ticket->id : 0;
 			wp_enqueue_script('qsot-event-frontend');
-			wp_localize_script('qsot-event-frontend', '_qsot_ea_tickets', array(
+			wp_localize_script('qsot-event-frontend', '_qsot_ea_tickets', apply_filters( 'qsot-event-frontend-settings', array(
 				'nonce' => wp_create_nonce('frontend-events-ticket-selection-'.$event->ID),
 				'edata' => self::_get_frontend_event_data($event),
 				'ajaxurl' => admin_url('admin-ajax.php'),
@@ -156,7 +152,7 @@ class qsot_event_area {
 					'one-moment' => array('msg' => '<h1>One Moment Please...</h1>', 'type' => 'msg'),
 				),
 				'owns' => $ticket_id ? apply_filters('qsot-zoner-owns-current-user', 0, $event, $ticket_id, self::$o->{'z.states.r'}) : 0,
-			));
+			), $event));
 		}
 	}
 
@@ -191,7 +187,7 @@ class qsot_event_area {
 			);
 		}
 
-		return $out;
+		return apply_filters( 'qsot-frontend-event-data', $out, $event );
 	}
 
 	public static function frontend_templates($list, $event) {
@@ -203,26 +199,34 @@ class qsot_event_area {
 		if (is_object($event->meta) && is_object($event->meta->available)) $max = $event->meta->available;
 
 		$list['ticket-selection'] = '<div class="ticket-form ticket-selection-section">'
-				.'<h3>Step 1: How Many?</h3>'
-				.'<div class="availability-message helper"></div>'
-				.'<div class="field">'
-					.'<span rel="tt"></span>'
-					.'<input type="number" step="1" min="0" max="'.$max.'" rel="qty" name="quantity" value="1" class="very-short" />'
-					.'<input type="button" value="Reserve Tickets" rel="reserve-btn" />'
+				.'<div class="form-inner">'
+					.'<div class="title-wrap">'
+						.'<h3>Step 1: How Many?</h3>'
+					.'</div>'
+					.'<div class="field">'
+						.'<label class="section-heading">Reserve some tickets:</label>'
+						.'<div class="availability-message helper"></div>'
+						.'<span rel="tt_edit"></span>'
+						.'<input type="number" step="1" min="0" max="'.$max.'" rel="qty" name="quantity" value="1" class="very-short" />'
+						.'<input type="button" value="Reserve" rel="reserve-btn" class="button" />'
+					.'</div>'
 				.'</div>'
 			.'</div>';
 
 		$list['owns'] = '<div class="ticket-form ticket-selection-section">'
-				.'<h3>Step 2: Review</h3>'
-				.'<div class="availability-more-message helper"></div>'
-				.'<div class="field">'
-					.'<a href="#" class="remove-link" rel="remove-btn">X</a>'
-					.'<input type="number" step="1" min="0" max="'.$max.'" rel="qty" name="quantity" value="1" class="very-short" />'
-					.'<span rel="tt"></span>'
-					.'<input type="button" value="Update" rel="update-btn" />'
+				.'<div class="form-inner">'
+					.'<div class="title-wrap">'
+						.'<h3>Step 2: Review</h3>'
+					.'</div>'
+					.'<div class="field">'
+						.'<a href="#" class="remove-link" rel="remove-btn">X</a>'
+						.'<span rel="tt"></span>'
+						.'<input type="number" step="1" min="0" max="'.$max.'" rel="qty" name="quantity" value="1" class="very-short" />'
+						.'<input type="button" value="Update" rel="update-btn" class="button" />'
+					.'</div>'
 				.'</div>'
-				.'<div class="qsot-form-actions">'
-					.'<a href="'.esc_attr($cart_url).'" class="button">Proceed to Cart</a>'
+				.'<div class="actions" rel="actions">'
+					.'<a href="'.esc_attr($cart_url).'" class="button" rel="cart-btn">Proceed to Cart</a>'
 				.'</div>'
 			.'</div>';
 
@@ -256,16 +260,21 @@ class qsot_event_area {
 		$list['view-area'] = '<div class="view-area view" rel="view-area">'
 				.'<div class="inside">'
 					.'<div class="image-preview" size="thumb" rel="img-wrap"></div>'
-					.'<div class="area-name" rel="area-name"></div>'
-					.'<div class="info" rel="info">'
-						.'<span class="ticket-name" rel="ttname"></span> @ '
-						.'<span class="ticket-price" rel="ttprice"></span> '
-						.'(x<span class="capacity" rel="capacity"></span>)'
-					.'</div>'
-					.'<div class="actions" rel="actions">'
-						.'<a href="#" rel="edit-btn">edit</a>'
-						.'<span class="divider"> | </span>'
-						.'<a href="#" rel="del-btn">delete</a>'
+					.'<div class="area-info" rel="area-info">'
+						. implode( '', array_values( apply_filters( 'qsot-event-area-ui-area-info', array(
+							'name' => '<div class="area-name" rel="area-name"></div>',
+							'capacity' => '<div class="info" rel="info">'
+									.'<span class="ticket-name" rel="ttname"></span> @ '
+									.'<span class="ticket-price" rel="ttprice"></span> '
+									.'(x<span class="capacity" rel="capacity"></span>)'
+								.'</div>',
+							'actions' => '<div class="actions" rel="actions">'
+									. implode( '<span class="divider"> | </span>', array_values( apply_filters( 'qsot-event-area-ui-actions', array(
+										'<a href="#" rel="edit-btn">edit</a>',
+										'<a href="#" rel="del-btn">delete</a>',
+									), $venue_id ) ) )
+								.'</div>',
+						), $venue_id ) ) )
 					.'</div>'
 				.'</div>'
 				.'<div class="clear"></div>'
@@ -273,31 +282,29 @@ class qsot_event_area {
 		$list['edit-area'] = '<div class="edit-area edit" rel="edit-area">'
 				.'<div class="errors" rel="error-list"></div>'
 				.'<input type="hidden" name="area-id[{{id}}]" rel="area-id" value="{{id}}"/>'
-				.'<div class="edit-field image-select-wrap" rel="field">'
-					.'<label for="img-id[{{id}}]">Event Area Image</label>'
-					.'<div>'
-						.'<div class="image-preview" size="full" rel="img-wrap"></div>'
-						.'<input type="hidden" name="img-id[{{id}}]" value="0" rel="img-id" />'
-						.'<div class="clear"></div>'
-					.'</div>'
-					.'<button class="button" rel="change-img">Select Image</button>'
-				.'</div>'
-				.'<div class="edit-field area-name-wrap" rel="field">'
-					.'<label for="area-name[{{id}}]">Area Name</label>'
-					.'<input autocomplete="off" type="text" class="widefat area-name" rel="area-name" name="area-name[{{id}}]" value="" />'
-				.'</div>'
-				.'<div class="edit-field area-name-wrap" rel="field">'
-					.'<label for="capacity[{{id}}]">Capacity</label>'
-					.'<input autocomplete="off" type="number" min="0" max="100000" step="1" class="widefat capacity" rel="capacity" name="capacity[{{id}}]" value="" />'
-				.'</div>'
-				.'<div class="edit-field area-ticket-type" rel="field">'
-					.'<label for="area-ticket-type">Available Pricing</label>'
-					/*
-					.'<div class="price-options-list" rel="list">'
-					.'</div>'
-					*/
-					.'<select class="widefat price-list" rel="ttid" name="price-option-tt-id[{{id}}]"></select>'
-				.'</div>'
+				. implode( '', array_values( apply_filters( 'qsot-event-area-ui-parts', array(
+					'image-selector' => '<div class="edit-field image-select-wrap" rel="field">'
+							.'<label for="img-id[{{id}}]"><strong>Event Area Image</strong></label>'
+							.'<div>'
+								.'<div class="image-preview" size="full" rel="img-wrap"></div>'
+								.'<input type="hidden" name="img-id[{{id}}]" value="0" rel="img-id" />'
+								.'<div class="clear"></div>'
+							.'</div>'
+							.'<button class="button" rel="change-img">Select Image</button>'
+						.'</div>',
+					'area-name' => '<div class="edit-field area-name-wrap" rel="field">'
+							.'<label for="area-name[{{id}}]"><strong>Area Name</strong></label>'
+							.'<input autocomplete="off" type="text" class="widefat area-name" rel="area-name" name="area-name[{{id}}]" value="" />'
+						.'</div>',
+					'capacity' => '<div class="edit-field area-name-wrap" rel="field">'
+							.'<label for="capacity[{{id}}]"><strong>Capacity</strong></label>'
+							.'<input autocomplete="off" type="number" min="0" max="100000" step="1" class="widefat capacity" rel="capacity" name="capacity[{{id}}]" value="" />'
+						.'</div>',
+					'pricing' => '<div class="edit-field area-ticket-type" rel="field">'
+							.'<label for="area-ticket-type"><strong>Available Pricing</strong></label>'
+							.'<select class="widefat price-list" rel="ttid" name="price-option-tt-id[{{id}}]"></select>'
+						.'</div>',
+				), $venue_id ) ) )
 				.'<div class="actions" rel="actions">'
 					.'<button class="button-primary save-btn" rel="save-btn">save</button>'
 					.'<button class="button cancel-btn" rel="cancel-btn">cancel</button>'
@@ -335,6 +342,7 @@ class qsot_event_area {
 			$resp['s'] = false;
 			$resp['e'] = array('Invalid request. Please refresh the page and try again.');
 		}
+		do_action( 'qsot-sync-cart' );
 		header('Content-Type: text/json');
 		echo @json_encode($resp);
 		exit;
@@ -348,7 +356,7 @@ class qsot_event_area {
 		$qty = $data['quantity'];
 		if ($qty > 0 && is_object($event) && is_object($event->meta) && is_object($event->meta->_event_area_obj) && is_object($event->meta->_event_area_obj->ticket)) {
 			$res = apply_filters('qsot-zoner-reserve-current-user', false, $event, $event->meta->_event_area_obj->ticket->id, $qty);
-			if ($res) {
+			if ($res && ! is_wp_error( $res ) ) {
 				$resp['s'] = true;
 				$resp['m'] = array('Updated your reservations successfully.');
 				$resp['data'] = array(
@@ -357,6 +365,8 @@ class qsot_event_area {
 				);
 				$resp['data']['available_more'] = $resp['data']['available'] - $resp['data']['owns'];
 				WC()->cart->maybe_set_cart_cookies();
+			} else if ( is_wp_error( $res ) ) {
+				$resp['e'] = array_merge( $res['e'], $res->get_error_messages() );
 			} else {
 				$resp['e'][] = 'Could not update your reservations.';
 			}
@@ -364,7 +374,7 @@ class qsot_event_area {
 			if ($qty <= 0) $resp['e'][] = 'The quantity must be greater than zero.';
 			if (!is_object($event)) $resp['e'][] = 'Could not load that event.';
 			if (!is_object($event->meta)) $resp['e'][] = 'A problem occurred when loading that event.';
-			if (!is_object($event->meta->_event_area_obj)) $resp['e'][] = 'That event does not have currently have any tickets.';
+			if (!is_object($event->meta->_event_area_obj)) $resp['e'][] = 'That event does not currently have any tickets.';
 			if (!is_object($event->meta->_event_area_obj->ticket)) $resp['e'][] = 'The event does not have any tickets.';
 		}
 
@@ -379,51 +389,69 @@ class qsot_event_area {
 		$event = apply_filters('qsot-get-event', false, $data['event_id']);
 		if (is_object($event) && is_object($event->meta) && is_object($event->meta->_event_area_obj) && is_object($event->meta->_event_area_obj->ticket)) {
 			$customer_id = apply_filters('qsot-zoner-current-user', md5(isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : time()));
-			$where = array(
-				'customer_id' => $customer_id,
-				'event_id' => $event->ID,
-				'ticket_type_id' => $event->meta->_event_area_obj->ticket->id,
-				'state' => self::$o->{'z.states.r'},
-			);
-			if ($data['quantity'] <= 0) {
-				$set = array(
-					'qty' => 0,
-					'_delete' => true,
-				);
-			} else {
-				$set = array(
-					'qty' => $data['quantity'],
-				);
-			}
-			$res = apply_filters('qsot-zoner-update-reservation', false, $where, $set);
-			$owns = apply_filters('qsot-zoner-owns-current-user', 0, $event, $event->meta->_event_area_obj->ticket->id, self::$o->{'z.states.r'});
 
-			if ($data['quantity'] <= 0) {
-				if (!$owns && $res) {
-					$resp['s'] = true;
-					$resp['m'] = array('Updated your reservations successfully.');
-					$resp['data'] = array(
-						'owns' => $owns,
-						'available' => $event->meta->available,
+			// get the available occupancy of the event
+			$available = apply_filters('qsot-get-event-available-tickets', 0, $event);
+			// determine how many this person already has reserved
+			$owns = apply_filters( 'qsot-zoner-owns', 0, $event, 0, self::$o->{'z.states.r'}, $customer_id );
+			$owns_all = array_sum( array_values( $owns ) );
+
+			$quantity = $data['quantity'];
+
+			if ( $quantity <= $available ) {
+				$where = array(
+					'customer_id' => $customer_id,
+					'event_id' => $event->ID,
+					'ticket_type_id' => $event->meta->_event_area_obj->ticket->id,
+					'state' => self::$o->{'z.states.r'},
+				);
+				if ($data['quantity'] <= 0) {
+					$set = array(
+						'qty' => 0,
+						'_delete' => true,
 					);
-					$resp['data']['available_more'] = $resp['data']['available'] - $resp['data']['owns'];
 				} else {
-					if ($owns) $resp['e'][] = 'A problem occurred when trying to remove your reservations.';
-					else $resp['e'][] = 'Could not update your reservations.';
+					$set = array(
+						'qty' => $data['quantity'],
+					);
+				}
+				$res = apply_filters('qsot-zoner-update-reservation', false, $where, $set);
+				$owns = apply_filters('qsot-zoner-owns-current-user', 0, $event, $event->meta->_event_area_obj->ticket->id, self::$o->{'z.states.r'});
+
+				if ($data['quantity'] <= 0) {
+					if (!$owns && $res) {
+						$resp['s'] = true;
+						$resp['m'] = array('Updated your reservations successfully.');
+						$resp['data'] = array(
+							'owns' => $owns,
+							'available' => $event->meta->available,
+						);
+						$resp['data']['available_more'] = $resp['data']['available'] - $resp['data']['owns'];
+					} else {
+						if ($owns) $resp['e'][] = 'A problem occurred when trying to remove your reservations.';
+						else $resp['e'][] = 'Could not update your reservations.';
+					}
+				} else {
+					if (!$res || !$owns) {
+						if ($owns) $resp['e'][] = 'A problem occurred when trying to update your reservations.';
+						else $resp['e'][] = 'Could not update your reservations.';
+					} else {
+						$resp['s'] = true;
+						$resp['m'] = array('Updated your reservations successfully.');
+						$resp['data'] = array(
+							'owns' => $owns,
+							'available' => $event->meta->available,
+						);
+						$resp['data']['available_more'] = $resp['data']['available'] - $resp['data']['owns'];
+					}
 				}
 			} else {
-				if (!$res || !$owns) {
-					if ($owns) $resp['e'][] = 'A problem occurred when trying to update your reservations.';
-					else $resp['e'][] = 'Could not update your reservations.';
-				} else {
-					$resp['s'] = true;
-					$resp['m'] = array('Updated your reservations successfully.');
-					$resp['data'] = array(
-						'owns' => $owns,
-						'available' => $event->meta->available,
-					);
-					$resp['data']['available_more'] = $resp['data']['available'] - $resp['data']['owns'];
-				}
+				$resp['e'][] = __( sprintf(
+					'There are not enough available tickets to increase the quantity of %s to %d. There are only %d available.',
+					$event->meta->_event_area_obj->ticket->get_title(),
+					$quantity,
+					$available
+				), 'qsot' );
 			}
 		} else {
 			if (!is_object($event)) $resp['e'][] = 'Could not load that event.';
@@ -435,7 +463,37 @@ class qsot_event_area {
 		return $resp;
 	}
 
-	public static function venue_bulk_edit_settings($post, $mb) {
+	public static function update_reservations_from_cart( $cart_updated ) {
+		if ( $cart_updated ) {
+			$customer_id = apply_filters('qsot-zoner-current-user', md5(isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : time()));
+
+			foreach ( WC()->cart->get_cart() as $key => $item ) {
+				if ( ! apply_filters( 'qsot-item-is-ticket', false, $item ) ) continue;
+
+				$where = array(
+					'customer_id' => $customer_id,
+					'event_id' => $item['event_id'],
+					'ticket_type_id' => $item['product_id'],
+					'state' => self::$o->{'z.states.r'},
+				);
+				if ( $item['quantity'] <= 0 ) {
+					$set = array(
+						'qty' => 0,
+						'_delete' => true,
+					);
+				} else {
+					$set = array(
+						'qty' => $item['quantity'],
+					);
+				}
+				$res = apply_filters('qsot-zoner-update-reservation', false, $where, $set);
+			}
+		}
+
+		return $cart_updated;
+	}
+
+	public static function event_area_bulk_edit_settings($post, $mb) {
 		$eaargs = array(
 			'post_type' => self::$o->{'event_area.post_type'},
 			'post_status' => array('publish', 'inherit'),
@@ -446,7 +504,7 @@ class qsot_event_area {
 			<div class="setting-group">
 				<div class="setting" rel="setting-main" tag="event-area">
 					<div class="setting-current">
-						<span class="setting-name">Area / Price:</span>
+						<span class="setting-name">Event Area:</span>
 						<span class="setting-current-value" rel="setting-display"></span>
 						<a class="edit-btn" href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]">Edit</a>
 						<input type="hidden" name="settings[event-area]" value="" scope="[rel=setting-main]" rel="event-area" />
@@ -501,9 +559,9 @@ class qsot_event_area {
 	}
 
 	public static function handle_ajax_admin() {
-		$post = wp_parse_args($_POST, array('sa' => '', 'venue_id' => 0, 'nonce' => ''));
+		$post = wp_parse_args($_POST, array('sa' => '', 'venue_id' => 0, 'check_venue_id' => 0, 'nonce' => ''));
 		$resp = array();
-		if (wp_verify_nonce($post['nonce'], 'event-areas-for-'.$post['venue_id'])) {
+		if (wp_verify_nonce($post['nonce'], 'event-areas-for-'.$post['check_venue_id'])) {
 			if (!empty($post['sa'])) $resp = apply_filters('qsot-event-area-admin-ajax-'.$post['sa'], $resp, $post);
 		} else {
 			$resp['s'] = false;
@@ -583,13 +641,17 @@ class qsot_event_area {
 				'post_status' => 'inherit',
 			);
 			if ($item['id'] > 0) $args['ID'] = $item['id'];
+
+			$old_id = $item['id'];
 			$id = wp_insert_post($args);
+
 			if ($id) {
 				$resp['s'] = true;
 				update_post_meta($id, self::$o->{'event_area.mk.cap'}, $item['capacity']);
 				update_post_meta($id, self::$o->{'event_area.mk.img'}, $item['image_id']);
 				update_post_meta($id, self::$o->{'event_area.mk.po'}, $item['ttid']);
-				$resp['items'][$item['id']] = apply_filters('qsot-get-venue-event-areas', array(), $venue_id, $id);
+				do_action( 'qsot-save-event-area', $old_id, $id, $item );
+				$resp['items'][$old_id] = apply_filters('qsot-get-venue-event-areas', array(), $venue_id, $id);
 			} else {
 				$resp['e'][] = 'There was a problem saving the area ['.$item['area-name'].'].';
 			}
@@ -650,8 +712,10 @@ class qsot_event_area {
 				}
 			}
 			$resp['data']['_owns'] = 0;
-			$owns = apply_filters('qsot-zoner-owns', 0, $event, $event->meta->_event_area_obj->ticket->id, false, false, $order->id);
-			if (is_array($owns)) foreach ($owns as $state => $cnt) $resp['data']['_owns'] += $cnt;
+			if ( isset( $event->meta, $event->meta->_event_area_obj, $event->meta->_event_area_obj->ticket ) && $event->meta->_event_area_obj->ticket->id > 0 ) {
+				$owns = apply_filters('qsot-zoner-owns', 0, $event, $event->meta->_event_area_obj->ticket->id, false, false, $order->id);
+				if (is_array($owns)) foreach ($owns as $state => $cnt) $resp['data']['_owns'] += $cnt;
+			}
 		}
 
 		return $resp;
@@ -672,7 +736,7 @@ class qsot_event_area {
 			if (empty($customer_id)) $customer_id = get_post_meta($order->id, '_customer_id', true);
 			if (empty($customer_id)) $customer_id = md5($order->id);
 			$res = apply_filters('qsot-zoner-reserve', false, $event, $event->meta->_event_area_obj->ticket->id, $qty, $customer_id, $oid);
-			if ($res) {
+			if ( $res && ! is_wp_error( $res ) ) {
 				do_action('qsot-order-admin-added-tickets', $order, $event, $event->meta->_event_area_obj->ticket->id, $qty);
 				$resp['s'] = true;
 			}
@@ -740,7 +804,11 @@ class qsot_event_area {
 				'thumb' => wp_get_attachment_image_src($ea->meta[self::$o->{'event_area.mk.img'}], array(150, 150)),
 			);
 
-			$final[$ea->ID] = $ea;
+			if ( has_action( 'get-venue-event-area' ) ) {
+				_deprecated_function( 'filter; "get-venue-event-area"', '1.6.5', 'filter; "qsot-get-venue-event-area"' );
+				$final[$ea->ID] = apply_filters( 'get-venue-event-area', $ea, $ea );
+			}
+			$final[$ea->ID] = apply_filters( 'qsot-get-venue-event-area', $ea, $ea );
 		}
 
 		return $area_id ? $final[$area_id.''] : $final;
@@ -819,8 +887,8 @@ class qsot_event_area {
 			$current = apply_filters('qsot-get-event-area', $current, $ea_id);
 			if (is_object($current)) {
 				$ttid = get_post_meta($ea_id, self::$o->{'event_area.mk.po'}, true);
-				$current->meta['purchased'] = apply_filters('qsot-get-event-purchased-tickets', 0, $event_id, $ttid);
-				$current->meta['available'] = apply_filters('qsot-get-event-available-tickets', 0, $event_id, $ttid);
+				$current->meta['purchased'] = apply_filters('qsot-get-event-purchased-tickets', 0, $event_id);
+				$current->meta['available'] = apply_filters('qsot-get-event-available-tickets', 0, $event_id);
 				$current->is_soldout = ($current->meta['available'] <= 0);
 			}
 		}
@@ -843,7 +911,7 @@ class qsot_event_area {
 		update_post_meta( $item['event_id'], self::$o->{'meta_key.ea_purchased'}, $total );
 	}
 
-	public static function get_purchased_tickets($current, $event_id, $ttid) {
+	public static function get_purchased_tickets($current, $event_id) {
 		static $cache = array();
 
 		$event_id = is_object($event_id) ? $event_id->ID : $event_id;
@@ -854,12 +922,12 @@ class qsot_event_area {
 		return $cache[$event_id.''];
 	}
 
-	public static function get_available_tickets($current, $event_id, $ttid) {
+	public static function get_available_tickets($current, $event_id) {
 		static $cache = array();
 
 		$event_id = is_object($event_id) ? $event_id->ID : $event_id;
 		if (!isset($cache[$event_id.''])) {
-			$purchased = (int)apply_filters('qsot-get-event-purchased-tickets', 0, $event_id, $ttid);
+			$purchased = (int)apply_filters('qsot-get-event-purchased-tickets', 0, $event_id);
 			$cache[$event_id.''] = (int)get_post_meta(
 				(int)get_post_meta($event_id, self::$o->{'meta_key.event_area'}, true),
 				self::$o->{'event_area.mk.cap'},
@@ -1065,7 +1133,7 @@ class qsot_event_area {
 				$requested_count = $_POST['ticket-count'];
 				if ($requested_count > 0) {
 					$success = apply_filters('qsot-zoner-reserve-current-user', false, $event, $ticket_type_id, $requested_count);
-					if (!$success) {
+					if ( ! $success || is_wp_error( $success ) ) {
 						$available = apply_filters('qsot-get-event-available-tickets', 0, $event, $ticket_type_id);
 						$ticket = get_product($ticket_type_id);
 						$ticket_name = sprintf(
@@ -1097,7 +1165,7 @@ class qsot_event_area {
 				if ($requested_count > 0) {
 					$owns = apply_filters('qsot-zoner-owns-current-user', 0, $event, $ticket_type_id, self::$o->{'z.states.r'});
 					$success = apply_filters('qsot-zoner-reserve-current-user', false, $event, $ticket_type_id, $requested_count);
-					if (!$success) {
+					if ( ! $success | is_wp_error( $success ) ) {
 						$available = apply_filters('qsot-get-event-available-tickets', 0, $event, $ticket_type_id);
 						$ticket = get_product($ticket_type_id);
 						$ticket_name = sprintf(

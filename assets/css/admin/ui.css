@@ -65,7 +65,7 @@ table.settings-table .setting { margin-bottom:5px; }
 .option-sub { border-top:1px dotted #b2b2b2; padding-top:8px; position:relative; }
 .option-sub.above { border-bottom:1px dotted #b2b2b2; padding-bottom:8px; margin-bottom:8px; border-top:0; padding-top:0; margin-top:0; }
 .option-sub.no-border { border:0; padding:0; margin:0; margin-bottom:8px; }
-.option-sub .bulk-edit-settings { position:absolute; top:0; padding:1em 1.5em; background-color:#FFFFFF; border:1px solid #dddddd; }
+.option-sub .bulk-edit-settings { position:absolute; top:10px; padding:1em 1.5em; background-color:#FFFFFF; border:1px solid #dddddd; z-index:800; }
 
 .date-text { width:90px; }
 .time-text { width:75px; }

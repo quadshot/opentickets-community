@@ -139,94 +139,137 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.6.12 =
+* added better error handling on ticket reservation form
+* improved 'qsBlock' code to adjust properly to covered element size 
+* updated 'over available tickets' check to be more universal
+
+= 1.6.11 =
+* repaired 'my-orders' section of the my account printout on the edit user page in the admin (thanks @rjh1990)
+
+= 1.6.10 =
+* repaired ticket confirmation code to be more universal
+
+= 1.6.9 =
+* added more filters and hooks for extensions
+
+= 1.6.8 =
+* added multiple hooks to help support new multi price plugin
+* fixed bug with event area image selection, when adding multiple EAs
+
+= 1.6.7 =
+* updated javasript declaration locations which resolves the event area add button bug
+
+= 1.6.6 =
+* added setting to customize the event base url (@Temitayo Akeem)
+* repaired 'user profile'/'edit user' page php errors
+* repaired 'new event area' on 'new venue' bug (@cbell)
+
+= 1.6.5 =
+* added filter to inform other plugins of sub-event save
+* added more javascript hooks
+* added various utility functions to core class
+* improved base styling of ticket selection form
+* improved zoner flexibility
+* improved cart to reservation table (and vice versa) syncing
+* improved handling of multiple different values when editing event settings
+* updated order item display on order confirmations to show label for ticket link
+* removed unused icon files
+* repaired 'new event area' saving bug
+* repaired infinite loop bug when saving orders in admin
+* repaired sprite filename
+* repaired 'event settings' underlapping next metabox bug
+* corrected ticket selection error message verbiage
+* tweaked change log
+
 = 1.6.4 =
-* repairing the checkin process (thanks @bradleysp)
-* adding ticket checked in count to checkin status screens
+* added ticket checked in count to checkin status screens
+* repaired the checkin process (thanks @bradleysp)
 
 = 1.6.3 =
-* repairing edge case infinite loop on admin order save
 * updated admin order save billing information validation
 * updated qrcode declaration to account for possible different server setups (thanks @bradleysp & @regenbauma)
+* repaired edge case infinite loop on admin order save
 
 = 1.6.2 =
-* repairing the event date editor so that it proper handles empty dates
+* repaired the event date editor so that it proper handles empty dates
 
 = 1.6.1 =
-* repairing the event date editor in the 'event settings' ui
+* repaired the event date editor in the 'event settings' ui
 
 = 1.6.0 =
-* repaired 'hidden event' functionality so that those users with the link can view the event (thanks @bradleysp)
 * added the ability to 'password protect' events like you would normally do for a regular post (thanks @bradleysp)
 * updated the 'event settings' ui to handle new funcitonality and to be better organized
 * updated calendar styling to have visual markers depending on event status
+* repaired 'hidden event' functionality so that those users with the link can view the event (thanks @bradleysp)
 
 = 1.5.4 =
-* repairing the empty cart issue (thanks @regenbauma) for anonymous users
 * changed image format of map so it always shows in PDF tickets (thanks @bradleysp)
+* repaired the empty cart issue (thanks @regenbauma) for anonymous users
 
 = 1.5.3 =
-* tweaking woocommerce checker to check for github-generated plugin directories
-* repairing email ticket link auth code verification
-* repairing a my-account event visibility bug
+* tweaked woocommerce checker to check for github-generated plugin directories
 * changed image format of barcode so it always shows in PDF tickets (thanks @bradleysp)
+* repaired email ticket link auth code verification
+* repaired a my-account event visibility bug
 
 = 1.5.2 =
-* repairing 'new user' funcitonality on the edit order screen
-* repairing auto loading of user information when user is selected during admin order creation
-* fixing the issue where ticket purchases were getting tallied multiple times (thanks Robert Trevellyan) 
-* adjusting WC ajax takeovers so that our metaboxes are loaded on save/load order items
-* updating myaccount page to not show ticket links until order is complete
+* updated myaccount page to not show ticket links until order is complete
+* adjusted WC ajax takeovers so that our metaboxes are loaded on save/load order items
+* repaired 'new user' funcitonality on the edit order screen
+* repaired auto loading of user information when user is selected during admin order creation
+* repaired the issue where ticket purchases were getting tallied multiple times (thanks Robert Trevellyan) 
 
 = 1.5.1 =
-* removing new WooCommerce stati from event stati list
-* fixing installation bug where event links are not immediately available
+* repaired installation bug where event links are not immediately available
+* removed new WooCommerce stati from event stati list
 
 = 1.5.0 =
 * woocommerce 2.2.0+ compatibility patches
+* added backward compatibility for WC2.1.x
 * updated all edit order metaboxes in admin
 * converted all order status checkes to WC2.2.x method
 * repaired new order status change bug where reservations were getting cancelled
-* added backward compatibility for WC2.1.x
 
 = 1.4.1 =
+* added the ability to choose the date the event calendar opens to
 * fixed bug where ticket links become available before order is completed
-* adding the ability to choose the date the event calendar opens to
 
 = 1.4.0 =
-* fixing event permalinks problem when using 'default permalinks' - Core WP Bug
-* allowing ticket permalinks to work with 'default permalinks'
-* adding functionality to base reporting class for easier extension
-* fixing reporting page tab selection bug
-* adding upcoming tickets panel to my-account page
+* added functionality to base reporting class for easier extension
+* added upcoming tickets panel to my-account page
+* updated ticket permalinks to work with 'default permalinks'
+* fixed event permalinks problem when using 'default permalinks' - Core WP Bug
+* fixed reporting page tab selection bug
 
 = 1.3.5 =
-* adding a minimum memory limit check/auto adjust if possible
-* changing API for reporting to be more flexible
-* add better event date range function
-* repairing event date range calculation
+* added a minimum memory limit check/auto adjust if possible
+* added better event date range function
+* changed API for reporting to be more flexible
+* repaired event date range calculation
 
 = 1.3.2 =
-* removed more php notices
-* changed the 'inifinite login' feature, so that it works with 4.0 and does not prevent 4.0 from handling sessions properly
 * added plugin icons
+* changed the 'inifinite login' feature, so that it works with 4.0 and does not prevent 4.0 from handling sessions properly
+* removed more php notices
 
 = 1.3.1 =
-* removed 'web interfaces' from included packages, for wp.org compliance
 * changed how frontend ajax is handled
-* repairing seating report for recent changes
+* repaired seating report for recent changes
+* removed 'web interfaces' from included packages, for wp.org compliance
 
 = 1.3.0 =
-* corrected more php notices
 * changed how the order details metabox is overtaken, to preserve WC methodology
-* fixed edge case with zoner entry removal
-* fixed ticket display area name issue
+* repaired edge case with zoner entry removal
+* repaired ticket display area name issue
+* repaired more php notices
 
 = 1.2.7 =
+* repaired php notice issues
 * removed deprecated user query filtering
-* corrected php notice issues
 
 = 1.2.6 =
-* ticket permalinks automatically work on installation now
+* updated ticket permalinks to automatically work on installation
 
 = 1.2.5 =
 * initial public release
