@@ -139,6 +139,11 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.6.12 =
+* added better error handling on ticket reservation form
+* improved 'qsBlock' code to adjust properly to covered element size 
+* updated 'over available tickets' check to be more universal
+
 = 1.6.11 =
 * repaired 'my-orders' section of the my account printout on the edit user page in the admin (thanks @rjh1990)
 
