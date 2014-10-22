@@ -170,6 +170,7 @@ QS.popMediaBox = (function($, qt) {
 })(jQuery, QS.Tools);
 
 (function($) {
+	/*
   $.fn.qsBlock = function(settings) {
     return this.each(function() {
       var element = $(this), off = element.offset(),
@@ -195,6 +196,40 @@ QS.popMediaBox = (function($, qt) {
 			msg.find('h1').css({ fontSize: dims.height > 30 ? 28 : '100%' });
 
       var ublock = function() { bd.remove(); msg.remove(); element.off('unblock', ublock); }
+      element.on('unblock', ublock);
+    }); 
+  };  
+
+  $.fn.qsUnblock = function(element) { return this.each(function() { $(this).trigger('unblock'); }); };
+	*/
+  $.fn.qsBlock = function(settings) {
+    return this.each(function() {
+      var element = $(this), position = element.css( 'position' ),
+          sets = $.extend(true, { msg:'<h1>Loading...</h1>', css:{ backgroundColor:'#000000', opacity:0.5 }, msgcss:{ color:'#ffffff' } }, settings),
+          bd = $('<div class="block-backdrop"></div>').appendTo( element ), msg = $('<div class="block-msg"></div>').appendTo( element ),
+					dims = { width:element.outerWidth(), height:element.outerHeight() };
+			if ( position == 'static' )
+				element.css( { position:'relative' } );
+			$(sets.msg).css({ color:'inherit' }).appendTo(msg);
+      var mhei = msg.height();
+      bd.css($.extend({
+        position: 'absolute',
+        width: 'auto',
+        height: 'auto',
+        top: 0, bottom:0,
+        left: 0, right:0
+      }, sets.css));
+      msg.css($.extend({
+        textAlign: 'center',
+        position: 'absolute',
+        width: dims.width,
+        top: '50%',
+        left: 0,
+				marginTop: -mhei
+      }, sets.msgcss));
+			msg.find('h1').css({ fontSize: dims.height > 30 ? 28 : '100%' });
+
+      var ublock = function() { element.css( { position:position } ); bd.remove(); msg.remove(); element.off('unblock', ublock); }
       element.on('unblock', ublock);
     }); 
   };  
