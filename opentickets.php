@@ -453,6 +453,43 @@ if (!function_exists('qsot_underload_core_class')) {
 		stream_filter_register('qsot_underload', 'QSOT_underload_filter');
 }
 
+// load one of our classes, and update the 'extends' declaration with the appropriate class name if supplied
+if ( ! function_exists( 'qsot_overload_core_class' ) ) {
+	function qsot_overload_core_class( $path, $new_under_class_name='' ) {
+		global $woocommerce;
+
+		QSOT_overload_filter::$replace = $new_under_class_name;
+
+		$f = fopen( opentickets::plugin_dir() . $path, 'r' );
+		stream_filter_append( $f, 'qsot_overload' );
+		eval( stream_get_contents( $f ) );
+		fclose( $f );
+		unset( $content );
+	}
+
+	class QSOT_overload_filter extends php_user_filter {
+		public static $replace = '';
+
+		public function filter( $in, $out, &$consumed, $closing ) {
+			while ( $bucket = stream_bucket_make_writeable( $in ) ) {
+				$read = $bucket->datalen;
+				if ( !empty( self::$replace ) && strpos( $bucket->data, 'extends' ) !== false ) {
+					$bucket->data = preg_replace( '#extends\s+([_a-z][_a-z0-9]*)(\s|\{)#si', 'extends '.self::$replace.'\2', $bucket->data );
+				}
+				if ( $consumed == 0 ) {
+					$bucket->data = preg_replace( '#^<\?(php)?\s+#s', '', $bucket->data );
+				}
+				$consumed += $read; //$bucket->datalen;
+				stream_bucket_append( $out, $bucket );
+			}
+			return PSFS_PASS_ON;
+		}
+	}
+
+	if ( function_exists( 'stream_filter_register' ) )
+		stream_filter_register( 'qsot_overload', 'QSOT_overload_filter' );
+}
+
 if (!function_exists('is_ajax')) {
 	function is_ajax() {
 		if (defined('DOING_AJAX') && DOING_AJAX) return true;
