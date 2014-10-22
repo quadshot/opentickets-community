@@ -307,10 +307,10 @@ class qsot_zoner {
 			$available = apply_filters('qsot-get-event-available-tickets', 0, $event);
 			// determine how many this person already has reserved
 			$owns = array_sum( array_values( apply_filters('qsot-zoner-owns', 0, $event, 0, self::$o->{'z.states.r'}, $customer_id) ) );
-			//$owns_tt = apply_filters('qsot-zoner-owns', 0, $event, $ticket_type_id, self::$o->{'z.states.r'}, $customer_id);
+			$owns_tt = apply_filters('qsot-zoner-owns', 0, $event, $ticket_type_id, self::$o->{'z.states.r'}, $customer_id);
 
 			// if this user already owns some seats for this event, then 
-			if ($owns) {
+			if ($owns_tt) {
 				// if they are requesting more than is available, then just fail
 				if ($count > ($available + $owns)) return new WP_Error( 'There are not ' . $count . ' tickets available to reserve.' );
 				// otherwise update the reservation count for this user for this event
@@ -323,7 +323,7 @@ class qsot_zoner {
 			// if the user does not already have reservations for this event, then
 			} else {
 				// if the user is requesting more than what is currently available, then just fail
-				if ($count > $available) return new WP_Error( 'There are not ' . $count . ' tickets available to reserve.' );
+				if ($count > ($available + $owns)) return new WP_Error( 'There are not ' . $count . ' tickets available to reserve.' );
 				// oterhwise, insert the reservations for these seats now
 				$res = $wpdb->insert(
 					$wpdb->qsot_event_zone_to_order,

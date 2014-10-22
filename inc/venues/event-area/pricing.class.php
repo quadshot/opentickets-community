@@ -344,7 +344,7 @@ class qsot_seat_pricing {
 			$res = apply_filters(
 				'qsot-zoner-update-reservation',
 				false,
-				array('event_id' => $item['event_id'], 'qty' => $item['quantity'], 'state' => '*', 'customer_id' => $cuids),
+				array('event_id' => $item['event_id'], 'qty' => $item['quantity'], 'state' => '*', 'customer_id' => $cuids, 'ticket_type_id' => $item['product_id']),
 				array('qty' => 0, '_delete' => true)
 			);
 		}
