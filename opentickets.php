@@ -460,11 +460,21 @@ if ( ! function_exists( 'qsot_overload_core_class' ) ) {
 
 		QSOT_overload_filter::$replace = $new_under_class_name;
 
-		$f = fopen( opentickets::plugin_dir() . $path, 'r' );
-		stream_filter_append( $f, 'qsot_overload' );
-		eval( stream_get_contents( $f ) );
-		fclose( $f );
-		unset( $content );
+		$filepath = $path;
+		if ( ! file_exists( $filepath ) ) {
+			if ( file_exists( dirname( QSOT::plugin_dir() ) . DIRECTORY_SEPARATOR . $path ) )
+				$filepath = dirname( QSOT::plugin_dir() ) . DIRECTORY_SEPARATOR . $path;
+			else if ( file_exists( QSOT::plugin_dir() . DIRECTORY_SEPARATOR . $path ) )
+				$filepath = QSOT::plugin_dir() . DIRECTORY_SEPARATOR . $path;
+		}
+
+		if ( file_exists( $filepath ) ) {
+			$f = fopen( $filepath, 'r' );
+			stream_filter_append( $f, 'qsot_overload' );
+			eval( stream_get_contents( $f ) );
+			fclose( $f );
+			unset( $content );
+		} else throw new Exception( 'Could not find overload file [ ' . $path . ' ].' );
 	}
 
 	class QSOT_overload_filter extends php_user_filter {
