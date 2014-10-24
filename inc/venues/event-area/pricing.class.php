@@ -344,7 +344,7 @@ class qsot_seat_pricing {
 			$res = apply_filters(
 				'qsot-zoner-update-reservation',
 				false,
-				array('event_id' => $item['event_id'], 'qty' => $item['quantity'], 'state' => '*', 'customer_id' => $cuids),
+				array('event_id' => $item['event_id'], 'qty' => $item['quantity'], 'state' => '*', 'customer_id' => $cuids, 'ticket_type_id' => $item['product_id']),
 				array('qty' => 0, '_delete' => true)
 			);
 		}
@@ -669,7 +669,7 @@ class qsot_seat_pricing {
 		return $resp;
 	}
 
-	public static function add_tickets_button($order, $data, $order_items) {
+	public static function add_tickets_button($order) {
 		?><button type="button" class="button add-order-tickets" rel="add-tickets-btn"><?php _e( 'Add tickets', 'qsot' ); ?></button><?php
 	}
 

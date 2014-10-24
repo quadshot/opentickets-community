@@ -139,6 +139,13 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.6.15 =
+* added overloader function for coupons extension
+* repaired more logic to handle the new GAMP plugin
+
+= 1.6.14 =
+* fixed core event saving visibility bug
+
 = 1.6.13 =
 * added code to update internal table names when switching blogs
 * improved woocommerce check to include network plugins

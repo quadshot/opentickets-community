@@ -48,6 +48,7 @@ class qsot_order_admin {
 	public static function register_assets() {
 		if (QSOT::is_wc_latest()) {
 			wp_register_script('qsot-new-user', self::$o->core_url.'assets/js/admin/order/new-user.js', array('jquery-ui-dialog', 'qsot-tools', 'wc-admin-meta-boxes'), self::$o->version);
+			wp_register_script( 'qsot-order-metaboxes', self::$o->core_url.'assets/js/admin/order/metaboxes.js', array( 'qsot-tools', 'wc-admin-meta-boxes' ), self::$o->version );
 		} else {
 			wp_register_script('qsot-new-user', self::$o->core_url.'assets/js/admin/order/new-user.js', array('jquery-ui-dialog', 'qsot-tools', 'woocommerce_admin_meta_boxes'), self::$o->version);
 		}
@@ -60,6 +61,9 @@ class qsot_order_admin {
 			'order_id' => $post_id,
 			'templates' => self::_new_user_ui_templates($post_id), // all templates used by the ui js
 		), $post_id));
+
+		// take over some of the metabox javascript actions
+		wp_enqueue_script( 'qsot-order-metaboxes' );
 	}
 
 	// draw the new user button as soon as possible on the order data metabox
