@@ -519,7 +519,7 @@ QS.Tooltip = QS.Tooltip || (function($, q, qt, w, d, undefined) {
 	return Tooltip;
 })(jQuery, QS, QS.Tools, window, document);
 
-QS.EventUI_Callbacks = (function($, undefined) {
+QS.CB = QS.EventUI_Callbacks = (function($, undefined) {
 	function EventUI_Callbacks(cls, fname, sname) {
 		var t = this;
 		var _callbacks = {};
@@ -572,6 +572,7 @@ QS.EventUI_Callbacks = (function($, undefined) {
 
 	return EventUI_Callbacks;
 })(jQuery);
+QS.cbs = new QS.CB();
 
 (function($, undefined) {
 	// base visibility toggle on the current visibility state of the target container

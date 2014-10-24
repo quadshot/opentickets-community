@@ -669,7 +669,7 @@ class qsot_seat_pricing {
 		return $resp;
 	}
 
-	public static function add_tickets_button($order, $data, $order_items) {
+	public static function add_tickets_button($order) {
 		?><button type="button" class="button add-order-tickets" rel="add-tickets-btn"><?php _e( 'Add tickets', 'qsot' ); ?></button><?php
 	}
 
