@@ -588,8 +588,8 @@ class qsot_order_admin {
 		self::$options->add(array(
 			'order' => 2100,
 			'type' => 'title',
-			'title' => __('Additional Admin Based Order Validation', 'qsot'),
-			'id' => 'heading-admin-orders-1',
+			'title' => __('Additional Email Settings', 'qsot'),
+			'id' => 'heading-add-email-sets-1',
 		));
 
 		self::$options->add(array(
@@ -615,7 +615,7 @@ class qsot_order_admin {
 		self::$options->add(array(
 			'order' => 2199,
 			'type' => 'sectionend',
-			'id' => 'heading-admin-orders-1',
+			'id' => 'heading-add-email-sets-1',
 		));
 	}
 }

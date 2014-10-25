@@ -398,11 +398,48 @@ class QSOT {
 		return $max;
 	}
 
+	public static function compile_frontend_styles() {
+		$options = qsot_options::instance();
+		$colors = $options->{'qsot-event-frontend-colors'};
+
+		$base_file = QSOT::plugin_dir() . 'assets/css/frontend/event-base.less';
+		$less_file = QSOT::plugin_dir() . 'assets/css/frontend/event.less';
+		$css_file = QSOT::plugin_dir() . 'assets/css/frontend/event.css';
+
+		// Write less file
+		if ( is_writable( $base_file ) && is_writable( $css_file ) ) {
+			// Colours changed - recompile less
+			if ( ! class_exists( 'lessc' ) )
+				include_once( WC()->plugin_path() . '/includes/libraries/class-lessc.php' );
+			if ( ! class_exists( 'cssmin' ) )
+				include_once( WC()->plugin_path() . '/includes/libraries/class-cssmin.php' );
+
+			try {
+				// create the base file
+				$css = array();
+				foreach ( $colors as $tag => $color )
+					$css[] = '@' . $tag . ':' . $color . ';';
+				file_put_contents( $base_file, implode( "\n", $css ) );
+
+				// create the core css file
+				$less = new lessc;
+				$compiled_css = $less->compileFile( $less_file );
+				$compiled_css = CssMin::minify( $compiled_css );
+
+				if ( $compiled_css )
+					file_put_contents( $css_file, $compiled_css );
+			} catch ( Exception $ex ) {
+				wp_die( __( 'Could not compile event.less:', 'qsot' ) . ' ' . $ex->getMessage() );
+			}
+		}
+	}
+
 	// do magic - as yet to be determined the need of
 	public static function activation() {
 		self::load_plugins_and_modules();
 		do_action('qsot-activate');
 		flush_rewrite_rules();
+		self::compile_frontend_styles();
 	}
 }
 

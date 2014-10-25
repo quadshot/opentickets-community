@@ -8,6 +8,7 @@ if (!class_exists('QSOT_tickets')):
 class QSOT_tickets {
 	// holder for event plugin options
 	protected static $o = null;
+	protected static $options = null;
 
 	// container for templates caches
 	protected static $templates = array();
@@ -21,6 +22,13 @@ class QSOT_tickets {
 		$settings_class_name = apply_filters('qsot-settings-class-name', '');
 		if (empty($settings_class_name) || !class_exists($settings_class_name)) return;
 		self::$o = call_user_func_array(array($settings_class_name, 'instance'), array());
+
+		// load all the options, and share them with all other parts of the plugin
+		$options_class_name = apply_filters('qsot-options-class-name', '');
+		if (!empty($options_class_name)) {
+			self::$options = call_user_func_array(array($options_class_name, "instance"), array());
+			self::_setup_admin_options();
+		}
 
 		// setup the db tables for the ticket code lookup
 		// we offload this to a different table so that we can index the ticket codes for lookup speed
@@ -287,11 +295,58 @@ class QSOT_tickets {
 
 		$current = is_object($current) ? $current : new stdClass();
 		$current->order = $order;
+		$current->show_order_number = self::$options->{'qsot-ticket-show-order-id'} == 'yes';
 		$current->order_item = $order_item;
 		$current->product = $product;
 		$current->event = $event;
-		$current->event->image_id = get_post_thumbnail_id($current->event->ID);
-		$current->event->image_id = empty($current->event->image_id) ? get_post_thumbnail_id($current->event->post_parent) : $current->event->image_id;
+		$current->names = array();
+
+		// choose either the event or product image depending on settings
+		switch ( self::$options->{'qsot-ticket-image-shown'} ) {
+			default:
+			case 'event':
+				$current->event->image_id = get_post_thumbnail_id( $current->event->ID );
+				$current->event->image_id = empty($current->event->image_id) ? get_post_thumbnail_id($current->event->post_parent) : $current->event->image_id;
+			break;
+
+			case 'product':
+				$current->event->image_id = get_post_thumbnail_id( $product->id );
+			break;
+		}
+
+
+		// if the options say use the shipping name, then attempt to use it
+		if ( self::$options->{'qsot-ticket-purchaser-info'} == 'shipping' ) {
+			$k = 'shipping';
+			foreach ( array( 'first_name', 'last_name' ) as $_k ) {
+				$key = $k . '_' . $_k;
+				if ( $name = $order->$key )
+					$current->names[] = $name;
+			}
+		}
+		
+		// always fallback to billing name, since it is usually required, if we still have no names
+		if ( empty( $current->names ) ) {
+			$k = 'billing';
+			foreach ( array( 'first_name', 'last_name' ) as $_k ) {
+				$key = $k . '_' . $_k;
+				if ( $name = $order->$key )
+					$current->names[] = $name;
+			}
+		}
+
+		// if the names are still empty, try to pull any information from the user the order is assigned to, if it exists
+		if ( empty( $current->names ) && ( $uid = $order->customer_user ) ) {
+			$user = get_user_by( 'id', $uid );
+			if ( is_object( $user ) && isset( $user->user_login ) ) {
+				if ( $user->display_name )
+					$current->names[] = $user->display_name;
+				else
+					$current->names[] = $user->user_login;
+			} else {
+				$current->names[] = 'unknown';
+			}
+		}
 
 		return $current;
 	}
@@ -417,6 +472,65 @@ class QSOT_tickets {
 
 	public static function on_activate() {
 		flush_rewrite_rules();
+	}
+
+	protected static function _setup_admin_options() {
+		self::$options->def('qsot-ticket-image-shown', 'event');
+		self::$options->def('qsot-ticket-purchaser-info', 'event');
+		self::$options->def('qsot-ticket-show-order-id', 'no');
+
+		self::$options->add(array(
+			'order' => 500,
+			'type' => 'title',
+			'title' => __('Tickets', 'qsot'),
+			'id' => 'heading-frontend-tickets-1',
+			'page' => 'frontend',
+		));
+
+		self::$options->add(array(
+			'order' => 505,
+			'id' => 'qsot-ticket-image-shown',
+			'type' => 'radio',
+			'title' => __('Left Ticket Image', 'qsot'),
+			'desc_tip' => __('The image to show in the bottom left corner of the ticket.', 'qsot'),
+			'options' => array(
+				'event' => __('the Event Featured Image', 'qsot'),
+				'product' => __('the Ticket Product Image', 'qsot'),
+			),
+			'default' => 'event',
+			'page' => 'frontend',
+		));
+
+		self::$options->add(array(
+			'order' => 507,
+			'id' => 'qsot-ticket-purchaser-info',
+			'type' => 'radio',
+			'title' => __('Purchaser Info', 'qsot'),
+			'desc_tip' => __('Which information to user for the purchaser display information. Either Billing or Shipping.', 'qsot'),
+			'options' => array(
+				'billing' => __('the Billing Information', 'qsot'),
+				'shipping' => __('the Shipping Information', 'qsot'),
+			),
+			'default' => 'billing',
+			'page' => 'frontend',
+		));
+
+		self::$options->add(array(
+			'order' => 509,
+			'id' => 'qsot-ticket-show-order-id',
+			'type' => 'checkbox',
+			'title' => __('Show Order #', 'qsot'),
+			'desc' => __('Show the order number of the ticket, on the ticket.', 'qsot'),
+			'default' => 'no',
+			'page' => 'frontend',
+		));
+
+		self::$options->add(array(
+			'order' => 599,
+			'type' => 'sectionend',
+			'id' => 'heading-frontend-tickets-1',
+			'page' => 'frontend',
+		));
 	}
 }
 

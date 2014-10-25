@@ -1461,14 +1461,35 @@ class qsot_post_type {
 	}
 
 	protected static function _setup_admin_options() {
+		$colors = array();
+
+		$colors['form_bg'] = '#f4f4f4';
+		$colors['form_border'] = '#888888';
+		$colors['form_action_bg'] = '#888888';
+		$colors['form_helper'] = '#757575';
+
+		$colors['good_msg_bg'] = '#eeffee';
+		$colors['good_msg_border'] = '#008800';
+		$colors['good_msg_text'] = '#008800';
+
+		$colors['bad_msg_bg'] = '#ffeeee';
+		$colors['bad_msg_border'] = '#880000';
+		$colors['bad_msg_text'] = '#880000';
+
+		$colors['remove_bg'] = '#880000';
+		$colors['remove_border'] = '#660000';
+		$colors['remove_text'] = '#ffffff';
+
 		self::$options->def('qsot-single-synopsis', 'no');
 		self::$options->def('qsot-stop-sales-before-show', '');
+		self::$options->def( 'qsot-event-frontend-colors', $color );
 
 		self::$options->add(array(
 			'order' => 100,
 			'type' => 'title',
-			'title' => __('General Settings', 'qsot'),
-			'id' => 'heading-general-1',
+			'title' => __('Event Display', 'qsot'),
+			'id' => 'heading-frontend-general-1',
+			'page' => 'frontend',
 		));
 
 		self::$options->add(array(
@@ -1476,8 +1497,9 @@ class qsot_post_type {
 			'id' => 'qsot-stop-sales-before-show',
 			'type' => 'text',
 			'title' => __('Stop Sales Before Show', 'qsot'),
-			'desc' => __('Amount of time to stop sales for a show, before show time. (ie: stop sales two hour before show time <code>2 hours</code>)', 'qsot'),
+			'desc' => '<br/>' . __('Amount of time to stop sales for a show, before show time. (ie: stop sales two hour before show time <code>2 hours</code>)', 'qsot'),
 			'desc_tip' => __('valid units: hour, hours, minute, minutes, second, seconds, day, days, week, weeks, month, months, year, years', 'qsot'),
+			'page' => 'frontend',
 		));
 
 		self::$options->add(array(
@@ -1488,12 +1510,21 @@ class qsot_post_type {
 			'desc' => __('Show event synopsis on single event pages', 'qsot'),
 			'desc_tip' => __('By default, just the event logo, and the event pricing options are shown. This feature will additionally show the description of the event to the user.', 'qsot'),
 			'default' => 'no',
+			'page' => 'frontend',
+		));
+
+		self::$options->add(array(
+			'order' => 190,
+			'id' => 'qsot-event-frontend-colors',
+			'type' => 'qsot_frontend_styles',
+			'page' => 'frontend',
 		));
 
 		self::$options->add(array(
 			'order' => 199,
 			'type' => 'sectionend',
-			'id' => 'heading-general-1',
+			'id' => 'heading-frontend-general-1',
+			'page' => 'frontend',
 		));
 	}
 }

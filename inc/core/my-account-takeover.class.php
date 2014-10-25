@@ -313,35 +313,38 @@ class qsot_my_account_takeover {
 			'order' => 1000,
 			'type' => 'title',
 			'title' => __('My Account Page', 'qsot'),
-			'id' => 'heading-my-account-1',
+			'id' => 'heading-frontend-my-account-1',
+			'page' => 'frontend',
 		));
 
 		self::$options->add(array(
 			'order' => 1010,
 			'id' => 'qsot-my-account-display-upcoming-tickets',
 			'type' => 'radio',
-			'title' => __('Display Upcoming Tickets', 'qsot'),
+			'title' => __('Upcoming Tickets', 'qsot'),
 			'desc_tip' => __('Format to display the upcoming tickets list in. The list appears on the end user\'s "My Account" page.', 'qsot'),
 			'options' => array(
-				'by_event' => __('By Event', 'qsot'),
-				'as_list' => __('As Line Item List', 'qsot'),
+				'by_event' => __('Display By Event', 'qsot'),
+				'as_list' => __('Display As Line Item List', 'qsot'),
 			),
 			'default' => 'by_event',
-		));
-
-		self::$options->add(array(
-			'order' => 1020,
-			'id' => 'qsot-infinite-login',
-			'type' => 'checkbox',
-			'title' => __('Infinite Login', 'qsot'),
-			'desc' => __('Once a user logs in, they stay logged in, forever.', 'qsot'),
-			'default' => 'yes',
+			'page' => 'frontend',
 		));
 
 		self::$options->add(array(
 			'order' => 1030,
 			'type' => 'sectionend',
-			'id' => 'heading-my-account-1',
+			'id' => 'heading-frontend-my-account-1',
+			'page' => 'frontend',
+		));
+
+		self::$options->add(array(
+			'order' => 103,
+			'id' => 'qsot-infinite-login',
+			'type' => 'checkbox',
+			'title' => __('Infinite Login', 'qsot'),
+			'desc' => __('Once a user logs in, they stay logged in, forever.', 'qsot'),
+			'default' => 'yes',
 		));
 	}
 }
