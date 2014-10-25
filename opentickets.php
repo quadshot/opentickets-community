@@ -407,7 +407,7 @@ class QSOT {
 		$css_file = QSOT::plugin_dir() . 'assets/css/frontend/event.css';
 
 		// Write less file
-		if ( is_writable( $base_file ) && is_writable( $css_file ) ) {
+		if ( is_writable( $base_file ) && is_writable( dirname( $css_file ) ) ) {
 			// Colours changed - recompile less
 			if ( ! class_exists( 'lessc' ) )
 				include_once( WC()->plugin_path() . '/includes/libraries/class-lessc.php' );
