@@ -139,6 +139,9 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.7.1 =
+* added frontend style settings page
+
 = 1.7.0 =
 * added styling to the settings pages
 * added settings for frontend colors (thanks @bradleysp)
