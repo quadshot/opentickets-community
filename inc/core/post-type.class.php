@@ -1482,7 +1482,7 @@ class qsot_post_type {
 
 		self::$options->def('qsot-single-synopsis', 'no');
 		self::$options->def('qsot-stop-sales-before-show', '');
-		self::$options->def( 'qsot-event-frontend-colors', $color );
+		self::$options->def( 'qsot-event-frontend-colors', $colors );
 
 		self::$options->add(array(
 			'order' => 100,

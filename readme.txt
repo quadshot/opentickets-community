@@ -139,6 +139,9 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.7.2 =
+* fixed 'compile stylesheet' error
+
 = 1.7.1 =
 * added frontend style settings page
 
