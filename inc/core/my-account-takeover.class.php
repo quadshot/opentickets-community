@@ -42,7 +42,7 @@ class qsot_my_account_takeover {
 	public static function my_orders_headers($user, $orders) {
 		if (!is_admin()) return;
 
-		echo '<th>'.__('Shows','opentickets-community').'</th>';
+		echo '<th>'.__('Shows','opentickets-community-edition').'</th>';
 	}
 
 	public static function my_orders_values($user, $order) {
@@ -66,7 +66,7 @@ class qsot_my_account_takeover {
 				<?php if (count($shows)): ?>
 					<?php echo implode('<br/>', $shows) ?>
 				<?php else: ?>
-					<?php echo '&nbsp;'.__('(none)','opentickets-community'); ?>
+					<?php echo '&nbsp;'.__('(none)','opentickets-community-edition'); ?>
 				<?php endif; ?>
 			</td>
 		<?php
@@ -123,7 +123,7 @@ class qsot_my_account_takeover {
 		}
 
 		if ( !current_user_can('delete_users') && $order->user_id != $user_id ) {
-			echo '<div class="woocommerce-error">' . __( 'Invalid order.', 'woocommerce' ) . ' <a href="'.get_permalink( wc_get_page_id('myaccount') ).'">'. __( 'My Account &rarr;','opentickets-community') .'</a>' . '</div>';
+			echo '<div class="woocommerce-error">' . __( 'Invalid order.', 'woocommerce' ) . ' <a href="'.get_permalink( wc_get_page_id('myaccount') ).'">'. __( 'My Account &rarr;','opentickets-community-edition') .'</a>' . '</div>';
 			return;
 		}
 
@@ -134,20 +134,20 @@ class qsot_my_account_takeover {
 		}
 
 		echo '<p class="order-info">'
-		. sprintf( __('Order <mark class="order-number">%s</mark> made on <mark class="order-date">%s</mark>','opentickets-community'), $order->get_order_number(), date_i18n( get_option( 'date_format' ), strtotime( $order->order_date ) ) )
-		. '. ' . sprintf( __('Order status: <mark class="order-status">%s</mark>','opentickets-community'), __($status->name,'opentickets-community') )
+		. sprintf( __('Order <mark class="order-number">%s</mark> made on <mark class="order-date">%s</mark>','opentickets-community-edition'), $order->get_order_number(), date_i18n( get_option( 'date_format' ), strtotime( $order->order_date ) ) )
+		. '. ' . sprintf( __('Order status: <mark class="order-status">%s</mark>','opentickets-community-edition'), __($status->name,'opentickets-community-edition') )
 		. '.</p>';
 
 		$notes = $order->get_customer_order_notes();
 		if ($notes) :
 			?>
-			<h2><?php _e('Order Updates','opentickets-community'); ?></h2>
+			<h2><?php _e('Order Updates','opentickets-community-edition'); ?></h2>
 			<ol class="commentlist notes">
 				<?php foreach ($notes as $note) : ?>
 				<li class="comment note">
 					<div class="comment_container">
 						<div class="comment-text">
-							<p class="meta"><?php echo date_i18n(__( 'l jS \of F Y, h:ia','opentickets-community'), strtotime($note->comment_date)); ?></p>
+							<p class="meta"><?php echo date_i18n(__( 'l jS \of F Y, h:ia','opentickets-community-edition'), strtotime($note->comment_date)); ?></p>
 							<div class="description">
 								<?php echo wpautop(wptexturize($note->comment_content)); ?>
 							</div>
@@ -312,7 +312,7 @@ class qsot_my_account_takeover {
 		self::$options->add(array(
 			'order' => 1000,
 			'type' => 'title',
-			'title' => __('My Account Page','opentickets-community'),
+			'title' => __('My Account Page','opentickets-community-edition'),
 			'id' => 'heading-frontend-my-account-1',
 			'page' => 'frontend',
 		));
@@ -321,11 +321,11 @@ class qsot_my_account_takeover {
 			'order' => 1010,
 			'id' => 'qsot-my-account-display-upcoming-tickets',
 			'type' => 'radio',
-			'title' => __('Display Upcoming Tickets','opentickets-community'),
-			'desc_tip' => __('Format to display the upcoming tickets list in. The list appears on the end user\'s "My Account" page.','opentickets-community'),
+			'title' => __('Display Upcoming Tickets','opentickets-community-edition'),
+			'desc_tip' => __('Format to display the upcoming tickets list in. The list appears on the end user\'s "My Account" page.','opentickets-community-edition'),
 			'options' => array(
-				'by_event' => __('By Event','opentickets-community'),
-				'as_list' => __('As Line Item List','opentickets-community'),
+				'by_event' => __('By Event','opentickets-community-edition'),
+				'as_list' => __('As Line Item List','opentickets-community-edition'),
 			),
 			'default' => 'by_event',
 			'page' => 'frontend',
@@ -342,8 +342,8 @@ class qsot_my_account_takeover {
 			'order' => 103,
 			'id' => 'qsot-infinite-login',
 			'type' => 'checkbox',
-			'title' => __('Infinite Login','opentickets-community'),
-			'desc' => __('Once a user logs in, they stay logged in, forever.','opentickets-community'),
+			'title' => __('Infinite Login','opentickets-community-edition'),
+			'desc' => __('Once a user logs in, they stay logged in, forever.','opentickets-community-edition'),
 			'default' => 'yes',
 		));
 	}

@@ -41,7 +41,7 @@ class qsot_frontend_calendar {
 	}
 
 	public static function add_calendar_template($list) {
-		$list['qsot-calendar.php'] = __('OpenTickets Calendar','opentickets-community');
+		$list['qsot-calendar.php'] = __('OpenTickets Calendar','opentickets-community-edition');
 		return $list;
 	}
 
@@ -65,8 +65,8 @@ class qsot_frontend_calendar {
 			if (!isset($wp_registered_sidebars[$slug])) {
 				$a = array(
 					'id' => $slug,
-					'name' => __('Non-JS Calendar Page','opentickets-community'),
-					'description' => __('Widget area on calendar template that shows when a user does not have javascript enabled.','opentickets-community'),
+					'name' => __('Non-JS Calendar Page','opentickets-community-edition'),
+					'description' => __('Widget area on calendar template that shows when a user does not have javascript enabled.','opentickets-community-edition'),
 					'before_widget' => '<div id="%1$s" class="widget %SPAN% %2$s"><div class="widget-inner">',
 					'after_widget' => '</div><div class="clear"></div></div>',
 					'before_title' => '<h3 class="widgettitle">',
@@ -122,7 +122,7 @@ class qsot_frontend_calendar {
 		foreach ($screens as $screen) {
 			add_meta_box(
 				'qsot-calendar-settings-box',
-				__('Calendar Settings','opentickets-community'),
+				__('Calendar Settings','opentickets-community-edition'),
 				array(__CLASS__, 'mb_calendar_settings'),
 				$screen,
 				'side',
@@ -214,7 +214,7 @@ class qsot_frontend_calendar {
 		);
 		$e['_start'] = strtotime($e['start']);
 		if (!apply_filters('qsot-can-sell-tickets-to-event', false, $event->ID)) { //$e['_start'] < current_time('timestamp')) {
-			$e['avail-words'] = __('Ended','opentickets-community');
+			$e['avail-words'] = __('Ended','opentickets-community-edition');
 			$e['passed'] = true;
 		}
 		if (is_admin()) {
@@ -246,9 +246,9 @@ class qsot_frontend_calendar {
 	public static function mb_calendar_settings($post, $mb) {
 		// generate a list of valid options for the calendar starting date modes
 		$valid = apply_filters('qsot-calendar-modes', array(
-			'today' => __('Today','opentickets-community'), // starts the calendar at today, when the calendar page is loaded
-			'first' => __('Date of next Event','opentickets-community'), // starts the calendar at the date of the first event, when calendar is loaded
-			'manual' => __('Manually entered date','opentickets-community'), // uses a manually entered date as the start date of the calendar when it is loaded
+			'today' => __('Today','opentickets-community-edition'), // starts the calendar at today, when the calendar page is loaded
+			'first' => __('Date of next Event','opentickets-community-edition'), // starts the calendar at the date of the first event, when calendar is loaded
+			'manual' => __('Manually entered date','opentickets-community-edition'), // uses a manually entered date as the start date of the calendar when it is loaded
 		));
 
 		// get the current settings
@@ -260,7 +260,7 @@ class qsot_frontend_calendar {
 
 		// draw the form
 		?>
-			<p><strong><?php _e('Starting Date Method','opentickets-community') ?></strong></p>
+			<p><strong><?php _e('Starting Date Method','opentickets-community-edition') ?></strong></p>
 
 			<p>
 				<?php foreach ($valid as $meth => $label): ?>
@@ -272,8 +272,8 @@ class qsot_frontend_calendar {
 			</p>
 
 			<div class="hide-if-js extra-box" rel="extra-manual">
-				<p><strong><?php _e('Manually entered date','opentickets-community') ?></strong></p>
-				<label class="screen-reader-text" for="qsot-cal-start-manual"><?php _e('Manually entered date','opentickets-community') ?></label>
+				<p><strong><?php _e('Manually entered date','opentickets-community-edition') ?></strong></p>
+				<label class="screen-reader-text" for="qsot-cal-start-manual"><?php _e('Manually entered date','opentickets-community-edition') ?></label>
 				<input size="11" type="text" class="use-datepicker" id="qsot-cal-start-manual" name="_calendar_start_manual" value="<?php echo esc_attr($date) ?>" />
 			</div>
 
@@ -291,9 +291,9 @@ class qsot_frontend_calendar {
 
 		// generate a list of valid options for the calendar starting date modes
 		$valid = apply_filters('qsot-calendar-modes', array(
-			'today' => __('Today','opentickets-community'), // starts the calendar at today, when the calendar page is loaded
-			'first' => __('Date of next Event','opentickets-community'), // starts the calendar at the date of the first event, when calendar is loaded
-			'manual' => __('Manually entered date','opentickets-community'), // uses a manually entered date as the start date of the calendar when it is loaded
+			'today' => __('Today','opentickets-community-edition'), // starts the calendar at today, when the calendar page is loaded
+			'first' => __('Date of next Event','opentickets-community-edition'), // starts the calendar at the date of the first event, when calendar is loaded
+			'manual' => __('Manually entered date','opentickets-community-edition'), // uses a manually entered date as the start date of the calendar when it is loaded
 		));
 
 		// get the current settings
@@ -356,7 +356,7 @@ class qsot_frontend_calendar {
 		$page_id = get_option('qsot_calendar_page_id', 0);
 		if (empty($page_id)) {
 			$data = array(
-				'post_title' => __('Event Calendar','opentickets-community'),
+				'post_title' => __('Event Calendar','opentickets-community-edition'),
 				'post_name' => 'calendar',
 				'post_content' => '',
 				'post_status' => 'publish',
@@ -374,14 +374,14 @@ class qsot_frontend_calendar {
 
 	public static function add_pages($list) {
 		$list[] = array(
-			'title' => __('Event Pages','opentickets-community'),
+			'title' => __('Event Pages','opentickets-community-edition'),
 			'type' => 'title',
-			'desc' => __('These pages are used to display the upcoming events.','opentickets-community'),
+			'desc' => __('These pages are used to display the upcoming events.','opentickets-community-edition'),
 			'id' => 'qsot-event-pages',
 		);
 		$list[] = array(
-			'title' => __('Event Calendar','opentickets-community'),
-			'desc' => __('Page to display the calendar of upcoming events.','opentickets-community'),
+			'title' => __('Event Calendar','opentickets-community-edition'),
+			'desc' => __('Page to display the calendar of upcoming events.','opentickets-community-edition'),
 			'id' => 'qsot_calendar_page_id',
 			'type' => 'single_select_page',
 			'default' => '',

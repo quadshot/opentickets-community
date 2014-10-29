@@ -133,7 +133,7 @@ class qsot_post_type {
 			$event = apply_filters('qsot-get-event', false, $item['event_id']);
 			if (is_object($event)) {
 				$list[] = array(
-					'name' => __('Event','opentickets-community'),
+					'name' => __('Event','opentickets-community-edition'),
 					'display' => apply_filters('the_title', $event->post_title),
 				);
 			}
@@ -150,7 +150,7 @@ class qsot_post_type {
 		echo sprintf(
 			'<br/><small> - <a class="event-link" href="%s" target="_blank" title="%s">%s</a></small>',
 			get_permalink($event->ID),
-			__('View this event','opentickets-community'),
+			__('View this event','opentickets-community-edition'),
 			apply_filters('the_title', $event->post_title)
 		);
 	}
@@ -290,7 +290,7 @@ class qsot_post_type {
 			$final = array();
 			foreach ($columns as $col => $val) {
 				$final[$col] = $val;
-				if ($col == 'title') $final['child-event-count'] = __('Events','opentickets-community');
+				if ($col == 'title') $final['child-event-count'] = __('Events','opentickets-community-edition');
 			}
 			$columns = $final;
 		}
@@ -318,7 +318,7 @@ class qsot_post_type {
 			'only-parents' => sprintf(
 				'<a href="%s"'.$current.'>%s (%d)</a>',
 				'edit.php?post_type='.self::$o->core_post_type.'&post_parent=0',
-				__('Top Level Events','opentickets-community'),
+				__('Top Level Events','opentickets-community-edition'),
 				$post_counts["0"]
 			),
 		);
@@ -662,8 +662,8 @@ class qsot_post_type {
 
 		$list[$corept] = array(
 			'label_replacements' => array(
-				'plural' => __('Events','opentickets-community'), // plural version of the proper name, used in the slightly modified labels in my _register_post_type method
-				'singular' => __('Event','opentickets-community'), // singular version of the proper name, used in the slightly modified labels in my _register_post_type method
+				'plural' => __('Events','opentickets-community-edition'), // plural version of the proper name, used in the slightly modified labels in my _register_post_type method
+				'singular' => __('Event','opentickets-community-edition'), // singular version of the proper name, used in the slightly modified labels in my _register_post_type method
 			),
 			'args' => array( // almost all of these are passed through to the core regsiter_post_type function, and follow the same guidelines defined on wordpress.org
 				'public' => true, 
@@ -824,7 +824,7 @@ class qsot_post_type {
 						.'<span class="'.self::$o->fctm.'-event-title"></span>' // event title
 					.'</div>'
 					.'<div class="'.self::$o->fctm.'-section">'
-						.'<span>'.__('Max','opentickets-community').': </span><span class="'.self::$o->fctm.'-capacity"></span>' // event max occupants
+						.'<span>'.__('Max','opentickets-community-edition').': </span><span class="'.self::$o->fctm.'-capacity"></span>' // event max occupants
 					.'</div>'
 					.'<div class="'.self::$o->fctm.'-section">'
 						.'<span>'.__('Status','qsot').': </span><span class="'.self::$o->fctm.'-visibility"></span>' // status
@@ -1054,7 +1054,7 @@ class qsot_post_type {
 		if ($post->post_parent == 0) {
 			add_meta_box(
 				'event-date-time',
-				__('Event Date Time Settings','opentickets-community'),
+				__('Event Date Time Settings','opentickets-community-edition'),
 				array(__CLASS__, 'mb_event_date_time_settings'),
 				self::$o->core_post_type,
 				'normal',
@@ -1064,7 +1064,7 @@ class qsot_post_type {
 
 		add_meta_box(
 			'stop-sales-before-show',
-			__('Stop Sales Before Show','opentickets-community'),
+			__('Stop Sales Before Show','opentickets-community-edition'),
 			array(__CLASS__, 'mb_stop_sales_before_show'),
 			self::$o->core_post_type,
 			'side',
@@ -1073,7 +1073,7 @@ class qsot_post_type {
 
 		add_meta_box(
 			'event-run-date-range',
-			__('Event Run Date Range','opentickets-community'),
+			__('Event Run Date Range','opentickets-community-edition'),
 			array(__CLASS__, 'mb_event_run_date_range'),
 			self::$o->core_post_type,
 			'side',
@@ -1085,14 +1085,14 @@ class qsot_post_type {
 		$formula = get_post_meta($post->ID, '_stop_sales_before_show', true);
 		?>
 			<div class="field-wrap">
-				<div class="label"><label><?php echo __('Formula','opentickets-community'); ?>:</label></div>
+				<div class="label"><label><?php echo __('Formula','opentickets-community-edition'); ?>:</label></div>
 				<div class="field">
 					<input type="text" class="widefat" name="_qsot_stop_sales_before_show" value="<?php echo esc_attr($formula) ?>" />
 				</div>
 			</div>
 
 			<p>
-				<?php _e('This is the formula to calculate when tickets should stop being sold on the frontend for this show. For example, if you wish to stop selling tickets 2 hours and 30 minutes before the show, use: <code>2 hours 30 minutes</code>. Valid units include: hour, hours, minute, minutes, second, seconds, day, days, week, weeks, month, months, year, years. Leave the formula empty to just use the Global Setting for this formula.','opentickets-community'); ?>
+				<?php _e('This is the formula to calculate when tickets should stop being sold on the frontend for this show. For example, if you wish to stop selling tickets 2 hours and 30 minutes before the show, use: <code>2 hours 30 minutes</code>. Valid units include: hour, hours, minute, minutes, second, seconds, day, days, week, weeks, month, months, year, years. Leave the formula empty to just use the Global Setting for this formula.','opentickets-community-edition'); ?>
 			</p>
 		<?php
 	}
@@ -1108,7 +1108,7 @@ class qsot_post_type {
 			</style>
 
 			<div class="field-wrap">
-				<label><?php _e('Start Date/Time','opentickets-community') ?>:</label>
+				<label><?php _e('Start Date/Time','opentickets-community-edition') ?>:</label>
 				<div class="field">
 					<table cellspacing="0">
 						<tbody>
@@ -1126,7 +1126,7 @@ class qsot_post_type {
 				</div>
 			</div>
 			<div class="field-wrap">
-				<label><?php _e('End Date/Time:','opentickets-community') ?></label>
+				<label><?php _e('End Date/Time:','opentickets-community-edition') ?></label>
 				<div class="field">
 					<table cellspacing="0">
 						<tbody>
@@ -1134,7 +1134,7 @@ class qsot_post_type {
 								<td width="60%">
 									<input type="text" class="widefat use-datepicker" name="_qsot_end_date" value="<?php echo esc_attr($end) ?>" />
 								</td>
-								<td width="1%"><?php _e('@','opentickets-community') ?></td>
+								<td width="1%"><?php _e('@','opentickets-community-edition') ?></td>
 								<td width="39%">
 									<input type="text" class="widefat use-timepicker" name="_qsot_end_time" value="<?php echo esc_attr($end_time) ?>" />
 								</td>
@@ -1156,21 +1156,21 @@ class qsot_post_type {
 							<tbody>
 								<tr>
 									<td width="50%">
-										<h4><?php _e('Basic Settings','opentickets-community') ?></h4>
+										<h4><?php _e('Basic Settings','opentickets-community-edition') ?></h4>
 										<div class="date-time-block subsub">
 											<?php $now = strtotime(current_time('mysql')) ?>
-											<input type="text" class="use-datepicker date-text" name="start-date" value="<?php echo date(__('Y-m-d','opentickets-community'), $now) ?>" title="<?php _e('Start Date','opentickets-community') ?>" />
-											<input type="text" class="time-text" name="start-time" value="<?php echo date(__('h:ia','opentickets-community'), $now) ?>" title="<?php _e('Start Time','opentickets-community') ?>" />
-											<?php _e('to','opentickets-community') ?>
+											<input type="text" class="use-datepicker date-text" name="start-date" value="<?php echo date(__('Y-m-d','opentickets-community-edition'), $now) ?>" title="<?php _e('Start Date','opentickets-community-edition') ?>" />
+											<input type="text" class="time-text" name="start-time" value="<?php echo date(__('h:ia','opentickets-community-edition'), $now) ?>" title="<?php _e('Start Time','opentickets-community-edition') ?>" />
+											<?php _e('to','opentickets-community-edition') ?>
 											<?php $end = strtotime('+1 hour', $now); ?>
-											<input type="text" class="use-datepicker date-text" name="end-date" value="<?php echo date(__('Y-m-d','opentickets-community'), $end) ?>" title="<?php _e('End Date','opentickets-community') ?>" />
-											<input type="text" class="time-text" name="end-time" value="<?php echo date(__('h:ia','opentickets-community'), $end) ?>" title="<?php _e('End Time','opentickets-community') ?>" />
+											<input type="text" class="use-datepicker date-text" name="end-date" value="<?php echo date(__('Y-m-d','opentickets-community-edition'), $end) ?>" title="<?php _e('End Date','opentickets-community-edition') ?>" />
+											<input type="text" class="time-text" name="end-time" value="<?php echo date(__('h:ia','opentickets-community-edition'), $end) ?>" title="<?php _e('End Time','opentickets-community-edition') ?>" />
 										</div>
 										
 										<div class="event-settings-block subsub">
 											<span class="cb-wrap">
 												<input type="checkbox" name="repeat" value="1" class="togvis" tar=".repeat-options" scope=".option-sub" auto="auto" />
-												<span class="cb-text"><?php _e('Repeat','opentickets-community') ?>...</span>
+												<span class="cb-text"><?php _e('Repeat','opentickets-community-edition') ?>...</span>
 											</span>
 										</div>
 
@@ -1179,92 +1179,92 @@ class qsot_post_type {
 
 									<td>
 										<div class="repeat-options hide-if-js">
-											<h4><?php _e('Repeat','opentickets-community') ?></h4>
+											<h4><?php _e('Repeat','opentickets-community-edition') ?></h4>
 											<div class="repeat-settings subsub">
 												<table class="repeat-settings-wrapper settings-list">
 													<tbody>
 														<tr>
-															<th><?php _e('Repeats','opentickets-community') ?>:</th>
+															<th><?php _e('Repeats','opentickets-community-edition') ?>:</th>
 															<td>
 																<select name="repeats" class="togvis" tar=".repeat-options-%VAL%" scope=".repeat-settings" auto="auto">
 																	<?php /* <option value="daily">Daily</option> */ ?>
-																	<option value="weekly" <?php selected(true, true) ?>><?php _e('Weekly','opentickets-community') ?></option>
+																	<option value="weekly" <?php selected(true, true) ?>><?php _e('Weekly','opentickets-community-edition') ?></option>
 																</select>
 															</td>
 														</tr>
 
 														<tr>
-															<th><?php _e('Repeats Every','opentickets-community') ?>:</th>
+															<th><?php _e('Repeats Every','opentickets-community-edition') ?>:</th>
 															<td>
 																<select name="repeat-every">
 																	<?php for ($i=1; $i<=30; $i++): ?>
 																		<option value="<?php echo $i; ?>"><?php echo $i; ?></option>
 																	<?php endfor; ?>
 																</select>
-																<span class="every-descriptor repeat-options-daily hide-if-js"><?php _e('days','opentickets-community') ?></span>
-																<span class="every-descriptor repeat-options-weekly hide-if-js"><?php _e('weeks','opentickets-community') ?></span>
+																<span class="every-descriptor repeat-options-daily hide-if-js"><?php _e('days','opentickets-community-edition') ?></span>
+																<span class="every-descriptor repeat-options-weekly hide-if-js"><?php _e('weeks','opentickets-community-edition') ?></span>
 															</td>
 														</tr>
 
 														<tr class="hide-if-js repeat-options-weekly">
-															<th><?php _e('Repeat on','opentickets-community') ?>:</th>
+															<th><?php _e('Repeat on','opentickets-community-edition') ?>:</th>
 															<td>
 																<span class="cb-wrap">
 																	<input type="checkbox" name="repeat-on[]" value="0" <?php selected(date('w', $now), 0) ?> />
-																	<span class="cb-text"><?php _e('Su','opentickets-community') ?></span>
+																	<span class="cb-text"><?php _e('Su','opentickets-community-edition') ?></span>
 																</span>
 																<span class="cb-wrap">
 																	<input type="checkbox" name="repeat-on[]" value="1" <?php selected(date('w', $now), 1) ?> />
-																	<span class="cb-text"><?php _e('Mo','opentickets-community') ?></span>
+																	<span class="cb-text"><?php _e('Mo','opentickets-community-edition') ?></span>
 																</span>
 																<span class="cb-wrap">
 																	<input type="checkbox" name="repeat-on[]" value="2" <?php selected(date('w', $now), 2) ?> />
-																	<span class="cb-text"><?php _e('Tu','opentickets-community') ?></span>
+																	<span class="cb-text"><?php _e('Tu','opentickets-community-edition') ?></span>
 																</span>
 																<span class="cb-wrap">
 																	<input type="checkbox" name="repeat-on[]" value="3" <?php selected(date('w', $now), 3) ?> />
-																	<span class="cb-text"><?php _e('We','opentickets-community') ?></span>
+																	<span class="cb-text"><?php _e('We','opentickets-community-edition') ?></span>
 																</span>
 																<span class="cb-wrap">
 																	<input type="checkbox" name="repeat-on[]" value="4" <?php selected(date('w', $now), 4) ?> />
-																	<span class="cb-text"><?php _e('Th','opentickets-community') ?></span>
+																	<span class="cb-text"><?php _e('Th','opentickets-community-edition') ?></span>
 																</span>
 																<span class="cb-wrap">
 																	<input type="checkbox" name="repeat-on[]" value="5" <?php selected(date('w', $now), 5) ?> />
-																	<span class="cb-text"><?php _e('Fr','opentickets-community') ?></span>
+																	<span class="cb-text"><?php _e('Fr','opentickets-community-edition') ?></span>
 																</span>
 																<span class="cb-wrap">
 																	<input type="checkbox" name="repeat-on[]" value="6" <?php selected(date('w', $now), 6) ?> />
-																	<span class="cb-text"><?php _e('Sa','opentickets-community') ?></span>
+																	<span class="cb-text"><?php _e('Sa','opentickets-community-edition') ?></span>
 																</span>
 															</td>
 														</tr>
 
 														<tr>
-															<th><?php _e('Starts on','opentickets-community') ?>:</th>
+															<th><?php _e('Starts on','opentickets-community-edition') ?>:</th>
 															<td>
-																<input type="text" class="widefat date-text use-datepicker" name="repeat-starts" value="<?php echo date(__('Y-m-d','opentickets-community'), $now) ?>" />
+																<input type="text" class="widefat date-text use-datepicker" name="repeat-starts" value="<?php echo date(__('Y-m-d','opentickets-community-edition'), $now) ?>" />
 															</td>
 														</tr>
 
 														<tr>
-															<th><?php _e('Ends','opentickets-community') ?>:</th>
+															<th><?php _e('Ends','opentickets-community-edition') ?>:</th>
 															<td>
 																<ul>
 																	<li>
 																		<span class="cb-wrap">
 																			<input type="radio" name="repeat-ends-type" value="on" checked="checked" />
-																			<span class="cb-text"><?php _e('On','opentickets-community') ?>:</span>
+																			<span class="cb-text"><?php _e('On','opentickets-community-edition') ?>:</span>
 																		</span>
-																		<input type="text" class="widefat date-text use-datepicker" name="repeat-ends-on" value="<?php echo date(__('Y-m-d','opentickets-community'), $now) ?>" />
+																		<input type="text" class="widefat date-text use-datepicker" name="repeat-ends-on" value="<?php echo date(__('Y-m-d','opentickets-community-edition'), $now) ?>" />
 																	</li>
 																	<li>
 																		<span class="cb-wrap">
 																			<input type="radio" name="repeat-ends-type" value="after" />
-																			<span class="cb-text"><?php _e('After','opentickets-community') ?>:</span>
+																			<span class="cb-text"><?php _e('After','opentickets-community-edition') ?>:</span>
 																		</span>
 																		<input type="number" class="widefat date-text" name="repeat-ends-after" value="15" />
-																		<span> <?php _e('occurences','opentickets-community') ?></span>
+																		<span> <?php _e('occurences','opentickets-community-edition') ?></span>
 																	</li>
 																	<?php do_action('qsot-events-repeat-ends-type', $post, $mb) ?>
 																</ul>
@@ -1285,7 +1285,7 @@ class qsot_post_type {
 
 						<div class="clear"></div>
 						<div class="actions">
-							<input type="button" value="<?php _e('Add to Calendar','opentickets-community') ?>" class="action button button-primary" rel="add-btn" />
+							<input type="button" value="<?php _e('Add to Calendar','opentickets-community-edition') ?>" class="action button button-primary" rel="add-btn" />
 						</div>
 						<ul class="messages" rel="messages">
 						</ul>
@@ -1301,105 +1301,105 @@ class qsot_post_type {
 						<tbody>
 							<tr>
 								<td width="1%" class="date-selection-column">
-									<h4><?php _e('Event Date/Times','opentickets-community') ?></h4>
+									<h4><?php _e('Event Date/Times','opentickets-community-edition') ?></h4>
 									<div class="event-date-time-list-view" rel="event-list"></div>
 								</td>
 
 								<td>
 									<div class="bulk-edit-settings hide-if-js" rel="settings-main-form">
-										<h4><?php _e('Settings','opentickets-community') ?></h4>
+										<h4><?php _e('Settings','opentickets-community-edition') ?></h4>
 										<div class="settings-form">
 											<div class="setting-group">
 												<div class="setting" rel="setting-main" tag="status">
 													<div class="setting-current">
-														<span class="setting-name"><?php _e('Status:','opentickets-community') ?></span>
+														<span class="setting-name"><?php _e('Status:','opentickets-community-edition') ?></span>
 														<span class="setting-current-value" rel="setting-display"></span>
-														<a class="edit-btn" href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]"><?php _e('Edit','opentickets-community') ?></a>
+														<a class="edit-btn" href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]"><?php _e('Edit','opentickets-community-edition') ?></a>
 														<input type="hidden" name="settings[status]" value="" scope="[rel=setting-main]" rel="status" />
 													</div>
 													<div class="setting-edit-form" rel="setting-form">
 														<select name="status">
-															<option value="publish" data-only-if="status=,publish,pending,draft,hidden,private"><?php _e('Published','opentickets-community') ?></option>
-															<option value="private" data-only-if="status=private"><?php _e('Privately Published','opentickets-community') ?></option>
-															<option value="future" data-only-if="status=future"><?php _e('Scheduled','opentickets-community') ?></option>
+															<option value="publish" data-only-if="status=,publish,pending,draft,hidden,private"><?php _e('Published','opentickets-community-edition') ?></option>
+															<option value="private" data-only-if="status=private"><?php _e('Privately Published','opentickets-community-edition') ?></option>
+															<option value="future" data-only-if="status=future"><?php _e('Scheduled','opentickets-community-edition') ?></option>
 															<?php do_action( 'qsot-event-setting-custom-status', $post, $mb ) ?>
-															<option value="pending"><?php _e('Pending Review','opentickets-community') ?></option>
-															<option value="draft"><?php _e('Draft','opentickets-community') ?></option>
+															<option value="pending"><?php _e('Pending Review','opentickets-community-edition') ?></option>
+															<option value="draft"><?php _e('Draft','opentickets-community-edition') ?></option>
 														</select>
 														<div class="edit-setting-actions">
-															<input type="button" class="button" rel="setting-save" value="<?php _e('OK','opentickets-community') ?>" />
-															<a href="#" rel="setting-cancel"><?php _e('Cancel','opentickets-community') ?></a>
+															<input type="button" class="button" rel="setting-save" value="<?php _e('OK','opentickets-community-edition') ?>" />
+															<a href="#" rel="setting-cancel"><?php _e('Cancel','opentickets-community-edition') ?></a>
 														</div>
 													</div>
 												</div>
 
 												<div class="setting" rel="setting-main" tag="visibility">
 													<div class="setting-current">
-														<span class="setting-name"><?php _e('Visibility','opentickets-community') ?>:</span>
+														<span class="setting-name"><?php _e('Visibility','opentickets-community-edition') ?>:</span>
 														<span class="setting-current-value" rel="setting-display"></span>
-														<a href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]"><?php _e('Edit','opentickets-community') ?></a>
+														<a href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]"><?php _e('Edit','opentickets-community-edition') ?></a>
 														<input type="hidden" name="settings[visibility]" value="" scope="[rel=setting-main]" rel="visibility" />
 													</div>
 													<div class="setting-edit-form" rel="setting-form">
-														<div class="cb-wrap" title="<?php _e('Viewable to the public','opentickets-community') ?>">
+														<div class="cb-wrap" title="<?php _e('Viewable to the public','opentickets-community-edition') ?>">
 															<input type="radio" name="visibility" value="public" />
-															<span class="cb-text"><?php _e('Public','opentickets-community') ?></span>
+															<span class="cb-text"><?php _e('Public','opentickets-community-edition') ?></span>
 														</div>
-														<div class="cb-wrap" title="<?php _e('Visible on the calendar, but only those with the password can view to make reservations','opentickets-community') ?>">
+														<div class="cb-wrap" title="<?php _e('Visible on the calendar, but only those with the password can view to make reservations','opentickets-community-edition') ?>">
 															<input type="radio" name="visibility" value="protected" />
-															<span class="cb-text"><?php _e('Password Protected','opentickets-community') ?></span>
+															<span class="cb-text"><?php _e('Password Protected','opentickets-community-edition') ?></span>
 															<div class="extra" data-only-if="visibility=protected">
-																<label><?php _e('Password:','opentickets-community') ?></label><br/>
+																<label><?php _e('Password:','opentickets-community-edition') ?></label><br/>
 																<input type="text" name="password" value="" rel="password" />
 															</div>
 														</div>
-														<div class="cb-wrap" title="<?php _e('Hidden from the calendar, but open to anyone with the url','opentickets-community') ?>">
+														<div class="cb-wrap" title="<?php _e('Hidden from the calendar, but open to anyone with the url','opentickets-community-edition') ?>">
 															<input type="radio" name="visibility" value="hidden" />
-															<span class="cb-text"><?php _e('Hidden','opentickets-community') ?></span>
+															<span class="cb-text"><?php _e('Hidden','opentickets-community-edition') ?></span>
 														</div>
-														<div class="cb-wrap" title="<?php _e('Only logged in admin users or the event author can view it','opentickets-community') ?>">
+														<div class="cb-wrap" title="<?php _e('Only logged in admin users or the event author can view it','opentickets-community-edition') ?>">
 															<input type="radio" name="visibility" value="private" />
-															<span class="cb-text"><?php _e('Private','opentickets-community') ?></span>
+															<span class="cb-text"><?php _e('Private','opentickets-community-edition') ?></span>
 														</div>
 														<div class="edit-setting-actions">
-															<input type="button" class="button" rel="setting-save" value="<?php _e('OK','opentickets-community') ?>" />
-															<a href="#" rel="setting-cancel"><?php _e('Cancel','opentickets-community') ?></a>
+															<input type="button" class="button" rel="setting-save" value="<?php _e('OK','opentickets-community-edition') ?>" />
+															<a href="#" rel="setting-cancel"><?php _e('Cancel','opentickets-community-edition') ?></a>
 														</div>
 													</div>
 												</div>
 
 												<div class="setting" rel="setting-main" tag="pub_date">
 													<div class="setting-current">
-														<span class="setting-name"><?php _e('Publish Date:','opentickets-community') ?></span>
+														<span class="setting-name"><?php _e('Publish Date:','opentickets-community-edition') ?></span>
 														<span class="setting-current-value" rel="setting-display"></span>
-														<a class="edit-btn" href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]"><?php _e('Edit','opentickets-community') ?></a>
+														<a class="edit-btn" href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]"><?php _e('Edit','opentickets-community-edition') ?></a>
 														<input type="hidden" name="settings[pub_date]" value="" scope="[rel=setting-main]" rel="pub_date" />
 													</div>
 													<div class="setting-edit-form" rel="setting-form">
 														<input type="hidden" name="pub_date" value="" />
 														<div class="date-edit" tar="[name='pub_date']" scope="[rel='setting-form']">
 															<select rel="month">
-																<option value="1">01 - <?php _e('Januaray','opentickets-community') ?></option>
-																<option value="2">02 - <?php _e('February','opentickets-community') ?></option>
-																<option value="3">03 - <?php _e('March','opentickets-community') ?></option>
-																<option value="4">04 - <?php _e('April','opentickets-community') ?></option>
-																<option value="5">05 - <?php _e('May','opentickets-community') ?></option>
-																<option value="6">06 - <?php _e('June','opentickets-community') ?></option>
-																<option value="7">07 - <?php _e('July','opentickets-community') ?></option>
-																<option value="8">08 - <?php _e('August','opentickets-community') ?></option>
-																<option value="9">09 - <?php _e('September','opentickets-community') ?></option>
-																<option value="10">10 - <?php _e('October','opentickets-community') ?></option>
-																<option value="11">11 - <?php _e('November','opentickets-community') ?></option>
-																<option value="12">12 - <?php _e('December','opentickets-community') ?></option>
+																<option value="1">01 - <?php _e('Januaray','opentickets-community-edition') ?></option>
+																<option value="2">02 - <?php _e('February','opentickets-community-edition') ?></option>
+																<option value="3">03 - <?php _e('March','opentickets-community-edition') ?></option>
+																<option value="4">04 - <?php _e('April','opentickets-community-edition') ?></option>
+																<option value="5">05 - <?php _e('May','opentickets-community-edition') ?></option>
+																<option value="6">06 - <?php _e('June','opentickets-community-edition') ?></option>
+																<option value="7">07 - <?php _e('July','opentickets-community-edition') ?></option>
+																<option value="8">08 - <?php _e('August','opentickets-community-edition') ?></option>
+																<option value="9">09 - <?php _e('September','opentickets-community-edition') ?></option>
+																<option value="10">10 - <?php _e('October','opentickets-community-edition') ?></option>
+																<option value="11">11 - <?php _e('November','opentickets-community-edition') ?></option>
+																<option value="12">12 - <?php _e('December','opentickets-community-edition') ?></option>
 															</select>
 															<input type="text" rel="day" value="" size="2" />, 
-															<input type="text" rel="year" value="" size="4" class="year" /> <?php _e('@','opentickets-community') ?> 
+															<input type="text" rel="year" value="" size="4" class="year" /> <?php _e('@','opentickets-community-edition') ?> 
 															<input type="text" rel="hour" value="" size="2" /> : 
 															<input type="text" rel="minute" value="" size="2" />
 														</div>
 														<div class="edit-setting-actions">
-															<input type="button" class="button" rel="setting-save" value="<?php _e('OK','opentickets-community') ?>" />
-															<a href="#" rel="setting-cancel"><?php _e('Cancel','opentickets-community') ?></a>
+															<input type="button" class="button" rel="setting-save" value="<?php _e('OK','opentickets-community-edition') ?>" />
+															<a href="#" rel="setting-cancel"><?php _e('Cancel','opentickets-community-edition') ?></a>
 														</div>
 													</div>
 												</div>
@@ -1427,11 +1427,11 @@ class qsot_post_type {
 			<table class="form-table">
 				<tbody>
 					<tr>
-						<th scope="row"><label for="qsot_event_permalink_slug"><?php _e('Event base','opentickets-community') ?></label></th>
+						<th scope="row"><label for="qsot_event_permalink_slug"><?php _e('Event base','opentickets-community-edition') ?></label></th>
 						<td>
 							<input id="qsot_event_permalink_slug" class="widefat" type="text" name="qsot_event_permalink_slug" value="<?php echo esc_attr( $current['permalink_slug'] ) ?>" /><br/>
 							<span class="description">
-								<?php printf(__('Enter a custom base to use. This url segment will prefix the event name in the url.<br/><code>example: %s</code>','opentickets-community'), site_url( '/<strong>event</strong>/my-event_' . date_i18n( 'Y-m-d_H00a' ) . '/' ) ) ?>
+								<?php printf(__('Enter a custom base to use. This url segment will prefix the event name in the url.<br/><code>example: %s</code>','opentickets-community-edition'), site_url( '/<strong>event</strong>/my-event_' . date_i18n( 'Y-m-d_H00a' ) . '/' ) ) ?>
 							</span>
 						</td>
 					</tr>
@@ -1447,7 +1447,7 @@ class qsot_post_type {
 
 		$wp_settings_sections['permalink']['opentickets-permalink'] = array(
 			'id' => 'opentickets-permalink',
-			'title' => __('Event permalink base','opentickets-community'),
+			'title' => __('Event permalink base','opentickets-community-edition'),
 			'callback' => array(
 				__CLASS__,
 				'add_permalinks_settings_page_settings',
@@ -1488,7 +1488,7 @@ class qsot_post_type {
 		self::$options->add(array(
 			'order' => 100,
 			'type' => 'title',
-			'title' => __('Event Display', 'opentickets-community'),
+			'title' => __('Event Display', 'opentickets-community-edition'),
 			'id' => 'heading-frontend-general-1',
 			'page' => 'frontend',
 		));
@@ -1497,9 +1497,9 @@ class qsot_post_type {
 			'order' => 105,
 			'id' => 'qsot-stop-sales-before-show',
 			'type' => 'text',
-			'title' => __('Stop Sales Before Show','opentickets-community'),
-			'desc' => __('Amount of time to stop sales for a show, before show time. (ie: stop sales two hour before show time <code>2 hours</code>)','opentickets-community'),
-			'desc_tip' => __('valid units: hour, hours, minute, minutes, second, seconds, day, days, week, weeks, month, months, year, years','opentickets-community'),
+			'title' => __('Stop Sales Before Show','opentickets-community-edition'),
+			'desc' => __('Amount of time to stop sales for a show, before show time. (ie: stop sales two hour before show time <code>2 hours</code>)','opentickets-community-edition'),
+			'desc_tip' => __('valid units: hour, hours, minute, minutes, second, seconds, day, days, week, weeks, month, months, year, years','opentickets-community-edition'),
 			'page' => 'frontend',
 		));
 
@@ -1507,9 +1507,9 @@ class qsot_post_type {
 			'order' => 110,
 			'id' => 'qsot-single-synopsis',
 			'type' => 'checkbox',
-			'title' => __('Single Event Synopsis','opentickets-community'),
-			'desc' => __('Show event synopsis on single event pages','opentickets-community'),
-			'desc_tip' => __('By default, just the event logo, and the event pricing options are shown. This feature will additionally show the description of the event to the user.','opentickets-community'),
+			'title' => __('Single Event Synopsis','opentickets-community-edition'),
+			'desc' => __('Show event synopsis on single event pages','opentickets-community-edition'),
+			'desc_tip' => __('By default, just the event logo, and the event pricing options are shown. This feature will additionally show the description of the event to the user.','opentickets-community-edition'),
 			'default' => 'no',
 			'page' => 'frontend',
 		));
