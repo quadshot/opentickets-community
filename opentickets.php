@@ -70,7 +70,7 @@ class QSOT {
 
 		add_filter('plugin_action_links', array(__CLASS__, 'plugins_page_actions'), 10, 4);
 		
-		load_plugin_textdomain( 'qsot', false, dirname( plugin_basename( __FILE__ ) ) . '/langs/' );
+		load_plugin_textdomain( 'opentickets-community', false, dirname( plugin_basename( __FILE__ ) ) . '/langs/' );
 	}
 
 	public static function me() { return self::$me; }
