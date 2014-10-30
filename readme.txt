@@ -139,6 +139,22 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.7.2 =
+* fixed 'compile stylesheet' error
+
+= 1.7.1 =
+* added frontend style settings page
+
+= 1.7.0 =
+* added styling to the settings pages
+* added settings for frontend colors (thanks @bradleysp)
+* added ticket option for order number on ticket
+* added ticket option for image to use on ticket (thanks @bradleysp)
+* added ticket option for using shipping info instead of billing info (thanks @bradleysp)
+* added ending date to ticket
+* moved settings to appropriate new settings pages
+* removed frontend event.css file, and made it create on activate & settings save
+
 = 1.6.15 =
 * added overloader function for coupons extension
 * repaired more logic to handle the new GAMP plugin

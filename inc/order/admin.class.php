@@ -613,7 +613,7 @@ class qsot_order_admin {
 		self::$options->add(array(
 			'order' => 2199,
 			'type' => 'sectionend',
-			'id' => 'heading-admin-orders-1',
+			'id' => 'heading-add-email-sets-1',
 		));
 	}
 }

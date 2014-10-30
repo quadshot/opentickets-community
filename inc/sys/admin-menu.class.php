@@ -459,6 +459,13 @@ class qsot_admin_menu {
 		self::$options->def('qsot-allow-stats', 'no');
 
 		self::$options->add(array(
+			'order' => 100,
+			'type' => 'title',
+			'title' => __('Global Settings', 'qsot'),
+			'id' => 'heading-general-1',
+		));
+
+		self::$options->add(array(
 			'order' => 101,
 			'id' => 'qsot-allow-stats',
 			'type' => 'checkbox',
@@ -466,6 +473,12 @@ class qsot_admin_menu {
 			'desc' => __('Allow OpenTickets to gather information about your WordPress installation.', 'qsot'),
 			'desc_tip' => __('This information is strictly used to make this product better and more compatible with other plugins.', 'qsot'),
 			'default' => 'no',
+		));
+
+		self::$options->add(array(
+			'order' => 199,
+			'type' => 'sectionend',
+			'id' => 'heading-general-1',
 		));
 	}
 

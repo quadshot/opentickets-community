@@ -35,7 +35,13 @@
 									<td colspan="2" class="event-information">
 										<ul>
 											<li><h2><?php echo $ticket->event->parent_post_title ?></h2></li>
-											<li>Date: <?php echo date('D, F jS, Y @ h:ia ', strtotime($ticket->event->meta->start)); ?></li>
+											<li>Starts: <?php echo date('D, F jS, Y @ g:ia ', strtotime($ticket->event->meta->start)); ?></li>
+											<?php
+												$format = strtotime( 'today', strtotime( $ticket->event->meta->start ) ) == strtotime( 'today', strtotime( $ticket->event->meta->end ) )
+													? '@ g:ia '
+													: 'D, F jS, Y @ g:ia '
+											?>
+											<li>Ends: <?php echo date( $format, strtotime($ticket->event->meta->end) ); ?></li>
 											<li>Area: <?php echo $ticket->event_area->post_title ?></li>
 										</ul>
 									</td>
@@ -52,7 +58,10 @@
 								<tr>
 									<td class="personalization right">
 										<ul>
-											<li><?php echo ucwords($ticket->order->billing_first_name.' '.$ticket->order->billing_last_name) ?></li>
+											<?php if ( $ticket->show_order_number ): ?>
+												<li>ORDER #<?php echo $ticket->order->id ?></li>
+											<?php endif; ?>
+											<li><?php echo ucwords( implode( ' ', $ticket->names ) ) ?></li>
 											<li>
 												<?php echo $ticket->product->get_title() ?>
 												<?php if ($ticket->order_item['qty'] > 1): ?>

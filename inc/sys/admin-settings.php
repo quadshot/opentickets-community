@@ -15,6 +15,7 @@ class qsot_admin_settings extends WC_Admin_Settings {
 			include_once( $GLOBALS['woocommerce']->plugin_path.'/includes/admin/settings/class-wc-settings-page.php' );
 
 			$settings[] = include( 'settings/general.php' );
+			$settings[] = include( 'settings/frontend.php' );
 
 			self::$settings = apply_filters( 'qsot_get_settings_pages', array_filter($settings) );
 		}

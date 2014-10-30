@@ -14,7 +14,7 @@ class qsot_options {
 		//add_action('qsot_settings_start', array(__CLASS__, 'woo_settings_tab'), 10);
 		add_filter('qsot_settings_tabs_array', array(__CLASS__, 'add_woo_tab'), 10, 1);
 		//add_action('qsot_settings_tabs_'.self::$tab_slug, array(__CLASS__, 'draw_woo_tab_panel'), 10);
-		add_filter('qsot_general_settings', array(__CLASS__, 'get_all_general_settings'), 10, 1);
+		add_filter( 'qsot-get-page-settings', array( __CLASS__, 'get_group_settings' ), 100, 2 );
 
 		add_filter('qsot-get-option-value', array(__CLASS__, 'get_option_value'), 10, 2);
 
@@ -95,28 +95,49 @@ class qsot_options {
 			'type' => 'text',
 			'desc' => '',
 			'desc_tip' => false,
+			'page' => 'general',
 		));
-		$this->options[] = $args;
+		if ( ! isset( $this->options[ $args['page'] ] ) || ! is_array( $this->options[ $args['page'] ] ) ) $this->options[ $args['page'] ] = array();
+		$this->options[ $args['page'] ][] = $args;
 	}
 
-	public function get_ordered() {
-		$pri = array();
-		foreach ($this->options as $o) $pri[] = $o['order'];
-		$o = $this->options;
-		array_multisort($pri, SORT_ASC, SORT_NUMERIC, $o);
-		return $o;
+	public function get_ordered( $group=false ) {
+		$pri = $sec = $os = array();
+
+		if ( $group === false ) {
+			foreach ( $this->options as $k => $v )
+				foreach ( $v as $o ) {
+					$pri[] = $o['order'];
+					$sec[] = $v;
+					$os[] = $o;
+				}
+			array_multisort($pri, SORT_ASC, SORT_NUMERIC, $sec, SORT_ASC, $os);
+		} else {
+			if ( isset( $this->options[$group] ) )
+				foreach ( $this->options[$group] as $o ) {
+					$pri[] = $o['order'];
+					$os[] = $o;
+				}
+			array_multisort($pri, SORT_ASC, SORT_NUMERIC, $os);
+		}
+
+		return $os;
 	}
 
 	public function get($id=false) {
 		if (empty($id) || $id == '_') return $this->get_ordered();
 		else {
 			$res = null;
-			foreach ($this->options as $o) {
-				if ($o['id'] == $id) {
-					$res = $o;
-					break;
+
+			foreach ( $this->options as $k => $v ) {
+				foreach ( $v as $o ) {
+					if ($o['id'] == $id) {
+						$res = $o;
+						break 2;
+					}
 				}
 			}
+
 			return $res;
 		}
 	}
@@ -131,13 +152,26 @@ class qsot_options {
 		}
 	}
 
-	public function remove($id) {
-		$o = $this->options;
-		$this->options = array();
+	public function remove( $id, $group=false ) {
+		if ( $group === false ) {
+			$os = $this->options;
+			$this->options = array_combine( array_keys( $os ), array_fill( 0, count( $os ), array() ) );
 
-		foreach ($o as $opt) {
-			if ($opt['id'] != $id) {
-				$this->options[] = $opt;
+			foreach ( $os as $k => $v ) {
+				foreach ( $v as $o ) {
+					if ( $o['id'] != $id ) {
+						$this->options[$k][] = $o;
+					}
+				}
+			}
+		} else if ( is_scalar( $group ) &&  isset( $this->options[$group] ) ) {
+			$os = $this->options[$group];
+			$this->options[$group] = array();
+
+			foreach ( $os as $o ) {
+				if ( $o['id'] != $id ) {
+					$this->options[$group][] = $o;
+				}
 			}
 		}
 	}
@@ -167,11 +201,15 @@ class qsot_options {
 	}
 
 	public static function get_all_general_settings($settings) {
+		return self::get_group_settings( $settings, 'general' );
+	}
+
+	public static function get_group_settings( $settings, $group ) {
 		$options = qsot_options::instance();
-		$o = $options->get_ordered();
-		
-		$settings = array_merge($settings, apply_filters('qsot-woocommerce-settings', $o));
-		return $settings;
+		$o = apply_filters( 'qsot-woocommerce-settings', $options->get_ordered( $group ) );
+		$o = apply_filters( 'qsot-woocommerce-settings-' . $group, $o );
+
+		return array_merge( $settings, $o );
 	}
 }
 
