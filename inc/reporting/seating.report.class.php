@@ -1,9 +1,9 @@
 <?php (__FILE__ == $_SERVER['SCRIPT_FILENAME']) ? die(header('Location: /')) : null;
 
 class qsot_seating_report extends qsot_admin_report {
-	protected static $report_name = 'Seating';
+	protected static $report_name = 'Seating'; // i18n cannot be used here, see pre_init
 	protected static $report_slug = 'seating';
-	protected static $report_desc = 'List all seats for a show, as wells as their availability and occupancy.';
+	protected static $report_desc = '';
 	protected static $s2w = array();
 
 	// holder for event plugin options
@@ -14,13 +14,16 @@ class qsot_seating_report extends qsot_admin_report {
 	protected static $page_hook = 'toplevel_page_opentickets';
 
 	public static function pre_init() {
+		self::$report_name = __('Seating','opentickets-community-edition');
+		self::$report_desc = __('List all seats for a show, as wells as their availability and occupancy.','opentickets-community-edition');
+
 		$settings_class_name = apply_filters('qsot-settings-class-name', '');
 		if (!empty($settings_class_name)) {
 			self::$o = call_user_func_array(array($settings_class_name, "instance"), array());
 			self::$s2w = array(
-				self::$o->{'z.states.r'} => 'Not Paid',
-				self::$o->{'z.states.c'} => 'Paid',
-				self::$o->{'z.states.o'} => 'Checked In',
+				self::$o->{'z.states.r'} => __('Not Paid','opentickets-community-edition'),
+				self::$o->{'z.states.c'} => __('Paid','opentickets-community-edition'),
+				self::$o->{'z.states.o'} => __('Checked In','opentickets-community-edition'),
 			);
 
 			// load all the options, and share them with all other parts of the plugin
@@ -77,7 +80,7 @@ class qsot_seating_report extends qsot_admin_report {
 	}
 
 	public static function add_order_note_types($list, $order) {
-		$list['seating-report-note'] = __('Seating Report note', 'qsot');
+		$list['seating-report-note'] = __('Seating Report note','opentickets-community-edition');
 		return $list;
 	}
 
@@ -91,7 +94,7 @@ class qsot_seating_report extends qsot_admin_report {
 	}
 
 	public static function add_me_as_report($list) {
-		$list['seating'] = isset($list['seating']) ? $list['seating'] : array('title' => __('Seating', 'qsot'), 'charts' => array());
+		$list['seating'] = isset($list['seating']) ? $list['seating'] : array('title' => __('Seating','opentickets-community-edition'), 'charts' => array());
 		$list['seating']['charts'][] = array(
 			'title' => self::get('name'),
 			'description' => self::get('desc'),
@@ -167,16 +170,16 @@ class qsot_seating_report extends qsot_admin_report {
 		?>
 			<div class="form-container" style="margin-bottom:15px;">
 				<form method="post" action="">
-					<label for="range">Year:</label>
+					<label for="range"><?php _e('Year:','opentickets-community-edition') ?></label>
 					<input type="hidden" name ="old-range" value="<?php echo esc_attr($range) ?>" />
 					<select name="range" id="range" class="filter-list" limit="#event">
-						<option value="all">[All Years]</option>
+						<option value="all"><?php _e('[All Years]','opentickets-community-edition') ?></option>
 						<?php for ($i=$miny; $i<=$maxy; $i++): ?>
 							<option value="<?php echo esc_attr($i) ?>" <?php selected($i, $range) ?>><?php echo $i ?></option>
 						<?php endfor; ?>
 					</select>
 
-					<label for="event"><?php _e('Event:', 'qsot') ?></label>
+					<label for="event"><?php _e('Event:','opentickets-community-edition') ?></label>
 					<div style="display:none;">
 						<select class="event-pool" rel="event-pool">
 							<?php foreach ($parents as $parent): ?>
@@ -189,7 +192,7 @@ class qsot_seating_report extends qsot_admin_report {
 					<select name="parent_event" id="event" rel="event-list" pool="[rel='event-pool']"></select>
 					<input type="hidden" name="action" value="extended-form" />
 					<input type="hidden" name="report" value="seating" />
-					<input type="submit" value="Lookup Showings" />
+					<input type="submit" value="<?php _e('Lookup Showings','opentickets-community-edition') ?>" />
 				</form>
 				<div class="form-extended" id="form_extended"></div>
 			</div>
@@ -212,7 +215,7 @@ class qsot_seating_report extends qsot_admin_report {
 
 		?>
 			<form method="post" action="">
-				<label for="showing"><?php _e('Showing:', 'qsot') ?></label>
+				<label for="showing"><?php _e('Showing:','opentickets-community-edition') ?></label>
 				<select name="showing" id="showing">
 					<?php foreach ($shows as $show): ?>
 						<option value="<?php echo esc_attr($show->ID) ?>" <?php echo selected($show->ID, $data['showing']) ?>><?php echo esc_html($show->post_title) ?></option>
@@ -222,7 +225,7 @@ class qsot_seating_report extends qsot_admin_report {
 				<input type="hidden" name="action" value="show-results" />
 				<input type="hidden" name="sort" value="<?php echo $sort ?>" />
 				<input type="hidden" name="report" value="seating" />
-				<input type="submit" value="Show Report" />
+				<input type="submit" value="<?php _e('Show Report','opentickets-community-edition') ?>" />
 			</form>
 		<?php
 	}
@@ -345,7 +348,7 @@ class qsot_seating_report extends qsot_admin_report {
 		if (!empty($data['showing'])) {
 			$ticket_data = apply_filters('qsot-seating-report-get-ticket-data', array(), $data);
 			if (!isset($ticket_data['event'])) {
-				echo '<p><em>Could not find that event.</em></p>';
+				_e('<p><em>Could not find that event.</em></p>','opentickets-community-edition');
 				return;
 			}
 
@@ -483,19 +486,19 @@ class qsot_seating_report extends qsot_admin_report {
 
 	protected static function _report_fields($csv=false) {
 		$basic = array(
-			'purchaser' => __('Purchaser'),
-			'order_id' => __('Order #'),
-			'ticket_type' => __('Ticket Type'),
-			'quantity' => __('Quantity'),
-      'email' => __('Email'),
-      'phone' => __('Phone'),
-      'address' => __('Address'),
-			'note' => __('Note'),
-			'state' => __('Status'),
+			'purchaser' => __('Purchaser','opentickets-community-edition'),
+			'order_id' => __('Order #','opentickets-community-edition'),
+			'ticket_type' => __('Ticket Type','opentickets-community-edition'),
+			'quantity' => __('Quantity','opentickets-community-edition'),
+      'email' => __('Email','opentickets-community-edition'),
+      'phone' => __('Phone','opentickets-community-edition'),
+      'address' => __('Address','opentickets-community-edition'),
+			'note' => __('Note','opentickets-community-edition'),
+			'state' => __('Status','opentickets-community-edition'),
 		);
 		if ($csv) {
-			$basic['event'] = __('Event');
-			$basic['ticket_link'] = __('Ticket Url');
+			$basic['event'] = __('Event','opentickets-community-edition');
+			$basic['ticket_link'] = __('Ticket Url','opentickets-community-edition');
 		}
 		return apply_filters('qsot-seating-report-fields', $basic);
 	}
@@ -539,7 +542,7 @@ class qsot_seating_report extends qsot_admin_report {
 
 	public static function get($field) {
 		$var = 'report_'.$field;
-		return isset(self::$$var) ? __(self::$$var, 'qsot') : '';
+		return isset(self::$$var) ? __(self::$$var,'opentickets-community-edition') : '';
 	}
 }
 
