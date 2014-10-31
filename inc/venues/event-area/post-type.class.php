@@ -145,11 +145,11 @@ class qsot_event_area {
 				'ajaxurl' => admin_url('admin-ajax.php'),
 				'templates' => apply_filters('qsot-event-frontend-templates', array(), $event),
 				'messages' => array(
-					'available' => array('msg' => 'There are currently <span class="available"></span> <span rel="tt"></span> available.', 'type' => 'msg'),
-					'more-available' => array('msg' => 'There are currently <span class="available"></span> more <span rel="tt"></span> available.', 'type' => 'msg'),
-					'not-available' => array('msg' => 'We\'re sorry. There are currently no tickets available.', 'type' => 'error'),
-					'sold-out' => array('msg' => 'We are sorry. This event is sold out!', 'type' => 'error'),
-					'one-moment' => array('msg' => '<h1>One Moment Please...</h1>', 'type' => 'msg'),
+					'available' => array('msg' => __('There are currently <span class="available"></span> <span rel="tt"></span> available.','opentickets-community-edition'), 'type' => 'msg'),
+					'more-available' => array('msg' => __('There are currently <span class="available"></span> more <span rel="tt"></span> available.','opentickets-community-edition'), 'type' => 'msg'),
+					'not-available' => array('msg' => __('We\'re sorry. There are currently no tickets available.','opentickets-community-edition'), 'type' => 'error'),
+					'sold-out' => array('msg' => __('We are sorry. This event is sold out!','opentickets-community-edition'), 'type' => 'error'),
+					'one-moment' => array('msg' => __('<h1>One Moment Please...</h1>','opentickets-community-edition'), 'type' => 'msg'),
 				),
 				'owns' => $ticket_id ? apply_filters('qsot-zoner-owns-current-user', 0, $event, $ticket_id, self::$o->{'z.states.r'}) : 0,
 			), $event));
@@ -201,14 +201,14 @@ class qsot_event_area {
 		$list['ticket-selection'] = '<div class="ticket-form ticket-selection-section">'
 				.'<div class="form-inner">'
 					.'<div class="title-wrap">'
-						.'<h3>Step 1: How Many?</h3>'
+						.'<h3>'.__('Step 1: How Many?','opentickets-community-edition').'</h3>'
 					.'</div>'
 					.'<div class="field">'
-						.'<label class="section-heading">Reserve some tickets:</label>'
+						.'<label class="section-heading">'.__('Reserve some tickets:','opentickets-community-edition').'</label>'
 						.'<div class="availability-message helper"></div>'
 						.'<span rel="tt"></span>'
 						.'<input type="number" step="1" min="0" max="'.$max.'" rel="qty" name="quantity" value="1" class="very-short" />'
-						.'<input type="button" value="Reserve" rel="reserve-btn" class="button" />'
+						.'<input type="button" value="'.__('Reserve','opentickets-community-edition').'" rel="reserve-btn" class="button" />'
 					.'</div>'
 				.'</div>'
 			.'</div>';
@@ -216,17 +216,17 @@ class qsot_event_area {
 		$list['owns'] = '<div class="ticket-form ticket-selection-section">'
 				.'<div class="form-inner">'
 					.'<div class="title-wrap">'
-						.'<h3>Step 2: Review</h3>'
+						.'<h3>'.__('Step 2: Review','opentickets-community-edition').'</h3>'
 					.'</div>'
 					.'<div class="field">'
 						.'<a href="#" class="remove-link" rel="remove-btn">X</a>'
 						.'<span rel="tt"></span>'
 						.'<input type="number" step="1" min="0" max="'.$max.'" rel="qty" name="quantity" value="1" class="very-short" />'
-						.'<input type="button" value="Update" rel="update-btn" class="button" />'
+						.'<input type="button" value="'.__('Update','opentickets-community-edition').'" rel="update-btn" class="button" />'
 					.'</div>'
 				.'</div>'
 				.'<div class="actions" rel="actions">'
-					.'<a href="'.esc_attr($cart_url).'" class="button" rel="cart-btn">Proceed to Cart</a>'
+					.'<a href="'.esc_attr($cart_url).'" class="button" rel="cart-btn">'.__('Proceed to Cart','opentickets-community-edition').'</a>'
 				.'</div>'
 			.'</div>';
 
@@ -245,16 +245,16 @@ class qsot_event_area {
 	public static function admin_templates($list, $venue_id) {
 		$list['area-ui'] = '<div class="area-ui">'
 				.'<div class="actions top">'
-					.'<button class="add-btn button" rel="add-btn">add</button>'
+					.'<button class="add-btn button" rel="add-btn">'.__('add','opentickets-community-edition').'</button>'
 				.'</div>'
 				.'<div class="area-list" rel="area-list"></div>'
 				.'<div class="actions bottom">'
-					.'<button class="add-btn button" rel="add-btn">add</button>'
+					.'<button class="add-btn button" rel="add-btn">'.__('add','opentickets-community-edition').'</button>'
 				.'</div>'
 			.'</div>';
 		$list['no-areas'] = '<div class="view-area view none-area" rel="view-area">'
 				.'<div class="inside">'
-					.'<span class="none">There are currently no areas configured. Please add one to continue.</span>'
+					.'<span class="none">'.__('There are currently no areas configured. Please add one to continue.','opentickets-community-edition').'</span>'
 				.'</div>'
 			.'</div>';
 		$list['view-area'] = '<div class="view-area view" rel="view-area">'
@@ -270,8 +270,8 @@ class qsot_event_area {
 								.'</div>',
 							'actions' => '<div class="actions" rel="actions">'
 									. implode( '<span class="divider"> | </span>', array_values( apply_filters( 'qsot-event-area-ui-actions', array(
-										'<a href="#" rel="edit-btn">edit</a>',
-										'<a href="#" rel="del-btn">delete</a>',
+										'<a href="#" rel="edit-btn">'.__('edit','opentickets-community-edition').'</a>',
+										'<a href="#" rel="del-btn">'.__('delete','opentickets-community-edition').'</a>',
 									), $venue_id ) ) )
 								.'</div>',
 						), $venue_id ) ) )
@@ -284,20 +284,20 @@ class qsot_event_area {
 				.'<input type="hidden" name="area-id[{{id}}]" rel="area-id" value="{{id}}"/>'
 				. implode( '', array_values( apply_filters( 'qsot-event-area-ui-parts', array(
 					'image-selector' => '<div class="edit-field image-select-wrap" rel="field">'
-							.'<label for="img-id[{{id}}]"><strong>Event Area Image</strong></label>'
+							.'<label for="img-id[{{id}}]"><strong>'.__('Event Area Image','opentickets-community-edition').'</strong></label>'
 							.'<div>'
 								.'<div class="image-preview" size="full" rel="img-wrap"></div>'
 								.'<input type="hidden" name="img-id[{{id}}]" value="0" rel="img-id" />'
 								.'<div class="clear"></div>'
 							.'</div>'
-							.'<button class="button" rel="change-img">Select Image</button>'
+							.'<button class="button" rel="change-img">'.__('Select Image','opentickets-community-edition').'</button>'
 						.'</div>',
 					'area-name' => '<div class="edit-field area-name-wrap" rel="field">'
-							.'<label for="area-name[{{id}}]"><strong>Area Name</strong></label>'
+							.'<label for="area-name[{{id}}]"><strong>'.__('Area Name','opentickets-community-edition').'</strong></label>'
 							.'<input autocomplete="off" type="text" class="widefat area-name" rel="area-name" name="area-name[{{id}}]" value="" />'
 						.'</div>',
 					'capacity' => '<div class="edit-field area-name-wrap" rel="field">'
-							.'<label for="capacity[{{id}}]"><strong>Capacity</strong></label>'
+							.'<label for="capacity[{{id}}]"><strong>'.__('Capacity','opentickets-community-edition').'</strong></label>'
 							.'<input autocomplete="off" type="number" min="0" max="100000" step="1" class="widefat capacity" rel="capacity" name="capacity[{{id}}]" value="" />'
 						.'</div>',
 					'pricing' => '<div class="edit-field area-ticket-type" rel="field">'

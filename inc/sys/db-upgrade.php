@@ -62,7 +62,7 @@ class qsot_db_upgrader {
 			}
 		}
 
-		self::$upgrade_messages[] = 'The DB tables ['.implode(', ', $utabs).'] are not at the most current versions. Attempting to upgrade them.';
+		self::$upgrade_messages[] = sprintf(__('The DB tables [%s] are not at the most current versions. Attempting to upgrade them.','opentickets-community-edition'), implode(', ', $utabs));
 		dbDelta($sql);
 
 		if (is_admin() && isset($_GET['debug_delta']) && $_GET['debug_delta'] == 9999) {
@@ -97,26 +97,26 @@ class qsot_db_upgrader {
 					$found = $readable[$name];
 					if (strtolower(trim($field['type'])) != strtolower(trim($found->Type))) {
 						$pass = false;
-						$reason = 'types dont match ['.$name.'] ['.strtolower(trim($field['type'])).'] : ['.strtolower(trim($found->Type)).']';
+						$reason = __('types dont match','opentickets-community-edition').'  ['.$name.'] ['.strtolower(trim($field['type'])).'] : ['.strtolower(trim($found->Type)).']';
 						break;
 					}
 					if (strtolower(trim($field['null'])) != strtolower(trim($found->Null))) {
 						$pass = false;
-						$reason = 'nulls dont match ['.$name.'] ['.strtolower(trim($field['null'])).'] : ['.strtolower(trim($found->Null)).']';
+						$reason = __('nulls dont match','opentickets-community-edition').' ['.$name.'] ['.strtolower(trim($field['null'])).'] : ['.strtolower(trim($found->Null)).']';
 						break;
 					}
 					if (strtolower(trim($field['extra'])) != strtolower(trim($found->Extra))) {
 						$pass = false;
-						$reason = 'extras dont match ['.$name.'] ['.strtolower(trim($field['extra'])).'] : ['.strtolower(trim($found->Extra)).']';
+						$reason = __('extras dont match','opentickets-community-edition').' ['.$name.'] ['.strtolower(trim($field['extra'])).'] : ['.strtolower(trim($found->Extra)).']';
 						break;
 					}
 				}
 
 				if (!$pass) {
-					self::$upgrade_messages[] = 'Update to DB, table ['.$table_name.'], was NOT successful. <pre>'.$reason.'</pre>';
+					self::$upgrade_messages[] = sprintf(__('Update to DB, table [%s], was NOT successful. %s','opentickets-community-edition'), $table_name, "<pre>$reason</pre>");
 				} else {
 					do_action('qsot-db-upgrade-'.$table_name.'-success', $table_desc['version']);
-					self::$upgrade_messages[] = 'Update to DB, table ['.$table_name.'], was successful.';
+					self::$upgrade_messages[] = sprintf(__('Update to DB, table [%s], was successful.','opentickets-community-edition'), $table_name);
 					if (isset($table_desc['version']))
 						$versions[$table_name] = $table_desc['version'];
 				}

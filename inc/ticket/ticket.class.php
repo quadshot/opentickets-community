@@ -91,13 +91,13 @@ class QSOT_tickets {
 		$link = $link ? add_query_arg(array('n' => $auth), $link) : $link;
 		if (empty($link)) return;
 
-		$label = __( 'Ticket', 'qsot' );
-		$title = __( 'View your ticket', 'qsot' );
-		$display = __( 'View this ticket', 'qsot' );
+		$label = __( 'Ticket', 'opentickets-community-edition' );
+		$title = __( 'View your ticket', 'opentickets-community-edition' );
+		$display = __( 'View this ticket', 'opentickets-community-edition' );
 		if ($item['qty'] > 1) {
-			$label = __( 'Tickets', 'qsot' );
-			$title = __( 'View your tickets', 'qsot' );
-			$display = __( 'View these tickets', 'qsot' );
+			$label = __( 'Tickets', 'opentickets-community-edition' );
+			$title = __( 'View your tickets', 'opentickets-community-edition' );
+			$display = __( 'View these tickets', 'opentickets-community-edition' );
 		}
 
 		echo sprintf(
@@ -388,7 +388,7 @@ class QSOT_tickets {
 			} else if ($guest_checkout && !isset($_POST['verification_form'])) {
 				self::_guest_verification_form();
 			} else if ($cuest_checkout && !apply_filters('qsot-ticket-verification-form-check', false, $order->ID)) {
-				self::_no_access('The information you supplied does not match our record.');
+				self::_no_access(__('The information you supplied does not match our record.','opentickets-community-edition'));
 			} else {
 				self::_no_access();
 			}
@@ -482,7 +482,7 @@ class QSOT_tickets {
 		self::$options->add(array(
 			'order' => 500,
 			'type' => 'title',
-			'title' => __('Tickets', 'qsot'),
+			'title' => __('Tickets', 'opentickets-community-edition'),
 			'id' => 'heading-frontend-tickets-1',
 			'page' => 'frontend',
 		));
@@ -491,11 +491,11 @@ class QSOT_tickets {
 			'order' => 505,
 			'id' => 'qsot-ticket-image-shown',
 			'type' => 'radio',
-			'title' => __('Left Ticket Image', 'qsot'),
-			'desc_tip' => __('The image to show in the bottom left corner of the ticket.', 'qsot'),
+			'title' => __('Left Ticket Image', 'opentickets-community-edition'),
+			'desc_tip' => __('The image to show in the bottom left corner of the ticket.', 'opentickets-community-edition'),
 			'options' => array(
-				'event' => __('the Event Featured Image', 'qsot'),
-				'product' => __('the Ticket Product Image', 'qsot'),
+				'event' => __('the Event Featured Image', 'opentickets-community-edition'),
+				'product' => __('the Ticket Product Image', 'opentickets-community-edition'),
 			),
 			'default' => 'event',
 			'page' => 'frontend',
@@ -505,11 +505,11 @@ class QSOT_tickets {
 			'order' => 507,
 			'id' => 'qsot-ticket-purchaser-info',
 			'type' => 'radio',
-			'title' => __('Purchaser Info', 'qsot'),
-			'desc_tip' => __('Which information to user for the purchaser display information. Either Billing or Shipping.', 'qsot'),
+			'title' => __('Purchaser Info', 'opentickets-community-edition'),
+			'desc_tip' => __('Which information to user for the purchaser display information. Either Billing or Shipping.', 'opentickets-community-edition'),
 			'options' => array(
-				'billing' => __('the Billing Information', 'qsot'),
-				'shipping' => __('the Shipping Information', 'qsot'),
+				'billing' => __('the Billing Information', 'opentickets-community-edition'),
+				'shipping' => __('the Shipping Information', 'opentickets-community-edition'),
 			),
 			'default' => 'billing',
 			'page' => 'frontend',
@@ -519,8 +519,8 @@ class QSOT_tickets {
 			'order' => 509,
 			'id' => 'qsot-ticket-show-order-id',
 			'type' => 'checkbox',
-			'title' => __('Show Order #', 'qsot'),
-			'desc' => __('Show the order number of the ticket, on the ticket.', 'qsot'),
+			'title' => __('Show Order #', 'opentickets-community-edition'),
+			'desc' => __('Show the order number of the ticket, on the ticket.', 'opentickets-community-edition'),
 			'default' => 'no',
 			'page' => 'frontend',
 		));

@@ -18,7 +18,7 @@ class QSOT_addon_registry {
 
 	public function __construct() {
 		if (self::$instance != null && self::$instance instanceof $me)
-			throw new Exception('Only one instance of '.__CLASS__.' can be created.', 501);
+			throw new Exception(sprintf(__('Only one instance of %s can be created.','opentickets-community-edition'), __CLASS__), 501);
 	}
 
 	public function is_activated($addon) { static $state = null; return $state == null ? ( $state = ! is_admin() ) : $state; }
