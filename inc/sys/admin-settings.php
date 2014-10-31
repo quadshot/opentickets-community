@@ -26,14 +26,14 @@ class qsot_admin_settings extends WC_Admin_Settings {
 		global $current_section, $current_tab;
 
 		if ( empty( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'qsot-settings' ) )
-	    		die( __( 'Action failed. Please refresh the page and retry.', 'qsot' ) );
+	    		die( __( 'Action failed. Please refresh the page and retry.','opentickets-community-edition' ) );
 
 		// Trigger actions
 		do_action( 'qsot_settings_save_' . $current_tab );
 		do_action( 'qsot_update_options_' . $current_tab );
 		do_action( 'qsot_update_options' );
 
-		self::add_message( __( 'Your settings have been saved.', 'qsot' ) );
+		self::add_message( __( 'Your settings have been saved.','opentickets-community-edition' ) );
 		self::check_download_folder_protection();
 
 		do_action( 'qsot_settings_saved' );
@@ -79,7 +79,7 @@ class qsot_admin_settings extends WC_Admin_Settings {
 		wp_enqueue_script( 'qsot_settings', WC()->plugin_url() . '/assets/js/admin/settings.min.js', array( 'jquery', 'jquery-ui-datepicker', 'jquery-ui-sortable', 'iris' ), WC()->version, true );
 
 		wp_localize_script( 'woocommerce_settings', 'woocommerce_settings_params', array(
-			'i18n_nav_warning' => __( 'The changes you made will be lost if you navigate away from this page.', 'qsot' )
+			'i18n_nav_warning' => __( 'The changes you made will be lost if you navigate away from this page.','opentickets-community-edition' )
 		) );
 
 		// Include settings pages

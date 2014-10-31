@@ -21,7 +21,7 @@
 
 		<p class="submit">
 			<?php if ( ! isset( $GLOBALS['hide_save_button'] ) ) : ?>
-				<input name="save" class="button-primary" type="submit" value="<?php _e( 'Save changes', 'qsot' ); ?>" />
+				<input name="save" class="button-primary" type="submit" value="<?php _e( 'Save changes','opentickets-community-edition' ); ?>" />
 			<?php endif; ?>
 			<input type="hidden" name="subtab" id="last_tab" />
 			<?php wp_nonce_field( 'qsot-settings' ); ?>
