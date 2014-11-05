@@ -7,7 +7,7 @@
 		<thead>
 			<tr>
 				<?php foreach ($fields as $field => $label): ?>
-					<th><a href="#" sort="<?php echo esc_attr($field) ?>" class="sorter" title="Sort by <?php echo esc_attr($label) ?>"><?php echo $label ?></a></th>
+					<th><a href="#" sort="<?php echo esc_attr($field) ?>" class="sorter" title="<?php _e('Sort by','opentickets-community-edition'); echo esc_attr($label) ?>"><?php echo $label ?></a></th>
 				<?php endforeach; ?>
 			</tr>
 		</thead>
@@ -20,7 +20,7 @@
 							case 'purchaser': ?>
 								<td>
 									<?php if (!empty($row['_user_link'])): ?>
-										<a href="<?php echo esc_attr($row['_user_link']) ?>" title="Edit User"><?php echo $row['purchaser'] ?></a>
+										<a href="<?php echo esc_attr($row['_user_link']) ?>" title="<?php _e('Edit User','opentickets-community-edition') ?>"><?php echo $row['purchaser'] ?></a>
 									<?php else: ?>
 										<?php echo $row['purchaser'] ?>
 									<?php endif; ?>
@@ -30,7 +30,7 @@
 								<td>
 									<?php $out = !empty($row['order_id']) ? '#'.$row['order_id'] : '-' ?>
 									<?php if (!empty($row['_order_link'])): ?>
-										<a href="<?php echo esc_attr($row['_order_link']) ?>" title="Edit Order"><?php echo $out ?></a>
+										<a href="<?php echo esc_attr($row['_order_link']) ?>" title="<?php _e('Edit Order','opentickets-community-edition') ?>"><?php echo $out ?></a>
 									<?php else: ?>
 										<?php echo $out ?>
 									<?php endif; ?>
@@ -44,7 +44,7 @@
 							<?php case 'ticket_type': ?>
 								<td>
 									<?php if (!empty($row['_product_link'])): ?>
-										<a href="<?php echo esc_attr($row['_product_link']) ?>" title="Edit Product"><?php echo $row['ticket_type'] ?></a>
+										<a href="<?php echo esc_attr($row['_product_link']) ?>" title="<?php _e('Edit Product','opentickets-community-edition') ?>"><?php echo $row['ticket_type'] ?></a>
 									<?php else: ?>
 										<?php echo $row['ticket_type'] ?>
 									<?php endif; ?>

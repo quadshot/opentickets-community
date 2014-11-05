@@ -21,9 +21,9 @@ $msg = 'Ticket has PREVIOUSLY checked in!';
 					<div class="checked-in event-checkin previously-checked-in">
 						<h1 class="page-title"><?php echo $msg ?></h1>
 						<ul class="ticket-info">
-							<li class="owner"><strong>Owner:</strong> <?php echo $owner ?></li>
-							<li class="event"><strong>Event:</strong> <?php echo $ticket->event->post_title ?></li>
-							<li class="checked"><strong>Checked-In:</strong> <?php echo $index ?></li>
+							<li class="owner"><strong><?php _e('Owner:','opentickets-community-edition') ?></strong> <?php echo $owner ?></li>
+							<li class="event"><strong><?php _e('Event:','opentickets-community-edition') ?></strong> <?php echo $ticket->event->post_title ?></li>
+							<li class="checked"><strong><?php _e('Checked-In:','opentickets-community-edition') ?></strong> <?php echo $index ?></li>
 						</ul>
 					</div>
 

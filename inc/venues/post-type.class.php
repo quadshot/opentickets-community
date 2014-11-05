@@ -110,12 +110,12 @@ class qsot_venue_post_type {
 		if (!is_object($venue) || !isset($venue->post_type) || $venue->post_type !== 'qsot-venue') return $current;
 
 		$kmap = array(
-			'address1' => 'Address',
-			'address2' => 'Address 2',
-			'city' => 'City',
-			'state' => 'State',
-			'postal_code' => 'Postal Code',
-			'country' => 'Country',
+			'address1' => __('Address','opentickets-community-edition'),
+			'address2' => __('Address 2','opentickets-community-edition'),
+			'city' => __('City','opentickets-community-edition'),
+			'state' => __('State','opentickets-community-edition'),
+			'postal_code' => __('Postal Code','opentickets-community-edition'),
+			'country' => __('Country','opentickets-community-edition'),
 		);
 		$venue_info = get_post_meta($venue->ID, '_venue_information', true);
 		$out = array();
@@ -232,21 +232,21 @@ class qsot_venue_post_type {
 			<div class="setting-group">
 				<div class="setting" rel="setting-main" tag="venue">
 					<div class="setting-current">
-						<span class="setting-name">Venue:</span>
+						<span class="setting-name"><?php _e('Venue:','opentickets-community-edition') ?></span>
 						<span class="setting-current-value" rel="setting-display"></span>
-						<a class="edit-btn" href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]">Edit</a>
+						<a class="edit-btn" href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]"><?php _e('Edit','opentickets-community-edition') ?></a>
 						<input type="hidden" name="settings[venue]" value="" scope="[rel=setting-main]" rel="venue" />
 					</div>
 					<div class="setting-edit-form" rel="setting-form">
 						<select name="venue">
-							<option value="0">- None -</option>
+							<option value="0">- <?php _e('None','opentickets-community-edition') ?> -</option>
 							<?php foreach ($venues as $venue): ?>
 								<option value="<?php echo esc_attr($venue->ID) ?>"><?php echo esc_attr($venue->post_title) ?></option>
 							<?php endforeach; ?>
 						</select>
 						<div class="edit-setting-actions">
-							<input type="button" class="button" rel="setting-save" value="OK" />
-							<a href="#" rel="setting-cancel">Cancel</a>
+							<input type="button" class="button" rel="setting-save" value="<?php _e('OK','opentickets-community-edition') ?>" />
+							<a href="#" rel="setting-cancel"><?php _e('Cancel','opentickets-community-edition') ?></a>
 						</div>
 					</div>
 				</div>
@@ -287,7 +287,7 @@ class qsot_venue_post_type {
 	public static function setup_meta_boxes($post) {
 		add_meta_box(
 			'venue-information',
-			'Venue Information',
+			__('Venue Information','opentickets-community-edition'),
 			array(__CLASS__, 'mb_venue_information'),
 			$post->post_type,
 			'normal',
@@ -296,7 +296,7 @@ class qsot_venue_post_type {
 
 		add_meta_box(
 			'venue-social',
-			'Venue Social Information',
+			__('Venue Social Information','opentickets-community-edition'),
 			array(__CLASS__, 'mb_venue_social_information'),
 			$post->post_type,
 			'normal',
@@ -349,39 +349,39 @@ class qsot_venue_post_type {
 			<table class="venue-information-table">
 				<tbody>
 					<tr>
-						<th width="1%">Address:</th>
+						<th width="1%"><?php _e('Address:','opentickets-community-edition') ?></th>
 						<td><input type="text" class="widefat" name="venue[info][address1]" value="<?php echo esc_attr($info['address1']) ?>" /></td>
 					</tr>
 					<tr>
-						<th>Address 2:</th>
+						<th><?php _e('Address 2:','opentickets-community-edition') ?></th>
 						<td><input type="text" class="widefat" name="venue[info][address2]" value="<?php echo esc_attr($info['address2']) ?>" /></td>
 					</tr>
 					<tr>
-						<th>City:</th>
+						<th><?php _e('City:','opentickets-community-edition') ?></th>
 						<td><input type="text" class="widefat" name="venue[info][city]" value="<?php echo esc_attr($info['city']) ?>" /></td>
 					</tr>
 					<tr>
-						<th>State:</th>
+						<th><?php _e('State:','opentickets-community-edition') ?></th>
 						<td><input type="text" class="widefat" name="venue[info][state]" value="<?php echo esc_attr($info['state']) ?>" /></td>
 					</tr>
 					<tr>
-						<th>Postal Code:</th>
+						<th><?php _e('Postal Code:','opentickets-community-edition') ?></th>
 						<td><input type="text" class="widefat" name="venue[info][postal_code]" value="<?php echo esc_attr($info['postal_code']) ?>" /></td>
 					</tr>
 					<tr>
-						<th>Country:</th>
+						<th><?php _e('Country:','opentickets-community-edition') ?></th>
 						<td><input type="text" class="widefat" name="venue[info][country]" value="<?php echo esc_attr($info['country']) ?>" /></td>
 					</tr>
 					<tr>
-						<th>Logo Image</th>
+						<th><?php _e('Logo Image','opentickets-community-edition') ?></th>
 						<td>
 							<?php do_action('mba-mediabox-button', array(
 								'post-id' => $post->ID,
 								'id-field' => '.logo-image-id',
 								'preview-container' => '.logo-image-preview',
 								'preview-size' => array(150,150),
-								'upload-button-text' => 'Select Logo',
-								'remove-button-text' => 'Remove',
+								'upload-button-text' => __('Select Logo','opentickets-community-edition'),
+								'remove-button-text' => __('Remove','opentickets-community-edition'),
 								'remove-button-classes' => ' ',
 							)); ?>
 							<div class="logo-image-preview"><?php echo wp_get_attachment_image($info['logo_image_id'], array(150, 150)) ?></div>
@@ -389,17 +389,17 @@ class qsot_venue_post_type {
 						</td>
 					</tr>
 					<tr>
-						<th>Notes:</th>
+						<th><?php _e('Notes:','opentickets-community-edition') ?></th>
 						<td>
 							<textarea class="widefat tinymce" name="venue[info][notes]"><?php echo $info['notes'] ?></textarea>
-							<span class="helper" style="font-size:9px; color:#888888;">This is what is displayed on your tickets about this venue.</span>
+							<span class="helper" style="font-size:9px; color:#888888;"><?php _e('This is what is displayed on your tickets about this venue.','opentickets-community-edition') ?></span>
 						</td>
 					</tr>
 					<tr>
-						<th>Map Instructions:</th>
+						<th><?php _e('Map Instructions:','opentickets-community-edition') ?></th>
 						<td>
 							<textarea class="widefat tinymce" name="venue[info][instructions]"><?php echo $info['instructions'] ?></textarea>
-							<span class="helper" style="font-size:9px; color:#888888;">Displayed below the map on your event tickets. Meant for extra directions.</span>
+							<span class="helper" style="font-size:9px; color:#888888;"><?php _e('Displayed below the map on your event tickets. Meant for extra directions.','opentickets-community-edition') ?></span>
 						</td>
 					</tr>
 					<?php do_action('qsot-venue-info-rows', $info, $post, $mb) ?>
@@ -426,23 +426,23 @@ class qsot_venue_post_type {
 			<table class="venue-social-information-table">
 				<tbody>
 					<tr>
-						<th width="1%">Phone:</th>
+						<th width="1%"><?php _e('Phone:','opentickets-community-edition') ?></th>
 						<td><input type="text" class="widefat" name="venue[info][phone]" value="<?php echo esc_attr($info['phone']) ?>" /></td>
 					</tr>
 					<tr>
-						<th>Website:</th>
+						<th><?php _e('Website:','opentickets-community-edition') ?></th>
 						<td><input type="text" class="widefat" name="venue[info][website]" value="<?php echo esc_attr($info['website']) ?>" /></td>
 					</tr>
 					<tr>
-						<th>Facebook:</th>
+						<th><?php _e('Facebook:','opentickets-community-edition') ?></th>
 						<td><input type="text" class="widefat" name="venue[info][facebook]" value="<?php echo esc_attr($info['facebook']) ?>" /></td>
 					</tr>
 					<tr>
-						<th>Twitter:</th>
+						<th><?php _e('Twitter:','opentickets-community-edition') ?></th>
 						<td><input type="text" class="widefat" name="venue[info][twitter]" value="<?php echo esc_attr($info['twitter']) ?>" /></td>
 					</tr>
 					<tr>
-						<th>Contact Email:</th>
+						<th><?php _e('Contact Email:','opentickets-community-edition') ?></th>
 						<td><input type="text" class="widefat" name="venue[info][contact_email]" value="<?php echo esc_attr($info['contact_email']) ?>" /></td>
 					</tr>
 					<?php do_action('qsot-venue-social-info-rows', $info, $post, $mb) ?>
@@ -476,8 +476,8 @@ class qsot_venue_post_type {
 	public static function register_post_type($list) {
 		$list[self::$o->{'venue.post_type'}] = array(
 			'label_replacements' => array(
-				'plural' => 'Venues', // plural version of the proper name
-				'singular' => 'Venue', // singular version of the proper name
+				'plural' => __('Venues','opentickets-community-edition'), // plural version of the proper name
+				'singular' => __('Venue','opentickets-community-edition'), // singular version of the proper name
 			),
 			'args' => array( // almost all of these are passed through to the core regsiter_post_type function, and follow the same guidelines defined on wordpress.org
 				'public' => true,

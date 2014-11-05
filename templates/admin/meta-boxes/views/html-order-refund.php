@@ -11,9 +11,9 @@ $who_refunded = new WP_User( $refund->post->post_author );
 
 	<td class="name">
 		<?php
-			echo esc_attr__( 'Refund', 'woocommerce' ) . ' - ' . esc_attr( date_i18n( get_option( 'date_format' ) . ', ' . get_option( 'time_format' ), strtotime( $refund->post_date ) ) );
+			echo esc_attr__( 'Refund', 'opentickets-community-edition' ) . ' - ' . esc_attr( date_i18n( get_option( 'date_format' ) . ', ' . get_option( 'time_format' ), strtotime( $refund->post_date ) ) );
 			if ( $who_refunded->exists() ){
-				echo ' ' . esc_attr_x( 'by', 'Ex: Refund - $date >by< $username', 'woocommerce' ) . ' ' . '<abbr class="refund_by" title="' . esc_attr__( 'ID: ', 'woocommerce' ) . absint( $who_refunded->ID ) . '">' . esc_attr( $who_refunded->display_name ) . '</abbr>' ;
+				echo ' ' . esc_attr_x( 'by', 'Ex: Refund - $date >by< $username', 'opentickets-community-edition' ) . ' ' . '<abbr class="refund_by" title="' . esc_attr__( 'ID: ', 'opentickets-community-edition' ) . absint( $who_refunded->ID ) . '">' . esc_attr( $who_refunded->display_name ) . '</abbr>' ;
 			}
 		?>
 		<?php if ( $refund->get_refund_reason() ) : ?>
