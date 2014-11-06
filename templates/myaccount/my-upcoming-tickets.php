@@ -1,5 +1,5 @@
 <?php if (isset($tickets) && is_array($tickets) && !empty($tickets)): ?>
-	<h2><?php echo apply_filters('qsot_my_account_my_upcoming_tickets_title', __('Upcoming Tickets', 'qsot')); ?></h2>
+	<h2><?php echo apply_filters('qsot_my_account_my_upcoming_tickets_title', __('Upcoming Tickets', 'opentickets-community-edition')); ?></h2>
 
 	<?php if ($display_format == 'as_list'): ?>
 
@@ -14,21 +14,21 @@
 				?>
 				<li>
 					<?php if ( isset( $ticket->permalink ) && $ticket->permalink ): ?>
-						<a href="<?php echo esc_attr($ticket->permalink) ?>" title="<?php echo esc_attr( __( 'View your ticket', 'qsot' ) ) ?>"><?php echo $name ?></a>
+						<a href="<?php echo esc_attr($ticket->permalink) ?>" title="<?php echo esc_attr( __( 'View your ticket', 'opentickets-community-edition' ) ) ?>"><?php echo $name ?></a>
 					<?php else: ?>
-						<?php echo $name . ' (' . __( 'pending payment', 'qsot' ) . ')' ?>
+						<?php echo $name . ' (' . __( 'pending payment', 'opentickets-community-edition' ) . ')' ?>
 					<?php endif; ?>
 					<?php echo sprintf(
 						__( 'for <a href="%s" title="%s">%s</a>' ),
 						esc_attr( get_permalink( $ticket->event->ID ) ),
-						esc_attr( __( 'Visit the Event page', 'qsot' ) ),
+						esc_attr( __( 'Visit the Event page', 'opentickets-community-edition' ) ),
 						apply_filters( 'the_title', $ticket->event->post_title )
 					) ?>
 					<?php if (is_admin() && isset($ticket->__order_id) && !empty($ticket->__order_id)): ?>
 						<?php echo sprintf(
 							__( '(order <a href="%s" title="%s">#%s<a/>)' ),
 							esc_attr( get_edit_post_link( $ticket->__order_id ) ),
-							esc_attr( __( 'Edit order', 'qsot' ) ) . ' #' . $ticket->__order_id,
+							esc_attr( __( 'Edit order', 'opentickets-community-edition' ) ) . ' #' . $ticket->__order_id,
 							$ticket->__order_id
 						) ?>
 					<?php endif; ?>
@@ -51,8 +51,8 @@
 								<?php echo sprintf(
 									__( '<a href="%s" title="%s">%s</a>' ),
 									esc_attr( get_permalink( $event->ID ) ),
-									__( 'Visit the Event page', 'qsot' ),
-									__( '(View Show Page)', 'qsot' )
+									__( 'Visit the Event page', 'opentickets-community-edition' ),
+									__( '(View Show Page)', 'opentickets-community-edition' )
 								) ?>
 							</span>
 						</th>
@@ -72,7 +72,7 @@
 								<?php if ( isset( $ticket->permalink ) && $ticket->permalink ): ?>
 									<a href="<?php echo esc_attr($ticket->permalink) ?>" title="View your ticket"><?php echo $name ?></a>
 								<?php else: ?>
-									<?php echo $name . ' (' . __( 'pending payment', 'qsot' ) . ')' ?>
+									<?php echo $name . ' (' . __( 'pending payment', 'opentickets-community-edition' ) . ')' ?>
 								<?php endif; ?>
 							</td>
 							<td> x <?php echo $ticket->_qty ?></td>
@@ -81,7 +81,7 @@
 									<?php echo sprintf(
 										__( '(order <a href="%s" title="%s">#%s<a/>)' ),
 										esc_attr( get_edit_post_link( $ticket->__order_id ) ),
-										esc_attr( __( 'Edit order', 'qsot' ) ) . ' #' . $ticket->__order_id,
+										esc_attr( __( 'Edit order', 'opentickets-community-edition' ) ) . ' #' . $ticket->__order_id,
 										$ticket->__order_id
 									) ?>
 								</td>
