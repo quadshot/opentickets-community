@@ -139,6 +139,10 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.8.0 =
+* added i18n support
+* added po for italian
+
 = 1.7.2 =
 * fixed 'compile stylesheet' error
 
