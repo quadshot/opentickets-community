@@ -34,14 +34,14 @@ class qsot_reporting {
 		$links = array();
 
 		if (is_array($csv) && isset($csv['url']) && !empty($csv['url']))
-			$links['csv'] = sprintf('<a href="%s" title="Download">%s</a>', esc_attr($csv['url']), 'Download CSV');
+			$links['csv'] = sprintf('<a href="%s" title="%s">%s</a>', esc_attr($csv['url']), __('Download CSV','qsot'), __('Download CSV','qsot'));
 
 		if (isset($req)) {
 			$link_data = array('pf' => 1);
 			$link_data['showing'] = $req['showing'];
 			if (isset($req['sort']) && !empty($req['sort'])) $link_data['sort'] = $req['sort'];
 			$link = add_query_arg($link_data, $_SERVER['HTTP_REFERER']);
-			$links['pf'] = sprintf('<a href="%s" title="%s" target="_blank">%s</a>', esc_attr($link), 'Printer Friendly Version', 'Printer Friendly Version');
+			$links['pf'] = sprintf('<a href="%s" title="%s" target="_blank">%s</a>', esc_attr($link), __('Printer Friendly Version','qsot'), __('Printer Friendly Version','qsot'));
 		}
 		?>
 		<?php if (count($links)): ?>
@@ -245,10 +245,9 @@ abstract class qsot_admin_report {
 	protected static $bad_path = '';
 	public static function csv_path_notice() {
 		if (self::$bad_path) {
-			?><div class="error">
-				Could not create the report cache directory.
-				Make sure that the permissions for '<?php echo $path ?>' allow the webserver to create a directory, and try again.
-			</div><?php
+			echo '<div class="error">';
+			printf(__("Could not create the report cache directory. Make sure that the permissions for '%s' allow the webserver to create a directory, and try again.",'qsot'), $path);
+			echo '</div>';
 		}
 	}
 
@@ -316,7 +315,7 @@ abstract class qsot_admin_report {
 
 	// display a generic report error
 	protected function _report_error($msg='') {
-		$msg = $msg ? $msg : 'An un expected error occurred during report generation.';
+		$msg = $msg ? $msg : __('An un expected error occurred during report generation.','qsot');
 
 		?>
 			<div class="report-error">
@@ -333,8 +332,7 @@ abstract class qsot_admin_report {
 			include $template;
 		} else {
 			// if there is not template (unlikely) then display something for all our hard work
-			echo '<p>Could not find the report result template. '
-				.'Below is the list of raw CSV results.</p><ul>';
+			echo '<p>'.__('Could not find the report result template. Below is the list of raw CSV results.','qsot').'</p><ul>';
 			foreach ($csvs as $event_id => $csv) {
 				echo sprintf(
 					'<li><a href="%s" title="%s">%s</a></li>',
@@ -367,7 +365,7 @@ abstract class qsot_admin_report {
 	protected function _payment_method($order, $fallback='') {
 		return isset($order['_payment_method']) && !empty($order['_payment_method'])
 			? $order['_payment_method']
-			: ( isset($order['_order_total']) && $order['_order_total'] > 0 ? '(unknown)' : '-free-' );
+			: ( isset($order['_order_total']) && $order['_order_total'] > 0 ? __('(unknown)','qsot') : __('-free-','qsot') );
 	}
 
 	// if the billing information does not exist for an order, but their is an owning user for the order, attempt to pull billing information from user information

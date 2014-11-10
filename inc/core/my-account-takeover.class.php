@@ -42,7 +42,7 @@ class qsot_my_account_takeover {
 	public static function my_orders_headers($user, $orders) {
 		if (!is_admin()) return;
 
-		?><th>Shows</th><?php
+		echo '<th>'.__('Shows','qsot').'</th>';
 	}
 
 	public static function my_orders_values($user, $order) {
@@ -66,7 +66,7 @@ class qsot_my_account_takeover {
 				<?php if (count($shows)): ?>
 					<?php echo implode('<br/>', $shows) ?>
 				<?php else: ?>
-					&nbsp;(none)
+					<?php echo '&nbsp;'.__('(none)','qsot'); ?>
 				<?php endif; ?>
 			</td>
 		<?php
