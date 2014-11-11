@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OpenTickets Community Edition\n"
-"POT-Creation-Date: 2014-09-23 11:36-0500\n"
-"PO-Revision-Date: 2014-09-23 11:37-0500\n"
+"POT-Creation-Date: 2014-11-11 17:51-0500\n"
+"PO-Revision-Date: 2014-11-11 17:51-0500\n"
 "Last-Translator: Dino Termini <dino@quadshot.com>\n"
 "Language-Team: \n"
 "Language: it_IT\n"
@@ -14,6 +14,10 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-KeywordsList: __;_e;_x\n"
 "X-Poedit-SearchPath-0: ..\n"
+
+#: ../inc/core/calendar.class.php:44
+msgid "OpenTickets Calendar"
+msgstr ""
 
 #: ../inc/core/calendar.class.php:68
 msgid "Non-JS Calendar Page"
@@ -29,36 +33,40 @@ msgstr ""
 msgid "Calendar Settings"
 msgstr ""
 
-#: ../inc/core/calendar.class.php:248 ../inc/core/calendar.class.php:293
-msgid "Today"
+#: ../inc/core/calendar.class.php:217
+msgid "Ended"
 msgstr ""
 
 #: ../inc/core/calendar.class.php:249 ../inc/core/calendar.class.php:294
+msgid "Today"
+msgstr ""
+
+#: ../inc/core/calendar.class.php:250 ../inc/core/calendar.class.php:295
 msgid "Date of next Event"
 msgstr ""
 
-#: ../inc/core/calendar.class.php:250 ../inc/core/calendar.class.php:274
-#: ../inc/core/calendar.class.php:275 ../inc/core/calendar.class.php:295
+#: ../inc/core/calendar.class.php:251 ../inc/core/calendar.class.php:275
+#: ../inc/core/calendar.class.php:276 ../inc/core/calendar.class.php:296
 msgid "Manually entered date"
 msgstr ""
 
-#: ../inc/core/calendar.class.php:262
+#: ../inc/core/calendar.class.php:263
 msgid "Starting Date Method"
 msgstr ""
 
-#: ../inc/core/calendar.class.php:370
-msgid "Event Pages"
-msgstr ""
-
-#: ../inc/core/calendar.class.php:372
-msgid "These pages are used to display the upcoming events."
-msgstr ""
-
-#: ../inc/core/calendar.class.php:376
+#: ../inc/core/calendar.class.php:359 ../inc/core/calendar.class.php:383
 msgid "Event Calendar"
 msgstr ""
 
 #: ../inc/core/calendar.class.php:377
+msgid "Event Pages"
+msgstr ""
+
+#: ../inc/core/calendar.class.php:379
+msgid "These pages are used to display the upcoming events."
+msgstr ""
+
+#: ../inc/core/calendar.class.php:384
 msgid "Page to display the calendar of upcoming events."
 msgstr ""
 
@@ -68,6 +76,10 @@ msgstr ""
 
 #: ../inc/core/event-reporting.class.php:44
 msgid "Printer Friendly Version"
+msgstr ""
+
+#: ../inc/core/event-reporting.class.php:86
+msgid "Report"
 msgstr ""
 
 #: ../inc/core/event-reporting.class.php:110
@@ -106,11 +118,11 @@ msgid ""
 msgstr ""
 
 #: ../inc/core/event-reporting.class.php:340
-msgid "View report for "
+msgid "View report for"
 msgstr ""
 
 #: ../inc/core/event-reporting.class.php:341
-msgid "Report for "
+msgid "Report for"
 msgstr ""
 
 #: ../inc/core/event-reporting.class.php:368
@@ -137,58 +149,58 @@ msgstr ""
 msgid "My Account &rarr;"
 msgstr ""
 
-#: ../inc/core/my-account-takeover.class.php:139
+#: ../inc/core/my-account-takeover.class.php:137
 #, php-format
 msgid ""
 "Order <mark class=\"order-number\">%s</mark> made on <mark class=\"order-date"
 "\">%s</mark>"
 msgstr ""
 
-#: ../inc/core/my-account-takeover.class.php:140
+#: ../inc/core/my-account-takeover.class.php:138
 #, php-format
 msgid "Order status: <mark class=\"order-status\">%s</mark>"
 msgstr ""
 
-#: ../inc/core/my-account-takeover.class.php:146
+#: ../inc/core/my-account-takeover.class.php:144
 msgid "Order Updates"
 msgstr ""
 
-#: ../inc/core/my-account-takeover.class.php:152
+#: ../inc/core/my-account-takeover.class.php:150
 msgid "l jS \\of F Y, h:ia"
 msgstr ""
 
-#: ../inc/core/my-account-takeover.class.php:309
+#: ../inc/core/my-account-takeover.class.php:315
 msgid "My Account Page"
 msgstr ""
 
-#: ../inc/core/my-account-takeover.class.php:317
+#: ../inc/core/my-account-takeover.class.php:324
 msgid "Display Upcoming Tickets"
 msgstr ""
 
-#: ../inc/core/my-account-takeover.class.php:318
+#: ../inc/core/my-account-takeover.class.php:325
 msgid ""
 "Format to display the upcoming tickets list in. The list appears on the end "
 "user's \"My Account\" page."
 msgstr ""
 
-#: ../inc/core/my-account-takeover.class.php:320
+#: ../inc/core/my-account-takeover.class.php:327
 msgid "By Event"
 msgstr ""
 
-#: ../inc/core/my-account-takeover.class.php:321
+#: ../inc/core/my-account-takeover.class.php:328
 msgid "As Line Item List"
 msgstr ""
 
-#: ../inc/core/my-account-takeover.class.php:330
+#: ../inc/core/my-account-takeover.class.php:345
 msgid "Infinite Login"
 msgstr ""
 
-#: ../inc/core/my-account-takeover.class.php:331
+#: ../inc/core/my-account-takeover.class.php:346
 msgid "Once a user logs in, they stay logged in, forever."
 msgstr ""
 
-#: ../inc/core/post-type.class.php:136 ../inc/core/post-type.class.php:693
-#: ../inc/reporting/seating.report.class.php:497
+#: ../inc/core/post-type.class.php:136 ../inc/core/post-type.class.php:666
+#: ../inc/reporting/seating.report.class.php:500
 msgid "Event"
 msgstr ""
 
@@ -196,7 +208,7 @@ msgstr ""
 msgid "View this event"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:293 ../inc/core/post-type.class.php:692
+#: ../inc/core/post-type.class.php:293 ../inc/core/post-type.class.php:665
 msgid "Events"
 msgstr ""
 
@@ -204,21 +216,22 @@ msgstr ""
 msgid "Top Level Events"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:603
+#: ../inc/core/post-type.class.php:593 ../inc/core/post-type.class.php:1358
 msgid "Hidden"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:848
+#: ../inc/core/post-type.class.php:827
 msgid "Max"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:851
-#: ../inc/reporting/seating.report.class.php:494
+#: ../inc/core/post-type.class.php:830
+#: ../inc/reporting/seating.report.class.php:497
+#: ../inc/sys/admin-menu.class.php:337
 msgid "Status"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:896 ../inc/core/post-type.class.php:944
-#: ../inc/core/post-type.class.php:969
+#: ../inc/core/post-type.class.php:880 ../inc/core/post-type.class.php:933
+#: ../inc/core/post-type.class.php:963
 #, php-format
 msgid "%s on %s @ %s"
 msgstr ""
@@ -227,7 +240,7 @@ msgstr ""
 msgid "Event Date Time Settings"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1067 ../inc/core/post-type.class.php:1385
+#: ../inc/core/post-type.class.php:1067 ../inc/core/post-type.class.php:1500
 msgid "Stop Sales Before Show"
 msgstr ""
 
@@ -257,12 +270,41 @@ msgstr ""
 msgid "End Date/Time:"
 msgstr ""
 
+#: ../inc/core/post-type.class.php:1137 ../inc/core/post-type.class.php:1396
+msgid "@"
+msgstr ""
+
 #: ../inc/core/post-type.class.php:1159
 msgid "Basic Settings"
 msgstr ""
 
+#: ../inc/core/post-type.class.php:1162 ../inc/core/post-type.class.php:1166
+#: ../inc/core/post-type.class.php:1246 ../inc/core/post-type.class.php:1259
+msgid "Y-m-d"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1162
+msgid "Start Date"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1163 ../inc/core/post-type.class.php:1167
+msgid "h:ia"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1163
+msgid "Start Time"
+msgstr ""
+
 #: ../inc/core/post-type.class.php:1164
 msgid "to"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1166
+msgid "End Date"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1167
+msgid "End Time"
 msgstr ""
 
 #: ../inc/core/post-type.class.php:1173 ../inc/core/post-type.class.php:1182
@@ -306,7 +348,7 @@ msgid "Tu"
 msgstr ""
 
 #: ../inc/core/post-type.class.php:1226
-msgid "W"
+msgid "We"
 msgstr ""
 
 #: ../inc/core/post-type.class.php:1230
@@ -314,7 +356,7 @@ msgid "Th"
 msgstr ""
 
 #: ../inc/core/post-type.class.php:1234
-msgid "F"
+msgid "Fr"
 msgstr ""
 
 #: ../inc/core/post-type.class.php:1238
@@ -355,132 +397,443 @@ msgid "Settings"
 msgstr ""
 
 #: ../inc/core/post-type.class.php:1315
-msgid "Visibility"
+msgid "Status:"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1317 ../inc/sys/core-hacks.class.php:596
+#: ../inc/core/post-type.class.php:1317 ../inc/core/post-type.class.php:1340
+#: ../inc/core/post-type.class.php:1375 ../inc/sys/core-hacks.class.php:596
 #: ../inc/sys/core-hacks.class.php:1143 ../inc/sys/core-hacks.class.php:1246
-#: ../templates/admin/meta-boxes/views/html-order-items.php:211
+#: ../inc/venues/event-area/post-type.class.php:509
+#: ../inc/venues/post-type.class.php:237
+#: ../templates/admin/meta-boxes/views/html-order-fee.php:83
+#: ../templates/admin/meta-boxes/views/html-order-items.php:213
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:220
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:312
 msgid "Edit"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1329
+#: ../inc/core/post-type.class.php:1322
+msgid "Published"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1323
+msgid "Privately Published"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1324
+msgid "Scheduled"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1326
+msgid "Pending Review"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1327
+msgid "Draft"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1330 ../inc/core/post-type.class.php:1365
+#: ../inc/core/post-type.class.php:1401
+#: ../inc/venues/event-area/post-type.class.php:534
+#: ../inc/venues/post-type.class.php:248
 msgid "OK"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1330 ../inc/sys/mba.class.php:462
-#: ../templates/admin/meta-boxes/views/html-order-items.php:243
-#: ../templates/admin/meta-boxes/views/html-order-items.php:287
-#: ../templates/admin/meta-boxes/views/html-order-items.php:307
-#: ../templates/admin/meta-boxes/views/html-order-items.php:362
+#: ../inc/core/post-type.class.php:1331 ../inc/core/post-type.class.php:1366
+#: ../inc/core/post-type.class.php:1402 ../inc/sys/mba.class.php:462
+#: ../inc/venues/event-area/post-type.class.php:535
+#: ../inc/venues/post-type.class.php:249
+#: ../templates/admin/meta-boxes/views/html-order-items.php:249
+#: ../templates/admin/meta-boxes/views/html-order-items.php:292
+#: ../templates/admin/meta-boxes/views/html-order-items.php:312
+#: ../templates/admin/meta-boxes/views/html-order-items.php:367
 msgid "Cancel"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1377
-msgid "General Settings"
+#: ../inc/core/post-type.class.php:1338
+msgid "Visibility"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1344
+msgid "Viewable to the public"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1346
+msgid "Public"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1348
+msgid ""
+"Visible on the calendar, but only those with the password can view to make "
+"reservations"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1350
+msgid "Password Protected"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1352
+msgid "Password:"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1356
+msgid "Hidden from the calendar, but open to anyone with the url"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1360
+msgid "Only logged in admin users or the event author can view it"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1362
+msgid "Private"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1373
+msgid "Publish Date:"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1382
+msgid "Januaray"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1383
+msgid "February"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1384
+msgid "March"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1385
+msgid "April"
 msgstr ""
 
 #: ../inc/core/post-type.class.php:1386
+msgid "May"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1387
+msgid "June"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1388
+msgid "July"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1389
+msgid "August"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1390
+msgid "September"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1391
+msgid "October"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1392
+msgid "November"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1393
+msgid "December"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1430
+msgid "Event base"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1434
+#, php-format
+msgid ""
+"Enter a custom base to use. This url segment will prefix the event name in "
+"the url.<br/><code>example: %s</code>"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1450
+msgid "Event permalink base"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1491
+msgid "Event Display"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1501
 msgid ""
 "Amount of time to stop sales for a show, before show time. (ie: stop sales "
 "two hour before show time <code>2 hours</code>)"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1387
+#: ../inc/core/post-type.class.php:1502
 msgid ""
 "valid units: hour, hours, minute, minutes, second, seconds, day, days, week, "
 "weeks, month, months, year, years"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1394
+#: ../inc/core/post-type.class.php:1510
 msgid "Single Event Synopsis"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1395
+#: ../inc/core/post-type.class.php:1511
 msgid "Show event synopsis on single event pages"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1396
+#: ../inc/core/post-type.class.php:1512
 msgid ""
 "By default, just the event logo, and the event pricing options are shown. "
 "This feature will additionally show the description of the event to the user."
 msgstr ""
 
-#: ../inc/order/admin.class.php:496
+#: ../inc/order/admin.class.php:149
+msgid ""
+"The current settings disallow using \"<strong>Guest</strong>\" as the "
+"customer for the order. You have attempted to use \"<strong>Guest</strong>\" "
+"as the customer. You will not be able to process payments or complete an "
+"order until a user has been selected as the customer."
+msgstr ""
+
+#: ../inc/order/admin.class.php:184
+msgid ""
+"Additionally, because of the current Woocommerce settings, \"<strong>Guest</"
+"strong>\" is not allowed as the customer user. Please select a user first."
+msgstr ""
+
+#: ../inc/order/admin.class.php:216
+msgid ""
+"You cannot use \"Guest\" as the owner of the order, due to current "
+"Woocommerce settings."
+msgstr ""
+
+#: ../inc/order/admin.class.php:241 ../inc/order/admin.class.php:244
+msgid "must be at least 2 letters or numbers"
+msgstr ""
+
+#: ../inc/order/admin.class.php:247
+msgid "must be at least 7 letters, numbers, or spaces"
+msgstr ""
+
+#: ../inc/order/admin.class.php:250
+msgid "must be at least 4 letters, numbers, or spaces"
+msgstr ""
+
+#: ../inc/order/admin.class.php:256
+msgid "must be at least 5 letters, numbers, or spaces"
+msgstr ""
+
+#: ../inc/order/admin.class.php:261
+msgid "must be at least 2 letters, numbers, or spaces"
+msgstr ""
+
+#: ../inc/order/admin.class.php:269
+msgid "must be at least 3 letters, numbers, or spaces"
+msgstr ""
+
+#: ../inc/order/admin.class.php:273
+msgid "must be a valid email"
+msgstr ""
+
+#: ../inc/order/admin.class.php:281
+msgid "must be a valid phone number"
+msgstr ""
+
+#: ../inc/order/admin.class.php:326 ../inc/order/admin.class.php:328
+msgid ""
+"Your current settings require you to provide most billing information for "
+"each order."
+msgstr ""
+
+#: ../inc/order/admin.class.php:368
+msgid "New User"
+msgstr ""
+
+#: ../inc/order/admin.class.php:396
+msgid "The username is a required field."
+msgstr ""
+
+#: ../inc/order/admin.class.php:398
+msgid "That user name contains illegal characters."
+msgstr ""
+
+#: ../inc/order/admin.class.php:400
+msgid ""
+"is already being used by another user. Please enter a different username."
+msgstr ""
+
+#: ../inc/order/admin.class.php:405
+msgid "The email address is required."
+msgstr ""
+
+#: ../inc/order/admin.class.php:407
+msgid "That is not a valid email address."
+msgstr ""
+
+#: ../inc/order/admin.class.php:409
+msgid ""
+"is already in use by another user. Please use a different email address."
+msgstr ""
+
+#: ../inc/order/admin.class.php:413
+msgid "The first name is a required field."
+msgstr ""
+
+#: ../inc/order/admin.class.php:417
+msgid "The last name is a required field."
+msgstr ""
+
+#: ../inc/order/admin.class.php:421
+msgid "The information you supplied passed validation."
+msgstr ""
+
+#: ../inc/order/admin.class.php:433
+msgid "User creation failed:"
+msgstr ""
+
+#: ../inc/order/admin.class.php:436
+msgid "The user was created successfully."
+msgstr ""
+
+#: ../inc/order/admin.class.php:470
+msgid "New User Form"
+msgstr ""
+
+#: ../inc/order/admin.class.php:481
+msgid "Username"
+msgstr ""
+
+#: ../inc/order/admin.class.php:485
+#: ../inc/reporting/seating.report.class.php:493
+#: ../inc/sys/core-hacks.class.php:1185
+#: ../templates/tickets/verification-form.php:8
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:76
+msgid "Email"
+msgstr ""
+
+#: ../inc/order/admin.class.php:489 ../inc/sys/core-hacks.class.php:1147
+#: ../inc/sys/core-hacks.class.php:1250
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:38
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:85
+msgid "First Name"
+msgstr ""
+
+#: ../inc/order/admin.class.php:493 ../inc/sys/core-hacks.class.php:1151
+#: ../inc/sys/core-hacks.class.php:1254
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:42
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:89
+msgid "Last Name"
+msgstr ""
+
+#: ../inc/order/admin.class.php:589
 msgid "Additional Admin Based Order Validation"
 msgstr ""
 
-#: ../inc/order/admin.class.php:505
+#: ../inc/order/admin.class.php:598
 msgid "Custom Completed Order Message"
 msgstr ""
 
-#: ../inc/order/admin.class.php:506
+#: ../inc/order/admin.class.php:599
 msgid ""
 "This html appears at the bottom of the default Completed Order email, sent "
 "to the customer upon completion of their order, below their address "
 "information."
 msgstr ""
 
-#: ../inc/order/admin.class.php:515
+#: ../inc/order/admin.class.php:608
 msgid "Custom Completed Order Message - Text only version"
 msgstr ""
 
-#: ../inc/order/admin.class.php:516
+#: ../inc/order/admin.class.php:609
 msgid ""
 "This text appears at the bottom of the default Completed Order email, sent "
 "to the customer upon completion of their order, below their address "
 "information."
 msgstr ""
 
-#: ../inc/reporting/seating.report.class.php:80
-msgid "Seating Report note"
-msgstr ""
-
-#: ../inc/reporting/seating.report.class.php:94
+#: ../inc/reporting/seating.report.class.php:17
+#: ../inc/reporting/seating.report.class.php:97
 msgid "Seating"
 msgstr ""
 
-#: ../inc/reporting/seating.report.class.php:179
+#: ../inc/reporting/seating.report.class.php:18
+msgid ""
+"List all seats for a show, as wells as their availability and occupancy."
+msgstr ""
+
+#: ../inc/reporting/seating.report.class.php:24
+msgid "Not Paid"
+msgstr ""
+
+#: ../inc/reporting/seating.report.class.php:25
+msgid "Paid"
+msgstr ""
+
+#: ../inc/reporting/seating.report.class.php:26
+msgid "Checked In"
+msgstr ""
+
+#: ../inc/reporting/seating.report.class.php:83
+msgid "Seating Report note"
+msgstr ""
+
+#: ../inc/reporting/seating.report.class.php:173
+msgid "Year:"
+msgstr ""
+
+#: ../inc/reporting/seating.report.class.php:176
+msgid "[All Years]"
+msgstr ""
+
+#: ../inc/reporting/seating.report.class.php:182
+#: ../inc/venues/event-area/pricing.class.php:457
+#: ../inc/venues/event-area/pricing.class.php:521
+#: ../templates/checkin/already-occupied.php:25
+#: ../templates/checkin/occupy-failure.php:25
+#: ../templates/checkin/occupy-success.php:25
 msgid "Event:"
 msgstr ""
 
-#: ../inc/reporting/seating.report.class.php:215
+#: ../inc/reporting/seating.report.class.php:195
+msgid "Lookup Showings"
+msgstr ""
+
+#: ../inc/reporting/seating.report.class.php:218
 msgid "Showing:"
 msgstr ""
 
-#: ../inc/reporting/seating.report.class.php:486
-msgid "Purchaser"
+#: ../inc/reporting/seating.report.class.php:228
+msgid "Show Report"
 msgstr ""
 
-#: ../inc/reporting/seating.report.class.php:487
-msgid "Order #"
-msgstr ""
-
-#: ../inc/reporting/seating.report.class.php:488
-msgid "Ticket Type"
+#: ../inc/reporting/seating.report.class.php:351
+msgid "<p><em>Could not find that event.</em></p>"
 msgstr ""
 
 #: ../inc/reporting/seating.report.class.php:489
-msgid "Quantity"
+msgid "Purchaser"
 msgstr ""
 
 #: ../inc/reporting/seating.report.class.php:490
-#: ../inc/sys/core-hacks.class.php:1185
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:76
-msgid "Email"
+msgid "Order #"
 msgstr ""
 
 #: ../inc/reporting/seating.report.class.php:491
+msgid "Ticket Type"
+msgstr ""
+
+#: ../inc/reporting/seating.report.class.php:492
+msgid "Quantity"
+msgstr ""
+
+#: ../inc/reporting/seating.report.class.php:494
 #: ../inc/sys/core-hacks.class.php:1188
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:79
 msgid "Phone"
 msgstr ""
 
-#: ../inc/reporting/seating.report.class.php:492
+#: ../inc/reporting/seating.report.class.php:495
 #: ../inc/sys/core-hacks.class.php:1196 ../inc/sys/core-hacks.class.php:1198
 #: ../inc/sys/core-hacks.class.php:1293 ../inc/sys/core-hacks.class.php:1295
+#: ../inc/venues/post-type.class.php:113
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:226
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:228
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:318
@@ -488,16 +841,20 @@ msgstr ""
 msgid "Address"
 msgstr ""
 
-#: ../inc/reporting/seating.report.class.php:493
+#: ../inc/reporting/seating.report.class.php:496
 msgid "Note"
 msgstr ""
 
-#: ../inc/reporting/seating.report.class.php:498
+#: ../inc/reporting/seating.report.class.php:501
 msgid "Ticket Url"
 msgstr ""
 
 #: ../inc/sys/admin-menu.class.php:111
 msgid "Reports"
+msgstr ""
+
+#: ../inc/sys/admin-menu.class.php:213
+msgid "There are currently no reports available for"
 msgstr ""
 
 #: ../inc/sys/admin-menu.class.php:263
@@ -512,42 +869,162 @@ msgid ""
 "any of your users' information, so your security and privacy is still safe. "
 "The information we will be tracking is purely about your WordPress "
 "installation, and will be used to help us understand which plugins and "
-"themes we need to be compatible with. "
+"themes we need to be compatible with."
 msgstr ""
 
-#: ../inc/sys/admin-menu.class.php:272
+#: ../inc/sys/admin-menu.class.php:268
 msgid "Yes"
 msgstr ""
 
-#: ../inc/sys/admin-menu.class.php:279
+#: ../inc/sys/admin-menu.class.php:275
 msgid "Dismiss"
 msgstr ""
 
-#: ../inc/sys/admin-menu.class.php:465
+#: ../inc/sys/admin-menu.class.php:306
+msgid "Fair enough. Thanks anyways."
+msgstr ""
+
+#: ../inc/sys/admin-menu.class.php:312
+msgid "Thanks a bunch."
+msgstr ""
+
+#: ../inc/sys/admin-menu.class.php:331
+msgid "Title"
+msgstr ""
+
+#: ../inc/sys/admin-menu.class.php:332
+msgid "Author"
+msgstr ""
+
+#: ../inc/sys/admin-menu.class.php:333
+msgid "Author Name"
+msgstr ""
+
+#: ../inc/sys/admin-menu.class.php:334
+msgid "Author URI"
+msgstr ""
+
+#: ../inc/sys/admin-menu.class.php:335
+msgid "Description"
+msgstr ""
+
+#: ../inc/sys/admin-menu.class.php:336
+msgid "Version"
+msgstr ""
+
+#: ../inc/sys/admin-menu.class.php:338 ../inc/sys/core-hacks.class.php:1004
+msgid "Template"
+msgstr ""
+
+#: ../inc/sys/admin-menu.class.php:339
+msgid "Stylesheet"
+msgstr ""
+
+#: ../inc/sys/admin-menu.class.php:340 ../inc/sys/admin-menu.class.php:350
+msgid "Template Files"
+msgstr ""
+
+#: ../inc/sys/admin-menu.class.php:341 ../inc/sys/admin-menu.class.php:350
+msgid "Stylesheet Files"
+msgstr ""
+
+#: ../inc/sys/admin-menu.class.php:342
+msgid "Template Dir"
+msgstr ""
+
+#: ../inc/sys/admin-menu.class.php:343
+msgid "Stylesheet Dir"
+msgstr ""
+
+#: ../inc/sys/admin-menu.class.php:344
+msgid "Screenshot"
+msgstr ""
+
+#: ../inc/sys/admin-menu.class.php:345
+msgid "Tags"
+msgstr ""
+
+#: ../inc/sys/admin-menu.class.php:346
+msgid "Theme Root"
+msgstr ""
+
+#: ../inc/sys/admin-menu.class.php:347
+msgid "Theme Root URI"
+msgstr ""
+
+#: ../inc/sys/admin-menu.class.php:348
+msgid "Parent Theme"
+msgstr ""
+
+#: ../inc/sys/admin-menu.class.php:401
+msgid "Add %singular%"
+msgstr ""
+
+#: ../inc/sys/admin-menu.class.php:402
+msgid "Add New %singular%"
+msgstr ""
+
+#: ../inc/sys/admin-menu.class.php:403
+msgid "Edit %singular%"
+msgstr ""
+
+#: ../inc/sys/admin-menu.class.php:404
+msgid "New %singular%"
+msgstr ""
+
+#: ../inc/sys/admin-menu.class.php:405
+msgid "All %plural%"
+msgstr ""
+
+#: ../inc/sys/admin-menu.class.php:406
+msgid "View %singular%"
+msgstr ""
+
+#: ../inc/sys/admin-menu.class.php:407
+msgid "Search %plural%"
+msgstr ""
+
+#: ../inc/sys/admin-menu.class.php:408
+msgid "No %lplural% found"
+msgstr ""
+
+#: ../inc/sys/admin-menu.class.php:409
+msgid "No %lplural% found in Trash"
+msgstr ""
+
+#: ../inc/sys/admin-menu.class.php:477
+msgid "Global Settings"
+msgstr ""
+
+#: ../inc/sys/admin-menu.class.php:485
 msgid "Allow Statistics"
 msgstr ""
 
-#: ../inc/sys/admin-menu.class.php:466
+#: ../inc/sys/admin-menu.class.php:486
 msgid ""
 "Allow OpenTickets to gather information about your WordPress installation."
 msgstr ""
 
-#: ../inc/sys/admin-menu.class.php:467
+#: ../inc/sys/admin-menu.class.php:487
 msgid ""
 "This information is strictly used to make this product better and more "
 "compatible with other plugins."
 msgstr ""
 
-#: ../inc/sys/admin-settings.php:28
+#: ../inc/sys/admin-settings.php:29
 msgid "Action failed. Please refresh the page and retry."
 msgstr ""
 
-#: ../inc/sys/admin-settings.php:35
+#: ../inc/sys/admin-settings.php:36
 msgid "Your settings have been saved."
 msgstr ""
 
-#: ../inc/sys/admin-settings.php:81
+#: ../inc/sys/admin-settings.php:82
 msgid "The changes you made will be lost if you navigate away from this page."
+msgstr ""
+
+#: ../inc/sys/base-widget.class.php:28
+msgid "New Widget"
 msgstr ""
 
 #: ../inc/sys/core-hacks.class.php:69
@@ -566,6 +1043,10 @@ msgstr ""
 
 #: ../inc/sys/core-hacks.class.php:131
 msgid "View Order Receipt"
+msgstr ""
+
+#: ../inc/sys/core-hacks.class.php:143
+msgid "Preview"
 msgstr ""
 
 #: ../inc/sys/core-hacks.class.php:156
@@ -600,7 +1081,7 @@ msgid "Discounts after tax - user defined."
 msgstr ""
 
 #: ../inc/sys/core-hacks.class.php:353
-#: ../templates/admin/meta-boxes/views/html-order-items.php:148
+#: ../templates/admin/meta-boxes/views/html-order-items.php:150
 #: ../templates/admin/meta-boxes/views/html-order-shipping.php:14
 msgid "Shipping"
 msgstr ""
@@ -694,7 +1175,7 @@ msgid "Calc totals"
 msgstr ""
 
 #: ../inc/sys/core-hacks.class.php:540
-#: ../templates/admin/meta-boxes/views/html-order-items.php:50
+#: ../templates/admin/meta-boxes/views/html-order-items.php:52
 msgid "Item"
 msgstr ""
 
@@ -707,7 +1188,7 @@ msgid "Tax class for the line item"
 msgstr ""
 
 #: ../inc/sys/core-hacks.class.php:548
-#: ../templates/admin/meta-boxes/views/html-order-items.php:54
+#: ../templates/admin/meta-boxes/views/html-order-items.php:56
 msgid "Qty"
 msgstr ""
 
@@ -720,13 +1201,13 @@ msgid "Line subtotals are before pre-tax discounts, totals are after."
 msgstr ""
 
 #: ../inc/sys/core-hacks.class.php:553
-#: ../templates/admin/meta-boxes/views/html-order-items.php:62
-#: ../templates/admin/meta-boxes/views/html-order-items.php:63
+#: ../templates/admin/meta-boxes/views/html-order-items.php:64
+#: ../templates/admin/meta-boxes/views/html-order-items.php:65
 msgid "Tax"
 msgstr ""
 
 #: ../inc/sys/core-hacks.class.php:595
-#: ../templates/admin/meta-boxes/views/html-order-items.php:209
+#: ../templates/admin/meta-boxes/views/html-order-items.php:211
 msgid "Actions"
 msgstr ""
 
@@ -735,7 +1216,7 @@ msgid "Delete Lines"
 msgstr ""
 
 #: ../inc/sys/core-hacks.class.php:599
-#: ../templates/admin/meta-boxes/views/html-order-items.php:215
+#: ../templates/admin/meta-boxes/views/html-order-items.php:217
 msgid "Stock Actions"
 msgstr ""
 
@@ -748,12 +1229,12 @@ msgid "Increase Line Stock"
 msgstr ""
 
 #: ../inc/sys/core-hacks.class.php:606
-#: ../templates/admin/meta-boxes/views/html-order-items.php:221
+#: ../templates/admin/meta-boxes/views/html-order-items.php:223
 msgid "Apply"
 msgstr ""
 
 #: ../inc/sys/core-hacks.class.php:610
-#: ../templates/admin/meta-boxes/views/html-order-items.php:302
+#: ../templates/admin/meta-boxes/views/html-order-items.php:307
 msgid "Search for a product&hellip;"
 msgstr ""
 
@@ -762,7 +1243,7 @@ msgid "Add item(s)"
 msgstr ""
 
 #: ../inc/sys/core-hacks.class.php:613
-#: ../templates/admin/meta-boxes/views/html-order-items.php:241
+#: ../templates/admin/meta-boxes/views/html-order-items.php:247
 msgid "Add fee"
 msgstr ""
 
@@ -798,8 +1279,8 @@ msgid "Private note"
 msgstr ""
 
 #: ../inc/sys/core-hacks.class.php:715
-#: ../templates/admin/meta-boxes/views/html-order-items.php:308
-#: ../templates/admin/meta-boxes/views/html-order-items.php:363
+#: ../templates/admin/meta-boxes/views/html-order-items.php:313
+#: ../templates/admin/meta-boxes/views/html-order-items.php:368
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:83
 msgid "Add"
 msgstr ""
@@ -823,10 +1304,6 @@ msgstr ""
 
 #: ../inc/sys/core-hacks.class.php:997 ../inc/sys/core-hacks.class.php:998
 msgid "Parent"
-msgstr ""
-
-#: ../inc/sys/core-hacks.class.php:1004
-msgid "Template"
 msgstr ""
 
 #: ../inc/sys/core-hacks.class.php:1005
@@ -902,18 +1379,6 @@ msgstr ""
 msgid "Billing Details"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:1147 ../inc/sys/core-hacks.class.php:1250
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:38
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:85
-msgid "First Name"
-msgstr ""
-
-#: ../inc/sys/core-hacks.class.php:1151 ../inc/sys/core-hacks.class.php:1254
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:42
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:89
-msgid "Last Name"
-msgstr ""
-
 #: ../inc/sys/core-hacks.class.php:1155 ../inc/sys/core-hacks.class.php:1258
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:46
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:93
@@ -927,12 +1392,14 @@ msgid "Address 1"
 msgstr ""
 
 #: ../inc/sys/core-hacks.class.php:1163 ../inc/sys/core-hacks.class.php:1266
+#: ../inc/venues/post-type.class.php:114
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:54
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:101
 msgid "Address 2"
 msgstr ""
 
 #: ../inc/sys/core-hacks.class.php:1167 ../inc/sys/core-hacks.class.php:1270
+#: ../inc/venues/post-type.class.php:115
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:58
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:105
 msgid "City"
@@ -945,6 +1412,7 @@ msgid "Postcode"
 msgstr ""
 
 #: ../inc/sys/core-hacks.class.php:1175 ../inc/sys/core-hacks.class.php:1278
+#: ../inc/venues/post-type.class.php:118
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:66
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:113
 msgid "Country"
@@ -992,6 +1460,39 @@ msgstr ""
 msgid "Copy from billing"
 msgstr ""
 
+#: ../inc/sys/db-upgrade.php:65
+#, php-format
+msgid ""
+"The DB tables [%s] are not at the most current versions. Attempting to "
+"upgrade them."
+msgstr ""
+
+#: ../inc/sys/db-upgrade.php:100
+msgid "types dont match"
+msgstr ""
+
+#: ../inc/sys/db-upgrade.php:105
+msgid "nulls dont match"
+msgstr ""
+
+#: ../inc/sys/db-upgrade.php:110
+msgid "extras dont match"
+msgstr ""
+
+#: ../inc/sys/db-upgrade.php:116
+#, php-format
+msgid "Update to DB, table [%s], was NOT successful. %s"
+msgstr ""
+
+#: ../inc/sys/db-upgrade.php:119
+#, php-format
+msgid "Update to DB, table [%s], was successful."
+msgstr ""
+
+#: ../inc/sys/mba.class.php:441
+msgid "Use this image"
+msgstr ""
+
 #: ../inc/sys/mba.class.php:449
 msgid "Delete Permanently"
 msgstr ""
@@ -1021,78 +1522,720 @@ msgstr ""
 msgid "Select Files"
 msgstr ""
 
-#: ../inc/sys/settings/general.php:22
-msgid "General"
+#: ../inc/sys/obj.php:17
+msgid "Could not extend. Invalid type."
 msgstr ""
 
-#: ../inc/sys/settings/general.php:50
+#: ../inc/sys/registry.php:21
+#, php-format
+msgid "Only one instance of %s can be created."
+msgstr ""
+
+#: ../inc/sys/settings/frontend.php:22
+msgid "Frontend"
+msgstr ""
+
+#: ../inc/sys/settings/frontend.php:50
 msgid "Frontend Styles"
 msgstr ""
 
-#: ../inc/sys/settings/general.php:70
-msgid "Primary"
+#: ../inc/sys/settings/frontend.php:82
+msgid "Form BG"
 msgstr ""
 
-#: ../inc/sys/settings/general.php:70
-msgid "Call to action buttons/price slider/layered nav UI"
-msgstr ""
-
-#: ../inc/sys/settings/general.php:71
-msgid "Secondary"
-msgstr ""
-
-#: ../inc/sys/settings/general.php:71
-msgid "Buttons and tabs"
-msgstr ""
-
-#: ../inc/sys/settings/general.php:72
-msgid "Highlight"
-msgstr ""
-
-#: ../inc/sys/settings/general.php:72
-msgid "Price labels and Sale Flashes"
-msgstr ""
-
-#: ../inc/sys/settings/general.php:73
-msgid "Content"
-msgstr ""
-
-#: ../inc/sys/settings/general.php:73
-msgid "Your themes page background - used for tab active states"
-msgstr ""
-
-#: ../inc/sys/settings/general.php:74
-msgid "Subtext"
-msgstr ""
-
-#: ../inc/sys/settings/general.php:74
-msgid "Used for certain text and asides - breadcrumbs, small text etc."
-msgstr ""
-
-#: ../inc/sys/settings/general.php:77
+#: ../inc/sys/settings/frontend.php:85
 msgid ""
-"To edit colours <code>woocommerce/assets/css/woocommerce-base.less</code> "
-"and <code>woocommerce.css</code> need to be writable. See <a href=\"http://"
-"codex.wordpress.org/Changing_File_Permissions\">the Codex</a> for more "
-"information."
+"Background color of the \"reserve some tickets\" form on the event page."
+msgstr ""
+
+#: ../inc/sys/settings/frontend.php:88
+msgid "Form Border"
+msgstr ""
+
+#: ../inc/sys/settings/frontend.php:91
+msgid "Border color around the \"reserve some tickets\" form."
+msgstr ""
+
+#: ../inc/sys/settings/frontend.php:94
+msgid "Action BG"
+msgstr ""
+
+#: ../inc/sys/settings/frontend.php:97
+msgid ""
+"Background of the \"action\" section, below the \"reserve some tickets\" "
+"form, where the proceed to cart button appears."
+msgstr ""
+
+#: ../inc/sys/settings/frontend.php:100
+msgid "Helper"
+msgstr ""
+
+#: ../inc/sys/settings/frontend.php:103
+msgid "Text color of the \"helper text\" on the \"reserve some tickets\" form."
+msgstr ""
+
+#: ../inc/sys/settings/frontend.php:108
+msgid "Bad BG"
+msgstr ""
+
+#: ../inc/sys/settings/frontend.php:111
+msgid ""
+"Background color of the error message block on the \"reserve some tickets\" "
+"form."
+msgstr ""
+
+#: ../inc/sys/settings/frontend.php:114
+msgid "Bad Border"
+msgstr ""
+
+#: ../inc/sys/settings/frontend.php:117
+msgid ""
+"Border color around the error message block on the \"reserve some tickets\" "
+"form."
+msgstr ""
+
+#: ../inc/sys/settings/frontend.php:120
+msgid "Bad Text"
+msgstr ""
+
+#: ../inc/sys/settings/frontend.php:123
+msgid ""
+"Text color of the error message block on the \"reserve some tickets\" form."
+msgstr ""
+
+#: ../inc/sys/settings/frontend.php:128
+msgid "Good BG"
+msgstr ""
+
+#: ../inc/sys/settings/frontend.php:131
+msgid ""
+"Background color of the success message block on the \"reserve some tickets"
+"\" form."
+msgstr ""
+
+#: ../inc/sys/settings/frontend.php:134
+msgid "Good Border"
+msgstr ""
+
+#: ../inc/sys/settings/frontend.php:137
+msgid ""
+"Border color around the success message block on the \"reserve some tickets"
+"\" form."
+msgstr ""
+
+#: ../inc/sys/settings/frontend.php:140
+msgid "Good Text"
+msgstr ""
+
+#: ../inc/sys/settings/frontend.php:143
+msgid ""
+"Text color of the success message block on the \"reserve some tickets\" form."
+msgstr ""
+
+#: ../inc/sys/settings/frontend.php:148
+msgid "Remove BG"
+msgstr ""
+
+#: ../inc/sys/settings/frontend.php:151
+msgid ""
+"Background color of the remove reservation button on the \"reserve some "
+"tickets\" form."
+msgstr ""
+
+#: ../inc/sys/settings/frontend.php:154
+msgid "Remove Border"
+msgstr ""
+
+#: ../inc/sys/settings/frontend.php:157
+msgid ""
+"Border color around the remove reservation button on the \"reserve some "
+"tickets\" form."
+msgstr ""
+
+#: ../inc/sys/settings/frontend.php:160
+msgid "Remove Text"
+msgstr ""
+
+#: ../inc/sys/settings/frontend.php:163
+msgid ""
+"Text color of the remove reservation button on the \"reserve some tickets\" "
+"form."
+msgstr ""
+
+#: ../inc/sys/settings/frontend.php:167
+#, php-format
+msgid ""
+"To edit colours %s and %s need to be writable. See <a href=\"%s\">the Codex</"
+"a> for more information."
+msgstr ""
+
+#: ../inc/sys/settings/frontend.php:218
+#, php-format
+msgid ""
+"Error saving the Frontend Styles, %s is not a valid color, please use only "
+"valid colors code."
+msgstr ""
+
+#: ../inc/sys/settings/general.php:22
+msgid "General"
 msgstr ""
 
 #: ../inc/sys/views/html-admin-settings.php:24
 msgid "Save changes"
 msgstr ""
 
-#: ../inc/venues/event-area/pricing.class.php:627
-msgid "Add tickets"
-msgstr ""
-
-#: ../inc/venues/event-area/pricing.class.php:674
+#: ../inc/ticket/ticket.class.php:94
+#: ../inc/venues/event-area/pricing.class.php:720
+#: ../templates/tickets/basic-ticket.php:18
 msgid "Ticket"
 msgstr ""
 
-#: ../inc/venues/event-area/pricing.class.php:675
+#: ../inc/ticket/ticket.class.php:95
+#: ../templates/myaccount/my-upcoming-tickets.php:17
+msgid "View your ticket"
+msgstr ""
+
+#: ../inc/ticket/ticket.class.php:96
+msgid "View this ticket"
+msgstr ""
+
+#: ../inc/ticket/ticket.class.php:98 ../inc/ticket/ticket.class.php:485
+msgid "Tickets"
+msgstr ""
+
+#: ../inc/ticket/ticket.class.php:99
+msgid "View your tickets"
+msgstr ""
+
+#: ../inc/ticket/ticket.class.php:100
+msgid "View these tickets"
+msgstr ""
+
+#: ../inc/ticket/ticket.class.php:391
+msgid "The information you supplied does not match our record."
+msgstr ""
+
+#: ../inc/ticket/ticket.class.php:494
+msgid "Left Ticket Image"
+msgstr ""
+
+#: ../inc/ticket/ticket.class.php:495
+msgid "The image to show in the bottom left corner of the ticket."
+msgstr ""
+
+#: ../inc/ticket/ticket.class.php:497
+msgid "the Event Featured Image"
+msgstr ""
+
+#: ../inc/ticket/ticket.class.php:498
+msgid "the Ticket Product Image"
+msgstr ""
+
+#: ../inc/ticket/ticket.class.php:508
+msgid "Purchaser Info"
+msgstr ""
+
+#: ../inc/ticket/ticket.class.php:509
+msgid ""
+"Which information to user for the purchaser display information. Either "
+"Billing or Shipping."
+msgstr ""
+
+#: ../inc/ticket/ticket.class.php:511
+msgid "the Billing Information"
+msgstr ""
+
+#: ../inc/ticket/ticket.class.php:512
+msgid "the Shipping Information"
+msgstr ""
+
+#: ../inc/ticket/ticket.class.php:522
+msgid "Show Order #"
+msgstr ""
+
+#: ../inc/ticket/ticket.class.php:523
+msgid "Show the order number of the ticket, on the ticket."
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:148
+msgid ""
+"There are currently <span class=\"available\"></span> <span rel=\"tt\"></"
+"span> available."
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:149
+msgid ""
+"There are currently <span class=\"available\"></span> more <span rel=\"tt"
+"\"></span> available."
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:150
+msgid "We're sorry. There are currently no tickets available."
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:151
+#: ../templates/post-content/event-area.php:104
+msgid "We are sorry. This event is sold out!"
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:152
+msgid "<h1>One Moment Please...</h1>"
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:204
+msgid "Step 1: How Many?"
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:207
+msgid "Reserve some tickets:"
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:211
+msgid "Reserve"
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:219
+msgid "Step 2: Review"
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:225
+#: ../templates/post-content/event-area.php:88
+msgid "Update"
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:229
+msgid "Proceed to Cart"
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:248
+#: ../inc/venues/event-area/post-type.class.php:252
+msgid "add"
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:257
+msgid "There are currently no areas configured. Please add one to continue."
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:273
+msgid "edit"
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:274
+msgid "delete"
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:287
+msgid "Event Area Image"
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:293
+msgid "Select Image"
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:296
+msgid "Area Name"
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:300
+msgid "Capacity"
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:304
+msgid "Available Pricing"
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:309
+msgid "save"
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:310
+msgid "cancel"
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:320
+#: ../inc/venues/post-type.class.php:242
+msgid "None"
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:337
+msgid "This event is password protected."
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:343
+#: ../inc/venues/event-area/post-type.class.php:568
+#: ../inc/venues/event-area/pricing.class.php:561
+msgid "Invalid request. Please refresh the page and try again."
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:361
+#: ../inc/venues/event-area/post-type.class.php:424
+#: ../inc/venues/event-area/post-type.class.php:440
+msgid "Updated your reservations successfully."
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:371
+#: ../inc/venues/event-area/post-type.class.php:432
+#: ../inc/venues/event-area/post-type.class.php:437
+msgid "Could not update your reservations."
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:374
+#: ../inc/venues/event-area/post-type.class.php:744
+msgid "The quantity must be greater than zero."
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:375
+#: ../inc/venues/event-area/post-type.class.php:457
+msgid "Could not load that event."
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:376
+#: ../inc/venues/event-area/post-type.class.php:458
+msgid "A problem occurred when loading that event."
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:377
+msgid "That event does not currently have any tickets."
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:378
+#: ../inc/venues/event-area/post-type.class.php:460
+msgid "The event does not have any tickets."
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:431
+msgid "A problem occurred when trying to remove your reservations."
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:436
+msgid "A problem occurred when trying to update your reservations."
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:450
+#, php-format
+msgid ""
+"There are not enough available tickets to increase the quantity of %s to %d. "
+"There are only %d available."
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:459
+msgid "That event does not have currently have any tickets."
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:507
+msgid "Event Area:"
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:514
+msgid "-None-"
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:581
+#, php-format
+msgid "Could not find the venue you specified [%s]."
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:611
+msgid "Could not find that venue."
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:630
+msgid "Could not save the item(s) because not enough information was provided."
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:656
+#, php-format
+msgid "There was a problem saving the area [%s]."
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:745
+msgid "Could not find that event."
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:746
+msgid "That is not a valid order."
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:857
+#: ../inc/venues/event-area/post-type.class.php:1201
+msgid "Event Areas"
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:1000
+msgid "We are sorry. Online registration for this event has closed."
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:1141
+msgid "(Unknown Ticket Type)"
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:1145
+#, php-format
+msgid ""
+"There are only <span class=\"available\">%s</span> %s available currently. "
+"Could not temporarily reserve %d %s."
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:1156
+#: ../inc/venues/event-area/post-type.class.php:1190
+msgid "The number of tickets must be greater than 0."
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:1177
+#, php-format
+msgid ""
+"There are only <span class=\"available\">%s</span> more %s available "
+"currently. Could not temporarily reserve %d more %s. You still have %d %s."
+msgstr ""
+
+#: ../inc/venues/event-area/post-type.class.php:1202
+msgid "Area"
+msgstr ""
+
+#: ../inc/venues/event-area/pricing.class.php:375
+#, php-format
+msgid ""
+"There were only %d of the %s for %s available. We reserved all of them for "
+"you instead of the %d you requested."
+msgstr ""
+
+#: ../inc/venues/event-area/pricing.class.php:383
+#, php-format
+msgid ""
+"There were no %s for %s available to give you. We have removed it from your "
+"cart."
+msgstr ""
+
+#: ../inc/venues/event-area/pricing.class.php:440
+msgid "(no event selected)"
+msgstr ""
+
+#: ../inc/venues/event-area/pricing.class.php:522
+msgid "Date:"
+msgstr ""
+
+#: ../inc/venues/event-area/pricing.class.php:524
+msgid "Capacity:"
+msgstr ""
+
+#: ../inc/venues/event-area/pricing.class.php:525
+msgid "Available:"
+msgstr ""
+
+#: ../inc/venues/event-area/pricing.class.php:530
+#: ../inc/venues/event-area/pricing.class.php:535
+msgid "Different Event"
+msgstr ""
+
+#: ../inc/venues/event-area/pricing.class.php:531
+msgid "Use This Event"
+msgstr ""
+
+#: ../inc/venues/event-area/pricing.class.php:544
+msgid "Add Tickets"
+msgstr ""
+
+#: ../inc/venues/event-area/pricing.class.php:549
+msgid "Loading. One moment please..."
+msgstr ""
+
+#: ../inc/venues/event-area/pricing.class.php:611
+msgid "Invalid order number."
+msgstr ""
+
+#: ../inc/venues/event-area/pricing.class.php:660
+msgid "Could not find the new event."
+msgstr ""
+
+#: ../inc/venues/event-area/pricing.class.php:663
+msgid "Could not find that order item on the order."
+msgstr ""
+
+#: ../inc/venues/event-area/pricing.class.php:666
+msgid "The order item does not appear to be valid."
+msgstr ""
+
+#: ../inc/venues/event-area/pricing.class.php:673
+msgid "Add tickets"
+msgstr ""
+
+#: ../inc/venues/event-area/pricing.class.php:721
+#, php-format
 msgid ""
 "Allows this product to be assigned as a ticket, when configuring pricing on "
-"a seating chart, for the "
+"a seating chart, for the %s plugin."
+msgstr ""
+
+#: ../inc/venues/post-type.class.php:116
+msgid "State"
+msgstr ""
+
+#: ../inc/venues/post-type.class.php:117
+msgid "Postal Code"
+msgstr ""
+
+#: ../inc/venues/post-type.class.php:235
+msgid "Venue:"
+msgstr ""
+
+#: ../inc/venues/post-type.class.php:290
+msgid "Venue Information"
+msgstr ""
+
+#: ../inc/venues/post-type.class.php:299
+msgid "Venue Social Information"
+msgstr ""
+
+#: ../inc/venues/post-type.class.php:352
+msgid "Address:"
+msgstr ""
+
+#: ../inc/venues/post-type.class.php:356
+msgid "Address 2:"
+msgstr ""
+
+#: ../inc/venues/post-type.class.php:360
+msgid "City:"
+msgstr ""
+
+#: ../inc/venues/post-type.class.php:364
+msgid "State:"
+msgstr ""
+
+#: ../inc/venues/post-type.class.php:368
+msgid "Postal Code:"
+msgstr ""
+
+#: ../inc/venues/post-type.class.php:372
+msgid "Country:"
+msgstr ""
+
+#: ../inc/venues/post-type.class.php:376
+msgid "Logo Image"
+msgstr ""
+
+#: ../inc/venues/post-type.class.php:383
+msgid "Select Logo"
+msgstr ""
+
+#: ../inc/venues/post-type.class.php:384
+msgid "Remove"
+msgstr ""
+
+#: ../inc/venues/post-type.class.php:392
+msgid "Notes:"
+msgstr ""
+
+#: ../inc/venues/post-type.class.php:395
+msgid "This is what is displayed on your tickets about this venue."
+msgstr ""
+
+#: ../inc/venues/post-type.class.php:399
+msgid "Map Instructions:"
+msgstr ""
+
+#: ../inc/venues/post-type.class.php:402
+msgid ""
+"Displayed below the map on your event tickets. Meant for extra directions."
+msgstr ""
+
+#: ../inc/venues/post-type.class.php:429
+msgid "Phone:"
+msgstr ""
+
+#: ../inc/venues/post-type.class.php:433
+msgid "Website:"
+msgstr ""
+
+#: ../inc/venues/post-type.class.php:437
+msgid "Facebook:"
+msgstr ""
+
+#: ../inc/venues/post-type.class.php:441
+msgid "Twitter:"
+msgstr ""
+
+#: ../inc/venues/post-type.class.php:445
+msgid "Contact Email:"
+msgstr ""
+
+#: ../inc/venues/post-type.class.php:479
+msgid "Venues"
+msgstr ""
+
+#: ../inc/venues/post-type.class.php:480
+msgid "Venue"
+msgstr ""
+
+#: ../launcher.php:105
+msgid "Required Plugin Not Up-to-date"
+msgstr ""
+
+#: ../launcher.php:108
+#, php-format
+msgid ""
+"The <em><a href=\"%s\" target=\"_blank\">%s</a></em> plugin "
+"<strong>requires</strong> that <em><a href=\"http://www.woothemes.com/"
+"woocommerce/\" target=\"_blank\">WooCommerce</a></em> be at least at version "
+"<u><strong>%s</strong></u>; you are currently running version <em>%s</em>. "
+"Because of this, the <em><a href=\"%s\" target=\"_blank\">%s</a></em> plugin "
+"has not initialized any of its functionality. To enable the features of this "
+"plugin, simply install and activate the latest version of <em><a href="
+"\"http://www.woothemes.com/woocommerce/\" target=\"_blank\">WooCommerce</a></"
+"em>."
+msgstr ""
+
+#: ../launcher.php:126
+msgid "Missing Required Plugin"
+msgstr ""
+
+#: ../launcher.php:129
+#, php-format
+msgid ""
+"The <em><a href=\"%s\" target=\"_blank\">%s</a></em> plugin "
+"<strong>requires</strong> that <em><a href=\"http://www.woothemes.com/"
+"woocommerce/\" target=\"_blank\">WooCommerce</a></em>\tbe activated in order "
+"to perform most vital functions; therefore, the plugin has not initialized "
+"any of its functionality. To enable the features of this plugin, simply "
+"install and activate <em><a href=\"http://www.woothemes.com/woocommerce/\" "
+"target=\"_blank\">WooCommerce</a></em>."
+msgstr ""
+
+#: ../opentickets.php:97
+#, php-format
+msgid ""
+"<a href=\"%s\" title=\"Visit the License Key settings page\">Settings</a>"
+msgstr ""
+
+#: ../opentickets.php:331
+msgid "Memory Requirement Problem"
+msgstr ""
+
+#: ../opentickets.php:359
+#, php-format
+msgid ""
+"The %%%%PRODUCT%%%% plugin <strong>requires</strong> that your server allow "
+"at least %s of memory to WordPress. We recommend at least %s for optimum "
+"performance (as does WooCommerce). We tried to raise the memory limit to the "
+"minimum for your automatically, but your server settings do not allow it. "
+"Your server currently only allows %s, which is below the minimum. We have "
+"stopped loading OpenTickets, in an effort maintain access to your site. Once "
+"you have raised your server settings to at least the minimum memory "
+"requirement, we will turn OpenTickets back on automatically."
+msgstr ""
+
+#: ../opentickets.php:369
+#, php-format
+msgid ""
+"The %%%%PRODUCT%%%% plugin <strong>requires</strong> that your server allow "
+"at least %s of memory to WordPress. Currently, yoru server is set to allow "
+"%s, which is above the minimum. We recommend at least %s for optimum "
+"performance (as does WooCommerce). If you cannot raise the limit to the "
+"recommended amount, or do not wish to, then simply ignore this message."
+msgstr ""
+
+#: ../opentickets.php:434
+msgid "Could not compile event.less:"
 msgstr ""
 
 #: ../templates/admin/meta-boxes/views/html-order-fee.php:13
@@ -1125,12 +2268,12 @@ msgid "Add&nbsp;meta"
 msgstr ""
 
 #: ../templates/admin/meta-boxes/views/html-order-item.php:163
-#: ../templates/admin/meta-boxes/views/html-order-items.php:20
+#: ../templates/admin/meta-boxes/views/html-order-items.php:21
 msgid "Standard"
 msgstr ""
 
 #: ../templates/admin/meta-boxes/views/html-order-item.php:177
-#: ../templates/admin/meta-boxes/views/html-order-items.php:331
+#: ../templates/admin/meta-boxes/views/html-order-items.php:336
 msgid "Tax class"
 msgstr ""
 
@@ -1144,129 +2287,129 @@ msgstr ""
 msgid "Before pre-tax discounts."
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:56
+#: ../templates/admin/meta-boxes/views/html-order-items.php:58
 #: ../templates/order/order-details.php:21
 msgid "Total"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:148
+#: ../templates/admin/meta-boxes/views/html-order-items.php:150
 msgid "This is the shipping and handling total costs for the order."
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:168
+#: ../templates/admin/meta-boxes/views/html-order-items.php:170
 msgid "Order Discount"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:168
+#: ../templates/admin/meta-boxes/views/html-order-items.php:170
 msgid "This is the total discount applied after tax."
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:182
+#: ../templates/admin/meta-boxes/views/html-order-items.php:184
 msgid "Order Total"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:196
+#: ../templates/admin/meta-boxes/views/html-order-items.php:198
 msgid "Refunded"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:212
+#: ../templates/admin/meta-boxes/views/html-order-items.php:214
 msgid "Delete selected line item(s)"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:216
+#: ../templates/admin/meta-boxes/views/html-order-items.php:218
 msgid "Reduce line item stock"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:217
+#: ../templates/admin/meta-boxes/views/html-order-items.php:219
 msgid "Increase line item stock"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:225
+#: ../templates/admin/meta-boxes/views/html-order-items.php:227
 msgid "Add line item(s)"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:228
+#: ../templates/admin/meta-boxes/views/html-order-items.php:230
 msgid "Add Tax"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:231
+#: ../templates/admin/meta-boxes/views/html-order-items.php:233
 msgid "Refund"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:234
+#: ../templates/admin/meta-boxes/views/html-order-items.php:240
 msgid "Calculate Taxes"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:235
+#: ../templates/admin/meta-boxes/views/html-order-items.php:241
 msgid "Calculate Total"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:240
+#: ../templates/admin/meta-boxes/views/html-order-items.php:246
 msgid "Add product(s)"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:242
+#: ../templates/admin/meta-boxes/views/html-order-items.php:248
 msgid "Add shipping cost"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:244
+#: ../templates/admin/meta-boxes/views/html-order-items.php:250
 msgid "Save"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:255
+#: ../templates/admin/meta-boxes/views/html-order-items.php:260
 msgid "Restock refunded items"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:259
+#: ../templates/admin/meta-boxes/views/html-order-items.php:264
 msgid "Amount already refunded"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:263
+#: ../templates/admin/meta-boxes/views/html-order-items.php:268
 msgid "Total available to refund"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:267
+#: ../templates/admin/meta-boxes/views/html-order-items.php:272
 msgid "Refund amount"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:274
+#: ../templates/admin/meta-boxes/views/html-order-items.php:279
 msgid "Reason for refund (optional)"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:284
+#: ../templates/admin/meta-boxes/views/html-order-items.php:289
 #, php-format
 msgid "Refund %s via %s"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:286
+#: ../templates/admin/meta-boxes/views/html-order-items.php:291
 msgid "Refund manually"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:298
+#: ../templates/admin/meta-boxes/views/html-order-items.php:303
 msgid "Add products"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:322
+#: ../templates/admin/meta-boxes/views/html-order-items.php:327
 msgid "Add tax"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:330
+#: ../templates/admin/meta-boxes/views/html-order-items.php:335
 msgid "Rate name"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:332
+#: ../templates/admin/meta-boxes/views/html-order-items.php:337
 msgid "Rate code"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:333
+#: ../templates/admin/meta-boxes/views/html-order-items.php:338
 msgid "Rate %"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:354
+#: ../templates/admin/meta-boxes/views/html-order-items.php:359
 msgid "Or, enter tax rate ID:"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:355
+#: ../templates/admin/meta-boxes/views/html-order-items.php:360
 msgid "Optional"
 msgstr ""
 
@@ -1276,6 +2419,54 @@ msgstr ""
 
 #: ../templates/admin/meta-boxes/views/html-order-shipping.php:19
 msgid "Shipping Method"
+msgstr ""
+
+#: ../templates/admin/post-types/meta-boxes/views/html-order-item.php:4
+msgid "OpenTickets WC template override has moved location."
+msgstr ""
+
+#: ../templates/admin/reports/seating-report.php:10
+msgid "Sort by"
+msgstr ""
+
+#: ../templates/admin/reports/seating-report.php:23
+msgid "Edit User"
+msgstr ""
+
+#: ../templates/admin/reports/seating-report.php:33
+msgid "Edit Order"
+msgstr ""
+
+#: ../templates/admin/reports/seating-report.php:47
+msgid "Edit Product"
+msgstr ""
+
+#: ../templates/checkin/already-occupied.php:24
+#: ../templates/checkin/occupy-failure.php:24
+#: ../templates/checkin/occupy-success.php:24
+msgid "Owner:"
+msgstr ""
+
+#: ../templates/checkin/already-occupied.php:26
+#: ../templates/checkin/occupy-failure.php:26
+#: ../templates/checkin/occupy-success.php:26
+msgid "Checked-In:"
+msgstr ""
+
+#: ../templates/checkin/no-access.php:7
+msgid "No access"
+msgstr ""
+
+#: ../templates/checkin/no-access.php:8
+msgid "You do not have sufficient permissions to perform this action!"
+msgstr ""
+
+#: ../templates/checkin/occupy-failure.php:9
+msgid "Check-In FAILED!"
+msgstr ""
+
+#: ../templates/checkin/occupy-success.php:9
+msgid "Check-In SUCCESSFUL"
 msgstr ""
 
 #: ../templates/emails/email-order-items.php:25
@@ -1293,10 +2484,6 @@ msgstr ""
 
 #: ../templates/myaccount/my-upcoming-tickets.php:2
 msgid "Upcoming Tickets"
-msgstr ""
-
-#: ../templates/myaccount/my-upcoming-tickets.php:17
-msgid "View your ticket"
 msgstr ""
 
 #: ../templates/myaccount/my-upcoming-tickets.php:19
@@ -1361,6 +2548,128 @@ msgstr ""
 
 #: ../templates/order/order-details.php:137
 msgid "Shipping Address"
+msgstr ""
+
+#: ../templates/post-content/event-area.php:8
+msgid ""
+"For a better experience, certain features of javascript area required. "
+"Currently you either do not have these features, or you do not have them "
+"enabled. Despite this, you can still purchase your tickets, using 2 simple "
+"steps."
+msgstr ""
+
+#: ../templates/post-content/event-area.php:11
+msgid ""
+"<strong>STEP 1:</strong> Below, enter the number of tickets you wish to "
+"purchase, then click <span class=\"button-name\">Reserve Tickets</span>."
+msgstr ""
+
+#: ../templates/post-content/event-area.php:14
+msgid ""
+"<strong>STEP 2:</strong> Finally, once you have successfully Reserved your "
+"Tickets, click <span class=\"button-name\">Proceed to Cart</span> to "
+"complete your order."
+msgstr ""
+
+#: ../templates/post-content/event-area.php:33
+msgid "Successfully removed your reservations."
+msgstr ""
+
+#: ../templates/post-content/event-area.php:41
+msgid "<span class=\"step-name\">STEP 1</span>: How many?"
+msgstr ""
+
+#: ../templates/post-content/event-area.php:45
+#, php-format
+msgid ""
+"Currently, there are <span class=\"available\">%s</span> \"<span class="
+"\"ticket-name\">%s</span>\" (<span class=\"ticket-price\">%s</span>) "
+"available for purchase."
+msgstr ""
+
+#: ../templates/post-content/event-area.php:48
+#, php-format
+msgid ""
+"How many \"<span class=\"ticket-name\">%s</span>\" (<span class=\"ticket-"
+"price\">%s</span>)?"
+msgstr ""
+
+#: ../templates/post-content/event-area.php:58
+msgid "Reserve Tickets"
+msgstr ""
+
+#: ../templates/post-content/event-area.php:68
+msgid "<span class=\"step-name\">STEP 2</span>: Review"
+msgstr ""
+
+#: ../templates/post-content/event-area.php:72
+#, php-format
+msgid ""
+"Currently, there are <span class=\"available\">%s</span> more \"<span class="
+"\"ticket-name\">%s</span>\" (<span class=\"ticket-price\">%s</span>) "
+"available for purchase."
+msgstr ""
+
+#: ../templates/post-content/event-area.php:76
+msgid "You currently have:"
+msgstr ""
+
+#: ../templates/post-content/event-area.php:107
+msgid ""
+"We are sorry. There are currently no tickets available for this event. Check "
+"back soon!"
+msgstr ""
+
+#: ../templates/tickets/basic-ticket.php:26
+msgid "Download PDF"
+msgstr ""
+
+#: ../templates/tickets/basic-ticket.php:38
+msgid "Starts:"
+msgstr ""
+
+#: ../templates/tickets/basic-ticket.php:44
+msgid "Ends:"
+msgstr ""
+
+#: ../templates/tickets/basic-ticket.php:45
+#: ../templates/tickets/basic-ticket.php:105
+msgid "Area:"
+msgstr ""
+
+#: ../templates/tickets/basic-ticket.php:62
+msgid "ORDER #"
+msgstr ""
+
+#: ../templates/tickets/basic-ticket.php:77
+msgid "Who is OpenTickets?"
+msgstr ""
+
+#: ../templates/tickets/error-msg.php:6
+msgid "An error has occurred while attempting to view the ticket"
+msgstr ""
+
+#: ../templates/tickets/verification-form.php:3
+msgid "Additional Information is Required"
+msgstr ""
+
+#: ../templates/tickets/verification-form.php:5
+msgid ""
+"In order to allow you to view your ticket, we must first verify who you are, "
+"and that you should be able to view this ticket. To do that, we need to "
+"obtain some information from you, that we will use to verify who you are. If "
+"this information matches our record, then your ticket will be available to "
+"you."
+msgstr ""
+
+#: ../templates/tickets/verification-form.php:11
+msgid ""
+"This should be the email you used during the purchase of your ticket, as "
+"your billing email address."
+msgstr ""
+
+#: ../templates/tickets/verification-form.php:15
+msgid "Submit"
 msgstr ""
 
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:157

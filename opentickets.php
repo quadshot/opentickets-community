@@ -94,9 +94,8 @@ class QSOT {
 		if ($plugin_file == self::$me && isset($actions['deactivate'])) {
 			$new = array(
 				'settings' => sprintf(
-					'<a href="%s" title="Visit the License Key settings page">%s</a>',
-					esc_attr(apply_filters('qsot-get-menu-page-uri', '', 'settings', true)),
-					'Settings'
+					__('<a href="%s" title="Visit the License Key settings page">Settings</a>','opentickets-community-edition'),
+					esc_attr(apply_filters('qsot-get-menu-page-uri', '', 'settings', true))
 				),
 			);
 			$actions = array_merge($new, $actions);
@@ -329,7 +328,7 @@ class QSOT {
 		?>
 			<div class="error errors">
 				<p class="error">
-					<u><strong>Memory Requirement Problem</strong></u><br/>
+					<u><strong><?php _e('Memory Requirement Problem','opentickets-community-edition') ?></strong></u><br/>
 					<?php echo $msg ?>
 				</p>
 			</div>
@@ -357,20 +356,21 @@ class QSOT {
 			$hmin = '<em><strong>'.round($min / 1048576, 2).'MB</strong></em>';
 			$hrec = '<em><strong>'.round($recommend / 1048576, 2).'MB</strong></em>';
 			$hcur = '<em><strong>'.round($current_limit / 1048576, 2).'MB</strong></em>';
-			self::$memory_error = 'The %%PRODUCT%% plugin <strong>requires</strong> that your server allow at least '.$hmin.' of memory to WordPress. '
-				.'We recommend at least '.$hrec.' for optimum performance (as does WooCommerce). '
-				.'We tried to raise the memory limit to the minimum for your automatically, but your server settings do not allow it. '
-				.'Your server currently only allows '.$hcur.', which is below the minimum. '
-				.'We have stopped loading OpenTickets, in an effort maintain access to your site. '
-				.'Once you have raised your server settings to at least the minimum memory requirement, we will turn OpenTickets back on automatically.';
+			self::$memory_error = sprintf(__('The %%%%PRODUCT%%%% plugin <strong>requires</strong> that your server allow at least %s of memory to WordPress. We recommend at least %s for optimum performance (as does WooCommerce). We tried to raise the memory limit to the minimum for your automatically, but your server settings do not allow it. Your server currently only allows %s, which is below the minimum. We have stopped loading OpenTickets, in an effort maintain access to your site. Once you have raised your server settings to at least the minimum memory requirement, we will turn OpenTickets back on automatically.', 'opentickets-community-edition'),
+				$hmin,
+				$hrec,
+				$hcur
+			);
+				
 		} else if ($current_limit < $recommend) {
 			$hmin = '<em><strong>'.round($min / 1048576, 2).'MB</strong></em>';
 			$hrec = '<em><strong>'.round($recommend / 1048576, 2).'MB</strong></em>';
 			$hcur = '<em><strong>'.round($current_limit / 1048576, 2).'MB</strong></em>';
-			self::$memory_error = 'The %%PRODUCT%% plugin <strong>requires</strong> that your server allow at least '.$hmin.' of memory to WordPress. '
-				.'Currently, yoru server is set to allow '.$hcur.', which is above the minimum. '
-				.'We recommend at least '.$hrec.' for optimum performance (as does WooCommerce). '
-				.'If you cannot raise the limit to the recommended amount, or do not wish to, then simply ignore this message.';
+			self::$memory_error = sprintf(__('The %%%%PRODUCT%%%% plugin <strong>requires</strong> that your server allow at least %s of memory to WordPress. Currently, yoru server is set to allow %s, which is above the minimum. We recommend at least %s for optimum performance (as does WooCommerce). If you cannot raise the limit to the recommended amount, or do not wish to, then simply ignore this message.','opentickets-community-edition'),
+				$hmin,
+				$hcur,
+				$hrec
+			);
 		}
 
 		if (!empty(self::$memory_error)) add_action('admin_notices', array(__CLASS__, 'memory_limit_problem'), 100);
@@ -431,7 +431,7 @@ class QSOT {
 				if ( $compiled_css )
 					file_put_contents( $css_file, $compiled_css );
 			} catch ( Exception $ex ) {
-				wp_die( __( 'Could not compile event.less:', 'qsot' ) . ' ' . $ex->getMessage() );
+				wp_die( __( 'Could not compile event.less:', 'opentickets-community-edition' ) . ' ' . $ex->getMessage() );
 			}
 		}
 	}
