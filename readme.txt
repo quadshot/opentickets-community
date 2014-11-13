@@ -139,6 +139,9 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.8.1 =
+* repaired ticket validation form and admin user access
+
 = 1.8.0 =
 * added i18n support
 * added po for italian
