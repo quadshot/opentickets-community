@@ -5,6 +5,8 @@ if (!class_exists('qsot_zoner')):
 // handles reservations, creation, update, and deletion
 class qsot_zoner {
 	protected static $o = null;
+	protected static $debug = false;
+	protected static $log_file = null;
 
 	public static function pre_init() {
 		$settings_class_name = apply_filters('qsot-settings-class-name', '');
@@ -490,6 +492,7 @@ class qsot_zoner {
 
 	// update/delete existing reservations
 	public static function update_reservation($success, $where, $set) {
+		self::lg( '******************', 'update_reservations()', $_SERVER['REQUEST_URI'], '*__f__*', $where, $set, $_POST );
 		global $wpdb;
 		$is_delete = false;
 
@@ -643,6 +646,44 @@ class qsot_zoner {
 		}
 
 		return $success;
+	}
+
+	protected static function lg() {
+		if ( ! self::$debug ) return;
+		if ( ! is_resource( self::$log_file ) ) self::$log_file = fopen( QSOT::plugin_dir() . uniqid( 'zoner' ) . '.log', 'a' );
+		if ( is_resource( self::$log_file ) ) {
+			foreach ( func_get_args() as $arg ) {
+				if ( is_scalar( $arg ) ) {
+					if ( $arg == '*__f__*' ) {
+						$bt = self::bt( true );
+						$out = 'BACKTRACE: ' . implode( "\n", $bt );
+					} else {
+						$out = 'MSG: ' . $arg;
+					}
+				} else {
+					$out = 'DUMP: ' . var_export( $arg, true );
+				}
+				$out .= "\n";
+				fwrite( self::$log_file, $out, strlen( $out ) );
+			}
+		}
+	}
+
+	protected static function bt( $functions_only=false ) {
+		$out = array();
+		if ( $functions_only ) {
+			$bt = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS );
+			foreach ( $bt as $call ) {
+				$func = ( ( isset( $call['function'] ) ) ? $call['function'] : '<global-scope>' ) . '()';
+				if ( isset( $call['class'] ) ) $func = $call['class'] . '::' . $func;
+				else if ( isset( $call['object'] ) ) $func = $call['object'] . '[' . ( ( is_object( $call['object'] ) ) ? get_class( $call['object'] ) : 'object' ) . ']->' . $func;
+				$file = isset( $call['file'] ) ? $call['file'] : '<no-file>';
+				$line = isset( $call['line'] ) ? $call['line'] : '<no-line>';
+				$out[] = $func . ' in ' . $file . ' @ ' . $line;
+			}
+		} else $out = debug_backtrace();
+
+		return $out;
 	}
 
 	public static function setup_table_names() {
