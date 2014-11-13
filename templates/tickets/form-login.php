@@ -1,3 +1,7 @@
 <?php get_header(); ?>
-	<?php woocommerce_get_template( 'shop/form-login.php' ); ?>
+<div id="primary" class="content-area">
+	<div id="content" class="site-content" role="main">
+		<?php woocommerce_get_template( 'shop/form-login.php' ); ?>
+	</div>
+</div>
 <?php get_footer();

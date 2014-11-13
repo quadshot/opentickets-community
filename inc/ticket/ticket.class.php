@@ -378,16 +378,17 @@ class QSOT_tickets {
 		$customer_user_id = get_post_meta($order->ID, '_customer_user', true);
 		$u = wp_get_current_user();
 
-		if (is_user_logged_in()) {
+		if ( is_user_logged_in() || ! empty( $_POST ) ) {
 			if (
-					(current_user_can('manage_woocommerce_orders')) ||
+					(current_user_can('edit_shop_orders')) ||
 					($customer_user_id && current_user_can('edit_user', $customer_user_id)) ||
-					($u->ID && $customer_user_id == $u->ID)
+					($u->ID && $customer_user_id == $u->ID) ||
+					( $guest_checkout && apply_filters( 'qsot-ticket-verification-form-check', false, $order->ID ) )
 			) {
 				$can = true;
 			} else if ($guest_checkout && !isset($_POST['verification_form'])) {
 				self::_guest_verification_form();
-			} else if ($cuest_checkout && !apply_filters('qsot-ticket-verification-form-check', false, $order->ID)) {
+			} else if ($guest_checkout && !apply_filters('qsot-ticket-verification-form-check', false, $order->ID)) {
 				self::_no_access('The information you supplied does not match our record.');
 			} else {
 				self::_no_access();
@@ -395,6 +396,8 @@ class QSOT_tickets {
 		} else {
 			if (isset($_GET['n']) && apply_filters('qsot-verify-email-link-auth', false, $_GET['n'], $args['order_id'])) {
 				$can = true;
+			} else if ($guest_checkout && !isset($_POST['verification_form'])) {
+				self::_guest_verification_form();
 			} else {
 				self::_login_form();
 			}
@@ -411,16 +414,19 @@ class QSOT_tickets {
 	protected static function _login_form() {
 		$template = apply_filters('qsot-locate-template', '', array('tickets/form-login.php'), false, false);
 		include_once $template;
+		exit;
 	}
 
 	protected static function _no_access($msg='That is not a valid ticket.') {
 		$template = apply_filters('qsot-locate-template', '', array('tickets/error-msg.php'), false, false);
 		include_once $template;
+		exit;
 	}
 
 	protected static function _guest_verification_form() {
 		$template = apply_filters('qsot-locate-template', '', array('tickets/verification-form.php'), false, false);
 		include_once $template;
+		exit;
 	}
 
 	public static function intercept_ticket_request(&$wp) {
