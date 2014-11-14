@@ -180,3 +180,18 @@ ul#adminmenu a.qsot-special-arrow:after {
 .ot-reports-page .result-table-wrap .report-foot-col { font-weight:bold; }
 .ot-reports-page .range_datepicker { cursor:pointer; border-color:#aaaaaa; }
 .ot-reports-page .time-display { font-style:italic; text-decoration:underline; color:#888888; }
+
+#system-report-text { display:none; }
+.system-status-report-msg input[type="button"],
+.system-status-report-msg textarea { margin-bottom:1em; }
+.qsot-page .inside .inner { padding-top:1em; }
+.qsot-page .helper { font-style:italic; font-size:0.9em; }
+.qsot-page .tool-item td { padding-bottom:1em; padding-left:1em; }
+.qsot-page .tool-item td:first-child { text-align:right; }
+.qsot-status-table th { font-weight:bold; font-style:italic; }
+.qsot-status-table tbody tr.odd td { background-color:#fcfcfc; }
+.qsot-status-table thead tr th { border-bottom-color:#ccc; border-bottom-width:2px; }
+.qsot-status-table tbody tr:hover td { background-color:#e0e0e0; }
+.qsot-status-table tbody tr td:first-child { white-space:nowrap; }
+.qsot-status-table .good { color:#00bb00; }
+.qsot-status-table .bad { color:#bb0000; }

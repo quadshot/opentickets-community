@@ -21,7 +21,7 @@ class qsot_seat_pricing {
 		if (!empty($settings_class_name)) {
 			self::$o = call_user_func_array(array($settings_class_name, "instance"), array());
 
-			add_filter('qsot-get-all-ticket-products', array(__CLASS__, 'get_all_ticket_products'), 100, 1);
+			add_filter( 'qsot-get-all-ticket-products', array( __CLASS__, 'get_all_ticket_products' ), 100, 2 );
 			add_filter('qsot-price-formatted', array(__CLASS__, 'formatted_price'), 10, 1);
 
 			add_filter('product_type_options', array(__CLASS__, 'add_ticket_product_type_option'), 999);
@@ -466,7 +466,7 @@ class qsot_seat_pricing {
 		<?php
 	}
 
-	public static function get_all_ticket_products($list) {
+	public static function get_all_ticket_products( $list, $format='objects' ) {
 		$args = array(
 			'post_type' => 'product',
 			'post_status' => 'publish',
@@ -484,6 +484,8 @@ class qsot_seat_pricing {
 		);
 
 		$ids = get_posts($args);
+		if ( 'ids' == $format ) return $ids;
+
 		$tickets = array();
 		foreach ($ids as $id) {
 			$ticket = get_product($id);

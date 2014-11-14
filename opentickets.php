@@ -382,22 +382,29 @@ class QSOT {
 		static $max = false;
 
 		if ($force || $max === false) {
-			$raw = strtolower(ini_get('memory_limit'));
-			preg_match_all('#^(\d+)(\w*)?$#', $raw, $matches, PREG_SET_ORDER);
-			if (isset($matches[0])) {
-				$max = $matches[0][1];
-				$unit = $matches[0][2];
-				switch ($unit) {
-					case 'k': $max *= 1024; break;
-					case 'm': $max *= 1048576; break;
-					case 'g': $max *= 1073741824; break;
-				}
-			} else {
-				$max = 32 * 1048576;
-			}
+			$max = self::xb2b( ini_get('memory_limit'), true );
 		}
 
 		return $max;
+	}
+
+	public static function xb2b( $raw, $fakeit = false ) {
+		$out = '';
+		$raw = strtolower( $raw );
+		preg_match_all( '#^(\d+)(\w*)?$#', $raw, $matches, PREG_SET_ORDER );
+		if ( isset( $matches[0] ) ) {
+			$out = $matches[0][1];
+			$unit = $matches[0][2];
+			switch ( $unit ) {
+				case 'k': $out *= 1024; break;
+				case 'm': $out *= 1048576; break;
+				case 'g': $out *= 1073741824; break;
+			}
+		} else {
+			$out = $fakeit ? 32 * 1048576 : $raw;
+		}
+
+		return $out;
 	}
 
 	public static function compile_frontend_styles() {
