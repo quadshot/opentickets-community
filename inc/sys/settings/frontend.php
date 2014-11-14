@@ -79,92 +79,92 @@ class qsot_Settings_Frontend extends WC_Settings_Page {
 
 					// Show inputs
 					$this->color_picker(
-						__( 'Form BG', 'qsot' ),
+						__( 'Form BG','opentickets-community-edition'),
 						'qsot_frontend_css_form_bg',
 						$colors['form_bg'],
-						__( 'Background color of the "reserve some tickets" form on the event page.', 'qsot' )
+						__( 'Background color of the "reserve some tickets" form on the event page.','opentickets-community-edition' )
 					);
 					$this->color_picker(
-						__( 'Form Border', 'qsot' ),
+						__( 'Form Border','opentickets-community-edition' ),
 						'qsot_frontend_css_form_border',
 						$colors['form_border'],
-						__( 'Border color around the "reserve some tickets" form.', 'qsot' )
+						__( 'Border color around the "reserve some tickets" form.','opentickets-community-edition' )
 					);
 					$this->color_picker(
-						__( 'Action BG', 'qsot' ),
+						__( 'Action BG','opentickets-community-edition' ),
 						'qsot_frontend_css_form_action_bg',
 						$colors['form_action_bg'],
-						__( 'Background of the "action" section, below the "reserve some tickets" form, where the proceed to cart button appears.', 'qsot' )
+						__( 'Background of the "action" section, below the "reserve some tickets" form, where the proceed to cart button appears.','opentickets-community-edition' )
 					);
 					$this->color_picker(
-						__( 'Helper', 'qsot' ),
+						__( 'Helper','opentickets-community-edition' ),
 						'qsot_frontend_css_form_helper',
 						$colors['form_helper'],
-						__( 'Text color of the "helper text" on the "reserve some tickets" form.', 'qsot' )
+						__( 'Text color of the "helper text" on the "reserve some tickets" form.','opentickets-community-edition' )
 					);
 					echo '<div class="clear"></div>';
 
 					$this->color_picker(
-						__( 'Bad BG', 'qsot' ),
+						__( 'Bad BG','opentickets-community-edition' ),
 						'qsot_frontend_css_bad_msg_bg',
 						$colors['bad_msg_bg'],
-						__( 'Background color of the error message block on the "reserve some tickets" form.', 'qsot' )
+						__( 'Background color of the error message block on the "reserve some tickets" form.','opentickets-community-edition' )
 					);
 					$this->color_picker(
-						__( 'Bad Border', 'qsot' ),
+						__( 'Bad Border','opentickets-community-edition' ),
 						'qsot_frontend_css_bad_msg_border',
 						$colors['bad_msg_border'],
-						__( 'Border color around the error message block on the "reserve some tickets" form.', 'qsot' )
+						__( 'Border color around the error message block on the "reserve some tickets" form.','opentickets-community-edition' )
 					);
 					$this->color_picker(
-						__( 'Bad Text', 'qsot' ),
+						__( 'Bad Text','opentickets-community-edition' ),
 						'qsot_frontend_css_bad_msg_text',
 						$colors['bad_msg_text'],
-						__( 'Text color of the error message block on the "reserve some tickets" form.', 'qsot' )
+						__( 'Text color of the error message block on the "reserve some tickets" form.','opentickets-community-edition' )
 					);
 					echo '<div class="clear"></div>';
 
 					$this->color_picker(
-						__( 'Good BG', 'qsot' ),
+						__( 'Good BG','opentickets-community-edition' ),
 						'qsot_frontend_css_good_msg_bg',
 						$colors['good_msg_bg'],
-						__( 'Background color of the success message block on the "reserve some tickets" form.', 'qsot' )
+						__( 'Background color of the success message block on the "reserve some tickets" form.','opentickets-community-edition' )
 					);
 					$this->color_picker(
-						__( 'Good Border', 'qsot' ),
+						__( 'Good Border','opentickets-community-edition' ),
 						'qsot_frontend_css_good_msg_border',
 						$colors['good_msg_border'],
-						__( 'Border color around the success message block on the "reserve some tickets" form.', 'qsot' )
+						__( 'Border color around the success message block on the "reserve some tickets" form.','opentickets-community-edition' )
 					);
 					$this->color_picker(
-						__( 'Good Text', 'qsot' ),
+						__( 'Good Text','opentickets-community-edition' ),
 						'qsot_frontend_css_good_msg_text',
 						$colors['good_msg_text'],
-						__( 'Text color of the success message block on the "reserve some tickets" form.', 'qsot' )
+						__( 'Text color of the success message block on the "reserve some tickets" form.','opentickets-community-edition' )
 					);
 					echo '<div class="clear"></div>';
 
 					$this->color_picker(
-						__( 'Remove BG', 'qsot' ),
+						__( 'Remove BG','opentickets-community-edition' ),
 						'qsot_frontend_css_remove_bg',
 						$colors['remove_bg'],
-						__( 'Background color of the remove reservation button on the "reserve some tickets" form.', 'qsot' )
+						__( 'Background color of the remove reservation button on the "reserve some tickets" form.','opentickets-community-edition' )
 					);
 					$this->color_picker(
-						__( 'Remove Border', 'qsot' ),
+						__( 'Remove Border','opentickets-community-edition' ),
 						'qsot_frontend_css_remove_border',
 						$colors['remove_border'],
-						__( 'Border color around the remove reservation button on the "reserve some tickets" form.', 'qsot' )
+						__( 'Border color around the remove reservation button on the "reserve some tickets" form.','opentickets-community-edition' )
 					);
 					$this->color_picker(
-						__( 'Remove Text', 'qsot' ),
+						__( 'Remove Text','opentickets-community-edition' ),
 						'qsot_frontend_css_remove_text',
 						$colors['remove_text'],
-						__( 'Text color of the remove reservation button on the "reserve some tickets" form.', 'qsot' )
+						__( 'Text color of the remove reservation button on the "reserve some tickets" form.','opentickets-community-edition' )
 					);
 				} else {
 					echo '<span class="description">' . sprintf(
-						__( 'To edit colours %s and %s need to be writable. See <a href="%s">the Codex</a> for more information.', 'qsot' ),
+						__( 'To edit colours %s and %s need to be writable. See <a href="%s">the Codex</a> for more information.','opentickets-community-edition' ),
 						'<code>opentickets-community-edition/assets/css/frontend/event-base.less</code>',
 						'<code>event.css</code>',
 						'http://codex.wordpress.org/Changing_File_Permissions'
@@ -215,7 +215,7 @@ class qsot_Settings_Frontend extends WC_Settings_Page {
 			foreach ( $colors as $color ) {
 				if ( ! preg_match( '/^#[a-f0-9]{6}$/i', $color ) ) {
 					$valid_colors = false;
-					WC_Admin_Settings::add_error( sprintf( __( 'Error saving the Frontend Styles, %s is not a valid color, please use only valid colors code.', 'qsot' ), $color ) );
+					WC_Admin_Settings::add_error( sprintf( __( 'Error saving the Frontend Styles, %s is not a valid color, please use only valid colors code.','opentickets-community-edition' ), $color ) );
 					break;
 				}
 			}

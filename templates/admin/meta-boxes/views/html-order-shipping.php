@@ -11,13 +11,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<td class="name">
 		<div class="view">
-			<?php echo ! empty( $item['name'] ) ? esc_html( $item['name'] ) : __( 'Shipping', 'woocommerce' ); ?>
+			<?php echo ! empty( $item['name'] ) ? esc_html( $item['name'] ) : __( 'Shipping', 'opentickets-community-edition' ); ?>
 		</div>
 		<div class="edit" style="display: none;">
-			<input type="text" placeholder="<?php _e( 'Shipping Name', 'woocommerce' ); ?>" name="shipping_method_title[<?php echo $item_id; ?>]" value="<?php echo ( isset( $item['name'] ) ) ? esc_attr( $item['name'] ) : ''; ?>" />
+			<input type="text" placeholder="<?php _e( 'Shipping Name', 'opentickets-community-edition' ); ?>" name="shipping_method_title[<?php echo $item_id; ?>]" value="<?php echo ( isset( $item['name'] ) ) ? esc_attr( $item['name'] ) : ''; ?>" />
 			<select name="shipping_method[<?php echo $item_id; ?>]">
-				<optgroup label="<?php _e( 'Shipping Method', 'woocommerce' ); ?>">
-					<option value=""><?php _e( 'N/A', 'woocommerce' ); ?></option>
+				<optgroup label="<?php _e( 'Shipping Method', 'opentickets-community-edition' ); ?>">
+					<option value=""><?php _e( 'N/A', 'opentickets-community-edition' ); ?></option>
 					<?php
 						$found_method = false;
 
@@ -33,9 +33,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 						}
 
 						if ( ! $found_method && ! empty( $method_id ) ) {
-							echo '<option value="' . esc_attr( $method_id ) . '" selected="selected">' . __( 'Other', 'woocommerce' ) . '</option>';
+							echo '<option value="' . esc_attr( $method_id ) . '" selected="selected">' . __( 'Other', 'opentickets-community-edition' ) . '</option>';
 						} else {
-							echo '<option value="other">' . __( 'Other', 'woocommerce' ) . '</option>';
+							echo '<option value="other">' . __( 'Other', 'opentickets-community-edition' ) . '</option>';
 						}
 					?>
 				</optgroup>

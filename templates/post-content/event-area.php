@@ -5,17 +5,13 @@
 		<div class="qsot-ticket-selection show-if-js"></div>
 		<div class="remove-if-js no-js-message">
 			<p>
-				For a better experience, certain features of javascript area required.
-				Currently you either do not have these features, or you do not have them enabled.
-				Despite this, you can still purchase your tickets, using 2 simple steps.<br/>
+				<?php _e('For a better experience, certain features of javascript area required. Currently you either do not have these features, or you do not have them enabled. Despite this, you can still purchase your tickets, using 2 simple steps.','opentickets-community-edition') ?>
 			</p>
 			<p>
-				<strong>STEP 1: </strong>Below, enter the number of tickets you wish to purchase,
-				then click <span class="button-name">Reserve Tickets</span>.
+				<?php _e('<strong>STEP 1:</strong> Below, enter the number of tickets you wish to purchase, then click <span class="button-name">Reserve Tickets</span>.','opentickets-community-edition') ?>
 			</p>
 			<p>
-				<strong>STEP 2: </strong>Finally, once you have successfully Reserved your Tickets,
-				click <span class="button-name">Proceed to Cart</span> to complete your order.
+				<?php _e('<strong>STEP 2:</strong> Finally, once you have successfully Reserved your Tickets, click <span class="button-name">Proceed to Cart</span> to complete your order.','opentickets-community-edition') ?>
 			</p>
 		</div>
 
@@ -34,7 +30,7 @@
 
 			<?php if (isset($_GET['rmvd'])): ?>
 				<ul class="form-removed">
-					<li class="msg">Successfully removed your reservations.</li>
+					<li class="msg"><?php _e('Successfully removed your reservations.','opentickets-community-edition') ?></li>
 				</ul>
 			<?php endif; ?>
 
@@ -42,20 +38,14 @@
 				<div class="step-one ticket-selection-section">
 					<div class="form-inner">
 						<form class="submittable" action="<?php echo esc_attr(remove_query_arg(array('rmvd'))) ?>" method="post">
-							<h3><span class="step-name">STEP 1</span>: How many?</h3>
+							<h3><?php _e('<span class="step-name">STEP 1</span>: How many?','opentickets-community-edition') ?></h3>
 
 							<div class="field">
 								<div class="helper">
-									Currently, there are <span class="available"><?php echo $area->meta['available'] ?></span>
-									"<span class="ticket-name"><?php echo $area->ticket->get_title() ?></span>"
-									(<span class="ticket-price"><?php echo wc_price($area->ticket->get_price()) ?></span>)
-									available for purchase.
+									<?php printf(__('Currently, there are <span class="available">%s</span> "<span class="ticket-name">%s</span>" (<span class="ticket-price">%s</span>) available for purchase.','opentickets-community-edition'),  $area->meta['available'], $area->ticket->get_title(), wc_price($area->ticket->get_price())); ?>
 								</div>
 								<label for="ticket-count">
-									How many
-									"<span class="ticket-name"><?php echo $area->ticket->get_title() ?></span>"
-									(<span class="ticket-price"><?php echo wc_price($area->ticket->get_price()) ?></span>)
-									?
+									<?php printf(__('How many "<span class="ticket-name">%s</span>" (<span class="ticket-price">%s</span>)?','opentickets-community-edition'), $area->ticket->get_title(), wc_price($area->ticket->get_price())); ?>
 								</label>
 								<input type="number" min="0" max="<?php echo $area->meta['available'] ?>" step="1" class="very-short" name="ticket-count" value="1" />
 							</div>
@@ -65,7 +55,7 @@
 							<div class="qsot-form-actions">
 								<?php wp_nonce_field('ticket-selection-step-one', 'submission') ?>
 								<input type="hidden" name="qsot-step" value="1" />
-								<input type="submit" value="Reserve Tickets" class="button" />
+								<input type="submit" value="<?php _e('Reserve Tickets','opentickets-community-edition') ?>" class="button" />
 							</div>
 						</form>
 					</div>
@@ -75,18 +65,15 @@
 			<?php if (!empty($reserved)): ?>
 				<div class="step-two ticket-selection-section">
 					<div class="form-inner">
-						<h3><span class="step-name">STEP 2</span>: Review</h3>
+						<h3><?php _e('<span class="step-name">STEP 2</span>: Review','opentickets-community-edition') ?></h3>
 
 						<div class="field">
 							<div class="helper">
-								Currently, there are <span class="available"><?php echo $area->meta['available'] - $reserved ?></span> more
-								"<span class="ticket-name"><?php echo $area->ticket->get_title() ?></span>"
-								(<span class="ticket-price"><?php echo wc_price($area->ticket->get_price()) ?></span>)
-								available for purchase.
+								<?php printf(__('Currently, there are <span class="available">%s</span> more "<span class="ticket-name">%s</span>" (<span class="ticket-price">%s</span>) available for purchase.','opentickets-community-edition'), $area->meta['available'] - $reserved, $area->ticket->get_title(), wc_price($area->ticket->get_price())); ?>
 							</div>
 
 							<form class="submittable" action="<?php echo esc_attr(remove_query_arg(array('rmvd'))) ?>" method="post">
-								<label>You currently have:</label>
+								<label><?php _e('You currently have:','opentickets-community-edition') ?></label>
 								<div class="you-have">
 									<a href="<?php echo esc_attr(add_query_arg(array('remove_reservations' => 1, 'submission' => wp_create_nonce('ticket-selection-step-two')))) ?>" class="remove-link">X</a>
 
@@ -98,7 +85,7 @@
 
 									<?php wp_nonce_field('ticket-selection-step-two', 'submission') ?>
 									<input type="hidden" name="qsot-step" value="2" />
-									<input type="submit" value="Update" class="button" />
+									<input type="submit" value="<?php _e('Update','opentickets-community-edition') ?>" class="button" />
 								</div>
 							</form>
 						</div>
@@ -114,10 +101,10 @@
 		</div>
 	<?php elseif ($area->is_soldout): ?>
 		<div class="event-area-image"><?php do_action('qsot-draw-event-area-image', $event, $area, $reserved) ?></div>
-		<p>We are sorry. This event is sold out!</p>
+		<p><?php _e('We are sorry. This event is sold out!','opentickets-community-edition') ?></p>
 	<?php else: ?>
 		<div class="event-area-image"><?php do_action('qsot-draw-event-area-image', $event, $area, $reserved) ?></div>
-		<p>We are sorry. There are currently no tickets available for this event. Check back soon!</p>
+		<p><?php _e('We are sorry. There are currently no tickets available for this event. Check back soon!','opentickets-community-edition') ?></p>
 	<?php endif; ?>
 	
 	<?php do_action('qsot-after-ticket-selection-form', $event, $area, $reserved); ?>

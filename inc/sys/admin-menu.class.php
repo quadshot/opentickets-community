@@ -108,7 +108,7 @@ class qsot_admin_menu {
 
 	public static function create_menu_items() {
 		self::$menu_page_hooks['main'] = add_menu_page(
-			__('Reports', 'qsot'),
+			__('Reports','opentickets-community-edition' ),
 			self::$o->product_name,
 			'view_woocommerce_reports',
 			self::$menu_slugs['main'],
@@ -119,8 +119,8 @@ class qsot_admin_menu {
 
 		self::$menu_page_hooks['settings'] = add_submenu_page(
 			self::$menu_slugs['main'],
-			__('Settings', 'qsot'),
-			__('Settings', 'qsot'),
+			__('Settings','opentickets-community-edition'),
+			__('Settings','opentickets-community-edition'),
 			'manage_options',
 			self::$menu_slugs['settings'],
 			array(__CLASS__, 'ap_settings_page')
@@ -210,7 +210,7 @@ class qsot_admin_menu {
 					<div class="icon32 icon32-opentickets icon32-opentickets-reports" id="icon-opentickets"><br /></div><h2 class="nav-tab-wrapper woo-nav-tab-wrapper">No Reports Available</h2>
 					<div class="inside">
 						<p>
-							There are currently no reports available for <?php echo self::$o->product_name ?>.
+							<?php _e('There are currently no reports available for','opentickets-community-edition'); echo ' '.self::$o->product_name.'.'; ?>
 						</p>
 					</div>
 				<?php endif; ?>
@@ -260,23 +260,19 @@ class qsot_admin_menu {
 
 		wp_enqueue_script('qsot-nag');
 		wp_localize_script('qsot-nag', '_qsot_nag_settings', array(
-			'title' => __('Allow OpenTickets Stats?', 'qsot'),
-			'question' => __('OpenTickets is always being improved, thanks to users like you. '
-				.'To help us improve this product, would you allow us collect some basic information about your installation, like many others already have? '
-				.'We will not track any of your users\' information, so your security and privacy is still safe. '
-				.'The information we will be tracking is purely about your WordPress installation, '
-				.'and will be used to help us understand which plugins and themes we need to be compatible with. ', 'qsot'),
+			'title' => __('Allow OpenTickets Stats?','opentickets-community-edition'),
+			'question' => __('OpenTickets is always being improved, thanks to users like you. To help us improve this product, would you allow us collect some basic information about your installation, like many others already have? We will not track any of your users\' information, so your security and privacy is still safe. The information we will be tracking is purely about your WordPress installation, and will be used to help us understand which plugins and themes we need to be compatible with.','opentickets-community-edition'),
 			'answers' => array(
 				array(
 					'type' => 'button',
-					'label' => esc_attr(__('Yes', 'qsot')),
+					'label' => esc_attr(__('Yes','opentickets-community-edition')),
 					'location' => 'right',
 					'action' => 'allow',
 					'class' => 'button-primary',
 				),
 				array(
 					'type' => 'link',
-					'label' => esc_attr(__('Dismiss', 'qsot')),
+					'label' => esc_attr(__('Dismiss','opentickets-community-edition')),
 					'location' => 'left',
 					'action' => 'dismiss',
 				),
@@ -307,13 +303,13 @@ class qsot_admin_menu {
 		switch ($sa) {
 			case 'dismiss':
 				update_user_option($u->ID, '_qsot_info_nag', '1');
-				$out['msg'] = 'Fair enough. Thanks anyways.';
+				$out['msg'] = __('Fair enough. Thanks anyways.','opentickets-community-edition');
 			break;
 
 			case 'allow':
 				update_user_option($u->ID, '_qsot_info_nag', '1');
 				self::$options->{'qsot-allow-stats'} = 'yes';
-				$out['msg'] = 'Thanks a bunch.';
+				$out['msg'] = __('Thanks a bunch.','opentickets-community-edition');
 				self::send_all_stats();
 			break;
 		}
@@ -331,10 +327,27 @@ class qsot_admin_menu {
 	}
 
 	public static function send_all_stats() {
-		$fields = array('Title', 'Author', 'Author Name', 'Author URI', 'Description', 'Version', 'Status', 'Template', 'Stylesheet', 'Template Files', 'Stylesheet Files',
-			'Template Dir', 'Stylesheet Dir', 'Screenshot', 'Tags', 'Theme Root', 'Theme Root URI', 'Parent Theme',
+		$fields = array(
+			__('Title','opentickets-community-edition'),
+			__('Author','opentickets-community-edition'),
+			__('Author Name','opentickets-community-edition'),
+			__('Author URI','opentickets-community-edition'),
+			__('Description','opentickets-community-edition'),
+			__('Version','opentickets-community-edition'),
+			__('Status','opentickets-community-edition'),
+			__('Template','opentickets-community-edition'),
+			__('Stylesheet','opentickets-community-edition'),
+			__('Template Files','opentickets-community-edition'),
+			__('Stylesheet Files','opentickets-community-edition'),
+			__('Template Dir','opentickets-community-edition'),
+			__('Stylesheet Dir','opentickets-community-edition'),
+			__('Screenshot','opentickets-community-edition'),
+			__('Tags','opentickets-community-edition'),
+			__('Theme Root','opentickets-community-edition'),
+			__('Theme Root URI','opentickets-community-edition'),
+			__('Parent Theme','opentickets-community-edition')
 		);
-		$only_keys = array('Template Files' => 1, 'Stylesheet Files' => 1,);
+		$only_keys = array(__('Template Files','opentickets-community-edition') => 1, __('Stylesheet Files','opentickets-community-edition') => 1);
 		$current_theme = wp_get_theme();
 		$current_theme_title = $current_theme->offsetGet('Title');
 		$raw_themes = wp_get_themes();
@@ -385,15 +398,15 @@ class qsot_admin_menu {
 		$labels = array(
 			'name' => '%plural%',
 			'singular_name' => '%singular%',
-			'add_new' => 'Add %singular%',
-			'add_new_item' => 'Add New %singular%',
-			'edit_item' => 'Edit %singular%',
-			'new_item' => 'New %singular%',
-			'all_items' => 'All %plural%',
-			'view_item' => 'View %singular%',
-			'search_items' => 'Search %plural%',
-			'not_found' =>  'No %lplural% found',
-			'not_found_in_trash' => 'No %lplural% found in Trash', 
+			'add_new' => __('Add %singular%','opentickets-community-edition'),
+			'add_new_item' => __('Add New %singular%','opentickets-community-edition'),
+			'edit_item' => __('Edit %singular%','opentickets-community-edition'),
+			'new_item' => __('New %singular%','opentickets-community-edition'),
+			'all_items' => __('All %plural%','opentickets-community-edition'),
+			'view_item' => __('View %singular%','opentickets-community-edition'),
+			'search_items' => __('Search %plural%','opentickets-community-edition'),
+			'not_found' =>  __('No %lplural% found','opentickets-community-edition'),
+			'not_found_in_trash' => __('No %lplural% found in Trash','opentickets-community-edition'),
 			'parent_item_colon' => '',
 			'menu_name' => '%plural%'
 		);
@@ -461,7 +474,7 @@ class qsot_admin_menu {
 		self::$options->add(array(
 			'order' => 100,
 			'type' => 'title',
-			'title' => __('Global Settings', 'qsot'),
+			'title' => __('Global Settings','opentickets-community-edition'),
 			'id' => 'heading-general-1',
 		));
 
@@ -469,9 +482,9 @@ class qsot_admin_menu {
 			'order' => 101,
 			'id' => 'qsot-allow-stats',
 			'type' => 'checkbox',
-			'title' => __('Allow Statistics', 'qsot'),
-			'desc' => __('Allow OpenTickets to gather information about your WordPress installation.', 'qsot'),
-			'desc_tip' => __('This information is strictly used to make this product better and more compatible with other plugins.', 'qsot'),
+			'title' => __('Allow Statistics','opentickets-community-edition'),
+			'desc' => __('Allow OpenTickets to gather information about your WordPress installation.','opentickets-community-edition'),
+			'desc_tip' => __('This information is strictly used to make this product better and more compatible with other plugins.','opentickets-community-edition'),
 			'default' => 'no',
 		));
 

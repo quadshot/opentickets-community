@@ -14,7 +14,7 @@ class qsobj {
 		} else if (is_object($obj)) {
 			self::_extendO($obj, $obj2);
 		} else {
-			throw new Exception('Could not extend. Invalid type.');
+			throw new Exception(__('Could not extend. Invalid type.','opentickets-community-edition'));
 		}
 		return $obj;
 	}

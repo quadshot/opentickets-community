@@ -18,7 +18,7 @@ if ( 'yes' == get_option( 'woocommerce_calc_taxes' ) ) {
 	$order_taxes         = $order->get_taxes();
 	$tax_classes         = array_filter( array_map( 'trim', explode( "\n", get_option( 'woocommerce_tax_classes' ) ) ) );
 	$classes_options     = array();
-	$classes_options[''] = __( 'Standard', 'qsot' );
+	$classes_options[''] = __( 'Standard', 'opentickets-community-edition' );
 
 	if ( $tax_classes ) {
 		foreach ( $tax_classes as $class ) {
@@ -49,20 +49,20 @@ if ( 'yes' == get_option( 'woocommerce_calc_taxes' ) ) {
 		<thead>
 			<tr>
 				<th><input type="checkbox" class="check-column" /></th>
-				<th class="item" colspan="2"><?php _e( 'Item', 'qsot' ); ?></th>
+				<th class="item" colspan="2"><?php _e( 'Item', 'opentickets-community-edition' ); ?></th>
 
 				<?php do_action( 'woocommerce_admin_order_item_headers' ); ?>
 
-				<th class="quantity"><?php _e( 'Qty', 'qsot' ); ?></th>
+				<th class="quantity"><?php _e( 'Qty', 'opentickets-community-edition' ); ?></th>
 
-				<th class="line_cost"><?php _e( 'Total', 'qsot' ); ?></th>
+				<th class="line_cost"><?php _e( 'Total', 'opentickets-community-edition' ); ?></th>
 
 				<?php
 					if ( isset( $legacy_order ) && ! $legacy_order && 'yes' == get_option( 'woocommerce_calc_taxes' ) ) :
 						foreach ( $order_taxes as $tax_id => $tax_item ) :
 							$tax_class      = wc_get_tax_class_by_tax_id( $tax_item['rate_id'] );
-							$tax_class_name = isset( $classes_options[ $tax_class ] ) ? $classes_options[ $tax_class ] : __( 'Tax', 'qsot' );
-							$column_label   = ! empty( $tax_item['label'] ) ? $tax_item['label'] : __( 'Tax', 'qsot' );
+							$tax_class_name = isset( $classes_options[ $tax_class ] ) ? $classes_options[ $tax_class ] : __( 'Tax', 'opentickets-community-edition' );
+							$column_label   = ! empty( $tax_item['label'] ) ? $tax_item['label'] : __( 'Tax', 'opentickets-community-edition' );
 							?>
 								<th class="line_tax tips" data-tip="<?php
 										echo esc_attr( $tax_item['name'] . ' (' . $tax_class_name . ')' );
@@ -147,7 +147,7 @@ if ( 'yes' == get_option( 'woocommerce_calc_taxes' ) ) {
 	?>
 	<table class="wc-order-totals">
 		<tr>
-			<td class="label"><?php _e( 'Shipping', 'qsot' ); ?> <span class="tips" data-tip="<?php _e( 'This is the shipping and handling total costs for the order.', 'qsot' ); ?>">[?]</span>:</td>
+			<td class="label"><?php _e( 'Shipping', 'opentickets-community-edition' ); ?> <span class="tips" data-tip="<?php _e( 'This is the shipping and handling total costs for the order.', 'opentickets-community-edition' ); ?>">[?]</span>:</td>
 			<td class="total"><?php echo wc_price( $order->get_total_shipping() ); ?></td>
 			<td width="1%"></td>
 		</tr>
@@ -167,7 +167,7 @@ if ( 'yes' == get_option( 'woocommerce_calc_taxes' ) ) {
 		<?php do_action( 'woocommerce_admin_order_totals_after_tax', $order->id ); ?>
 
 		<tr>
-			<td class="label"><?php _e( 'Order Discount', 'qsot' ); ?> <span class="tips" data-tip="<?php _e( 'This is the total discount applied after tax.', 'qsot' ); ?>">[?]</span>:</td>
+			<td class="label"><?php _e( 'Order Discount', 'opentickets-community-edition' ); ?> <span class="tips" data-tip="<?php _e( 'This is the total discount applied after tax.', 'opentickets-community-edition' ); ?>">[?]</span>:</td>
 			<td class="total">
 				<div class="view"><?php echo wc_price( $order->get_total_discount() ); ?></div>
 				<div class="edit" style="display: none;">
@@ -181,7 +181,7 @@ if ( 'yes' == get_option( 'woocommerce_calc_taxes' ) ) {
 		<?php do_action( 'woocommerce_admin_order_totals_after_discount', $order->id ); ?>
 
 		<tr>
-			<td class="label"><?php _e( 'Order Total', 'qsot' ); ?>:</td>
+			<td class="label"><?php _e( 'Order Total', 'opentickets-community-edition' ); ?>:</td>
 			<td class="total">
 				<div class="view"><?php echo wc_price( $order->get_total() ); ?></div>
 				<div class="edit" style="display: none;">
@@ -195,7 +195,7 @@ if ( 'yes' == get_option( 'woocommerce_calc_taxes' ) ) {
 		<?php do_action( 'woocommerce_admin_order_totals_after_total', $order->id ); ?>
 
 		<tr>
-			<td class="label refunded-total"><?php _e( 'Refunded', 'qsot' ); ?>:</td>
+			<td class="label refunded-total"><?php _e( 'Refunded', 'opentickets-community-edition' ); ?>:</td>
 			<td class="total refunded-total">-<?php echo wc_price( $order->get_total_refunded() ); ?></td>
 			<td width="1%"></td>
 		</tr>
@@ -208,46 +208,46 @@ if ( 'yes' == get_option( 'woocommerce_calc_taxes' ) ) {
 <div class="wc-order-data-row wc-order-bulk-actions">
 	<p class="bulk-actions">
 		<select>
-			<option value=""><?php _e( 'Actions', 'qsot' ); ?></option>
+			<option value=""><?php _e( 'Actions', 'opentickets-community-edition' ); ?></option>
 			<?php if ( $order->is_editable() ) : ?>
-				<optgroup label="<?php _e( 'Edit', 'qsot' ); ?>">
-					<option value="delete"><?php _e( 'Delete selected line item(s)', 'qsot' ); ?></option>
+				<optgroup label="<?php _e( 'Edit', 'opentickets-community-edition' ); ?>">
+					<option value="delete"><?php _e( 'Delete selected line item(s)', 'opentickets-community-edition' ); ?></option>
 				</optgroup>
 			<?php endif; ?>
-			<optgroup label="<?php _e( 'Stock Actions', 'qsot' ); ?>">
-				<option value="reduce_stock"><?php _e( 'Reduce line item stock', 'qsot' ); ?></option>
-				<option value="increase_stock"><?php _e( 'Increase line item stock', 'qsot' ); ?></option>
+			<optgroup label="<?php _e( 'Stock Actions', 'opentickets-community-edition' ); ?>">
+				<option value="reduce_stock"><?php _e( 'Reduce line item stock', 'opentickets-community-edition' ); ?></option>
+				<option value="increase_stock"><?php _e( 'Increase line item stock', 'opentickets-community-edition' ); ?></option>
 			</optgroup>
 		</select>
 
-		<button type="button" class="button do_bulk_action wc-reload" title="<?php _e( 'Apply', 'qsot' ); ?>"><span><?php _e( 'Apply', 'qsot' ); ?></span></button>
+		<button type="button" class="button do_bulk_action wc-reload" title="<?php _e( 'Apply', 'opentickets-community-edition' ); ?>"><span><?php _e( 'Apply', 'opentickets-community-edition' ); ?></span></button>
 	</p>
 	<p class="add-items">
 		<?php if ( $order->is_editable() ) : ?>
-			<button type="button" class="button add-line-item"><?php _e( 'Add line item(s)', 'qsot' ); ?></button>
+			<button type="button" class="button add-line-item"><?php _e( 'Add line item(s)', 'opentickets-community-edition' ); ?></button>
 		<?php endif; ?>
 		<?php if ( 'yes' == get_option( 'woocommerce_calc_taxes' ) && $order->is_editable() ) : ?>
-			<button type="button" class="button add-order-tax"><?php _e( 'Add Tax', 'qsot' ); ?></button>
+			<button type="button" class="button add-order-tax"><?php _e( 'Add Tax', 'opentickets-community-edition' ); ?></button>
 		<?php endif; ?>
 		<?php if ( ( $order->get_total() - $order->get_total_refunded() ) > 0 ) : ?>
-			<button type="button" class="button refund-items"><?php _e( 'Refund', 'qsot' ); ?></button>
+			<button type="button" class="button refund-items"><?php _e( 'Refund', 'opentickets-community-edition' ); ?></button>
 		<?php endif; ?>
 		<?php
 			// allow other plugins to add buttons here
 			do_action( 'woocommerce_order_item_add_action_buttons', $order );
 		?>
 		<?php if ( $order->is_editable() ) : ?>
-		<button type="button" class="button button-primary calculate-tax-action"><?php _e( 'Calculate Taxes', 'qsot' ); ?></button>
-		<button type="button" class="button button-primary calculate-action"><?php _e( 'Calculate Total', 'qsot' ); ?></button>
+		<button type="button" class="button button-primary calculate-tax-action"><?php _e( 'Calculate Taxes', 'opentickets-community-edition' ); ?></button>
+		<button type="button" class="button button-primary calculate-action"><?php _e( 'Calculate Total', 'opentickets-community-edition' ); ?></button>
 		<?php endif; ?>
 	</p>
 </div>
 <div class="wc-order-data-row wc-order-add-item" style="display:none;">
-	<button type="button" class="button add-order-item"><?php _e( 'Add product(s)', 'qsot' ); ?></button>
-	<button type="button" class="button add-order-fee"><?php _e( 'Add fee', 'qsot' ); ?></button>
-	<button type="button" class="button add-order-shipping"><?php _e( 'Add shipping cost', 'qsot' ); ?></button>
-	<button type="button" class="button cancel-action"><?php _e( 'Cancel', 'qsot' ); ?></button>
-	<button type="button" class="button button-primary save-action"><?php _e( 'Save', 'qsot' ); ?></button>
+	<button type="button" class="button add-order-item"><?php _e( 'Add product(s)', 'opentickets-community-edition' ); ?></button>
+	<button type="button" class="button add-order-fee"><?php _e( 'Add fee', 'opentickets-community-edition' ); ?></button>
+	<button type="button" class="button add-order-shipping"><?php _e( 'Add shipping cost', 'opentickets-community-edition' ); ?></button>
+	<button type="button" class="button cancel-action"><?php _e( 'Cancel', 'opentickets-community-edition' ); ?></button>
+	<button type="button" class="button button-primary save-action"><?php _e( 'Save', 'opentickets-community-edition' ); ?></button>
 	<?php
 		// allow other plugins to add buttons here
 		do_action( 'woocommerce_order_item_add_line_buttons', $order );
@@ -257,26 +257,26 @@ if ( 'yes' == get_option( 'woocommerce_calc_taxes' ) ) {
 <div class="wc-order-data-row wc-order-refund-items" style="display: none;">
 	<table class="wc-order-totals">
 		<tr>
-			<td class="label"><label for="restock_refunded_items"><?php _e( 'Restock refunded items', 'qsot' ); ?>:</label></td>
+			<td class="label"><label for="restock_refunded_items"><?php _e( 'Restock refunded items', 'opentickets-community-edition' ); ?>:</label></td>
 			<td class="total"><input type="checkbox" id="restock_refunded_items" name="restock_refunded_items" checked="checked" /></td>
 		</tr>
 		<tr>
-			<td class="label"><?php _e( 'Amount already refunded', 'qsot' ); ?>:</td>
+			<td class="label"><?php _e( 'Amount already refunded', 'opentickets-community-edition' ); ?>:</td>
 			<td class="total">-<?php echo wc_price( $order->get_total_refunded() ); ?></td>
 		</tr>
 		<tr>
-			<td class="label"><?php _e( 'Total available to refund', 'qsot' ); ?>:</td>
+			<td class="label"><?php _e( 'Total available to refund', 'opentickets-community-edition' ); ?>:</td>
 			<td class="total"><?php echo wc_price( $order->get_total() - $order->get_total_refunded() ); ?></td>
 		</tr>
 		<tr>
-			<td class="label"><label for="refund_amount"><?php _e( 'Refund amount', 'qsot' ); ?>:</label></td>
+			<td class="label"><label for="refund_amount"><?php _e( 'Refund amount', 'opentickets-community-edition' ); ?>:</label></td>
 			<td class="total">
 				<input type="text" class="text" id="refund_amount" name="refund_amount" class="wc_input_price" />
 				<div class="clear"></div>
 			</td>
 		</tr>
 		<tr>
-			<td class="label"><label for="refund_reason"><?php _e( 'Reason for refund (optional)', 'qsot' ); ?>:</label></td>
+			<td class="label"><label for="refund_reason"><?php _e( 'Reason for refund (optional)', 'opentickets-community-edition' ); ?>:</label></td>
 			<td class="total">
 				<input type="text" class="text" id="refund_reason" name="refund_reason" />
 				<div class="clear"></div>
@@ -286,10 +286,10 @@ if ( 'yes' == get_option( 'woocommerce_calc_taxes' ) ) {
 	<div class="clear"></div>
 	<div class="refund-actions">
 		<?php if ( false !== $payment_gateway && $payment_gateway->supports( 'refunds' ) ) : ?>
-		<button type="button" class="button button-primary do-api-refund"><?php printf( _x( 'Refund %s via %s', 'Refund $amount', 'qsot' ), '<span class="wc-order-refund-amount">' . wc_price( 0 ) . '</span>', $order->payment_method_title ); ?></button>
+		<button type="button" class="button button-primary do-api-refund"><?php printf( _x( 'Refund %s via %s', 'Refund $amount', 'opentickets-community-edition' ), '<span class="wc-order-refund-amount">' . wc_price( 0 ) . '</span>', $order->payment_method_title ); ?></button>
 		<?php endif; ?>
-		<button type="button" class="button button-primary do-manual-refund"><?php _e( 'Refund manually', 'qsot' ); ?></button>
-		<button type="button" class="button cancel-action"><?php _e( 'Cancel', 'qsot' ); ?></button>
+		<button type="button" class="button button-primary do-manual-refund"><?php _e( 'Refund manually', 'opentickets-community-edition' ); ?></button>
+		<button type="button" class="button cancel-action"><?php _e( 'Cancel', 'opentickets-community-edition' ); ?></button>
 		<div class="clear"></div>
 	</div>
 </div>
@@ -300,17 +300,17 @@ if ( 'yes' == get_option( 'woocommerce_calc_taxes' ) ) {
 		<div class="wc-backbone-modal-content">
 			<section class="wc-backbone-modal-main" role="main">
 				<header>
-					<h1><?php echo __( 'Add products', 'qsot' ); ?></h1>
+					<h1><?php echo __( 'Add products', 'opentickets-community-edition' ); ?></h1>
 				</header>
 				<article>
 					<form action="" method="post">
-						<select id="add_item_id" class="ajax_chosen_select_products_and_variations" multiple="multiple" data-placeholder="<?php _e( 'Search for a product&hellip;', 'qsot' ); ?>" style="width: 96%;"></select>
+						<select id="add_item_id" class="ajax_chosen_select_products_and_variations" multiple="multiple" data-placeholder="<?php _e( 'Search for a product&hellip;', 'opentickets-community-edition' ); ?>" style="width: 96%;"></select>
 					</form>
 				</article>
 				<footer>
 					<div class="inner">
-						<button id="btn-cancel" class="button button-large"><?php echo __( 'Cancel' , 'qsot' ); ?></button>
-						<button id="btn-ok" class="button button-primary button-large"><?php echo __( 'Add' , 'qsot' ); ?></button>
+						<button id="btn-cancel" class="button button-large"><?php echo __( 'Cancel' , 'opentickets-community-edition' ); ?></button>
+						<button id="btn-ok" class="button button-primary button-large"><?php echo __( 'Add' , 'opentickets-community-edition' ); ?></button>
 					</div>
 				</footer>
 			</section>
@@ -324,7 +324,7 @@ if ( 'yes' == get_option( 'woocommerce_calc_taxes' ) ) {
 		<div class="wc-backbone-modal-content">
 			<section class="wc-backbone-modal-main" role="main">
 				<header>
-					<h1><?php _e( 'Add tax', 'qsot' ); ?></h1>
+					<h1><?php _e( 'Add tax', 'opentickets-community-edition' ); ?></h1>
 				</header>
 				<article>
 					<form action="" method="post">
@@ -332,10 +332,10 @@ if ( 'yes' == get_option( 'woocommerce_calc_taxes' ) ) {
 							<thead>
 								<tr>
 									<th>&nbsp;</th>
-									<th><?php _e( 'Rate name', 'qsot' ); ?></th>
-									<th><?php _e( 'Tax class', 'qsot' ); ?></th>
-									<th><?php _e( 'Rate code', 'qsot' ); ?></th>
-									<th><?php _e( 'Rate %', 'qsot' ); ?></th>
+									<th><?php _e( 'Rate name', 'opentickets-community-edition' ); ?></th>
+									<th><?php _e( 'Tax class', 'opentickets-community-edition' ); ?></th>
+									<th><?php _e( 'Rate code', 'opentickets-community-edition' ); ?></th>
+									<th><?php _e( 'Rate %', 'opentickets-community-edition' ); ?></th>
 								</tr>
 							</thead>
 						<?php
@@ -356,16 +356,16 @@ if ( 'yes' == get_option( 'woocommerce_calc_taxes' ) ) {
 						</table>
 						<?php if ( absint( $wpdb->get_var( "SELECT COUNT(tax_rate_id) FROM {$wpdb->prefix}woocommerce_tax_rates;" ) ) > 100 ) : ?>
 							<p>
-								<label for="manual_tax_rate_id"><?php _e( 'Or, enter tax rate ID:', 'qsot' ); ?></label><br/>
-								<input type="number" name="manual_tax_rate_id" id="manual_tax_rate_id" step="1" placeholder="<?php _e( 'Optional', 'qsot' ); ?>" />
+								<label for="manual_tax_rate_id"><?php _e( 'Or, enter tax rate ID:', 'opentickets-community-edition' ); ?></label><br/>
+								<input type="number" name="manual_tax_rate_id" id="manual_tax_rate_id" step="1" placeholder="<?php _e( 'Optional', 'opentickets-community-edition' ); ?>" />
 							</p>
 						<?php endif; ?>
 					</form>
 				</article>
 				<footer>
 					<div class="inner">
-						<button id="btn-cancel" class="button button-large"><?php echo __( 'Cancel' , 'qsot' ); ?></button>
-						<button id="btn-ok" class="button button-primary button-large"><?php echo __( 'Add' , 'qsot' ); ?></button>
+						<button id="btn-cancel" class="button button-large"><?php echo __( 'Cancel' , 'opentickets-community-edition' ); ?></button>
+						<button id="btn-ok" class="button button-primary button-large"><?php echo __( 'Add' , 'opentickets-community-edition' ); ?></button>
 					</div>
 				</footer>
 			</section>

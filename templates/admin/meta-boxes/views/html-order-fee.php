@@ -10,10 +10,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<td class="name">
 		<div class="view">
-			<?php echo ! empty( $item['name'] ) ? esc_html( $item['name'] ) : __( 'Fee', 'woocommerce' ); ?>
+			<?php echo ! empty( $item['name'] ) ? esc_html( $item['name'] ) : __( 'Fee','opentickets-community-edition' ); ?>
 		</div>
 		<div class="edit" style="display: none;">
-			<input type="text" placeholder="<?php _e( 'Fee Name', 'woocommerce' ); ?>" name="order_item_name[<?php echo absint( $item_id ); ?>]" value="<?php echo ( isset( $item['name'] ) ) ? esc_attr( $item['name'] ) : ''; ?>" />
+			<input type="text" placeholder="<?php _e( 'Fee Name', 'opentickets-community-edition' ); ?>" name="order_item_name[<?php echo absint( $item_id ); ?>]" value="<?php echo ( isset( $item['name'] ) ) ? esc_attr( $item['name'] ) : ''; ?>" />
 			<input type="hidden" class="order_item_id" name="order_item_id[]" value="<?php echo esc_attr( $item_id ); ?>" />
 			<input type="hidden" name="order_item_tax_class[<?php echo absint( $item_id ); ?>]" value="<?php echo isset( $item['tax_class'] ) ? esc_attr( $item['tax_class'] ) : ''; ?>" />
 		</div>
@@ -80,7 +80,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<td class="wc-order-edit-line-item">
 		<?php if ( !is_callable(array(&$order, 'is_editable')) ): /*@@@@LOUSHOU - backwards compatibility */ ?>
-			<a class="edit_order_item" href="#"><img src="<?php echo WC()->plugin_url(); ?>/assets/images/icons/edit.png" alt="Edit" width="14" /></a>
+			<a class="edit_order_item" href="#"><img src="<?php echo WC()->plugin_url(); ?>/assets/images/icons/edit.png" alt="<?php _e('Edit','opentickets-community-edition') ?>" width="14" /></a>
 		<?php elseif ( $order->is_editable() ) : ?>
 			<div class="wc-order-edit-line-item-actions">
 				<a class="edit-order-item" href="#"></a><a class="delete-order-item" href="#"></a>

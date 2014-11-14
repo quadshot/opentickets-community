@@ -145,11 +145,11 @@ class qsot_event_area {
 				'ajaxurl' => admin_url('admin-ajax.php'),
 				'templates' => apply_filters('qsot-event-frontend-templates', array(), $event),
 				'messages' => array(
-					'available' => array('msg' => 'There are currently <span class="available"></span> <span rel="tt"></span> available.', 'type' => 'msg'),
-					'more-available' => array('msg' => 'There are currently <span class="available"></span> more <span rel="tt"></span> available.', 'type' => 'msg'),
-					'not-available' => array('msg' => 'We\'re sorry. There are currently no tickets available.', 'type' => 'error'),
-					'sold-out' => array('msg' => 'We are sorry. This event is sold out!', 'type' => 'error'),
-					'one-moment' => array('msg' => '<h1>One Moment Please...</h1>', 'type' => 'msg'),
+					'available' => array('msg' => __('There are currently <span class="available"></span> <span rel="tt"></span> available.','opentickets-community-edition'), 'type' => 'msg'),
+					'more-available' => array('msg' => __('There are currently <span class="available"></span> more <span rel="tt"></span> available.','opentickets-community-edition'), 'type' => 'msg'),
+					'not-available' => array('msg' => __('We\'re sorry. There are currently no tickets available.','opentickets-community-edition'), 'type' => 'error'),
+					'sold-out' => array('msg' => __('We are sorry. This event is sold out!','opentickets-community-edition'), 'type' => 'error'),
+					'one-moment' => array('msg' => __('<h1>One Moment Please...</h1>','opentickets-community-edition'), 'type' => 'msg'),
 				),
 				'owns' => $ticket_id ? apply_filters('qsot-zoner-owns-current-user', 0, $event, $ticket_id, self::$o->{'z.states.r'}) : 0,
 			), $event));
@@ -201,14 +201,14 @@ class qsot_event_area {
 		$list['ticket-selection'] = '<div class="ticket-form ticket-selection-section">'
 				.'<div class="form-inner">'
 					.'<div class="title-wrap">'
-						.'<h3>Step 1: How Many?</h3>'
+						.'<h3>'.__('Step 1: How Many?','opentickets-community-edition').'</h3>'
 					.'</div>'
 					.'<div class="field">'
-						.'<label class="section-heading">Reserve some tickets:</label>'
+						.'<label class="section-heading">'.__('Reserve some tickets:','opentickets-community-edition').'</label>'
 						.'<div class="availability-message helper"></div>'
 						.'<span rel="tt"></span>'
 						.'<input type="number" step="1" min="0" max="'.$max.'" rel="qty" name="quantity" value="1" class="very-short" />'
-						.'<input type="button" value="Reserve" rel="reserve-btn" class="button" />'
+						.'<input type="button" value="'.__('Reserve','opentickets-community-edition').'" rel="reserve-btn" class="button" />'
 					.'</div>'
 				.'</div>'
 			.'</div>';
@@ -216,17 +216,17 @@ class qsot_event_area {
 		$list['owns'] = '<div class="ticket-form ticket-selection-section">'
 				.'<div class="form-inner">'
 					.'<div class="title-wrap">'
-						.'<h3>Step 2: Review</h3>'
+						.'<h3>'.__('Step 2: Review','opentickets-community-edition').'</h3>'
 					.'</div>'
 					.'<div class="field">'
 						.'<a href="#" class="remove-link" rel="remove-btn">X</a>'
 						.'<span rel="tt"></span>'
 						.'<input type="number" step="1" min="0" max="'.$max.'" rel="qty" name="quantity" value="1" class="very-short" />'
-						.'<input type="button" value="Update" rel="update-btn" class="button" />'
+						.'<input type="button" value="'.__('Update','opentickets-community-edition').'" rel="update-btn" class="button" />'
 					.'</div>'
 				.'</div>'
 				.'<div class="actions" rel="actions">'
-					.'<a href="'.esc_attr($cart_url).'" class="button" rel="cart-btn">Proceed to Cart</a>'
+					.'<a href="'.esc_attr($cart_url).'" class="button" rel="cart-btn">'.__('Proceed to Cart','opentickets-community-edition').'</a>'
 				.'</div>'
 			.'</div>';
 
@@ -245,16 +245,16 @@ class qsot_event_area {
 	public static function admin_templates($list, $venue_id) {
 		$list['area-ui'] = '<div class="area-ui">'
 				.'<div class="actions top">'
-					.'<button class="add-btn button" rel="add-btn">add</button>'
+					.'<button class="add-btn button" rel="add-btn">'.__('add','opentickets-community-edition').'</button>'
 				.'</div>'
 				.'<div class="area-list" rel="area-list"></div>'
 				.'<div class="actions bottom">'
-					.'<button class="add-btn button" rel="add-btn">add</button>'
+					.'<button class="add-btn button" rel="add-btn">'.__('add','opentickets-community-edition').'</button>'
 				.'</div>'
 			.'</div>';
 		$list['no-areas'] = '<div class="view-area view none-area" rel="view-area">'
 				.'<div class="inside">'
-					.'<span class="none">There are currently no areas configured. Please add one to continue.</span>'
+					.'<span class="none">'.__('There are currently no areas configured. Please add one to continue.','opentickets-community-edition').'</span>'
 				.'</div>'
 			.'</div>';
 		$list['view-area'] = '<div class="view-area view" rel="view-area">'
@@ -270,8 +270,8 @@ class qsot_event_area {
 								.'</div>',
 							'actions' => '<div class="actions" rel="actions">'
 									. implode( '<span class="divider"> | </span>', array_values( apply_filters( 'qsot-event-area-ui-actions', array(
-										'<a href="#" rel="edit-btn">edit</a>',
-										'<a href="#" rel="del-btn">delete</a>',
+										'<a href="#" rel="edit-btn">'.__('edit','opentickets-community-edition').'</a>',
+										'<a href="#" rel="del-btn">'.__('delete','opentickets-community-edition').'</a>',
 									), $venue_id ) ) )
 								.'</div>',
 						), $venue_id ) ) )
@@ -284,30 +284,30 @@ class qsot_event_area {
 				.'<input type="hidden" name="area-id[{{id}}]" rel="area-id" value="{{id}}"/>'
 				. implode( '', array_values( apply_filters( 'qsot-event-area-ui-parts', array(
 					'image-selector' => '<div class="edit-field image-select-wrap" rel="field">'
-							.'<label for="img-id[{{id}}]"><strong>Event Area Image</strong></label>'
+							.'<label for="img-id[{{id}}]"><strong>'.__('Event Area Image','opentickets-community-edition').'</strong></label>'
 							.'<div>'
 								.'<div class="image-preview" size="full" rel="img-wrap"></div>'
 								.'<input type="hidden" name="img-id[{{id}}]" value="0" rel="img-id" />'
 								.'<div class="clear"></div>'
 							.'</div>'
-							.'<button class="button" rel="change-img">Select Image</button>'
+							.'<button class="button" rel="change-img">'.__('Select Image','opentickets-community-edition').'</button>'
 						.'</div>',
 					'area-name' => '<div class="edit-field area-name-wrap" rel="field">'
-							.'<label for="area-name[{{id}}]"><strong>Area Name</strong></label>'
+							.'<label for="area-name[{{id}}]"><strong>'.__('Area Name','opentickets-community-edition').'</strong></label>'
 							.'<input autocomplete="off" type="text" class="widefat area-name" rel="area-name" name="area-name[{{id}}]" value="" />'
 						.'</div>',
 					'capacity' => '<div class="edit-field area-name-wrap" rel="field">'
-							.'<label for="capacity[{{id}}]"><strong>Capacity</strong></label>'
+							.'<label for="capacity[{{id}}]"><strong>'.__('Capacity','opentickets-community-edition').'</strong></label>'
 							.'<input autocomplete="off" type="number" min="0" max="100000" step="1" class="widefat capacity" rel="capacity" name="capacity[{{id}}]" value="" />'
 						.'</div>',
 					'pricing' => '<div class="edit-field area-ticket-type" rel="field">'
-							.'<label for="area-ticket-type"><strong>Available Pricing</strong></label>'
+							.'<label for="area-ticket-type"><strong>'.__('Available Pricing','opentickets-community-edition').'</strong></label>'
 							.'<select class="widefat price-list" rel="ttid" name="price-option-tt-id[{{id}}]"></select>'
 						.'</div>',
 				), $venue_id ) ) )
 				.'<div class="actions" rel="actions">'
-					.'<button class="button-primary save-btn" rel="save-btn">save</button>'
-					.'<button class="button cancel-btn" rel="cancel-btn">cancel</button>'
+					.'<button class="button-primary save-btn" rel="save-btn">'.__('save','opentickets-community-edition').'</button>'
+					.'<button class="button cancel-btn" rel="cancel-btn">'.__('cancel','opentickets-community-edition').'</button>'
 				.'</div>'
 			.'</div>';
 		$list['price-option'] = '<div class="price-option-wrap" rel="price-option">'
@@ -317,7 +317,7 @@ class qsot_event_area {
 					.'</td>'
 					.'<td class="price-option-name-wrap" width="25%">'
 						.'<select class="widefat" name="price-option-tt-id[{{id}}][]" rel="ttid">'
-							.'<option value="0">None</option>'
+							.'<option value="0">'.__('None','opentickets-community-edition').'</option>'
 						.'</select>'
 					.'</td>'
 				.'</tr></tbody></table>'
@@ -334,13 +334,13 @@ class qsot_event_area {
 			$event = get_post( $post['event_id'] );
 			if ( post_password_required( $event ) ) {
 				$resp['s'] = false;
-				$resp['e'] = array( 'This event is password protected.' );
+				$resp['e'] = array( __('This event is password protected.','opentickets-community-edition') );
 			} else if ( ! empty( $post['sa'] ) ) {
 				$resp = apply_filters('qsot-ticket-selection-frontend-ajax-'.$post['sa'], $resp, $post);
 			}
 		} else {
 			$resp['s'] = false;
-			$resp['e'] = array('Invalid request. Please refresh the page and try again.');
+			$resp['e'] = array( __('Invalid request. Please refresh the page and try again.','opentickets-community-edition') );
 		}
 		do_action( 'qsot-sync-cart' );
 		header('Content-Type: text/json');
@@ -358,7 +358,7 @@ class qsot_event_area {
 			$res = apply_filters('qsot-zoner-reserve-current-user', false, $event, $event->meta->_event_area_obj->ticket->id, $qty);
 			if ($res && ! is_wp_error( $res ) ) {
 				$resp['s'] = true;
-				$resp['m'] = array('Updated your reservations successfully.');
+				$resp['m'] = array( __('Updated your reservations successfully.','opentickets-community-edition') );
 				$resp['data'] = array(
 					'owns' => apply_filters('qsot-zoner-owns-current-user', 0, $event, $event->meta->_event_area_obj->ticket->id, self::$o->{'z.states.r'}),
 					'available' => $event->meta->available,
@@ -368,14 +368,14 @@ class qsot_event_area {
 			} else if ( is_wp_error( $res ) ) {
 				$resp['e'] = array_merge( $res['e'], $res->get_error_messages() );
 			} else {
-				$resp['e'][] = 'Could not update your reservations.';
+				$resp['e'][] = __('Could not update your reservations.','opentickets-community-edition');
 			}
 		} else {
-			if ($qty <= 0) $resp['e'][] = 'The quantity must be greater than zero.';
-			if (!is_object($event)) $resp['e'][] = 'Could not load that event.';
-			if (!is_object($event->meta)) $resp['e'][] = 'A problem occurred when loading that event.';
-			if (!is_object($event->meta->_event_area_obj)) $resp['e'][] = 'That event does not currently have any tickets.';
-			if (!is_object($event->meta->_event_area_obj->ticket)) $resp['e'][] = 'The event does not have any tickets.';
+			if ($qty <= 0) $resp['e'][] = __('The quantity must be greater than zero.','opentickets-community-edition');
+			if (!is_object($event)) $resp['e'][] = __('Could not load that event.','opentickets-community-edition');
+			if (!is_object($event->meta)) $resp['e'][] = __('A problem occurred when loading that event.','opentickets-community-edition');
+			if (!is_object($event->meta->_event_area_obj)) $resp['e'][] = __('That event does not currently have any tickets.','opentickets-community-edition');
+			if (!is_object($event->meta->_event_area_obj->ticket)) $resp['e'][] = __('The event does not have any tickets.','opentickets-community-edition');
 		}
 
 		return $resp;
@@ -421,23 +421,23 @@ class qsot_event_area {
 				if ($data['quantity'] <= 0) {
 					if (!$owns && $res) {
 						$resp['s'] = true;
-						$resp['m'] = array('Updated your reservations successfully.');
+						$resp['m'] = array( __('Updated your reservations successfully.','opentickets-community-edition') );
 						$resp['data'] = array(
 							'owns' => $owns,
 							'available' => $event->meta->available,
 						);
 						$resp['data']['available_more'] = $resp['data']['available'] - $resp['data']['owns'];
 					} else {
-						if ($owns) $resp['e'][] = 'A problem occurred when trying to remove your reservations.';
-						else $resp['e'][] = 'Could not update your reservations.';
+						if ($owns) $resp['e'][] = __('A problem occurred when trying to remove your reservations.','opentickets-community-edition');
+						else $resp['e'][] = __('Could not update your reservations.','opentickets-community-edition');
 					}
 				} else {
 					if (!$res || !$owns) {
-						if ($owns) $resp['e'][] = 'A problem occurred when trying to update your reservations.';
-						else $resp['e'][] = 'Could not update your reservations.';
+						if ($owns) $resp['e'][] = __('A problem occurred when trying to update your reservations.','opentickets-community-edition');
+						else $resp['e'][] = __('Could not update your reservations.','opentickets-community-edition');
 					} else {
 						$resp['s'] = true;
-						$resp['m'] = array('Updated your reservations successfully.');
+						$resp['m'] = array( __('Updated your reservations successfully.','opentickets-community-edition') );
 						$resp['data'] = array(
 							'owns' => $owns,
 							'available' => $event->meta->available,
@@ -447,17 +447,17 @@ class qsot_event_area {
 				}
 			} else {
 				$resp['e'][] = __( sprintf(
-					'There are not enough available tickets to increase the quantity of %s to %d. There are only %d available.',
+					__('There are not enough available tickets to increase the quantity of %s to %d. There are only %d available.','opentickets-community-edition'),
 					$event->meta->_event_area_obj->ticket->get_title(),
 					$quantity,
 					$available
 				), 'qsot' );
 			}
 		} else {
-			if (!is_object($event)) $resp['e'][] = 'Could not load that event.';
-			if (!is_object($event->meta)) $resp['e'][] = 'A problem occurred when loading that event.';
-			if (!is_object($event->meta->_event_area_obj)) $resp['e'][] = 'That event does not have currently have any tickets.';
-			if (!is_object($event->meta->_event_area_obj->ticket)) $resp['e'][] = 'The event does not have any tickets.';
+			if (!is_object($event)) $resp['e'][] = __('Could not load that event.','opentickets-community-edition');
+			if (!is_object($event->meta)) $resp['e'][] = __('A problem occurred when loading that event.','opentickets-community-edition');
+			if (!is_object($event->meta->_event_area_obj)) $resp['e'][] = __('That event does not have currently have any tickets.','opentickets-community-edition');
+			if (!is_object($event->meta->_event_area_obj->ticket)) $resp['e'][] = __('The event does not have any tickets.','opentickets-community-edition');
 		}
 
 		return $resp;
@@ -504,14 +504,14 @@ class qsot_event_area {
 			<div class="setting-group">
 				<div class="setting" rel="setting-main" tag="event-area">
 					<div class="setting-current">
-						<span class="setting-name">Event Area:</span>
+						<span class="setting-name"><?php _e('Event Area:','opentickets-community-edition') ?></span>
 						<span class="setting-current-value" rel="setting-display"></span>
-						<a class="edit-btn" href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]">Edit</a>
+						<a class="edit-btn" href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]"><?php _e('Edit','opentickets-community-edition') ?></a>
 						<input type="hidden" name="settings[event-area]" value="" scope="[rel=setting-main]" rel="event-area" />
 					</div>
 					<div class="setting-edit-form" rel="setting-form">
 						<select name="event-area">
-							<option value="0">-None-</option>
+							<option value="0"><?php _e('-None-','opentickets-community-edition') ?></option>
 							<?php foreach ($areas as $area): ?>
 								<?php
 									$ticket = get_product(get_post_meta($area->ID, self::$o->{'event_area.mk.po'}, true));
@@ -531,8 +531,8 @@ class qsot_event_area {
 							<?php endforeach; ?>
 						</select>
 						<div class="edit-setting-actions">
-							<input type="button" class="button" rel="setting-save" value="OK" />
-							<a href="#" rel="setting-cancel">Cancel</a>
+							<input type="button" class="button" rel="setting-save" value="<?php _e('OK','opentickets-community-edition') ?>" />
+							<a href="#" rel="setting-cancel"><?php _e('Cancel','opentickets-community-edition') ?></a>
 						</div>
 					</div>
 				</div>
@@ -565,7 +565,7 @@ class qsot_event_area {
 			if (!empty($post['sa'])) $resp = apply_filters('qsot-event-area-admin-ajax-'.$post['sa'], $resp, $post);
 		} else {
 			$resp['s'] = false;
-			$resp['e'] = array('Invalid request. Please refresh the page and try again.');
+			$resp['e'] = array( __('Invalid request. Please refresh the page and try again.','opentickets-community-edition') );
 		}
 		header('Content-Type: text/json');
 		echo @json_encode($resp);
@@ -578,7 +578,7 @@ class qsot_event_area {
 
 		$vid = isset($data['venue_id']) ? $data['venue_id'] : 0;
 		if (empty($vid)) {
-			$resp['e'][] = 'Could not find the venue you specified ['.$vid.'].';
+			$resp['e'][] = sprintf( __('Could not find the venue you specified [%s].','opentickets-community-edition'), $vid);
 			return $resp;
 		}
 
@@ -608,7 +608,7 @@ class qsot_event_area {
 
 		$venue_id = isset($data['venue_id']) ? $data['venue_id'] : 0;
 		if (!$venue_id) {
-			$resp['e'][] = 'Could not find that venue.';
+			$resp['e'][] = __('Could not find that venue.','opentickets-community-edition');
 			return $resp;
 		}
 
@@ -627,7 +627,7 @@ class qsot_event_area {
 		}
 
 		if (empty($items)) {
-			$resp['e'][] = 'Could not save the item'.(count($data['area-id']) == 1 ? '' : 's').' because not enough information was provided.';
+			$resp['e'][] = __('Could not save the item(s) because not enough information was provided.','opentickets-community-edition');
 			return $resp;
 		}
 
@@ -653,7 +653,7 @@ class qsot_event_area {
 				do_action( 'qsot-save-event-area', $old_id, $id, $item );
 				$resp['items'][$old_id] = apply_filters('qsot-get-venue-event-areas', array(), $venue_id, $id);
 			} else {
-				$resp['e'][] = 'There was a problem saving the area ['.$item['area-name'].'].';
+				$resp['e'][] = sprintf( __('There was a problem saving the area [%s].','opentickets-community-edition'), $item['area-name']);
 			}
 		}
 
@@ -741,9 +741,9 @@ class qsot_event_area {
 				$resp['s'] = true;
 			}
 		} else {
-			if ($qty <= 0) $resp['e'][] = 'The quantity must be greater than zero.';
-			if (!is_object($event)) $resp['e'][] = 'Could not find that event.';
-			if (!is_object($order)) $resp['e'][] = 'That is not a valid order.';
+			if ($qty <= 0) $resp['e'][] = __('The quantity must be greater than zero.','opentickets-community-edition');
+			if (!is_object($event)) $resp['e'][] = __('Could not find that event.','opentickets-community-edition');
+			if (!is_object($order)) $resp['e'][] = __('That is not a valid order.','opentickets-community-edition');
 		}
 
 		return $resp;
@@ -854,7 +854,7 @@ class qsot_event_area {
 		foreach ($screens as $screen) {
 			add_meta_box(
 				'available-event-areas',
-				'Event Areas',
+				__('Event Areas','opentickets-community-edition'),
 				array(__CLASS__, 'mb_venue_event_areas'),
 				$screen,
 				'normal',
@@ -997,7 +997,7 @@ class qsot_event_area {
 
 			$out = apply_filters('qsot-no-js-seat-selection-form', $out, $area, $event, $interests, $reserved);
 		} else {
-			$out = '<p><strong>We are sorry. Online registration for this event has closed.</strong></p>';
+			$out = '<p><strong>'.__('We are sorry. Online registration for this event has closed.','opentickets-community-edition').'</strong></p>';
 		}
 
 		return $out.$content;
@@ -1138,11 +1138,11 @@ class qsot_event_area {
 						$ticket = get_product($ticket_type_id);
 						$ticket_name = sprintf(
 							'"<span class="ticket-name">%s</span>" (<span class="ticket-price">%s</span>)',
-							is_object($ticket) ? $ticket->get_title() : '(Unknown Ticket Type)',
+							is_object($ticket) ? $ticket->get_title() : __('(Unknown Ticket Type)','opentickets-community-edition'),
 							is_object($ticket) ? wc_price($ticket->get_price()) : wc_price(0)
 						);
 						self::$nojs_submission_errors[] = sprintf(
-							'There are only <span class="available">%s</span> %s available currently. Could not temporarily reserve %d %s.',
+							__('There are only <span class="available">%s</span> %s available currently. Could not temporarily reserve %d %s.','opentickets-community-edition'),
 							$available,
 							$ticket_name,
 							$requested_count,
@@ -1153,7 +1153,7 @@ class qsot_event_area {
 						exit;
 					}
 				} else {
-					self::$nojs_submission_errors[] = 'The number of tickets must be greater than 0.';
+					self::$nojs_submission_errors[] = __('The number of tickets must be greater than 0.','opentickets-community-edition');
 				}
 			break;
 
@@ -1174,7 +1174,7 @@ class qsot_event_area {
 							is_object($ticket) ? wc_price($ticket->get_price()) : wc_price(0)
 						);
 						self::$nojs_submission_errors[] = sprintf(
-							'There are only <span class="available">%s</span> more %s available currently. Could not temporarily reserve %d more %s. You still have %d %s.',
+							__('There are only <span class="available">%s</span> more %s available currently. Could not temporarily reserve %d more %s. You still have %d %s.','opentickets-community-edition'),
 							$available - $owns,
 							$ticket_name,
 							$requested_count,
@@ -1187,7 +1187,7 @@ class qsot_event_area {
 						exit;
 					}
 				} else {
-					self::$nojs_submission_errors[] = 'The number of tickets must be greater than 0.';
+					self::$nojs_submission_errors[] = __('The number of tickets must be greater than 0.','opentickets-community-edition');
 				}
 			break;
 		}
@@ -1198,8 +1198,8 @@ class qsot_event_area {
 	public static function register_post_type($list) {
 		$list[self::$o->{'event_area.post_type'}] = array(
 			'label_replacements' => array(
-				'plural' => 'Event Areas', // plural version of the proper name
-				'singular' => 'Area', // singular version of the proper name
+				'plural' => __('Event Areas','opentickets-community-edition'), // plural version of the proper name
+				'singular' => __('Area','opentickets-community-edition'), // singular version of the proper name
 			),
 			'args' => array( // almost all of these are passed through to the core regsiter_post_type function, and follow the same guidelines defined on wordpress.org
 				'public' => false,

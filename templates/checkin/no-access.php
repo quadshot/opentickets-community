@@ -4,8 +4,8 @@ Checkin Page: Check-In Failure
 */
 //get_header();
 
-$heading = $heading ? $heading : 'No access';
-$msg = $msg ? $msg : 'You do not have sufficient permissions to perform this action!';
+$heading = $heading ? $heading : __('No access','opentickets-community-edition');
+$msg = $msg ? $msg : __('You do not have sufficient permissions to perform this action!','opentickets-community-edition');
 ?><html><head><title><?php echo $heading.' - '.get_bloginfo('name') ?></title>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
 <meta name="viewport" content="width=device-width" />

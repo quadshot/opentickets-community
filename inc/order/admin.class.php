@@ -146,9 +146,7 @@ class qsot_order_admin {
 			?>
 				<div class="error">
 					<p>
-						The current settings disallow using '<strong>Guest</strong>' as the customer for the order.
-						You have attempted to use '<strong>Guest</strong>' as the customer.
-						You will not be able to process payments or complete an order until a user has been selected as the customer.
+						<?php _e('The current settings disallow using "<strong>Guest</strong>" as the customer for the order. You have attempted to use "<strong>Guest</strong>" as the customer. You will not be able to process payments or complete an order until a user has been selected as the customer.','opentickets-community-edition') ?>
 					</p>
 				</div>
 			<?php
@@ -183,7 +181,7 @@ class qsot_order_admin {
 		// if the payment is not being blocked by the guest setting, then dont change the existing message
 		if (!get_post_meta($post->ID, '_use_guest_attempted', true)) return $msg;
 
-		return $msg.' Additionally, because of the current Woocommerce settings, "<strong>Guest</strong>" is not allowed as the customer user. Please select a user first.';
+		return $msg.' '.__('Additionally, because of the current Woocommerce settings, "<strong>Guest</strong>" is not allowed as the customer user. Please select a user first.','opentickets-community-edition');
 	}
 
 	public static function enforce_non_guest_orders($post_id, $post) {
@@ -215,9 +213,9 @@ class qsot_order_admin {
 					$ostatus = substr( $ostatus = current( $stati ), 0, 3 ) == 'wc-' ? substr( $ostatus, 3 ) : $ostatus;
 				}
 				if ( $ostatus != 'pending' ) {
-					$order->update_status('pending', 'You cannot use "Guest" as the owner of the order, due to current Woocommerce settings.');
+					$order->update_status('pending', __('You cannot use "Guest" as the owner of the order, due to current Woocommerce settings.','opentickets-community-edition'));
 				} else {
-					$order->add_order_note( 'You cannot use "Guest" as the owner of the order, due to current Woocommerce settings.' );
+					$order->add_order_note('You cannot use "Guest" as the owner of the order, due to current Woocommerce settings.','opentickets-community-edition'));
 				}
 
 				self::_enable_emails();
@@ -240,27 +238,27 @@ class qsot_order_admin {
 		$errors = array();
 		$fields = array( // all fields are pre-filtered with trim and a regex that replaces multiple spaces with 1 space (same with dashes)
 			'_billing_first_name' => array(
-				'#^([\w\d][\-\w\d\s\&\.\']+)$#' => 'must be at least 2 letters or numbers', // at least 2 letters or numbers
+				'#^([\w\d][\-\w\d\s\&\.\']+)$#' => __('must be at least 2 letters or numbers','opentickets-community-edition'), // at least 2 letters or numbers
 			),
 			'_billing_last_name' => array(
-				'#^([\w\d][\-\w\d\s\&\.\']+)$#' => 'must be at least 2 letters or numbers', // at least 2 letters or numbers
+				'#^([\w\d][\-\w\d\s\&\.\']+)$#' => __('must be at least 2 letters or numbers','opentickets-community-edition'), // at least 2 letters or numbers
 			),
 			'_billing_address_1' => array(
-				'#^(.{5,})$#' => 'must be at least 7 letters, numbers, or spaces', // at least 7 letters numbers and spaces, beginning and ending with letter or number
+				'#^(.{5,})$#' => __('must be at least 7 letters, numbers, or spaces','opentickets-community-edition'), // at least 7 letters numbers and spaces, beginning and ending with letter or number
 			),
 			'_billing_city' => array(
-				'#^([\w\d][\w\d\s]{2,}[\w\d])$#' => 'must be at least 4 letters, numbers, or spaces', // at least 4 letters numbers and spaces, beginning and ending with letter or number
+				'#^([\w\d][\w\d\s]{2,}[\w\d])$#' => __('must be at least 4 letters, numbers, or spaces','opentickets-community-edition'), // at least 4 letters numbers and spaces, beginning and ending with letter or number
 			),
 			'_billing_postcode' => array(
 				'functions' => array(
 					array(
 						'func' => array(__CLASS__, 'is_postcode'),
-						'msg' => __('must be at least 5 letters, numbers, or spaces', 'qsot'), // at least 5 letters numbers and dashes, beginning and ending with letter or number
+						'msg' => __('must be at least 5 letters, numbers, or spaces','opentickets-community-edition'), // at least 5 letters numbers and dashes, beginning and ending with letter or number
 					),
 				),
 			),
 			'_billing_country' => array(
-				'#^([\w\d][\w\d\s]*?[\w\d])$#' => 'must be at least 2 letters, numbers, or spaces', // at least 3 letters numbers and spaces, beginning and ending with letter or number
+				'#^([\w\d][\w\d\s]*?[\w\d])$#' => __('must be at least 2 letters, numbers, or spaces','opentickets-community-edition'), // at least 3 letters numbers and spaces, beginning and ending with letter or number
 			),
 			/* not valid for international
 			'_billing_state' => array(
@@ -268,11 +266,11 @@ class qsot_order_admin {
 			),
 			*/
 			'_billing_email' => array(
-				'#^([\w\d].+[\w])$#' => 'must be at least 3 letters, numbers, or spaces', // at least 3 characters long, beginning with letter or number and ending with letter
+				'#^([\w\d].+[\w])$#' => __('must be at least 3 letters, numbers, or spaces','opentickets-community-edition'), // at least 3 characters long, beginning with letter or number and ending with letter
 				'functions' => array(
 					array(
 						'func' => 'is_email',
-						'msg' => 'must be a valid email',
+						'msg' => __('must be a valid email','opentickets-community-edition'),
 					),
 				),
 			),
@@ -280,7 +278,7 @@ class qsot_order_admin {
 				'functions' => array(
 					array(
 						'func' => array(__CLASS__, 'is_phone'),
-						'msg' => 'must be a valid phone number',
+						'msg' => __('must be a valid phone number','opentickets-community-edition'),
 					),
 				),
 			),
@@ -325,9 +323,9 @@ class qsot_order_admin {
 				$ostatus = substr( $ostatus = current( $stati ), 0, 3 ) == 'wc-' ? substr( $ostatus, 3 ) : $ostatus;
 			}
 			if ( $ostatus != 'pending' ) {
-				$order->update_status('pending', 'Your current settings require you to provide most billing information for each order.');
+				$order->update_status('pending', __('Your current settings require you to provide most billing information for each order.','opentickets-community-edition'));
 			} else {
-				$order->add_order_note( 'Your current settings require you to provide most billing information for each order.', false );
+				$order->add_order_note(__('Your current settings require you to provide most billing information for each order.','opentickets-community-edition'), false);
 			}
 
 			self::_enable_emails();
@@ -367,7 +365,7 @@ class qsot_order_admin {
 
 	public static function add_new_user_button($customer_user, $post, $post_id) {
 		?>
-			<a href="#" class="new-user" rel="new-user-btn">New User</a>
+			<a href="#" class="new-user" rel="new-user-btn"><?php _e('New User','opentickets-community-edition') ?></a>
 		<?php
 	}
 
@@ -395,32 +393,32 @@ class qsot_order_admin {
 
 		if (get_option('woocommerce_registration_email_for_username', 'no') == 'no') {
 			if (empty($username)) {
-				$res['e'][] = 'The username is a required field.';
+				$res['e'][] = __('The username is a required field.','opentickets-community-edition');
 			} else if (!validate_username($username)) {
-				$res['e'][] = 'That user name contains illegal characters.';
+				$res['e'][] = __('That user name contains illegal characters.','opentickets-community-edition');
 			} else if (username_exists($username)) {
-				$res['e'][] = $username.' is already being used by another user. Please enter a different username.';
+				$res['e'][] = $username.' '.__('is already being used by another user. Please enter a different username.','opentickets-community-edition');
 			}
 		}
 
 		if (empty($email)) {
-			$res['e'][] = 'The email address is required.';
+			$res['e'][] = __('The email address is required.','opentickets-community-edition');
 		} else if (!is_email($email)) {
-			$res['e'][] = 'That is not a valid email address.';
+			$res['e'][] = __('That is not a valid email address.','opentickets-community-edition');
 		} else if (email_exists($email)) {
-			$res['e'][] = $email.' is already in use by another user. Please use a different email address.';
+			$res['e'][] = $email.' '.__('is already in use by another user. Please use a different email address.','opentickets-community-edition');
 		}
 
 		if (empty($first_name)) {
-			$res['e'][] = 'The first name is a required field.';
+			$res['e'][] = __('The first name is a required field.','opentickets-community-edition');
 		}
 
 		if (empty($last_name)) {
-			$res['e'][] = 'The last name is a required field.';
+			$res['e'][] = __('The last name is a required field.','opentickets-community-edition');
 		}
 
 		if (empty($res['e'])) {
-			$res['m'][] = 'The information you supplied passed validation.';
+			$res['m'][] = __('The information you supplied passed validation.','opentickets-community-edition');
 			$user_info = array(
 				'user_login' => get_option('woocommerce_registration_email_for_username', 'no') == 'yes' ? $email : $username,
 				'user_email' => $email,
@@ -432,10 +430,10 @@ class qsot_order_admin {
 			);
 			$user_id = wp_insert_user($user_info);
 			if (is_wp_error($user_id)) {
-				$res['e'][] = 'User creation failed: '.$user_id->get_error_message();
+				$res['e'][] = __('User creation failed:','opentickets-community-edition').' '.$user_id->get_error_message();
 			} else {
 				$res['s'] = true;
-				$res['m'][] = 'The user was created successfully.';
+				$res['m'][] = __('The user was created successfully.','opentickets-community-edition');
 				$user = new WP_User($user_id);
 				$res['c']['id'] = $user_id;
 				$res['c']['displayed_value'] = sprintf('%s %s (#%d - %s)', $first_name, $last_name, $user_id, $email);
@@ -469,7 +467,7 @@ class qsot_order_admin {
 	protected static function _new_user_ui_templates($post_id) {
 		$list = array();
 
-		$list['new-user-form'] = '<div class="new-user-form-wrapper" title="New User Form">'
+		$list['new-user-form'] = '<div class="new-user-form-wrapper" title="'.__('New User Form','opentickets-community-edition').'">'
 				.'<style>'
 					.'.new-user-form-wrapper .messages { font-size:10px; font-weight:700; font-style:italic; } '
 					.'.new-user-form-wrapper .messages > div { padding:2px 5px; margin-bottom:3px; border:1px solid #880000; border-radius:5px; } '
@@ -480,19 +478,19 @@ class qsot_order_admin {
 				.(get_option('woocommerce_registration_email_for_username', 'no') == 'yes'
 					? ''
 					: '<div class="field">'
-							.'<label for="new_user_login">Username</label>'
+							.'<label for="new_user_login">'.__('Username','opentickets-community-edition').'</label>'
 							.'<input class="widefat" type="test" name="new_user_login" id="new_user_login" rel="new-user-login" value="" />'
 						.'</div>')
 				.'<div class="field">'
-					.'<label for="new_user_email">Email</label>'
+					.'<label for="new_user_email">'.__('Email','opentickets-community-edition').'</label>'
 					.'<input class="widefat" type="email" name="new_user_email" id="new_user_email" rel="new-user-email" value="" />'
 				.'</div>'
 				.'<div class="field">'
-					.'<label for="new_user_first_name">First Name</label>'
+					.'<label for="new_user_first_name">'.__('First Name','opentickets-community-edition').'</label>'
 					.'<input class="widefat" type="text" name="new_user_first_name" id="new_user_first_name" rel="new-user-first-name" value="" />'
 				.'</div>'
 				.'<div class="field">'
-					.'<label for="new_user_last_name">Last Name</label>'
+					.'<label for="new_user_last_name">'.__('Last Name','opentickets-community-edition').'</label>'
 					.'<input class="widefat" type="text" name="new_user_last_name" id="new_user_last_name" rel="new-user-last-name" value="" />'
 				.'</div>'
 			.'</div>';
@@ -588,8 +586,8 @@ class qsot_order_admin {
 		self::$options->add(array(
 			'order' => 2100,
 			'type' => 'title',
-			'title' => __('Additional Email Settings', 'qsot'),
-			'id' => 'heading-add-email-sets-1',
+			'title' => __('Additional Admin Based Order Validation','opentickets-community-edition'),
+			'id' => 'heading-admin-orders-1',
 		));
 
 		self::$options->add(array(
@@ -597,8 +595,8 @@ class qsot_order_admin {
 			'id' => 'qsot-completed-order-email-message',
 			'type' => 'textarea',
 			'class' => 'widefat reason-list',
-			'title' => __('Custom Completed Order Message', 'qsot'),
-			'desc' => __('This html appears at the bottom of the default Completed Order email, sent to the customer upon completion of their order, below their address information.', 'qsot'),
+			'title' => __('Custom Completed Order Message','opentickets-community-edition'),
+			'desc' => __('This html appears at the bottom of the default Completed Order email, sent to the customer upon completion of their order, below their address information.','opentickets-community-edition'),
 			'default' => '',
 		));
 
@@ -607,8 +605,8 @@ class qsot_order_admin {
 			'id' => 'qsot-completed-order-email-message-text',
 			'type' => 'textarea',
 			'class' => 'widefat reason-list',
-			'title' => __('Custom Completed Order Message - Text only version', 'qsot'),
-			'desc' => __('This text appears at the bottom of the default Completed Order email, sent to the customer upon completion of their order, below their address information.', 'qsot'),
+			'title' => __('Custom Completed Order Message - Text only version','opentickets-community-edition'),
+			'desc' => __('This text appears at the bottom of the default Completed Order email, sent to the customer upon completion of their order, below their address information.','opentickets-community-edition'),
 			'default' => '',
 		));
 

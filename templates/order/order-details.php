@@ -13,12 +13,12 @@ global $woocommerce;
 
 $order = new WC_Order( $order_id );
 ?>
-<h2><?php _e( 'Order Details', 'woocommerce' ); ?></h2>
+<h2><?php _e( 'Order Details', 'opentickets-community-edition' ); ?></h2>
 <table class="shop_table order_details">
 	<thead>
 		<tr>
-			<th class="product-name"><?php _e( 'Product', 'woocommerce' ); ?></th>
-			<th class="product-total"><?php _e( 'Total', 'woocommerce' ); ?></th>
+			<th class="product-name"><?php _e( 'Product', 'opentickets-community-edition' ); ?></th>
+			<th class="product-total"><?php _e( 'Total', 'opentickets-community-edition' ); ?></th>
 		</tr>
 	</thead>
 	<tfoot>
@@ -66,7 +66,7 @@ $order = new WC_Order( $order_id );
 								foreach ( $download_files as $download_id => $file ) {
 									$i++;
 
-									$links[] = '<small><a href="' . esc_url( $file['download_url'] ) . '">' . sprintf( __( 'Download file%s', 'woocommerce' ), ( count( $download_files ) > 1 ? ' ' . $i . ': ' : ': ' ) ) . esc_html( $file['name'] ) . '</a></small>';
+									$links[] = '<small><a href="' . esc_url( $file['download_url'] ) . '">' . sprintf( __( 'Download file%s', 'opentickets-community-edition' ), ( count( $download_files ) > 1 ? ' ' . $i . ': ' : ': ' ) ) . esc_html( $file['name'] ) . '</a></small>';
 								}
 
 								echo '<br/>' . implode( '<br/>', $links );
@@ -98,12 +98,12 @@ $order = new WC_Order( $order_id );
 <?php do_action( 'woocommerce_order_details_after_order_table', $order ); ?>
 
 <header>
-	<h2><?php _e( 'Customer details', 'woocommerce' ); ?></h2>
+	<h2><?php _e( 'Customer details', 'opentickets-community-edition' ); ?></h2>
 </header>
 <dl class="customer_details">
 <?php
-	if ( $order->billing_email ) echo '<dt>' . __( 'Email:', 'woocommerce' ) . '</dt><dd>' . $order->billing_email . '</dd>';
-	if ( $order->billing_phone ) echo '<dt>' . __( 'Telephone:', 'woocommerce' ) . '</dt><dd>' . $order->billing_phone . '</dd>';
+	if ( $order->billing_email ) echo '<dt>' . __( 'Email:', 'opentickets-community-edition' ) . '</dt><dd>' . $order->billing_email . '</dd>';
+	if ( $order->billing_phone ) echo '<dt>' . __( 'Telephone:', 'opentickets-community-edition' ) . '</dt><dd>' . $order->billing_phone . '</dd>';
 
 	// Additional customer details hook
 	do_action( 'woocommerce_order_details_after_customer_details', $order );
@@ -119,11 +119,11 @@ $order = new WC_Order( $order_id );
 <?php endif; ?>
 
 		<header class="title">
-			<h3><?php _e( 'Billing Address', 'woocommerce' ); ?></h3>
+			<h3><?php _e( 'Billing Address', 'opentickets-community-edition' ); ?></h3>
 		</header>
 		<address><p>
 			<?php
-				if ( ! $order->get_formatted_billing_address() ) _e( 'N/A', 'woocommerce' ); else echo $order->get_formatted_billing_address();
+				if ( ! $order->get_formatted_billing_address() ) _e( 'N/A', 'opentickets-community-edition' ); else echo $order->get_formatted_billing_address();
 			?>
 		</p></address>
 
@@ -134,11 +134,11 @@ $order = new WC_Order( $order_id );
 	<div class="col-2">
 
 		<header class="title">
-			<h3><?php _e( 'Shipping Address', 'woocommerce' ); ?></h3>
+			<h3><?php _e( 'Shipping Address', 'opentickets-community-edition' ); ?></h3>
 		</header>
 		<address><p>
 			<?php
-				if ( ! $order->get_formatted_shipping_address() ) _e( 'N/A', 'woocommerce' ); else echo $order->get_formatted_shipping_address();
+				if ( ! $order->get_formatted_shipping_address() ) _e( 'N/A', 'opentickets-community-edition' ); else echo $order->get_formatted_shipping_address();
 			?>
 		</p></address>
 

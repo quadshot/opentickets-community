@@ -34,14 +34,14 @@ class qsot_reporting {
 		$links = array();
 
 		if (is_array($csv) && isset($csv['url']) && !empty($csv['url']))
-			$links['csv'] = sprintf('<a href="%s" title="%s">%s</a>', esc_attr($csv['url']), __('Download CSV','qsot'), __('Download CSV','qsot'));
+			$links['csv'] = sprintf('<a href="%s" title="%s">%s</a>', esc_attr($csv['url']), __('Download CSV','opentickets-community-edition'), __('Download CSV','opentickets-community-edition'));
 
 		if (isset($req)) {
 			$link_data = array('pf' => 1);
 			$link_data['showing'] = $req['showing'];
 			if (isset($req['sort']) && !empty($req['sort'])) $link_data['sort'] = $req['sort'];
 			$link = add_query_arg($link_data, $_SERVER['HTTP_REFERER']);
-			$links['pf'] = sprintf('<a href="%s" title="%s" target="_blank">%s</a>', esc_attr($link), __('Printer Friendly Version','qsot'), __('Printer Friendly Version','qsot'));
+			$links['pf'] = sprintf('<a href="%s" title="%s" target="_blank">%s</a>', esc_attr($link), __('Printer Friendly Version','opentickets-community-edition'), __('Printer Friendly Version','opentickets-community-edition'));
 		}
 		?>
 		<?php if (count($links)): ?>
@@ -83,7 +83,7 @@ class qsot_reporting {
 }
 
 abstract class qsot_admin_report {
-	protected static $report_name = 'Report';
+	protected static $report_name = __('Report','opentickets-community-edition');
 	protected static $report_slug = 'report';
 	protected static $report_desc = '';
 
@@ -107,16 +107,16 @@ abstract class qsot_admin_report {
 		$title = esc_html( strip_tags( $title ) );
 
 		if ( is_network_admin() )
-			$admin_title = __( 'Network Admin' );
+			$admin_title = __('Network Admin','opentickets-community-edition');
 		elseif ( is_user_admin() )
-			$admin_title = __( 'Global Dashboard' );
+			$admin_title = __('Global Dashboard','opentickets-community-edition');
 		else
 			$admin_title = get_bloginfo( 'name' );
 
 		if ( $admin_title == $title )
-			$admin_title = sprintf( __( '%1$s &#8212; WordPress' ), $title );
+			$admin_title = sprintf( __('%1$s &#8212; WordPress','opentickets-community-edition'), $title );
 		else
-			$admin_title = sprintf( __( '%1$s &lsaquo; %2$s &#8212; WordPress' ), $title, $admin_title );
+			$admin_title = sprintf( __('%1$s &lsaquo; %2$s &#8212; WordPress','opentickets-community-edition'), $title, $admin_title );
 
 		$admin_title = apply_filters( 'admin_title', $admin_title, $title );
 
@@ -246,7 +246,7 @@ abstract class qsot_admin_report {
 	public static function csv_path_notice() {
 		if (self::$bad_path) {
 			echo '<div class="error">';
-			printf(__("Could not create the report cache directory. Make sure that the permissions for '%s' allow the webserver to create a directory, and try again.",'qsot'), $path);
+			printf(__("Could not create the report cache directory. Make sure that the permissions for '%s' allow the webserver to create a directory, and try again.",'opentickets-community-edition'), $path);
 			echo '</div>';
 		}
 	}
@@ -315,7 +315,7 @@ abstract class qsot_admin_report {
 
 	// display a generic report error
 	protected function _report_error($msg='') {
-		$msg = $msg ? $msg : __('An un expected error occurred during report generation.','qsot');
+		$msg = $msg ? $msg : __('An un expected error occurred during report generation.','opentickets-community-edition');
 
 		?>
 			<div class="report-error">
@@ -332,13 +332,13 @@ abstract class qsot_admin_report {
 			include $template;
 		} else {
 			// if there is not template (unlikely) then display something for all our hard work
-			echo '<p>'.__('Could not find the report result template. Below is the list of raw CSV results.','qsot').'</p><ul>';
+			echo '<p>'.__('Could not find the report result template. Below is the list of raw CSV results.','opentickets-community-edition').'</p><ul>';
 			foreach ($csvs as $event_id => $csv) {
 				echo sprintf(
 					'<li><a href="%s" title="%s">%s</a></li>',
 					esc_attr($csv['url']),
-					esc_attr(__('View report for ', 'qsot').$events[$event_id.'']['title']),
-					__('Report for ', 'qsot').$events[$event_id.'']['title']
+					esc_attr(__('View report for','opentickets-community-edition').' '.$events[$event_id.'']['title']),
+					__('Report for','opentickets-community-edition').' '.$events[$event_id.'']['title']
 				);
 			}
 			echo '</ul>';
@@ -365,7 +365,7 @@ abstract class qsot_admin_report {
 	protected function _payment_method($order, $fallback='') {
 		return isset($order['_payment_method']) && !empty($order['_payment_method'])
 			? $order['_payment_method']
-			: ( isset($order['_order_total']) && $order['_order_total'] > 0 ? __('(unknown)','qsot') : __('-free-','qsot') );
+			: ( isset($order['_order_total']) && $order['_order_total'] > 0 ? __('(unknown)','opentickets-community-edition') : __('-free-','opentickets-community-edition') );
 	}
 
 	// if the billing information does not exist for an order, but their is an owning user for the order, attempt to pull billing information from user information

@@ -378,7 +378,7 @@ class qsot_seat_pricing {
 
 			if ( $woocommerce->cart->cart_contents[$item_key]['quantity'] > 0 ) {
 				wc_add_notice( sprintf(
-					'There were only %d of the %s for %s available. We reserved all of them for you instead of the %d you requested.',
+					__('There were only %d of the %s for %s available. We reserved all of them for you instead of the %d you requested.','opentickets-community-edition'),
 					$woocommerce->cart->cart_contents[$item_key]['quantity'],
 					$product->get_title(),
 					$event->post_title,
@@ -386,7 +386,7 @@ class qsot_seat_pricing {
 				), 'error' );
 			} else {
 				wc_add_notice( sprintf(
-					'There were no %s for %s available to give you. We have removed it from your cart.',
+					__('There were no %s for %s available to give you. We have removed it from your cart.','opentickets-community-edition'),
 					$product->get_title(),
 					$event->post_title
 				), 'error' );
@@ -443,12 +443,12 @@ class qsot_seat_pricing {
 
 	protected static function _draw_item_ticket_info($item_id, $item, $product, $edit=false) {
 		if ($product->ticket != 'yes') return;
-		$event_display = '<span class="event-name">(no event selected)</span>';
+		$event_display = '<span class="event-name">'.__('(no event selected)','opentickets-community-edition').'</span>';
 		$event_id = 0;
 		if (isset($item['event_id'])) {
 			$event = get_post($item['event_id']);
 			if (is_object($event)) {
-				$event_display = sprintf('<a rel="edit-event" target="_blank" href="%s" title="edit event">%s</a>', get_edit_post_link($event->ID), apply_filters('the_title', $event->post_title));
+				$event_display = sprintf('<a rel="edit-event" target="_blank" href="%s">%s</a>', get_edit_post_link($event->ID), apply_filters('the_title', $event->post_title));
 				$event_id = $event->ID;
 			}
 		}
@@ -460,7 +460,7 @@ class qsot_seat_pricing {
 						event-id="<?php echo esc_attr($event_id) ?>"
 						qty="<?php echo esc_attr($item['qty']) ?>">Change</a></div>
 				<?php endif; ?>
-				<div class="info"><strong>Event: </strong> <?php echo $event_display ?></div>
+				<div class="info"><strong><?php _e('Event:','opentickets-community-edition') ?></strong> <?php echo $event_display ?></div>
 				<?php do_action('qsot-ticket-item-meta', $item_id, $item, $product) ?>
 			</div>
 		<?php
@@ -526,21 +526,21 @@ class qsot_seat_pricing {
 			.'</div>';
 
 		$list['info'] = '<div class="ts-section info-wrap" rel="wrap">'
-				.'<div class="row"><span class="label">Event: </span> <span class="value event-name" rel="name"></span></div>'
-				.'<div class="row"><span class="label">Date: </span> <span class="value event-date" rel="date"></span></div>'
+				.'<div class="row"><span class="label">'.__('Event:','opentickets-community-edition').' </span> <span class="value event-name" rel="name"></span></div>'
+				.'<div class="row"><span class="label">'.__('Date:','opentickets-community-edition').' </span> <span class="value event-date" rel="date"></span></div>'
 				.'<div class="event-capacity" rel="capacity">'
-					.'<span class="field"><span class="label">Capacity: </span> <span class="value total-capacity" rel="total"></span></span>'
-					.'<span class="field"><span class="label">Available: </span> <span class="value available" rel="available"></span></span>'
+					.'<span class="field"><span class="label">'.__('Capacity:','opentickets-community-edition').' </span> <span class="value total-capacity" rel="total"></span></span>'
+					.'<span class="field"><span class="label">'.__('Available:','opentickets-community-edition').' </span> <span class="value available" rel="available"></span></span>'
 				.'</div>'
 			.'</div>';
 
 		$list['actions:change'] = '<div class="action-list" rel="btns">'
-				.'<input type="button" class="button" rel="change-btn" value="Different Event"/>'
-				.'<input type="button" class="button" rel="use-btn" value="Use This Event"/>'
+				.'<input type="button" class="button" rel="change-btn" value="'.__('Different Event','opentickets-community-edition').'"/>'
+				.'<input type="button" class="button" rel="use-btn" value="'.__('Use This Event','opentickets-community-edition').'"/>'
 			.'</div>';
 
 		$list['actions:add'] = '<div class="action-list" rel="btns">'
-				.'<input type="button" class="button" rel="change-btn" value="Different Event"/>'
+				.'<input type="button" class="button" rel="change-btn" value="'.__('Different Event','opentickets-community-edition').'"/>'
 			.'</div>';
 
 		$list['inner:change'] = '<div class="image-wrap" rel="image-wrap"></div>';
@@ -549,12 +549,12 @@ class qsot_seat_pricing {
 				.'<div class="ticket-form ts-section">'
 					.'<span class="ticket-name" rel="ttname"></span>'
 					.'<input type="number" min="1" max="100000" step="1" rel="ticket-count" name="qty" value="1" />'
-					.'<input type="button" class="button" rel="add-btn" value="Add Tickets" />'
+					.'<input type="button" class="button" rel="add-btn" value="'.__('Add Tickets','opentickets-community-edition').'" />'
 				.'</div>'
 				.'<div class="image-wrap" rel="image-wrap"></div>'
 			.'</div>';
 
-		$list['transition'] = '<h1 class="loading">Loading. One moment please...</h1>';
+		$list['transition'] = '<h1 class="loading">'.__('Loading. One moment please...','opentickets-community-edition').'</h1>';
 
 		return $list;
 	}
@@ -566,7 +566,7 @@ class qsot_seat_pricing {
 			if (!empty($post['sa'])) $resp = apply_filters('qsot-ticket-selection-admin-ajax-'.$post['sa'], $resp, $post);
 		} else {
 			$resp['s'] = false;
-			$resp['e'] = array('Invalid request. Please refresh the page and try again.');
+			$resp['e'] = array( __('Invalid request. Please refresh the page and try again.','opentickets-community-edition') );
 		}
 		header('Content-Type: text/json');
 		echo @json_encode($resp);
@@ -616,7 +616,7 @@ class qsot_seat_pricing {
 				$resp['i'][] = $out;
 			}
 		} else {
-			$resp['e'][] = 'Invalid order number.';
+			$resp['e'][] = __('Invalid order number.','opentickets-community-edition');
 		}
 
 		return $resp;
@@ -665,20 +665,20 @@ class qsot_seat_pricing {
 					$event->post_title = apply_filters('the_title', $event->post_title);
 					$resp['event'] = $event;
 				} else {
-					$resp['e'] = 'Could not find the new event.';
+					$resp['e'] = __('Could not find the new event.','opentickets-community-edition');
 				}
 			} else {
-				$resp['e'] = 'Could not find that order item on the order.';
+				$resp['e'] = __('Could not find that order item on the order.','opentickets-community-edition');
 			}
 		} else {
-			$resp['e'] = 'The order item does not appear to be valid.';
+			$resp['e'] = __('The order item does not appear to be valid.','opentickets-community-edition');
 		}
 
 		return $resp;
 	}
 
 	public static function add_tickets_button($order) {
-		?><button type="button" class="button add-order-tickets" rel="add-tickets-btn"><?php _e( 'Add tickets', 'qsot' ); ?></button><?php
+		?><button type="button" class="button add-order-tickets" rel="add-tickets-btn"><?php _e( 'Add tickets','opentickets-community-edition' ); ?></button><?php
 	}
 
 	public static function oid_from_oiid($oid, $oiid, $force=false) {
@@ -726,7 +726,7 @@ class qsot_seat_pricing {
 			'id' => '_ticket',
 			'wrapper_class' => 'show_if_simple',
 			'label' => __('Ticket', 'qsot'),
-			'description' => __('Allows this product to be assigned as a ticket, when configuring pricing on a seating chart, for the '.self::$o->product_name.' plugin.', 'qsot'),
+			'description' => sprintf( __('Allows this product to be assigned as a ticket, when configuring pricing on a seating chart, for the %s plugin.','opentickets-community-edition'), self::$o->product_name),
 		);
 	
 		return $list;

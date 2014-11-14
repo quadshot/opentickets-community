@@ -438,7 +438,7 @@ if (!class_exists('lou_media_box_anywhere')):
 
 			// creates the tracking field and new button with meaningful text
 			$send_marker = '<input type="hidden" name="'.self::$_hooks[self::$_tokens[$token]]['field_name'].'['.$attachment_id.']" value="1"/>';
-			$use_button = '<input type="submit" class="button" name="send['.$attachment_id.']" value="'.esc_attr__('Use this image').'"/>';
+			$use_button = '<input type="submit" class="button" name="send['.$attachment_id.']" value="'.__('Use this image','opentickets-community-edition').'"/>';
 
 			// the is pretty much a copy of part of the get_media_item() function inside /wp-admin/includes/media.php . this generates the 
 			// delete button in all the states that are appropriate to it. it is also the reason we needed to calculate the $attachment_id 
@@ -446,30 +446,30 @@ if (!class_exists('lou_media_box_anywhere')):
 			if (current_user_can('delete_post', $attachment_id)) {
 				if ( !EMPTY_TRASH_DAYS ) {
 					$delete = '<a href="'.wp_nonce_url('post.php?action=delete&amp;post='.$attachment_id, 'delete-attachment_'.$attachment_id)
-						.'" id="del['.$attachment_id.']" class="delete">'.__('Delete Permanently').'</a>';
+						.'" id="del['.$attachment_id.']" class="delete">'.__('Delete Permanently','opentickets-community-edition').'</a>';
 				} elseif ( !MEDIA_TRASH ) {
 					$delete = 
 						'<a href="#" class="del-link" onclick="document.getElementById(\'del_attachment_'.$attachment_id.'\').style.display=\'block\';return false;">'
-							.__('Delete')
+							.__('Delete','opentickets-community-edition')
 						.'</a>'
 						.'<div id="del_attachment_'.$attachment_id.'" class="del-attachment" style="display:none;">'
-							.sprintf(__('You are about to delete <strong>%s</strong>.'), $filename)
+							.sprintf(__('You are about to delete <strong>%s</strong>.','opentickets-community-edition'), $filename)
 							.'<a href="'.wp_nonce_url('post.php?action=delete&amp;post='.$attachment_id, 'delete-attachment_'.$attachment_id)
 									.'" id="del['.$attachment_id.']" class="button">'
-								.__('Continue')
+								.__('Continue','opentickets-community-edition')
 							.'</a>'
 							.'<a href="#" class="button" onclick="this.parentNode.style.display=\'none\';return false;">'
-								.__('Cancel')
+								.__('Cancel','opentickets-community-edition')
 							.'</a>'
 						.'</div>';
 				} else {
 					$delete =
 						'<a href="'.wp_nonce_url('post.php?action=trash&amp;post='.$attachment_id, 'trash-attachment_'.$attachment_id).'" id="del['.$attachment_id.']" class="delete">'
-							.__('Move to Trash')
+							.__('Move to Trash','opentickets-community-edition')
 						.'</a>'
 						.'<a href="'.wp_nonce_url('post.php?action=untrash&amp;post='.$attachment_id, 'untrash-attachment_'.$attachment_id).'"
 								id="undo['.$attachment_id.']" class="undo hidden">'
-							.__('Undo')
+							.__('Undo','opentickets-community-edition')
 						.'</a>';
 				}
 			}
@@ -590,7 +590,7 @@ if (!class_exists('lou_media_box_anywhere')):
 			var swfu;
 			SWFUpload.onload = function() {
 				var settings = {
-						button_text: '<span class="button"><?php _e('Select Files'); ?><\/span>',
+						button_text: '<span class="button"><?php _e('Select Files','opentickets-community-edition'); ?><\/span>',
 						button_text_style: '.button { text-align: center; font-weight: bold; font-family:"Lucida Grande",Verdana,Arial,"Bitstream Vera Sans",sans-serif; font-size: 11px; text-shadow: 0 1px 0 #FFFFFF; color:#464646; }',
 						button_height: "23",
 						button_width: "132",

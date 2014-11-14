@@ -66,7 +66,7 @@ class qsot_core_hacks {
 			remove_meta_box('woocommerce-order-notes', 'shop_order', 'side');
 			add_meta_box(
 				'qsotcommerce-order-notes',
-				__('Order Notes', 'woocommerce'),
+				__('Order Notes','opentickets-community-edition'),
 				array(__CLASS__, 'woocommerce_order_notes_meta_box'),
 				'shop_order',
 				'side',
@@ -76,8 +76,8 @@ class qsot_core_hacks {
 			remove_meta_box('woocommerce-order-items', 'shop_order', 'normal', 'high');
 			add_meta_box(
 				'woocommerce-order-items',
-				__( 'Order Items', 'woocommerce' )
-						.' <span class="tips" data-tip="'.__('Note: if you edit quantities or remove items from the order you will need to manually update stock levels.', 'woocommerce')
+				__( 'Order Items','opentickets-community-edition' )
+						.' <span class="tips" data-tip="'.__('Note: if you edit quantities or remove items from the order you will need to manually update stock levels.','opentickets-community-edition')
 						.'">[?]</span>',
 				array(__CLASS__, 'woocommerce_order_items_meta_box'),
 				'shop_order',
@@ -118,7 +118,7 @@ class qsot_core_hacks {
 		remove_meta_box('woocommerce-order-totals', 'shop_order', 'side', 'default');
 		add_meta_box(
 			'woocommerce-order-totals',
-			__( 'Order Totals', 'woocommerce' ),
+			__( 'Order Totals', 'opentickets-community-edition' ),
 			array(__CLASS__, 'woocommerce_order_totals_meta_box'),
 			'shop_order',
 			'side',
@@ -128,7 +128,7 @@ class qsot_core_hacks {
 	}
 
 	public static function add_view_customer_facing_emails($list) {
-		$list['view-completed-email'] = __('View Order Receipt', 'qsot');
+		$list['view-completed-email'] = __('View Order Receipt','opentickets-community-edition');
 		return $list;
 	}
 
@@ -140,7 +140,7 @@ class qsot_core_hacks {
 
 		?><html>
 			<head>
-				<title><?php echo $email->get_subject() ?> - Preview - <?php echo get_bloginfo('name') ?></title>
+				<title><?php echo $email->get_subject().' - '; _e('Preview','opentickets-community-edition'); echo ' - '.get_bloginfo('name') ?></title>
 			</head>
 			<body>
 				<?php echo $email->get_content(); ?>
@@ -153,8 +153,8 @@ class qsot_core_hacks {
 		$list['no_processing'] = array(
 			'id' => '_no_processing',
 			'wrapper_class' => 'show_if_simple show_if_grouped show_if_external show_if_variable no-wrap',
-			'label' => __('Bypass Process', 'qsot'),
-			'description' => __('Checking this box bypasses the Processing step and marks the order as Complete. (if other products in an order require processing, the order will still goto processing)', 'qsot'),
+			'label' => __('Bypass Process','opentickets-community-edition'),
+			'description' => __('Checking this box bypasses the Processing step and marks the order as Complete. (if other products in an order require processing, the order will still goto processing)','opentickets-community-edition'),
 		);
 	
 		return $list;
@@ -303,11 +303,11 @@ class qsot_core_hacks {
 		$data = get_post_meta( $post->ID );
 		?>
 		<div class="totals_group">
-			<h4><span class="discount_total_display inline_total"></span><?php _e( 'Discounts', 'woocommerce' ); ?></h4>
+			<h4><span class="discount_total_display inline_total"></span><?php _e( 'Discounts','opentickets-community-edition' ); ?></h4>
 			<ul class="totals">
 
 				<li class="left">
-					<label><?php _e( 'Cart Discount:', 'woocommerce' ); ?>&nbsp;<a class="tips" data-tip="<?php _e( 'Discounts before tax - calculated by comparing subtotals to totals.', 'woocommerce' ); ?>" href="#">[?]</a></label>
+					<label><?php _e( 'Cart Discount:','opentickets-community-edition' ); ?>&nbsp;<a class="tips" data-tip="<?php _e( 'Discounts before tax - calculated by comparing subtotals to totals.','opentickets-community-edition' ); ?>" href="#">[?]</a></label>
 					<input type="number" step="any" min="0" id="_cart_discount" name="_cart_discount" placeholder="0.00" value="<?php
 						if ( isset( $data['_cart_discount'][0] ) )
 							echo esc_attr( $data['_cart_discount'][0] );
@@ -315,7 +315,7 @@ class qsot_core_hacks {
 				</li>
 
 				<li class="right">
-					<label><?php _e( 'Order Discount:', 'woocommerce' ); ?>&nbsp;<a class="tips" data-tip="<?php _e( 'Discounts after tax - user defined.', 'woocommerce' ); ?>" href="#">[?]</a></label>
+					<label><?php _e( 'Order Discount:','opentickets-community-edition' ); ?>&nbsp;<a class="tips" data-tip="<?php _e( 'Discounts after tax - user defined.','opentickets-community-edition' ); ?>" href="#">[?]</a></label>
 					<input type="number" step="any" min="0" id="_order_discount" name="_order_discount" placeholder="0.00" value="<?php
 						if ( isset( $data['_order_discount'][0] ) )
 							echo esc_attr( $data['_order_discount'][0] );
@@ -350,29 +350,29 @@ class qsot_core_hacks {
 		<?php /* adding if statement around shipping to hide it if it is irrelevant, like many other woocommerce features */ ?>
 		<?php if (get_option('woocommerce-order-totals') == 'yes'): ?>
 			<div class="totals_group">
-				<h4><?php _e( 'Shipping', 'woocommerce' ); ?></h4>
+				<h4><?php _e( 'Shipping','opentickets-community-edition' ); ?></h4>
 				<ul class="totals">
 
 					<li class="wide">
-						<label><?php _e( 'Label:', 'woocommerce' ); ?></label>
-						<input type="text" id="_shipping_method_title" name="_shipping_method_title" placeholder="<?php _e( 'The shipping title the customer sees', 'woocommerce' ); ?>" value="<?php
+						<label><?php _e( 'Label:','opentickets-community-edition' ); ?></label>
+						<input type="text" id="_shipping_method_title" name="_shipping_method_title" placeholder="<?php _e( 'The shipping title the customer sees','opentickets-community-edition'); ?>" value="<?php
 							if ( isset( $data['_shipping_method_title'][0] ) )
 								echo esc_attr( $data['_shipping_method_title'][0] );
 						?>" class="first" />
 					</li>
 
 					<li class="left">
-						<label><?php _e( 'Cost:', 'woocommerce' ); ?></label>
-						<input type="number" step="any" min="0" id="_order_shipping" name="_order_shipping" placeholder="0.00 <?php _e( '(ex. tax)', 'woocommerce' ); ?>" value="<?php
+						<label><?php _e( 'Cost:','opentickets-community-edition' ); ?></label>
+						<input type="number" step="any" min="0" id="_order_shipping" name="_order_shipping" placeholder="0.00 <?php _e( '(ex. tax)','opentickets-community-edition' ); ?>" value="<?php
 							if ( isset( $data['_order_shipping'][0] ) )
 								echo esc_attr( $data['_order_shipping'][0] );
 						?>" class="first" />
 					</li>
 
 					<li class="right">
-						<label><?php _e( 'Method:', 'woocommerce' ); ?></label>
+						<label><?php _e( 'Method:','opentickets-community-edition' ); ?></label>
 						<select name="_shipping_method" id="_shipping_method" class="first">
-							<option value=""><?php _e( 'N/A', 'woocommerce' ); ?></option>
+							<option value=""><?php _e( 'N/A','opentickets-community-edition' ); ?></option>
 							<?php
 								$chosen_method 	= ! empty( $data['_shipping_method'][0] ) ? $data['_shipping_method'][0] : '';
 								$found_method 	= false;
@@ -392,9 +392,9 @@ class qsot_core_hacks {
 								}
 
 								if ( ! $found_method && ! empty( $chosen_method ) ) {
-									echo '<option value="' . esc_attr( $chosen_method ) . '" selected="selected">' . __( 'Other', 'woocommerce' ) . '</option>';
+									echo '<option value="' . esc_attr( $chosen_method ) . '" selected="selected">' . __( 'Other','opentickets-community-edition' ) . '</option>';
 								} else {
-									echo '<option value="other">' . __( 'Other', 'woocommerce' ) . '</option>';
+									echo '<option value="other">' . __( 'Other','opentickets-community-edition' ) . '</option>';
 								}
 							?>
 						</select>
@@ -409,7 +409,7 @@ class qsot_core_hacks {
 		<?php if ( get_option( 'woocommerce_calc_taxes' ) == 'yes' ) : ?>
 
 		<div class="totals_group tax_rows_group">
-			<h4><?php _e( 'Tax Rows', 'woocommerce' ); ?></h4>
+			<h4><?php _e( 'Tax Rows','opentickets-community-edition' ); ?></h4>
 			<div id="tax_rows" class="total_rows">
 				<?php
 					global $wpdb;
@@ -434,15 +434,15 @@ class qsot_core_hacks {
 					}
 				?>
 			</div>
-			<h4><a href="#" class="add_tax_row"><?php _e( '+ Add tax row', 'woocommerce' ); ?> <span class="tips" data-tip="<?php _e( 'These rows contain taxes for this order. This allows you to display multiple or compound taxes rather than a single total.', 'woocommerce' ); ?>">[?]</span></a></a></h4>
+			<h4><a href="#" class="add_tax_row"><?php _e( '+ Add tax row','opentickets-community-edition' ); ?> <span class="tips" data-tip="<?php _e( 'These rows contain taxes for this order. This allows you to display multiple or compound taxes rather than a single total.','opentickets-community-edition' ); ?>">[?]</span></a></a></h4>
 			<div class="clear"></div>
 		</div>
 		<div class="totals_group">
-			<h4><span class="tax_total_display inline_total"></span><?php _e( 'Tax Totals', 'woocommerce' ); ?></h4>
+			<h4><span class="tax_total_display inline_total"></span><?php _e( 'Tax Totals','opentickets-community-edition' ); ?></h4>
 			<ul class="totals">
 
 				<li class="left">
-					<label><?php _e( 'Sales Tax:', 'woocommerce' ); ?>&nbsp;<a class="tips" data-tip="<?php _e( 'Total tax for line items + fees.', 'woocommerce' ); ?>" href="#">[?]</a></label>
+					<label><?php _e( 'Sales Tax:','opentickets-community-edition' ); ?>&nbsp;<a class="tips" data-tip="<?php _e( 'Total tax for line items + fees.','opentickets-community-edition' ); ?>" href="#">[?]</a></label>
 					<input type="number" step="any" min="0" id="_order_tax" name="_order_tax" placeholder="0.00" value="<?php
 						if ( isset( $data['_order_tax'][0] ) )
 							echo esc_attr( $data['_order_tax'][0] );
@@ -450,7 +450,7 @@ class qsot_core_hacks {
 				</li>
 
 				<li class="right">
-					<label><?php _e( 'Shipping Tax:', 'woocommerce' ); ?></label>
+					<label><?php _e( 'Shipping Tax:','opentickets-community-edition' ); ?></label>
 					<input type="number" step="any" min="0" id="_order_shipping_tax" name="_order_shipping_tax" placeholder="0.00" value="<?php
 						if ( isset( $data['_order_shipping_tax'][0] ) )
 							echo esc_attr( $data['_order_shipping_tax'][0] );
@@ -464,11 +464,11 @@ class qsot_core_hacks {
 		<?php endif; ?>
 
 		<div class="totals_group">
-			<h4><?php _e( 'Order Totals', 'woocommerce' ); ?></h4>
+			<h4><?php _e( 'Order Totals','opentickets-community-edition' ); ?></h4>
 			<ul class="totals">
 
 				<li class="left">
-					<label><?php _e( 'Order Total:', 'woocommerce' ); ?></label>
+					<label><?php _e( 'Order Total:','opentickets-community-edition' ); ?></label>
 					<input type="number" step="any" min="0" id="_order_total" name="_order_total" placeholder="0.00" value="<?php
 						if ( isset( $data['_order_total'][0] ) )
 							echo esc_attr( $data['_order_total'][0] );
@@ -476,9 +476,9 @@ class qsot_core_hacks {
 				</li>
 
 				<li class="right">
-					<label><?php _e( 'Payment Method:', 'woocommerce' ); ?></label>
+					<label><?php _e( 'Payment Method:','opentickets-community-edition' ); ?></label>
 					<select name="_payment_method" id="_payment_method" class="first">
-						<option value=""><?php _e( 'N/A', 'woocommerce' ); ?></option>
+						<option value=""><?php _e( 'N/A','opentickets-community-edition' ); ?></option>
 						<?php
 							$chosen_method 	= ! empty( $data['_payment_method'][0] ) ? $data['_payment_method'][0] : '';
 							$found_method 	= false;
@@ -494,9 +494,9 @@ class qsot_core_hacks {
 							}
 
 							if ( ! $found_method && ! empty( $chosen_method ) ) {
-								echo '<option value="' . esc_attr( $chosen_method ) . '" selected="selected">' . __( 'Other', 'woocommerce' ) . '</option>';
+								echo '<option value="' . esc_attr( $chosen_method ) . '" selected="selected">' . __( 'Other','opentickets-community-edition' ) . '</option>';
 							} else {
-								echo '<option value="other">' . __( 'Other', 'woocommerce' ) . '</option>';
+								echo '<option value="other">' . __( 'Other','opentickets-community-edition' ) . '</option>';
 							}
 						?>
 					</select>
@@ -510,9 +510,9 @@ class qsot_core_hacks {
 		</div>
 		<p class="buttons">
 			<?php if ( get_option( 'woocommerce_calc_taxes' ) == 'yes' ) : ?>
-				<button type="button" class="button calc_line_taxes"><?php _e( 'Calc taxes', 'woocommerce' ); ?></button>
+				<button type="button" class="button calc_line_taxes"><?php _e( 'Calc taxes','opentickets-community-edition' ); ?></button>
 			<?php endif; ?>
-			<button type="button" class="button calc_totals button-primary"><?php _e( 'Calc totals', 'woocommerce' ); ?></button>
+			<button type="button" class="button calc_totals button-primary"><?php _e( 'Calc totals','opentickets-community-edition' ); ?></button>
 		</p>
 		<?php
 	}
@@ -537,20 +537,20 @@ class qsot_core_hacks {
 				<thead>
 					<tr>
 						<th><input type="checkbox" class="check-column" /></th>
-						<th class="item" colspan="2"><?php _e( 'Item', 'woocommerce' ); ?></th>
+						<th class="item" colspan="2"><?php _e( 'Item','opentickets-community-edition' ); ?></th>
 
 						<?php do_action( 'woocommerce_admin_order_item_headers' ); ?>
 
 						<?php if ( get_option( 'woocommerce_calc_taxes' ) == 'yes' ) : ?>
-							<th class="tax_class"><?php _e( 'Tax Class', 'woocommerce' ); ?>&nbsp;<a class="tips" data-tip="<?php _e( 'Tax class for the line item', 'woocommerce' ); ?>." href="#">[?]</a></th>
+							<th class="tax_class"><?php _e( 'Tax Class','opentickets-community-edition' ); ?>&nbsp;<a class="tips" data-tip="<?php _e( 'Tax class for the line item','opentickets-community-edition' ); ?>." href="#">[?]</a></th>
 						<?php endif; ?>
 
-						<th class="quantity"><?php _e( 'Qty', 'woocommerce' ); ?></th>
+						<th class="quantity"><?php _e( 'Qty','opentickets-community-edition' ); ?></th>
 
-						<th class="line_cost"><?php _e( 'Totals', 'woocommerce' ); ?>&nbsp;<a class="tips" data-tip="<?php _e( 'Line subtotals are before pre-tax discounts, totals are after.', 'woocommerce' ); ?>" href="#">[?]</a></th>
+						<th class="line_cost"><?php _e( 'Totals','opentickets-community-edition' ); ?>&nbsp;<a class="tips" data-tip="<?php _e( 'Line subtotals are before pre-tax discounts, totals are after.','opentickets-community-edition' ); ?>" href="#">[?]</a></th>
 
 						<?php if ( get_option( 'woocommerce_calc_taxes' ) == 'yes' ) : ?>
-							<th class="line_tax"><?php _e( 'Tax', 'woocommerce' ); ?></th>
+							<th class="line_tax"><?php _e( 'Tax','opentickets-community-edition' ); ?></th>
 						<?php endif; ?>
 
 						<?php do_action( 'woocommerce_admin_after_order_item_headers' ); /*@@@@LOUSHOU - allow addition of columns to the end of the list */ ?>
@@ -592,25 +592,25 @@ class qsot_core_hacks {
 
 		<p class="bulk_actions">
 			<select>
-				<option value=""><?php _e( 'Actions', 'woocommerce' ); ?></option>
-				<optgroup label="<?php _e( 'Edit', 'woocommerce' ); ?>">
-					<option value="delete"><?php _e( 'Delete Lines', 'woocommerce' ); ?></option>
+				<option value=""><?php _e( 'Actions','opentickets-community-edition' ); ?></option>
+				<optgroup label="<?php _e( 'Edit','opentickets-community-edition' ); ?>">
+					<option value="delete"><?php _e( 'Delete Lines','opentickets-community-edition' ); ?></option>
 				</optgroup>
-				<optgroup label="<?php _e( 'Stock Actions', 'woocommerce' ); ?>">
-					<option value="reduce_stock"><?php _e( 'Reduce Line Stock', 'woocommerce' ); ?></option>
-					<option value="increase_stock"><?php _e( 'Increase Line Stock', 'woocommerce' ); ?></option>
+				<optgroup label="<?php _e( 'Stock Actions','opentickets-community-edition' ); ?>">
+					<option value="reduce_stock"><?php _e( 'Reduce Line Stock','opentickets-community-edition' ); ?></option>
+					<option value="increase_stock"><?php _e( 'Increase Line Stock','opentickets-community-edition' ); ?></option>
 				</optgroup>
 				<?php do_action('woocommerce_order_items_bulk_actions', $order, $data, $order_items) ?>
 			</select>
 
-			<button type="button" class="button do_bulk_action wc-reload" title="<?php _e( 'Apply', 'woocommerce' ); ?>"><span><?php _e( 'Apply', 'woocommerce' ); ?></span></button>
+			<button type="button" class="button do_bulk_action wc-reload" title="<?php _e( 'Apply','opentickets-community-edition' ); ?>"><span><?php _e( 'Apply','opentickets-community-edition' ); ?></span></button>
 		</p>
 
 		<div class="add_items" style="text-align:right; margin:1em 0;">
-			<select id="add_item_id" class="ajax_chosen_select_products_and_variations" multiple="multiple" data-placeholder="<?php _e( 'Search for a product&hellip;', 'woocommerce' ); ?>" style="width: 400px"></select>
+			<select id="add_item_id" class="ajax_chosen_select_products_and_variations" multiple="multiple" data-placeholder="<?php _e( 'Search for a product&hellip;','opentickets-community-edition' ); ?>" style="width: 400px"></select>
 			<div class="buttons" style="margin-right:9px;">
-				<button type="button" class="button add_order_item"><?php _e( 'Add item(s)', 'woocommerce' ); ?></button>
-				<button type="button" class="button add_order_fee"><?php _e( 'Add fee', 'woocommerce' ); ?></button>
+				<button type="button" class="button add_order_item"><?php _e( 'Add item(s)','opentickets-community-edition' ); ?></button>
+				<button type="button" class="button add_order_fee"><?php _e( 'Add fee','opentickets-community-edition' ); ?></button>
 				<?php do_action('woocommerce_order_item_add_line_buttons', $order, $data, $order_items) ?>
 			</div>
 		</div>
@@ -643,7 +643,7 @@ class qsot_core_hacks {
 			echo wpautop( wptexturize( $note ) );
 			echo '</div><p class="meta">';
 			echo '('.apply_filters('woocommerce_get_order_note_type', 'private', get_comment($comment_id)).')';
-			echo '<a href="#" class="delete_note">'.__( 'Delete note', 'woocommerce' ).'</a>';
+			echo '<a href="#" class="delete_note">'.__( 'Delete note','opentickets-community-edition' ).'</a>';
 			echo '</p>';
 			echo '</li>';
 
@@ -682,37 +682,37 @@ class qsot_core_hacks {
 						<?php echo wpautop( wptexturize( wp_kses_post( $note->comment_content ) ) ); ?>
 					</div>
 					<p class="meta">
-						<?php printf( __( 'added %s ago', 'woocommerce' ), human_time_diff( strtotime( $note->comment_date_gmt ), current_time( 'timestamp', 1 ) ) ); ?>
+						<?php printf( __( 'added %s ago','opentickets-community-edition' ), human_time_diff( strtotime( $note->comment_date_gmt ), current_time( 'timestamp', 1 ) ) ); ?>
 						(<?php echo apply_filters('woocommerce_get_order_note_type', 'private', $note) ?>)
-						<a href="#" class="delete_note"><?php _e( 'Delete note', 'woocommerce' ); ?></a>
+						<a href="#" class="delete_note"><?php _e( 'Delete note','opentickets-community-edition' ); ?></a>
 					</p>
 				</li>
 				<?php
 			}
 		} else {
-			echo '<li>' . __( 'There are no notes for this order yet.', 'woocommerce' ) . '</li>';
+			echo '<li>' . __( 'There are no notes for this order yet.','opentickets-community-edition' ) . '</li>';
 		}
 
 		echo '</ul>';
 		?>
 		<div class="add_note">
-			<h4><?php _e( 'Add note', 'woocommerce' ); ?> <img class="help_tip" data-tip='<?php esc_attr_e( 'Add a note for your reference, or add a customer note (the user will be notified).', 'woocommerce' ); ?>' src="<?php echo $woocommerce->plugin_url(); ?>/assets/images/help.png" height="16" width="16" /></h4>
+			<h4><?php _e( 'Add note','opentickets-community-edition' ); ?> <img class="help_tip" data-tip='<?php esc_attr_e( 'Add a note for your reference, or add a customer note (the user will be notified).','opentickets-community-edition' ); ?>' src="<?php echo $woocommerce->plugin_url(); ?>/assets/images/help.png" height="16" width="16" /></h4>
 			<p>
 				<textarea type="text" name="order_note" id="add_order_note" class="input-text" cols="20" rows="5"></textarea>
 			</p>
 			<p>
 				<?php
 					$note_types = apply_filters('woocommerce_order_note_types', array(
-						'customer' => __('Customer note', 'woocommerce'),
+						'customer' => __('Customer note','opentickets-community-edition' ),
 					), $post);
 				?>
 				<select name="order_note_type" id="order_note_type">
-					<option value=""><?php _e( 'Private note', 'woocommerce' ); ?></option>
+					<option value=""><?php _e( 'Private note','opentickets-community-edition' ); ?></option>
 					<?php foreach ($note_types as $val => $label): ?>
 						<option value="<?php echo esc_attr($val) ?>"><?php echo $label ?></option>
 					<?php endforeach; ?>
 				</select>
-				<a href="#" class="add_note button"><?php _e( 'Add', 'woocommerce' ); ?></a>
+				<a href="#" class="add_note button"><?php _e( 'Add','opentickets-community-edition' ); ?></a>
 			</p>
 		</div>
 		<script type="text/javascript">
@@ -792,7 +792,7 @@ class qsot_core_hacks {
 		if ( empty( $term ) )
 			die();
 
-		$default = isset( $_GET['default'] ) ? $_GET['default'] : __( 'Guest', 'woocommerce' );
+		$default = isset( $_GET['default'] ) ? $_GET['default'] : __( 'Guest', 'opentickets-community-edition' );
 
 		$found_customers = array( '' => $default );
 
@@ -1057,41 +1057,41 @@ class qsot_core_hacks {
 			<input name="post_status" type="hidden" value="publish" />
 			<div id="order_data" class="panel">
 
-				<h2><?php _e( 'Order Details', 'woocommerce' ); ?></h2>
+				<h2><?php _e( 'Order Details', 'opentickets-community-edition' ); ?></h2>
 				<p class="order_number"><?php
 
-					echo __( 'Order number', 'woocommerce' ) . ' ' . esc_html( $order->get_order_number() ) . '. ';
+					echo __( 'Order number', 'opentickets-community-edition' ) . ' ' . esc_html( $order->get_order_number() ) . '. ';
 
 					$ip_address = get_post_meta( $post->ID, '_customer_ip_address', true );
 
 					if ( $ip_address )
-						echo __( 'Customer IP:', 'woocommerce' ) . ' ' . esc_html( $ip_address );
+						echo __( 'Customer IP:', 'opentickets-community-edition' ) . ' ' . esc_html( $ip_address );
 
 				?></p>
 
 				<div class="order_data_column_container">
 					<div class="order_data_column">
 
-						<h4><?php _e( 'General Details', 'woocommerce' ); ?></h4>
+						<h4><?php _e( 'General Details', 'opentickets-community-edition' ); ?></h4>
 
-						<p class="form-field"><label for="order_status"><?php _e( 'Order status:', 'woocommerce' ) ?></label>
+						<p class="form-field"><label for="order_status"><?php _e( 'Order status:', 'opentickets-community-edition' ) ?></label>
 						<select id="order_status" name="order_status" class="chosen_select">
 							<?php
 								$statuses = (array) get_terms( 'shop_order_status', array( 'hide_empty' => 0, 'orderby' => 'id' ) );
 								foreach ( $statuses as $status ) {
-									echo '<option value="' . esc_attr( $status->slug ) . '" ' . selected( $status->slug, $order_status, false ) . '>' . esc_html__( $status->name, 'woocommerce' ) . '</option>';
+									echo '<option value="' . esc_attr( $status->slug ) . '" ' . selected( $status->slug, $order_status, false ) . '>' . esc_html__( $status->name, 'opentickets-community-edition' ) . '</option>';
 								}
 							?>
 						</select></p>
 
-						<p class="form-field last"><label for="order_date"><?php _e( 'Order Date:', 'woocommerce' ) ?></label>
-							<input type="text" class="date-picker-field" name="order_date" id="order_date" maxlength="10" value="<?php echo date_i18n( 'Y-m-d', strtotime( $post->post_date ) ); ?>" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])" /> @ <input type="text" class="hour" placeholder="<?php _e( 'h', 'woocommerce' ) ?>" name="order_date_hour" id="order_date_hour" maxlength="2" size="2" value="<?php echo date_i18n( 'H', strtotime( $post->post_date ) ); ?>" pattern="\-?\d+(\.\d{0,})?" />:<input type="text" class="minute" placeholder="<?php _e( 'm', 'woocommerce' ) ?>" name="order_date_minute" id="order_date_minute" maxlength="2" size="2" value="<?php echo date_i18n( 'i', strtotime( $post->post_date ) ); ?>" pattern="\-?\d+(\.\d{0,})?" />
+						<p class="form-field last"><label for="order_date"><?php _e( 'Order Date:', 'opentickets-community-edition' ) ?></label>
+							<input type="text" class="date-picker-field" name="order_date" id="order_date" maxlength="10" value="<?php echo date_i18n( 'Y-m-d', strtotime( $post->post_date ) ); ?>" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])" /> @ <input type="text" class="hour" placeholder="<?php _e( 'h', 'opentickets-community-edition' ) ?>" name="order_date_hour" id="order_date_hour" maxlength="2" size="2" value="<?php echo date_i18n( 'H', strtotime( $post->post_date ) ); ?>" pattern="\-?\d+(\.\d{0,})?" />:<input type="text" class="minute" placeholder="<?php _e( 'm', 'opentickets-community-edition' ) ?>" name="order_date_minute" id="order_date_minute" maxlength="2" size="2" value="<?php echo date_i18n( 'i', strtotime( $post->post_date ) ); ?>" pattern="\-?\d+(\.\d{0,})?" />
 						</p>
 
 						<p class="form-field form-field-wide">
-							<label for="customer_user"><?php _e( 'Customer:', 'woocommerce' ) ?></label>
+							<label for="customer_user"><?php _e( 'Customer:', 'opentickets-community-edition' ) ?></label>
 							<select id="customer_user" name="customer_user" class="ajax_chosen_select_customer">
-								<option value=""><?php _e( 'Guest', 'woocommerce' ) ?></option>
+								<option value=""><?php _e( 'Guest', 'opentickets-community-edition' ) ?></option>
 								<?php
 									if ( $customer_user ) {
 										$user = get_user_by( 'id', $customer_user );
@@ -1131,8 +1131,8 @@ class qsot_core_hacks {
 
 						<?php if ( get_option( 'woocommerce_enable_order_comments' ) != 'no' ) : ?>
 
-							<p class="form-field form-field-wide"><label for="excerpt"><?php _e( 'Customer Note:', 'woocommerce' ) ?></label>
-							<textarea rows="1" cols="40" name="excerpt" tabindex="6" id="excerpt" placeholder="<?php _e( 'Customer\'s notes about the order', 'woocommerce' ); ?>"><?php echo wp_kses_post( $post->post_excerpt ); ?></textarea></p>
+							<p class="form-field form-field-wide"><label for="excerpt"><?php _e( 'Customer Note:', 'opentickets-community-edition' ) ?></label>
+							<textarea rows="1" cols="40" name="excerpt" tabindex="6" id="excerpt" placeholder="<?php _e( 'Customer\'s notes about the order', 'opentickets-community-edition' ); ?>"><?php echo wp_kses_post( $post->post_excerpt ); ?></textarea></p>
 
 						<?php endif; ?>
 
@@ -1140,52 +1140,52 @@ class qsot_core_hacks {
 
 					</div>
 					<div class="order_data_column">
-						<h4><?php _e( 'Billing Details', 'woocommerce' ); ?> <a class="edit_address" href="#">(<?php _e( 'Edit', 'woocommerce' ) ;?>)</a></h4>
+						<h4><?php _e( 'Billing Details', 'opentickets-community-edition' ); ?> <a class="edit_address" href="#">(<?php _e( 'Edit', 'opentickets-community-edition' ) ;?>)</a></h4>
 						<?php
 							$billing_data = apply_filters('woocommerce_admin_billing_fields', array(
 								'first_name' => array(
-									'label' => __( 'First Name', 'woocommerce' ),
+									'label' => __( 'First Name', 'opentickets-community-edition' ),
 									'show'	=> false
 									),
 								'last_name' => array(
-									'label' => __( 'Last Name', 'woocommerce' ),
+									'label' => __( 'Last Name', 'opentickets-community-edition' ),
 									'show'	=> false
 									),
 								'company' => array(
-									'label' => __( 'Company', 'woocommerce' ),
+									'label' => __( 'Company', 'opentickets-community-edition' ),
 									'show'	=> false
 									),
 								'address_1' => array(
-									'label' => __( 'Address 1', 'woocommerce' ),
+									'label' => __( 'Address 1', 'opentickets-community-edition' ),
 									'show'	=> false
 									),
 								'address_2' => array(
-									'label' => __( 'Address 2', 'woocommerce' ),
+									'label' => __( 'Address 2', 'opentickets-community-edition' ),
 									'show'	=> false
 									),
 								'city' => array(
-									'label' => __( 'City', 'woocommerce' ),
+									'label' => __( 'City', 'opentickets-community-edition' ),
 									'show'	=> false
 									),
 								'postcode' => array(
-									'label' => __( 'Postcode', 'woocommerce' ),
+									'label' => __( 'Postcode', 'opentickets-community-edition' ),
 									'show'	=> false
 									),
 								'country' => array(
-									'label' => __( 'Country', 'woocommerce' ),
+									'label' => __( 'Country', 'opentickets-community-edition' ),
 									'show'	=> false,
 									'type'	=> 'select',
-									'options' => array( '' => __( 'Select a country&hellip;', 'woocommerce' ) ) + $woocommerce->countries->get_allowed_countries()
+									'options' => array( '' => __( 'Select a country&hellip;', 'opentickets-community-edition' ) ) + $woocommerce->countries->get_allowed_countries()
 									),
 								'state' => array(
-									'label' => __( 'State/County', 'woocommerce' ),
+									'label' => __( 'State/County', 'opentickets-community-edition' ),
 									'show'	=> false
 									),
 								'email' => array(
-									'label' => __( 'Email', 'woocommerce' ),
+									'label' => __( 'Email', 'opentickets-community-edition' ),
 									),
 								'phone' => array(
-									'label' => __( 'Phone', 'woocommerce' ),
+									'label' => __( 'Phone', 'opentickets-community-edition' ),
 									),
 								) );
 
@@ -1193,9 +1193,9 @@ class qsot_core_hacks {
 							echo '<div class="address">';
 
 								if ( $order->get_formatted_billing_address() )
-									echo '<p><strong>' . __( 'Address', 'woocommerce' ) . ':</strong><br/> ' . $order->get_formatted_billing_address() . '</p>';
+									echo '<p><strong>' . __( 'Address', 'opentickets-community-edition' ) . ':</strong><br/> ' . $order->get_formatted_billing_address() . '</p>';
 								else
-									echo '<p class="none_set"><strong>' . __( 'Address', 'woocommerce' ) . ':</strong> ' . __( 'No billing address set.', 'woocommerce' ) . '</p>';
+									echo '<p class="none_set"><strong>' . __( 'Address', 'opentickets-community-edition' ) . ':</strong> ' . __( 'No billing address set.', 'opentickets-community-edition' ) . '</p>';
 
 								foreach ( $billing_data as $key => $field ) {
 									if ( isset( $field['show'] ) && $field['show'] === false )
@@ -1208,7 +1208,7 @@ class qsot_core_hacks {
 							echo '</div>';
 
 							// Display form
-							echo '<div class="edit_address"><p><button class="button load_customer_billing">'.__( 'Load billing address', 'woocommerce' ).'</button></p>';
+							echo '<div class="edit_address"><p><button class="button load_customer_billing">'.__( 'Load billing address', 'opentickets-community-edition' ).'</button></p>';
 
 							foreach ( $billing_data as $key => $field ) {
 								if ( ! isset( $field['type'] ) )
@@ -1243,45 +1243,45 @@ class qsot_core_hacks {
 					</div>
 					<div class="order_data_column">
 
-						<h4><?php _e( 'Shipping Details', 'woocommerce' ); ?> <a class="edit_address" href="#">(<?php _e( 'Edit', 'woocommerce' ) ;?>)</a></h4>
+						<h4><?php _e( 'Shipping Details', 'opentickets-community-edition' ); ?> <a class="edit_address" href="#">(<?php _e( 'Edit', 'opentickets-community-edition' ) ;?>)</a></h4>
 						<?php
 							$shipping_data = apply_filters('woocommerce_admin_shipping_fields', array(
 								'first_name' => array(
-									'label' => __( 'First Name', 'woocommerce' ),
+									'label' => __( 'First Name', 'opentickets-community-edition' ),
 									'show'	=> false
 									),
 								'last_name' => array(
-									'label' => __( 'Last Name', 'woocommerce' ),
+									'label' => __( 'Last Name', 'opentickets-community-edition' ),
 									'show'	=> false
 									),
 								'company' => array(
-									'label' => __( 'Company', 'woocommerce' ),
+									'label' => __( 'Company', 'opentickets-community-edition' ),
 									'show'	=> false
 									),
 								'address_1' => array(
-									'label' => __( 'Address 1', 'woocommerce' ),
+									'label' => __( 'Address 1', 'opentickets-community-edition' ),
 									'show'	=> false
 									),
 								'address_2' => array(
-									'label' => __( 'Address 2', 'woocommerce' ),
+									'label' => __( 'Address 2', 'opentickets-community-edition' ),
 									'show'	=> false
 									),
 								'city' => array(
-									'label' => __( 'City', 'woocommerce' ),
+									'label' => __( 'City', 'opentickets-community-edition' ),
 									'show'	=> false
 									),
 								'postcode' => array(
-									'label' => __( 'Postcode', 'woocommerce' ),
+									'label' => __( 'Postcode', 'opentickets-community-edition' ),
 									'show'	=> false
 									),
 								'country' => array(
-									'label' => __( 'Country', 'woocommerce' ),
+									'label' => __( 'Country', 'opentickets-community-edition' ),
 									'show'	=> false,
 									'type'	=> 'select',
-									'options' => array( '' => __( 'Select a country&hellip;', 'woocommerce' ) ) + $woocommerce->countries->get_allowed_countries()
+									'options' => array( '' => __( 'Select a country&hellip;', 'opentickets-community-edition' ) ) + $woocommerce->countries->get_allowed_countries()
 									),
 								'state' => array(
-									'label' => __( 'State/County', 'woocommerce' ),
+									'label' => __( 'State/County', 'opentickets-community-edition' ),
 									'show'	=> false
 									),
 								) );
@@ -1290,9 +1290,9 @@ class qsot_core_hacks {
 							echo '<div class="address">';
 
 								if ( $order->get_formatted_shipping_address() )
-									echo '<p><strong>' . __( 'Address', 'woocommerce' ) . ':</strong><br/> ' . $order->get_formatted_shipping_address() . '</p>';
+									echo '<p><strong>' . __( 'Address', 'opentickets-community-edition' ) . ':</strong><br/> ' . $order->get_formatted_shipping_address() . '</p>';
 								else
-									echo '<p class="none_set"><strong>' . __( 'Address', 'woocommerce' ) . ':</strong> ' . __( 'No shipping address set.', 'woocommerce' ) . '</p>';
+									echo '<p class="none_set"><strong>' . __( 'Address', 'opentickets-community-edition' ) . ':</strong> ' . __( 'No shipping address set.', 'opentickets-community-edition' ) . '</p>';
 
 								if ( $shipping_data ) foreach ( $shipping_data as $key => $field ) {
 									if ( isset( $field['show'] ) && $field['show'] === false )
@@ -1305,7 +1305,7 @@ class qsot_core_hacks {
 							echo '</div>';
 
 							// Display form
-							echo '<div class="edit_address"><p><button class="button load_customer_shipping">' . __( 'Load shipping address', 'woocommerce' ) . '</button> <button class="button billing-same-as-shipping">'. __( 'Copy from billing', 'woocommerce' ) . '</button></p>';
+							echo '<div class="edit_address"><p><button class="button load_customer_shipping">' . __( 'Load shipping address', 'opentickets-community-edition' ) . '</button> <button class="button billing-same-as-shipping">'. __( 'Copy from billing', 'opentickets-community-edition' ) . '</button></p>';
 
 							if ( $shipping_data ) foreach ( $shipping_data as $key => $field ) {
 								if ( ! isset( $field['type'] ) )

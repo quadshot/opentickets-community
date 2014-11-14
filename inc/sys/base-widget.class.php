@@ -7,7 +7,7 @@ if (!class_exists('qsot_base_widget')):
 abstract class qsot_events_base_widget extends WP_Widget {
 	protected $_base_dir;
 	protected $_base_url;
-	protected $proper_name = 'New Widget'; // default proper widget name
+	protected $proper_name = ''; // default proper widget name - i18n cannot be used here, see pre_init()
 	protected $short_name = 'new-widget'; // default short widget name
 	protected $defaults = array(); // default widget setting defaults
 	protected $exclude = array(); // default list of setting keys to exclude from the strip tags filter
@@ -25,6 +25,7 @@ abstract class qsot_events_base_widget extends WP_Widget {
 
 	// setup the base class so that it can do what it needs to
 	public static function pre_init() {
+		self::$proper_name = __('New Widget','opentickets-community-edition');
 	}
 	
 	// wrapper function for core WP widget system to call, that will chain call our widget's form function

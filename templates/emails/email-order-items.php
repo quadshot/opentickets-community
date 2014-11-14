@@ -22,7 +22,7 @@ foreach ( $items as $item_id => $item ) :
 
 			// Show title/image etc
 			if ( $show_image ) {
-				echo apply_filters( 'woocommerce_order_item_thumbnail', '<img src="' . ( $_product->get_image_id() ? current( wp_get_attachment_image_src( $_product->get_image_id(), 'thumbnail') ) : wc_placeholder_img_src() ) .'" alt="' . __( 'Product Image', 'woocommerce' ) . '" height="' . esc_attr( $image_size[1] ) . '" width="' . esc_attr( $image_size[0] ) . '" style="vertical-align:middle; margin-right: 10px;" />', $item );
+				echo apply_filters( 'woocommerce_order_item_thumbnail', '<img src="' . ( $_product->get_image_id() ? current( wp_get_attachment_image_src( $_product->get_image_id(), 'thumbnail') ) : wc_placeholder_img_src() ) .'" alt="' . __( 'Product Image', 'opentickets-community-edition' ) . '" height="' . esc_attr( $image_size[1] ) . '" width="' . esc_attr( $image_size[0] ) . '" style="vertical-align:middle; margin-right: 10px;" />', $item );
 			}
 
 			// Product name
@@ -37,15 +37,15 @@ foreach ( $items as $item_id => $item ) :
 			if ( $show_download_links && is_object( $_product ) && $_product->exists() && $_product->is_downloadable() ) {
 
 				$download_files = $order->get_item_downloads( $item );
-				$i              = 0;
+				$i = 0;
 
 				foreach ( $download_files as $download_id => $file ) {
 					$i++;
 
 					if ( count( $download_files ) > 1 ) {
-						$prefix = sprintf( __( 'Download %d', 'woocommerce' ), $i );
+						$prefix = sprintf( __( 'Download %d', 'opentickets-community-edition' ), $i );
 					} elseif ( $i == 1 ) {
-						$prefix = __( 'Download', 'woocommerce' );
+						$prefix = __( 'Download', 'opentickets-community-edition' );
 					}
 
 					echo '<br/><small>' . $prefix . ': <a href="' . esc_url( $file['download_url'] ) . '" target="_blank">' . esc_html( $file['name'] ) . '</a></small>';
