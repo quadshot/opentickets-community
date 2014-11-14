@@ -215,7 +215,7 @@ class qsot_order_admin {
 				if ( $ostatus != 'pending' ) {
 					$order->update_status('pending', __('You cannot use "Guest" as the owner of the order, due to current Woocommerce settings.','opentickets-community-edition'));
 				} else {
-					$order->add_order_note('You cannot use "Guest" as the owner of the order, due to current Woocommerce settings.','opentickets-community-edition'));
+					$order->add_order_note(__('You cannot use "Guest" as the owner of the order, due to current Woocommerce settings.','opentickets-community-edition'));
 				}
 
 				self::_enable_emails();

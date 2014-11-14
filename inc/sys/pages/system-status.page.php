@@ -72,6 +72,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 
 	// add noticies to the page, depending on the current tab
 	public function admin_notices() {
+		if ( ! isset( $_GET['page'] ) || $this->slug == $_GET['page'] ) return;
 		$current = $this->_current_tab();
 
 		// if on the system status tab, allow for a mehtod to copy a text version of the report for support tickets

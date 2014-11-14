@@ -83,7 +83,7 @@ class qsot_reporting {
 }
 
 abstract class qsot_admin_report {
-	protected static $report_name = __('Report','opentickets-community-edition');
+	protected static $report_name = 'Report';
 	protected static $report_slug = 'report';
 	protected static $report_desc = '';
 
