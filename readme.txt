@@ -139,6 +139,13 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.8.2 =
+* added the 85% of i18n changes that were missed during the first merge
+* added the paypal gateway patch
+* added system status page and tools page
+* added tools to repair paypal issue
+* repaired cart to ticket sync, so paid tickets are not removed
+
 = 1.8.1 =
 * repaired ticket validation form and admin user access
 
