@@ -44,6 +44,9 @@ class qsot_seat_pricing {
 			add_action('woocommerce_before_edit_order_itemmeta', array(__CLASS__, 'before_edit_item_meta'), 10, 3);
 			add_filter('qsot-get-order-id-from-oiid', array(__CLASS__, 'oid_from_oiid'), 10, 3);
 
+			// when adding a ticket to an order, we need to update the event order to zone table with the new data
+			add_action( 'woocommerce_add_order_item_meta', array( __CLASS__, 'update_ticket_order_information' ), 100000, 3 );
+
 			add_action('wp_ajax_woocommerce_remove_order_item', array(__CLASS__, 'aj_admin_remove_order_item'), 5);
 			add_action('before_delete_post', array(__CLASS__, 'before_delete_order'), 5, 1);
 
@@ -227,13 +230,14 @@ class qsot_seat_pricing {
 						'qty' => $item['qty'],
 						'state' => array( self::$o->{'z.states.r'}, self::$o->{'z.states.c'} ),
 						'order_id' => array( 0, $order_id ),
+						'order_item_id' => $item_id,
 						'ticket_type_id' => $item['product_id'],
-						'customer_id' => $cuids,
+						//'customer_id' => $cuids,
 					),
 					array(
 						'state' => self::$o->{'z.states.c'},
 						'order_id' => $order_id,
-						'customer_id' => empty( $ocuid ) ? $customer_id : $ocuid,
+						//'customer_id' => empty( $ocuid ) ? $customer_id : $ocuid,
 						'order_item_id' => $item_id
 					)
 				);
@@ -411,6 +415,45 @@ class qsot_seat_pricing {
 					);
 				}
 			}
+		}
+	}
+
+	// get the order_id from the order_item_id
+	protected static function _oid_from_oiid( $oiid ) {
+		// create the cache key. caching is important here because it saves us a db query
+		$key = 'oiid2oid-' . $oiid;
+
+		// fetch the cache
+		$oid = (int) wp_cache_get( $key );
+
+		// if there is no cache, then create it
+		if ( $oid <= 0 ) {
+			global $wpdb;
+			$oid = $wpdb->get_var( $wpdb->prepare( 'select order_id from ' . $wpdb->prefix . 'woocommerce_order_items where order_item_id = %d', $oiid ) );
+			wp_cache_set( $key, $oid, 300 );
+		}
+
+		// return the found id
+		return $oid;
+	}
+
+	// when we are adding meta data to the order item, check if the item is a ticket. if it is, then update the order to event zone table with the appropriate data
+	public static function update_ticket_order_information( $item_id, $item, $cart_item_key ) {
+		// if this items is a ticket
+		if ( isset( $item['event_id'] ) ) {
+			// fetch the order_id from the order_item_id
+			$order_id = self::_oid_from_oiid( $item_id );
+			
+			// get the unique identifier of this user, which is reported in the table we are updating
+			$session_id = WC()->session->get_customer_id();
+
+			// update the data in the table so that the order_id and the order_item_id are correct
+			$res = apply_filters(
+				'qsot-zoner-update-reservation',
+				false,
+				array( 'event_id' => $item['event_id'], 'state' => '*', 'customer_id' => $session_id, 'ticket_type_id' => $item['product_id'], 'qty' => $item['quantity'] ),
+				array( 'order_id' => $order_id, 'order_item_id' => $item_id )
+			);
 		}
 	}
 

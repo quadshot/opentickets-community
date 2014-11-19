@@ -190,7 +190,7 @@ ul#adminmenu a.qsot-special-arrow:after {
 .qsot-page .tool-item td:first-child { text-align:right; }
 .qsot-status-table th { font-weight:bold; font-style:italic; }
 .qsot-status-table tbody tr.odd td { background-color:#fcfcfc; }
-.qsot-status-table thead tr th { border-bottom-color:#ccc; border-bottom-width:2px; }
+.qsot-status-table thead tr th { border-bottom-color:#ccc; border-bottom-width:2px; background-color:#333; color:#eee; }
 .qsot-status-table tbody tr:hover td { background-color:#e0e0e0; }
 .qsot-status-table tbody tr td:first-child { white-space:nowrap; }
 .qsot-status-table .good { color:#00bb00; }

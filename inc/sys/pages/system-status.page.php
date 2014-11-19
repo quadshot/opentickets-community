@@ -72,7 +72,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 
 	// add noticies to the page, depending on the current tab
 	public function admin_notices() {
-		if ( ! isset( $_GET['page'] ) || $this->slug == $_GET['page'] ) return;
+		if ( ! isset( $_GET['page'] ) || $this->slug != $_GET['page'] ) return;
 		$current = $this->_current_tab();
 
 		// if on the system status tab, allow for a mehtod to copy a text version of the report for support tickets
@@ -88,7 +88,10 @@ class QSOT_system_status_page extends QSOT_base_page {
 						$( document ).on( 'click', '#show-status-report', function( e ) {
 							e.preventDefault();
 							var tar = $( $( this ).attr( 'tar' ) );
-							if ( 'none' == tar.css( 'display' ) ) tar.fadeIn( 300 );
+							if ( 'none' == tar.css( 'display' ) ) tar.fadeIn( {
+									duration:300,
+									complete:function() { $(this).focus().select(); }
+								});
 							else tar.fadeOut( 250 );
 						} );
 					} )( jQuery );
@@ -493,7 +496,8 @@ class QSOT_system_status_page extends QSOT_base_page {
 			// add one line for each stat, with a label and a value
 			foreach ( $items as $label => $data ) {
 				$data = $this->_normalize_stat( $data );
-				$strs[] = sprintf( '  * %s: [%s] %s', $label, $data['type'], $data['msg'] );
+				$msg = ! empty( $data['txt'] ) ? $data['txt'] : $data['msg'];
+				$strs[] = sprintf( '  * %s: [%s] %s', $label, $data['type'], $msg );
 			}
 
 			// add some spacing below each group
@@ -563,14 +567,15 @@ class QSOT_system_status_page extends QSOT_base_page {
 		$items['PHP Max Input Vars'] = $this->_new_item( ini_get( 'max_input_vars' ) );
 
 		$u = wp_upload_dir();
-		$msg = 'Uplaods directory IS writable (' . $u['basedir'] . ')';
+		$msg = 'Uplaods directory IS writable';
 		$type = 'good';
-		$extra = '';
+		$extra = ' (' . $u['basedir'] . ')';
 		if ( ! is_writable( $u['basedir'] ) ) {
-			$msg = 'Uploads directory IS NOT writable (' . $u['basedir'] . ')';
+			$msg = 'Uploads directory IS NOT writable';
 			$type = 'bad';
 			$extra = sprintf(
-				__( 'Having your uploads directory writable not only allows you to upload your media files, but also allows OpenTickets (and other plugins) to store their file caches. Please <a href="%s">make your uploads directory writable</a> for these reasons.', 'opentickets-community-edition' ),
+				' (' . $u['basedir'] . ')'
+				. __( 'Having your uploads directory writable not only allows you to upload your media files, but also allows OpenTickets (and other plugins) to store their file caches. Please <a href="%s">make your uploads directory writable</a> for these reasons.', 'opentickets-community-edition' ),
 				esc_attr( 'http://codex.wordpress.org/Changing_File_Permissions' )
 			);
 		}
@@ -582,17 +587,178 @@ class QSOT_system_status_page extends QSOT_base_page {
 		$groups[] = $group;
 
 
-		return $groups;
+		$group = $this->_new_group( __( 'Software', 'opentickets-community-edition' ) );
+		$items = array();
+
+		list( $html, $text ) = self::_get_plugin_list();
+		$items['Active Plugins'] = $this->_new_item( implode( ', <br/>', $html ), 'neutral', '', "\n   + " . implode( ",\n   + ", $text ) );
+		list( $html, $text ) = self::_get_theme_list();
+		$items['Acitve Theme'] = $this->_new_item( implode( ', <br/>', $html ), 'neutral', '', "\n   + " . implode( ",\n   + ", $text ) );
+
+		$group['.items'] = $items;
+		$groups[] = $group;
+
+
+		$group = $this->_new_group( __( 'Data', 'opentickets-community-edition' ) );
+		$items = array();
+
+		$list = self::_get_event_areas();
+		$items['Event Areas'] = $this->_new_item( implode( ', ', $list ), 'neutral', '', "\n   + " . implode( ",\n   + ", $list ) );
+		$list = self::_get_ticket_products();
+		$items['Ticket Products'] = $this->_new_item( implode( ', ', $list ), 'neutral', '', "\n   + " . implode( ",\n   + ", $list ) );
+
+		$group['.items'] = $items;
+		$groups[] = $group;
+
+
+		return apply_filters( 'qsot-system-status-stats', $groups );
 	}
 
-	protected function _new_item( $value, $type='neutral', $extra='' ) {
-		return array( 'msg' => ( is_bool( $value ) ) ? ( $value ? 'Yes' : 'No' ) : (string) $value, 'type' => $type, 'extra' => $extra );
+	// aggregate information about the event areas
+	protected function _get_event_areas() {
+		$out = array();
+
+		$args = array(
+			'post_type' => 'qsot-event-area',
+			'post_status' => 'publish',
+		);
+		$ea_posts = get_posts( $args );
+
+		foreach ( $ea_posts as $ea_post ) {
+			$price = get_post_meta( $ea_post->ID, '_pricing_options', true );
+			$out[] = '"' . apply_filters( 'the_title', $ea_post->post_title ) . '" [' . ( $price > 0 ? '#' . $price : 'NONE' ) . ']';
+		}
+
+		return $out;
 	}
 
-	protected function _new_group( $name ) { 
+	// aggregate a list of ticket products
+	protected function _get_ticket_products() {
+		$out = array();
+
+		$args = array(
+			'post_type' => 'product',
+			'post_status' => 'publish',
+			'fields' => 'ids',
+			'meta_query' => array(
+				array( 'key' => '_ticket', 'value' => 'yes', 'compare' => '=' ),
+			),
+		);
+		$ticket_product_ids = get_posts( $args );
+
+		foreach ( $ticket_product_ids as $id ) {
+			$p = wc_get_product( $id );
+			$eas = self::_count_eas_with_price( $id );
+
+			$out[] = '#' . $id . ' "' . $p->get_title() . '" (' . $p->get_price() . ') [' . $eas . ' EA]';
+		}
+
+		return $out;
+	}
+
+	protected function _count_eas_with_price( $product_id ) {
+		global $wpdb;
+
+		$q = $wpdb->prepare( 'select count(distinct post_id) from ' . $wpdb->postmeta . ' where meta_key = %s and meta_value = %d', '_pricing_options', $product_id );
+		return (int) $wpdb->get_var( $q );
+	}
+
+	// aggregate the relevant theme information
+	protected function _get_theme_list() {
+		$html = $text = array();
+
+		// fetch the current theme
+		$theme = wp_get_theme();
+		$is_parent = false;
+
+		// recursively grab a list of themes that are bing loaded. start with the child, and work through all the parent themes
+		do {
+			// format the theme information
+			$th_txt = $theme->get( 'Name' );
+			$th_url = $theme->get( 'ThemeURI' );
+			$th_link = ! empty( $th_url ) ? sprintf( '<a href="%s">%s</a>', esc_attr( $th_url ), $th_txt ) : $th_txt;
+
+			// format the author information
+			$by_txt = $theme->get( 'Author' );
+			$by_url = $theme->get( 'AuthorURI' );
+			$by_link = ! empty( $by_url ) ? sprintf( '<a href="%s">%s</a>', esc_attr( $by_url ), $by_txt ) : $by_txt;
+
+			// format the two different versions of the information
+			$html[] = sprintf(
+				__( '%s%s by %s', 'opentickets-community-edition' ),
+				$is_parent ? '[' . __( 'PARENT', 'opentickets-community-edition' ) . ']: ' : '',
+				$th_link,
+				$by_link
+			);
+			$text[] = sprintf(
+				__( '%s%s (%s) by %s (%s)', 'opentickets-community-edition' ),
+				$is_parent ? '[' . __( 'PARENT', 'opentickets-community-edition' ) . ']: ' : '',
+				$th_txt,
+				$th_url,
+				$by_txt,
+				$by_url
+			);
+
+			// if we do another iteration, then we are definitely in a parent theme, so mark it as such
+			$is_parent = true;
+		} while ( ( $theme = $theme->parent() ) );
+
+		return array( $html, $text );
+	}
+
+	// aggregate an array of important information about activated plugins
+	protected function _get_plugin_list() {
+		$html = $text = array();
+
+		// load the list of active plugins, and all the known information about all plugins
+		$ap = get_option( 'active_plugins' );
+		$p = get_plugins();
+
+		// cycle through the list of active plugins a
+		foreach ( $p as $file => $plugin ) {
+			// is the plugin active?
+			$on = in_array( $file, $ap );
+
+			// format the author information
+			$by_txt = isset( $plugin['Author'] ) ? $plugin['Author'] : '(Unknown Author)';
+			$by_url = isset( $plugin['AuthorURI'] ) ? $plugin['PluginURI'] : '';
+			$by_link = ! empty( $pl_url ) ? sprintf( '<a href="%s">%s</a>', esc_attr( $pl_url ), $plugin['Author'] ) : $by_txt;
+
+			// format the known plugin information
+			$pl_txt = $plugin['Name'];
+			$pl_url = isset( $plugin['PluginURI'] ) ? $plugin['PluginURI'] : '';
+			$pl_link = ! empty( $pl_url ) ? sprintf( '<a href="%s">%s</a>', esc_attr( $pl_url ), $plugin['Name'] ) : $pl_link;
+
+			// format the two different versions of the information
+			$html[] = sprintf(
+				__( '<b>%s</b>%s by %s', 'opentickets-community-edition' ),
+				$on ? '[' . __( 'ON', 'opentickets-community-edition' ) . ']: ' : '',
+				$pl_link,
+				$by_link
+			);
+			$text[] = sprintf(
+				__( '%s%s (%s) by %s (%s)', 'opentickets-community-edition' ),
+				$on ? '[' . __( 'ON', 'opentickets-community-edition' ) . ']: ' : '',
+				$pl_txt,
+				$pl_url,
+				$by_txt,
+				$by_url
+			);
+		}
+
+		return array( $html, $text );
+	}
+
+	// construct a new list item for for the statistics list, based on the supplied information
+	protected function _new_item( $value, $type='neutral', $extra='', $txt_version='' ) {
+		return array( 'msg' => ( is_bool( $value ) ) ? ( $value ? 'Yes' : 'No' ) : (string) $value, 'type' => $type, 'extra' => $extra, 'txt' => $txt_version );
+	}
+
+	// create a new group of list items, which has a specific name
+	protected function _new_group( $name ) {
 		return array(
 			'.heading' => array( 'label' => $name ),
-			'items' => array(),
+			'.items' => array(),
 		);
 	}
 }

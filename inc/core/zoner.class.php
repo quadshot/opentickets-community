@@ -636,8 +636,12 @@ class qsot_zoner {
 
 			// glue the query
 			$q .= implode('', $wheres).$limit;
+
 			// actually run the update, be it delete or update
 			$res = $wpdb->query($q);
+
+			// commit the query. why do i have to do this now, when it was never required before.
+			$wpdb->query('commit');
 			$success = $res !== false;
 	
 			// notify other plugins of our success
