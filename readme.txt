@@ -139,6 +139,10 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.8.3 =
+* added more information to the system status page
+* changed how IPN payment completions mark tickets paid
+
 = 1.8.2 =
 * added the 85% of i18n changes that were missed during the first merge
 * added the paypal gateway patch
