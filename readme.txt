@@ -139,6 +139,9 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.8.4 =
+* fixed deprecated php that causes ticket selection to not work
+
 = 1.8.3 =
 * added more information to the system status page
 * changed how IPN payment completions mark tickets paid
