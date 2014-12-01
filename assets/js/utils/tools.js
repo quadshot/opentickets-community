@@ -603,23 +603,36 @@ QS.cbs = new QS.CB();
 		$(tar.replace(/%VAL%/g, val), scope).show();
 	}
 
+	// if the button has not been initialized yet, then do so
+	function _maybe_init( me ) {
+		var is_init = me.data( 'togvis-init' );
+		if ( is_init != 1 ) {
+			me.trigger( 'init' );
+			return true;
+		}
+		return false;
+	}
+
 	// almost everything follows the simply rule of on or off, based on the target container's current state
-	$('.togvis').off( 'click.togvis' ).on('click.togvis', function(e) {
+	$( document ).off( 'click.togvis', '.togvis' ).on( 'click.togvis', '.togvis', function( e ) {
+		if ( _maybe_init( $( this ) ) ) return;
 		// do not do this for special case scenarios. checkboxes, radio buttons, and select boxes
 		if (this.tagName.toLowerCase() == 'select' || (this.tagName.toLowerCase() == 'input' && $.inArray($(this).attr('type').toLowerCase(), ['checkbox','radio']) != -1)) return;
 		e.preventDefault();
 		_everything.call(this);
 	});
 	// checkboxes and radio buttons show toggle the visibility of the target container, based on the state of the checkbox
-	$('input[type=checkbox].togvis, input[type=radio].togvis').off( 'change.togvis' ).on('change.togvis', function(e) { _cb_radio.call(this); });
+	$( document ).off( 'change.togvis', 'input[type=checkbox].togvis, input[type=radio].togvis' )
+			.on('change.togvis', 'input[type=checkbox].togvis, input[type=radio].togvis', function(e) { _cb_radio.call(this); });
 	// select boxes should hide all containers linked to non-selected options from the select box, and show all containers linked to the selected option
-	$('select.togvis').off( 'change.togvis' ).on( 'change.togvis', function(e) { _select_box.call(this); } );
+	$( document ).off( 'change.togvis', 'select.togvis' ).on( 'change.togvis', 'select.togvis', function(e) { _select_box.call(this); } );
 
 	// need a separate initialization function. the reason is because on things like checkboxes, if you call .change() on page load, the state of the 
 	// checkbox will change. for instance if you set the state to unchecked, if you call .change() on page load, the state will now be checked. this is
 	// undesired functionality in the case of page load, because on page load we want to simply switch everything to the starting state. in order to do
 	// this, we need to only read the state and use it to determine the state of the affected containers.
-	$('.togvis').off( 'init.togvis' ).on( 'init.togvis', function(e) {
+	$( document ).off( 'init.togvis', '.togvis' ).on( 'init.togvis', '.togvis', function(e) {
+		$( this ).data( 'togvis-init', 1 )
 		if (this.tagName.toLowerCase() == 'input' && $.inArray($(this).attr('type').toLowerCase(), ['checkbox', 'radio']) != -1) {
 			_cb_radio.call(this);
 		} else if (this.tagName.toLowerCase() == 'select') {
