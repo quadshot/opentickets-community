@@ -139,6 +139,9 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.8.5 =
+* fixed the 'new event date' button bug
+
 = 1.8.4 =
 * fixed deprecated php that causes ticket selection to not work
 
