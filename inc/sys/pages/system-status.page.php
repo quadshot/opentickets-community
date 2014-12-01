@@ -567,7 +567,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 		$items['PHP Max Input Vars'] = $this->_new_item( ini_get( 'max_input_vars' ) );
 
 		$u = wp_upload_dir();
-		$msg = 'Uplaods directory IS writable';
+		$msg = 'Uploads directory IS writable';
 		$type = 'good';
 		$extra = ' (' . $u['basedir'] . ')';
 		if ( ! is_writable( $u['basedir'] ) ) {
@@ -579,7 +579,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 				esc_attr( 'http://codex.wordpress.org/Changing_File_Permissions' )
 			);
 		}
-		$items['WP Uplaods Writable'] = $this->_new_item( $msg, $type, $extra );
+		$items['WP Uploads Writable'] = $this->_new_item( $msg, $type, $extra );
 
 		$items['Default Timezone'] = $this->_new_item( date_default_timezone_get() );
 
