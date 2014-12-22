@@ -139,6 +139,11 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.8.6 =
+* added ability to order QS.CB callback functions
+* updated order data metabox takeover class variable visibility for latest woocmmerce version
+* fixed post_parent__not_in and post_parent__in sql syntax errors
+
 = 1.8.5 =
 * fixed the 'new event date' button bug
 
