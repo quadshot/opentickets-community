@@ -521,27 +521,36 @@ QS.Tooltip = QS.Tooltip || (function($, q, qt, w, d, undefined) {
 
 QS.CB = QS.EventUI_Callbacks = (function($, undefined) {
 	function EventUI_Callbacks(cls, fname, sname) {
-		var t = this;
-		var _callbacks = {};
-		var fname = typeof fname == 'string' && fname.length > 0 ? fname : 'callback';
-		var sname = typeof sname == 'string' && sname.length > 0 ? sname : 'callbacks';
+		var t = this,
+				idx = 0,
+				_callbacks = {},
+				fname = typeof fname == 'string' && fname.length > 0 ? fname : 'callback',
+				sname = typeof sname == 'string' && sname.length > 0 ? sname : 'callbacks';
 
 		function cb_add(name, func) {
+			var res = function() {};
+
 			if (typeof func == 'function') {
 				if (!(_callbacks[name] instanceof Array)) _callbacks[name] = [];
-				_callbacks[name].push(func);
+				var obj = { p:idx++, f:func };
+				_callbacks[name].push( obj );
+				res = function( priority ) { obj.p = priority; };
 			}
+
+			return res;
 		};
 
 		function cb_remove(name, func) {
 			if (typeof func == 'function' && _callbacks[name] instanceof Array) {
-				_callbacks[name] = _callbacks[name].filter(function(f) { return f.toString() != func.toString(); });
+				_callbacks[name] = _callbacks[name].filter(function(f) { return f.f.toString() != func.toString(); });
 			}
 		};
 
+		function _ordered( a, b ) { return ( a.p < b.p ) ? -1 : ( ( a.p > b.p ) ? 1 : 0 ); };
+
 		function cb_get(name) {
 			if (!(_callbacks[name] instanceof Array)) return [];
-			return _callbacks[name].filter(function(f) { return true; }); //send a copy of callback list
+			return _callbacks[name].filter(function(f) { return true; }).sort( _ordered ); //send a copy of callback list
 		};
 
 		function cb_trigger(name, params) {
@@ -549,7 +558,7 @@ QS.CB = QS.EventUI_Callbacks = (function($, undefined) {
 			var cbs = cb_get(name);
 			if (cbs instanceof Array) {
 				for (var i=0; i<cbs.length; i++)
-					cbs[i].apply(this, params);
+					cbs[i].f.apply(this, params);
 			}
 		};
 
