@@ -26,8 +26,8 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  */
 class WC_Meta_Box_Order_Data extends _WooCommerce_Core_WC_Meta_Box_Order_Data {
 
-	private static $billing_fields = array();
-	private static $shipping_fields = array();
+	protected static $billing_fields = array();
+	protected static $shipping_fields = array();
 
 	/**
 	 * Init billing and shipping fields we display + save
