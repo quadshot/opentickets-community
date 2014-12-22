@@ -521,15 +521,6 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 			if (exists.length == 0) $('<input type="hidden" rel="items-removed" name="events-removed" value="1" />').appendTo(this.elements.main);
 		},
 
-		callback: function(name, params) {
-			var params = params || [];
-			var cbs = EventUI.callbacks.get(name);
-			if (cbs instanceof Array) {
-				for (var i=0; i<cbs.length; i++)
-					cbs[i].apply(this, params);
-			}
-		},
-
 		template: function(names) {
 			var template = '';
 
@@ -655,7 +646,7 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 
 	$.fn.qsEventUI = function(o) { return this.each(function() { return startEventUI($(this), o); }); };
 
-	EventUI.callbacks = new EventUI_Callbacks();
+	EventUI.callbacks = new QS.CB( EventUI );
 
 	return EventUI;
 })(jQuery, QS.EventUI_Callbacks);
