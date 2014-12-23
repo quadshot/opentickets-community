@@ -139,6 +139,11 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.8.7 =
+* updated all js callback areas to use QS.CB
+* fixed 'new event date' button bug
+* fixed 'event settings' js bug
+
 = 1.8.6 =
 * added ability to order QS.CB callback functions
 * updated order data metabox takeover class variable visibility for latest woocmmerce version
