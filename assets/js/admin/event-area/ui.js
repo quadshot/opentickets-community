@@ -1,6 +1,6 @@
 var _qsot_event_area_settings = _qsot_event_area_settings || {};
 var QS = QS || {};
-QS.EventAreaUICB = new QS.EventUI_Callbacks();
+QS.EventAreaUICB = new QS.CB();
 
 (function($, qt) {
 	var S = $.extend({ ajaxurl:'/wp-admin/admin-ajax.php', nonce:false, venue_id:0 }, _qsot_event_area_settings),

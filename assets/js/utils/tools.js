@@ -93,7 +93,7 @@ QS.Tools = (function($, q, qt, w, d, undefined) {
 		}
 	};
 	qt.start = function(cls, name) {
-		if (typeof QS.EventUI_Callbacks == 'function') cls.callbacks = new QS.EventUI_Callbacks(cls);
+		if (typeof QS.CB == 'function') cls.callbacks = new QS.CB(cls);
 		cls.start = function(settings) {
 			var exists = $(window).data(name);
 			if (typeof exists != 'object' || exists == null) {
@@ -519,8 +519,8 @@ QS.Tooltip = QS.Tooltip || (function($, q, qt, w, d, undefined) {
 	return Tooltip;
 })(jQuery, QS, QS.Tools, window, document);
 
-QS.CB = QS.EventUI_Callbacks = (function($, undefined) {
-	function EventUI_Callbacks(cls, fname, sname) {
+QS.CB (function($, undefined) {
+	function CBs(cls, fname, sname) {
 		var t = this,
 				idx = 0,
 				_callbacks = {},
@@ -579,7 +579,7 @@ QS.CB = QS.EventUI_Callbacks = (function($, undefined) {
 		}
 	}
 
-	return EventUI_Callbacks;
+	return CBs;
 })(jQuery);
 QS.cbs = new QS.CB();
 
@@ -657,7 +657,7 @@ QS.cbs = new QS.CB();
 	});
 })(jQuery);
 
-QS.EditSetting = (function($, EventUI_Callbacks, undefined) {
+QS.EditSetting = (function($, undefined) {
 	function startEditSetting(e, o) {
 		var e = $(e);
 		var exists = e.data('qsot-edit-setting');
@@ -980,7 +980,7 @@ QS.EditSetting = (function($, EventUI_Callbacks, undefined) {
 	$(update_min_height);
 
 	return EditSetting;
-})(jQuery, QS.EventUI_Callbacks);
+})(jQuery);
 
 (function($, undefined) {
 	$.LOU = $.LOU || {};

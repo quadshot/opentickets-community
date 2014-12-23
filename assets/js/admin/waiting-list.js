@@ -1,6 +1,6 @@
 QS.AdminWaitingListUserSelector = (function($, undefined) {
 	var qt = QS.Tools;
-	var cb = QS.EventUI_Callbacks;
+	var cb = QS.CB;
 
 	function awlus(s) {
 		var p = this;
@@ -89,7 +89,7 @@ QS.AdminWaitingListUserSelector = (function($, undefined) {
 
 QS.AdminWaitingList = (function($, undefined) {
 	var qt = QS.Tools;
-	var cb = QS.EventUI_Callbacks;
+	var cb = QS.CB;
 
 	function awl(s) {
 		var t = this;
@@ -317,7 +317,7 @@ QS.AdminWaitingList = (function($, undefined) {
 
 QS.AdminWaitingListSeatingReport = (function($, undefined) {
 	var qt = QS.Tools;
-	var cb = QS.EventUI_Callbacks;
+	var cb = QS.CB;
 
 	function awlsr(s) {
 		var t = this;

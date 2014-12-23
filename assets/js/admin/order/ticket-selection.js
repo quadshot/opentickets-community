@@ -308,7 +308,7 @@ QS.adminTicketSelection = (function($, qs, qt) {
 	}
 
 	ui.aj = aj;
-	ui.callbacks = new QS.EventUI_Callbacks();
+	ui.callbacks = new QS.CB( ui );
 
 	var instance = undefined;
 	ui.start = function( o, e ) {

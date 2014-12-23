@@ -1,5 +1,5 @@
 var QS = QS || {};
-QS.EventUI = (function($, EventUI_Callbacks, undefined) {
+QS.EventUI = (function($, undefined) {
 	var qt = QS.Tools;
 	function NewEventDateTimeForm() {
 		var t = this;
@@ -652,4 +652,4 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 	EventUI.callbacks = new QS.CB( EventUI );
 
 	return EventUI;
-})(jQuery, QS.EventUI_Callbacks);
+})(jQuery);
