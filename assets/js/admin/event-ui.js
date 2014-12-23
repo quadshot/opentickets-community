@@ -143,7 +143,7 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 				return 1;
 			}
 
-			while (inRange()) {
+			if ( qt.isO( data['repeat-on'] ) && Object.keys( data['repeat-on'] ).length ) while (inRange()) {
 				for (i in data['repeat-on']) {
 					if (nextDay(data['repeat-on'][i]) < 0) continue; // initial run, in case first day is in middle of list. list m,tu,th,sa and first day is th
 					if (!inRange()) break;
@@ -582,7 +582,10 @@ QS.EventUI = (function($, EventUI_Callbacks, undefined) {
 		addButtons: function(view) {
 			var tm = this.fctm;
 			this.elements.header_center = view.element.closest('.'+tm).find('.'+tm+'-header-center');
-			this.addButton('new_event_btn', 'New Event Date', ['togvis'], {tar:'.option-sub[rel=add]', scope:'.events-ui'});
+			this.addButton('new_event_btn', 'New Event Date', ['togvis'], {tar:'.option-sub[rel=add]', scope:'.events-ui'}).click(function() {
+				var scope = $(this).closest( $(this).attr('scope') ), tar = $( $(this).attr('tar'), scope);
+				console.log('scope', scope.length, 'tar', tar.length, scope, tar);
+			});
 			this.callback('add_buttons');
 		},
 

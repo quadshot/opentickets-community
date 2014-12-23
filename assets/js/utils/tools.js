@@ -623,7 +623,7 @@ QS.cbs = new QS.CB();
 	}
 
 	// almost everything follows the simply rule of on or off, based on the target container's current state
-	$( document ).off( 'click.togvis', '.togvis' ).on( 'click.togvis', '.togvis', function( e ) {
+	$( document ).on( 'click.togvis', '.togvis', function( e ) {
 		if ( _maybe_init( $( this ) ) ) return;
 		// do not do this for special case scenarios. checkboxes, radio buttons, and select boxes
 		if (this.tagName.toLowerCase() == 'select' || (this.tagName.toLowerCase() == 'input' && $.inArray($(this).attr('type').toLowerCase(), ['checkbox','radio']) != -1)) return;
@@ -634,13 +634,13 @@ QS.cbs = new QS.CB();
 	$( document ).off( 'change.togvis', 'input[type=checkbox].togvis, input[type=radio].togvis' )
 			.on('change.togvis', 'input[type=checkbox].togvis, input[type=radio].togvis', function(e) { _cb_radio.call(this); });
 	// select boxes should hide all containers linked to non-selected options from the select box, and show all containers linked to the selected option
-	$( document ).off( 'change.togvis', 'select.togvis' ).on( 'change.togvis', 'select.togvis', function(e) { _select_box.call(this); } );
+	$( document ).on( 'change.togvis', 'select.togvis', function(e) { _select_box.call(this); } );
 
 	// need a separate initialization function. the reason is because on things like checkboxes, if you call .change() on page load, the state of the 
 	// checkbox will change. for instance if you set the state to unchecked, if you call .change() on page load, the state will now be checked. this is
 	// undesired functionality in the case of page load, because on page load we want to simply switch everything to the starting state. in order to do
 	// this, we need to only read the state and use it to determine the state of the affected containers.
-	$( document ).off( 'init.togvis', '.togvis' ).on( 'init.togvis', '.togvis', function(e) {
+	$( document ).on( 'init.togvis', '.togvis', function(e) {
 		$( this ).data( 'togvis-init', 1 )
 		if (this.tagName.toLowerCase() == 'input' && $.inArray($(this).attr('type').toLowerCase(), ['checkbox', 'radio']) != -1) {
 			_cb_radio.call(this);
@@ -809,15 +809,6 @@ QS.EditSetting = (function($, EventUI_Callbacks, undefined) {
 			this.callback('clear', [data]);
 		},
 
-		callback: function(name, params) {
-			var params = params || [];
-			var cbs = EditSetting.callbacks.get(name);
-			if (cbs instanceof Array) {
-				for (var i=0; i<cbs.length; i++)
-					cbs[i].apply(this, params);
-			}
-		},
-
 		_only_ifs_update: function( data, only ) {
 			var sel = only && ( typeof only == 'string' || typeof only == 'number' ) ? '[data-only-if^="' + only + '="]' : '[data-only-if]';
 			this.elements.form.find( sel ).each(function() {
@@ -976,7 +967,7 @@ QS.EditSetting = (function($, EventUI_Callbacks, undefined) {
 		}
 	});
 
-	EditSetting.callbacks = new EventUI_Callbacks();
+	EditSetting.callbacks = new QS.CB(EditSetting);
 
 	function update_min_height() {
 		var opt = $( '.option-sub[rel="settings"]' ), bulk = opt.find( '.bulk-edit-settings' ), h = bulk.css('display') == 'none', bulkhei = bulk.show().outerHeight( true );
