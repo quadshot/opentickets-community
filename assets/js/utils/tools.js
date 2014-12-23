@@ -519,7 +519,7 @@ QS.Tooltip = QS.Tooltip || (function($, q, qt, w, d, undefined) {
 	return Tooltip;
 })(jQuery, QS, QS.Tools, window, document);
 
-QS.CB (function($, undefined) {
+QS.CB = (function($, undefined) {
 	function CBs(cls, fname, sname) {
 		var t = this,
 				idx = 0,
