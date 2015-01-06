@@ -3,7 +3,7 @@
  * Plugin Name: OpenTickets Community Edition
  * Plugin URI:  http://opentickets.com/
  * Description: Event Management and Online Ticket Sales Platform
- * Version:     1.8.7
+ * Version:     1.8.8
  * Author:      Quadshot Software LLC
  * Author URI:  http://quadshot.com/
  * Copyright:   Copyright (C) 2009-2014 Quadshot Software LLC
@@ -40,7 +40,7 @@ class opentickets_community_launcher {
 			'pre' => 'qsot-',
 			'fctm' => 'fc',
 			'always_reserve' => 0,
-			'version' => '1.8.7',
+			'version' => '1.8.8',
 			'min_wc_version' => '2.1.0',
 			'core_post_type' => 'qsot-event',
 			'core_post_rewrite_slug' => 'event',
@@ -56,6 +56,10 @@ class opentickets_community_launcher {
 		// require woocommerce
 		if (self::_is_woocommerce_active()) {
 			if (self::_has_woocommerce_min_version()) {
+				// patch CORS issue where SSL forced admin prevents CORS from validating, making the calendar not work, and pretty much any ajax request on the frontend
+				self::maybe_patch_CORS();
+
+				// load opentickets
 				require_once 'opentickets.php';
 			} else {
 				add_action('admin_notices', array(__CLASS__, 'requires_woocommerce_min_version'), 10);
@@ -66,6 +70,80 @@ class opentickets_community_launcher {
 			$wc = substr($me, 0, strpos($me, 'opentickets-community')).implode(DIRECTORY_SEPARATOR, array('woocommerce', 'woocommerce.php'));
 			add_action('activate_'.$wc, array(__CLASS__, 'wc_activation'), 0);
 		}
+	}
+
+	// when a site uses the 'FORCE_SSL_ADMIN' constant, or hasany of the random plugins that force ssl in the admin, a bad situation occurs, in terms of ajax.
+	// most of the time in this scenario, the frontend of the site is over HTTP while the admin is being forced to HTTPS. however, if plugins are properly designed, all their
+	// ajax requests use the /wp-admin/admin-ajax.php ajax target url. this presents a problem, because now ALL AJAX request hit HTTPS://site.com/wp-admin/admin-ajax.php .
+	// at first glance this is not an issue, but once you start seeing that your ajax requests on the frontend stop working, you start getting concerned.
+	// the problem here is this:
+	//   CORS is active in most modern browsers. CORS _denies_ all ajax responses that are considered 'not the same domain'. unfortunately, one of the things that makes
+	//   two domains 'not the same domain' is the protocol that is being used on each. thus, if you make an ajax request from the homepage (HTTP://site.com/) to the proper ajax
+	//   url (HTTPS://site.com/wp-admin/admin-ajax.php) you get blocked by CORS because the requesting page is using a different protocol than the requested page. (HTTP to HTTPS)
+	// this is a core wordpress bug. to work around the problem, you have two options:
+	//   - allow ajax requests from all urls on the net to hit your site ( Access-Control-Allow-Origin: * ), or
+	//   - allow for HTTP and HTTPS to be considered the same url, by sniffing the requester origin, and spitting it back out as the allowed origin
+	// we chose to use the more secure version of this. so here is the work around
+	public static function maybe_patch_CORS() {
+		// fetch all the headers we have sent already. we do this because we do not want to send the header again if some other plugin does this already, or if core WP gets an unexpected patch
+		$sent = self::_sent_headers();
+
+		// if the allow-control-allow-origin header is not already sent, then attempt to add it if we can
+		if ( ! isset( $sent['access-control-allow-origin'] ) ) {
+			// figure out the site url, so we can determine if we should allow the origin access to this resource, by comparing the origin to our site domain
+			$surl = @parse_url( site_url() );
+
+			// get all the request headers
+			$headers = self::_get_headers();
+
+			// test if the 'origin' request header DOMAIN matches our site url DOMAIN, regardless of protocol
+			if ( isset( $headers['origin'] ) && ( $ourl = @parse_url( $headers['origin'] ) ) && $our['host'] == $surl['host'] ) {
+				// if it does, allow this origin access
+				header( 'Access-Control-Allow-Origin: ' . $headers['origin'] );
+			}
+		}
+	}
+
+	// gather all the headers that have been sent already
+	protected static function _sent_headers() {
+		$headers = array();
+		$list = headers_list();
+
+		// format the headers into array( 'header-name' => 'header value' ) form, making sure to normalize the header-names to lowercase for comparisons later
+		foreach ( $list as $header ) {
+			$parts = array_map( 'trim', explode( ':', $header, 2 ) );
+			$key = strtolower( $parts[0] );
+			$headers[ $key ] = implode( ':', $parts );
+		}
+
+		return $headers;
+	}
+
+	// cross server method to fetch all the request headers
+	protected static function _get_headers() {
+		// serve cached values if we have called this function before
+		static $headers = false;
+		if ( is_array( $headers ) ) return $headers;
+
+		// if we are using apache, then there is a function for getting all the request headers already. just normalize the header-name to lowercase and pass it on through
+		if ( function_exists( 'getallheaders' ) ) return $headers = array_change_key_case( getallheaders() );
+
+		$headers = array();
+		// on other webservers, we may nt have that function, so just pull all the header information out of the $_SERVER[] superglobal, becasue they will definitely be present there
+		foreach ( $_SERVER as $key => $value ) {
+			// look for http headers marked with HTTP_ prefix
+			if ( substr( $key, 0, 5 ) == 'HTTP_' ) {
+				$key = str_replace( ' ', '-', strtolower( str_replace( '_', ' ', substr( $key, 5 ) ) ) );
+				$headers[ $key ] = $value;
+			// special case for the content-type header
+			} elseif ( $key == "CONTENT_TYPE" ) {
+				$headers["content-type"] = $value;
+			// special case for the content-length header
+			} elseif ( $key == "CONTENT_LENGTH" ) {
+				$headers["content-length"] = $value;
+			}
+		}
+		return $headers;
 	}
 
 	//run out activation code upon woocommerce activation, if woocommerce is activated AFTER OpenTickets

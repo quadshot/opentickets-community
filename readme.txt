@@ -139,6 +139,9 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.8.8 =
+* added patch for CORE bug caused by FORCE_SSL_ADMIN and CORS standards
+
 = 1.8.7 =
 * updated all js callback areas to use QS.CB
 * fixed 'new event date' button bug
