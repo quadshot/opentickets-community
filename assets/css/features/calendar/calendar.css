@@ -19,6 +19,10 @@ a.fc-event:hover { color:#ffffff; }
 
 .calendar-content-wrap { padding-left:1em; padding-right:1em; }
 
+.site-content .calendar-content { margin-left:0; display:block; width:auto; }
+.site-content .calendar-content .calendar-content-wrap { padding-left:0; padding-right:0; }
+.site-content .calendar-content .calendar-content-wrap article { padding:1em 1em 0; }
+
 table.fc-header,
 table.fc-header td,
 table.fc-header th { border-width:0; }

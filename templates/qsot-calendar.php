@@ -3,10 +3,11 @@
 Template Name: OpenTickets Calendar
 */
 
-get_header(); ?>
+get_header();
+?>
 <div id="main-content" class="main-content">
 	<div id="primary" class="content-area">
-		<div id="content" class="row-fluid clearfix site-content">
+		<div id="content" class="row-fluid clearfix site-content calendar-content">
 			<div class="span12">
 				<div id="page-entry" class="calendar-content-wrap">
 					<div class="fluid-row">
