@@ -53,7 +53,7 @@ class qsot_Settings_Frontend extends WC_Settings_Page {
 				$base_file = QSOT::plugin_dir() . 'assets/css/frontend/event-base.less';
 				$css_file = QSOT::plugin_dir() . 'assets/css/frontend/event.css';
 
-				if ( is_writable( $base_file ) && is_writable( $css_file ) ) {
+				if ( is_writable( $base_file ) && is_writable( dirname( $css_file ) ) ) {
 					$options = qsot_options::instance();
 
 					// Get settings
