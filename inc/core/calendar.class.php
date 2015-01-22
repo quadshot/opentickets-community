@@ -22,7 +22,8 @@ class qsot_frontend_calendar {
 			add_filter('init', array(__CLASS__, 'register_assets'), 10);
 
 			add_action('init', array(__CLASS__, 'add_sidebar'), 11);
-			add_filter('init', array(__CLASS__, 'intercept_cal_ajax'), 1000, 1);
+			add_action( 'wp_ajax_qscal', array( __CLASS__, 'aj_frontend_cal' ), 10000, 1 );
+			add_action( 'wp_ajax_nopriv_qscal', array( __CLASS__, 'aj_frontend_cal' ), 10000, 1 );
 			add_filter('wp_enqueue_scripts', array(__CLASS__, 'add_assets'), 10000);
 			add_action('qsot-calendar-settings', array(__CLASS__, 'calendar_settings'), 10, 3);
 			add_filter('qsot-calendar-event', array(__CLASS__, 'get_calendar_event'), 10, 2);
@@ -134,8 +135,8 @@ class qsot_frontend_calendar {
 	public static function calendar_settings($post, $needs_calendar=true, $shortcode='') {
 		$time = microtime(true);
 		wp_localize_script('qsot-frontend-calendar', '_qsot_event_calendar_ui_settings', apply_filters('qsot-event-calendar-ui-settings', array(
-			'ajaxurl' => add_query_arg(array(
-				'qscal' => 'events',
+			'ajaxurl' => add_query_arg( array(
+				'action' => 'qscal',
 				't' => strrev($time),
 				'v' => md5($time.NONCE_KEY),
 			), admin_url('/admin-ajax.php')),
@@ -144,13 +145,12 @@ class qsot_frontend_calendar {
 		), $post));
 	}
 
-	public static function intercept_cal_ajax() {
-		if (isset($_GET['qscal'], $_GET['t'], $_GET['v'])) {
-			$t = strrev($_GET['t']);
-			if (md5($t.NONCE_KEY) == $_GET['v']) {
-				self::_handle_ajax();
-				die();
-			}
+	public static function aj_frontend_cal() {
+		if ( ! isset( $_GET['t'], $_GET['v'] ) ) return;
+		$t = strrev( $_GET['t'] );
+		if ( $_GET['v'] == md5( $t . NONCE_KEY ) ) {
+			self::_handle_ajax();
+			die();
 		}
 	}
 

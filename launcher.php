@@ -57,7 +57,7 @@ class opentickets_community_launcher {
 		if (self::_is_woocommerce_active()) {
 			if (self::_has_woocommerce_min_version()) {
 				// patch CORS issue where SSL forced admin prevents CORS from validating, making the calendar not work, and pretty much any ajax request on the frontend
-				self::maybe_patch_CORS();
+				//self::maybe_patch_CORS();
 
 				// load opentickets
 				require_once 'opentickets.php';

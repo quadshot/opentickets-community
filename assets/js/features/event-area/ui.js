@@ -11,6 +11,8 @@ QS.EATicketSelection = (function($, q, qt) {
 				efunc = efunc || function(){};
 
 		$.ajax({
+			// patch for 'force ssl admin' issues
+			xhrFields: { withCredentials: true },
 			url: S.ajaxurl,
 			data: data,
 			type: 'POST',
