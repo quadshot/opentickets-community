@@ -139,6 +139,13 @@ Setup an 'Event':
 
 == Changelog ==
 
+= 1.8.9 =
+* updated style and template for calendar to look better on 2015 theme
+* fixed event css writer code
+* fixed the non-ssl to ssl-ajax cookie problem for the calendar
+* fixed display of the protected events for 4.1
+* fixed frontend to backend http to https issue (force ssl admin issue)
+
 = 1.8.8 =
 * added patch for CORE bug caused by FORCE_SSL_ADMIN and CORS standards
 
