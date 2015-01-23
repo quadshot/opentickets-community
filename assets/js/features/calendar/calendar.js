@@ -28,7 +28,8 @@ var QSEventsEventCalendar = (function($, w, d, undefined) {
 						eventSources: [
 							{
 								url: t.o.ajaxurl,
-								data: _current_url_params
+								data: _current_url_params,
+								xhrFields: { withCredentials: true }
 							}
 						],
 						eventClick: _click,

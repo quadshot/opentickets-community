@@ -171,7 +171,7 @@ class qsot_frontend_calendar {
 
 		$args = array(
 			'post_type' => self::$o->core_post_type,
-			'post_status' => array( 'publish' ),
+			'post_status' => array( 'publish', 'protected' ),
 			'posts_per_page' => -1,
 			'post_parent__not' => 0,
 			'suppress_filters' => false,
