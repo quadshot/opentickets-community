@@ -32,6 +32,7 @@ class qsot_core_hacks {
 			add_filter('woocommerce_get_order_note_type', array(__CLASS__, 'get_order_note_type'), 10, 2);
 
 			add_action('save_post', array(__CLASS__, 'update_order_user_addresses'), 1000000, 2);
+			add_action( 'woocommerce_admin_order_data_after_billing_address', array( __CLASS__, 'add_sync_billing_field' ), 10, 1 );
 
 			add_action('pre_user_query', array(__CLASS__, 'or_display_name_user_query'), 101, 1);
 
@@ -1339,6 +1340,17 @@ class qsot_core_hacks {
 			</div>
 		</div>
 		<?php
+	}
+
+	public static function add_sync_billing_field( $order ) {
+		// only allow updating the user's billing information if we require users to signup, creating user accounts
+		if ( get_option( 'woocommerce_enable_guest_checkout' ) != 'yes' ) {
+			echo '<div class="edit_address"><p class="form-field _billing_sync_customer_address">'
+				. '<input type="hidden" name="_billing_sync_customer_address" value="0" />'
+				. '<input type="checkbox" name="_billing_sync_customer_address" value="1" class="billing-sync-customer-address" />'
+				. '<span for="_billing_sync_customer_address">Update Customer Address</span>'
+			. '</p></div>';
+		}
 	}
 
 	public static function update_order_user_addresses($post_id, $post) {

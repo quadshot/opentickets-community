@@ -8,9 +8,9 @@
  * @version     2.1.0 / 1.5.0
  */
 
-qsot_underload_core_class('/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php');
-
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
+qsot_underload_core_class('/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php');
 
 /**
  * WC_Meta_Box_Order_Notes
@@ -49,7 +49,7 @@ class WC_Meta_Box_Order_Notes extends _WooCommerce_Core_WC_Meta_Box_Order_Notes 
 						<?php echo wpautop( wptexturize( wp_kses_post( $note->comment_content ) ) ); ?>
 					</div>
 					<p class="meta">
-						<abbr class="exact-date" title="<?php echo $note->comment_date_gmt; ?> GMT"><?php printf( __( 'added %s ago', 'woocommerce' ), human_time_diff( strtotime( $note->comment_date_gmt ), current_time( 'timestamp', 1 ) ) ); ?></abbr>
+						<abbr class="exact-date" title="<?php echo $note->comment_date; ?>"><?php printf( __( 'added on %1$s at %2$s', 'woocommerce' ), date_i18n( wc_date_format(), strtotime( $note->comment_date ) ), date_i18n( wc_time_format(), strtotime( $note->comment_date ) ) ); ?></abbr>
 						<?php if ( $note->comment_author !== __( 'WooCommerce', 'woocommerce' ) ) printf( ' ' . __( 'by %s', 'woocommerce' ), $note->comment_author ); ?>
 						<a href="#" class="delete_note"><?php _e( 'Delete note', 'woocommerce' ); ?></a>
 					</p>
@@ -58,7 +58,7 @@ class WC_Meta_Box_Order_Notes extends _WooCommerce_Core_WC_Meta_Box_Order_Notes 
 			}
 
 		} else {
-			echo '<li>' . __( 'There are no notes for this order yet.', 'woocommerce' ) . '</li>';
+			echo '<li>' . __( 'There are no notes yet.', 'woocommerce' ) . '</li>';
 		}
 
 		echo '</ul>';
@@ -75,10 +75,10 @@ class WC_Meta_Box_Order_Notes extends _WooCommerce_Core_WC_Meta_Box_Order_Notes 
 					), $post);
 				?>
 				<select name="order_note_type" id="order_note_type">
-					<option value=""><?php _e( 'Private note', 'woocommerce' ); ?></option>
 					<?php foreach ($note_types as $val => $label): ?>
 						<option value="<?php echo esc_attr($val) ?>"><?php echo $label ?></option>
 					<?php endforeach; ?>
+					<option value=""><?php _e( 'Private note', 'woocommerce' ); ?></option>
 				</select>
 				<a href="#" class="add_note button"><?php _e( 'Add', 'woocommerce' ); ?></a>
 			</p>

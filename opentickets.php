@@ -89,6 +89,11 @@ class QSOT {
 		return $answer !== null ? $answer : ($answer = version_compare(self::$wc_back_one, WC()->version) <= 0);
 	}
 
+	public static function is_wc_at_least( $version ) {
+		static $answers = array();
+		return ( isset( $answers[ $version ] ) ) ? $answers[ $version ] : ( $answers[ $version ] = version_compare( $version, WC()->version ) <= 0 );
+	}
+
 	// add the settings page link to the plugins page
 	public static function plugins_page_actions($actions, $plugin_file, $plugin_data, $context) {
 		if ($plugin_file == self::$me && isset($actions['deactivate'])) {
@@ -455,21 +460,9 @@ class QSOT {
 // loads a core woo class equivalent of a class this plugin takes over, under a different name, so that it can be extended by this plugin's versions and still use the same original name
 if (!function_exists('qsot_underload_core_class')) {
 	function qsot_underload_core_class($path, $class_name='') {
-		global $woocommerce;
-
+		$woocommerce = WC();
 		// eval load WooCommerce Core WC_Coupon class, so that we can change the name, so that we can extend it
-		/*
-		$content = file_get_contents($woocommerce->plugin_path.$path);
-		if ($class_name) {
-			$content = preg_replace('#class\s+('.preg_quote($class_name, '#').')(\s|\{)#si', 'class _WooCommerce_Core_\1\2', $content);
-		} else {
-			preg_match_all('#class\s+([a-z_][a-z0-9_]*)(\s|\{)#si', $content, $matches, PREG_SET_ORDER);
-			if (is_array($matches) && count($matches)) foreach ($matches as $match)
-				$content = preg_replace('#class\s+('.preg_quote($match[1], '#').')(\s|\{)#si', 'class _WooCommerce_Core_\1\2', $content);
-		}
-		$content = preg_replace('#^<\?php.*?/\*#s', '/*', $content);
-		*/
-		$f = fopen($woocommerce->plugin_path.$path, 'r');
+		$f = fopen( $woocommerce->plugin_path() . $path, 'r' );
 		stream_filter_append($f, 'qsot_underload');
 		eval(stream_get_contents($f));
 		fclose($f);
