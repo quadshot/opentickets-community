@@ -10,9 +10,9 @@
  * @version     2.1.0 / 1.5
  */
 
-qsot_underload_core_class('/includes/admin/meta-boxes/class-wc-meta-box-order-items.php');
-
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
+qsot_underload_core_class('/includes/admin/meta-boxes/class-wc-meta-box-order-items.php');
 
 class WC_Meta_Box_Order_Items extends _WooCommerce_Core_WC_Meta_Box_Order_Items {
 
