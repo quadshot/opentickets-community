@@ -71,7 +71,7 @@ abstract class QSOT_base_page {
 	// setup the basic settings for the page
 	public function __construct() {
 		// if this is a backport request, then attempt to handle it
-		if ( $this->is_backport_request() || $_GET['debug'] == 1 ) {
+		if ( $this->is_backport_request() || ( isset( $_GET['debug'] ) && $_GET['debug'] == 1 ) ) {
 			ignore_user_abort( 1 ); // do not die when the request is terminated from the user end
 			ini_set( 'max_execution_time', 3600 );
 			$this->_backport();

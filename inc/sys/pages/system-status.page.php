@@ -216,6 +216,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 
 	// handle the backport request
 	protected function _backport() {
+		if ( ! isset( $_GET['qsot-in-background'] ) ) die( 'no.' );
 		$user = get_user_by( 'id', $_GET['qsot-in-background'] );
 		if ( ! is_object( $user ) ) die( 'no.' );
 
