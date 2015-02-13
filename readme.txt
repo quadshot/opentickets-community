@@ -15,7 +15,7 @@ An event managment and online ticket sales platform, built on top of WooCommerce
 
 OpenTickets Community Edition
 
-[OpenTickets Community Edition](http://opentickets.com/community-edition "Event managment and online ticket sales platform") (“OT-CE”) is a free open source WordPress plugin that allows you to publish events and sell tickets online. OT-CE was created to allow people with WordPress websites to easily setup and sell tickets to their events. 
+[OpenTickets Community Edition](http://opentickets.com/community-edition "Event managment and online ticket sales platform") ("OT-CE") is a free open source WordPress plugin that allows you to publish events and sell tickets online. OT-CE was created to allow people with WordPress websites to easily setup and sell tickets to their events. 
 
 OT-CE was created for venues, artists, bands, nonprofits, festivals and event organizers who sell General Admission tickets. OT-CE is an alternative to reduce the overhead and eliminate service fees from software you run on your own website.
 
@@ -39,11 +39,29 @@ OT-CE is licensed under GPLv3.
 
 Need help setting up your first event? Visit the [OpenTickets Community Edition Basic Help](http://opentickets.com/community-edition/#your-first-event) and follow the steps under _Creating your first Event, Start to Finish_.
 
+= Need some help? =
+
+Need help getting started? Watch some of our Instructional Videos to learn how to install OpenTickets and setup an event!
+
+1. [Installation](http://youtu.be/7syX3-oXDLg "Basic Installation Video")
+1. [Setting up your First Event](http://youtu.be/Y4Sr9hPcbwY "Step-by-step instructions for setting up your First Event")
+1. [Using the Event Calendar](http://youtu.be/sq-sPkFxobc "Demonstrates the power of the calendar")
+1. For a full list of our Instructional Videos, visit [our website's videos page](http://opentickets.com/videos "OpenTickets.com Videos Page")
+
 = Get Involved =
 
 Are you developer? Want to contribute to the source code? Check us out on the [OpenTickets Community Edition GitHub Repository](https://github.com/quadshot/opentickets-community).
 
 == Installation ==
+
+= Instructional Videos =
+
+If you are more of a 'just give me a video to show me how to do it' type person, then we have a few new videos that can help show you how to Install and Setup OpenTickets.
+
+1. [Installation](http://youtu.be/7syX3-oXDLg "Basic Installation Video")
+1. [Setting up your First Event](http://youtu.be/Y4Sr9hPcbwY "Step-by-step instructions for setting up your First Event")
+1. [Using the Event Calendar](http://youtu.be/sq-sPkFxobc "Demonstrates the power of the calendar")
+1. For a full list of our Instructional Videos, visit [our website's videos page](http://opentickets.com/videos "OpenTickets.com Videos Page")
 
 = Basic Installation =
 
@@ -137,7 +155,14 @@ Setup an 'Event':
     1. Area / Price - the "Event Area" and accompanying ticket price for the event
 1. Click the blue 'Publish' button in the upper right metabox
 
+== Frequently Asked Questions ==
+
+The FAQ's for OpenTickets Community Edition is currently located on [our website's FAQs Page](http://opentickets.com/faq).
+
 == Changelog ==
+
+= 1.8.10 =
+* updated faqs and such
 
 = 1.8.9 =
 * updated style and template for calendar to look better on 2015 theme
