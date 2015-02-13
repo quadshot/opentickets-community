@@ -444,10 +444,11 @@ class qsot_post_type {
 		return $orderby;
 	}
 
-	public static function the_posts_add_meta($posts, $q) {
-		foreach ($posts as $i => $post) {
-			if ($post->post_type == self::$o->core_post_type) {
-				$posts[$i] = apply_filters('qsot-event-add-meta', $post, $event_id);
+	// add the event metadata to event type posts, preventing the need to call this 'meta addtion' code elsewhere
+	public static function the_posts_add_meta( $posts, $q ) {
+		foreach ( $posts as $i => $post ) {
+			if ( $post->post_type == self::$o->core_post_type ) {
+				$posts[ $i ] = apply_filters( 'qsot-event-add-meta', $post, $post->ID );
 			}
 		}
 
@@ -1158,10 +1159,10 @@ class qsot_post_type {
 									<td width="50%">
 										<h4><?php _e('Basic Settings','opentickets-community-edition') ?></h4>
 										<div class="date-time-block subsub">
-											<?php $now = strtotime(current_time('mysql')) ?>
+											<?php $now = current_time( 'timestamp' ) ?>
 											<input type="text" class="use-datepicker date-text" name="start-date" value="<?php echo date(__('Y-m-d','opentickets-community-edition'), $now) ?>" title="<?php _e('Start Date','opentickets-community-edition') ?>" />
 											<input type="text" class="time-text" name="start-time" value="<?php echo date(__('h:ia','opentickets-community-edition'), $now) ?>" title="<?php _e('Start Time','opentickets-community-edition') ?>" />
-											<?php _e('to','opentickets-community-edition') ?>
+											<?php _e('to','opentickets-community-edition') ?><br/>
 											<?php $end = strtotime('+1 hour', $now); ?>
 											<input type="text" class="use-datepicker date-text" name="end-date" value="<?php echo date(__('Y-m-d','opentickets-community-edition'), $end) ?>" title="<?php _e('End Date','opentickets-community-edition') ?>" />
 											<input type="text" class="time-text" name="end-time" value="<?php echo date(__('h:ia','opentickets-community-edition'), $end) ?>" title="<?php _e('End Time','opentickets-community-edition') ?>" />
