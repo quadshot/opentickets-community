@@ -161,6 +161,13 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.9.0 =
+* added WC2.3 compatibility
+* updated 'edit order' metabox takeovers for WC2.3
+* tweaked 'new event' form styles
+* fixed several residual php notices
+* removed WC2.1 compatibility
+
 = 1.8.10 =
 * updated faqs and such
 
@@ -369,6 +376,11 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 = 1.2.5 =
 * initial public release
+
+== Upgrade Notice ==
+
+= 1.9.0 =
+WooCommerce 2.3.x was recently released. OpenTickets Community Edition v1.9.x enables WC2.3 compatibility. Upgrade to version 1.9.x around the time you upgrade WooCommerce to 2.3.x.
 
 == Arbitrary section ==
 
