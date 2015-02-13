@@ -13,7 +13,7 @@ An event managment and online ticket sales platform, built on top of WooCommerce
 
 == Description ==
 
-OpenTickets Community Edition
+= OpenTickets Community Edition =
 
 [OpenTickets Community Edition](http://opentickets.com/community-edition "Event managment and online ticket sales platform") ("OT-CE") is a free open source WordPress plugin that allows you to publish events and sell tickets online. OT-CE was created to allow people with WordPress websites to easily setup and sell tickets to their events. 
 
