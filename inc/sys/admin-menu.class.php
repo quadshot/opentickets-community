@@ -142,7 +142,7 @@ class qsot_admin_menu {
 		$reports->output();
 		return;
 		global $woocommerce;
-		require_once( $woocommerce->plugin_path.'/admin/woocommerce-admin-reports.php' );
+		require_once( $woocommerce->plugin_path() . '/admin/woocommerce-admin-reports.php' );
 
 		$charts = self::_get_reports_charts();
 

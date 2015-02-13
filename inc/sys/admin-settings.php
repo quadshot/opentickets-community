@@ -1,6 +1,6 @@
 <?php (__FILE__ == $_SERVER['SCRIPT_FILENAME']) ? die(header('Location: /')) : null;
 
-require_once $GLOBALS['woocommerce']->plugin_path.'/includes/admin/class-wc-admin-settings.php';
+require_once $GLOBALS['woocommerce']->plugin_path() . '/includes/admin/class-wc-admin-settings.php';
 
 class qsot_admin_settings extends WC_Admin_Settings {
 
@@ -12,7 +12,7 @@ class qsot_admin_settings extends WC_Admin_Settings {
 		if ( empty( self::$settings ) ) {
 			$settings = array();
 
-			include_once( $GLOBALS['woocommerce']->plugin_path.'/includes/admin/settings/class-wc-settings-page.php' );
+			include_once( $GLOBALS['woocommerce']->plugin_path() . '/includes/admin/settings/class-wc-settings-page.php' );
 
 			$settings[] = include( 'settings/general.php' );
 			$settings[] = include( 'settings/frontend.php' );

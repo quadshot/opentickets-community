@@ -119,7 +119,7 @@ class qsot_templates {
 
 		$found = locate_template(array($name), false, false);
 		if (!$found) {
-			$woodir = trailingslashit($woocommerce->plugin_path);
+			$woodir = trailingslashit( $woocommerce->plugin_path() );
 			switch ($type) {
 				case 'admin': $qsot_path = 'templates/admin/'; $woo_path = 'includes/admin/'; break;
 				default: $qsot_path = 'templates/'; $woo_path = 'templates/';
