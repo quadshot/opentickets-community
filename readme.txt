@@ -161,6 +161,12 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.9.1 =
+* added wysiwyg to settings page for html email
+* fixed conflict with The Events Calendar plugin
+* fixed weird ordering problem on event settings
+* fixed minor bug in system status page
+
 = 1.9.0 =
 * added WC2.3 compatibility
 * updated 'edit order' metabox takeovers for WC2.3
