@@ -457,6 +457,11 @@ class QSOT {
 	}
 }
 
+// dummy noop function. literally does nothing (meant for actions and filters)
+if ( ! function_exists( 'qsot_noop' ) ):
+	function qsot_noop( $first ) { return $first; };
+endif;
+
 // loads a core woo class equivalent of a class this plugin takes over, under a different name, so that it can be extended by this plugin's versions and still use the same original name
 if (!function_exists('qsot_underload_core_class')) {
 	function qsot_underload_core_class($path, $class_name='') {

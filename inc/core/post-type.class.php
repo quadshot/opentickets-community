@@ -45,6 +45,14 @@ class qsot_post_type {
 			add_action('admin_head', array(__CLASS__, 'patch_menu_second_hack'), 10);
 			// handle saving of the parent event post
 			add_action('save_post', array(__CLASS__, 'save_event'), 999, 2);
+			// protect save_event() from 'remove_action' global varialbe violation bug
+			// ** when calling remove_action() from a function that is called by that action, the $GLOBALS['wp_filter'] is directly modified.
+			// ** at the same time the do_action/apply_filters function uses this exact same variable to cycle through the function callback list.
+			// ** when you remove the last function attached to a given priority on a tag, deleting that prioiry's key, causes the foreach loop
+			// ** in our do_action & apply_filters functions to skip over the next priority, because what would have been the nex priority falls
+			// ** down the array into the current priority's slot, making php think the next one is actually the one that is two away.
+			// ** I cannot replicate this problem in independent tests, outside wp, but I can reliably get this to happen within.
+			add_action( 'save_post', 'qsot_noop', 998 );
 
 			// obtain start and end date range based on criteria
 			add_filter('qsot-event-date-range', array(__CLASS__, 'get_date_range'), 100, 2);
@@ -75,7 +83,6 @@ class qsot_post_type {
 			add_filter('the_content', array(__CLASS__, 'the_content'), 10, 1);
 
 			add_filter('qsot-can-sell-tickets-to-event', array(__CLASS__, 'check_event_sale_time'), 10, 2);
-			//add_filter('posts_request', function($req, $q) { die(var_dump($req, $q)); }, 10, 2);
 
 			add_action('add_meta_boxes', array(__CLASS__, 'core_setup_meta_boxes'), 10, 1);
 
@@ -470,7 +477,6 @@ class qsot_post_type {
 
 	public static function add_meta($event) {
 		if (is_object($event) && isset($event->ID, $event->post_type) && $event->post_type == self::$o->core_post_type) {
-			//die(var_dump($event));
 			$km = self::$o->meta_key;
 			$m = array();
 			$meta = get_post_meta($event->ID);
@@ -846,7 +852,7 @@ class qsot_post_type {
 		if ($post->post_parent != 0) return; // this is only for parent event posts
 
 		// if there were settings for the sub events sent, then process those settings
-		if (isset($_POST['_event_settings'])) {
+		if (isset($_POST['_qsot_event_settings'])) {
 			$need_lookup = $updates = $matched = array();
 			// default post_arr to send to wp_insert_post
 			$defs = array(
@@ -859,7 +865,7 @@ class qsot_post_type {
 
 			// cycle through all the subevent settings that were sent. some will be new, some will be modified, some will be modified but have lost their post id. determine what each is,
 			// and properly group them for possible later processing
-			foreach ($_POST['_event_settings'] as $item) {
+			foreach ($_POST['_qsot_event_settings'] as $item) {
 				// expand the settings
 				$tmp = @json_decode(stripslashes($item));
 				// if the settings are a valid set of settings, then continue with this item

@@ -640,7 +640,7 @@ QS.EventUI = (function($, undefined) {
 				ev = $.extend({}, defaults, ev);
 				this.callback('before_submit_event_item', [ ev, events[i], defaults ]);
 				var txt = JSON.stringify(ev);
-				$('<input type="hidden" name="_event_settings['+i+']" value=""/>').val(txt).appendTo(form);
+				$('<input type="hidden" name="_qsot_event_settings['+i+']" value=""/>').val(txt).appendTo(form);
 			}
 
 			//return false;

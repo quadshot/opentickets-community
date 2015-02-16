@@ -586,14 +586,14 @@ class qsot_order_admin {
 		self::$options->add(array(
 			'order' => 2100,
 			'type' => 'title',
-			'title' => __('Additional Admin Based Order Validation','opentickets-community-edition'),
+			'title' => __('Additional Email Settings','opentickets-community-edition'),
 			'id' => 'heading-admin-orders-1',
 		));
 
 		self::$options->add(array(
 			'order' => 2131,
 			'id' => 'qsot-completed-order-email-message',
-			'type' => 'textarea',
+			'type' => 'wysiwyg',
 			'class' => 'widefat reason-list',
 			'title' => __('Custom Completed Order Message','opentickets-community-edition'),
 			'desc' => __('This html appears at the bottom of the default Completed Order email, sent to the customer upon completion of their order, below their address information.','opentickets-community-edition'),

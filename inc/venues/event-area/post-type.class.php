@@ -106,7 +106,7 @@ class qsot_event_area {
 			add_filter('qsot-ticket-selection-admin-ajax-add-tickets', array(__CLASS__, 'aaj_ts_add_tickets'), 10, 2);
 
 			// sub event bulk edit stuff
-			add_action('qsot-events-bulk-edit-settings', array(__CLASS__, 'event_area_bulk_edit_settings'), 20, 2);
+			add_action('qsot-events-bulk-edit-settings', array(__CLASS__, 'event_area_bulk_edit_settings'), 30, 2);
 			add_filter('qsot-events-save-sub-event-settings', array(__CLASS__, 'save_sub_event_settings'), 10, 3);
 			add_filter('qsot-load-child-event-settings', array(__CLASS__, 'load_child_event_settings'), 10, 3);
 

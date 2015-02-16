@@ -99,7 +99,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 			<?php
 		}
 
-		if ( 'tools' == $current ) {
+		if ( 'tools' == $current && isset( $_GET['performed'] ) ) {
 			switch ( $_GET['performed'] ) {
 				case 'resync':
 					echo sprintf(
@@ -166,7 +166,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 								?></a>
 							</td>
 							<td>
-								<span class="helper"><?php _e( 'Same as aboe, only all processing is done behind the scenes. This takes longer, but does not require that you keep this window open.', 'openticket-community-edition' ) ?></span>
+								<span class="helper"><?php _e( 'Same as above, only all processing is done behind the scenes. This takes longer, but does not require that you keep this window open.', 'openticket-community-edition' ) ?></span>
 							</td>
 						</tr>
 					</tbody>
@@ -185,7 +185,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 			$processed = false;
 
 			// if the tool requested is on our list, then handle it appropriately
-			switch ( $_GET['qsot-tool'] ) {
+			if ( isset( $_GET['qsot-tool'] ) ) switch ( $_GET['qsot-tool'] ) {
 				case 'RsOi2Tt': // resync tool
 					if ( $this->_verify_action_nonce( 'RsOi2Tt' ) ) {
 						$state = $_GET['state'] == 'bg' ? '-bg' : '';
@@ -621,13 +621,14 @@ class QSOT_system_status_page extends QSOT_base_page {
 
 		$args = array(
 			'post_type' => 'qsot-event-area',
-			'post_status' => 'publish',
+			'post_status' => 'any',
+			'posts_per_page' => -1,
 		);
 		$ea_posts = get_posts( $args );
 
 		foreach ( $ea_posts as $ea_post ) {
 			$price = get_post_meta( $ea_post->ID, '_pricing_options', true );
-			$out[] = '"' . apply_filters( 'the_title', $ea_post->post_title ) . '" [' . ( $price > 0 ? '#' . $price : 'NONE' ) . ']';
+			$out[] = '"' . apply_filters( 'the_title', $ea_post->post_title ) . '" [' . ( $price > 0 ? '#' . $price : 'NONE' ) . '] (' . $ea_post->post_status . ')';
 		}
 
 		return $out;
@@ -644,6 +645,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 			'meta_query' => array(
 				array( 'key' => '_ticket', 'value' => 'yes', 'compare' => '=' ),
 			),
+			'posts_per_page' => -1,
 		);
 		$ticket_product_ids = get_posts( $args );
 

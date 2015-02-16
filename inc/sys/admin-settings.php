@@ -9,6 +9,7 @@ class qsot_admin_settings extends WC_Admin_Settings {
 	private static $messages = array();
 
 	public static function get_settings_pages() {
+		add_action( 'woocommerce_admin_field_wysiwyg', array( __CLASS__, 'field_wysiwyg' ) );
 		if ( empty( self::$settings ) ) {
 			$settings = array();
 
@@ -40,6 +41,40 @@ class qsot_admin_settings extends WC_Admin_Settings {
 
 		wp_safe_redirect(add_query_arg(array('updated' => 1)));
 		exit;
+	}
+
+	public static function field_wysiwyg( $args ) {
+		$args = wp_parse_args( $args, array(
+			'id' => '',
+			'title' => '',
+			'default' => '',
+			'class' => '',
+		) );
+		if ( empty( $args['id'] ) ) return;
+
+		$args['title'] = ( empty( $title['title'] ) ) ? ucwords( implode( ' ', explode( '-', str_replace( '_', '-', $args['id'] ) ) ) ) : $args['title'];
+
+		?><tr valign="top" class="woocommerce_wysiwyg">
+			<th scope="row" class="titledesc">
+				<?php echo force_balance_tags( $args['title'] ) ?>
+			</th>
+			<td class="forminp"><?php
+				wp_editor(
+					get_option( $args['id'], $args['default'] ),
+					$args['id'],
+					array(
+						'quicktags' => false,
+						'teeny' => true,
+						'textarea_name' => $args['id'],
+						'textarea_rows' => 2,
+						'media_buttons' => false,
+						'wpautop' => false,
+						'editor_class' => $args['class'],
+						'tinymce' => array( 'wp_autoresize_on' => '', 'paste_as_text' => true ),
+					)   
+				);
+			?></td>
+		</tr><?php
 	}
 
 	/**
