@@ -9,13 +9,13 @@ Copyright: Copyright (C) 2009-2014 Quadshot Software LLC
 License: GNU General Public License, version 3 (GPL-3.0)
 License URI: http://www.gnu.org/copyleft/gpl.html
 
-An event managment and online ticket sales platform, built on top of WooCommerce.
+An event management and online ticket sales platform, built on top of WooCommerce.
 
 == Description ==
 
 = OpenTickets Community Edition =
 
-[OpenTickets Community Edition](http://opentickets.com/community-edition "Event managment and online ticket sales platform") ("OT-CE") is a free open source WordPress plugin that allows you to publish events and sell tickets online. OT-CE was created to allow people with WordPress websites to easily setup and sell tickets to their events. 
+[OpenTickets Community Edition](http://opentickets.com/community-edition "Event management and online ticket sales platform") ("OT-CE") is a free open source WordPress plugin that allows you to publish events and sell tickets online. OT-CE was created to allow people with WordPress websites to easily setup and sell tickets to their events. 
 
 OT-CE was created for venues, artists, bands, nonprofits, festivals and event organizers who sell General Admission tickets. OT-CE is an alternative to reduce the overhead and eliminate service fees from software you run on your own website.
 
@@ -160,6 +160,9 @@ Setup an 'Event':
 The FAQ's for OpenTickets Community Edition is currently located on [our website's FAQs Page](http://opentickets.com/faq).
 
 == Changelog ==
+
+= 1.9.2 =
+* fixing plugin description typo
 
 = 1.9.1 =
 * added wysiwyg to settings page for html email
