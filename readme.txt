@@ -161,6 +161,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.9.3 =
+* fixed the 'removed event area' issue
+
 = 1.9.2 =
 * fixing plugin description typo
 
