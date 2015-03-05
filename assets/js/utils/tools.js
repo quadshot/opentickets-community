@@ -276,7 +276,7 @@ QS.Features.load = (function($, w, d, s, undefined) {
 
 		if (cascade instanceof Array) {
 			for (var i=0; i<cascade.length; i++) {
-				var c = cascade[i];
+				var f = cascade[i];
 				if (typeof f == 'object' && f.name && f.run && typeof f.run == 'function') {
 					if (s[f.name]) {
 						if (typeof cache[f.name] == 'undefined' || cache[f.name] === null) cache[f.name] = s[f.name](w, d);

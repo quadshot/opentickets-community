@@ -950,9 +950,13 @@ class qsot_event_area {
 			}
 			$current->ticket = false;
 			if (!empty($current->meta[self::$o->{'event_area.mk.po'}])) {
-				$current->ticket = get_product($current->meta[self::$o->{'event_area.mk.po'}]);
-				$current->ticket->_display_title = $current->ticket->get_title();
-				$current->ticket->_display_price = apply_filters('qsot-price-formatted', $current->ticket->get_price());
+				$current->ticket = wc_get_product($current->meta[self::$o->{'event_area.mk.po'}]);
+				if ( is_object( $current->ticket ) ) {
+					$current->ticket->_display_title = $current->ticket->get_title();
+					$current->ticket->_display_price = apply_filters('qsot-price-formatted', $current->ticket->get_price());
+				} else {
+					$current->ticket = false;
+				}
 			}
 		}
 
