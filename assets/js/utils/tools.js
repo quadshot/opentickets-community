@@ -118,6 +118,7 @@ QS.popMediaBox = (function($, qt) {
 				par = qt.is(args.par) ? ( qt.isO(args.par) ? args.par : self.closest(args.par) ) : ( (par = self.attr('scope')) ? self.closest(par) : self.closest('div') ),
 				id_field = qt.is(args.id_field) ? ( qt.isO(args.id_field) ? args.id_field : par.find(args.id_field) ) : ( (id_field = par.find('[rel="img-id"]')) ? id_field : $() ),
 				preview_cont = qt.is(args.pc) ? ( qt.isO(args.pc) ? args.pc : par.find(args.pc) ) : ( (preview_cont = par.find('[rel="image-preview"]')) ? preview_cont : $() ),
+				with_selection = qt.isF( args.with_selection ) ? args.with_selection : function( attachment ) {},
 				on_select = qt.isF(args.on_select) ? args.on_select : function() {
 					var attachment = custom.state().get('selection').first().attributes;
 					if (id_field.length) id_field.val(attachment.id);
@@ -131,6 +132,7 @@ QS.popMediaBox = (function($, qt) {
 							$('<img src="'+url+'" class="preview-image" />').appendTo(t.empty());
 						});
 					}
+					with_selection( attachment );
 				};
 
     if ( custom ) {

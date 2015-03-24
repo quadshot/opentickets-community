@@ -516,18 +516,16 @@ class qsot_event_area {
 								<?php
 									$ticket = get_product(get_post_meta($area->ID, self::$o->{'event_area.mk.po'}, true));
 									$capacity = get_post_meta($area->ID, self::$o->{'event_area.mk.cap'}, true);
+									if ( is_object( $ticket ) ) {
+										$disp_cap = $capacity;
+										$name = esc_attr( $area->post_title ) . ' / ' . $ticket->get_title() . ' (' . apply_filters( 'qsot-price-formatted', $ticket->get_price() ) . ')';
+									} else {
+										$disp_cap = 0;
+										$name = esc_attr( $area->post_title ) . ' / ' . apply_filters( 'the_title', '(no ticket selected)' ) . ' (' . apply_filters( 'qsot-price-formatted', 0 ) . ')';
+									}
+									$name = apply_filters( 'qsot-event-settings-event-area-name', $name, $area, $ticket, $capacity );
 								?>
-								<?php if (is_object($ticket)): ?>
-									<option value="<?php echo esc_attr($area->ID) ?>" venue-id="<?php echo $area->post_parent ?>" capacity="<?php echo $capacity ?>"><?php
-										echo esc_attr($area->post_title).' / '.$ticket->get_title()
-												.' ('.apply_filters('qsot-price-formatted', $ticket->get_price()).')'
-									?></option>
-								<?php else: ?>
-									<option value="<?php echo esc_attr($area->ID) ?>" venue-id="<?php echo $area->post_parent ?>" capacity="0"><?php
-										echo esc_attr($area->post_title).' / '.apply_filters('the_title', '(no ticket selected)')
-												.' ('.apply_filters('qsot-price-formatted', 0).')'
-									?></option>
-								<?php endif; ?>
+								<option value="<?php echo esc_attr($area->ID) ?>" venue-id="<?php echo $area->post_parent ?>" capacity="<?php echo $disp_cap ?>"><?php echo $name; ?></option>
 							<?php endforeach; ?>
 						</select>
 						<div class="edit-setting-actions">
