@@ -1,0 +1,7 @@
+.venue-directions { margin-bottom:10px; }
+.venue-map { float:left; margin:0 10px 10px 0; }
+.map-instructions { font-size:0.8em; color:#787878; margin:0; padding:5px 0 0; }
+
+.address-info { margin:0; padding:0; border:0; font-size:1em; list-style:none outside none; }
+.address-label { font-weight:bold; }
+.address-value { font-style:italic; }

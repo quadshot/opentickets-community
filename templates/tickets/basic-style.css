@@ -1,0 +1,39 @@
+/*
+ * Style Name: _Default
+ */
+
+body { margin:0; background-color:white; }
+
+.clear { clear:both; }
+
+.actions-list { padding:10px 0; border-bottom:2px solid #888888; margin-bottom:15px; font-size:12px; font-family:Helvetica, Arial, sans-serif; font-weight:bold; }
+.actions-list a { padding:0 10px; }
+
+.page-wrap { width:700px; font-family:Helvetica, Arial, sans-serif; }
+.page-wrap .venue-info,
+.page-wrap .ticket-wrap { padding:20px 0; margin:0 20px; page-break-inside:avoid; }
+.page-wrap .ticket-wrap .inner-wrap { border:1px solid #555555; padding:10px 10px 17px; position:relative; }
+.page-wrap table { width:100%; }
+.page-wrap table td { vertical-align:top; padding:0; margin:0; border:0; }
+.page-wrap .ot-tiny-logo { position:absolute; bottom:2px; left:2px; }
+
+.page-wrap h2 { margin:0 0 3px 0; padding:0; }
+
+.page-wrap ul { list-style:none outside none; margin:0; padding:0; border:0; }
+.page-wrap li { list-style:none outside none; margin:0; padding:1px 0; border:0; }
+
+.page-wrap .personalization { font-size:12px; font-weight:bold; }
+.page-wrap .right { text-align:right; }
+.page-wrap .map-extra-instructions { font-size:10px; color:#999999; }
+
+.page-wrap .venue-address { margin-bottom:10px; }
+.page-wrap .venue-notes { font-size:12px; }
+
+.page-wrap .two-columns { }
+.page-wrap .two-columns .column { margin:0; padding:0; border:0; }
+.page-wrap .two-columns div.column { float:left; }
+.page-wrap .column .inner { padding:0 12px; }
+.page-wrap .column.column-left { border-right:1px solid #aaaaaa; }
+.page-wrap .column.column-right { width:400px; }
+.page-wrap .column.column-right .inner { padding-right:0; }
+.page-wrap .column.column-left .inner { padding-left:0; }
