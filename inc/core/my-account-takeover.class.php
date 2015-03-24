@@ -339,7 +339,7 @@ class qsot_my_account_takeover {
 		));
 
 		self::$options->add(array(
-			'order' => 103,
+			'order' => 115,
 			'id' => 'qsot-infinite-login',
 			'type' => 'checkbox',
 			'title' => __('Infinite Login','opentickets-community-edition'),

@@ -27,7 +27,7 @@ class qsot_admin_settings extends WC_Admin_Settings {
 		global $current_section, $current_tab;
 
 		if ( empty( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'qsot-settings' ) )
-	    		die( __( 'Action failed. Please refresh the page and retry.','opentickets-community-edition' ) );
+			die( __( 'Action failed. Please refresh the page and retry.','opentickets-community-edition' ) );
 
 		// Trigger actions
 		do_action( 'qsot_settings_save_' . $current_tab );
@@ -39,7 +39,7 @@ class qsot_admin_settings extends WC_Admin_Settings {
 
 		do_action( 'qsot_settings_saved' );
 
-		wp_safe_redirect(add_query_arg(array('updated' => 1)));
+		wp_safe_redirect( apply_filters( 'qsot-settings-save-redirect', add_query_arg( array( 'updated' => 1 ) ), $current_tab ) );
 		exit;
 	}
 

@@ -44,6 +44,10 @@ class qsot_admin_menu {
 			add_action('deactivate_plugin', array(__CLASS__, 'incremental_stats'), 1000, 2);
 			add_action('switch_theme', array(__CLASS__, 'incremental_stats'), 1000, 2);
 
+			// when saving settings, we could have updated the /qsot-event/ url slug... so we need to updating the permalinks on page refresh
+			add_action( 'qsot-settings-save-redirect', array( __CLASS__, 'refresh_permalinks_on_save_uri' ), 10, 2 );
+			add_action( 'admin_init', array( __CLASS__, 'refresh_permalinks_on_save_page_refresh' ), 1 );
+
 			if (is_admin()) {
 				add_action('admin_enqueue_scripts', array(__CLASS__, 'nag_stats'), 1000);
 				add_action('wp_ajax_qsot-nag', array(__CLASS__, 'handle_nag_ajax'), 1000);
@@ -80,6 +84,26 @@ class qsot_admin_menu {
 		// if there are post types to create, then create them
 		if (is_array($core) && !empty($core))
 			foreach ($core as $slug => $args) self::_register_post_type($slug, $args);
+	}
+
+	public static function refresh_permalinks_on_save_uri( $uri, $page ) {
+		if ( 'general' == $page ) {
+			$uri = add_query_arg( array( 'refresh-permalinks' => wp_create_nonce( 'refresh-now/qsot' ) ) );
+		}
+
+		return $uri;
+	}
+
+	public static function refresh_permalinks_on_save_page_refresh() {
+		if ( isset( $_GET['refresh-permalinks'] ) ) {
+			if ( wp_verify_nonce( $_GET['refresh-permalinks'], 'refresh-now/qsot' ) ) {
+				global $wp_rewrite;
+				flush_rewrite_rules();
+				$wp_rewrite->rewrite_rules();
+			}
+			wp_safe_redirect( remove_query_arg( array( 'refresh-permalinks' ) ) );
+			exit;
+		}
 	}
 
 	public static function repair_menu_order() {
@@ -470,6 +494,7 @@ class qsot_admin_menu {
 
 	protected static function _setup_admin_options() {
 		self::$options->def('qsot-allow-stats', 'no');
+		self::$options->def( 'qsot-event-permalink-slug', self::$o->core_post_type );
 
 		self::$options->add(array(
 			'order' => 100,
@@ -486,6 +511,16 @@ class qsot_admin_menu {
 			'desc' => __('Allow OpenTickets to gather information about your WordPress installation.','opentickets-community-edition'),
 			'desc_tip' => __('This information is strictly used to make this product better and more compatible with other plugins.','opentickets-community-edition'),
 			'default' => 'no',
+		));
+
+		self::$options->add(array(
+			'order' => 103,
+			'id' => 'qsot-event-permalink-slug',
+			'type' => 'text',
+			'title' => __('Event Link Slug','opentickets-community-edition'),
+			'desc' => __('The url slug that is prepended to the event name in the url. (ex: <code>http://example.com/<strong>event</strong>/my-event/</code>)','opentickets-community-edition'),
+			'desc_tip' => __('This is the segment of the url that preceeds the event name.','opentickets-community-edition'),
+			'default' => self::$options->{'qsot-event-permalink-slug'},
 		));
 
 		self::$options->add(array(

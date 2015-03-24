@@ -45,7 +45,7 @@ class qsot_post_type {
 			add_action('admin_head', array(__CLASS__, 'patch_menu_second_hack'), 10);
 			// handle saving of the parent event post
 			add_action('save_post', array(__CLASS__, 'save_event'), 999, 2);
-			// protect save_event() from 'remove_action' global varialbe violation bug
+			// protect save_event() from 'remove_action' global variable violation bug, brought to light by using OpenTickets in tandem with TheEventCalendar
 			// ** when calling remove_action() from a function that is called by that action, the $GLOBALS['wp_filter'] is directly modified.
 			// ** at the same time the do_action/apply_filters function uses this exact same variable to cycle through the function callback list.
 			// ** when you remove the last function attached to a given priority on a tag, deleting that prioiry's key, causes the foreach loop
@@ -664,7 +664,7 @@ class qsot_post_type {
 	public static function register_post_type( $list) {
 		// needs to be it's own local variable, so that we can pass it as a 'used' variable to the anonymous function we make later
 		$corept = self::$o->core_post_type;
-		$rwslug = get_option( 'qsot_event_permalink_slug' );
+		$rwslug = get_option( 'qsot-event-permalink-slug' );
 		$rwslug = empty( $rwslug ) ? $corept : $rwslug;
 
 		$list[$corept] = array(
