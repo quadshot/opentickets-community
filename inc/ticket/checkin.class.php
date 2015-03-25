@@ -15,26 +15,30 @@ class QSOT_checkin {
 		if (empty($settings_class_name) || !class_exists($settings_class_name)) return;
 		self::$o = call_user_func_array(array($settings_class_name, 'instance'), array());
 
-		// add rewrite rules handling
-		add_action('wp', array(__CLASS__, 'intercept_checkin_request'), 15);
-		add_filter('query_vars', array(__CLASS__, 'query_vars'), 1000);
-		add_filter('qsot-tickets-rewrite-rules', array(__CLASS__, 'checkin_rewrite_rules'), 1000);
-		add_action('qsot-event-checkin-intercepted', array(__CLASS__, 'event_checkin'), 1000, 2);
-
 		// add qr to ticket
 		add_filter('qsot-compile-ticket-info', array(__CLASS__, 'add_qr_code'), 3000, 3);
+
+		// add rewrite rules to intercept the QR Code scans
+		do_action(
+			'qsot-rewriter-add',
+			'qsot-event-checkin',
+			array(
+				'name' => 'qsot-event-checkin',
+				'query_vars' => array( 'qsot-event-checkin', 'qsot-checkin-packet' ),
+				'rules' => array( 'event-checkin/(.*)?' => 'qsot-event-checkin=1&qsot-checkin-packet=' ),
+				'func' => array( __CLASS__, 'intercept_checkins' ),
+			)
+		);
 	}
 
-	public static function intercept_checkin_request(&$wp) {
-		if (isset($wp->query_vars['qsot-event-checkin'], $wp->query_vars['qsot-checkin-packet']) && $wp->query_vars['qsot-event-checkin']) {
-			$packet = $wp->query_vars['qsot-checkin-packet'];
-			do_action('qsot-event-checkin-intercepted', self::_parse_checkin_packet($packet), $packet);
-		}
+	public static function intercept_checkins( $value, $qvar, $all_data, $query_vars ) {
+		$packet = urldecode( $all_data['qsot-checkin-packet'] );
+		self::event_checkin( self::_parse_checkin_packet( $packet ), $packet );
 	}
 
 	public static function event_checkin($data, $packet) {
 		if (!is_user_logged_in() || !current_user_can('edit_users')) {
-			self::_no_access();
+			self::_no_access('', '', $data, $packet);
 			exit;
 		}
 
@@ -60,26 +64,36 @@ class QSOT_checkin {
 		exit;
 	}
 
-	protected static function _no_access($msg='', $heading='') {
-		$template = apply_filters('qsot-locate-template', '', array('checkin/no-access.php'), false, false);
-		$stylesheet = apply_filters('qsot-locate-template', '', array('checkin/style.css'), false, false);
-		$stylesheet = str_replace(DIRECTORY_SEPARATOR, '/', str_replace(ABSPATH, '/', $stylesheet));
-		$stylesheet = site_url($stylesheet);
-		include_once $template;
+	protected static function _no_access($msg='', $heading='', $data=array(), $packet='') {
+		if ( ! is_user_logged_in() ) {
+			$url = wp_login_url( self::create_checkin_url( str_replace( array( '+', '=', '/' ), array( '-', '_', '~' ), $packet ) ) );
+			wp_safe_redirect( $url );
+			exit;
+		} else {
+			$template = apply_filters('qsot-locate-template', '', array('checkin/no-access.php'), false, false);
+			$stylesheet = apply_filters('qsot-locate-template', '', array('checkin/style.css'), false, false);
+			$stylesheet = str_replace(DIRECTORY_SEPARATOR, '/', str_replace(ABSPATH, '/', $stylesheet));
+			$stylesheet = site_url($stylesheet);
+			include_once $template;
+		}
 	}
 
-	public static function query_vars($vars) {
-		$new_items = array(
-			'qsot-event-checkin',
-			'qsot-checkin-packet',
-		);
+	public static function create_checkin_url( $info ) {
+		global $wp_rewrite;
+		$post_link = $wp_rewrite->get_extra_permastruct( 'post' );
 
-		return array_unique(array_merge($vars, $new_items));
-	}
+		$packet = self::_create_checkin_packet( $info );
 
-	public static function checkin_rewrite_rules($rules) {
-		$rules['qsot-event-checkin'] = array('event-checkin/(.*)?', 'qsot-event-checkin=1&qsot-checkin-packet=');
-		return $rules;
+		if ( ! empty( $post_link ) ) {
+			$post_link = site_url( '/event-checkin/' . $packet . '/' );
+		} else {
+			$post_link = add_query_arg( array(
+				'qsot-event-checkin' => 1,
+				'qsot-checkin-packet' => $packet,
+			), site_url() );
+		}
+
+		return $post_link;
 	}
 
 	// create the QR Codes that are added to the ticket display, based on the existing ticket information, order_item_id, and order_id
@@ -113,7 +127,7 @@ class QSOT_checkin {
 				'ticket_num' => 0,
 			);
 
-			$url = site_url('/event-checkin/'.self::_create_checkin_packet($info).'/');
+			$url = self::create_checkin_url( $info );
 
 			$data = array( 'd' => $url, 'p' => site_url() );
 			ksort( $data );
@@ -141,7 +155,7 @@ class QSOT_checkin {
 
 			for ( $i = 0; $i < $qty; $i++ ) {
 				$info['ticket_num'] = $i;
-				$url = site_url('/event-checkin/'.self::_create_checkin_packet($info).'/');
+				$url = self::create_checkin_url( $info );
 
 				$data = array( 'd' => $url, 'p' => site_url() );
 				ksort( $data );
@@ -162,8 +176,9 @@ class QSOT_checkin {
 	}
 
 	protected static function _create_checkin_packet($data) {
+		if ( ! is_array( $data ) ) return $data;
 		$pack = sprintf(
-			'%s;%s;%s.%s;%s:%s;%s',
+			'%s;%s;%s.%s;%s:%s:%s',
 			$data['order_id'],
 			$data['order_item_id'],
 			$data['event_id'],
@@ -173,20 +188,26 @@ class QSOT_checkin {
 			$data['ticket_num']
 		);
 		$pack .= '|'.sha1($pack.AUTH_SALT);
-		return @base64_encode(strrev($pack));
+		// need string replace to accommodate login screen redirect
+		return str_replace( array( '+', '=', '/' ), array( '-', '_', '~' ), @base64_encode( strrev( $pack ) ) );
 	}
 
 	protected static function _parse_checkin_packet($raw) {
 		$data = array();
-		$packet = strrev(@base64_decode($raw));
+		$raw = str_replace( array( '-', '_', '~' ), array( '+', '=', '/' ), $raw );
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG )
+			$packet = strrev( base64_decode( $raw ) );
+		else
+			$packet = strrev( @base64_decode( $raw ) );
 
 		// ticket security
-		$pack = explode('|', $packet);
-		$hash = array_pop($pack);
-		$pack = implode('|', $pack);
+		// strrev to prevent 'title' tampering, if that is even a thing
+		$pack = explode( '|', strrev( $packet ), 2 );
+		$hash = strrev( array_shift( $pack ) );
+		$pack = strrev( implode( '|', $pack ) );
 		if (!$pack || !$hash || sha1($pack.AUTH_SALT) != $hash) return $data;
 
-		$parts = explode(';', $packet);
+		$parts = explode(';', $packet, 4);
 		$data['order_id'] = array_shift($parts);
 		$data['order_item_id'] = array_shift($parts);
 		list($data['event_id'], $data['price']) = explode('.', array_shift($parts));

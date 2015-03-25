@@ -7,7 +7,7 @@ class qsot_rewriter {
 		'name' => '%SLUG%',
 		'query_vars' => array( '%SLUG%' ),
 		'rules' => array( '%SLUG%/(.*)?' => '%SLUG%=' ),
-		'func' => array( __CLASS__, 'generic_redirect' ),
+		'func' => array( __CLASS__, 'generic_intercept' ),
 		'epmask' => EP_PAGES,
 	);
 
@@ -51,17 +51,31 @@ class qsot_rewriter {
 		// aggregate a list of othe registered query_vars
 		$all_vars = array();
 		foreach ( self::$rules as $slug => $args )
-			foreach ( $args['query_vars'] as $var ) $all_vars[] = $var;
+			foreach ( $args['query_vars'] as $var ) $all_vars[ $var ] = $slug;
 
 		// determine which of the registered ones were matched in the query
-		$exists = array_intersect( $all_vars, array_keys( $wp->query_vars ) );
+		$exists = array_intersect( array_keys( $all_vars ), array_keys( $wp->query_vars ) );
 		$query_vars = $wp->query_vars;
 
 		// for each matched registered query var, pop an action for it to be intercepted elsewhere if required
 		foreach ( $exists as $qvar ) {
 			$value = $wp->query_vars[ $qvar ];
-			do_action( 'qsot-rewriter-intercepted-' . $qvar, $value, $qvar, $query_vars );
+			$slug = $all_vars[ $qvar ];
+			$all_data = array();
+			if ( isset( self::$rules[ $slug ], self::$rules[ $slug ]['query_vars'] ) )
+				foreach ( self::$rules[ $slug ]['query_vars'] as $qv )
+					$all_data[ $qv ] = isset( $query_vars[ $qv ] ) ? $query_vars[ $qv ] : '';
+
+			if ( isset( self::$rules[ $all_vars[ $qvar ] ], self::$rules[ $all_vars[ $qvar ] ]['func'] ) && is_callable( self::$rules[ $all_vars[ $qvar ] ]['func'] ) ) {
+				call_user_func_array( self::$rules[ $all_vars[ $qvar ] ]['func'], array( $value, $qvar, $all_data, $query_vars ) );
+			} else {
+				do_action( 'qsot-rewriter-intercepted-' . $qvar, $value, $qvar, $all_data, $query_vars );
+			}
 		}
+	}
+
+	public static function generic_intercept( $value, $qvar, $all_data, $query_vars ) {
+		do_action( 'qsot-rewriter-intercepted-' . $qvar, $value, $qvar, $all_data, $query_vars );
 	}
 
 	// actually add the rules to the list of rewrite_rules
