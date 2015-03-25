@@ -161,6 +161,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.10.1 =
+* added missing file
+
 = 1.10.0 =
 * added the ability to change the event url slug
 * added code to uniquify the ticket QRs while maintaining security
