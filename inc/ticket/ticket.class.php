@@ -37,9 +37,11 @@ class QSOT_tickets {
 		add_filter('qsot-upgrader-table-descriptions', array(__CLASS__, 'setup_tables'), 10);
 
 		// handle incoming urls that are for ticket functions
+		/*
 		add_filter('query_vars', array(__CLASS__, 'query_vars'), 10);
 		add_action('wp', array(__CLASS__, 'intercept_ticket_request'), 11);
 		add_filter('rewrite_rules_array', array(__CLASS__, 'rewrite_rules_array'), PHP_INT_MAX);
+		*/
 
 		// ticket codes
 		add_filter('qsot-generate-ticket-code', array(__CLASS__, 'generate_ticket_code'), 10, 2);
@@ -57,7 +59,8 @@ class QSOT_tickets {
 		add_filter('qsot-get-ticket-link', array(__CLASS__, 'get_ticket_link'), 1000, 2);
 
 		// display ticket
-		add_action('qsot-ticket-intercepted', array(__CLASS__, 'display_ticket'), 1000, 1);
+		//add_action('qsot-ticket-intercepted', array(__CLASS__, 'display_ticket'), 1000, 1);
+		add_action('qsot-rewriter-intercepted-qsot-ticket-id', array(__CLASS__, 'display_ticket'), 1000, 1);
 		add_filter('qsot-compile-ticket-info', array(__CLASS__, 'compile_ticket_info'), 1000, 3);
 		// one-click-email link auth
 		add_filter('qsot-email-link-auth', array(__CLASS__, 'email_link_auth'), 1000, 2);
@@ -74,6 +77,51 @@ class QSOT_tickets {
 		if (is_admin()) {
 			add_action('admin_footer-options-permalink.php', array(__CLASS__, 'debug_rewrite_rules'));
 		}
+
+		// add the rewrite rules for the ticket urls
+		do_action(
+			'qsot-rewriter-add',
+			'qsot-ticket',
+			array(
+				'name' => 'qsot-ticket',
+				'query_vars' => array( 'qsot-ticket', 'qsot-ticket-id' ),
+				'rules' => array( 'ticket/(.*)?' => 'qsot-ticket=1&qsot-ticket-id=' ),
+			)
+		);
+	}
+
+	public static function query_vars($vars) {
+		$new_items = array(
+			'qsot-ticket',
+			'qsot-ticket-id',
+		);
+
+		return array_unique(array_merge($vars, $new_items));
+	}
+
+	public static function intercept_ticket_request(&$wp) {
+		if (isset($wp->query_vars['qsot-ticket'], $wp->query_vars['qsot-ticket-id']) && $wp->query_vars['qsot-ticket']) {
+			$code = $wp->query_vars['qsot-ticket-id'];
+			do_action('qsot-ticket-intercepted', $code);
+		}
+	}
+
+	public static function rewrite_rules_array($current) {
+		global $wp_rewrite;
+		$rules = apply_filters('qsot-tickets-rewrite-rules', array(
+			'qsot-ticket' => array('ticket/(.*)?', 'qsot-ticket=1&qsot-ticket-id='),
+		));
+		$extra = array();
+
+		foreach ($rules as $k => $v) {
+			list($find, $replace) = $v;
+			$wp_rewrite->add_permastruct($k, '%'.$k.'%', false, EP_PAGES);
+			$wp_rewrite->add_rewrite_tag('%'.$k.'%', $find, $replace);
+			$uri_rules = $wp_rewrite->generate_rewrite_rules('%'.$k.'%', EP_PAGES);
+			$extra = array_merge($extra, $uri_rules);
+		}
+
+		return $extra + $current;
 	}
 
 	public static function debug_rewrite_rules() {
@@ -221,15 +269,6 @@ class QSOT_tickets {
 		$args = apply_filters('qsot-decode-ticket-code-args', $args, $raw);
 
 		return $args;
-	}
-
-	public static function query_vars($vars) {
-		$new_items = array(
-			'qsot-ticket',
-			'qsot-ticket-id',
-		);
-
-		return array_unique(array_merge($vars, $new_items));
 	}
 
 	public static function email_link_auth($current, $order_id) {
@@ -427,31 +466,6 @@ class QSOT_tickets {
 		$template = apply_filters('qsot-locate-template', '', array('tickets/verification-form.php'), false, false);
 		include_once $template;
 		exit;
-	}
-
-	public static function intercept_ticket_request(&$wp) {
-		if (isset($wp->query_vars['qsot-ticket'], $wp->query_vars['qsot-ticket-id']) && $wp->query_vars['qsot-ticket']) {
-			$code = $wp->query_vars['qsot-ticket-id'];
-			do_action('qsot-ticket-intercepted', $code);
-		}
-	}
-
-	public static function rewrite_rules_array($current) {
-		global $wp_rewrite;
-		$rules = apply_filters('qsot-tickets-rewrite-rules', array(
-			'qsot-ticket' => array('ticket/(.*)?', 'qsot-ticket=1&qsot-ticket-id='),
-		));
-		$extra = array();
-
-		foreach ($rules as $k => $v) {
-			list($find, $replace) = $v;
-			$wp_rewrite->add_permastruct($k, '%'.$k.'%', false, EP_PAGES);
-			$wp_rewrite->add_rewrite_tag('%'.$k.'%', $find, $replace);
-			$uri_rules = $wp_rewrite->generate_rewrite_rules('%'.$k.'%', EP_PAGES);
-			$extra = array_merge($extra, $uri_rules);
-		}
-
-		return $extra + $current;
 	}
 
 	public static function setup_table_names() {

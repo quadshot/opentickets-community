@@ -82,42 +82,95 @@ class QSOT_checkin {
 		return $rules;
 	}
 
+	// create the QR Codes that are added to the ticket display, based on the existing ticket information, order_item_id, and order_id
 	public static function add_qr_code($ticket, $order_item_id, $order_id) {
-		$info = array(
-			'order_id' => $ticket->order->id,
-			'event_id' => $ticket->event->ID,
-			'order_item_id' => $order_item_id,
-			'title' => $ticket->product->get_title().' ('.$ticket->product->get_price_html().')',
-			'price' => $ticket->product->get_price(),
-			'uniq' => md5(sha1(microtime(true).rand(0, PHP_INT_MAX))),
-		);
-		$url = site_url('/event-checkin/'.self::_create_checkin_packet($info).'/');
+		// if the $ticket has not been loaded, or could not be loaded, and thus is not an object, then gracefully skip this function
+		if ( ! is_object( $ticket ) ) return $ticket;
 
-		$data = array( 'd' => $url, 'p' => site_url() );
-		ksort( $data );
-		$data['sig'] = sha1( NONCE_KEY . @json_encode( $data ) . NONCE_SALT );
-		$data = @json_encode( $data );
+		// validate that the $order_id supplied is a valid order
+		$order = wc_get_order( $order_id );
+		if ( ! is_object( $order ) ) return $ticket;
 
-		$ticket->qr_code = sprintf(
-			'<img src="%s%s" alt="%s" />',
-			self::$o->core_url.'libs/phpqrcode/index.php?d=',
-			//base64_encode(@json_encode($data)),
-			base64_encode(strrev($data)),
-			$ticket->product->get_title().' ('.$ticket->product->get_price().')'
-		);
+		// validate that the $order_item_id supplied is present on the supplied order
+		$items = $order->get_items();
+		if ( ! is_array( $items ) || ! isset( $items[ $order_item_id . '' ] ) ) return $ticket;
+		$item = $items[ $order_item_id . '' ];
+		unset( $order, $items );
+
+		// determine the quantity of the tickets that were purchased for this item
+		$qty = isset( $item['qty'] ) ? $item['qty'] : 1;
+
+		// if we only have one ticket, then only generate a single QR Code
+		if ( 1 == $qty ) {
+			// aggregate the ticket information to compile into the QR Code
+			$info = array(
+				'order_id' => $ticket->order->id,
+				'event_id' => $ticket->event->ID,
+				'order_item_id' => $order_item_id,
+				'title' => $ticket->product->get_title().' ('.$ticket->product->get_price_html().')',
+				'price' => $ticket->product->get_price(),
+				'uniq' => md5(sha1(microtime(true).rand(0, PHP_INT_MAX))),
+				'ticket_num' => 0,
+			);
+
+			$url = site_url('/event-checkin/'.self::_create_checkin_packet($info).'/');
+
+			$data = array( 'd' => $url, 'p' => site_url() );
+			ksort( $data );
+			$data['sig'] = sha1( NONCE_KEY . @json_encode( $data ) . NONCE_SALT );
+			$data = @json_encode( $data );
+
+			$ticket->qr_code = sprintf(
+				'<img src="%s%s" alt="%s" />',
+				self::$o->core_url.'libs/phpqrcode/index.php?d=',
+				base64_encode(strrev($data)),
+				$ticket->product->get_title().' ('.$ticket->product->get_price().')'
+			);
+		} else if ( $qty > 1 ) {
+			$ticket->qr_code = null;
+			$ticket->qr_codes = array();
+
+			$info = array(
+				'order_id' => $ticket->order->id,
+				'event_id' => $ticket->event->ID,
+				'order_item_id' => $order_item_id,
+				'title' => $ticket->product->get_title().' ('.$ticket->product->get_price_html().')',
+				'price' => $ticket->product->get_price(),
+				'uniq' => md5(sha1(microtime(true).rand(0, PHP_INT_MAX))),
+			);
+
+			for ( $i = 0; $i < $qty; $i++ ) {
+				$info['ticket_num'] = $i;
+				$url = site_url('/event-checkin/'.self::_create_checkin_packet($info).'/');
+
+				$data = array( 'd' => $url, 'p' => site_url() );
+				ksort( $data );
+				$data['sig'] = sha1( NONCE_KEY . @json_encode( $data ) . NONCE_SALT );
+				$data = @json_encode( $data );
+
+				$ticket->qr_codes[ $i ] = sprintf(
+					'<img src="%s%s" alt="%s" />',
+					self::$o->core_url.'libs/phpqrcode/index.php?d=',
+					base64_encode(strrev($data)),
+					$ticket->product->get_title().' ('.$ticket->product->get_price().')'
+				);
+				if ( null == $ticket->qr_code ) $ticket->qr_code = $ticket->qr_codes[ $i ];
+			}
+		}
 
 		return $ticket;
 	}
 
 	protected static function _create_checkin_packet($data) {
 		$pack = sprintf(
-			'%s;%s;%s.%s;%s:%s',
+			'%s;%s;%s.%s;%s:%s;%s',
 			$data['order_id'],
 			$data['order_item_id'],
 			$data['event_id'],
 			$data['price'],
 			$data['title'],
-			$data['uniq']
+			$data['uniq'],
+			$data['ticket_num']
 		);
 		$pack .= '|'.sha1($pack.AUTH_SALT);
 		return @base64_encode(strrev($pack));

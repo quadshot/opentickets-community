@@ -2,6 +2,8 @@
 /*
  * Template Name: _Default
  */
+
+$multiple = $ticket->order_item['qty'] > 1;
 ?><!DOCTYPE html>
 <!--[if IE 6]>
 <html id="ie6" <?php language_attributes(); ?>>
@@ -26,7 +28,7 @@
 					<a href="<?php echo esc_attr(add_query_arg(array('frmt' => 'pdf'))) ?>"><?php _e('Download PDF','opentickets-community-edition') ?></a>
 				</div>
 			<?php endif; ?>
-			<?php for ($index=0; $index < $ticket->order_item['qty']; $index++): ?>
+			<?php for ( $index=0; $index < $ticket->order_item['qty']; $index++ ): ?>
 				<div class="ticket-wrap">
 					<div class="inner-wrap">
 						<table class="ticket">
@@ -45,7 +47,7 @@
 											<li><?php _e('Area:','opentickets-community-edition'); echo ' '.$ticket->event_area->post_title ?></li>
 										</ul>
 									</td>
-									<td width="125" rowspan="2" class="qr-code right"><?php echo $ticket->qr_code ?></td>
+									<td width="125" rowspan="2" class="qr-code right"><?php echo ( $multiple && isset( $ticket->qr_codes[ $index ] ) ) ? $ticket->qr_codes[ $index ] : $ticket->qr_code ?></td>
 								</tr>
 								<tr>
 									<td rowspan="2" class="event-image">
