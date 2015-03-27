@@ -64,7 +64,7 @@
 							$name = sprintf(
 								'%s @ %s',
 								$ticket->product->get_title(),
-								money_format('%.2n', $ticket->_line_subtotal)
+								wc_price( $ticket->_line_subtotal )
 							);
 						?>
 						<tr>

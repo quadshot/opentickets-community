@@ -279,8 +279,8 @@ class QSOT {
 	}
 
 	public static function locale() {
-		$locale = apply_filters('plugin_locale', get_locale(), 'woocommerce');
-		setlocale(LC_MONETARY, $locale);
+		//$locale = apply_filters('plugin_locale', get_locale(), 'woocommerce');
+		//setlocale(LC_MONETARY, $locale);
 	}
 
 	// load all *.class.php files in the inc/ dir, and any other includes dirs that are specified by external plugins (which may or may not be useful, since external plugins
