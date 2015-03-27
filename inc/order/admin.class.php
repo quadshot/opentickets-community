@@ -32,7 +32,8 @@ class qsot_order_admin {
 			add_action('save_post', array(__CLASS__, 'enforce_non_guest_orders'), PHP_INT_MAX - 1, 2);
 			add_action('admin_notices', array(__CLASS__, 'cannot_use_guest'), 10);
 
-			add_action('woocommerce_completed_order_email_after_address', array(__CLASS__, 'print_custom_email_message'), 1);
+			add_action('woocommerce_email_customer_details', array(__CLASS__, 'print_custom_email_message'), 1000);
+			add_action('woocommerce_email_before_order_table', array(__CLASS__, 'print_custom_email_message_top'), 1000);
 			add_filter('qsot-order-has-tickets', array(__CLASS__, 'has_tickets'), 10, 2);
 		}
 	}
@@ -518,6 +519,19 @@ class qsot_order_admin {
 		return $has;
 	}
 
+	public static function print_custom_email_message_top($order, $html=true) {
+		$print = apply_filters('qsot-order-has-tickets', false, $order);
+		if ($print) {
+			if ($html) {
+				$msg = self::$options->{'qsot-completed-order-email-message-top'};
+				if (!empty($msg)) echo '<div class="custom-email-message">'.$msg.'</div>';
+			} else {
+				$msg = self::$options->{'qsot-completed-order-email-message-text-top'};
+				if (!empty($msg)) echo "\n****************************************************\n\n".$msg;
+			}
+		}
+	}
+
 	public static function print_custom_email_message($order, $html=true) {
 		$print = apply_filters('qsot-order-has-tickets', false, $order);
 		if ($print) {
@@ -583,42 +597,64 @@ class qsot_order_admin {
 	}
 
 	protected static function _setup_admin_options() {
-		self::$options->def('qsot-require-billing-information', 'yes');
-		self::$options->def('qsot-completed-order-email-message', '');
-		self::$options->def('qsot-completed-order-email-message-text', '');
+		self::$options->def( 'qsot-require-billing-information', 'yes' );
+		self::$options->def( 'qsot-completed-order-email-message-top', '' );
+		self::$options->def( 'qsot-completed-order-email-message-text-top', '' );
+		self::$options->def( 'qsot-completed-order-email-message', '' );
+		self::$options->def( 'qsot-completed-order-email-message-text', '' );
 
-		self::$options->add(array(
+		self::$options->add( array(
 			'order' => 2100,
 			'type' => 'title',
-			'title' => __('Additional Email Settings','opentickets-community-edition'),
+			'title' => __( 'Additional Email Settings', 'opentickets-community-edition' ),
 			'id' => 'heading-admin-orders-1',
-		));
+		) );
 
-		self::$options->add(array(
+		self::$options->add( array(
 			'order' => 2131,
+			'id' => 'qsot-completed-order-email-message-top',
+			'type' => 'wysiwyg',
+			'class' => 'widefat reason-list',
+			'title' => __( 'Custom Completed Order Message (Above Order Items)', 'opentickets-community-edition' ),
+			'desc' => __( 'This html appears near the top of the default Completed Order email, sent to the customer upon completion of their order, above the order items.', 'opentickets-community-edition' ),
+			'default' => '',
+		) );
+
+		self::$options->add( array(
+			'order' => 2132,
+			'id' => 'qsot-completed-order-email-message-text-top',
+			'type' => 'textarea',
+			'class' => 'widefat reason-list',
+			'title' => __( 'Custom Completed Order Message - Text only version (Above Order Items)', 'opentickets-community-edition' ),
+			'desc' => __( 'This html appears near the top of the default Completed Order email, sent to the customer upon completion of their order, above the order items.', 'opentickets-community-edition' ),
+			'default' => '',
+		) );
+
+		self::$options->add( array(
+			'order' => 2141,
 			'id' => 'qsot-completed-order-email-message',
 			'type' => 'wysiwyg',
 			'class' => 'widefat reason-list',
-			'title' => __('Custom Completed Order Message','opentickets-community-edition'),
-			'desc' => __('This html appears at the bottom of the default Completed Order email, sent to the customer upon completion of their order, below their address information.','opentickets-community-edition'),
+			'title' => __( 'Custom Completed Order Message (Below Address)', 'opentickets-community-edition' ),
+			'desc' => __( 'This html appears at the bottom of the default Completed Order email, sent to the customer upon completion of their order, below their address information.', 'opentickets-community-edition' ),
 			'default' => '',
-		));
+		) );
 
-		self::$options->add(array(
-			'order' => 2132,
+		self::$options->add( array(
+			'order' => 2142,
 			'id' => 'qsot-completed-order-email-message-text',
 			'type' => 'textarea',
 			'class' => 'widefat reason-list',
-			'title' => __('Custom Completed Order Message - Text only version','opentickets-community-edition'),
-			'desc' => __('This text appears at the bottom of the default Completed Order email, sent to the customer upon completion of their order, below their address information.','opentickets-community-edition'),
+			'title' => __( 'Custom Completed Order Message - Text only version (Below Address)', 'opentickets-community-edition' ),
+			'desc' => __( 'This text appears at the bottom of the default Completed Order email, sent to the customer upon completion of their order, below their address information.', 'opentickets-community-edition' ),
 			'default' => '',
-		));
+		) );
 
-		self::$options->add(array(
+		self::$options->add( array(
 			'order' => 2199,
 			'type' => 'sectionend',
 			'id' => 'heading-add-email-sets-1',
-		));
+		) );
 	}
 }
 
