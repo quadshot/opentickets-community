@@ -70,7 +70,11 @@ class qsot_order_admin {
 	public static function new_user_btn($order) {
 		?><script language="javascript" type="text/javascript">
 			if (typeof jQuery == 'object' || typeof jQuery == 'function')
-				(function($) { $('<a href="#" class="new-user-btn" rel="new-user-btn">new</a>').appendTo('.order_data_column .form-field label[for="customer_user"]'); })(jQuery);
+				(function($) {
+					var w = $( '<span class="new-user-btn-wrap"></span>' ).appendTo( '.order_data_column .form-field label[for="customer_user"]' );
+					$( '<a href="#" class="new-user-btn" rel="new-user-btn">new</a>' ).appendTo( w );
+					$( '<span class="divider"> | </span>' ).appendTo( w );
+				})(jQuery);
 		</script><?php
 	}
 
