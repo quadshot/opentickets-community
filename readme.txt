@@ -161,6 +161,16 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.10.2 =
+* added a 'top customized completed email' setting
+* tweaked spacing on the 'new user' button, so it is away from the new WC
+* 'view other orders' link 
+* tweaked 'multiday event' display
+* fixed 'locked event settings' box issue
+* fixed calendar event fetch edgecase bug
+* fixed locale issue on my account page 
+* fixed the 'customized email' issue
+
 = 1.10.1 =
 * added missing file
 
