@@ -353,7 +353,16 @@ QS.EventUI = (function($, undefined) {
 			event_list:e.find('[rel=event-list]'),
 			buttons:{}
 		};
-		this.init();
+    this.elements.postbox = this.elements.calendar.closest( '.postbox' );
+
+    // fix for 'locked event settings box' people are reporting
+    if ( this.elements.postbox.hasClass( 'closed' ) ) { 
+      this.elements.postbox.removeClass( 'closed' );
+      this.init();
+      this.elements.postbox.addClass( 'closed' );
+    } else {
+      this.init();
+    }   
 	};
 
 	EventUI.prototype = {
