@@ -168,7 +168,10 @@ ul#adminmenu a.qsot-special-arrow:after {
 	content:" "; height:0; margin-top:-8px; pointer-events:none; position:absolute; right:0; top:50%; width:0;
 }
 
-.new-user-btn { float:right; clear:none; }
+.new-user-btn-wrap { float:right; clear:none; }
+.new-user-btn-wrap span { display:none; }
+.new-user-btn-wrap a { float:none !important; }
+.wc-customer-user a+span.new-user-btn-wrap span.divider { display:inline; padding:0 3px 0 1px; }
 
 /* reporting */
 #report_result .ticket-list td.status { white-space:nowrap; }
