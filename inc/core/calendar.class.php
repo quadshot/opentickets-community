@@ -145,10 +145,12 @@ class qsot_frontend_calendar {
 		), $post));
 	}
 
+	// verify the calendar security
 	public static function aj_frontend_cal() {
 		if ( ! isset( $_GET['t'], $_GET['v'] ) ) return;
 		$t = strrev( $_GET['t'] );
 		if ( $_GET['v'] == md5( $t . NONCE_KEY ) ) {
+			// if the check passes, run the ajax request
 			self::_handle_ajax();
 			die();
 		}
@@ -166,9 +168,11 @@ class qsot_frontend_calendar {
 			.'</div>';
 	}
 
+	// grab a list of all the events that meet the supplied criteria
 	protected static function _handle_ajax() {
 		$parents = $final = array();
 
+		// setup the basic posts query to find out events
 		$args = array(
 			'post_type' => self::$o->core_post_type,
 			'post_status' => array( 'publish', 'protected' ),
@@ -176,48 +180,73 @@ class qsot_frontend_calendar {
 			'post_parent__not' => 0,
 			'suppress_filters' => false,
 		);
-		if (isset($_REQUEST['start'])) $args['start_date_after'] = date('Y-m-d H:i:s', $_REQUEST['start']);
-		if (isset($_REQUEST['end'])) $args['start_date_before'] = date('Y-m-d H:i:s', $_REQUEST['end']);
-		if (isset($_REQUEST['priced_like'])) $args['priced_like'] = (int)$_REQUEST['priced_like'];
-		if (isset($_REQUEST['has_price'])) $args['has_price'] = $_REQUEST['has_price'];
+
+		// if there was a data range supplied (the days shown on the current calendar page), then use those in the lookup
+		if ( isset( $_REQUEST['start'] ) ) $args['start_date_after'] = date( 'Y-m-d H:i:s', $_REQUEST['start'] );
+		if ( isset( $_REQUEST['end'] ) ) $args['start_date_before'] = date( 'Y-m-d H:i:s', $_REQUEST['end'] );
+
+		// if there are pricing specific filters supplied, add those to the query
+		if ( isset( $_REQUEST['priced_like'] ) ) $args['priced_like'] = (int)$_REQUEST['priced_like'];
+		if ( isset( $_REQUEST['has_price'] ) ) $args['has_price'] = $_REQUEST['has_price'];
+
+		// can the current user see specially statused events? if so add those also
 		if ( apply_filters( 'qsot-show-hidden-events', current_user_can( 'edit_posts' ) ) ) $args['post_status'][] = 'hidden';
 		if ( current_user_can( 'read_private_posts' ) ) $args['post_status'][] = 'private';
 
-		$events = get_posts($args);
-		foreach ($events as $event) {
-			$tmp = apply_filters('qsot-calendar-event', false, $event);
-			if ($tmp !== false)
+		// aggregate the list of events to render
+		$events = get_posts( $args );
+
+		// organize each event's data in a way that the event calendar can properly display it
+		foreach ( $events as $event ) {
+			$tmp = apply_filters( 'qsot-calendar-event', false, $event );
+			if ( $tmp !== false )
 				$final[] = $tmp;
 		}
 		
-		header('Content-Type: text/json');
-		echo @json_encode($final);
+		header( 'Content-Type: text/json' );
+		echo @json_encode( $final );
 	}
 
+	// aggregate a formatted list of a given event's information, for use in the event calendar
 	public static function get_calendar_event($current, $event) {
-		if (!is_object($event) || !isset($event->post_parent, $event->post_title, $event->ID, $event->meta)) return $current;
+		// verify we have all the information about an event that we need. if not, then pass through
+		if ( ! is_object( $event ) || ! isset( $event->post_parent, $event->post_title, $event->ID, $event->meta ) ) return $current;
 
-		if (isset($parents["{$event->post_parent}"])) $par = $parents["{$event->post_parent}"];
-		else $par = $parents["{$event->post_parent}"] = get_post($event->post_parent);
+		// gather information about this event's parent, because it will be used in the output of the event data
+		$par = get_post($event->post_parent);
 
+		// start compiling the organized list of information
 		$e = array(
-			'title' => apply_filters('the_title', is_object($par) && isset($par->post_title) ? $par->post_title : $event->post_title),
-			'start' => get_post_meta($event->ID, self::$o->{'meta_key.start'}, true),
-			'url' => get_permalink($event->ID),
-			'img' => get_the_post_thumbnail($event->ID),
+			// use the parent event title as the event title, because it does not have the date, which will already be displayed based on the calendar position. if that is not avaiable, just use the clunky title
+			'title' => apply_filters( 'the_title', is_object( $par ) && isset( $par->post_title ) ? $par->post_title : $event->post_title ),
+			// add the start and end dates
+			'start' => get_post_meta( $event->ID, self::$o->{'meta_key.start'}, true ),
+			'end' => get_post_meta( $event->ID, self::$o->{'meta_key.end'}, true ),
+			// add the link to the event
+			'url' => get_permalink( $event->ID ),
+			// add the event image
+			'img' => get_the_post_thumbnail( $event->ID ),
+			// add the availability information
 			'available' => $event->meta->available,
 			'capacity' => $event->meta->capacity,
 			'avail-words' => $event->meta->availability,
+			// add the status and visibility information
 			'status' => $event->post_status,
 			'protected' => $event->post_password ? 1 : 0,
 			'passed' => false,
 		);
-		$e['_start'] = strtotime($e['start']);
-		if (!apply_filters('qsot-can-sell-tickets-to-event', false, $event->ID)) { //$e['_start'] < current_time('timestamp')) {
-			$e['avail-words'] = __('Ended','opentickets-community-edition');
+		// add extra meta that is used internally by the calendar js code
+		$e['_start'] = strtotime( $e['start'] );
+		$e['_end'] = strtotime( $e['end'] );
+
+		// double check that this event can still have tickets solve for it. there is a setting that can stop sales X amount of time before a show start. this handles that in the calendar interface
+		if ( ! apply_filters( 'qsot-can-sell-tickets-to-event', false, $event->ID ) ) {
+			$e['avail-words'] = __( 'Ended', 'opentickets-community-edition' );
 			$e['passed'] = true;
 		}
-		if (is_admin()) {
+
+		// if we are in the admin, we need the id for the admin calendar interface, because it has extra js that uses the id
+		if ( is_admin() ) {
 			$e['id'] = $event->ID;
 		}
 
