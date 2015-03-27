@@ -90,44 +90,8 @@ class QSOT_tickets {
 		);
 	}
 
-	public static function query_vars($vars) {
-		$new_items = array(
-			'qsot-ticket',
-			'qsot-ticket-id',
-		);
-
-		return array_unique(array_merge($vars, $new_items));
-	}
-
-	public static function intercept_ticket_request(&$wp) {
-		if (isset($wp->query_vars['qsot-ticket'], $wp->query_vars['qsot-ticket-id']) && $wp->query_vars['qsot-ticket']) {
-			$code = $wp->query_vars['qsot-ticket-id'];
-			do_action('qsot-ticket-intercepted', $code);
-		}
-	}
-
-	public static function rewrite_rules_array($current) {
-		global $wp_rewrite;
-		$rules = apply_filters('qsot-tickets-rewrite-rules', array(
-			'qsot-ticket' => array('ticket/(.*)?', 'qsot-ticket=1&qsot-ticket-id='),
-		));
-		$extra = array();
-
-		foreach ($rules as $k => $v) {
-			list($find, $replace) = $v;
-			$wp_rewrite->add_permastruct($k, '%'.$k.'%', false, EP_PAGES);
-			$wp_rewrite->add_rewrite_tag('%'.$k.'%', $find, $replace);
-			$uri_rules = $wp_rewrite->generate_rewrite_rules('%'.$k.'%', EP_PAGES);
-			$extra = array_merge($extra, $uri_rules);
-		}
-
-		return $extra + $current;
-	}
-
 	public static function debug_rewrite_rules() {
-		/*
-		?><pre style="font-size:11px; color:#000000; background-color:#ffffff;"><?php print_r($GLOBALS['wp_rewrite']->rules) ?></pre><?php
-		*/
+		?><pre style="font-size:11px; padding-left:160px; color:#000000; background-color:#ffffff;"><?php print_r($GLOBALS['wp_rewrite']->rules) ?></pre><?php
 	}
 
 	public static function add_view_ticket_link_to_emails($item_id, $item, $order) {
