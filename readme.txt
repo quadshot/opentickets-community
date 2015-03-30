@@ -161,6 +161,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.10.3 =
+* fixed alternate view of myaccount page
+
 = 1.10.2 =
 * added a 'top customized completed email' setting
 * tweaked spacing on the 'new user' button, so it is away from the new WC
