@@ -161,6 +161,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.10.4 =
+* tweaked logic to account for GAMP plugin reservations
+
 = 1.10.3 =
 * fixed alternate view of myaccount page
 
