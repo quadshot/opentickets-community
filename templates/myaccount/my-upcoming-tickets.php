@@ -8,8 +8,8 @@
 				<?php
 					$name = sprintf(
 						'%s @ %s',
-						$ticket->product->post->post_title,
-						money_format('%.2n', $ticket->_line_subtotal)
+						$ticket->product->get_title(),
+						wc_price( $ticket->_line_subtotal )
 					);
 				?>
 				<li>
