@@ -137,7 +137,7 @@ class QSOT_checkin {
 			$ticket->qr_code = sprintf(
 				'<img src="%s%s" alt="%s" />',
 				self::$o->core_url.'libs/phpqrcode/index.php?d=',
-				base64_encode(strrev($data)),
+				str_replace( array( '+', '=', '/' ), array( '-', '_', '~' ), base64_encode( strrev( $data ) ) ),
 				$ticket->product->get_title().' ('.$ticket->product->get_price().')'
 			);
 		} else if ( $qty > 1 ) {
@@ -165,7 +165,7 @@ class QSOT_checkin {
 				$ticket->qr_codes[ $i ] = sprintf(
 					'<img src="%s%s" alt="%s" />',
 					self::$o->core_url.'libs/phpqrcode/index.php?d=',
-					base64_encode(strrev($data)),
+					str_replace( array( '+', '=', '/' ), array( '-', '_', '~' ), base64_encode( strrev( $data ) ) ),
 					$ticket->product->get_title().' ('.$ticket->product->get_price().')'
 				);
 				if ( null == $ticket->qr_code ) $ticket->qr_code = $ticket->qr_codes[ $i ];
