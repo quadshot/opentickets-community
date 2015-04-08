@@ -101,6 +101,13 @@ class QSOT_system_status_page extends QSOT_base_page {
 
 		if ( 'tools' == $current && isset( $_GET['performed'] ) ) {
 			switch ( $_GET['performed'] ) {
+				case 'removed-db-table-versions':
+					echo sprintf(
+						'<div class="updated"><p>%s</p></div>',
+						__( 'Purged the OTCE table versions, forcing a reinitialize of the tables.', 'opentickets-community' )
+					);
+				break;
+
 				case 'resync':
 					echo sprintf(
 						'<div class="updated"><p>%s</p></div>',
@@ -169,6 +176,17 @@ class QSOT_system_status_page extends QSOT_base_page {
 								<span class="helper"><?php _e( 'Same as above, only all processing is done behind the scenes. This takes longer, but does not require that you keep this window open.', 'openticket-community-edition' ) ?></span>
 							</td>
 						</tr>
+
+						<tr class="tool-item">
+							<td>
+								<a class="button" href="<?php echo esc_attr( $this->_action_nonce( 'FdbUg', add_query_arg( array( 'qsot-tool' => 'FdbUg' ), $url ) ) ) ?>"><?php
+									_e( 'Force the DB tables to re-initialize', 'opentickets-community-edition' )
+								?></a>
+							</td>
+							<td>
+								<span class="helper"><?php _e( 'In some very rare cases, you may need to force the db tables to be recreated. This button, does that.', 'openticket-community-edition' ) ?></span>
+							</td>
+						</tr>
 					</tbody>
 				</table>
 			</div>
@@ -191,6 +209,14 @@ class QSOT_system_status_page extends QSOT_base_page {
 						$state = $_GET['state'] == 'bg' ? '-bg' : '';
 						if ( $this->_perform_resync_order_items_to_ticket_table() ) $args['performed'] = 'resync' . $state;
 						else $args['performed'] = 'failed-resync' . $state;
+						$processed = true;
+					}
+				break;
+
+				case 'FdbUg':
+					if ( $this->_verify_action_nonce( 'FdbUg' ) ) {
+						delete_option( '_qsot_upgrader_db_table_versions' );
+						$args['performed'] = 'removed-db-table-versions';
 						$processed = true;
 					}
 				break;

@@ -47,29 +47,34 @@ class qsot_templates {
 	}
 
 	public static function intercept_page_template_request($current) {
-		if (is_page()) {
+		if ( is_page() ) {
+			$intercept = apply_filters('qsot-templates-page-templates', array());
+
 			$id = get_queried_object_id();
 			$template = get_page_template_slug();
 			$pagename = get_query_var('pagename');
 
-			if ( ! $pagename && $id ) {
-				// If a static page is set as the front page, $pagename will not be set. Retrieve it from the queried object
-				$post = get_queried_object();
-				if ( $post )
-					$pagename = $post->post_name;
-			}
+			if ( isset( $intercept[ $template ] ) ) {
+				if ( ! $pagename && $id ) {
+					// If a static page is set as the front page, $pagename will not be set. Retrieve it from the queried object
+					$post = get_queried_object();
+					if ( $post )
+						$pagename = $post->post_name;
+				}
 
-			$templates = array();
-			if ( $template && 0 === validate_file( $template ) )
-				$templates[] = $template;
-			$current = apply_filters('qsot-locate-template', $current, $templates);
+				$templates = array();
 
-			if (empty($current)) {
+				if ( $template && 0 === validate_file( $template ) )
+					$templates[] = $template;
+				/*
 				if ( $pagename )
 					$templates[] = "page-$pagename.php";
 				if ( $id )
 					$templates[] = "page-$id.php";
 				$templates[] = 'page.php';
+				*/
+
+				$current = apply_filters('qsot-locate-template', $current, $templates);
 			}
 		}
 
@@ -110,12 +115,25 @@ class qsot_templates {
 
 	public static function wc_locate_template($current, $template_name, $template_path) {
 		$name = $template_name;
+		//self::_lg( 'templater::wc_locate_template $current', $current );
 		$found = apply_filters('qsot-woo-template', $name);
+		//self::_lg( 'templater::wc_locate_template $found', $found );
 		return $found ? $found : $current;
+	}
+
+	// created to track down a specific theme issue
+	protected static function _lg( $msg ) {
+		?>
+			<script>
+				( function() { var args = <?php echo @json_encode( func_get_args() ) ?>; if ( console && console.log && 'function' == typeof console.log ) console.log.apply( console.log, args ); } )();
+			</script>
+		<?php
 	}
 
 	public static function locate_woo_template($name, $type=false) {
 		global $woocommerce;
+
+		//self::_lg( '>>>> req template', $name );
 
 		$found = locate_template(array($name), false, false);
 		if (!$found) {
@@ -126,20 +144,25 @@ class qsot_templates {
 			}
 
 			$dirs = apply_filters('qsot-template-dirs', array(
-				//get_stylesheet_directory().'/templates/',
-				//get_template_directory().'/templates/',
+				get_stylesheet_directory().'/woocommerce/',
+				get_template_directory().'/woocommerce/',
+				get_stylesheet_directory().'/templates/',
+				get_template_directory().'/templates/',
 				self::$o->core_dir.$qsot_path,
 				$woodir.$woo_path,
 			), $qsot_path, $woo_path, 'woocommerce');
 			array_unshift($dirs, get_stylesheet_directory().'/'.$qsot_path, get_template_directory().'/'.$qsot_path);
 
 			foreach ($dirs as $dir) {
+				//self::_lg( '==== checking', trailingslashit($dir).$name, file_exists(($file = trailingslashit($dir).$name)) );
 				if (file_exists(($file = trailingslashit($dir).$name))) {
 					$found = $file;
 					break;
 				}
 			}
 		}
+
+		//self::_lg( '<<<< final template', $found );
 
 		return $found;
 	}
