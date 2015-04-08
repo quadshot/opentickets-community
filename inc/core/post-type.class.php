@@ -853,6 +853,8 @@ class qsot_post_type {
 
 		// if there were settings for the sub events sent, then process those settings
 		if (isset($_POST['_qsot_event_settings'])) {
+			$date_format = get_option( 'date_format', 'Y-m-d' );
+
 			$need_lookup = $updates = $matched = array();
 			// default post_arr to send to wp_insert_post
 			$defs = array(
@@ -884,7 +886,7 @@ class qsot_post_type {
 						$updates[] = array(
 							'post_arr' => wp_parse_args(array(
 								'ID' => $tmp->post_id, // be sure to set the id of the post to update, otherwise we get a completely new post
-								'post_title' => sprintf(__('%s on %s @ %s','qsot'), $post->post_title, date('Y-m-d', $d), date('g:ia', $d)), // create a pretty proper title
+								'post_title' => sprintf(__('%s on %s @ %s','qsot'), $post->post_title, date( $date_format, $d), date('g:ia', $d)), // create a pretty proper title
 								'post_status' => in_array( $tmp->visibility, array( 'public', 'protected' ) ) ? $tmp->status : $tmp->visibility, // set the post status of the event
 								'post_password' => 'protected' == $tmp->visibility ? $tmp->password : '', // protected events have passwords
 								'post_name' => $tmp->title, // use that normalized title we made earlier, as to create a pretty url
@@ -937,7 +939,7 @@ class qsot_post_type {
 							$updates[] = array(
 								'post_arr' => wp_parse_args(array(
 									'ID' => $exist->ID, // be sure to set the post_id so that we don't create a new post 
-									'post_title' => sprintf(__('%s on %s @ %s','qsot'), $post->post_title, date('Y-m-d', $d), date('g:ia', $d)), // make a pretty title to describe the event
+									'post_title' => sprintf(__('%s on %s @ %s','qsot'), $post->post_title, date( $date_format, $d), date('g:ia', $d)), // make a pretty title to describe the event
 									'post_name' => $tmp->title, // use the normalized event slug for pretty urls
 									'post_status' => in_array( $tmp->visibility, array( 'public', 'protected' ) ) ? $tmp->status : $tmp->visibility, // set the post status of the event
 									'post_password' => 'protected' == $tmp->visibility ? $tmp->password : '', // protected events have passwords
@@ -967,7 +969,7 @@ class qsot_post_type {
 						// add the settings to the list of posts to update/insert
 						$updates[] = array(
 							'post_arr' => wp_parse_args(array( // will INSERT because there is no post_id
-								'post_title' => sprintf(__('%s on %s @ %s','qsot'), $post->post_title, date('Y-m-d', $d), date('g:ia', $d)), // create a pretty title
+								'post_title' => sprintf(__('%s on %s @ %s','qsot'), $post->post_title, date( $date_format, $d), date('g:ia', $d)), // create a pretty title
 								'post_name' => $data->title, // user pretty url slug
 								'post_status' => in_array( $tmp->visibility, array( 'public', 'protected' ) ) ? $tmp->status : $tmp->visibility, // set the post status of the event
 								'post_password' => 'protected' == $tmp->visibility ? $tmp->password : '', // protected events have passwords
