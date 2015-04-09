@@ -162,6 +162,8 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 == Changelog ==
 
 = 1.10.8 =
+* moved login augmentation to early loaded location
+* moved all modules and plugin loads until after all plugins loaded
 * tweaked db upgrade process to handle rare mysql letter case issue
 
 = 1.10.7 =
