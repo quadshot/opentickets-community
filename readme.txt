@@ -161,6 +161,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.10.7 =
+* turned off db errors during db upgrade
+
 = 1.10.6 =
 * added additional template location checks
 * added 'tool' to force db reinit
