@@ -161,6 +161,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.10.8 =
+* tweaked db upgrade process to handle rare mysql letter case issue
+
 = 1.10.7 =
 * turned off db errors during db upgrade
 
