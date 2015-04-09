@@ -27,6 +27,8 @@ class QSOT {
 		self::$plugin_url = self::$o->core_url;
 		self::$product_url = self::$o->product_url;
 
+		add_action( 'plugins_loaded', array( __CLASS__, 'admin_deactivate' ), 0 );
+
 		if (!self::_memory_check()) return;
 
 		// locale fix
@@ -92,6 +94,20 @@ class QSOT {
 	public static function is_wc_at_least( $version ) {
 		static $answers = array();
 		return ( isset( $answers[ $version ] ) ) ? $answers[ $version ] : ( $answers[ $version ] = version_compare( $version, WC()->version ) <= 0 );
+	}
+
+	public static function admin_deactivate() {
+		if ( ! is_admin() || ! current_user_can( 'manage_options' ) ) return;
+		if ( ! isset( $_COOKIE['ot-deactivate'] ) || 'opentickets' != $_COOKIE['ot-deactivate'] ) return;
+		
+		$me = plugin_basename( self::$o->core_file );
+		$active = get_option( 'active_plugins' );
+		$out = array_diff( $active, array( $me ) );
+		update_option( 'active_plugins', $out );
+		setcookie( 'ot-deactivate', '', 1, '/' );
+
+		wp_safe_redirect( add_query_arg( array( 'updated' => 1 ) ) );
+		exit;
 	}
 
 	// add the settings page link to the plugins page
