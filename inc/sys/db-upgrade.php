@@ -19,8 +19,10 @@ class qsot_db_upgrader {
 	protected static function _maybe_update_db() {
 		global $wpdb, $charset_collate;
 
-		$ERROR_STATUS = $wpdb->show_errors;
-		$wpdb->show_errors = false;
+		if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
+			$ERROR_STATUS = $wpdb->show_errors;
+			$wpdb->show_errors = false;
+		}
 
 		$versions = get_option(self::$_table_versions_key, array());
 		$tables = array();
@@ -79,7 +81,9 @@ class qsot_db_upgrader {
 		self::$upgrade_messages[] = sprintf(__('The DB tables [%s] are not at the most current versions. Attempting to upgrade them.','opentickets-community-edition'), implode(', ', $utabs));
 		dbDelta($sql);
 
-		$wpdb->show_errors = $ERROR_STATUS;
+		if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
+			$wpdb->show_errors = $ERROR_STATUS;
+		}
 
 		if (is_admin() && isset($_GET['debug_delta']) && $_GET['debug_delta'] == 9999) {
 			global $EZSQL_ERROR;
