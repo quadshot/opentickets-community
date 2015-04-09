@@ -448,7 +448,15 @@ class QSOT_tickets {
       'keys' => array(
         'PRIMARY KEY  oiid (order_item_id)',
 				'INDEX tc (ticket_code(250))',
-      )    
+      ),
+			'pre-update' => array(
+				'when' => array(
+					'exists' => array(
+						'alter ignore table ' . $wpdb->qsot_ticket_codes . ' drop primary key',
+						'alter ignore table ' . $wpdb->qsot_ticket_codes . ' drop index `tc`',
+					),
+				),
+			),
     );   
 
     return $tables;

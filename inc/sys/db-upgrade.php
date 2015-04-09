@@ -23,9 +23,11 @@ class qsot_db_upgrader {
 		$tables = array();
 		$tables = apply_filters('qsot-upgrader-table-descriptions', $tables);
 
+		$existing_tables = $wpdb->get_col( 'show tables' );
+
 		$needs_update = false;
-		foreach ($tables as $tname => $table) {
-			if (isset($table['version']) && (!isset($versions[$tname]) || version_compare($versions[$tname], $table['version']) < 0)) {
+		foreach ( $tables as $tname => $table ) {
+			if ( isset( $table['version'] ) && ( ! in_array( $tname, $existing_tables ) || ! isset( $versions[ $tname ] ) || version_compare( $versions[ $tname ], $table['version'] ) < 0 ) ) {
 				$needs_update = true;
 				break;
 			}
@@ -35,11 +37,15 @@ class qsot_db_upgrader {
 
 		include_once trailingslashit(ABSPATH).'wp-admin/includes/upgrade.php';
 
-		$sql = array();
+		$pre_sql = $sql = array();
 		$utabs = array();
-		foreach ($tables as $table_name => &$desc) {
-			if (isset($desc['version']) && (!isset($versions[$table_name]) || version_compare($versions[$table_name], $desc['version']) < 0)) {
+		foreach ( $tables as $table_name => &$desc ) {
+			if ( isset( $desc['version'] ) && ( ! in_array( $table_name, $existing_tables ) || ! isset( $versions[ $table_name] ) || version_compare( $versions[ $table_name ], $desc['version'] ) < 0 ) ) {
 				if (isset($desc['fields']) && is_array($desc['fields']) && !empty($desc['fields']) && isset($desc['keys']) && is_array($desc['keys']) && !empty($desc['keys'])) {
+					$pre_update = isset( $desc['pre-update'] ) ? $desc['pre-update'] : array();
+					$pre_update_sql = self::_pre_update_sql( $pre_update, $table_name, $existing_tables, $versions, $desc );
+					$pre_sql = array_merge( $pre_sql, $pre_update_sql );
+
 					$fields = $desc['fields'];
 					$keys = $desc['keys'];
 					$sql_fields = array();
@@ -60,6 +66,11 @@ class qsot_db_upgrader {
 					$utabs[] = $table_name;
 				}
 			}
+		}
+
+		if ( ! empty( $pre_sql ) ) {
+			foreach ( $pre_sql as $q ) 
+				$wpdb->query( $q );
 		}
 
 		self::$upgrade_messages[] = sprintf(__('The DB tables [%s] are not at the most current versions. Attempting to upgrade them.','opentickets-community-edition'), implode(', ', $utabs));
@@ -124,6 +135,57 @@ class qsot_db_upgrader {
 		}
 		update_option(self::$_table_versions_key, $versions);
 		add_action('admin_notices', array(__CLASS__, 'a_admin_update_notice'));
+	}
+
+	protected static function _pre_update_sql( $pre_update, $table_name, $existing_tables, $versions, $desc ) {
+		if ( empty( $pre_update ) ) return array();
+		$out = array();
+		
+		if ( is_array( $pre_update ) ) foreach ( $pre_update as $type => $conditions ) {
+			switch ( $type ) {
+				case 'when':
+					if ( is_array( $conditions ) ) foreach ( $conditions as $condition => $scenarios ) {
+						switch ( $condition ) {
+							case 'always':
+								if ( is_array( $scenarios ) ) foreach ( $scenarios as $value => $run ) {
+									if ( @is_callable( $run ) ) call_user_func( $run, isset( $versions[ $table_name ] ) ? $versions[ $table_name ] : '0.0.0' );
+									else if ( is_string( $run ) ) $out[] = $run . ';';
+								}
+							break;
+
+							case 'exists':
+								if ( is_array( $scenarios ) ) foreach ( $scenarios as $value => $run ) {
+									if ( in_array( $table_name, $existing_tables ) ) {
+										if ( @is_callable( $run ) ) call_user_func( $run, isset( $versions[ $table_name ] ) ? $versions[ $table_name ] : '0.0.0' );
+										else if ( is_string( $run ) ) $out[] = $run . ';';
+									}
+								}
+							break;
+
+							case 'version <':
+								if ( is_array( $scenarios ) ) foreach ( $scenarios as $value => $run ) {
+									if ( ! in_array( $table_name, $existing_tables ) || ! isset( $versions[ $table_name ] ) || version_compare( $versions[ $table_name ], $value ) < 0 ) {
+										if ( @is_callable( $run ) ) call_user_func( $run, isset( $versions[ $table_name ] ) ? $versions[ $table_name ] : '0.0.0' );
+										else if ( is_string( $run ) ) $out[] = $run . ';';
+									}
+								}
+							break;
+
+							case 'version >':
+								if ( is_array( $scenarios ) ) foreach ( $scenarios as $value => $run ) {
+									if ( in_array( $table_name, $existing_tables ) && isset( $versions[ $table_name ] ) && version_compare( $versions[ $table_name ], $value ) > 0 ) {
+										if ( @is_callable( $run ) ) call_user_func( $run, isset( $versions[ $table_name ] ) ? $versions[ $table_name ] : '0.0.0' );
+										else if ( is_string( $run ) ) $out[] = $run . ';';
+									}
+								}
+							break;
+						}
+					}
+				break;
+			}
+		}
+
+		return $out;
 	}
 
 	protected static function _default($v, $t) {

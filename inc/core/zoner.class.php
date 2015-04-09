@@ -714,7 +714,17 @@ class qsot_zoner {
         'KEY ord_id (order_id)',
         'KEY oiid (order_item_id)',
 				'KEY stt (state)',
-      )    
+      ),
+			'pre-update' => array(
+				'when' => array(
+					'exists' => array(
+						'alter ignore table ' . $wpdb->qsot_event_zone_to_order . ' drop index `evt_id`',
+						'alter ignore table ' . $wpdb->qsot_event_zone_to_order . ' drop index `ord_id`',
+						'alter ignore table ' . $wpdb->qsot_event_zone_to_order . ' drop index `oiid`',
+						'alter ignore table ' . $wpdb->qsot_event_zone_to_order . ' drop index `stt`',
+					),
+				),
+			),
     );   
 
     return $tables;
