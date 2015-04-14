@@ -6,12 +6,12 @@ body { margin:0; background-color:white; }
 
 .clear { clear:both; }
 
-.actions-list { padding:10px 0; border-bottom:2px solid #888888; margin-bottom:15px; font-size:12px; font-family:Helvetica, Arial, sans-serif; font-weight:bold; }
+.actions-list { padding:10px 0; border-bottom:2px solid #888888; margin-bottom:5px; font-size:12px; font-family:Helvetica, Arial, sans-serif; font-weight:bold; }
 .actions-list a { padding:0 10px; }
 
 .page-wrap { width:700px; font-family:Helvetica, Arial, sans-serif; }
 .page-wrap .venue-info,
-.page-wrap .ticket-wrap { padding:20px 0; margin:0 20px; page-break-inside:avoid; }
+.page-wrap .ticket-wrap { padding:10px 0; margin:0 10px; page-break-inside:avoid; }
 .page-wrap .ticket-wrap .inner-wrap { border:1px solid #555555; padding:10px 10px 17px; position:relative; }
 .page-wrap table { width:100%; }
 .page-wrap table td { vertical-align:top; padding:0; margin:0; border:0; }
