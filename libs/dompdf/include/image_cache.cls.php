@@ -84,7 +84,7 @@ class Image_Cache {
           }
           else {
             set_error_handler("record_warnings");
-            $image = file_get_contents($full_url);
+            $image = qsot_remote_file::get_contents($full_url);
             restore_error_handler();
           }
   

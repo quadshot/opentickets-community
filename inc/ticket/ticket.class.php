@@ -368,7 +368,7 @@ class QSOT_tickets {
 		$pdf = new DOMPDF();
 		$pdf->load_html($html);
 		$pdf->render();
-		$pdf->stream(sanitize_title_with_dashes('ticket-'.$title).'.pdf');
+		$pdf->stream( sanitize_title_with_dashes( 'ticket-' . $title ) . '.pdf', array( 'Attachment' => 0 ) );
 	}
 
 	protected static function _can_user_view_ticket($args) {
@@ -446,7 +446,7 @@ class QSOT_tickets {
 				'ticket_code' => array('type' => 'varchar(250)'),
       ),   
       'keys' => array(
-        'PRIMARY KEY  oiid (order_item_id)',
+        'PRIMARY KEY  (order_item_id)',
 				'INDEX tc (ticket_code(250))',
       ),
 			'pre-update' => array(

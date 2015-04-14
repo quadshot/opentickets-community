@@ -1,7 +1,13 @@
 <?php 
+// track version since the lib does not do it itself... sigh
+define( 'DOMPDF_VERSION', '0.6.1' );
+require_once 'dompdf.custom.functions.php';
+
 //define("DOMPDF_TEMP_DIR", "/tmp");
 //define("DOMPDF_CHROOT", DOMPDF_DIR);
-//define("DOMPDF_UNICODE_ENABLED", false);
+//define("DOMPDF_FONT_DIR", DOMPDF_DIR."/lib/fonts/");
+//define("DOMPDF_FONT_CACHE", DOMPDF_DIR."/lib/fonts/");
+//define("DOMPDF_UNICODE_ENABLED", true);
 //define("DOMPDF_PDF_BACKEND", "PDFLib");
 //define("DOMPDF_DEFAULT_MEDIA_TYPE", "print");
 //define("DOMPDF_DEFAULT_PAPER_SIZE", "letter");

@@ -307,12 +307,22 @@ class Stylesheet {
       }
   
       set_error_handler("record_warnings");
-      $css = file_get_contents($file, null, $this->_dompdf->get_http_context());
+      $css = qsot_remote_file::get_contents($file, null, $this->_dompdf->get_http_context());
       restore_error_handler();
     
       $good_mime_type = true;
-      
+
+			$headers = qsot_remote_file::get_headers();
+			if ( is_array( $headers ) && ! empty( $headers ) ) {
+				foreach ( $headers as $_header ) {
+					if ( preg_match( '#Content-Type:\s*([\w/]+)#i', $_header, $matches ) && ( $matches[1] !== 'text/css' ) ) {
+						$good_mime_type = false;
+					}
+				}
+			}
+
       // See http://the-stickman.com/web-development/php/getting-http-response-headers-when-using-file_get_contents/
+			/* LOUSHOU replaced ********************
       if ( isset($http_response_header) && !$this->_dompdf->get_quirksmode() ) {
         foreach($http_response_header as $_header) {
           if ( preg_match("@Content-Type:\s*([\w/]+)@i", $_header, $matches) && 
@@ -321,6 +331,7 @@ class Stylesheet {
           }
         }
       }
+			*/
   
       if ( !$good_mime_type || $css == "" ) {
         record_warnings(E_USER_WARNING, "Unable to load css file $file", __FILE__, __LINE__);
@@ -816,8 +827,8 @@ class Stylesheet {
       
       $query = $this->_css_selector_to_xpath($selector, true);
       
-      // Retrieve the nodes
-      $nodes = @$xp->query($query["query"]);
+      // Retrieve the nodes, limit to body for generated content
+      $nodes = @$xp->query( '.'.$query["query"] );
       if ( $nodes == null ) {
         record_warnings(E_USER_WARNING, "The CSS selector '$selector' is not valid", __FILE__, __LINE__);
         continue;
@@ -839,7 +850,6 @@ class Stylesheet {
           }
           
           $new_node->setAttribute($pos, $pos);
-          
           $new_frame_id = $tree->insert_node($node, $new_node, $pos);
           $node->setAttribute("dompdf_{$pos}_frame_id", $new_frame_id);
         }
@@ -1014,13 +1024,13 @@ class Stylesheet {
     // Something more legible:
     $re =
       "/\s*                                   # Skip leading whitespace                             \n".
-      "( @([^\s]+)\s+([^{;]*) (?:;|({)) )?    # Match @rules followed by ';' or '{'                 \n".
+      "( @([^\s{]+)\s*([^{;]*) (?:;|({)) )?   # Match @rules followed by ';' or '{'                 \n".
       "(?(1)                                  # Only parse sub-sections if we're in an @rule...     \n".
       "  (?(4)                                # ...and if there was a leading '{'                   \n".
       "    \s*( (?:(?>[^{}]+) ({)?            # Parse rulesets and individual @page rules           \n".
-      "            (?(6) (?>[^}]*) }) \s*)+?  \n".
-      "       )                               \n".
-      "   })                                  # Balancing '}'                                \n".
+      "            (?(6) (?>[^}]*) }) \s*)+?                                                        \n".
+      "       )                                                                                     \n".
+      "   })                                  # Balancing '}'                                       \n".
       "|                                      # Branch to match regular rules (not preceeded by '@')\n".
       "([^{]*{[^}]*}))                        # Parse normal rulesets\n".
       "/xs";

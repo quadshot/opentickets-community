@@ -77,7 +77,7 @@ $multiple = $ticket->order_item['qty'] > 1;
 							</tbody>
 						</table>
 						<a href="<?php echo esc_attr( QSOT::product_url() ) ?>" title="<?php _e('Who is OpenTickets?','opentickets-community-edition') ?>">
-							<img src="<?php echo esc_attr( QSOT::plugin_url() . 'assets/imgs/opentickets-tiny.png' ) ?>" class="ot-tiny-logo" />
+							<img src="<?php echo esc_attr( QSOT::plugin_url() . 'assets/imgs/opentickets-tiny.jpg' ) ?>" class="ot-tiny-logo" />
 						</a>
 					</div>
 				</div>
