@@ -362,6 +362,7 @@ class QSOT_tickets {
 		$url = trailingslashit($u['baseurl']).'tcpdf-cache/';
 
 		if (!file_exists($pth) && !mkdir($pth)) return;
+		ini_set( 'max_execution_time', 180 );
 
 		require_once self::$o->core_dir.'libs/dompdf/dompdf_config.inc.php';
 
