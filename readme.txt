@@ -161,6 +161,10 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.10.10 =
+* changed PDF to be a download file instead of browser load
+* changed QRs to embeded images instead of separate requests, when generating the PDF
+
 = 1.10.9 =
 * tweaked/forked dompdf to not require allow_url_fopen
 
