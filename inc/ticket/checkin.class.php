@@ -114,6 +114,9 @@ class QSOT_checkin {
 		// determine the quantity of the tickets that were purchased for this item
 		$qty = isset( $item['qty'] ) ? $item['qty'] : 1;
 
+		// is PDF the format we are generating?
+		$is_pdf = isset( $_GET['frmt'] ) && 'pdf' == $_GET['frmt'];
+
 		// if we only have one ticket, then only generate a single QR Code
 		if ( 1 == $qty ) {
 			// aggregate the ticket information to compile into the QR Code
@@ -129,30 +132,28 @@ class QSOT_checkin {
 
 			$url = self::create_checkin_url( $info );
 
-			/*
-			$data = array( 'd' => $url, 'p' => site_url() );
-			ksort( $data );
-			$data['sig'] = sha1( NONCE_KEY . @json_encode( $data ) . NONCE_SALT );
-			$data = @json_encode( $data );
-			*/
+			if ( ! $is_pdf ) {
+				$data = array( 'd' => $url, 'p' => site_url() );
+				ksort( $data );
+				$data['sig'] = sha1( NONCE_KEY . @json_encode( $data ) . NONCE_SALT );
+				$data = @json_encode( $data );
 
-			$img_url = self::_qr_img( $url );
+				$ticket->qr_code = sprintf(
+					'<img src="%s%s" alt="%s" />',
+					$img_url,
+					//self::$o->core_url.'libs/phpqrcode/index.php?d=',
+					str_replace( array( '+', '=', '/' ), array( '-', '_', '~' ), base64_encode( strrev( $data ) ) ),
+					$ticket->product->get_title().' ('.$ticket->product->get_price().')'
+				);
+			} else {
+				$img_url = self::_qr_img( $url );
 
-			/*
-			$ticket->qr_code = sprintf(
-				'<img src="%s%s" alt="%s" />',
-				$img_url,
-				//self::$o->core_url.'libs/phpqrcode/index.php?d=',
-				str_replace( array( '+', '=', '/' ), array( '-', '_', '~' ), base64_encode( strrev( $data ) ) ),
-				$ticket->product->get_title().' ('.$ticket->product->get_price().')'
-			);
-				*/
-
-			$ticket->qr_code = sprintf(
-				'<img src="%s" alt="%s" />',
-				$img_url,
-				$ticket->product->get_title().' ('.$ticket->product->get_price().')'
-			);
+				$ticket->qr_code = sprintf(
+					'<img src="%s" alt="%s" />',
+					$img_url,
+					$ticket->product->get_title().' ('.$ticket->product->get_price().')'
+				);
+			}
 		} else if ( $qty > 1 ) {
 			$ticket->qr_code = null;
 			$ticket->qr_codes = array();
@@ -170,29 +171,27 @@ class QSOT_checkin {
 				$info['ticket_num'] = $i;
 				$url = self::create_checkin_url( $info );
 
-				/*
-				$data = array( 'd' => $url, 'p' => site_url() );
-				ksort( $data );
-				$data['sig'] = sha1( NONCE_KEY . @json_encode( $data ) . NONCE_SALT );
-				$data = @json_encode( $data );
-				*/
+				if ( ! $is_pdf ) {
+					$data = array( 'd' => $url, 'p' => site_url() );
+					ksort( $data );
+					$data['sig'] = sha1( NONCE_KEY . @json_encode( $data ) . NONCE_SALT );
+					$data = @json_encode( $data );
 
-				$img_url = self::_qr_img( $url );
+					$ticket->qr_codes[ $i ] = sprintf(
+						'<img src="%s%s" alt="%s" />',
+						self::$o->core_url.'libs/phpqrcode/index.php?d=',
+						str_replace( array( '+', '=', '/' ), array( '-', '_', '~' ), base64_encode( strrev( $data ) ) ),
+						$ticket->product->get_title().' ('.$ticket->product->get_price().')'
+					);
+				} else {
+					$img_url = self::_qr_img( $url );
 
-				/*
-				$ticket->qr_codes[ $i ] = sprintf(
-					'<img src="%s%s" alt="%s" />',
-					self::$o->core_url.'libs/phpqrcode/index.php?d=',
-					str_replace( array( '+', '=', '/' ), array( '-', '_', '~' ), base64_encode( strrev( $data ) ) ),
-					$ticket->product->get_title().' ('.$ticket->product->get_price().')'
-				);
-					*/
-
-				$ticket->qr_codes[ $i ] = sprintf(
-					'<img src="%s" alt="%s" />',
-					$img_url,
-					$ticket->product->get_title().' ('.$ticket->product->get_price().')'
-				);
+					$ticket->qr_codes[ $i ] = sprintf(
+						'<img src="%s" alt="%s" />',
+						$img_url,
+						$ticket->product->get_title().' ('.$ticket->product->get_price().')'
+					);
+				}
 				if ( null == $ticket->qr_code ) $ticket->qr_code = $ticket->qr_codes[ $i ];
 			}
 		}
