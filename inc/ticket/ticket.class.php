@@ -368,7 +368,7 @@ class QSOT_tickets {
 		$pdf = new DOMPDF();
 		$pdf->load_html($html);
 		$pdf->render();
-		$pdf->stream( sanitize_title_with_dashes( 'ticket-' . $title ) . '.pdf', array( 'Attachment' => 0 ) );
+		$pdf->stream( sanitize_title_with_dashes( 'ticket-' . $title ) . '.pdf', array( 'Attachment' => 1 ) );
 	}
 
 	protected static function _can_user_view_ticket($args) {
