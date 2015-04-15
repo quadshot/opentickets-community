@@ -110,6 +110,5 @@ try {
 
 	QRimage::jpg($tab, $outfile, min(max(1, $enc->size), $maxSize), $enc->margin, 100);
 } catch (Exception $e) {
-	die(var_dump($e));
 	QRtools::log($outfile, $e->getMessage());
 }
