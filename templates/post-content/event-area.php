@@ -3,7 +3,7 @@
 
 	<?php if (is_object($area->ticket) && !$area->is_soldout): ?>
 		<div class="qsot-ticket-selection show-if-js"></div>
-		<div class="remove-if-js no-js-message">
+		<div class="hide-if-js remove-if-js no-js-message">
 			<p>
 				<?php _e('For a better experience, certain features of javascript area required. Currently you either do not have these features, or you do not have them enabled. Despite this, you can still purchase your tickets, using 2 simple steps.','opentickets-community-edition') ?>
 			</p>
