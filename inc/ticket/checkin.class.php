@@ -133,6 +133,7 @@ class QSOT_checkin {
 			$url = self::create_checkin_url( $info );
 
 			if ( ! $is_pdf ) {
+				$img_url = self::_qr_img( $url );
 				$data = array( 'd' => $url, 'p' => site_url() );
 				ksort( $data );
 				$data['sig'] = sha1( NONCE_KEY . @json_encode( $data ) . NONCE_SALT );
@@ -140,8 +141,8 @@ class QSOT_checkin {
 
 				$ticket->qr_code = sprintf(
 					'<img src="%s%s" alt="%s" />',
-					$img_url,
-					//self::$o->core_url.'libs/phpqrcode/index.php?d=',
+					//$img_url,
+					self::$o->core_url.'libs/phpqrcode/index.php?d=',
 					str_replace( array( '+', '=', '/' ), array( '-', '_', '~' ), base64_encode( strrev( $data ) ) ),
 					$ticket->product->get_title().' ('.$ticket->product->get_price().')'
 				);
