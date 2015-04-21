@@ -161,6 +161,17 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.10.11 =
+* added a default event.css, for those without write access
+* added a default calendar.css for those without write access
+* added calendar color settings to admin panel
+* improved calendar theme framing
+* tweaked non-js ticket selection to look more like js version
+* tweaked calendar template to be more cross theme friendly
+* tweaked calendar style to be a bit more responsive
+* fixed single ticket QR urls
+* fixed visual of 'red box' in javascript enable browsers
+
 = 1.10.10 =
 * changed PDF to be a download file instead of browser load
 * changed QRs to embeded images instead of separate requests, when generating the PDF
