@@ -53,7 +53,7 @@ var QSEventsEventCalendar = (function($, w, d, undefined) {
 
 		function _header_render(header, view) {
 			var curDate = new XDate(this.getDate);
-			_setup_goto_form(this, header.find('.fc-header-center'));
+			_setup_goto_form( this ).insertBefore( header );
 		};
 
 		function _header_render_hook(view) {
@@ -92,7 +92,7 @@ var QSEventsEventCalendar = (function($, w, d, undefined) {
 					function() { $(this).removeClass('fc-state-hover'); }
 				);
 			}
-			gotoForm.appendTo(appendTo);
+			return gotoForm;
 		};
 
 		function _click(calEvent, e, view) {
@@ -174,7 +174,7 @@ var QSEventsEventCalendar = (function($, w, d, undefined) {
 			}
 
 			$('<span class="event-name">' + evt.title + extra + '</span>').appendTo(e.find('.heading'));
-			$('<span class="event-availability">Availability: '+evt['avail-words']+' ('+evt.available+')</span>').appendTo(e.find('.meta'));
+			$('<span class="event-availability"><span class="lbl">Availability: </span><span class="words">'+evt['avail-words']+' </span><span class="num">('+evt.available+')</span></span>').appendTo(e.find('.meta'));
 			var img = $(evt.img).appendTo(e.find('.img'));
 			var key = view.name+'-'+view.title;
 			_image_load_trick(img.attr('src'), key, function() {
