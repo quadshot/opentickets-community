@@ -148,6 +148,11 @@ table.mbtable tbody td.currency.negative { font-weight:bold; color:#880000; }
 .ot-settings-page table.form-table .color_box input.colorpick { box-sizing:border-box; font-family:monospace; margin:0; width:100%; }
 .ot-settings-page table.form-table img.help_tip { cursor:help; line-height:1; float:right; margin:1px 0 0; padding:0; vertical-align:middle; }
 .ot-settings-page table.form-table .color_box strong { display:block; font-size:0.8em; padding:0 0 2px; text-align:left; }
+.ot-settings-page input + .iris-picker { position:absolute; }
+.ot-settings-page .error-msg { color:#800; }
+.ot-settings-page .color-selection { padding-top:20px; }
+.ot-settings-page .color-selection:first-child { padding-top:none; }
+.ot-settings-page .color-selection h4 { margin:0 0 0.5em; }
 
 .bulk-edit-settings .setting-group .setting-name { font-style:italic; text-decoration:underline; }
 

@@ -429,16 +429,61 @@ class QSOT {
 		return $out;
 	}
 
-	public static function compile_frontend_styles() {
+	// get the color defaults
+	public static function default_colors() {
+		return array(
+			// ticket selection ui
+			'form_bg' => '#f4f4f4',
+			'form_border' => '#888888',
+			'form_action_bg' => '#888888',
+			'form_helper' => '#757575',
+
+			'good_msg_bg' => '#eeffee',
+			'good_msg_border' => '#008800',
+			'good_msg_text' => '#008800',
+
+			'bad_msg_bg' => '#ffeeee',
+			'bad_msg_border' => '#880000',
+			'bad_msg_text' => '#880000',
+
+			'remove_bg' => '#880000',
+			'remove_border' => '#660000',
+			'remove_text' => '#ffffff',
+
+			// calendar defaults
+			'calendar_item_bg' => '#577483',
+			'calendar_item_border' => '#3a87ad',
+			'calendar_item_text' => '#e8e8e8',
+			'calendar_item_text_hover' => '#ffffff',
+
+			'past_calendar_item_bg' => '#cecece',
+			'past_calendar_item_border' => '#747474',
+			'past_calendar_item_text' => '#747474',
+			'past_calendar_item_text_hover' => '#747474',
+		);
+	}
+
+	// fetch and compile the current settings for the frontend colors. make sure to apply known defaults
+	public static function current_colors() {
 		$options = qsot_options::instance();
 		$colors = $options->{'qsot-event-frontend-colors'};
+		$defaults = self::default_colors();
 
-		$base_file = QSOT::plugin_dir() . 'assets/css/frontend/event-base.less';
-		$less_file = QSOT::plugin_dir() . 'assets/css/frontend/event.less';
-		$css_file = QSOT::plugin_dir() . 'assets/css/frontend/event.css';
+		return wp_parse_args( $colors, $defaults );
+	}
+
+	public static function compile_frontend_styles() {
+		$colors = self::current_colors();
+
+		$pdir = QSOT::plugin_dir();
+		$base_file = $pdir . 'assets/css/frontend/event-base.less';
+		$files = array(
+			array( $pdir . 'assets/css/frontend/event.less', $pdir . 'assets/css/frontend/event.css' ),
+			array( $pdir . 'assets/css/features/calendar/calendar.less', $pdir . 'assets/css/features/calendar/calendar.css' ),
+		);
 
 		// Write less file
-		if ( is_writable( $base_file ) && is_writable( dirname( $css_file ) ) ) {
+		if ( is_writable( $base_file ) ) {
 			// Colours changed - recompile less
 			if ( ! class_exists( 'lessc' ) )
 				include_once( WC()->plugin_path() . '/includes/libraries/class-lessc.php' );
@@ -452,15 +497,26 @@ class QSOT {
 					$css[] = '@' . $tag . ':' . $color . ';';
 				file_put_contents( $base_file, implode( "\n", $css ) );
 
-				// create the core css file
-				$less = new lessc;
-				$compiled_css = $less->compileFile( $less_file );
-				$compiled_css = CssMin::minify( $compiled_css );
+				foreach ( $files as $file_group ) {
+					list( $less_file, $css_file ) = $file_group;
+					if ( is_writable( dirname( $css_file ) ) ) {
+						try {
+							// create the core css file
+							$less = new lessc;
+							$compiled_css = $less->compileFile( $less_file );
+							$compiled_css = CssMin::minify( $compiled_css );
 
-				if ( $compiled_css )
-					file_put_contents( $css_file, $compiled_css );
+							if ( $compiled_css )
+								file_put_contents( $css_file, $compiled_css );
+						} catch ( Exception $ex ) {
+							wp_die( sprintf( __( 'Could not compile stylesheet %s. [%s]', 'opentickets-community-edition' ), $less_file, $ex->getMessage() ) );
+						}
+					} else {
+						wp_die( sprintf( __( 'Could not write to stylesheet file %s.', 'opentickets-community-edition' ), $css_file ) );
+					}
+				}
 			} catch ( Exception $ex ) {
-				wp_die( __( 'Could not compile event.less:', 'opentickets-community-edition' ) . ' ' . $ex->getMessage() );
+				wp_die( sprintf( __( 'Could not write colors to file %s. [%s]', 'opentickets-community-edition' ), $base_file, $ex->getMessage() ) );
 			}
 		}
 	}
@@ -470,7 +526,11 @@ class QSOT {
 		self::load_plugins_and_modules();
 		do_action('qsot-activate');
 		flush_rewrite_rules();
+		ob_start();
 		self::compile_frontend_styles();
+		$out = ob_get_contents();
+		ob_end_clean();
+		file_put_contents( 'compile.log', $out );
 	}
 }
 
