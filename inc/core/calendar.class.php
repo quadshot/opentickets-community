@@ -5,6 +5,8 @@ class qsot_frontend_calendar {
 	protected static $options = null;
 	protected static $shortcode = 'qsot-event-calendar';
 
+	protected static $current_theme = null;
+
 	public static function pre_init() {
 		add_action('qsot-activate', array(__CLASS__, 'create_calendar_page'), 10);
 		// load all the options, and share them with all other parts of the plugin
@@ -38,6 +40,86 @@ class qsot_frontend_calendar {
 
 			// load admin js and css
 			add_action('qsot-admin-load-assets-page', array(__CLASS__, 'load_admin_assets'), 1000, 2);
+
+			// calendar template wrapper, based on current theme
+			add_action( 'init', array( __CLASS__, 'determine_current_theme' ), 10 );
+			add_action( 'qsot-before-calendar-content', array( __CLASS__, 'before_calendar_template' ), 10 );
+			add_action( 'qsot-after-calendar-content', array( __CLASS__, 'after_calendar_template' ), 10 );
+		}
+	}
+
+	// determine what the current theme is. this will be used to determine the wrappers for the calendar page content
+	public static function determine_current_theme() {
+		self::$current_theme = wp_get_theme();
+	}
+
+	// print out the 'opening wrapper' for the calendar page, depending on the current theme (at least the ones we are going to include by default in our plugin)
+	public static function before_calendar_template() {
+		$name = sanitize_title_with_dashes( self::$current_theme->template );
+		switch ( $name ) {
+			// core WP themes
+			case 'twentytwelve':
+				echo '<div id="primary"><div id="content" role="main">';
+			break;
+
+			case 'twentythirteen':
+				echo '<div id="primary" class="content-area"><div id="content" class="site-content" role="main">';
+			break;
+
+			case 'twentyfourteen':
+				echo '<div id="main-content" class="main-content"><div id="primary" class="content-area"><div id="content" class="site-content" role="main"><div id="page-entry">';
+			break;
+
+			case 'twentyfifteen':
+				echo '<div id="primary" class="content-area"><main id="main" class="site-main" role="main">';
+			break;
+
+			// canvas, OT preferred theme
+			case 'canvas':
+    		echo '<div id="content" class="col-full"><div id="main-sidebar-container"><section id="main">';
+			break;
+
+			// all other themes can add their own templates if needed, or have something defined in their child theme functions.php to handle it
+			default:
+				if ( has_action( 'qsot-before-calendar-content-' . $name ) )
+					do_action( 'qsot-before-calendar-content-' . $name, self::$current_theme );
+				else
+					echo '<div id="main-content" class="main-content"><div id="primary" class="content-area"><div id="content" class="row-fluid clearfix site-content calendar-content">'
+							.'<div class="span12 container"><div id="page-entry" class="calendar-content-wrap"><div class="fluid-row">';
+			break;
+		}
+	}
+
+	// print out the 'closing wrapper' for the calender page, depending on the current theme
+	public static function after_calendar_template() {
+		$name = sanitize_title_with_dashes( self::$current_theme->template );
+		switch ( $name ) {
+			// core WP themes
+			case 'twentytwelve':
+			case 'twentythirteen':
+				echo '</div></div>';
+			break;
+
+			case 'twentyfourteen':
+				echo '</div></div></div></div>';
+			break;
+
+			case 'twentyfifteen':
+				echo '</main></div>';
+			break;
+
+			// canvas, OT perferred theme
+			case 'canvas':
+				echo '</section></div></div>';
+			break;
+
+			// all other themes
+			default:
+				if ( has_action( 'qsot-after-calendar-content-' . $name ) )
+					do_action( 'qsot-after-calendar-content-' . $name, self::$current_theme );
+				else
+				echo '</div></div></div></div></div></div>';
+			break;
 		}
 	}
 
