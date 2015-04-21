@@ -219,6 +219,8 @@ class qsot_event_area {
 						.'<h3>'.__('Step 2: Review','opentickets-community-edition').'</h3>'
 					.'</div>'
 					.'<div class="field">'
+						.'<label class="section-heading">'.__('You currently have:','opentickets-community-edition').'</label>'
+						.'<div class="availability-message helper"></div>'
 						.'<a href="#" class="remove-link" rel="remove-btn">X</a>'
 						.'<span rel="tt"></span>'
 						.'<input type="number" step="1" min="0" max="'.$max.'" rel="qty" name="quantity" value="1" class="very-short" />'
