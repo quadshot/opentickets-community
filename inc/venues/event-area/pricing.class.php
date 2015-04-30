@@ -47,6 +47,8 @@ class qsot_seat_pricing {
 			// when adding a ticket to an order, we need to update the event order to zone table with the new data
 			add_action( 'woocommerce_add_order_item_meta', array( __CLASS__, 'update_ticket_order_information' ), 100000, 3 );
 
+			// when removing an item from the cart, we need to update reservations
+			add_action( 'woocommerce_cart_item_removed', array( __CLASS__, 'upon_cart_remove_item' ), 5, 2 );
 			add_action('wp_ajax_woocommerce_remove_order_item', array(__CLASS__, 'aj_admin_remove_order_item'), 5);
 			add_action('before_delete_post', array(__CLASS__, 'before_delete_order'), 5, 1);
 
@@ -76,8 +78,32 @@ class qsot_seat_pricing {
 	}
 
 	// executes AFTER the zoner::reserve_current_user method, and adds the ticket to the cart on a reported success (or removes it on $count = 0)
-	public static function reserve_current_user( $success, $event, $ticket_type_id, $count ) {
+	public static function reserve_current_user( $success, $event, $ticket_type_id=0, $count=0 ) {
 		if ( ! $success ) return $success;
+
+		$defs = array(
+			'event' => null,
+			'ticket_type_id' => 0,
+			'count' => 0,
+		);
+		$args = array();
+
+		// idetify the current user
+		$defs['customer_id'] = apply_filters( 'qsot-zoner-current-user', md5( ( isset( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] . ':' : rand( 0, PHP_INT_MAX ) ) . ':' . time() ) );
+
+		// noramlize all arguments
+		if ( is_array( $event ) ) {
+			$args = wp_parse_args( $event, $defs );
+		} else {
+			$args = wp_parse_args( array(
+				'event' => $event,
+				'ticket_type_id' => $ticket_type_id,
+				'count' => $count,
+			), $defs );
+		}
+
+		extract( $args );
+
 		$event = ! is_object( $event ) && (int) $event ? get_post( $event ) : $event;
 		if ( ! is_object( $event ) ) return $success;
 		
@@ -108,6 +134,14 @@ class qsot_seat_pricing {
 		}
 
 		return $success;
+	}
+
+	// when an item is removed from the cart, we need to remove the reservations from the database
+	public static function upon_cart_remove_item( $cart_item_key, $cart ) {
+		$item = $cart->removed_cart_contents[ $cart_item_key ];
+		if ( isset( $item['event_id'] ) ) {
+			apply_filters( 'qsot-zoner-reserve-current-user', false, $item['event_id'], $item['product_id'], 0 );
+		}
 	}
 
 	public static function reserve_admin($order, $event, $ticket_type_id, $count) {
