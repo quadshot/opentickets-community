@@ -73,7 +73,7 @@
 				</div>
 			<?php endif; ?>
 
-			<?php if (!empty($reserved)): ?>
+			<?php if ( ! empty( $reserved ) && ! is_wp_error( $reserved ) ): ?>
 				<div class="step-two ticket-selection-section">
 					<div class="form-inner">
 						<form class="submittable" action="<?php echo esc_attr(remove_query_arg(array('rmvd'))) ?>" method="post">
@@ -131,8 +131,6 @@
 		if (typeof jQuery == 'function') (function($) {
 			$('.remove-if-js').remove();
 			$('.empty-if-js').empty();
-			$('.hide-if-js').hide();
-			$('.show-if-js').show();
 		})(jQuery);
 	</script>
 </div>
