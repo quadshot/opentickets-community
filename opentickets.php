@@ -66,6 +66,9 @@ class QSOT {
 		add_action('init', array(__CLASS__, 'register_assets'), 2);
 
 		add_filter('plugin_action_links', array(__CLASS__, 'plugins_page_actions'), 10, 4);
+
+		// polyfill the hide/show js functions in the head tag, since some themes apparently don't have this
+		add_action( 'wp_head', array( __CLASS__, 'polyfill_hideshow_js' ), 0 );
 		
 		load_plugin_textdomain( 'opentickets-community-edition', false, dirname( plugin_basename( __FILE__ ) ) . '/langs/' );
 	}
@@ -165,6 +168,11 @@ class QSOT {
 
 		// allow sub/external plugins to load their own stuff right now
 		do_action('qsot-admin-load-assets-'.$post_type, $existing, $post_id);
+	}
+
+	// apparently some themes do not implement basic js hide/show features for showing and hideing content with css
+	public static function polyfill_hideshow_js() {
+		?><script language="javascript">document.write( '<style>.js .hide-if-js { display:none; } .js .show-if-js { display:block; }</style>' )</script><?php
 	}
 
 	// always register our scripts and styles before using them. it is good practice for future proofing, but more importantly, it allows other plugins to use our js if needed.
