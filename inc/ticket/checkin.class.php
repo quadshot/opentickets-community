@@ -31,61 +31,78 @@ class QSOT_checkin {
 		);
 	}
 
+	// handler for the checkin urls
 	public static function intercept_checkins( $value, $qvar, $all_data, $query_vars ) {
 		$packet = urldecode( $all_data['qsot-checkin-packet'] );
 		self::event_checkin( self::_parse_checkin_packet( $packet ), $packet );
 	}
 
-	public static function event_checkin($data, $packet) {
-		if (!is_user_logged_in() || !current_user_can('edit_users')) {
-			self::_no_access('', '', $data, $packet);
+	// interprets the request, and formulates an appropriate response
+	public static function event_checkin( $data, $packet ) {
+		// if the user is not logged in, or if they don't have access to check ppl in, then have them login or error out
+		if ( ! is_user_logged_in() || ! current_user_can( 'edit_users' ) ) {
+			self::_no_access( '', '', $data, $packet );
 			exit;
 		}
 
 		$template = '';
 
-		if (apply_filters('qsot-is-already-occupied', false, $data['order_id'], $data['event_id'], $data['order_item_id'])) {
+		// if the seat is already checked in, load a template saying so
+		if ( apply_filters( 'qsot-is-already-occupied', false, $data['order_id'], $data['event_id'], $data['order_item_id'] ) ) {
 			$template = 'checkin/already-occupied.php';
+		// otherwise
 		} else {
-			$res = apply_filters('qsot-occupy-sold', false, $data['order_id'], $data['event_id'], $data['order_item_id'], 1);
-			if ($res) $template = 'checkin/occupy-success.php';
+			// try to check the seat in
+			$res = apply_filters( 'qsot-occupy-sold', false, $data['order_id'], $data['event_id'], $data['order_item_id'], 1 );
+			// if it was successful, have a message saying that
+			if ( $res ) $template = 'checkin/occupy-success.php';
+			// otherwise, have a message saying it failed
 			else $template = 'checkin/occupy-failure.php';
 		}
 
-		$ticket = apply_filters('qsot-compile-ticket-info', false, $data['order_item_id'], $data['order_id']);
-		$ticket->owns = apply_filters('qsot-zoner-owns', array(), $ticket->event, $ticket->order_item['product_id'], '*', false, $data['order_id'], $data['order_item_id']);
-		$stylesheet = apply_filters('qsot-locate-template', '', array('checkin/style.css'), false, false);
-		$stylesheet = str_replace(DIRECTORY_SEPARATOR, '/', str_replace(ABSPATH, '/', $stylesheet));
-		$stylesheet = site_url($stylesheet);
+		// load the information used by the checkin template
+		$ticket = apply_filters( 'qsot-compile-ticket-info', false, $data['order_item_id'], $data['order_id'] );
+		$ticket->owns = apply_filters( 'qsot-zoner-owns', array(), $ticket->event, $ticket->order_item['product_id'], '*', false, $data['order_id'], $data['order_item_id'] );
+		$stylesheet = apply_filters( 'qsot-locate-template', '', array('checkin/style.css'), false, false );
+		$stylesheet = str_replace( DIRECTORY_SEPARATOR, '/', str_replace( ABSPATH, '/', $stylesheet ) );
+		$stylesheet = site_url( $stylesheet );
 
-		$template = apply_filters('qsot-locate-template', '', array($template), false, false);
+		// find the template, ensuring to allow theme overrides and such
+		$template = apply_filters( 'qsot-locate-template', '', array( $template ), false, false );
+		// render the results
 		include_once $template;
 
 		exit;
 	}
 
+	// when a user does not have access to check a ticket in, either they are logged out, or they do not have permission. respond to either situation
 	protected static function _no_access($msg='', $heading='', $data=array(), $packet='') {
+		// if they are not logged in, then pop a login form
 		if ( ! is_user_logged_in() ) {
 			$url = wp_login_url( self::create_checkin_url( str_replace( array( '+', '=', '/' ), array( '-', '_', '~' ), $packet ) ) );
 			wp_safe_redirect( $url );
 			exit;
+		// if they are logged in, but do not have permission, then fail
 		} else {
-			$template = apply_filters('qsot-locate-template', '', array('checkin/no-access.php'), false, false);
-			$stylesheet = apply_filters('qsot-locate-template', '', array('checkin/style.css'), false, false);
-			$stylesheet = str_replace(DIRECTORY_SEPARATOR, '/', str_replace(ABSPATH, '/', $stylesheet));
-			$stylesheet = site_url($stylesheet);
+			$template = apply_filters( 'qsot-locate-template', '', array( 'checkin/no-access.php' ), false, false );
+			$stylesheet = apply_filters( 'qsot-locate-template', '', array( 'checkin/style.css' ), false, false );
+			$stylesheet = str_replace( DIRECTORY_SEPARATOR, '/', str_replace( ABSPATH, '/', $stylesheet ) );
+			$stylesheet = site_url( $stylesheet );
 			include_once $template;
 		}
 	}
 
+	// create the url that will be used for the checkin process, based on the current permalink structure
 	public static function create_checkin_url( $info ) {
 		global $wp_rewrite;
 		$post_link = $wp_rewrite->get_extra_permastruct( 'post' );
 
 		$packet = self::_create_checkin_packet( $info );
 
+		// if we are using pretty permalinks, then make a pretty url
 		if ( ! empty( $post_link ) ) {
 			$post_link = site_url( '/event-checkin/' . $packet . '/' );
+		// otherwise use the default url struct, and have query params instead
 		} else {
 			$post_link = add_query_arg( array(
 				'qsot-event-checkin' => 1,
@@ -130,15 +147,19 @@ class QSOT_checkin {
 				'ticket_num' => 0,
 			);
 
+			// create the url we will use for the checkin, which will be the data we encode in the qr
 			$url = self::create_checkin_url( $info );
 
+			// if this is NOT a PDF request, then allow the image srcs to be externally loadable assets, so that they can be cached locally for the user
 			if ( ! $is_pdf ) {
+				// craft the qr generator url
 				$img_url = self::_qr_img( $url );
 				$data = array( 'd' => $url, 'p' => site_url() );
 				ksort( $data );
 				$data['sig'] = sha1( NONCE_KEY . @json_encode( $data ) . NONCE_SALT );
 				$data = @json_encode( $data );
 
+				// add an image tag to represent the qr code
 				$ticket->qr_code = sprintf(
 					'<img src="%s%s" alt="%s" />',
 					//$img_url,
@@ -146,19 +167,24 @@ class QSOT_checkin {
 					str_replace( array( '+', '=', '/' ), array( '-', '_', '~' ), base64_encode( strrev( $data ) ) ),
 					$ticket->product->get_title().' ('.$ticket->product->get_price().')'
 				);
+			// if this IS a PDF request, the pdf library works better if we embed the qr image data in the document in base64 encoded form. in some cases, using the alternative produces blank images on the pdf
 			} else {
+				// use a 
 				$img_url = self::_qr_img( $url );
 
+				// embed the image tag with the base64 encoded images
 				$ticket->qr_code = sprintf(
 					'<img src="%s" alt="%s" />',
 					$img_url,
 					$ticket->product->get_title().' ('.$ticket->product->get_price().')'
 				);
 			}
+		// if we have more than one qty, then use slightly different logic to generate each individual qr code
 		} else if ( $qty > 1 ) {
 			$ticket->qr_code = null;
 			$ticket->qr_codes = array();
 
+			// aggregate the shared information amungst all the qrs
 			$info = array(
 				'order_id' => $ticket->order->id,
 				'event_id' => $ticket->event->ID,
@@ -168,31 +194,41 @@ class QSOT_checkin {
 				'uniq' => md5(sha1(microtime(true).rand(0, PHP_INT_MAX))),
 			);
 
+			// for each one of the entire qty, assign each discrete one it's own index, so that it's url is slightly different, causing a different QR
 			for ( $i = 0; $i < $qty; $i++ ) {
+				// uniqify the qr
 				$info['ticket_num'] = $i;
+				// create the checkin url that is being encoded
 				$url = self::create_checkin_url( $info );
 
+				// if this is NOT a PDF request, then make the qr image urls an external assets, which can be locally cached
 				if ( ! $is_pdf ) {
+					// create the QR generator url
 					$data = array( 'd' => $url, 'p' => site_url() );
 					ksort( $data );
 					$data['sig'] = sha1( NONCE_KEY . @json_encode( $data ) . NONCE_SALT );
 					$data = @json_encode( $data );
 
+					// add the image tag to the list of image tags
 					$ticket->qr_codes[ $i ] = sprintf(
 						'<img src="%s%s" alt="%s" />',
 						self::$o->core_url.'libs/phpqrcode/index.php?d=',
 						str_replace( array( '+', '=', '/' ), array( '-', '_', '~' ), base64_encode( strrev( $data ) ) ),
 						$ticket->product->get_title().' ('.$ticket->product->get_price().')'
 					);
+				// if this IS a PDF request, then embed the QR image urls as base64 encoded data strings
 				} else {
+					// compile the qr image url
 					$img_url = self::_qr_img( $url );
 
+					// add the image tag for this qr to the list of image tags
 					$ticket->qr_codes[ $i ] = sprintf(
 						'<img src="%s" alt="%s" />',
 						$img_url,
 						$ticket->product->get_title().' ('.$ticket->product->get_price().')'
 					);
 				}
+				// if this is the first qr in the list, fill the qr_code property, for backwards compatibility, since some override templates may be out of date
 				if ( null == $ticket->qr_code ) $ticket->qr_code = $ticket->qr_codes[ $i ];
 			}
 		}
@@ -235,25 +271,39 @@ class QSOT_checkin {
 		return $img_url;
 	}
 
-	protected static function _create_checkin_packet($data) {
+	// create the packed that is used in the checkin process. this is a stringified version of all the information needed to check a user in
+	protected static function _create_checkin_packet( $data ) {
+		// if there is no data, then return nothing
 		if ( ! is_array( $data ) ) return $data;
-		$pack = sprintf(
-			'%s;%s;%s.%s;%s:%s:%s',
-			$data['order_id'],
-			$data['order_item_id'],
-			$data['event_id'],
-			$data['price'],
-			$data['title'],
-			$data['uniq'],
-			$data['ticket_num']
-		);
-		$pack .= '|'.sha1($pack.AUTH_SALT);
-		// need string replace to accommodate login screen redirect
+
+		$pack = null;
+		// allow other plugins to create their own checkin packet if they like. NOTE: they may also need to hook into 'qsot-parse-checkin-packet' below if they want to do this
+		$pack = apply_filters( 'qsot-create-checkin-packet', $pack, $data );
+
+		// if there is not a plugin override on this, then create a specifically formatted string containing the data we need
+		if ( null === $pack )
+			$pack = sprintf(
+				'%s;%s;%s.%s;%s:%s:%s',
+				$data['order_id'],
+				$data['order_item_id'],
+				$data['event_id'],
+				$data['price'],
+				$data['title'],
+				$data['uniq'],
+				$data['ticket_num']
+			);
+
+		// sign it for security
+		$pack .= '|' . sha1( $pack . AUTH_SALT );
+
+		// need string replace because some characters are not urlencode/decode friendly or query param friendly
 		return str_replace( array( '+', '=', '/' ), array( '-', '_', '~' ), @base64_encode( strrev( $pack ) ) );
 	}
 
+	// unpack the data stored in the checkin url packet, and put it in array format again, so that it can be used to perform the checkin
 	protected static function _parse_checkin_packet($raw) {
 		$data = array();
+		// make the reverse string replacements from above, otherwise the base64 won't decode
 		$raw = str_replace( array( '-', '_', '~' ), array( '+', '=', '/' ), $raw );
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG )
 			$packet = strrev( base64_decode( $raw ) );
@@ -265,13 +315,22 @@ class QSOT_checkin {
 		$pack = explode( '|', strrev( $packet ), 2 );
 		$hash = strrev( array_shift( $pack ) );
 		$pack = strrev( implode( '|', $pack ) );
-		if (!$pack || !$hash || sha1($pack.AUTH_SALT) != $hash) return $data;
+		if ( ! $pack || ! $hash || sha1( $pack . AUTH_SALT ) != $hash ) return $data;
 
-		$parts = explode(';', $packet, 4);
-		$data['order_id'] = array_shift($parts);
-		$data['order_item_id'] = array_shift($parts);
-		list($data['event_id'], $data['price']) = explode('.', array_shift($parts));
-		list($data['title'], $data['uniq']) = explode(':', array_shift($parts));
+		$data = null;
+		// allow other plugins to interpret the packet on their own; for instance, if they have custom packet logic above at filter 'qsot-create-checkin-packet'
+		$data = apply_filters( 'qsot-parse-checkin-packet', $data, $pack );
+
+		// if there is no plugin override, then assume we are dealing with the default packet, and parse that
+		if ( null === $data ) {
+			$data = array();
+			$parts = explode( ';', $packet, 4 );
+			$data['order_id'] = array_shift( $parts );
+			$data['order_item_id'] = array_shift( $parts );
+			list( $data['event_id'], $data['price'] ) = explode( '.', array_shift( $parts ) );
+			list( $data['title'], $data['uniq'] ) = explode( ':', array_shift( $parts ) );
+		}
+
 		return $data;
 	}
 }
