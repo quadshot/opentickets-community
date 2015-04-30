@@ -71,6 +71,7 @@ $multiple = $ticket->order_item['qty'] > 1;
 												<?php endif; ?>
 												(<?php echo $ticket->product->get_price_html() ?>)
 											</li>
+											<?php do_action( 'qsot-ticket-information', $ticket, $multiple ); ?>
 										</ul>
 									</td>
 								</tr>
