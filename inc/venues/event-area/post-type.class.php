@@ -660,61 +660,83 @@ class qsot_event_area {
 		return $resp;
 	}
 
-	public static function aaj_ts_load_event($resp, $data) {
+	// load the event details for the admin ticket selection interface
+	public static function aaj_ts_load_event( $resp, $data ) {
 		$resp['s'] = false;
 		$resp['e'] = array();
 
+		// fetch the relevant ids from the data
 		$event_id = $data['eid'];
 		$oiid = $data['oiid'];
 		$oid = $data['order_id'];
 
-		$event = apply_filters('qsot-get-event', false, $event_id);
-		$order = new WC_Order($oid);
-		if (is_object($event) && is_object($order)) {
+		// load the event and order information
+		$event = apply_filters( 'qsot-get-event', false, $event_id );
+		$order = new WC_Order( $oid );
+
+		// if both event and order exist, then 
+		if ( is_object( $event ) && is_object( $order ) ) {
+			// determine an appropriate 'customer id' to use when editing the ticket reservations
 			$customer_id = $data['customer_user'];
-			if (empty($customer_id)) $customer_id = get_post_meta($order->id, '_customer_id', true);
-			if (empty($customer_id)) $customer_id = md5($order->id);
+			if ( empty( $customer_id ) )
+				$customer_id = get_post_meta( $order->id, '_customer_id', true );
+			if ( empty( $customer_id ) )
+				$customer_id = md5( $order->id );
+
 			$resp['s'] = true;
+			// aggregate the basic event data
 			$resp['data'] = array(
 				'id' => $event->ID,
-				'name' => apply_filters('the_title', $event->post_title),
+				'name' => apply_filters( 'the_title', $event->post_title ),
 			);
-			$resp['data']['_link'] = sprintf('<a href="%s" target="_blank">%s</a>', get_edit_post_link($event->ID), $resp['data']['name']);
-			$resp['data']['_html_date'] = sprintf(
+			$resp['data']['_html_date'] = sprintf(// display dates
 				'<span class="from">%s</span> - <span class="to">%s</span>',
-				date_i18n('D, F jS, Y h:ia', strtotime($event->meta->start)),
-				date_i18n('D, F jS, Y h:ia', strtotime($event->meta->end))
+				date_i18n( 'D, F jS, Y h:ia', strtotime( $event->meta->start ) ),
+				date_i18n( 'D, F jS, Y h:ia', strtotime( $event->meta->end ) )
 			);
 			$resp['data']['_capacity'] = $event->meta->capacity;
 			$resp['data']['_available'] = $event->meta->available;
 			$resp['data']['_imgs'] = array();
 			$resp['data']['_raw'] = $event;
-			if (is_object($event->meta->_event_area_obj) && isset($event->meta->_event_area_obj->meta, $event->meta->_event_area_obj->meta['_thumbnail_id'])) {
-				//$img_info = get_post_meta(get_post_thumbnail_id($event->meta->_event_area_obj->ID), '_wp_attachment_metadata', true);
-				$img_info = get_post_meta($event->meta->_event_area_obj->meta['_thumbnail_id'], '_wp_attachment_metadata', true);
+			// create an edit link for the event that opens in a new tab
+			$resp['data']['_link'] = sprintf( '<a href="%s" target="_blank">%s</a>', get_edit_post_link( $event->ID ), $resp['data']['name'] );
+
+			// if the event area has a featured image, load that image's details for use in the ui
+			if ( is_object( $event->meta->_event_area_obj ) && isset( $event->meta->_event_area_obj->meta, $event->meta->_event_area_obj->meta['_thumbnail_id'] ) ) {
+				// get the image data, and store it in the result, so the ui can do with it what it wants
+				$img_info = get_post_meta( $event->meta->_event_area_obj->meta['_thumbnail_id'], '_wp_attachment_metadata', true );
 				$resp['data']['_image_info_raw'] = $img_info;
-				if (isset($img_info['file']) && is_array($img_info) && isset($img_info['sizes']) && is_array($img_info['sizes'])) {
+
+				// then for each image size, aggregate some information for displaying the image, which is used to create the image tags
+				if ( isset( $img_info['file'] ) && is_array( $img_info ) && isset( $img_info['sizes'] ) && is_array( $img_info['sizes'] ) ) {
 					$u = wp_upload_dir();
 					$base_file = $img_info['file'];
-					$file_path = trailingslashit(trailingslashit($u['baseurl']).str_replace(basename($base_file), '', $base_file));
-					foreach ($img_info['sizes'] as $k => $info) {
+					$file_path = trailingslashit( trailingslashit( $u['baseurl'] ) . str_replace( basename( $base_file ), '', $base_file ) );
+					// for each image size, add a record with the image path and size details
+					foreach ( $img_info['sizes'] as $k => $info ) {
 						$resp['data']['_imgs'][$k] = array(
-							'url' => $file_path.$info['file'],
+							'url' => $file_path . $info['file'],
 							'width' => $info['width'],
 							'height' => $info['height'],
 						);
 					}
+					// also add an entry for the fullsize version
 					$resp['data']['_imgs']['full'] = array(
-						'url' => trailingslashit($u['baseurl']).$base_file,
+						'url' => trailingslashit( $u['baseurl'] ) . $base_file,
 						'width' => $img_info['width'],
 						'height' => $img_info['height'],
 					);
 				}
 			}
+
+			// fetch the information about currently owned tickets
 			$resp['data']['_owns'] = 0;
 			if ( isset( $event->meta, $event->meta->_event_area_obj, $event->meta->_event_area_obj->ticket ) && $event->meta->_event_area_obj->ticket->id > 0 ) {
-				$owns = apply_filters('qsot-zoner-owns', 0, $event, $event->meta->_event_area_obj->ticket->id, false, false, $order->id);
-				if (is_array($owns)) foreach ($owns as $state => $cnt) $resp['data']['_owns'] += $cnt;
+				$owns = apply_filters( 'qsot-zoner-owns', 0, $event, $event->meta->_event_area_obj->ticket->id, false, false, $order->id );
+				if ( is_array( $owns ) )
+					foreach ( $owns as $state => $cnt )
+						if ( is_numeric( $cnt ) )
+							$resp['data']['_owns'] += $cnt;
 			}
 		}
 
