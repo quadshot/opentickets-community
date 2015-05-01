@@ -295,6 +295,8 @@ class qsot_seat_pricing {
 			$ostatus = is_callable(array(&$order, 'get_status')) ? $order->get_status() : $order->status;
 			if (in_array($ostatus, apply_filters('qsot-zoner-confirmed-statuses', array('on-hold', 'processing', 'completed'))))
 				$where['order_item_id'] = $oiid;
+			else
+				$where['order_item_id'] = array( 0, $oiid );
 
 			$res = apply_filters(
 				'qsot-zoner-update-reservation',
@@ -584,7 +586,8 @@ class qsot_seat_pricing {
 
 		do_action('qsot-calendar-settings', get_post($order_id), true, '');
 
-		wp_enqueue_style('qsot-jquery-ui');
+		//wp_enqueue_style('qsot-jquery-ui');
+		wp_enqueue_style( 'wp-jquery-ui-dialog' );
 		wp_enqueue_script('qsot-admin-ticket-selection');
 		wp_localize_script('qsot-admin-ticket-selection', '_qsot_admin_ticket_selection', array(
 			'nonce' => wp_create_nonce('edit-order-ticket-selection'),
