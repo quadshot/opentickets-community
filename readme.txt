@@ -161,6 +161,17 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.10.12 =
+* added js polyfill for hide-if-js-less themes
+* added filter for ticket information on ticket template
+* added 'has' feature to QS.CBS js utility
+* improved admin order load event function documentation and readability
+* improved checkin code to be more extendable
+* improved order/cart to reservation syncing
+* improved ticket code generation function and ticket assignment
+* repaired edgecase unconfirm function issue
+* repaired edgecase reservation error
+
 = 1.10.11 =
 * added a default event.css, for those without write access
 * added a default calendar.css for those without write access
