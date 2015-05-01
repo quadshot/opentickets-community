@@ -210,11 +210,12 @@ class QSOT_tickets {
 	public static function on_complete_update_tickets( $order_id, $old_status, $new_status ) {
 		if ( 'completed' == $new_status ) {
 			$order = wc_get_order( $order_id );
-			foreach ( $order->get_items() as $oiid => $item ) {
-				$values = $item;
-				unset( $item['item_meta'] );
-				self::add_ticket_code_for_order_item( $oiid, $values, '', $order_id );
-			}
+			if ( is_object( $order ) )
+				foreach ( $order->get_items() as $oiid => $item ) {
+					$values = $item;
+					unset( $item['item_meta'] );
+					self::add_ticket_code_for_order_item( $oiid, $values, '', $order_id );
+				}
 		}
 	}
 

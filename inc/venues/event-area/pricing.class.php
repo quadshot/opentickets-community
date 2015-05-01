@@ -439,7 +439,7 @@ class qsot_seat_pricing {
 			} else {
 				$cuids = array();
 				if (($customer_id = is_object($woocommerce->session) ? $woocommerce->session->get_customer_id() : '')) $cuids[] = $customer_id;
-				if (($ocuid = get_post_meta($order_id, '_customer_user', true))) $cuids[] = $ocuid;
+				if ( isset( WC()->session ) && ( $order_id = absint( WC()->session->order_awaiting_payment ) ) && ($ocuid = get_post_meta($order_id, '_customer_user', true))) $cuids[] = $ocuid;
 
 				// required. otherwise ALL reserved tickets for this event will be updated to confirmed... which is wrong
 				if (!empty($cuids)) {
