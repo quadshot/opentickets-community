@@ -183,15 +183,16 @@ class QSOT_tickets {
 		self::$order_id = $order_id;
 	}
 
-	public static function add_ticket_code_for_order_item($item_id, $values, $key='') {
-		if (empty(self::$order_id)) return;
+	public static function add_ticket_code_for_order_item( $item_id, $values, $key='', $order_id=0 ) {
+		if ( empty( $order_id ) && isset( self::$order_id ) ) $order_id = self::$order_id;
+		if ( empty( $order_id ) && isset( WC()->session ) && ( $cur_order_id = WC()->session->order_awaiting_payment ) ) $order_id = $cur_order_id;
 
 		global $wpdb;
 
 		$code_args = array_merge(
 			$values,
 			array(
-				'order_id' => self::$order_id,
+				'order_id' => $order_id,
 				'order_item_id' => $item_id,
 			)
 		);
