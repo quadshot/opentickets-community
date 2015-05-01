@@ -542,9 +542,15 @@ QS.CB = (function($, undefined) {
 			return res;
 		};
 
+		function cb_has( name ) {
+			return ( 'undefined' != typeof _callbacks[ name ] && _callbacks[ name ] instanceof Array );
+		};
+
 		function cb_remove(name, func) {
 			if (typeof func == 'function' && _callbacks[name] instanceof Array) {
 				_callbacks[name] = _callbacks[name].filter(function(f) { return f.f.toString() != func.toString(); });
+			} else if ( ( 'undefined' == typeof func || null === func ) && _callbacks[ name ] instanceof Array ) {
+				delete _callbacks[ name ];
 			}
 		};
 
@@ -567,6 +573,7 @@ QS.CB = (function($, undefined) {
 		function _debug_handlers() { console.log('debug_'+sname, $.extend({}, _callbacks)); };
 
 		t.add = cb_add;
+		t.has = cb_has;
 		t.remove = cb_remove;
 		t.get = cb_get;
 		t.trigger = cb_trigger;

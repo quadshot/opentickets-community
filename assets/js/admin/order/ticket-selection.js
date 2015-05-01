@@ -149,6 +149,10 @@ QS.adminTicketSelection = (function($, qs, qt) {
 			aj('update-order-items', {}, s, e);
 		}
 
+		function _adjust_dia() {
+			t.e.dia.dialog( 'option', 'position', { my:'center top', at:'center top+10', of:window, collision:'fit flip', within:window } );
+		}
+
 		function _display_type(name) {
 			var aname = 'actions_'+name, iname = 'inner_'+name;
 			t.e.ev.find('[rel="image-wrap"]').empty();
@@ -161,7 +165,7 @@ QS.adminTicketSelection = (function($, qs, qt) {
 		function _load_event(event_id) {
 			action = action || 'change';
 			t.e.all.hide();
-			t.e.trans.fadeIn(200);
+			t.e.trans.fadeIn( 200, _adjust_dia );
 			if (!t.e.dia.dialog('isOpen')) t.e.dia.dialog('open');
 
 			t.ev = {};
@@ -195,10 +199,10 @@ QS.adminTicketSelection = (function($, qs, qt) {
 				if (qt.isO(r.data._imgs) && qt.isO(r.data._imgs.full) && typeof r.data._imgs.full.url)
 					$('<div class="event-area-image"><img src="'+r.data._imgs.full.url+'" title="'+r.data.name+'" /></div>').appendTo(t.e.ev.find('[rel="image-wrap"]').empty());
 
-				ui.callbacks.trigger( 'load-event', [ r, t.e ] );
+				ui.callbacks.trigger( 'load-event', [ r, t.e, t, S ] );
 
 				t.e.all.hide();
-				$(t.e.info).add(t.e.actions).add(t.e.ev).fadeIn(200);
+				$(t.e.info).add(t.e.actions).add(t.e.ev).fadeIn( 200, _adjust_dia );
 			});
 		}
 
@@ -206,7 +210,7 @@ QS.adminTicketSelection = (function($, qs, qt) {
 			msgs = msgs || false;
 			t.e.all.hide();
 			if (msgs && msgs.length) _dia_error(msgs, true);
-			t.e.cal.fadeIn(200);
+			t.e.cal.fadeIn( 200, _adjust_dia );
 			if (!t.e.dia.dialog('isOpen')) t.e.dia.dialog('open');
 
 			t.cal.setUrlParams({ priced_like:t.priced_like });
@@ -214,7 +218,7 @@ QS.adminTicketSelection = (function($, qs, qt) {
 			var dt = new XDate(dt);
 			t.cal.cal.fullCalendar('gotoDate', dt.getFullYear(), dt.getMonth());
 
-			ui.callbacks.trigger( 'load-calendar', [ dt, t.e ] );
+			ui.callbacks.trigger( 'load-calendar', [ dt, t.e, t, S ] );
 		}
 
 		function _select_event(e, calEvent) {
@@ -239,7 +243,6 @@ QS.adminTicketSelection = (function($, qs, qt) {
 					_dia_error(['There was a problem changing the reservation.']);
 					return;
 				}
-				console.log('updating now');
 				t.oi.find('.change-ticket').attr('event-id', r.event.ID);
 				var lk = t.oi.find('.ticket-info [rel="edit-event"]');
 				$('<a rel="edit-event" href="'+r.event._edit_url+'" target="_blank" title="edit event">'+r.event.post_title+'</a>').insertBefore(lk);
@@ -256,6 +259,7 @@ QS.adminTicketSelection = (function($, qs, qt) {
 
 			t.e.dia = $(S.templates['dialog-shell']).appendTo('#wpwrap').dialog({
 				autoOpen: false,
+				dialogClass: 'qsot-dialog',
 				width: windims.w >= 1000 ? 1000 : (windims.w >= 600 ? 600 : windims - 10),
 				height: 'auto',
 				modal: true,
@@ -288,7 +292,7 @@ QS.adminTicketSelection = (function($, qs, qt) {
 			t.cal = new QSEventsEventCalendar(args);
 			t.cal.cal.fullCalendar('gotoDate', today.getFullYear(), today.getMonth());
 
-			ui.callbacks.trigger( 'setup-elements', [ t.e ] );
+			ui.callbacks.trigger( 'setup-elements', [ t.e, t, S ] );
 		}
 
 		function _setup_events() {
@@ -297,12 +301,19 @@ QS.adminTicketSelection = (function($, qs, qt) {
 			t.e.actions.on('click', '[rel="change-btn"]', _start_change_event);
 			t.e.actions.on('click', '[rel="use-btn"]', _update_ticket);
 			t.e.ev.on('click', '[rel="add-btn"]', t.add_tickets);
+
+			ui.callbacks.trigger( 'setup-events', [ t, S ] );
+		}
+
+		function _addon( func ) {
+			if ( qt.isF( func ) ) func( t.e, t, S );
 		}
 
 		t.add_tickets = _add_tickets;
 		t._dia_error = _dia_error;
 		t._dia_msgs = _dia_msgs;
 		t._update_order_items = _update_order_items;
+		t.addon = _addon;
 
 		_init();
 	}
@@ -320,5 +331,5 @@ QS.adminTicketSelection = (function($, qs, qt) {
 })(jQuery, QS, QS.Tools);
 
 jQuery(function($) {
-	var ts = QS.adminTicketSelection.start( {}, 'body' );
+	var ts = QS.AdminTS = QS.adminTicketSelection.start( {}, 'body' );
 });
