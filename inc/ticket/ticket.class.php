@@ -53,6 +53,7 @@ class QSOT_tickets {
 		add_action('qsot-ajax-before-add-order-item', array(__CLASS__, 'sniff_order_id'), 1000, 1);
 		add_action('woocommerce_add_order_item_meta', array(__CLASS__, 'add_ticket_code_for_order_item'), 1000, 3);
 		add_action('woocommerce_ajax_add_order_item_meta', array(__CLASS__, 'add_ticket_code_for_order_item'), 1000, 2);
+		add_action( 'woocommerce_order_status_changed', array( 'QSOT_tickets', 'on_complete_update_tickets' ), 1000, 4 );
 
 		// order item display
 		add_action('qsot-ticket-item-meta', array(__CLASS__, 'order_item_ticket_link'), 1000, 3);
@@ -204,6 +205,17 @@ class QSOT_tickets {
 			$code
 		);
 		$wpdb->query($q);
+	}
+
+	public static function on_complete_update_tickets( $order_id, $old_status, $new_status ) {
+		if ( 'completed' == $new_status ) {
+			$order = wc_get_order( $order_id );
+			foreach ( $order->get_items() as $oiid => $item ) {
+				$values = $item;
+				unset( $item['item_meta'] );
+				self::add_ticket_code_for_order_item( $oiid, $values, '', $order_id );
+			}
+		}
 	}
 
 	public static function generate_ticket_code($current, $args='') {
