@@ -1,18 +1,16 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: OpenTickets Community Edition\n"
-"POT-Creation-Date: 2015-05-08 06:31-0800\n"
+"Project-Id-Version: OpenTickets Community Edition 1.10.12\n"
+"POT-Creation-Date: 2015-05-08 06:28-0800\n"
 "PO-Revision-Date: 2015-05-08 06:31-0800\n"
-"Last-Translator: Dino Termini <dino@quadshot.com>\n"
-"Language-Team: \n"
-"Language: it_IT\n"
+"Last-Translator: \n"
+"Language-Team: Quadshot <info@opentickets.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.5.7\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;__;_e\n"
 "X-Poedit-Basepath: .\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-KeywordsList: __;_e;_x\n"
 "X-Poedit-SearchPath-0: ..\n"
 
 #: ../launcher.php:184
@@ -113,28 +111,28 @@ msgstr ""
 
 #: ../inc/core/calendar.class.php:208
 msgid "Calendar Settings"
-msgstr "Impostazioni Calendario"
+msgstr ""
 
 #: ../inc/core/calendar.class.php:326
 msgid "Ended"
-msgstr "Finito"
+msgstr ""
 
 #: ../inc/core/calendar.class.php:360 ../inc/core/calendar.class.php:408
 msgid "Today"
-msgstr "Oggi"
+msgstr ""
 
 #: ../inc/core/calendar.class.php:361 ../inc/core/calendar.class.php:409
 msgid "Date of next Event"
-msgstr "Prossimo evento"
+msgstr ""
 
 #: ../inc/core/calendar.class.php:362 ../inc/core/calendar.class.php:386
 #: ../inc/core/calendar.class.php:387 ../inc/core/calendar.class.php:410
 msgid "Manually entered date"
-msgstr "Data manuale"
+msgstr ""
 
 #: ../inc/core/calendar.class.php:374
 msgid "Starting Date Method"
-msgstr "Metodo della data d'inizio"
+msgstr ""
 
 #: ../inc/core/calendar.class.php:389 ../inc/core/post-type.class.php:1135
 #: ../inc/core/post-type.class.php:1156 ../inc/core/post-type.class.php:1186
@@ -153,45 +151,45 @@ msgstr ""
 
 #: ../inc/core/calendar.class.php:473 ../inc/core/calendar.class.php:497
 msgid "Event Calendar"
-msgstr "Calendario"
+msgstr ""
 
 #: ../inc/core/calendar.class.php:491
 msgid "Event Pages"
-msgstr "Pagine"
+msgstr ""
 
 #: ../inc/core/calendar.class.php:493
 msgid "These pages are used to display the upcoming events."
-msgstr "Queste pagine servono a mostrare i prossimi eventi."
+msgstr ""
 
 #: ../inc/core/calendar.class.php:498
 msgid "Page to display the calendar of upcoming events."
-msgstr "Pagina con il calendario dei prossimi eventi."
+msgstr ""
 
 #: ../inc/core/event-reporting.class.php:37
 msgid "Download CSV"
-msgstr "Scarica CSV"
+msgstr ""
 
 #: ../inc/core/event-reporting.class.php:44
 msgid "Printer Friendly Version"
-msgstr "Versione per la stampa"
+msgstr ""
 
 #: ../inc/core/event-reporting.class.php:110
 msgid "Network Admin"
-msgstr "Amministrazione Globale"
+msgstr ""
 
 #: ../inc/core/event-reporting.class.php:112
 msgid "Global Dashboard"
-msgstr "Pannello Globale"
+msgstr ""
 
 #: ../inc/core/event-reporting.class.php:117
 #, php-format
 msgid "%1$s &#8212; WordPress"
-msgstr "%1$s &#8212; WordPress"
+msgstr ""
 
 #: ../inc/core/event-reporting.class.php:119
 #, php-format
 msgid "%1$s &lsaquo; %2$s &#8212; WordPress"
-msgstr "%1$s &lsaquo; %2$s &#8212; WordPress"
+msgstr ""
 
 #: ../inc/core/event-reporting.class.php:249
 #, php-format
@@ -199,55 +197,48 @@ msgid ""
 "Could not create the report cache directory. Make sure that the permissions "
 "for '%s' allow the webserver to create a directory, and try again."
 msgstr ""
-"Impossibile creare la cartella temporanea per i rapporti. Assicurarsi che i "
-"permessi per '%s' consentano al server web di creare una directory, e "
-"riprovare."
 
 #: ../inc/core/event-reporting.class.php:318
 msgid "An un expected error occurred during report generation."
 msgstr ""
-"Si &egrave; verificato un errore inatteso durante la generazione del "
-"rapporto."
 
 #: ../inc/core/event-reporting.class.php:335
 msgid ""
 "Could not find the report result template. Below is the list of raw CSV "
 "results."
 msgstr ""
-"Impossibile trovare il template per il rapport. Di seguito &egrave; mostrato "
-"il rapporto CSV."
 
 #: ../inc/core/event-reporting.class.php:340
 msgid "View report for"
-msgstr "Mastra rapporto per"
+msgstr ""
 
 #: ../inc/core/event-reporting.class.php:341
 msgid "Report for"
-msgstr "Rapporto per"
+msgstr ""
 
 #: ../inc/core/event-reporting.class.php:368
 msgid "(unknown)"
-msgstr "(sconosciuto)"
+msgstr ""
 
 #: ../inc/core/event-reporting.class.php:368
 msgid "-free-"
-msgstr "-gratuito-"
+msgstr ""
 
 #: ../inc/core/my-account-takeover.class.php:45
 msgid "Shows"
-msgstr "Spettacoli"
+msgstr ""
 
 #: ../inc/core/my-account-takeover.class.php:69
 msgid "(none)"
-msgstr "(nessuno)"
+msgstr ""
 
 #: ../inc/core/my-account-takeover.class.php:126
 msgid "Invalid order."
-msgstr "Ordine non valido."
+msgstr ""
 
 #: ../inc/core/my-account-takeover.class.php:126
 msgid "My Account &rarr;"
-msgstr "Il mio profilo &rarr;"
+msgstr ""
 
 #: ../inc/core/my-account-takeover.class.php:137
 #, php-format
@@ -255,74 +246,66 @@ msgid ""
 "Order <mark class=\"order-number\">%s</mark> made on <mark class=\"order-date"
 "\">%s</mark>"
 msgstr ""
-"Ordine <mark class=\"order-number\">%s</mark> inviato il <mark class=\"order-"
-"date\">%s</mark>"
 
 #: ../inc/core/my-account-takeover.class.php:138
 #, php-format
 msgid "Order status: <mark class=\"order-status\">%s</mark>"
-msgstr "Stato ordine: <mark class=\"order-status\">%s</mark>"
+msgstr ""
 
 #: ../inc/core/my-account-takeover.class.php:144
 msgid "Order Updates"
-msgstr "Aggiornamenti ordine"
+msgstr ""
 
 #: ../inc/core/my-account-takeover.class.php:150
 msgid "l jS \\of F Y, h:ia"
-msgstr "l jS \\di F Y, H:i"
+msgstr ""
 
 #: ../inc/core/my-account-takeover.class.php:315
 msgid "My Account Page"
-msgstr "Il mio profilo"
+msgstr ""
 
 #: ../inc/core/my-account-takeover.class.php:324
 msgid "Display Upcoming Tickets"
-msgstr "Prossimi biglietti"
+msgstr ""
 
 #: ../inc/core/my-account-takeover.class.php:325
 msgid ""
 "Format to display the upcoming tickets list in. The list appears on the end "
 "user's \"My Account\" page."
 msgstr ""
-"Formato della lista dei biglietti. Questa lista viene mostrata nella pagina "
-"del profilo utente."
 
 #: ../inc/core/my-account-takeover.class.php:327
 msgid "By Event"
-msgstr "Per evento"
+msgstr ""
 
 #: ../inc/core/my-account-takeover.class.php:328
 msgid "As Line Item List"
-msgstr "Per riga"
+msgstr ""
 
 #: ../inc/core/my-account-takeover.class.php:345
 msgid "Infinite Login"
-msgstr "Login permanente"
+msgstr ""
 
 #: ../inc/core/my-account-takeover.class.php:346
 msgid "Once a user logs in, they stay logged in, forever."
-msgstr "Una volta autenticato, l'utente rimane tale a tempo indeterminato."
+msgstr ""
 
 #: ../inc/core/post-type.class.php:143 ../inc/core/post-type.class.php:673
 #: ../inc/reporting/seating.report.class.php:500
 msgid "Event"
-msgstr "Evento"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:160
 msgid "View this event"
-msgstr "Mostra evento"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:300 ../inc/core/post-type.class.php:672
 msgid "Events"
-msgstr "Eventi"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:328
 msgid "Top Level Events"
-msgstr "Eventi principali"
-
-#: ../inc/core/post-type.class.php:600 ../inc/core/post-type.class.php:1391
-msgid "Hidden"
-msgstr "Nascosto"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:721
 msgid "MM-dd-yyyy"
@@ -338,35 +321,35 @@ msgstr ""
 
 #: ../inc/core/post-type.class.php:842
 msgid "Max"
-msgstr "Max"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:845
 #: ../inc/reporting/seating.report.class.php:497
 #: ../inc/sys/admin-menu.class.php:361
 msgid "Status"
-msgstr "Stato"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:897 ../inc/core/post-type.class.php:950
 #: ../inc/core/post-type.class.php:980
 #, php-format
 msgid "%s on %s @ %s"
-msgstr "%s il %s alle %s"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1074
 msgid "Event Date Time Settings"
-msgstr "Impostazioni data e ora"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1084 ../inc/core/post-type.class.php:1533
 msgid "Stop Sales Before Show"
-msgstr "Ferma le vendite prima dello spettacolo"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1093
 msgid "Event Run Date Range"
-msgstr "Periodo dell'evento"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1105
 msgid "Formula"
-msgstr "Formula"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1112
 msgid ""
@@ -380,141 +363,141 @@ msgstr ""
 
 #: ../inc/core/post-type.class.php:1128
 msgid "Start Date/Time"
-msgstr "Data/Ora inizio"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1149
 msgid "End Date/Time:"
-msgstr "Data/Ora fine:"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1160 ../inc/core/post-type.class.php:1429
 msgid "@"
-msgstr "alle"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1182
 msgid "Basic Settings"
-msgstr "Impostazioni di base"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1186
 msgid "Start Date"
-msgstr "Data d'inizio"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1187 ../inc/core/post-type.class.php:1193
 #: ../inc/core/post-type.class.php:1276 ../inc/core/post-type.class.php:1292
 msgid "Y-m-d"
-msgstr "d-m-Y"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1188 ../inc/core/post-type.class.php:1194
 msgid "h:ia"
-msgstr "H:i"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1188
 msgid "Start Time"
-msgstr "Ora d'inizio"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1189
 msgid "to"
-msgstr "al"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1192
 msgid "End Date"
-msgstr "Data fine"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1194
 msgid "End Time"
-msgstr "Ora fine"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1200 ../inc/core/post-type.class.php:1209
 msgid "Repeat"
-msgstr "Ripeti"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1214
 msgid "Repeats"
-msgstr "Occorrenze"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1218
 msgid "Weekly"
-msgstr "Settimanale"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1224
 msgid "Repeats Every"
-msgstr "Ripeti ogni"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1231
 msgid "days"
-msgstr "giorni"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1232
 msgid "weeks"
-msgstr "settimane"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1237
 msgid "Repeat on"
-msgstr "Ripeti di"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1241
 msgid "Su"
-msgstr "Do"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1245
 msgid "Mo"
-msgstr "Lu"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1249
 msgid "Tu"
-msgstr "Ma"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1253
 msgid "We"
-msgstr "Me"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1257
 msgid "Th"
-msgstr "Gi"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1261
 msgid "Fr"
-msgstr "Ve"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1265
 msgid "Sa"
-msgstr "Sa"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1271
 msgid "Starts on"
-msgstr "Inizia il"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1281
 msgid "Ends"
-msgstr "Finisce"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1287
 msgid "On"
-msgstr "Il"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1297
 msgid "After"
-msgstr "Dopo"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1300
 msgid "occurences"
-msgstr "occorrenze"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1321
 msgid "Add to Calendar"
-msgstr "Aggiungi al calendario"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1337
 msgid "Event Date/Times"
-msgstr "Data/Ora Eventi"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1343 ../inc/sys/admin-menu.class.php:146
 #: ../inc/sys/admin-menu.class.php:147
 msgid "Settings"
-msgstr "Impostazioni"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1348
 msgid "Status:"
-msgstr "Stato:"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1350 ../inc/core/post-type.class.php:1373
 #: ../inc/core/post-type.class.php:1408 ../inc/sys/core-hacks.class.php:597
@@ -526,33 +509,33 @@ msgstr "Stato:"
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:221
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:313
 msgid "Edit"
-msgstr "Modifica"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1355
 msgid "Published"
-msgstr "Pubblico"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1356
 msgid "Privately Published"
-msgstr "Privato e Pubblicato"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1357
 msgid "Scheduled"
-msgstr "Programmato"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1359
 msgid "Pending Review"
-msgstr "In Revisione"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1360
 msgid "Draft"
-msgstr "Bozza"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1363 ../inc/core/post-type.class.php:1398
 #: ../inc/core/post-type.class.php:1434 ../inc/venues/post-type.class.php:248
 #: ../inc/venues/event-area/post-type.class.php:534
 msgid "OK"
-msgstr "OK"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1364 ../inc/core/post-type.class.php:1399
 #: ../inc/core/post-type.class.php:1435 ../inc/sys/mba.class.php:462
@@ -563,19 +546,19 @@ msgstr "OK"
 #: ../templates/admin/meta-boxes/views/html-order-items.php:312
 #: ../templates/admin/meta-boxes/views/html-order-items.php:367
 msgid "Cancel"
-msgstr "Annulla"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1371
 msgid "Visibility"
-msgstr "Visibilit&agrave;"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1377
 msgid "Viewable to the public"
-msgstr "Visibile al pubblico"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1379
 msgid "Public"
-msgstr "Pubblico"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1381
 msgid ""
@@ -585,75 +568,79 @@ msgstr ""
 
 #: ../inc/core/post-type.class.php:1383
 msgid "Password Protected"
-msgstr "Protetto da password"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1385
 msgid "Password:"
-msgstr "Password:"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1389
 msgid "Hidden from the calendar, but open to anyone with the url"
-msgstr "Non in calendario, ma accessibile a chi ha l'indirizzo web"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1391
+msgid "Hidden"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1393
 msgid "Only logged in admin users or the event author can view it"
-msgstr "Visibile solo agli utenti autenticati ed all'autore"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1395
 msgid "Private"
-msgstr "Privato"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1406
 msgid "Publish Date:"
-msgstr "Pubblicato il:"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1415
 msgid "Januaray"
-msgstr "Gennaio"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1416
 msgid "February"
-msgstr "Febbraio"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1417
 msgid "March"
-msgstr "Marzo"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1418
 msgid "April"
-msgstr "Aprile"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1419
 msgid "May"
-msgstr "Maggio"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1420
 msgid "June"
-msgstr "Giugno"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1421
 msgid "July"
-msgstr "Luglio"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1422
 msgid "August"
-msgstr "Agosto"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1423
 msgid "September"
-msgstr "Settembre"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1424
 msgid "October"
-msgstr "Ottobre"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1425
 msgid "November"
-msgstr "Novembre"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1426
 msgid "December"
-msgstr "Dicembre"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1463
 msgid "Event base"
@@ -1679,15 +1666,13 @@ msgstr ""
 
 #: ../inc/sys/pages/base-page.class.php:81
 #: ../inc/sys/pages/base-page.class.php:82
-#, fuzzy
 msgid "Base Page"
-msgstr "Pagine"
+msgstr ""
 
 #: ../inc/sys/pages/system-status.page.php:44
 #: ../inc/sys/pages/system-status.page.php:45
-#, fuzzy
 msgid "System Status"
-msgstr "Stato"
+msgstr ""
 
 #: ../inc/sys/pages/system-status.page.php:107
 msgid "Purged the OTCE table versions, forcing a reinitialize of the tables."
@@ -1988,14 +1973,12 @@ msgid ""
 msgstr ""
 
 #: ../inc/sys/settings/frontend.php:155
-#, fuzzy
 msgid "Calendar"
-msgstr "Calendario"
+msgstr ""
 
 #: ../inc/sys/settings/frontend.php:157
-#, fuzzy
 msgid "Calendar Item BG"
-msgstr "Impostazioni Calendario"
+msgstr ""
 
 #: ../inc/sys/settings/frontend.php:160
 msgid "The background color of the active items shown on the calendar."
@@ -2010,9 +1993,8 @@ msgid "The border color of the active items shown on the calendar."
 msgstr ""
 
 #: ../inc/sys/settings/frontend.php:169
-#, fuzzy
 msgid "Calendar Item Text"
-msgstr "Impostazioni Calendario"
+msgstr ""
 
 #: ../inc/sys/settings/frontend.php:172
 msgid "The text color of the active items shown on the calendar."
@@ -2716,11 +2698,6 @@ msgstr ""
 msgid "Reason for refund (optional)"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:289
-#, php-format
-msgid "Refund %s via %s"
-msgstr ""
-
 #: ../templates/admin/meta-boxes/views/html-order-items.php:291
 msgid "Refund manually"
 msgstr ""
@@ -3040,6 +3017,3 @@ msgstr ""
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:61
 msgid "There are no notes yet."
 msgstr ""
-
-#~ msgid "Report"
-#~ msgstr "Rapporto"
