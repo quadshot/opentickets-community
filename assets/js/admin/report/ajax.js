@@ -1,15 +1,26 @@
 (function($) {
 	function add_date_pickers(sel) {
-		var dates = jQuery(sel).datepicker({
-			defaultDate: "",
-			dateFormat: "yy-mm-dd",
-			numberOfMonths: 1,
-			maxDate: "+5y",
-			minDate: "-5y",
-			showButtonPanel: true,
-			showOn: "focus",
-			buttonImageOnly: true
-		}).filter('.from').focus();
+		var dates = jQuery(sel).each( function() {
+			var me = $( this ), real = me.attr( 'real' ), scope = me.attr( 'scope' ), frmt = me.attr( 'frmt' ), args = {
+						defaultDate: "",
+						dateFormat: "yy-mm-dd",
+						numberOfMonths: 1,
+						maxDate: "+5y",
+						minDate: "-5y",
+						showButtonPanel: true,
+						showOn: "focus",
+						buttonImageOnly: true
+					};
+			if ( 'undefined' != typeof real && null !== real ) {
+				var alt = $( real, me.closest( scope || 'body' ) );
+				if ( alt.length ) {
+					args.altField = alt;
+					args.altFormat = args.dateFormat;
+					args.dateFormat = frmt || args.dateFormat;
+				}
+			}
+			me.datepicker( args );
+		} ).filter('.from').focus();
 	}
 
 	function _rajax(data, target) {

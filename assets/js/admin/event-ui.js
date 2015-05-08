@@ -1,6 +1,11 @@
 var QS = QS || {};
 QS.EventUI = (function($, undefined) {
-	var qt = QS.Tools;
+	var qt = QS.Tools, S = $.extend( true, { frmts:{} }, _qsot_event_ui_settings );
+
+	function frmt( str ) {
+		return ( 'string' == typeof str && qt.is( S.frmts[ str ] ) ) ? S.frmts[ str ] : str;
+	}
+
 	function NewEventDateTimeForm() {
 		var t = this;
 
@@ -17,6 +22,10 @@ QS.EventUI = (function($, undefined) {
 		t.elements.form.end_date = $('input[name="end-date"]', t.elements.form.main_form);
 		t.elements.form.starts_on = $('input[name="repeat-starts"]', t.elements.form.main_form);
 		t.elements.form.ends_on = $('input[name="repeat-ends-on"]', t.elements.form.main_form);
+		t.elements.form.start_date_display = $('input[name="start-date-display"]', t.elements.form.main_form);
+		t.elements.form.end_date_display = $('input[name="end-date-display"]', t.elements.form.main_form);
+		t.elements.form.starts_on_display = $('input[name="repeat-starts-display"]', t.elements.form.main_form);
+		t.elements.form.ends_on_display = $('input[name="repeat-ends-on-display"]', t.elements.form.main_form);
 
 		var current = undefined;
 		$(window).on( 'scroll', function(e) {
@@ -35,16 +44,26 @@ QS.EventUI = (function($, undefined) {
 			}, 100 );
 		} );
 
-		t.elements.form.start_date.bind('change', function() {
-			var val = $(this).val();
-			var cur = new XDate(val);
-			var end = new XDate(t.elements.form.end_date.val());
-			var starton = new XDate(t.elements.form.starts_on.val());
-			var endon = new XDate(t.elements.form.ends_on.val());
+		t.elements.form.start_date_display.bind('change', function() {
+			var val = t.elements.form.start_date.val(),
+					disp_val = t.elements.form.start_date_display.val(),
+					cur = new XDate(val),
+					end = new XDate(t.elements.form.end_date.val()),
+					starton = new XDate(t.elements.form.starts_on.val()),
+					endon = new XDate(t.elements.form.ends_on.val());
 
-			if (cur.diffSeconds(end) < 0) t.elements.form.end_date.val(val);
-			if (cur.diffSeconds(starton) < 0) t.elements.form.starts_on.val(val);
-			if (cur.diffSeconds(endon) < 0) t.elements.form.ends_on.val(val);
+			if (cur.diffSeconds(end) < 0) {
+				t.elements.form.end_date_display.val( disp_val )
+				t.elements.form.end_date.val( val );
+			}
+			if (cur.diffSeconds(starton) < 0) {
+				t.elements.form.starts_on_display.val( disp_val )
+				t.elements.form.starts_on.val(val);
+			}
+			if (cur.diffSeconds(endon) < 0) {
+				t.elements.form.ends_on_display.val( disp_val );
+				t.elements.form.ends_on.val(val);
+			}
 		});
 
 		if (typeof t.callback != 'function') {
@@ -72,9 +91,9 @@ QS.EventUI = (function($, undefined) {
 			var current_dt = new XDate();
 			var data = $.extend({
 				'start-time': '00:00:00',
-				'start-date': current_dt.toString('yyyy-MM-dd'),
+				'start-date': current_dt.toString( frmt( 'MM-dd-yyyy' ) ),
 				'end-time': '23:59:59',
-				'end-time': current_dt.toString('yyyy-MM-dd'),
+				'end-time': current_dt.toString( frmt( 'MM-dd-yyyy' ) ),
 			}, data);
 
 			var base = {
@@ -313,7 +332,7 @@ QS.EventUI = (function($, undefined) {
 				extra.push('<div class="view action"><a href="'+ev.view_link+'" target="_blank" rel="edit" title="View Event">V</a></div>');
 			var ele = $('<div class="event-date" rel="item">'
 					+'<div class="event-title">'
-						+'<span>'+d.toString('hh:mmtt')+' on '+d.toString('ddd yyyy-MM-dd')+' ('+ev.title+')</span>'
+						+'<span>'+d.toString( frmt( 'hh:mmtt' ) )+' on '+d.toString( frmt( 'ddd MM-dd-yyyy' ) )+' ('+ev.title+')</span>'
 						+'<div class="actions">'
 							+extra.join('')
 							+'<div class="remove action" rel="remove">X</div>'
