@@ -42,7 +42,7 @@ class qsot_zoner {
 		add_filter('qsot-zoner-reserve', array(__CLASS__, 'reserve'), 10, 6);
 		add_filter('qsot-zoner-owns-current-user', array(__CLASS__, 'owns_current_user'), 10, 4);
 		add_filter('qsot-zoner-owns', array(__CLASS__, 'owns'), 10, 7);
-		add_filter('qsot-zoner-ownerships-current-user', array(__CLASS__, 'ownerships_current_user'), 10, 4);
+		add_filter('qsot-zoner-ownerships-current-user', array(__CLASS__, 'ownerships_current_user'), 10, 5);
 		add_filter('qsot-zoner-ownerships', array(__CLASS__, 'ownerships'), 10, 7);
 		add_filter('qsot-zoner-update-reservation', array(__CLASS__, 'update_reservation'), 10, 3);
 		add_filter('qsot-zoner-current-user', array(__CLASS__, 'current_user'), 10, 3);
@@ -427,11 +427,11 @@ class qsot_zoner {
 	}
 
 	// get the list of actual zones that the current user has reservations for (based on event, ticket type, and state)
-	public static function ownerships_current_user($current, $event=0, $ticket_type_id=0, $state=false) {
+	public static function ownerships_current_user($current, $event=0, $ticket_type_id=0, $state=false, $order_id=false) {
 		// determine current user
 		$customer_id = apply_filters('qsot-zoner-current-user', md5(isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : time()));
 		// get the zone list
-		return apply_filters('qsot-zoner-ownerships', $current, $event, $ticket_type_id, $state, $customer_id);
+		return apply_filters('qsot-zoner-ownerships', $current, $event, $ticket_type_id, $state, $customer_id, $order_id);
 	}
 
 	// get the list of actual zones that the _given_ user (and/or order_id, and/or order_item_id) has reservations for (based on event, ticket type, and state)

@@ -33,9 +33,12 @@ class qsot_seat_pricing {
 			// cart/order control
 			add_filter('qsot-zoner-reserve-current-user', array(__CLASS__, 'reserve_current_user'), 100, 4);
 			add_action('init', array(__CLASS__, 'sync_cart_tickets'), 6);
-			add_action( 'qsot-sync-cart', array(__CLASS__, 'sync_cart_tickets'), 10 );
+			add_action( 'woocommerce_cart_loaded_from_session', array( __CLASS__, 'sync_cart_tickets' ), 6 );
+			add_action( 'qsot-sync-cart', array( __CLASS__, 'sync_cart_tickets' ), 10 );
 			add_action('woocommerce_order_status_changed', array(__CLASS__, 'order_status_changed'), 100, 3);
+			add_action('woocommerce_order_status_changed', array(__CLASS__, 'order_status_changed_cancel'), 101, 3);
 			add_action('woocommerce_before_cart_item_quantity_zero', array(__CLASS__, 'delete_cart_ticket'), 10, 1);
+			add_action('woocommerce_cart_item_removed', array(__CLASS__, 'delete_cart_ticket'), 10, 1);
 			add_filter('woocommerce_get_cart_item_from_session', array(__CLASS__, 'load_item_data'), 20, 3);
 			add_action('woocommerce_add_order_item_meta', array(__CLASS__, 'add_item_meta'), 10, 3);
 			add_action('woocommerce_ajax_add_order_item_meta', array(__CLASS__, 'add_item_meta'), 10, 3);
@@ -278,50 +281,57 @@ class qsot_seat_pricing {
 
 				do_action('qsot-confirmed-ticket', $order, $item, $item_id);
 			}
-		} else if (in_array($new_status, apply_filters('qsot-zoner-unconfirm-statuses', array('cancelled')))) {
-			$order = wc_get_order($order_id);
-			$ocuid = get_post_meta($order_id, '_customer_user', true);
-
-			self::_unconfirm_tickets($order, '*', true, array('new_status' => $new_status, 'old_status' => $old_status));
+		}
+	}
+	
+	// separate function to handle the order status changes to 'cancelled'
+	public static function order_status_changed_cancel( $order_id, $old_status, $new_status ) {
+		// if the order is actually getting cancelled, or any other status that should be considered an 'unconfirm' step
+		if ( in_array( $new_status, apply_filters( 'qsot-zoner-unconfirm-statuses', array( 'cancelled' ) ) ) ) {
+			$order = wc_get_order( $order_id );
+			// unconfirmed the seats
+			self::_unconfirm_tickets( $order, '*', true, array( 'new_status' => $new_status, 'old_status' => $old_status ) );
 		}
 	}
 
-	protected static function _unconfirm_tickets($order, $oiids, $modify_meta=false, $modify_meta_extra=array()) {
-		foreach ($order->get_items() as $oiid => $item) {
-			if ($oiids !== '*' && (is_array($oiids) && !in_array(absint($oiid), $oiids))) continue;
-			if (!apply_filters('qsot-item-is-ticket', false, $item)) continue;
-			
-			$where = array('event_id' => $item['event_id'], 'ticket_type_id' => $item['product_id'], 'order_id' => $order->id, 'qty' => $item['qty']);
-			$ostatus = is_callable(array(&$order, 'get_status')) ? $order->get_status() : $order->status;
-			if (in_array($ostatus, apply_filters('qsot-zoner-confirmed-statuses', array('on-hold', 'processing', 'completed'))))
-				$where['order_item_id'] = $oiid;
-			else
-				$where['order_item_id'] = array( 0, $oiid );
+	// unconfirm seats that used to be on an order
+	protected static function _unconfirm_tickets( $order, $oiids, $modify_meta=false, $modify_meta_extra=array() ) {
+		// for each order item
+		foreach ( $order->get_items() as $oiid => $item ) {
+			// make sure that this order item is one that should be cancelled
+			if ( $oiids !== '*' && ( is_array( $oiids ) && ! in_array( absint( $oiid ), $oiids ) ) )
+				continue;
 
+			// if this order item is not a ticket, then skip it
+			if ( ! apply_filters( 'qsot-item-is-ticket', false, $item ) )
+				continue;
+			
+			// aggregate the information about the reservation to change
+			$where = array( 'event_id' => $item['event_id'], 'ticket_type_id' => $item['product_id'], 'order_id' => $order->id, 'qty' => $item['qty'], 'order_item_id' => array( 0, $oiid ) );
+			$ostatus = $order->get_status();
+
+			// actaully perform the update that removes the reservations
 			$res = apply_filters(
 				'qsot-zoner-update-reservation',
 				false,
 				$where,
-				array('qty' => 0, '_delete' => true)
+				array( 'qty' => 0, '_delete' => true )
 			);
 
-			if ($modify_meta) {
-				$delete_meta = apply_filters('qsot-zoner-unconfirm-ticket-delete-meta', array(
-					'_event_id'
-				), $oiid, $item, $order, $order->id, $modify_meta_extra);
-				$zero_meta = apply_filters('qsot-zoner-unconfirm-ticket-zero-meta', array(
-				/*
-					'_line_total',
-					'_line_subtotal',
-					'_line_subtotal_tax',
-					'_line_tax',
-				*/
-				), $oiid, $item, $order, $order->id, $modify_meta_extra);
-				if (!empty($delete_meta)) foreach ($delete_meta as $k) wc_delete_order_item_meta($oiid, $k);
-				if (!empty($zero_meta)) foreach ($zero_meta as $k) wc_update_order_item_meta($oiid, $k, 0);
+			// if we are being asked to modify the meta for these items as well, then do so
+			if ( $modify_meta ) {
+				$delete_meta = apply_filters( 'qsot-zoner-unconfirm-ticket-delete-meta', array( '_event_id' ), $oiid, $item, $order, $order->id, $modify_meta_extra );
+				$zero_meta = apply_filters( 'qsot-zoner-unconfirm-ticket-zero-meta', array(), $oiid, $item, $order, $order->id, $modify_meta_extra );
+				if ( ! empty( $delete_meta ) )
+					foreach ( $delete_meta as $k )
+						wc_delete_order_item_meta( $oiid, $k );
+				if ( ! empty( $zero_meta ) )
+					foreach ( $zero_meta as $k )
+						wc_update_order_item_meta( $oiid, $k, 0 );
 			}
 
-			do_action('qsot-unconfirmed-ticket', $order, $item, $oiid);
+			// let other plugins know that this happened
+			do_action( 'qsot-unconfirmed-ticket', $order, $item, $oiid );
 		}
 	}
 
@@ -341,7 +351,7 @@ class qsot_seat_pricing {
 
 		if ( ( ( defined( 'DOING_AJAX' ) && DOING_AJAX ) || !is_admin() ) && is_object($woocommerce) && is_object($woocommerce->cart)) {
 			$indexed = array();
-			$ownerships = apply_filters('qsot-zoner-ownerships-current-user', array(), 0, 0, apply_filters('qsot-temporary-zone-states', array(self::$o->{'z.states.r'})));
+			$ownerships = apply_filters('qsot-zoner-ownerships-current-user', array(), 0, 0, apply_filters('qsot-temporary-zone-states', array(self::$o->{'z.states.r'})), 0);
 
 			foreach ($ownerships as $state => $state_ownerships) {
 				foreach ($state_ownerships as $ownership) {
@@ -372,7 +382,14 @@ class qsot_seat_pricing {
 		global $woocommerce;
 		if (!is_object($woocommerce) || !is_object($woocommerce->cart)) return;
 
-		$item = isset($woocommerce->cart->cart_contents[$item_key]) ? $woocommerce->cart->cart_contents[$item_key] : false;
+		// get the cart item, whereever it exists
+    if ( isset( $woocommerce->cart->removed_cart_contents[ $item_key ] ) ) {
+      $item = $woocommerce->cart->removed_cart_contents[ $item_key ];
+      // do not allow restoring, because, someone could have swooped in and grabbed the seat during the layover
+      unset( $woocommerce->cart->removed_cart_contents[ $item_key ] );
+    } else if ( isset( $woocommerce->cart->cart_contents[ $item_key ] ) ) {
+      $item = $woocommerce->cart->cart_contents[ $item_key ];
+    }
 		if (empty($item)) return;
 
 		$cuids = array();
