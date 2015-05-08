@@ -161,6 +161,11 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.10.13 =
+* added ability for PO file to control date formats in datepickers
+* added core en_US PO
+* updated italian PO
+
 = 1.10.12 =
 * added js polyfill for hide-if-js-less themes
 * added filter for ticket information on ticket template
