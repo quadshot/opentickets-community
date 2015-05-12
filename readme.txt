@@ -163,6 +163,7 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 = 1.10.14 =
 * added version number of plugin to DB for external plugins
+* improved cart to reservation syncing, and vice versa
 * removed cruft JS code
 * removed obselete payment gateway patches
 
