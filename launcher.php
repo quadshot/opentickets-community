@@ -54,6 +54,10 @@ class opentickets_community_launcher {
 			'wp_version' => $GLOBALS['wp_version'],
 		));
 
+		// check the current version, and update the db value of that version number if it is not correct, but only on admin pages
+		if ( is_admin() )
+			self::_check_version();
+
 		// require woocommerce
 		if (self::_is_woocommerce_active()) {
 			if (self::_has_woocommerce_min_version()) {
@@ -145,6 +149,13 @@ class opentickets_community_launcher {
 			}
 		}
 		return $headers;
+	}
+
+	// update the recorded version, so that other plugins do not have to do fancy lookups to find it
+	protected static function _check_version() {
+		$version = get_option( 'opentickets_community_edition_version', '' );
+		if ( $version !== self::$o->version )
+			update_option( 'opentickets_community_edition_version', self::$o->version );
 	}
 
 	//run out activation code upon woocommerce activation, if woocommerce is activated AFTER OpenTickets

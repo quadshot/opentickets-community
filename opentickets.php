@@ -69,10 +69,6 @@ class QSOT {
 
 		// polyfill the hide/show js functions in the head tag, since some themes apparently don't have this
 		add_action( 'wp_head', array( __CLASS__, 'polyfill_hideshow_js' ), 0 );
-
-		// check the current version, and update the db value of that version number if it is not correct, but only on admin pages
-		if ( is_admin() )
-			add_action( 'plugins_loaded', array( __CLASS__, 'check_version' ), 0 );
 		
 		load_plugin_textdomain( 'opentickets-community-edition', false, dirname( plugin_basename( __FILE__ ) ) . '/langs/' );
 	}
@@ -531,13 +527,6 @@ class QSOT {
 				wp_die( sprintf( __( 'Could not write colors to file %s. [%s]', 'opentickets-community-edition' ), $base_file, $ex->getMessage() ) );
 			}
 		}
-	}
-
-	// update the recorded version, so that other plugins do not have to do fancy lookups to find it
-	public static function check_version() {
-		$version = get_option( 'opentickets_community_edition_version', '' );
-		if ( $version !== self::$o->version )
-			update_option( 'opentickets_community_edition_version', self::$o->version );
 	}
 
 	// do magic 
