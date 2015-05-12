@@ -163,7 +163,7 @@ QS.adminTicketSelection = (function($, qs, qt) {
 		}
 
 		function _load_event(event_id) {
-			action = action || 'change';
+			var action = action || 'change';
 			t.e.all.hide();
 			t.e.trans.fadeIn( 200, _adjust_dia );
 			if (!t.e.dia.dialog('isOpen')) t.e.dia.dialog('open');
