@@ -529,16 +529,26 @@ class QSOT {
 		}
 	}
 
-	// do magic - as yet to be determined the need of
+	// update the recorded version, so that other plugins do not have to do fancy lookups to find it
+	public static function check_version() {
+		$version = get_option( 'opentickets_community_edition_version', '' );
+		if ( $version !== self::$o->version )
+			update_option( 'opentickets_community_edition_version', self::$o->version );
+	}
+
+	// do magic 
 	public static function activation() {
 		self::load_plugins_and_modules();
+
 		do_action('qsot-activate');
 		flush_rewrite_rules();
+
 		ob_start();
 		self::compile_frontend_styles();
 		$out = ob_get_contents();
 		ob_end_clean();
-		file_put_contents( 'compile.log', $out );
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG )
+			file_put_contents( 'compile.log', $out );
 	}
 }
 
