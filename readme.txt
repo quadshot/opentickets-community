@@ -161,6 +161,11 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.10.14 =
+* added version number of plugin to DB for external plugins
+* removed cruft JS code
+* removed obselete payment gateway patches
+
 = 1.10.13 =
 * added ability for PO file to control date formats in datepickers
 * added core en_US PO
