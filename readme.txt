@@ -52,6 +52,10 @@ Need help getting started? Watch some of our Instructional Videos to learn how t
 
 Are you developer? Want to contribute to the source code? Check us out on the [OpenTickets Community Edition GitHub Repository](https://github.com/quadshot/opentickets-community).
 
+= Special Thanks =
+
+@bradleysp (testing), @ht-2 (tranlation)
+
 == Installation ==
 
 = Instructional Videos =
@@ -160,6 +164,10 @@ Setup an 'Event':
 The FAQ's for OpenTickets Community Edition is currently located on [our website's FAQs Page](http://opentickets.com/faq).
 
 == Changelog ==
+
+= 1.10.16 =
+* added German translation, thanks to H.T. (@ht-2)
+* added changes to the ticket format to accommodate i18n
 
 = 1.10.15 =
 * added ability to choose synopsis location on event pages
@@ -481,6 +489,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 * initial public release
 
 == Upgrade Notice ==
+
+= 1.10.16 =
+Thanks to H.T. (@ht-2) we now have a German Translation. 1.10.16 includes this translation.
 
 = 1.9.0 =
 WooCommerce 2.3.x was recently released. OpenTickets Community Edition v1.9.x enables WC2.3 compatibility. Upgrade to version 1.9.x around the time you upgrade WooCommerce to 2.3.x.
