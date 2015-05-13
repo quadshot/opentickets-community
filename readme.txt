@@ -161,6 +161,12 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.10.15 =
+* added ability to choose synopsis location on event pages
+* added template for 'past event' display
+* improved OTCE version storage in db
+* fixed IE js issue on order pages
+
 = 1.10.14 =
 * added version number of plugin to DB for external plugins
 * improved cart to reservation syncing, and vice versa
