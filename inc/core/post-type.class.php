@@ -1514,8 +1514,9 @@ class qsot_post_type {
 		$colors['remove_border'] = '#660000';
 		$colors['remove_text'] = '#ffffff';
 
-		self::$options->def('qsot-single-synopsis', 'no');
-		self::$options->def('qsot-stop-sales-before-show', '');
+		self::$options->def( 'qsot-single-synopsis', 'no' );
+		self::$options->def( 'qsot-synopsis-position', 'below' );
+		self::$options->def( 'qsot-stop-sales-before-show', '' );
 		self::$options->def( 'qsot-event-frontend-colors', $colors );
 
 		self::$options->add(array(
@@ -1546,6 +1547,19 @@ class qsot_post_type {
 			'default' => 'no',
 			'page' => 'frontend',
 		));
+
+		self::$options->add( array(
+			'id' => 'qsot-synopsis-position',
+			'order' => 125,
+			'type' => 'radio',
+			'title' => __( 'Single Event Synopsis Position', 'opentickets-community-edition' ),
+			'desc_tip' => __( 'The display position of the Event Synopsis on the single event page.', 'opentickets-community-edition' ),
+			'options' => array(
+				'above' => __( 'Above the Ticket Selection UI', 'opentickets-community-edition' ),
+				'below' => __( 'Below the Ticket Selection UI', 'opentickets-community-edition' ),
+			),   
+			'default' => 'below',
+		) );
 
 		self::$options->add(array(
 			'order' => 190,

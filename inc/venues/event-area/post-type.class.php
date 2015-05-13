@@ -5,6 +5,8 @@ if (!class_exists('qsot_event_area')):
 class qsot_event_area {
 	// holder for event plugin options
 	protected static $o = null;
+	// holder for event plugin settings
+	protected static $options = null;
 
 	// holder for non-js-version errors
 	protected static $nojs_submission_errors = array();
@@ -14,6 +16,13 @@ class qsot_event_area {
 		$settings_class_name = apply_filters('qsot-settings-class-name', '');
 		if (!class_exists($settings_class_name)) return false;
 		self::$o = call_user_func_array(array($settings_class_name, "instance"), array());
+
+		// load all the options, and share them with all other parts of the plugin
+		$options_class_name = apply_filters('qsot-options-class-name', '');
+		if (!empty($options_class_name)) {
+			self::$options = call_user_func_array(array($options_class_name, "instance"), array());
+			//self::_setup_admin_options();
+		}
 
 		self::$o->event_area = apply_filters('qsot-event-area-options', array(
 			'post_type' => 'qsot-event-area',
@@ -1006,27 +1015,32 @@ class qsot_event_area {
 	public static function draw_event_area($content, $event) {
 		$out = '';
 
-		if (apply_filters('qsot-can-sell-tickets-to-event', false, $event->ID)) {
-			global $woocommerce;
+		$reserved = $interests = array();
+		$area = apply_filters( 'qsot-get-event-event-area', false, $event->ID );
+		$template_file = 'post-content/event-area-closed.php';
 
-			$area = apply_filters('qsot-get-event-event-area', false, $event->ID);
-			$reserved = apply_filters('qsot-zoner-owns-current-user', 0, $event->ID, $area->ticket->post->ID, self::$o->{'z.states.r'});
-			$interests = array();
+		global $woocommerce;
 
-			if (is_object($area)) {
-				ob_start();
-				$template = apply_filters('qsot-locate-template', '', array('post-content/event-area.php'), false, false);
-				if (!empty($template)) include $template;
-				$out = ob_get_contents();
-				ob_end_clean();
-			}
-
-			$out = apply_filters('qsot-no-js-seat-selection-form', $out, $area, $event, $interests, $reserved);
-		} else {
-			$out = '<p><strong>'.__('We are sorry. Online registration for this event has closed.','opentickets-community-edition').'</strong></p>';
+		if ( apply_filters( 'qsot-can-sell-tickets-to-event', false, $event->ID ) ) {
+			$reserved = apply_filters( 'qsot-zoner-owns-current-user', 0, $event->ID, $area->ticket->post->ID, self::$o->{'z.states.r'} );
+			$template_file = 'post-content/event-area.php';
 		}
 
-		return $out.$content;
+		if ( is_object( $area ) ) {
+			ob_start();
+			$template = apply_filters( 'qsot-locate-template', '', array( $template_file, 'post-content/event-area.php' ), false, false );
+			if ( ! empty( $template ) )
+				include $template;
+			$out = ob_get_contents();
+			ob_end_clean();
+		}
+
+		$out = apply_filters( 'qsot-no-js-seat-selection-form', $out, $area, $event, $interests, $reserved );
+
+		if ( self::$options->{'qsot-synopsis-position'} == 'above' )
+			return $content . $out;
+		else
+			return $out . $content;
 	}
 
 	public static function get_ticket_type_id($current, $event, $post_data=array()) {
