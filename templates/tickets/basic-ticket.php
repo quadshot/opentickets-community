@@ -37,14 +37,19 @@ $multiple = $ticket->order_item['qty'] > 1;
 									<td colspan="2" class="event-information">
 										<ul>
 											<li><h2><?php echo $ticket->event->parent_post_title ?></h2></li>
-											<li><?php _e('Starts:','opentickets-community-edition'); echo ' '.date('D, F jS, Y @ g:ia ', strtotime($ticket->event->meta->start)); ?></li>
 											<?php
-												$format = strtotime( 'today', strtotime( $ticket->event->meta->start ) ) == strtotime( 'today', strtotime( $ticket->event->meta->end ) )
-													? '@ g:ia '
-													: 'D, F jS, Y @ g:ia '
+												$stime = strtotime( $ticket->event->meta->start );
+												$etime = strtotime( $ticket->event->meta->end );
 											?>
-											<li><?php _e('Ends:','opentickets-community-edition'); echo ' '.date( $format, strtotime($ticket->event->meta->end) ); ?></li>
-											<li><?php _e('Area:','opentickets-community-edition'); echo ' '.$ticket->event_area->post_title ?></li>
+											<li><?php _e( 'Starts:', 'opentickets-community-edition' ); echo ' ' . date( __( 'D, F jS, Y', 'opentickets-community-edition' ), $stime );?>
+											<?php _e( ' @ ', 'opentickets-community-edition' ) ?><?php echo ' ' . date( __( 'g:ia', 'opentickets-community-edition' ), $stime ) ?><?php _e( ' ', 'opentickets-community-edition' ) ?></li>
+											<?php
+												$format = strtotime( 'today', $stime ) == strtotime( 'today', $etime )
+													? __( 'g:ia', 'opentickets-community-edition' )
+													: __( 'D, F jS, Y', 'opentickets-community-edition' );
+											?>
+											<li><?php _e( 'Ends:', 'opentickets-community-edition' ); echo ' ' . date( __( 'g:ia', 'opentickets-community-edition' ), $etime ); ?><?php _e( ' ', 'opentickets-community-edition' );?></li>
+											<li><?php _e( 'Area:', 'opentickets-community-edition' ); echo ' ' . $ticket->event_area->post_title ?></li>
 										</ul>
 									</td>
 									<td width="125" rowspan="2" class="qr-code right"><?php echo ( $multiple && isset( $ticket->qr_codes[ $index ] ) ) ? $ticket->qr_codes[ $index ] : $ticket->qr_code ?></td>
