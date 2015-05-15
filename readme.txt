@@ -165,6 +165,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.10.17 =
+* added UK translation PO and MO for date formatting
+
 = 1.10.16 =
 * added German translation, thanks to H.T. (@ht-2)
 * added changes to the ticket format to accommodate i18n
