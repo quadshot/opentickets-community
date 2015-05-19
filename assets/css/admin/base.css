@@ -49,7 +49,7 @@ body div.opentickets-error a:hover { color:#DD9990; }
 .icon32-opentickets-settings { background-image:url("../../imgs/opentickets-icon-sprite.png") !important; background-size:auto auto; background-position:2px -166px; }
 .icon32-opentickets { display:block; float:left; height:36px; margin-right:2px; margin-top:8px; width:36px; }
 
-#woocommerce-order-items .item .ticket-info { border:2px solid #888888; border-radius:5px; background-color:#f0f0f0; padding:0.5em; margin:0.5em 0; line-height:1.3em; }
+#woocommerce-order-items .item .ticket-info { border:2px solid #888888; background-color:#f0f0f0; padding:0.5em; margin:0.5em 0; line-height:1.3em; }
 #woocommerce-order-items .item .ticket-info.updated { border-color:#008800; background-color:#eeffee; color:#008800; }
 #woocommerce-order-items .item.invalid > td { background-color:#f4e4e4; }
 #woocommerce-order-items .item.invalid .ticket-info { border-color:#880000; color:#880000; background-color:#f4d4d4; }

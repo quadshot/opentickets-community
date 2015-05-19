@@ -49,7 +49,7 @@ if (typeof jQuery != 'undefined') (function($, undefined) {
 		});
 	}
 
-	$(window).on('ajaxSuccess', function(ajObj, respObj, reqObj, resp) {
+	$(document).on('ajaxSuccess', function(ajObj, respObj, reqObj, resp) {
 		if (typeof reqObj != 'undefined' && reqObj.data && reqObj.data.match(/action=woocommerce_get_customer_details/)) {
 			if (reqObj.data.match(/type_to_load=billing/)) {
 				$('.billing-sync-customer-address').attr('checked', 'checked');
