@@ -165,6 +165,13 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+* updated admin templates for latest WC compatibility
+* updated admin js for jQuery Migrate compatibility
+* updated all PO and MO files with latest strings (need translations)
+* improved order admin takeover styling
+* removed double call to WC saved_items action
+* removed old legacy admin template takeovers
+
 = 1.10.17 =
 * added UK translation PO and MO for date formatting
 
