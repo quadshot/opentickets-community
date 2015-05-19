@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OpenTickets Community Edition\n"
-"POT-Creation-Date: 2015-05-08 06:31-0800\n"
-"PO-Revision-Date: 2015-05-08 06:31-0800\n"
+"POT-Creation-Date: 2015-05-19 12:07-0800\n"
+"PO-Revision-Date: 2015-05-19 12:08-0800\n"
 "Last-Translator: Dino Termini <dino@quadshot.com>\n"
 "Language-Team: \n"
 "Language: it_IT\n"
@@ -15,11 +15,11 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e;_x\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../launcher.php:184
+#: ../launcher.php:195
 msgid "Required Plugin Not Up-to-date"
 msgstr ""
 
-#: ../launcher.php:187
+#: ../launcher.php:198
 #, php-format
 msgid ""
 "The <em><a href=\"%s\" target=\"_blank\">%s</a></em> plugin "
@@ -33,11 +33,11 @@ msgid ""
 "em>."
 msgstr ""
 
-#: ../launcher.php:205
+#: ../launcher.php:216
 msgid "Missing Required Plugin"
 msgstr ""
 
-#: ../launcher.php:208
+#: ../launcher.php:219
 #, php-format
 msgid ""
 "The <em><a href=\"%s\" target=\"_blank\">%s</a></em> plugin "
@@ -356,7 +356,7 @@ msgstr "%s il %s alle %s"
 msgid "Event Date Time Settings"
 msgstr "Impostazioni data e ora"
 
-#: ../inc/core/post-type.class.php:1084 ../inc/core/post-type.class.php:1533
+#: ../inc/core/post-type.class.php:1084 ../inc/core/post-type.class.php:1534
 msgid "Stop Sales Before Show"
 msgstr "Ferma le vendite prima dello spettacolo"
 
@@ -517,12 +517,11 @@ msgid "Status:"
 msgstr "Stato:"
 
 #: ../inc/core/post-type.class.php:1350 ../inc/core/post-type.class.php:1373
-#: ../inc/core/post-type.class.php:1408 ../inc/sys/core-hacks.class.php:597
-#: ../inc/sys/core-hacks.class.php:1144 ../inc/sys/core-hacks.class.php:1247
-#: ../inc/venues/post-type.class.php:237
-#: ../inc/venues/event-area/post-type.class.php:511
+#: ../inc/core/post-type.class.php:1408 ../inc/sys/core-hacks.class.php:896
+#: ../inc/sys/core-hacks.class.php:999 ../inc/venues/post-type.class.php:237
+#: ../inc/venues/event-area/post-type.class.php:520
 #: ../templates/admin/meta-boxes/views/html-order-fee.php:83
-#: ../templates/admin/meta-boxes/views/html-order-items.php:213
+#: ../templates/admin/meta-boxes/views/html-order-items.php:217
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:221
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:313
 msgid "Edit"
@@ -550,18 +549,16 @@ msgstr "Bozza"
 
 #: ../inc/core/post-type.class.php:1363 ../inc/core/post-type.class.php:1398
 #: ../inc/core/post-type.class.php:1434 ../inc/venues/post-type.class.php:248
-#: ../inc/venues/event-area/post-type.class.php:534
+#: ../inc/venues/event-area/post-type.class.php:543
 msgid "OK"
 msgstr "OK"
 
 #: ../inc/core/post-type.class.php:1364 ../inc/core/post-type.class.php:1399
 #: ../inc/core/post-type.class.php:1435 ../inc/sys/mba.class.php:462
 #: ../inc/venues/post-type.class.php:249
-#: ../inc/venues/event-area/post-type.class.php:535
-#: ../templates/admin/meta-boxes/views/html-order-items.php:249
-#: ../templates/admin/meta-boxes/views/html-order-items.php:292
-#: ../templates/admin/meta-boxes/views/html-order-items.php:312
-#: ../templates/admin/meta-boxes/views/html-order-items.php:367
+#: ../inc/venues/event-area/post-type.class.php:544
+#: ../templates/admin/meta-boxes/views/html-order-items.php:255
+#: ../templates/admin/meta-boxes/views/html-order-items.php:301
 msgid "Cancel"
 msgstr "Annulla"
 
@@ -670,34 +667,50 @@ msgstr ""
 msgid "Event permalink base"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1524
+#: ../inc/core/post-type.class.php:1525
 msgid "Event Display"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1534
+#: ../inc/core/post-type.class.php:1535
 msgid ""
 "Amount of time to stop sales for a show, before show time. (ie: stop sales "
 "two hour before show time <code>2 hours</code>)"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1535
+#: ../inc/core/post-type.class.php:1536
 msgid ""
 "valid units: hour, hours, minute, minutes, second, seconds, day, days, week, "
 "weeks, month, months, year, years"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1543
+#: ../inc/core/post-type.class.php:1544
 msgid "Single Event Synopsis"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1544
+#: ../inc/core/post-type.class.php:1545
 msgid "Show event synopsis on single event pages"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1545
+#: ../inc/core/post-type.class.php:1546
 msgid ""
 "By default, just the event logo, and the event pricing options are shown. "
 "This feature will additionally show the description of the event to the user."
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1555
+msgid "Single Event Synopsis Position"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1556
+msgid "The display position of the Event Synopsis on the single event page."
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1558
+msgid "Above the Ticket Selection UI"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1559
+msgid "Below the Ticket Selection UI"
 msgstr ""
 
 #: ../inc/core/zoner.class.php:317 ../inc/core/zoner.class.php:328
@@ -823,21 +836,21 @@ msgstr ""
 
 #: ../inc/order/admin.class.php:490
 #: ../inc/reporting/seating.report.class.php:493
-#: ../inc/sys/core-hacks.class.php:1186
+#: ../inc/sys/core-hacks.class.php:938
 #: ../templates/tickets/verification-form.php:10
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:77
 msgid "Email"
 msgstr ""
 
-#: ../inc/order/admin.class.php:494 ../inc/sys/core-hacks.class.php:1148
-#: ../inc/sys/core-hacks.class.php:1251
+#: ../inc/order/admin.class.php:494 ../inc/sys/core-hacks.class.php:900
+#: ../inc/sys/core-hacks.class.php:1003
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:39
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:86
 msgid "First Name"
 msgstr ""
 
-#: ../inc/order/admin.class.php:498 ../inc/sys/core-hacks.class.php:1152
-#: ../inc/sys/core-hacks.class.php:1255
+#: ../inc/order/admin.class.php:498 ../inc/sys/core-hacks.class.php:904
+#: ../inc/sys/core-hacks.class.php:1007
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:43
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:90
 msgid "Last Name"
@@ -918,8 +931,8 @@ msgid "[All Years]"
 msgstr ""
 
 #: ../inc/reporting/seating.report.class.php:182
-#: ../inc/venues/event-area/pricing.class.php:542
-#: ../inc/venues/event-area/pricing.class.php:609
+#: ../inc/venues/event-area/pricing.class.php:559
+#: ../inc/venues/event-area/pricing.class.php:626
 #: ../templates/checkin/already-occupied.php:25
 #: ../templates/checkin/occupy-failure.php:25
 #: ../templates/checkin/occupy-success.php:25
@@ -959,14 +972,14 @@ msgid "Quantity"
 msgstr ""
 
 #: ../inc/reporting/seating.report.class.php:494
-#: ../inc/sys/core-hacks.class.php:1189
+#: ../inc/sys/core-hacks.class.php:941
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:80
 msgid "Phone"
 msgstr ""
 
 #: ../inc/reporting/seating.report.class.php:495
-#: ../inc/sys/core-hacks.class.php:1197 ../inc/sys/core-hacks.class.php:1199
-#: ../inc/sys/core-hacks.class.php:1294 ../inc/sys/core-hacks.class.php:1296
+#: ../inc/sys/core-hacks.class.php:949 ../inc/sys/core-hacks.class.php:951
+#: ../inc/sys/core-hacks.class.php:1046 ../inc/sys/core-hacks.class.php:1048
 #: ../inc/venues/post-type.class.php:113
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:227
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:229
@@ -1046,7 +1059,7 @@ msgstr ""
 msgid "Version"
 msgstr ""
 
-#: ../inc/sys/admin-menu.class.php:362 ../inc/sys/core-hacks.class.php:1005
+#: ../inc/sys/admin-menu.class.php:362 ../inc/sys/core-hacks.class.php:757
 msgid "Template"
 msgstr ""
 
@@ -1175,86 +1188,72 @@ msgstr ""
 msgid "New Widget"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:70
-msgid "Order Notes"
-msgstr ""
-
-#: ../inc/sys/core-hacks.class.php:80
-msgid "Order Items"
-msgstr ""
-
-#: ../inc/sys/core-hacks.class.php:81
-msgid ""
-"Note: if you edit quantities or remove items from the order you will need to "
-"manually update stock levels."
-msgstr ""
-
-#: ../inc/sys/core-hacks.class.php:132
+#: ../inc/sys/core-hacks.class.php:102
 msgid "View Order Receipt"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:144
+#: ../inc/sys/core-hacks.class.php:114
 msgid "Preview"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:157
+#: ../inc/sys/core-hacks.class.php:127
 msgid "Bypass Process"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:158
+#: ../inc/sys/core-hacks.class.php:128
 msgid ""
 "Checking this box bypasses the Processing step and marks the order as "
 "Complete. (if other products in an order require processing, the order will "
 "still goto processing)"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:307
+#: ../inc/sys/core-hacks.class.php:277
 msgid "Discounts"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:311
+#: ../inc/sys/core-hacks.class.php:281
 msgid "Cart Discount:"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:311
+#: ../inc/sys/core-hacks.class.php:281
 msgid "Discounts before tax - calculated by comparing subtotals to totals."
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:319
+#: ../inc/sys/core-hacks.class.php:289
 msgid "Order Discount:"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:319
+#: ../inc/sys/core-hacks.class.php:289
 msgid "Discounts after tax - user defined."
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:354
-#: ../templates/admin/meta-boxes/views/html-order-items.php:150
+#: ../inc/sys/core-hacks.class.php:324
+#: ../templates/admin/meta-boxes/views/html-order-items.php:162
 #: ../templates/admin/meta-boxes/views/html-order-shipping.php:14
 msgid "Shipping"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:358
+#: ../inc/sys/core-hacks.class.php:328
 msgid "Label:"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:359
+#: ../inc/sys/core-hacks.class.php:329
 msgid "The shipping title the customer sees"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:366
+#: ../inc/sys/core-hacks.class.php:336
 msgid "Cost:"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:367
+#: ../inc/sys/core-hacks.class.php:337
 msgid "(ex. tax)"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:374
+#: ../inc/sys/core-hacks.class.php:344
 msgid "Method:"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:376 ../inc/sys/core-hacks.class.php:482
+#: ../inc/sys/core-hacks.class.php:346 ../inc/sys/core-hacks.class.php:452
 #: ../templates/admin/meta-boxes/views/html-order-shipping.php:20
 #: ../templates/order/order-details.php:126
 #: ../templates/order/order-details.php:141
@@ -1262,8 +1261,8 @@ msgstr ""
 msgid "N/A"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:396 ../inc/sys/core-hacks.class.php:398
-#: ../inc/sys/core-hacks.class.php:498 ../inc/sys/core-hacks.class.php:500
+#: ../inc/sys/core-hacks.class.php:366 ../inc/sys/core-hacks.class.php:368
+#: ../inc/sys/core-hacks.class.php:468 ../inc/sys/core-hacks.class.php:470
 #: ../templates/admin/meta-boxes/views/html-order-shipping.php:36
 #: ../templates/admin/meta-boxes/views/html-order-shipping.php:38
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:286
@@ -1271,337 +1270,232 @@ msgstr ""
 msgid "Other"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:413
+#: ../inc/sys/core-hacks.class.php:383
 msgid "Tax Rows"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:438
+#: ../inc/sys/core-hacks.class.php:408
 msgid "+ Add tax row"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:438
+#: ../inc/sys/core-hacks.class.php:408
 msgid ""
 "These rows contain taxes for this order. This allows you to display multiple "
 "or compound taxes rather than a single total."
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:442
+#: ../inc/sys/core-hacks.class.php:412
 msgid "Tax Totals"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:446
+#: ../inc/sys/core-hacks.class.php:416
 msgid "Sales Tax:"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:446
+#: ../inc/sys/core-hacks.class.php:416
 msgid "Total tax for line items + fees."
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:454
+#: ../inc/sys/core-hacks.class.php:424
 msgid "Shipping Tax:"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:468
+#: ../inc/sys/core-hacks.class.php:438
 msgid "Order Totals"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:472
+#: ../inc/sys/core-hacks.class.php:442
 msgid "Order Total:"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:480
+#: ../inc/sys/core-hacks.class.php:450
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:270
 msgid "Payment Method:"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:514
+#: ../inc/sys/core-hacks.class.php:484
 msgid "Calc taxes"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:516
+#: ../inc/sys/core-hacks.class.php:486
 msgid "Calc totals"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:541
-#: ../templates/admin/meta-boxes/views/html-order-items.php:52
-msgid "Item"
-msgstr ""
-
-#: ../inc/sys/core-hacks.class.php:546
-msgid "Tax Class"
-msgstr ""
-
-#: ../inc/sys/core-hacks.class.php:546
-msgid "Tax class for the line item"
-msgstr ""
-
-#: ../inc/sys/core-hacks.class.php:549
-#: ../templates/admin/meta-boxes/views/html-order-items.php:56
-msgid "Qty"
-msgstr ""
-
-#: ../inc/sys/core-hacks.class.php:551
-msgid "Totals"
-msgstr ""
-
-#: ../inc/sys/core-hacks.class.php:551
-msgid "Line subtotals are before pre-tax discounts, totals are after."
-msgstr ""
-
-#: ../inc/sys/core-hacks.class.php:554
-#: ../templates/admin/meta-boxes/views/html-order-items.php:64
-#: ../templates/admin/meta-boxes/views/html-order-items.php:65
-msgid "Tax"
-msgstr ""
-
-#: ../inc/sys/core-hacks.class.php:596
-#: ../templates/admin/meta-boxes/views/html-order-items.php:211
-msgid "Actions"
-msgstr ""
-
-#: ../inc/sys/core-hacks.class.php:598
-msgid "Delete Lines"
-msgstr ""
-
-#: ../inc/sys/core-hacks.class.php:600
-#: ../templates/admin/meta-boxes/views/html-order-items.php:217
-msgid "Stock Actions"
-msgstr ""
-
-#: ../inc/sys/core-hacks.class.php:601
-msgid "Reduce Line Stock"
-msgstr ""
-
-#: ../inc/sys/core-hacks.class.php:602
-msgid "Increase Line Stock"
-msgstr ""
-
-#: ../inc/sys/core-hacks.class.php:607
-#: ../templates/admin/meta-boxes/views/html-order-items.php:223
-msgid "Apply"
-msgstr ""
-
-#: ../inc/sys/core-hacks.class.php:611
-#: ../templates/admin/meta-boxes/views/html-order-items.php:307
-msgid "Search for a product&hellip;"
-msgstr ""
-
-#: ../inc/sys/core-hacks.class.php:613
-msgid "Add item(s)"
-msgstr ""
-
-#: ../inc/sys/core-hacks.class.php:614
-#: ../templates/admin/meta-boxes/views/html-order-items.php:247
-msgid "Add fee"
-msgstr ""
-
-#: ../inc/sys/core-hacks.class.php:647 ../inc/sys/core-hacks.class.php:688
+#: ../inc/sys/core-hacks.class.php:516
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:54
 msgid "Delete note"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:686
-#, php-format
-msgid "added %s ago"
-msgstr ""
-
-#: ../inc/sys/core-hacks.class.php:694
-msgid "There are no notes for this order yet."
-msgstr ""
-
-#: ../inc/sys/core-hacks.class.php:700
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:67
-msgid "Add note"
-msgstr ""
-
-#: ../inc/sys/core-hacks.class.php:707
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:74
-msgid "Customer note"
-msgstr ""
-
-#: ../inc/sys/core-hacks.class.php:711
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:81
-msgid "Private note"
-msgstr ""
-
-#: ../inc/sys/core-hacks.class.php:716
-#: ../templates/admin/meta-boxes/views/html-order-items.php:313
-#: ../templates/admin/meta-boxes/views/html-order-items.php:368
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:83
-msgid "Add"
-msgstr ""
-
-#: ../inc/sys/core-hacks.class.php:796 ../inc/sys/core-hacks.class.php:1095
+#: ../inc/sys/core-hacks.class.php:548 ../inc/sys/core-hacks.class.php:847
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:208
 msgid "Guest"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:919
+#: ../inc/sys/core-hacks.class.php:671
 msgid "Page Attributes"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:919
+#: ../inc/sys/core-hacks.class.php:671
 msgid "Attributes"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:989
+#: ../inc/sys/core-hacks.class.php:741
 msgid "(no parent)"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:998 ../inc/sys/core-hacks.class.php:999
+#: ../inc/sys/core-hacks.class.php:750 ../inc/sys/core-hacks.class.php:751
 msgid "Parent"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:1006
+#: ../inc/sys/core-hacks.class.php:758
 msgid "Page Template"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:1008
+#: ../inc/sys/core-hacks.class.php:760
 msgid "Default Template"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:1012 ../inc/sys/core-hacks.class.php:1014
+#: ../inc/sys/core-hacks.class.php:764 ../inc/sys/core-hacks.class.php:766
 msgid "Order"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:1017
+#: ../inc/sys/core-hacks.class.php:769
 msgid "Need help? Use the Help tab in the upper right of your screen."
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:1061
-#: ../templates/order/order-details.php:16
+#: ../inc/sys/core-hacks.class.php:813 ../templates/order/order-details.php:16
 msgid "Order Details"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:1064
+#: ../inc/sys/core-hacks.class.php:816
 msgid "Order number"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:1069
+#: ../inc/sys/core-hacks.class.php:821
 msgid "Customer IP:"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:1076
+#: ../inc/sys/core-hacks.class.php:828
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:181
 msgid "General Details"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:1078
+#: ../inc/sys/core-hacks.class.php:830
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:187
 msgid "Order status:"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:1088
+#: ../inc/sys/core-hacks.class.php:840
 msgid "Order Date:"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:1089
+#: ../inc/sys/core-hacks.class.php:841
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:184
 msgid "h"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:1089
+#: ../inc/sys/core-hacks.class.php:841
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:184
 msgid "m"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:1093
+#: ../inc/sys/core-hacks.class.php:845
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:206
 msgid "Customer:"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:1135
+#: ../inc/sys/core-hacks.class.php:887
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:366
 msgid "Customer Note:"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:1136
+#: ../inc/sys/core-hacks.class.php:888
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:367
 msgid "Customer's notes about the order"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:1144
+#: ../inc/sys/core-hacks.class.php:896
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:221
 msgid "Billing Details"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:1156 ../inc/sys/core-hacks.class.php:1259
+#: ../inc/sys/core-hacks.class.php:908 ../inc/sys/core-hacks.class.php:1011
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:47
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:94
 msgid "Company"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:1160 ../inc/sys/core-hacks.class.php:1263
+#: ../inc/sys/core-hacks.class.php:912 ../inc/sys/core-hacks.class.php:1015
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:51
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:98
 msgid "Address 1"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:1164 ../inc/sys/core-hacks.class.php:1267
+#: ../inc/sys/core-hacks.class.php:916 ../inc/sys/core-hacks.class.php:1019
 #: ../inc/venues/post-type.class.php:114
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:55
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:102
 msgid "Address 2"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:1168 ../inc/sys/core-hacks.class.php:1271
+#: ../inc/sys/core-hacks.class.php:920 ../inc/sys/core-hacks.class.php:1023
 #: ../inc/venues/post-type.class.php:115
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:59
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:106
 msgid "City"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:1172 ../inc/sys/core-hacks.class.php:1275
+#: ../inc/sys/core-hacks.class.php:924 ../inc/sys/core-hacks.class.php:1027
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:63
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:110
 msgid "Postcode"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:1176 ../inc/sys/core-hacks.class.php:1279
+#: ../inc/sys/core-hacks.class.php:928 ../inc/sys/core-hacks.class.php:1031
 #: ../inc/venues/post-type.class.php:118
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:67
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:114
 msgid "Country"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:1179 ../inc/sys/core-hacks.class.php:1282
+#: ../inc/sys/core-hacks.class.php:931 ../inc/sys/core-hacks.class.php:1034
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:70
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:117
 msgid "Select a country&hellip;"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:1182 ../inc/sys/core-hacks.class.php:1285
+#: ../inc/sys/core-hacks.class.php:934 ../inc/sys/core-hacks.class.php:1037
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:73
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:120
 msgid "State/County"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:1199
+#: ../inc/sys/core-hacks.class.php:951
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:229
 msgid "No billing address set."
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:1212
+#: ../inc/sys/core-hacks.class.php:964
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:247
 msgid "Load billing address"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:1247
+#: ../inc/sys/core-hacks.class.php:999
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:313
 msgid "Shipping Details"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:1296
+#: ../inc/sys/core-hacks.class.php:1048
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:321
 msgid "No shipping address set."
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:1309
+#: ../inc/sys/core-hacks.class.php:1061
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:345
 msgid "Load shipping address"
 msgstr ""
 
-#: ../inc/sys/core-hacks.class.php:1309
+#: ../inc/sys/core-hacks.class.php:1061
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:345
 msgid "Copy from billing"
 msgstr ""
@@ -2089,7 +1983,7 @@ msgid "Save changes"
 msgstr ""
 
 #: ../inc/ticket/ticket.class.php:107
-#: ../inc/venues/event-area/pricing.class.php:808
+#: ../inc/venues/event-area/pricing.class.php:825
 #: ../templates/tickets/basic-ticket.php:20
 msgid "Ticket"
 msgstr ""
@@ -2174,7 +2068,7 @@ msgid "Venue:"
 msgstr ""
 
 #: ../inc/venues/post-type.class.php:242
-#: ../inc/venues/event-area/post-type.class.php:322
+#: ../inc/venues/event-area/post-type.class.php:331
 msgid "None"
 msgstr ""
 
@@ -2267,311 +2161,307 @@ msgstr ""
 msgid "Venue"
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:148
+#: ../inc/venues/event-area/post-type.class.php:157
 msgid ""
 "There are currently <span class=\"available\"></span> <span rel=\"tt\"></"
 "span> available."
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:149
+#: ../inc/venues/event-area/post-type.class.php:158
 msgid ""
 "There are currently <span class=\"available\"></span> more <span rel=\"tt"
 "\"></span> available."
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:150
+#: ../inc/venues/event-area/post-type.class.php:159
 msgid "We're sorry. There are currently no tickets available."
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:151
+#: ../inc/venues/event-area/post-type.class.php:160
 #: ../templates/post-content/event-area.php:122
 msgid "We are sorry. This event is sold out!"
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:152
+#: ../inc/venues/event-area/post-type.class.php:161
 msgid "<h1>One Moment Please...</h1>"
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:204
+#: ../inc/venues/event-area/post-type.class.php:213
 msgid "Step 1: How Many?"
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:207
+#: ../inc/venues/event-area/post-type.class.php:216
 #: ../templates/post-content/event-area.php:46
 msgid "Reserve some tickets:"
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:211
+#: ../inc/venues/event-area/post-type.class.php:220
 #: ../templates/post-content/event-area.php:67
 msgid "Reserve"
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:219
+#: ../inc/venues/event-area/post-type.class.php:228
 msgid "Step 2: Review"
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:222
+#: ../inc/venues/event-area/post-type.class.php:231
 #: ../templates/post-content/event-area.php:85
 msgid "You currently have:"
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:227
+#: ../inc/venues/event-area/post-type.class.php:236
 #: ../templates/post-content/event-area.php:107
 msgid "Update"
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:231
+#: ../inc/venues/event-area/post-type.class.php:240
 msgid "Proceed to Cart"
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:250
-#: ../inc/venues/event-area/post-type.class.php:254
+#: ../inc/venues/event-area/post-type.class.php:259
+#: ../inc/venues/event-area/post-type.class.php:263
 msgid "add"
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:259
+#: ../inc/venues/event-area/post-type.class.php:268
 msgid "There are currently no areas configured. Please add one to continue."
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:275
+#: ../inc/venues/event-area/post-type.class.php:284
 msgid "edit"
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:276
+#: ../inc/venues/event-area/post-type.class.php:285
 msgid "delete"
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:289
+#: ../inc/venues/event-area/post-type.class.php:298
 msgid "Event Area Image"
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:295
+#: ../inc/venues/event-area/post-type.class.php:304
 msgid "Select Image"
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:298
+#: ../inc/venues/event-area/post-type.class.php:307
 msgid "Area Name"
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:302
+#: ../inc/venues/event-area/post-type.class.php:311
 msgid "Capacity"
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:306
+#: ../inc/venues/event-area/post-type.class.php:315
 msgid "Available Pricing"
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:311
+#: ../inc/venues/event-area/post-type.class.php:320
 msgid "save"
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:312
+#: ../inc/venues/event-area/post-type.class.php:321
 msgid "cancel"
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:339
+#: ../inc/venues/event-area/post-type.class.php:348
 msgid "This event is password protected."
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:345
-#: ../inc/venues/event-area/post-type.class.php:568
-#: ../inc/venues/event-area/pricing.class.php:649
+#: ../inc/venues/event-area/post-type.class.php:354
+#: ../inc/venues/event-area/post-type.class.php:577
+#: ../inc/venues/event-area/pricing.class.php:666
 msgid "Invalid request. Please refresh the page and try again."
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:363
-#: ../inc/venues/event-area/post-type.class.php:426
-#: ../inc/venues/event-area/post-type.class.php:442
+#: ../inc/venues/event-area/post-type.class.php:372
+#: ../inc/venues/event-area/post-type.class.php:435
+#: ../inc/venues/event-area/post-type.class.php:451
 msgid "Updated your reservations successfully."
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:373
-#: ../inc/venues/event-area/post-type.class.php:434
-#: ../inc/venues/event-area/post-type.class.php:439
+#: ../inc/venues/event-area/post-type.class.php:382
+#: ../inc/venues/event-area/post-type.class.php:443
+#: ../inc/venues/event-area/post-type.class.php:448
 msgid "Could not update your reservations."
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:376
-#: ../inc/venues/event-area/post-type.class.php:766
+#: ../inc/venues/event-area/post-type.class.php:385
+#: ../inc/venues/event-area/post-type.class.php:775
 msgid "The quantity must be greater than zero."
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:377
-#: ../inc/venues/event-area/post-type.class.php:459
+#: ../inc/venues/event-area/post-type.class.php:386
+#: ../inc/venues/event-area/post-type.class.php:468
 msgid "Could not load that event."
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:378
-#: ../inc/venues/event-area/post-type.class.php:460
+#: ../inc/venues/event-area/post-type.class.php:387
+#: ../inc/venues/event-area/post-type.class.php:469
 msgid "A problem occurred when loading that event."
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:379
+#: ../inc/venues/event-area/post-type.class.php:388
 msgid "That event does not currently have any tickets."
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:380
-#: ../inc/venues/event-area/post-type.class.php:462
+#: ../inc/venues/event-area/post-type.class.php:389
+#: ../inc/venues/event-area/post-type.class.php:471
 msgid "The event does not have any tickets."
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:433
+#: ../inc/venues/event-area/post-type.class.php:442
 msgid "A problem occurred when trying to remove your reservations."
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:438
+#: ../inc/venues/event-area/post-type.class.php:447
 msgid "A problem occurred when trying to update your reservations."
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:452
+#: ../inc/venues/event-area/post-type.class.php:461
 #, php-format
 msgid ""
 "There are not enough available tickets to increase the quantity of %s to %d. "
 "There are only %d available."
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:461
+#: ../inc/venues/event-area/post-type.class.php:470
 msgid "That event does not have currently have any tickets."
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:509
+#: ../inc/venues/event-area/post-type.class.php:518
 msgid "Event Area:"
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:516
+#: ../inc/venues/event-area/post-type.class.php:525
 msgid "-None-"
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:581
+#: ../inc/venues/event-area/post-type.class.php:590
 #, php-format
 msgid "Could not find the venue you specified [%s]."
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:611
+#: ../inc/venues/event-area/post-type.class.php:620
 msgid "Could not find that venue."
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:630
+#: ../inc/venues/event-area/post-type.class.php:639
 msgid "Could not save the item(s) because not enough information was provided."
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:656
+#: ../inc/venues/event-area/post-type.class.php:665
 #, php-format
 msgid "There was a problem saving the area [%s]."
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:767
+#: ../inc/venues/event-area/post-type.class.php:776
 msgid "Could not find that event."
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:768
+#: ../inc/venues/event-area/post-type.class.php:777
 msgid "That is not a valid order."
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:879
-#: ../inc/venues/event-area/post-type.class.php:1227
+#: ../inc/venues/event-area/post-type.class.php:888
+#: ../inc/venues/event-area/post-type.class.php:1241
 msgid "Event Areas"
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:1026
-msgid "We are sorry. Online registration for this event has closed."
-msgstr ""
-
-#: ../inc/venues/event-area/post-type.class.php:1167
+#: ../inc/venues/event-area/post-type.class.php:1181
 msgid "(Unknown Ticket Type)"
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:1171
+#: ../inc/venues/event-area/post-type.class.php:1185
 #, php-format
 msgid ""
 "There are only <span class=\"available\">%s</span> %s available currently. "
 "Could not temporarily reserve %d %s."
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:1182
-#: ../inc/venues/event-area/post-type.class.php:1216
+#: ../inc/venues/event-area/post-type.class.php:1196
+#: ../inc/venues/event-area/post-type.class.php:1230
 msgid "The number of tickets must be greater than 0."
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:1203
+#: ../inc/venues/event-area/post-type.class.php:1217
 #, php-format
 msgid ""
 "There are only <span class=\"available\">%s</span> more %s available "
 "currently. Could not temporarily reserve %d more %s. You still have %d %s."
 msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:1228
+#: ../inc/venues/event-area/post-type.class.php:1242
 msgid "Area"
 msgstr ""
 
-#: ../inc/venues/event-area/pricing.class.php:421
+#: ../inc/venues/event-area/pricing.class.php:438
 #, php-format
 msgid ""
 "There were only %d of the %s for %s available. We reserved all of them for "
 "you instead of the %d you requested."
 msgstr ""
 
-#: ../inc/venues/event-area/pricing.class.php:429
+#: ../inc/venues/event-area/pricing.class.php:446
 #, php-format
 msgid ""
 "There were no %s for %s available to give you. We have removed it from your "
 "cart."
 msgstr ""
 
-#: ../inc/venues/event-area/pricing.class.php:525
+#: ../inc/venues/event-area/pricing.class.php:542
 msgid "(no event selected)"
 msgstr ""
 
-#: ../inc/venues/event-area/pricing.class.php:610
+#: ../inc/venues/event-area/pricing.class.php:627
 msgid "Date:"
 msgstr ""
 
-#: ../inc/venues/event-area/pricing.class.php:612
+#: ../inc/venues/event-area/pricing.class.php:629
 msgid "Capacity:"
 msgstr ""
 
-#: ../inc/venues/event-area/pricing.class.php:613
+#: ../inc/venues/event-area/pricing.class.php:630
 msgid "Available:"
 msgstr ""
 
-#: ../inc/venues/event-area/pricing.class.php:618
-#: ../inc/venues/event-area/pricing.class.php:623
+#: ../inc/venues/event-area/pricing.class.php:635
+#: ../inc/venues/event-area/pricing.class.php:640
 msgid "Different Event"
 msgstr ""
 
-#: ../inc/venues/event-area/pricing.class.php:619
+#: ../inc/venues/event-area/pricing.class.php:636
 msgid "Use This Event"
 msgstr ""
 
-#: ../inc/venues/event-area/pricing.class.php:632
+#: ../inc/venues/event-area/pricing.class.php:649
 msgid "Add Tickets"
 msgstr ""
 
-#: ../inc/venues/event-area/pricing.class.php:637
+#: ../inc/venues/event-area/pricing.class.php:654
 msgid "Loading. One moment please..."
 msgstr ""
 
-#: ../inc/venues/event-area/pricing.class.php:699
+#: ../inc/venues/event-area/pricing.class.php:716
 msgid "Invalid order number."
 msgstr ""
 
-#: ../inc/venues/event-area/pricing.class.php:748
+#: ../inc/venues/event-area/pricing.class.php:765
 msgid "Could not find the new event."
 msgstr ""
 
-#: ../inc/venues/event-area/pricing.class.php:751
+#: ../inc/venues/event-area/pricing.class.php:768
 msgid "Could not find that order item on the order."
 msgstr ""
 
-#: ../inc/venues/event-area/pricing.class.php:754
+#: ../inc/venues/event-area/pricing.class.php:771
 msgid "The order item does not appear to be valid."
 msgstr ""
 
-#: ../inc/venues/event-area/pricing.class.php:761
+#: ../inc/venues/event-area/pricing.class.php:778
 msgid "Add tickets"
 msgstr ""
 
-#: ../inc/venues/event-area/pricing.class.php:809
+#: ../inc/venues/event-area/pricing.class.php:826
 #, php-format
 msgid ""
 "Allows this product to be assigned as a ticket, when configuring pricing on "
@@ -2603,153 +2493,207 @@ msgstr ""
 msgid "Product SKU:"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-item.php:149
+#: ../templates/admin/meta-boxes/views/html-order-item.php:138
 msgid "Add&nbsp;meta"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-item.php:163
-#: ../templates/admin/meta-boxes/views/html-order-items.php:21
-msgid "Standard"
-msgstr ""
-
-#: ../templates/admin/meta-boxes/views/html-order-item.php:177
-#: ../templates/admin/meta-boxes/views/html-order-items.php:336
-msgid "Tax class"
-msgstr ""
-
-#: ../templates/admin/meta-boxes/views/html-order-item.php:231
-#: ../templates/admin/meta-boxes/views/html-order-item.php:274
+#: ../templates/admin/meta-boxes/views/html-order-item.php:200
+#: ../templates/admin/meta-boxes/views/html-order-item.php:243
 msgid "After pre-tax discounts."
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-item.php:234
-#: ../templates/admin/meta-boxes/views/html-order-item.php:277
+#: ../templates/admin/meta-boxes/views/html-order-item.php:203
+#: ../templates/admin/meta-boxes/views/html-order-item.php:246
 msgid "Before pre-tax discounts."
 msgstr ""
 
+#: ../templates/admin/meta-boxes/views/html-order-items.php:22
+msgid "Standard"
+msgstr ""
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:53
+msgid "Item"
+msgstr ""
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:57
+msgid "Cost"
+msgstr ""
+
 #: ../templates/admin/meta-boxes/views/html-order-items.php:58
+msgid "Qty"
+msgstr ""
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:59
 #: ../templates/order/order-details.php:21
 msgid "Total"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:150
+#: ../templates/admin/meta-boxes/views/html-order-items.php:65
+#: ../templates/admin/meta-boxes/views/html-order-items.php:66
+msgid "Tax"
+msgstr ""
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:137
+msgid "Coupon(s) Used"
+msgstr ""
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:152
+msgid "Discount"
+msgstr ""
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:152
+msgid "This is the total discount. Discounts are defined per line item."
+msgstr ""
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:162
 msgid "This is the shipping and handling total costs for the order."
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:170
-msgid "Order Discount"
-msgstr ""
-
-#: ../templates/admin/meta-boxes/views/html-order-items.php:170
-msgid "This is the total discount applied after tax."
-msgstr ""
-
-#: ../templates/admin/meta-boxes/views/html-order-items.php:184
+#: ../templates/admin/meta-boxes/views/html-order-items.php:182
 msgid "Order Total"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:198
+#: ../templates/admin/meta-boxes/views/html-order-items.php:202
 msgid "Refunded"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:214
-msgid "Delete selected line item(s)"
+#: ../templates/admin/meta-boxes/views/html-order-items.php:215
+msgid "Actions"
 msgstr ""
 
 #: ../templates/admin/meta-boxes/views/html-order-items.php:218
+msgid "Delete selected line item(s)"
+msgstr ""
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:221
+msgid "Stock Actions"
+msgstr ""
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:222
 msgid "Reduce line item stock"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:219
+#: ../templates/admin/meta-boxes/views/html-order-items.php:223
 msgid "Increase line item stock"
 msgstr ""
 
 #: ../templates/admin/meta-boxes/views/html-order-items.php:227
+msgid "Apply"
+msgstr ""
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:231
 msgid "Add line item(s)"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:230
+#: ../templates/admin/meta-boxes/views/html-order-items.php:233
+msgid "This order has been paid for and is no longer editable"
+msgstr ""
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:236
 msgid "Add Tax"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:233
+#: ../templates/admin/meta-boxes/views/html-order-items.php:239
 msgid "Refund"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:240
+#: ../templates/admin/meta-boxes/views/html-order-items.php:246
 msgid "Calculate Taxes"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:241
+#: ../templates/admin/meta-boxes/views/html-order-items.php:247
 msgid "Calculate Total"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:246
+#: ../templates/admin/meta-boxes/views/html-order-items.php:252
 msgid "Add product(s)"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:248
+#: ../templates/admin/meta-boxes/views/html-order-items.php:253
+msgid "Add fee"
+msgstr ""
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:254
 msgid "Add shipping cost"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:250
+#: ../templates/admin/meta-boxes/views/html-order-items.php:256
 msgid "Save"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:260
+#: ../templates/admin/meta-boxes/views/html-order-items.php:266
 msgid "Restock refunded items"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:264
+#: ../templates/admin/meta-boxes/views/html-order-items.php:270
 msgid "Amount already refunded"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:268
+#: ../templates/admin/meta-boxes/views/html-order-items.php:274
 msgid "Total available to refund"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:272
+#: ../templates/admin/meta-boxes/views/html-order-items.php:278
 msgid "Refund amount"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:279
+#: ../templates/admin/meta-boxes/views/html-order-items.php:285
 msgid "Reason for refund (optional)"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:289
+#: ../templates/admin/meta-boxes/views/html-order-items.php:297
+msgid "Payment Gateway"
+msgstr ""
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:299
 #, php-format
 msgid "Refund %s via %s"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:291
-msgid "Refund manually"
+#: ../templates/admin/meta-boxes/views/html-order-items.php:300
+#, php-format
+msgid "Refund %s manually"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:303
+#: ../templates/admin/meta-boxes/views/html-order-items.php:313
 msgid "Add products"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:327
-msgid "Add tax"
+#: ../templates/admin/meta-boxes/views/html-order-items.php:317
+msgid "Search for a product&hellip;"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:335
-msgid "Rate name"
+#: ../templates/admin/meta-boxes/views/html-order-items.php:322
+#: ../templates/admin/meta-boxes/views/html-order-items.php:377
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:83
+msgid "Add"
 msgstr ""
 
 #: ../templates/admin/meta-boxes/views/html-order-items.php:337
+msgid "Add tax"
+msgstr ""
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:345
+msgid "Rate name"
+msgstr ""
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:346
+msgid "Tax class"
+msgstr ""
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:347
 msgid "Rate code"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:338
+#: ../templates/admin/meta-boxes/views/html-order-items.php:348
 msgid "Rate %"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:359
+#: ../templates/admin/meta-boxes/views/html-order-items.php:369
 msgid "Or, enter tax rate ID:"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:360
+#: ../templates/admin/meta-boxes/views/html-order-items.php:370
 msgid "Optional"
 msgstr ""
 
@@ -2890,6 +2834,10 @@ msgstr ""
 msgid "Shipping Address"
 msgstr ""
 
+#: ../templates/post-content/event-area-closed.php:3
+msgid "We are sorry. Online registration for this event has closed."
+msgstr ""
+
 #: ../templates/post-content/event-area.php:8
 msgid ""
 "For a better experience, certain features of javascript area required. "
@@ -2949,24 +2897,44 @@ msgstr ""
 msgid "Download PDF"
 msgstr ""
 
-#: ../templates/tickets/basic-ticket.php:40
+#: ../templates/tickets/basic-ticket.php:44
 msgid "Starts:"
 msgstr ""
 
-#: ../templates/tickets/basic-ticket.php:46
+#: ../templates/tickets/basic-ticket.php:44
+#: ../templates/tickets/basic-ticket.php:49
+msgid "D, F jS, Y"
+msgstr ""
+
+#: ../templates/tickets/basic-ticket.php:45
+msgid " @ "
+msgstr ""
+
+#: ../templates/tickets/basic-ticket.php:45
+#: ../templates/tickets/basic-ticket.php:48
+#: ../templates/tickets/basic-ticket.php:51
+msgid "g:ia"
+msgstr ""
+
+#: ../templates/tickets/basic-ticket.php:45
+#: ../templates/tickets/basic-ticket.php:51
+msgid " "
+msgstr ""
+
+#: ../templates/tickets/basic-ticket.php:51
 msgid "Ends:"
 msgstr ""
 
-#: ../templates/tickets/basic-ticket.php:47
-#: ../templates/tickets/basic-ticket.php:108
+#: ../templates/tickets/basic-ticket.php:52
+#: ../templates/tickets/basic-ticket.php:113
 msgid "Area:"
 msgstr ""
 
-#: ../templates/tickets/basic-ticket.php:64
+#: ../templates/tickets/basic-ticket.php:69
 msgid "ORDER #"
 msgstr ""
 
-#: ../templates/tickets/basic-ticket.php:80
+#: ../templates/tickets/basic-ticket.php:85
 msgid "Who is OpenTickets?"
 msgstr ""
 
@@ -3039,6 +3007,18 @@ msgstr ""
 
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:61
 msgid "There are no notes yet."
+msgstr ""
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:67
+msgid "Add note"
+msgstr ""
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:74
+msgid "Customer note"
+msgstr ""
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:81
+msgid "Private note"
 msgstr ""
 
 #~ msgid "Report"
