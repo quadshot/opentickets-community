@@ -19,7 +19,6 @@ class qsot_core_hacks {
 			add_filter('qsot-page-templates-list', array(__CLASS__, 'page_templates_list'), 10, 2);
 			add_filter('qsot-get-page-template-list', array(__CLASS__, 'page_get_page_template_list'), 10, 1);
 			add_action('add_meta_boxes', array(__CLASS__, 'page_add_meta_boxes'), 100, 2);
-			add_action('add_meta_boxes', array(__CLASS__, 'order_add_meta_boxes'), 100, 2);
 			add_action('add_meta_boxes', array(__CLASS__, 'order_add_late_meta_boxes'), 100000, 2);
 			add_filter('page_template', array(__CLASS__, 'page_template_default'), 10, 1);
 			add_filter('qsot-maybe-override-theme_default', array(__CLASS__, 'maybe_override_template'), 10, 3);
@@ -57,35 +56,6 @@ class qsot_core_hacks {
 
 		remove_action('wp_ajax_woocommerce_add_order_item', 'woocommerce_ajax_add_order_item');
 		add_action('wp_ajax_woocommerce_add_order_item', array(__CLASS__, 'woocommerce_ajax_add_order_item'));
-	}
-
-	public static function order_add_meta_boxes($post_type, $post) {
-		if ($post_type !== 'shop_order') return;
-
-		// if we are on less than WC2.2.0
-		if (version_compare(WC()->version, '2.2.0') < 0) {
-			remove_meta_box('woocommerce-order-notes', 'shop_order', 'side');
-			add_meta_box(
-				'qsotcommerce-order-notes',
-				__('Order Notes','opentickets-community-edition'),
-				array(__CLASS__, 'woocommerce_order_notes_meta_box'),
-				'shop_order',
-				'side',
-				'default'
-			);
-
-			remove_meta_box('woocommerce-order-items', 'shop_order', 'normal', 'high');
-			add_meta_box(
-				'woocommerce-order-items',
-				__( 'Order Items','opentickets-community-edition' )
-						.' <span class="tips" data-tip="'.__('Note: if you edit quantities or remove items from the order you will need to manually update stock levels.','opentickets-community-edition')
-						.'">[?]</span>',
-				array(__CLASS__, 'woocommerce_order_items_meta_box'),
-				'shop_order',
-				'normal',
-				'high'
-			);
-		}
 	}
 
 	// effort to work around the new wp core page template existence validation, which prohibits page templates not in the theme
@@ -518,107 +488,6 @@ class qsot_core_hacks {
 		<?php
 	}
 
-	// copied from woocommerce/admin/post-types/writepanels/writepanel-order_data.php
-	// modified to allow for additional buttons and additional actions, as well as templaet overriding
-	public static function woocommerce_order_items_meta_box( $post ) {
-		global $wpdb, $thepostid, $theorder, $woocommerce;
-		//$writepanel_path = trailingslashit($woocommerce->plugin_path).'admin/post-types/writepanels/';
-
-		if ( ! is_object( $theorder ) )
-			$theorder = new WC_Order( $thepostid );
-
-		$order = $theorder;
-		$legacy_order = true;
-
-		$data = get_post_meta( $post->ID );
-		do_action('woocommerce_admin_before_order_items', $post, $order, $data);
-		?>
-		<div class="woocommerce_order_items_wrapper">
-			<table cellpadding="0" cellspacing="0" class="woocommerce_order_items">
-				<thead>
-					<tr>
-						<th><input type="checkbox" class="check-column" /></th>
-						<th class="item" colspan="2"><?php _e( 'Item','opentickets-community-edition' ); ?></th>
-
-						<?php do_action( 'woocommerce_admin_order_item_headers' ); ?>
-
-						<?php if ( get_option( 'woocommerce_calc_taxes' ) == 'yes' ) : ?>
-							<th class="tax_class"><?php _e( 'Tax Class','opentickets-community-edition' ); ?>&nbsp;<a class="tips" data-tip="<?php _e( 'Tax class for the line item','opentickets-community-edition' ); ?>." href="#">[?]</a></th>
-						<?php endif; ?>
-
-						<th class="quantity"><?php _e( 'Qty','opentickets-community-edition' ); ?></th>
-
-						<th class="line_cost"><?php _e( 'Totals','opentickets-community-edition' ); ?>&nbsp;<a class="tips" data-tip="<?php _e( 'Line subtotals are before pre-tax discounts, totals are after.','opentickets-community-edition' ); ?>" href="#">[?]</a></th>
-
-						<?php if ( get_option( 'woocommerce_calc_taxes' ) == 'yes' ) : ?>
-							<th class="line_tax"><?php _e( 'Tax','opentickets-community-edition' ); ?></th>
-						<?php endif; ?>
-
-						<?php do_action( 'woocommerce_admin_after_order_item_headers' ); /*@@@@LOUSHOU - allow addition of columns to the end of the list */ ?>
-						<th width="1%">&nbsp;</th>
-					</tr>
-				</thead>
-				<tbody id="order_items_list">
-
-					<?php
-						// List order items
-						$order_items = $order->get_items( apply_filters( 'woocommerce_admin_order_item_types', array( 'line_item', 'fee' ) ) );
-
-						foreach ( $order_items as $item_id => $item ) {
-
-							$class = apply_filters('woocommerce_admin_order_items_class', '', $item, $order);
-							switch ( $item['type'] ) {
-								case 'line_item' :
-									$_product 	= $order->get_product_from_item( $item );
-									$item_meta 	= $order->get_item_meta( $item_id );
-
-									//include( $writepanel_path.'order-item-html.php' );
-									//@@@@LOUSHOU - allow overtake of template
-									include(apply_filters('qsot-woo-template', 'meta-boxes/views/html-order-item.php', 'admin'));
-								break;
-								case 'fee' :
-									//include( $writepanel_path.'order-fee-html.php' );
-									//@@@@LOUSHOU - allow overtake of template
-									include(apply_filters('qsot-woo-template', 'meta-boxes/views/html-order-fee.php', 'admin'));
-								break;
-							}
-
-							do_action( 'woocommerce_order_item_' . $item['type'] . '_html' );
-
-						}
-					?>
-				</tbody>
-			</table>
-		</div>
-
-		<p class="bulk_actions">
-			<select>
-				<option value=""><?php _e( 'Actions','opentickets-community-edition' ); ?></option>
-				<optgroup label="<?php _e( 'Edit','opentickets-community-edition' ); ?>">
-					<option value="delete"><?php _e( 'Delete Lines','opentickets-community-edition' ); ?></option>
-				</optgroup>
-				<optgroup label="<?php _e( 'Stock Actions','opentickets-community-edition' ); ?>">
-					<option value="reduce_stock"><?php _e( 'Reduce Line Stock','opentickets-community-edition' ); ?></option>
-					<option value="increase_stock"><?php _e( 'Increase Line Stock','opentickets-community-edition' ); ?></option>
-				</optgroup>
-				<?php do_action('woocommerce_order_items_bulk_actions', $order, $data, $order_items) ?>
-			</select>
-
-			<button type="button" class="button do_bulk_action wc-reload" title="<?php _e( 'Apply','opentickets-community-edition' ); ?>"><span><?php _e( 'Apply','opentickets-community-edition' ); ?></span></button>
-		</p>
-
-		<div class="add_items" style="text-align:right; margin:1em 0;">
-			<select id="add_item_id" class="ajax_chosen_select_products_and_variations" multiple="multiple" data-placeholder="<?php _e( 'Search for a product&hellip;','opentickets-community-edition' ); ?>" style="width: 400px"></select>
-			<div class="buttons" style="margin-right:9px;">
-				<button type="button" class="button add_order_item"><?php _e( 'Add item(s)','opentickets-community-edition' ); ?></button>
-				<button type="button" class="button add_order_fee"><?php _e( 'Add fee','opentickets-community-edition' ); ?></button>
-				<?php do_action('woocommerce_order_item_add_line_buttons', $order, $data, $order_items) ?>
-			</div>
-		</div>
-		<div class="clear"></div>
-		<?php
-	}
-
 	// copied from woocommerce/woocommerce-ajax.php
 	// modified to allow other comment types to have an action to save info on
 	function woocommerce_add_order_note() {
@@ -652,123 +521,6 @@ class qsot_core_hacks {
 
 		// Quit out
 		die();
-	}
-
-	// copied from woocommerce/admin/post-types/writepanels/writepanel-order_notes.php
-	// modified to allow different comment types
-	public static function woocommerce_order_notes_meta_box() {
-		global $woocommerce, $post;
-
-		$args = array(
-			'post_id' 	=> $post->ID,
-			'approve' 	=> 'approve',
-			'type' 		=> 'order_note'
-		);
-
-		// changing required permission for viewing comments to the 'edit_shop_order' permissiosn instead of manage_woocommerce, because manage_woocommerce gives access to 
-		// woocommerce settings, which some users who need access to order notes may not have (like box-office and box-office-manager)
-		if (current_user_can('edit_shop_order', $post->ID)) remove_filter('comments_clauses', 'woocommerce_exclude_order_comments');
-		$notes = get_comments( $args );
-		if (current_user_can('edit_shop_order', $post->ID)) add_filter('comments_clauses', 'woocommerce_exclude_order_comments');
-
-		echo '<ul class="order_notes">';
-
-		if ( $notes ) {
-			foreach( $notes as $note ) {
-				$note_classes = get_comment_meta( $note->comment_ID, 'is_customer_note', true ) ? array( 'customer-note', 'note' ) : array( 'note' );
-
-				?>
-				<li rel="<?php echo absint( $note->comment_ID ) ; ?>" class="<?php echo implode( ' ', $note_classes ); ?>">
-					<div class="note_content">
-						<?php echo wpautop( wptexturize( wp_kses_post( $note->comment_content ) ) ); ?>
-					</div>
-					<p class="meta">
-						<?php printf( __( 'added %s ago','opentickets-community-edition' ), human_time_diff( strtotime( $note->comment_date_gmt ), current_time( 'timestamp', 1 ) ) ); ?>
-						(<?php echo apply_filters('woocommerce_get_order_note_type', 'private', $note) ?>)
-						<a href="#" class="delete_note"><?php _e( 'Delete note','opentickets-community-edition' ); ?></a>
-					</p>
-				</li>
-				<?php
-			}
-		} else {
-			echo '<li>' . __( 'There are no notes for this order yet.','opentickets-community-edition' ) . '</li>';
-		}
-
-		echo '</ul>';
-		?>
-		<div class="add_note">
-			<h4><?php _e( 'Add note','opentickets-community-edition' ); ?> <img class="help_tip" data-tip='<?php esc_attr_e( 'Add a note for your reference, or add a customer note (the user will be notified).','opentickets-community-edition' ); ?>' src="<?php echo $woocommerce->plugin_url(); ?>/assets/images/help.png" height="16" width="16" /></h4>
-			<p>
-				<textarea type="text" name="order_note" id="add_order_note" class="input-text" cols="20" rows="5"></textarea>
-			</p>
-			<p>
-				<?php
-					$note_types = apply_filters('woocommerce_order_note_types', array(
-						'customer' => __('Customer note','opentickets-community-edition' ),
-					), $post);
-				?>
-				<select name="order_note_type" id="order_note_type">
-					<option value=""><?php _e( 'Private note','opentickets-community-edition' ); ?></option>
-					<?php foreach ($note_types as $val => $label): ?>
-						<option value="<?php echo esc_attr($val) ?>"><?php echo $label ?></option>
-					<?php endforeach; ?>
-				</select>
-				<a href="#" class="add_note button"><?php _e( 'Add','opentickets-community-edition' ); ?></a>
-			</p>
-		</div>
-		<script type="text/javascript">
-
-			jQuery('#qsotcommerce-order-notes')
-
-			.on( 'click', 'a.add_note', function() {
-				if (!jQuery('textarea#add_order_note').val()) return;
-
-				jQuery('#qsotcommerce-order-notes').block({ message: null, overlayCSS: { background: '#fff url(<?php echo $woocommerce->plugin_url(); ?>/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
-
-				var data = {
-					action: 		'woocommerce_add_order_note',
-					post_id:		'<?php echo $post->ID; ?>',
-					note: 			jQuery('textarea#add_order_note').val(),
-					note_type:		jQuery('select#order_note_type').val(),
-					security: 		'<?php echo wp_create_nonce("add-order-note"); ?>'
-				};
-
-				jQuery.post( '<?php echo admin_url('admin-ajax.php'); ?>', data, function(response) {
-
-					jQuery('ul.order_notes').prepend( response );
-					jQuery('#qsotcommerce-order-notes').unblock();
-					jQuery('#add_order_note').val('');
-
-				});
-
-				return false;
-
-			})
-
-			.on( 'click', 'a.delete_note', function() {
-
-				var note = jQuery(this).closest('li.note');
-
-				jQuery(note).block({ message: null, overlayCSS: { background: '#fff url(<?php echo $woocommerce->plugin_url(); ?>/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
-
-				var data = {
-					action: 		'woocommerce_delete_order_note',
-					note_id:		jQuery(note).attr('rel'),
-					security: 		'<?php echo wp_create_nonce("delete-order-note"); ?>'
-				};
-
-				jQuery.post( '<?php echo admin_url('admin-ajax.php'); ?>', data, function(response) {
-
-					jQuery(note).remove();
-
-				});
-
-				return false;
-
-			});
-
-		</script>
-		<?php
 	}
 
 	public static function get_order_note_type($type, $note) {
