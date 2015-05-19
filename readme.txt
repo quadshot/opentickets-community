@@ -165,6 +165,7 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.10.18 =
 * updated admin templates for latest WC compatibility
 * updated admin js for jQuery Migrate compatibility
 * updated all PO and MO files with latest strings (need translations)
