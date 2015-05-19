@@ -142,11 +142,8 @@ class QSOT_order_admin_ajax {
 			wc_save_order_items( $order_id, $items );
 
 			// Return HTML items
-			$order = new WC_Order( $order_id );
+			$order = wc_get_order( $order_id );
 			$data  = get_post_meta( $order_id );
-
-			// tell plugins order items were saved
-			do_action( 'woocommerce_saved_order_items', $order_id, $items );
 
 			//include( 'admin/meta-boxes/views/html-order-items.php' );
 			//@@@@LOUSHOU - allow overtake of template
