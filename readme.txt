@@ -165,6 +165,11 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.10.19 =
+* fixed shipping order item column alignment in admin
+* fixed month name typo in admin
+* fixed recurring event date problem in admin even ui
+
 = 1.10.18 =
 * updated admin templates for latest WC compatibility
 * updated admin js for jQuery Migrate compatibility
