@@ -1412,7 +1412,7 @@ class qsot_post_type {
 														<input type="hidden" name="pub_date" value="" />
 														<div class="date-edit" tar="[name='pub_date']" scope="[rel='setting-form']">
 															<select rel="month">
-																<option value="1">01 - <?php _e('Januaray','opentickets-community-edition') ?></option>
+																<option value="1">01 - <?php _e('January','opentickets-community-edition') ?></option>
 																<option value="2">02 - <?php _e('February','opentickets-community-edition') ?></option>
 																<option value="3">03 - <?php _e('March','opentickets-community-edition') ?></option>
 																<option value="4">04 - <?php _e('April','opentickets-community-edition') ?></option>
