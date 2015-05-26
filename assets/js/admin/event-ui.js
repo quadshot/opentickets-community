@@ -612,7 +612,6 @@ QS.EventUI = (function($, undefined) {
 			this.elements.header_center = view.element.closest('.'+tm).find('.'+tm+'-header-center');
 			this.addButton('new_event_btn', 'New Event Date', ['togvis'], {tar:'.option-sub[rel=add]', scope:'.events-ui'}).click(function() {
 				var scope = $(this).closest( $(this).attr('scope') ), tar = $( $(this).attr('tar'), scope);
-				console.log('scope', scope.length, 'tar', tar.length, scope, tar);
 			});
 			this.callback('add_buttons');
 		},
