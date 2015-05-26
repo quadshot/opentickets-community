@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OpenTickets Community Edition\n"
-"POT-Creation-Date: 2015-05-19 12:08-0800\n"
-"PO-Revision-Date: 2015-05-19 12:08-0800\n"
+"POT-Creation-Date: 2015-05-26 09:56-0800\n"
+"PO-Revision-Date: 2015-05-26 09:56-0800\n"
 "Last-Translator: \n"
 "Language-Team: Quadshot <info@quadshot.com>\n"
 "MIME-Version: 1.0\n"
@@ -592,7 +592,7 @@ msgid "Publish Date:"
 msgstr ""
 
 #: ../inc/core/post-type.class.php:1415
-msgid "Januaray"
+msgid "January"
 msgstr ""
 
 #: ../inc/core/post-type.class.php:1416
@@ -1216,7 +1216,7 @@ msgstr ""
 
 #: ../inc/sys/core-hacks.class.php:324
 #: ../templates/admin/meta-boxes/views/html-order-items.php:162
-#: ../templates/admin/meta-boxes/views/html-order-shipping.php:14
+#: ../templates/admin/meta-boxes/views/html-order-shipping.php:20
 msgid "Shipping"
 msgstr ""
 
@@ -1241,7 +1241,7 @@ msgid "Method:"
 msgstr ""
 
 #: ../inc/sys/core-hacks.class.php:346 ../inc/sys/core-hacks.class.php:452
-#: ../templates/admin/meta-boxes/views/html-order-shipping.php:20
+#: ../templates/admin/meta-boxes/views/html-order-shipping.php:26
 #: ../templates/order/order-details.php:126
 #: ../templates/order/order-details.php:141
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:272
@@ -1250,8 +1250,8 @@ msgstr ""
 
 #: ../inc/sys/core-hacks.class.php:366 ../inc/sys/core-hacks.class.php:368
 #: ../inc/sys/core-hacks.class.php:468 ../inc/sys/core-hacks.class.php:470
-#: ../templates/admin/meta-boxes/views/html-order-shipping.php:36
-#: ../templates/admin/meta-boxes/views/html-order-shipping.php:38
+#: ../templates/admin/meta-boxes/views/html-order-shipping.php:42
+#: ../templates/admin/meta-boxes/views/html-order-shipping.php:44
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:286
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:288
 msgid "Other"
@@ -2669,11 +2669,11 @@ msgstr ""
 msgid "Optional"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-shipping.php:17
+#: ../templates/admin/meta-boxes/views/html-order-shipping.php:23
 msgid "Shipping Name"
 msgstr ""
 
-#: ../templates/admin/meta-boxes/views/html-order-shipping.php:19
+#: ../templates/admin/meta-boxes/views/html-order-shipping.php:25
 msgid "Shipping Method"
 msgstr ""
 

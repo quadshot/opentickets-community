@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenTickets Community Edition v1.10.15\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-19 12:08-0800\n"
-"PO-Revision-Date: 2015-05-19 12:08-0800\n"
+"POT-Creation-Date: 2015-05-26 09:56-0800\n"
+"PO-Revision-Date: 2015-05-26 09:56-0800\n"
 "Last-Translator: intruder <h.theuer@online.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -791,7 +791,8 @@ msgstr "Veröffentlichungsdatum:"
 
 # @ opentickets-community-edition
 #: inc/core/post-type.class.php:1415
-msgid "Januaray"
+#, fuzzy
+msgid "January"
 msgstr "Januar"
 
 # @ opentickets-community-edition
@@ -1616,7 +1617,7 @@ msgstr "Rabatt nach Steuer - Benutzerdefiniert."
 # @ opentickets-community-edition
 #: inc/sys/core-hacks.class.php:324
 #: templates/admin/meta-boxes/views/html-order-items.php:162
-#: templates/admin/meta-boxes/views/html-order-shipping.php:14
+#: templates/admin/meta-boxes/views/html-order-shipping.php:20
 msgid "Shipping"
 msgstr "Versand"
 
@@ -1648,7 +1649,7 @@ msgstr "Methode:"
 # @ opentickets-community-edition
 # @ woocommerce
 #: inc/sys/core-hacks.class.php:346 inc/sys/core-hacks.class.php:452
-#: templates/admin/meta-boxes/views/html-order-shipping.php:20
+#: templates/admin/meta-boxes/views/html-order-shipping.php:26
 #: templates/order/order-details.php:126 templates/order/order-details.php:141
 #: woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:272
 msgid "N/A"
@@ -1658,8 +1659,8 @@ msgstr "n.V."
 # @ woocommerce
 #: inc/sys/core-hacks.class.php:366 inc/sys/core-hacks.class.php:368
 #: inc/sys/core-hacks.class.php:468 inc/sys/core-hacks.class.php:470
-#: templates/admin/meta-boxes/views/html-order-shipping.php:36
-#: templates/admin/meta-boxes/views/html-order-shipping.php:38
+#: templates/admin/meta-boxes/views/html-order-shipping.php:42
+#: templates/admin/meta-boxes/views/html-order-shipping.php:44
 #: woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:286
 #: woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:288
 msgid "Other"
@@ -3505,12 +3506,12 @@ msgid "Optional"
 msgstr "Optional"
 
 # @ opentickets-community-edition
-#: templates/admin/meta-boxes/views/html-order-shipping.php:17
+#: templates/admin/meta-boxes/views/html-order-shipping.php:23
 msgid "Shipping Name"
 msgstr "Versandname"
 
 # @ opentickets-community-edition
-#: templates/admin/meta-boxes/views/html-order-shipping.php:19
+#: templates/admin/meta-boxes/views/html-order-shipping.php:25
 msgid "Shipping Method"
 msgstr "Versand-Methode"
 
