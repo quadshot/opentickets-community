@@ -15,7 +15,7 @@ body { margin:0; background-color:white; }
 .page-wrap .ticket-wrap .inner-wrap { border:1px solid #555555; padding:10px 10px 17px; position:relative; }
 .page-wrap table { width:100%; }
 .page-wrap table td { vertical-align:top; padding:0; margin:0; border:0; }
-.page-wrap .ot-tiny-logo { position:absolute; margin:1px 0 0 -8px; }
+.page-wrap .ot-tiny-logo { position:absolute; bottom: 0; margin:1px 0 0 -8px; }
 
 .page-wrap h2 { margin:0 0 3px 0; padding:0; }
 

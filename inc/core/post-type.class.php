@@ -270,7 +270,7 @@ class qsot_post_type {
 		$formula = str_replace('+', '-', $formula);
 		$formula = preg_replace('#(-)\s*(\d)#', '\1\2', $formula);
 		$formula = preg_replace('#(^|\s+)(?<!-)(\d+)#', '\1-\2', $formula);
-		
+
 		$stime = strtotime($start);
 		$stop_time = strtotime($formula, $stime);
 		if ($stop_time === false) $stop_time = $stime;
@@ -567,7 +567,7 @@ class qsot_post_type {
 	}
 
 	// always register our scripts and styles before using them. it is good practice for future proofing, but more importantly, it allows other plugins to use our js if needed.
-	// for instance, if an external plugin wants to load something after our js, like a takeover js, they will have access to see our js before we actually use it, and will 
+	// for instance, if an external plugin wants to load something after our js, like a takeover js, they will have access to see our js before we actually use it, and will
 	// actually be able to use it as a dependency to their js. if the js is not yet declared, you cannot use it as a dependency.
 	public static function register_assets() {
 		$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
@@ -591,7 +591,7 @@ class qsot_post_type {
 	// need three main statuses for events.
 	// Published - obvious, and needs no explanation
 	// Private - Admin Only equivalent. this is a status that only editors and above can see when searching or browsing to the permalink. we will extend this to affect the calendar and grids also.
-	// Hidden (new) - only logged in users can see this, and only if they know the permalink. security by obscurity. 
+	// Hidden (new) - only logged in users can see this, and only if they know the permalink. security by obscurity.
 	// CHANGE 6-27-13: Hidden should be completely public to anyone with the url, regardless of logged in status
 	public static function register_post_statuses() {
 		$slug = 'hidden'; // status name
@@ -599,7 +599,7 @@ class qsot_post_type {
 		$args = array(
 			'label' => _x('Hidden', 'post', 'qsot'), // nice label for the admin
 			// @WHY-PUBLIC
-			// though this is actually a 'private' type, which would otherwise be hidden, we must make it public. the reason is because core wordpress at 3.5.2 does not currently have a method to 
+			// though this is actually a 'private' type, which would otherwise be hidden, we must make it public. the reason is because core wordpress at 3.5.2 does not currently have a method to
 			// clearly define rules for post statuses. so in order to bypass the core filtering in the WP_Query::get_posts(), which determines the visibility of a post (query.php@3.5.1 on line 2699),
 			// so that we can make our own fancy filtering code, we MUST make it public, and then post-filter it.
 			'public' => true,
@@ -607,7 +607,7 @@ class qsot_post_type {
 			// @WHY-NOT-EXCLUDE-FROM-SEARCH
 			// again, this seems counter intuitive, but it is needed. currently serves a dual purpose. purpose #1: in our event ui interface, we have a settable field called 'visibility' (aka status)
 			// which queries WP for all post statuses that meet a list of specific criteria. one of those is that it is searchable, because we want to exclude several post statuses from that list
-			// which are not search able. making this true would defeat the purpose of adding it, for that reason alone. purpose #2: again because core WP does not have a good way to granularly 
+			// which are not search able. making this true would defeat the purpose of adding it, for that reason alone. purpose #2: again because core WP does not have a good way to granularly
 			// control what a post status does, we must make our status by pass core WP filtering so that we can do our own filtering. we need this status to be searchable by users with the
 			// read_private_pages capability, but not to anyone without read_private_pages permissions. to do this we need to allow WP add it to the SQL query for everyone, and then filter it out
 			// manually for those who cant use it.
@@ -622,11 +622,11 @@ class qsot_post_type {
 
 	// as discussed above, in the post_status declaration (marked @WHY-NOT-EXCLUDE-FROM-SEARCH), we need to allow WP to add the hidden status to all relevant queries, and then filter it out
 	// again for users that it does not apply to. since we want anyone with the read_private_pages to be able to see it, but anyone without to not see it, we need it there by default (so we don't
-	// have to modify core WP) and then filter it out for anyone cannot see it. to do this we need to assert specific conditions are true, and if they do not pass, we need to filter out 
+	// have to modify core WP) and then filter it out for anyone cannot see it. to do this we need to assert specific conditions are true, and if they do not pass, we need to filter out
 	// the status from the query.
 	public static function hide_hidden_posts_where($where, &$query) {
 		// first, before thinking about making changes to the query, make sure that we are actually querying for our event post type. there are two cases where our event post type could be
-		// being queried for, but we are only concerned with one. i'll explain both. the one we are not concerned with: if the where clause does not specifically filter for post_type, then 
+		// being queried for, but we are only concerned with one. i'll explain both. the one we are not concerned with: if the where clause does not specifically filter for post_type, then
 		// we could technically get an event post in the result. we are not concerned with this, because, except for some rare outlier situations and intentional circumventing of this rule,
 		// the only time that a query should not specifically filter for post_type is when we are visiting a 'single' page, which we have a separate software driven filter for. THE ONE WE DO
 		// CARE ABOUT: when the where clause implicitly states that we are querying by post_type. in this case, we are most likely doing a search or on some sort of list page. when that is
@@ -673,7 +673,7 @@ class qsot_post_type {
 				'singular' => __('Event','opentickets-community-edition'), // singular version of the proper name, used in the slightly modified labels in my _register_post_type method
 			),
 			'args' => array( // almost all of these are passed through to the core regsiter_post_type function, and follow the same guidelines defined on wordpress.org
-				'public' => true, 
+				'public' => true,
 				'menu_position' => 21.1,
 				'supports' => array(
 					'title',
@@ -894,7 +894,7 @@ class qsot_post_type {
 						$updates[] = array(
 							'post_arr' => wp_parse_args(array(
 								'ID' => $tmp->post_id, // be sure to set the id of the post to update, otherwise we get a completely new post
-								'post_title' => sprintf(__('%s on %s @ %s','qsot'), $post->post_title, date( $date_format, $d), date('g:ia', $d)), // create a pretty proper title
+								'post_title' => sprintf(__('%s on %s @ %s','opentickets-community-edition'), $post->post_title, date( $date_format, $d), date(__('g:ia','opentickets-community-edition'), $d)), // create a pretty proper title
 								'post_status' => in_array( $tmp->visibility, array( 'public', 'protected' ) ) ? $tmp->status : $tmp->visibility, // set the post status of the event
 								'post_password' => 'protected' == $tmp->visibility ? $tmp->password : '', // protected events have passwords
 								'post_name' => $tmp->title, // use that normalized title we made earlier, as to create a pretty url
@@ -946,8 +946,8 @@ class qsot_post_type {
 							// add the settings to the list of posts to update
 							$updates[] = array(
 								'post_arr' => wp_parse_args(array(
-									'ID' => $exist->ID, // be sure to set the post_id so that we don't create a new post 
-									'post_title' => sprintf(__('%s on %s @ %s','qsot'), $post->post_title, date( $date_format, $d), date('g:ia', $d)), // make a pretty title to describe the event
+									'ID' => $exist->ID, // be sure to set the post_id so that we don't create a new post
+									'post_title' => sprintf(__('%s on %s @ %s','opentickets-community-edition'), $post->post_title, date( $date_format, $d), date(__('g:ia','opentickets-community-edition'), $d)),// make a pretty title to describe the event
 									'post_name' => $tmp->title, // use the normalized event slug for pretty urls
 									'post_status' => in_array( $tmp->visibility, array( 'public', 'protected' ) ) ? $tmp->status : $tmp->visibility, // set the post status of the event
 									'post_password' => 'protected' == $tmp->visibility ? $tmp->password : '', // protected events have passwords
@@ -964,7 +964,7 @@ class qsot_post_type {
 						}
 					}
 				}
-				
+
 				// if there are still un matched sub event settings (always will be on new events with sub events)
 				if (count($need_lookup)) {
 					// cycle through them
@@ -977,7 +977,7 @@ class qsot_post_type {
 						// add the settings to the list of posts to update/insert
 						$updates[] = array(
 							'post_arr' => wp_parse_args(array( // will INSERT because there is no post_id
-								'post_title' => sprintf(__('%s on %s @ %s','qsot'), $post->post_title, date( $date_format, $d), date('g:ia', $d)), // create a pretty title
+								'post_title' => sprintf(__('%s on %s @ %s','opentickets-community-edition'), $post->post_title, date( $date_format, $d), date(__('g:ia','opentickets-community-edition'), $d)), // create a pretty title
 								'post_name' => $data->title, // user pretty url slug
 								'post_status' => in_array( $tmp->visibility, array( 'public', 'protected' ) ) ? $tmp->status : $tmp->visibility, // set the post status of the event
 								'post_password' => 'protected' == $tmp->visibility ? $tmp->password : '', // protected events have passwords
@@ -1034,7 +1034,7 @@ class qsot_post_type {
 			// update the start and end time fo the parent event
 			$current_start = get_post_meta($post_id, self::$o->{'meta_key.start'}, true);
 			$current_end = get_post_meta($post_id, self::$o->{'meta_key.end'}, true);
-			
+
 			@list($actual_start, $actual_end) = apply_filters('qsot-event-date-range', array(), array('event_id' => $post_id));
 
 			$submit_start_date = $submit_end_date = array();
@@ -1117,7 +1117,7 @@ class qsot_post_type {
 	public static function mb_event_run_date_range($post, $mb) {
 		@list($start, $start_time) = explode(' ', get_post_meta($post->ID, '_start', true));
 		@list($end, $end_time) = explode(' ', get_post_meta($post->ID, '_end', true));
-		
+
 		?>
 			<style>
 				#event-run-date-range .field-wrap { margin-bottom:6px; }
@@ -1136,7 +1136,7 @@ class qsot_post_type {
 											frmt="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>" />
 									<input type="hidden" name="_qsot_start_date" value="<?php echo esc_attr($start) ?>" />
 								</td>
-								<td width="1%">@</td>
+								<td width="1%"><?php _e('@','opentickets-community-edition') ?></td>
 								<td width="39%">
 									<input type="text" class="widefat use-timepicker" name="_qsot_start_time" value="<?php echo esc_attr($start_time) ?>" />
 								</td>
@@ -1193,7 +1193,7 @@ class qsot_post_type {
 											<input type="hidden" name="end-date" value="<?php echo date( __( 'Y-m-d', 'opentickets-community-edition' ), $now ) ?>" />
 											<input type="text" class="time-text" name="end-time" value="<?php echo date(__('h:ia','opentickets-community-edition'), $end) ?>" title="<?php _e('End Time','opentickets-community-edition') ?>" />
 										</div>
-										
+
 										<div class="event-settings-block subsub">
 											<span class="cb-wrap">
 												<input type="checkbox" name="repeat" value="1" class="togvis" tar=".repeat-options" scope=".option-sub" auto="auto" />
@@ -1412,7 +1412,7 @@ class qsot_post_type {
 														<input type="hidden" name="pub_date" value="" />
 														<div class="date-edit" tar="[name='pub_date']" scope="[rel='setting-form']">
 															<select rel="month">
-																<option value="1">01 - <?php _e('Januaray','opentickets-community-edition') ?></option>
+																<option value="1">01 - <?php _e('January','opentickets-community-edition') ?></option>
 																<option value="2">02 - <?php _e('February','opentickets-community-edition') ?></option>
 																<option value="3">03 - <?php _e('March','opentickets-community-edition') ?></option>
 																<option value="4">04 - <?php _e('April','opentickets-community-edition') ?></option>
@@ -1425,9 +1425,9 @@ class qsot_post_type {
 																<option value="11">11 - <?php _e('November','opentickets-community-edition') ?></option>
 																<option value="12">12 - <?php _e('December','opentickets-community-edition') ?></option>
 															</select>
-															<input type="text" rel="day" value="" size="2" />, 
-															<input type="text" rel="year" value="" size="4" class="year" /> <?php _e('@','opentickets-community-edition') ?> 
-															<input type="text" rel="hour" value="" size="2" /> : 
+															<input type="text" rel="day" value="" size="2" />,
+															<input type="text" rel="year" value="" size="4" class="year" /> <?php _e('@','opentickets-community-edition') ?>
+															<input type="text" rel="hour" value="" size="2" /> :
 															<input type="text" rel="minute" value="" size="2" />
 														</div>
 														<div class="edit-setting-actions">
@@ -1557,7 +1557,7 @@ class qsot_post_type {
 			'options' => array(
 				'above' => __( 'Above the Ticket Selection UI', 'opentickets-community-edition' ),
 				'below' => __( 'Below the Ticket Selection UI', 'opentickets-community-edition' ),
-			),   
+			),
 			'default' => 'below',
 		) );
 

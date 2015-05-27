@@ -66,15 +66,14 @@ $multiple = $ticket->order_item['qty'] > 1;
 									<td class="personalization right">
 										<ul>
 											<?php if ( $ticket->show_order_number ): ?>
-												<li><?php _e('ORDER #','opentickets-community-edition'); echo $ticket->order->id ?></li>
+												<li><?php _e('ORDER #','opentickets-community-edition'); echo ' ' .$ticket->order->id ?></li>
 											<?php endif; ?>
 											<li><?php echo ucwords( implode( ' ', $ticket->names ) ) ?></li>
-											<li>
-												<?php echo $ticket->product->get_title() ?>
-												<?php if ($ticket->order_item['qty'] > 1): ?>
+											<li><?php echo $ticket->product->get_title() ?></li>
+											<li><?php if ($ticket->order_item['qty'] > 1): ?>
 													[<?php echo $index+1 ?> of <?php echo $ticket->order_item['qty'] ?>]
-												<?php endif; ?>
-												(<?php echo $ticket->product->get_price_html() ?>)
+												<?php endif; ?></li>
+											<li>(<?php echo $ticket->product->get_price_html() ?>)
 											</li>
 											<?php do_action( 'qsot-ticket-information', $ticket, $multiple ); ?>
 										</ul>
@@ -82,9 +81,29 @@ $multiple = $ticket->order_item['qty'] > 1;
 								</tr>
 							</tbody>
 						</table>
+						<table>
+						<tbody>
+						<tr><td>
 						<a href="<?php echo esc_attr( QSOT::product_url() ) ?>" title="<?php _e('Who is OpenTickets?','opentickets-community-edition') ?>">
-							<img src="<?php echo esc_attr( QSOT::plugin_url() . 'assets/imgs/opentickets-tiny.jpg' ) ?>" class="ot-tiny-logo" />
-						</a>
+							<img src="<?php echo esc_attr( QSOT::plugin_url() . 'assets/imgs/loers-ticket.png' ) ?>" class="ot-tiny-logo" />
+						</a></td><td valign="bottom">
+						<a href="<?php echo esc_attr( QSOT::product_url() ) ?>" title="<?php _e('Who is OpenTickets?','opentickets-community-edition') ?>">
+													<img src="<?php echo esc_attr( QSOT::plugin_url() . 'assets/imgs/opentickets-tiny.jpg' ) ?>" class="ot-tiny-logo" />
+						</a></td><td>
+						<a href="<?php echo esc_attr( QSOT::product_url() ) ?>" title="<?php _e('Who is OpenTickets?','opentickets-community-edition') ?>">
+													<img align="bottom" src="<?php echo esc_attr( QSOT::plugin_url() . 'assets/imgs/opentickets-tiny.jpg' ) ?>" class="ot-tiny-logo" />
+						</a></td><td>
+						<a href="<?php echo esc_attr( QSOT::product_url() ) ?>" title="<?php _e('Who is OpenTickets?','opentickets-community-edition') ?>">
+													<img src="<?php echo esc_attr( QSOT::plugin_url() . 'assets/imgs/opentickets-tiny.jpg' ) ?>" class="ot-tiny-logo" />
+						</a></td><td>
+						<a href="<?php echo esc_attr( QSOT::product_url() ) ?>" title="<?php _e('Who is OpenTickets?','opentickets-community-edition') ?>">
+													<img src="<?php echo esc_attr( QSOT::plugin_url() . 'assets/imgs/opentickets-tiny.jpg' ) ?>" class="ot-tiny-logo" />
+						</a></td><td>
+						<a href="<?php echo esc_attr( QSOT::product_url() ) ?>" title="<?php _e('Who is OpenTickets?','opentickets-community-edition') ?>">
+													<img src="<?php echo esc_attr( QSOT::plugin_url() . 'assets/imgs/opentickets-tiny.jpg' ) ?>" class="ot-tiny-logo" />
+						</a></td></tr>
+						</tbody>
+						</table>
 					</div>
 				</div>
 			<?php endfor; ?>
