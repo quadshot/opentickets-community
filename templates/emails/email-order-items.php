@@ -30,7 +30,7 @@ foreach ( $items as $item_id => $item ) :
 
 			// SKU
 			if ( $show_sku && is_object( $_product ) && $_product->get_sku() ) {
-				echo ' (#' . $_product->get_sku() . ')';
+				echo ' (' . __('#', 'opentickets-community-edition' ) . $_product->get_sku() . ')';
 			}
 
 			// File URLs
