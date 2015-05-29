@@ -8,7 +8,7 @@ class QSOT_QRImage {
 		ob_start();
 
 		// get the image
-		$image = self::image( $frame, $pixelPerPoint, $outerFrame );
+		list( $image, $w, $h ) = self::image( $frame, $pixelPerPoint, $outerFrame );
 		
 		// output the raw image data
 		ImageJpeg($image, null, $q);
@@ -21,7 +21,7 @@ class QSOT_QRImage {
 		ob_end_clean();
 
 		// encode and return
-		return 'data:image/jpg;base64,' . base64_encode( $out );
+		return array( 'data:image/jpg;base64,' . base64_encode( $out ), $w, $h );
 	}
 
 	// copied and reformatted function from qrimage::image (also elevated visibility)
@@ -51,6 +51,6 @@ class QSOT_QRImage {
 		ImageCopyResized( $target_image, $base_image, 0, 0, 0, 0, $imgW * $pixelPerPoint, $imgH * $pixelPerPoint, $imgW, $imgH );
 		ImageDestroy( $base_image );
 		
-		return $target_image;
+		return array( $target_image, $imgW, $imgH );
 	}
 }

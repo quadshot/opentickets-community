@@ -153,7 +153,6 @@ class QSOT_checkin {
 			// if this is NOT a PDF request, then allow the image srcs to be externally loadable assets, so that they can be cached locally for the user
 			if ( ! $is_pdf ) {
 				// craft the qr generator url
-				$img_url = self::_qr_img( $url );
 				$data = array( 'd' => $url, 'p' => site_url() );
 				ksort( $data );
 				$data['sig'] = sha1( NONCE_KEY . @json_encode( $data ) . NONCE_SALT );
@@ -163,19 +162,21 @@ class QSOT_checkin {
 				$ticket->qr_code = sprintf(
 					'<img src="%s%s" alt="%s" />',
 					//$img_url,
-					self::$o->core_url.'libs/phpqrcode/index.php?d=',
-					str_replace( array( '+', '=', '/' ), array( '-', '_', '~' ), base64_encode( strrev( $data ) ) ),
-					$ticket->product->get_title().' ('.$ticket->product->get_price().')'
+					esc_attr( self::$o->core_url . 'libs/phpqrcode/index.php?d=' ),
+					esc_attr( str_replace( array( '+', '=', '/' ), array( '-', '_', '~' ), base64_encode( strrev( $data ) ) ) ),
+					esc_attr( $ticket->product->get_title() . ' (' . $ticket->product->get_price() . ')' )
 				);
 			// if this IS a PDF request, the pdf library works better if we embed the qr image data in the document in base64 encoded form. in some cases, using the alternative produces blank images on the pdf
 			} else {
 				// use a 
-				$img_url = self::_qr_img( $url );
+				$img_data = self::_qr_img( $url );
 
 				// embed the image tag with the base64 encoded images
 				$ticket->qr_code = sprintf(
-					'<img src="%s" alt="%s" />',
-					$img_url,
+					'<img src="%s" width="%s" height="%s" alt="%s" />',
+					esc_attr( $img_data[0] ),
+					esc_attr( $img_data[1] ),
+					esc_attr( $img_data[2] ),
 					$ticket->product->get_title().' ('.$ticket->product->get_price().')'
 				);
 			}
@@ -212,19 +213,21 @@ class QSOT_checkin {
 					// add the image tag to the list of image tags
 					$ticket->qr_codes[ $i ] = sprintf(
 						'<img src="%s%s" alt="%s" />',
-						self::$o->core_url.'libs/phpqrcode/index.php?d=',
-						str_replace( array( '+', '=', '/' ), array( '-', '_', '~' ), base64_encode( strrev( $data ) ) ),
-						$ticket->product->get_title().' ('.$ticket->product->get_price().')'
+						esc_attr( self::$o->core_url . 'libs/phpqrcode/index.php?d=' ),
+						esc_attr( str_replace( array( '+', '=', '/' ), array( '-', '_', '~' ), base64_encode( strrev( $data ) ) ) ),
+						esc_attr( $ticket->product->get_title() . ' (' . $ticket->product->get_price() . ')' )
 					);
 				// if this IS a PDF request, then embed the QR image urls as base64 encoded data strings
 				} else {
 					// compile the qr image url
-					$img_url = self::_qr_img( $url );
+					$img_data = self::_qr_img( $url );
 
 					// add the image tag for this qr to the list of image tags
 					$ticket->qr_codes[ $i ] = sprintf(
-						'<img src="%s" alt="%s" />',
-						$img_url,
+						'<img src="%s" width="%s" height="%s" alt="%s" />',
+						esc_attr( $img_data[0] ),
+						esc_attr( $img_data[1] ),
+						esc_attr( $img_data[2] ),
 						$ticket->product->get_title().' ('.$ticket->product->get_price().')'
 					);
 				}
@@ -261,14 +264,14 @@ class QSOT_checkin {
 			$maxSize = (int)( QR_PNG_MAXIMUM_SIZE / ( count( $tab ) + 2 * $enc->margin ) );
 
 			// render the image
-			$img_url = QSOT_QRimage::jpg_base64( $tab, min( max( 1, $enc->size ), $maxSize ), $enc->margin, 100 );
+			$img_data = QSOT_QRimage::jpg_base64( $tab, min( max( 1, $enc->size ), $maxSize ), $enc->margin, 100 );
 		} catch (Exception $e) {
-			$img_url = 'data:image/jpeg;base64,';
+			$img_data = array( 'data:image/jpeg;base64,', 0, 0 );
 			// log any exceptions
 			QRtools::log($outfile, $e->getMessage());
 		}
 
-		return $img_url;
+		return $img_data;
 	}
 
 	// create the packed that is used in the checkin process. this is a stringified version of all the information needed to check a user in
