@@ -10,10 +10,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<td class="name">
 		<div class="view">
-			<?php echo ! empty( $item['name'] ) ? esc_html( $item['name'] ) : __( 'Fee','opentickets-community-edition' ); ?>
+			<?php echo ! empty( $item['name'] ) ? esc_html( $item['name'] ) : __( 'Fee', 'woocommerce' ); ?>
 		</div>
 		<div class="edit" style="display: none;">
-			<input type="text" placeholder="<?php _e( 'Fee Name', 'opentickets-community-edition' ); ?>" name="order_item_name[<?php echo absint( $item_id ); ?>]" value="<?php echo ( isset( $item['name'] ) ) ? esc_attr( $item['name'] ) : ''; ?>" />
+			<input type="text" placeholder="<?php _e( 'Fee Name', 'woocommerce' ); ?>" name="order_item_name[<?php echo absint( $item_id ); ?>]" value="<?php echo ( isset( $item['name'] ) ) ? esc_attr( $item['name'] ) : ''; ?>" />
 			<input type="hidden" class="order_item_id" name="order_item_id[]" value="<?php echo esc_attr( $item_id ); ?>" />
 			<input type="hidden" name="order_item_tax_class[<?php echo absint( $item_id ); ?>]" value="<?php echo isset( $item['tax_class'] ) ? esc_attr( $item['tax_class'] ) : ''; ?>" />
 		</div>
@@ -21,6 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<?php do_action( 'woocommerce_admin_order_item_values', null, $item, absint( $item_id ) ); ?>
 
+	<td class="item_cost" width="1%">&nbsp;</td>
 	<td class="quantity" width="1%">&nbsp;</td>
 
 	<td class="line_cost" width="1%">
@@ -28,8 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php
 				echo ( isset( $item['line_total'] ) ) ? wc_price( wc_round_tax_total( $item['line_total'] ) ) : '';
 
-				/*@@@@LOUSHOU - backwards compatibility */
-				if ( is_callable(array(&$order, 'get_total_refunded_for_item')) && $refunded = $order->get_total_refunded_for_item( $item_id, 'fee' ) ) {
+				if ( $refunded = $order->get_total_refunded_for_item( $item_id, 'fee' ) ) {
 					echo '<small class="refunded">-' . wc_price( $refunded ) . '</small>';
 				}
 			?>
@@ -43,16 +43,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</td>
 
 	<?php
-		if ( isset( $legacy_order ) && ! $legacy_order && 'yes' == get_option( 'woocommerce_calc_taxes' ) ) :
+		if ( empty( $legacy_order ) && wc_tax_enabled() ) :
 			$line_tax_data = isset( $item['line_tax_data'] ) ? $item['line_tax_data'] : '';
 			$tax_data      = maybe_unserialize( $line_tax_data );
 
 			foreach ( $order_taxes as $tax_item ) :
 				$tax_item_id       = $tax_item['rate_id'];
 				$tax_item_total    = isset( $tax_data['total'][ $tax_item_id ] ) ? $tax_data['total'][ $tax_item_id ] : '';
-
 				?>
-
 					<td class="line_tax" width="1%">
 						<div class="view">
 							<?php
@@ -64,10 +62,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 							?>
 						</div>
 						<div class="edit" style="display: none;">
-							<input type="text" name="line_tax[<?php echo absint( $item_id ); ?>][<?php echo absint( $tax_item_id ); ?>]" placeholder="<?php echo wc_format_localized_price( 0 ); ?>" value="<?php echo ( isset( $tax_item_total ) ) ? esc_attr( wc_format_localized_price( $tax_item_total ) ) : ''; ?>" class="line_tax wc_input_price" />
+							<input type="text" name="line_tax[<?php echo absint( $item_id ); ?>][<?php echo esc_attr( $tax_item_id ); ?>]" placeholder="<?php echo wc_format_localized_price( 0 ); ?>" value="<?php echo ( isset( $tax_item_total ) ) ? esc_attr( wc_format_localized_price( $tax_item_total ) ) : ''; ?>" class="line_tax wc_input_price" />
 						</div>
 						<div class="refund" style="display: none;">
-							<input type="text" name="refund_line_tax[<?php echo absint( $item_id ); ?>][<?php echo absint( $tax_item_id ); ?>]" placeholder="<?php echo wc_format_localized_price( 0 ); ?>" class="refund_line_tax wc_input_price" data-tax_id="<?php echo absint( $tax_item_id ); ?>" />
+							<input type="text" name="refund_line_tax[<?php echo absint( $item_id ); ?>][<?php echo esc_attr( $tax_item_id ); ?>]" placeholder="<?php echo wc_format_localized_price( 0 ); ?>" class="refund_line_tax wc_input_price" data-tax_id="<?php echo esc_attr( $tax_item_id ); ?>" />
 						</div>
 					</td>
 
@@ -79,9 +77,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<?php do_action( 'woocommerce_admin_after_order_item_values', null, $item, absint( $item_id ) ); /*@@@@LOUSHOU - add columns at the end of the values list */ ?>
 
 	<td class="wc-order-edit-line-item">
-		<?php if ( !is_callable(array(&$order, 'is_editable')) ): /*@@@@LOUSHOU - backwards compatibility */ ?>
-			<a class="edit_order_item" href="#"><img src="<?php echo WC()->plugin_url(); ?>/assets/images/icons/edit.png" alt="<?php _e('Edit','opentickets-community-edition') ?>" width="14" /></a>
-		<?php elseif ( $order->is_editable() ) : ?>
+		<?php if ( $order->is_editable() ) : ?>
 			<div class="wc-order-edit-line-item-actions">
 				<a class="edit-order-item" href="#"></a><a class="delete-order-item" href="#"></a>
 			</div>
