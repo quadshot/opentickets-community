@@ -1,24 +1,29 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: OpenTickets Community Edition\n"
-"POT-Creation-Date: 2015-05-26 09:57-0800\n"
-"PO-Revision-Date: 2015-05-26 09:57-0800\n"
+"Project-Id-Version: OpenTickets Community Edition v1.10.19\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-05-29 07:08-0800\n"
+"PO-Revision-Date: 2015-05-29 07:08-0800\n"
 "Last-Translator: Dino Termini <dino@quadshot.com>\n"
 "Language-Team: \n"
-"Language: it_IT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Poedit 1.5.7\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
 "X-Poedit-Basepath: .\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-KeywordsList: __;_e;_x\n"
+"X-Textdomain-Support: yes\n"
 "X-Poedit-SearchPath-0: ..\n"
 
+# @ opentickets-community-edition
 #: ../launcher.php:195
 msgid "Required Plugin Not Up-to-date"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../launcher.php:198
 #, php-format
 msgid ""
@@ -33,10 +38,12 @@ msgid ""
 "em>."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../launcher.php:216
 msgid "Missing Required Plugin"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../launcher.php:219
 #, php-format
 msgid ""
@@ -49,16 +56,19 @@ msgid ""
 "target=\"_blank\">WooCommerce</a></em>."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../opentickets.php:116
 #, php-format
 msgid ""
 "<a href=\"%s\" title=\"Visit the License Key settings page\">Settings</a>"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../opentickets.php:361
 msgid "Memory Requirement Problem"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../opentickets.php:389
 #, php-format
 msgid ""
@@ -72,6 +82,7 @@ msgid ""
 "requirement, we will turn OpenTickets back on automatically."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../opentickets.php:399
 #, php-format
 msgid ""
@@ -82,60 +93,73 @@ msgid ""
 "recommended amount, or do not wish to, then simply ignore this message."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../opentickets.php:520
 #, php-format
 msgid "Could not compile stylesheet %s. [%s]"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../opentickets.php:523
 #, php-format
 msgid "Could not write to stylesheet file %s."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../opentickets.php:527
 #, php-format
 msgid "Could not write colors to file %s. [%s]"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/core/calendar.class.php:127
 msgid "OpenTickets Calendar"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/core/calendar.class.php:151
 msgid "Non-JS Calendar Page"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/core/calendar.class.php:152
 msgid ""
 "Widget area on calendar template that shows when a user does not have "
 "javascript enabled."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/core/calendar.class.php:208
 msgid "Calendar Settings"
 msgstr "Impostazioni Calendario"
 
+# @ opentickets-community-edition
 #: ../inc/core/calendar.class.php:326
 msgid "Ended"
 msgstr "Finito"
 
+# @ opentickets-community-edition
 #: ../inc/core/calendar.class.php:360 ../inc/core/calendar.class.php:408
 msgid "Today"
 msgstr "Oggi"
 
+# @ opentickets-community-edition
 #: ../inc/core/calendar.class.php:361 ../inc/core/calendar.class.php:409
 msgid "Date of next Event"
 msgstr "Prossimo evento"
 
+# @ opentickets-community-edition
 #: ../inc/core/calendar.class.php:362 ../inc/core/calendar.class.php:386
 #: ../inc/core/calendar.class.php:387 ../inc/core/calendar.class.php:410
 msgid "Manually entered date"
 msgstr "Data manuale"
 
+# @ opentickets-community-edition
 #: ../inc/core/calendar.class.php:374
 msgid "Starting Date Method"
 msgstr "Metodo della data d'inizio"
 
+# @ opentickets-community-edition
 #: ../inc/core/calendar.class.php:389 ../inc/core/post-type.class.php:1135
 #: ../inc/core/post-type.class.php:1156 ../inc/core/post-type.class.php:1186
 #: ../inc/core/post-type.class.php:1192 ../inc/core/post-type.class.php:1275
@@ -144,6 +168,7 @@ msgstr "Metodo della data d'inizio"
 msgid "m-d-Y"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/core/calendar.class.php:390 ../inc/core/post-type.class.php:1136
 #: ../inc/core/post-type.class.php:1157 ../inc/core/post-type.class.php:1185
 #: ../inc/core/post-type.class.php:1191 ../inc/core/post-type.class.php:1274
@@ -151,48 +176,59 @@ msgstr ""
 msgid "mm-dd-yy"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/core/calendar.class.php:473 ../inc/core/calendar.class.php:497
 msgid "Event Calendar"
 msgstr "Calendario"
 
+# @ opentickets-community-edition
 #: ../inc/core/calendar.class.php:491
 msgid "Event Pages"
 msgstr "Pagine"
 
+# @ opentickets-community-edition
 #: ../inc/core/calendar.class.php:493
 msgid "These pages are used to display the upcoming events."
 msgstr "Queste pagine servono a mostrare i prossimi eventi."
 
+# @ opentickets-community-edition
 #: ../inc/core/calendar.class.php:498
 msgid "Page to display the calendar of upcoming events."
 msgstr "Pagina con il calendario dei prossimi eventi."
 
+# @ opentickets-community-edition
 #: ../inc/core/event-reporting.class.php:37
 msgid "Download CSV"
 msgstr "Scarica CSV"
 
+# @ opentickets-community-edition
 #: ../inc/core/event-reporting.class.php:44
 msgid "Printer Friendly Version"
 msgstr "Versione per la stampa"
 
+# @ opentickets-community-edition
 #: ../inc/core/event-reporting.class.php:110
 msgid "Network Admin"
 msgstr "Amministrazione Globale"
 
+# @ opentickets-community-edition
 #: ../inc/core/event-reporting.class.php:112
 msgid "Global Dashboard"
 msgstr "Pannello Globale"
 
+# @ opentickets-community-edition
 #: ../inc/core/event-reporting.class.php:117
 #, php-format
 msgid "%1$s &#8212; WordPress"
 msgstr "%1$s &#8212; WordPress"
 
+# @ opentickets-community-edition
 #: ../inc/core/event-reporting.class.php:119
 #, php-format
 msgid "%1$s &lsaquo; %2$s &#8212; WordPress"
 msgstr "%1$s &lsaquo; %2$s &#8212; WordPress"
 
+# @ opentickets-community-edition
 #: ../inc/core/event-reporting.class.php:249
 #, php-format
 msgid ""
@@ -203,12 +239,14 @@ msgstr ""
 "permessi per '%s' consentano al server web di creare una directory, e "
 "riprovare."
 
+# @ opentickets-community-edition
 #: ../inc/core/event-reporting.class.php:318
 msgid "An un expected error occurred during report generation."
 msgstr ""
 "Si &egrave; verificato un errore inatteso durante la generazione del "
 "rapporto."
 
+# @ opentickets-community-edition
 #: ../inc/core/event-reporting.class.php:335
 msgid ""
 "Could not find the report result template. Below is the list of raw CSV "
@@ -217,38 +255,47 @@ msgstr ""
 "Impossibile trovare il template per il rapport. Di seguito &egrave; mostrato "
 "il rapporto CSV."
 
+# @ opentickets-community-edition
 #: ../inc/core/event-reporting.class.php:340
 msgid "View report for"
 msgstr "Mastra rapporto per"
 
+# @ opentickets-community-edition
 #: ../inc/core/event-reporting.class.php:341
 msgid "Report for"
 msgstr "Rapporto per"
 
+# @ opentickets-community-edition
 #: ../inc/core/event-reporting.class.php:368
 msgid "(unknown)"
 msgstr "(sconosciuto)"
 
+# @ opentickets-community-edition
 #: ../inc/core/event-reporting.class.php:368
 msgid "-free-"
 msgstr "-gratuito-"
 
+# @ opentickets-community-edition
 #: ../inc/core/my-account-takeover.class.php:45
 msgid "Shows"
 msgstr "Spettacoli"
 
+# @ opentickets-community-edition
 #: ../inc/core/my-account-takeover.class.php:69
 msgid "(none)"
 msgstr "(nessuno)"
 
+# @ woocommerce
 #: ../inc/core/my-account-takeover.class.php:126
 msgid "Invalid order."
 msgstr "Ordine non valido."
 
+# @ opentickets-community-edition
 #: ../inc/core/my-account-takeover.class.php:126
 msgid "My Account &rarr;"
 msgstr "Il mio profilo &rarr;"
 
+# @ opentickets-community-edition
 #: ../inc/core/my-account-takeover.class.php:137
 #, php-format
 msgid ""
@@ -258,27 +305,33 @@ msgstr ""
 "Ordine <mark class=\"order-number\">%s</mark> inviato il <mark class=\"order-"
 "date\">%s</mark>"
 
+# @ opentickets-community-edition
 #: ../inc/core/my-account-takeover.class.php:138
 #, php-format
 msgid "Order status: <mark class=\"order-status\">%s</mark>"
 msgstr "Stato ordine: <mark class=\"order-status\">%s</mark>"
 
+# @ opentickets-community-edition
 #: ../inc/core/my-account-takeover.class.php:144
 msgid "Order Updates"
 msgstr "Aggiornamenti ordine"
 
+# @ opentickets-community-edition
 #: ../inc/core/my-account-takeover.class.php:150
 msgid "l jS \\of F Y, h:ia"
 msgstr "l jS \\di F Y, H:i"
 
+# @ opentickets-community-edition
 #: ../inc/core/my-account-takeover.class.php:315
 msgid "My Account Page"
 msgstr "Il mio profilo"
 
+# @ opentickets-community-edition
 #: ../inc/core/my-account-takeover.class.php:324
 msgid "Display Upcoming Tickets"
 msgstr "Prossimi biglietti"
 
+# @ opentickets-community-edition
 #: ../inc/core/my-account-takeover.class.php:325
 msgid ""
 "Format to display the upcoming tickets list in. The list appears on the end "
@@ -287,87 +340,126 @@ msgstr ""
 "Formato della lista dei biglietti. Questa lista viene mostrata nella pagina "
 "del profilo utente."
 
+# @ opentickets-community-edition
 #: ../inc/core/my-account-takeover.class.php:327
 msgid "By Event"
 msgstr "Per evento"
 
+# @ opentickets-community-edition
 #: ../inc/core/my-account-takeover.class.php:328
 msgid "As Line Item List"
 msgstr "Per riga"
 
+# @ opentickets-community-edition
 #: ../inc/core/my-account-takeover.class.php:345
 msgid "Infinite Login"
 msgstr "Login permanente"
 
+# @ opentickets-community-edition
 #: ../inc/core/my-account-takeover.class.php:346
 msgid "Once a user logs in, they stay logged in, forever."
 msgstr "Una volta autenticato, l'utente rimane tale a tempo indeterminato."
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:143 ../inc/core/post-type.class.php:673
 #: ../inc/reporting/seating.report.class.php:500
 msgid "Event"
 msgstr "Evento"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:160
 msgid "View this event"
 msgstr "Mostra evento"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:300 ../inc/core/post-type.class.php:672
 msgid "Events"
 msgstr "Eventi"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:328
 msgid "Top Level Events"
 msgstr "Eventi principali"
 
-#: ../inc/core/post-type.class.php:600 ../inc/core/post-type.class.php:1391
+# @ qsot
+#: ../inc/core/post-type.class.php:600
+msgctxt "post"
 msgid "Hidden"
-msgstr "Nascosto"
+msgstr ""
 
+# @ opentickets-community-edition
+#: ../inc/core/post-type.class.php:617
+#, php-format
+msgid "Hidden <span class=\"count\">(%s)</span>"
+msgid_plural "Hidden <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:721
 msgid "MM-dd-yyyy"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:722
 msgid "ddd MM-dd-yyyy"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:723
 msgid "hh:mmtt"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:842
 msgid "Max"
 msgstr "Max"
 
+# @ qsot
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:845
 #: ../inc/reporting/seating.report.class.php:497
 #: ../inc/sys/admin-menu.class.php:361
 msgid "Status"
 msgstr "Stato"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:897 ../inc/core/post-type.class.php:950
 #: ../inc/core/post-type.class.php:980
 #, php-format
 msgid "%s on %s @ %s"
 msgstr "%s il %s alle %s"
 
+# @ opentickets-community-edition
+#: ../inc/core/post-type.class.php:897 ../inc/core/post-type.class.php:950
+#: ../inc/core/post-type.class.php:980
+#: ../templates/tickets/basic-ticket.php:45
+#: ../templates/tickets/basic-ticket.php:48
+#: ../templates/tickets/basic-ticket.php:51
+msgid "g:ia"
+msgstr ""
+
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1074
 msgid "Event Date Time Settings"
 msgstr "Impostazioni data e ora"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1084 ../inc/core/post-type.class.php:1534
 msgid "Stop Sales Before Show"
 msgstr "Ferma le vendite prima dello spettacolo"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1093
 msgid "Event Run Date Range"
 msgstr "Periodo dell'evento"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1105
 msgid "Formula"
 msgstr "Formula"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1112
 msgid ""
 "This is the formula to calculate when tickets should stop being sold on the "
@@ -378,144 +470,181 @@ msgid ""
 "just use the Global Setting for this formula."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1128
 msgid "Start Date/Time"
 msgstr "Data/Ora inizio"
 
+# @ opentickets-community-edition
+#: ../inc/core/post-type.class.php:1139 ../inc/core/post-type.class.php:1160
+#: ../inc/core/post-type.class.php:1429
+msgid "@"
+msgstr "alle"
+
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1149
 msgid "End Date/Time:"
 msgstr "Data/Ora fine:"
 
-#: ../inc/core/post-type.class.php:1160 ../inc/core/post-type.class.php:1429
-msgid "@"
-msgstr "alle"
-
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1182
 msgid "Basic Settings"
 msgstr "Impostazioni di base"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1186
 msgid "Start Date"
 msgstr "Data d'inizio"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1187 ../inc/core/post-type.class.php:1193
 #: ../inc/core/post-type.class.php:1276 ../inc/core/post-type.class.php:1292
 msgid "Y-m-d"
 msgstr "d-m-Y"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1188 ../inc/core/post-type.class.php:1194
 msgid "h:ia"
 msgstr "H:i"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1188
 msgid "Start Time"
 msgstr "Ora d'inizio"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1189
 msgid "to"
 msgstr "al"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1192
 msgid "End Date"
 msgstr "Data fine"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1194
 msgid "End Time"
 msgstr "Ora fine"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1200 ../inc/core/post-type.class.php:1209
 msgid "Repeat"
 msgstr "Ripeti"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1214
 msgid "Repeats"
 msgstr "Occorrenze"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1218
 msgid "Weekly"
 msgstr "Settimanale"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1224
 msgid "Repeats Every"
 msgstr "Ripeti ogni"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1231
 msgid "days"
 msgstr "giorni"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1232
 msgid "weeks"
 msgstr "settimane"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1237
 msgid "Repeat on"
 msgstr "Ripeti di"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1241
 msgid "Su"
 msgstr "Do"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1245
 msgid "Mo"
 msgstr "Lu"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1249
 msgid "Tu"
 msgstr "Ma"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1253
 msgid "We"
 msgstr "Me"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1257
 msgid "Th"
 msgstr "Gi"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1261
 msgid "Fr"
 msgstr "Ve"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1265
 msgid "Sa"
 msgstr "Sa"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1271
 msgid "Starts on"
 msgstr "Inizia il"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1281
 msgid "Ends"
 msgstr "Finisce"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1287
 msgid "On"
 msgstr "Il"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1297
 msgid "After"
 msgstr "Dopo"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1300
 msgid "occurences"
 msgstr "occorrenze"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1321
 msgid "Add to Calendar"
 msgstr "Aggiungi al calendario"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1337
 msgid "Event Date/Times"
 msgstr "Data/Ora Eventi"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1343 ../inc/sys/admin-menu.class.php:146
 #: ../inc/sys/admin-menu.class.php:147
 msgid "Settings"
 msgstr "Impostazioni"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1348
 msgid "Status:"
 msgstr "Stato:"
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/core/post-type.class.php:1350 ../inc/core/post-type.class.php:1373
 #: ../inc/core/post-type.class.php:1408 ../inc/sys/core-hacks.class.php:896
 #: ../inc/sys/core-hacks.class.php:999 ../inc/venues/post-type.class.php:237
@@ -527,32 +656,40 @@ msgstr "Stato:"
 msgid "Edit"
 msgstr "Modifica"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1355
 msgid "Published"
 msgstr "Pubblico"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1356
 msgid "Privately Published"
 msgstr "Privato e Pubblicato"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1357
 msgid "Scheduled"
 msgstr "Programmato"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1359
 msgid "Pending Review"
 msgstr "In Revisione"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1360
 msgid "Draft"
 msgstr "Bozza"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1363 ../inc/core/post-type.class.php:1398
 #: ../inc/core/post-type.class.php:1434 ../inc/venues/post-type.class.php:248
 #: ../inc/venues/event-area/post-type.class.php:543
 msgid "OK"
 msgstr "OK"
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/core/post-type.class.php:1364 ../inc/core/post-type.class.php:1399
 #: ../inc/core/post-type.class.php:1435 ../inc/sys/mba.class.php:462
 #: ../inc/venues/post-type.class.php:249
@@ -562,101 +699,130 @@ msgstr "OK"
 msgid "Cancel"
 msgstr "Annulla"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1371
 msgid "Visibility"
 msgstr "Visibilit&agrave;"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1377
 msgid "Viewable to the public"
 msgstr "Visibile al pubblico"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1379
 msgid "Public"
 msgstr "Pubblico"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1381
 msgid ""
 "Visible on the calendar, but only those with the password can view to make "
 "reservations"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1383
 msgid "Password Protected"
 msgstr "Protetto da password"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1385
 msgid "Password:"
 msgstr "Password:"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1389
 msgid "Hidden from the calendar, but open to anyone with the url"
 msgstr "Non in calendario, ma accessibile a chi ha l'indirizzo web"
 
+# @ opentickets-community-edition
+#: ../inc/core/post-type.class.php:1391
+msgid "Hidden"
+msgstr "Nascosto"
+
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1393
 msgid "Only logged in admin users or the event author can view it"
 msgstr "Visibile solo agli utenti autenticati ed all'autore"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1395
 msgid "Private"
 msgstr "Privato"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1406
 msgid "Publish Date:"
 msgstr "Pubblicato il:"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1415
 #, fuzzy
 msgid "January"
 msgstr "Gennaio"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1416
 msgid "February"
 msgstr "Febbraio"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1417
 msgid "March"
 msgstr "Marzo"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1418
 msgid "April"
 msgstr "Aprile"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1419
 msgid "May"
 msgstr "Maggio"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1420
 msgid "June"
 msgstr "Giugno"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1421
 msgid "July"
 msgstr "Luglio"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1422
 msgid "August"
 msgstr "Agosto"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1423
 msgid "September"
 msgstr "Settembre"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1424
 msgid "October"
 msgstr "Ottobre"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1425
 msgid "November"
 msgstr "Novembre"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1426
 msgid "December"
 msgstr "Dicembre"
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1463
 msgid "Event base"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1467
 #, php-format
 msgid ""
@@ -664,61 +830,74 @@ msgid ""
 "the url.<br/><code>example: %s</code>"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1483
 msgid "Event permalink base"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1525
 msgid "Event Display"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1535
 msgid ""
 "Amount of time to stop sales for a show, before show time. (ie: stop sales "
 "two hour before show time <code>2 hours</code>)"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1536
 msgid ""
 "valid units: hour, hours, minute, minutes, second, seconds, day, days, week, "
 "weeks, month, months, year, years"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1544
 msgid "Single Event Synopsis"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1545
 msgid "Show event synopsis on single event pages"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1546
 msgid ""
 "By default, just the event logo, and the event pricing options are shown. "
 "This feature will additionally show the description of the event to the user."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1555
 msgid "Single Event Synopsis Position"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1556
 msgid "The display position of the Event Synopsis on the single event page."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1558
 msgid "Above the Ticket Selection UI"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1559
 msgid "Below the Ticket Selection UI"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/core/zoner.class.php:317 ../inc/core/zoner.class.php:328
 #, php-format
 msgid "There are not %s tickets available to reserve."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:154
 msgid ""
 "The current settings disallow using \"<strong>Guest</strong>\" as the "
@@ -727,114 +906,141 @@ msgid ""
 "order until a user has been selected as the customer."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:189
 msgid ""
 "Additionally, because of the current Woocommerce settings, \"<strong>Guest</"
 "strong>\" is not allowed as the customer user. Please select a user first."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:221 ../inc/order/admin.class.php:223
 msgid ""
 "You cannot use \"Guest\" as the owner of the order, due to current "
 "Woocommerce settings."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:246 ../inc/order/admin.class.php:249
 msgid "must be at least 2 letters or numbers"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:252
 msgid "must be at least 7 letters, numbers, or spaces"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:255
 msgid "must be at least 4 letters, numbers, or spaces"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:261
 msgid "must be at least 5 letters, numbers, or spaces"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:266
 msgid "must be at least 2 letters, numbers, or spaces"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:274
 msgid "must be at least 3 letters, numbers, or spaces"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:278
 msgid "must be a valid email"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:286
 msgid "must be a valid phone number"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:331 ../inc/order/admin.class.php:333
 msgid ""
 "Your current settings require you to provide most billing information for "
 "each order."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:373
 msgid "New User"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:401
 msgid "The username is a required field."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:403
 msgid "That user name contains illegal characters."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:405
 msgid ""
 "is already being used by another user. Please enter a different username."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:410
 msgid "The email address is required."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:412
 msgid "That is not a valid email address."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:414
 msgid ""
 "is already in use by another user. Please use a different email address."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:418
 msgid "The first name is a required field."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:422
 msgid "The last name is a required field."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:426
 msgid "The information you supplied passed validation."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:438
 msgid "User creation failed:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:441
 msgid "The user was created successfully."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:475
 msgid "New User Form"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:486
 msgid "Username"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/order/admin.class.php:490
 #: ../inc/reporting/seating.report.class.php:493
 #: ../inc/sys/core-hacks.class.php:938
@@ -843,6 +1049,8 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/order/admin.class.php:494 ../inc/sys/core-hacks.class.php:900
 #: ../inc/sys/core-hacks.class.php:1003
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:39
@@ -850,6 +1058,8 @@ msgstr ""
 msgid "First Name"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/order/admin.class.php:498 ../inc/sys/core-hacks.class.php:904
 #: ../inc/sys/core-hacks.class.php:1007
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:43
@@ -857,28 +1067,34 @@ msgstr ""
 msgid "Last Name"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:609
 msgid "Additional Email Settings"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:618
 msgid "Custom Completed Order Message (Above Order Items)"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:619 ../inc/order/admin.class.php:629
 msgid ""
 "This html appears near the top of the default Completed Order email, sent to "
 "the customer upon completion of their order, above the order items."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:628
 msgid "Custom Completed Order Message - Text only version (Above Order Items)"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:638
 msgid "Custom Completed Order Message (Below Address)"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:639
 msgid ""
 "This html appears at the bottom of the default Completed Order email, sent "
@@ -886,10 +1102,12 @@ msgid ""
 "information."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:648
 msgid "Custom Completed Order Message - Text only version (Below Address)"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:649
 msgid ""
 "This text appears at the bottom of the default Completed Order email, sent "
@@ -897,40 +1115,49 @@ msgid ""
 "information."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:17
 #: ../inc/reporting/seating.report.class.php:97
 msgid "Seating"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:18
 msgid ""
 "List all seats for a show, as wells as their availability and occupancy."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:24
 msgid "Not Paid"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:25
 msgid "Paid"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:26
 msgid "Checked In"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:83
 msgid "Seating Report note"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:173
 msgid "Year:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:176
 msgid "[All Years]"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:182
 #: ../inc/venues/event-area/pricing.class.php:559
 #: ../inc/venues/event-area/pricing.class.php:626
@@ -940,44 +1167,56 @@ msgstr ""
 msgid "Event:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:195
 msgid "Lookup Showings"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:218
 msgid "Showing:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:228
 msgid "Show Report"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:351
 msgid "<p><em>Could not find that event.</em></p>"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:489
 msgid "Purchaser"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:490
 msgid "Order #"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:491
 msgid "Ticket Type"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:492
 msgid "Quantity"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/reporting/seating.report.class.php:494
 #: ../inc/sys/core-hacks.class.php:941
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:80
 msgid "Phone"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/reporting/seating.report.class.php:495
 #: ../inc/sys/core-hacks.class.php:949 ../inc/sys/core-hacks.class.php:951
 #: ../inc/sys/core-hacks.class.php:1046 ../inc/sys/core-hacks.class.php:1048
@@ -989,26 +1228,32 @@ msgstr ""
 msgid "Address"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:496
 msgid "Note"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:501
 msgid "Ticket Url"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:135
 msgid "Reports"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:237
 msgid "There are currently no reports available for"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:287
 msgid "Allow OpenTickets Stats?"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:288
 msgid ""
 "OpenTickets is always being improved, thanks to users like you. To help us "
@@ -1020,187 +1265,233 @@ msgid ""
 "themes we need to be compatible with."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:292
 msgid "Yes"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:299
 msgid "Dismiss"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:330
 msgid "Fair enough. Thanks anyways."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:336
 msgid "Thanks a bunch."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:355
 msgid "Title"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:356
 msgid "Author"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:357
 msgid "Author Name"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:358
 msgid "Author URI"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:359
 msgid "Description"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:360
 msgid "Version"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ default
 #: ../inc/sys/admin-menu.class.php:362 ../inc/sys/core-hacks.class.php:757
 msgid "Template"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:363
 msgid "Stylesheet"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:364 ../inc/sys/admin-menu.class.php:374
 msgid "Template Files"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:365 ../inc/sys/admin-menu.class.php:374
 msgid "Stylesheet Files"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:366
 msgid "Template Dir"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:367
 msgid "Stylesheet Dir"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:368
 msgid "Screenshot"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:369
 msgid "Tags"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:370
 msgid "Theme Root"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:371
 msgid "Theme Root URI"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:372
 msgid "Parent Theme"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:425
 msgid "Add %singular%"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:426
 msgid "Add New %singular%"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:427
 msgid "Edit %singular%"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:428
 msgid "New %singular%"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:429
 msgid "All %plural%"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:430
 msgid "View %singular%"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:431
 msgid "Search %plural%"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:432
 msgid "No %lplural% found"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:433
 msgid "No %lplural% found in Trash"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:502
 msgid "Global Settings"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:510
 msgid "Allow Statistics"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:511
 msgid ""
 "Allow OpenTickets to gather information about your WordPress installation."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:512
 msgid ""
 "This information is strictly used to make this product better and more "
 "compatible with other plugins."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:520
 msgid "Event Link Slug"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:521
 msgid ""
 "The url slug that is prepended to the event name in the url. (ex: "
 "<code>http://example.com/<strong>event</strong>/my-event/</code>)"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:522
 msgid "This is the segment of the url that preceeds the event name."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-settings.php:30
 msgid "Action failed. Please refresh the page and retry."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-settings.php:37
 msgid "Your settings have been saved."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/admin-settings.php:117
 msgid "The changes you made will be lost if you navigate away from this page."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/base-widget.class.php:28
 msgid "New Widget"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:102
 msgid "View Order Receipt"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:114
 msgid "Preview"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:127
 msgid "Bypass Process"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:128
 msgid ""
 "Checking this box bypasses the Processing step and marks the order as "
@@ -1208,52 +1499,66 @@ msgid ""
 "still goto processing)"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:277
 msgid "Discounts"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:281
 msgid "Cart Discount:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:281
 msgid "Discounts before tax - calculated by comparing subtotals to totals."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:289
 msgid "Order Discount:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:289
 msgid "Discounts after tax - user defined."
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:324
 #: ../templates/admin/meta-boxes/views/html-order-items.php:162
 #: ../templates/admin/meta-boxes/views/html-order-shipping.php:20
 msgid "Shipping"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:328
 msgid "Label:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:329
 msgid "The shipping title the customer sees"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:336
 msgid "Cost:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:337
 msgid "(ex. tax)"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:344
 msgid "Method:"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:346 ../inc/sys/core-hacks.class.php:452
 #: ../templates/admin/meta-boxes/views/html-order-shipping.php:26
 #: ../templates/order/order-details.php:126
@@ -1262,6 +1567,8 @@ msgstr ""
 msgid "N/A"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:366 ../inc/sys/core-hacks.class.php:368
 #: ../inc/sys/core-hacks.class.php:468 ../inc/sys/core-hacks.class.php:470
 #: ../templates/admin/meta-boxes/views/html-order-shipping.php:42
@@ -1271,167 +1578,218 @@ msgstr ""
 msgid "Other"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:383
 msgid "Tax Rows"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:408
 msgid "+ Add tax row"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:408
 msgid ""
 "These rows contain taxes for this order. This allows you to display multiple "
 "or compound taxes rather than a single total."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:412
 msgid "Tax Totals"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:416
 msgid "Sales Tax:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:416
 msgid "Total tax for line items + fees."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:424
 msgid "Shipping Tax:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:438
 msgid "Order Totals"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:442
 msgid "Order Total:"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:450
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:270
 msgid "Payment Method:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:484
 msgid "Calc taxes"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:486
 msgid "Calc totals"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:516
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:54
 msgid "Delete note"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:548 ../inc/sys/core-hacks.class.php:847
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:208
 msgid "Guest"
 msgstr ""
 
+# @ default
 #: ../inc/sys/core-hacks.class.php:671
 msgid "Page Attributes"
 msgstr ""
 
+# @ default
 #: ../inc/sys/core-hacks.class.php:671
 msgid "Attributes"
 msgstr ""
 
+# @ default
 #: ../inc/sys/core-hacks.class.php:741
 msgid "(no parent)"
 msgstr ""
 
+# @ default
 #: ../inc/sys/core-hacks.class.php:750 ../inc/sys/core-hacks.class.php:751
 msgid "Parent"
 msgstr ""
 
+# @ default
 #: ../inc/sys/core-hacks.class.php:758
 msgid "Page Template"
 msgstr ""
 
+# @ default
 #: ../inc/sys/core-hacks.class.php:760
 msgid "Default Template"
 msgstr ""
 
+# @ default
 #: ../inc/sys/core-hacks.class.php:764 ../inc/sys/core-hacks.class.php:766
 msgid "Order"
 msgstr ""
 
+# @ default
 #: ../inc/sys/core-hacks.class.php:769
 msgid "Need help? Use the Help tab in the upper right of your screen."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:813 ../templates/order/order-details.php:16
 msgid "Order Details"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:816
 msgid "Order number"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:821
 msgid "Customer IP:"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:828
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:181
 msgid "General Details"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:830
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:187
 msgid "Order status:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:840
 msgid "Order Date:"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:841
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:184
 msgid "h"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:841
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:184
 msgid "m"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:845
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:206
 msgid "Customer:"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:887
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:366
 msgid "Customer Note:"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:888
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:367
 msgid "Customer's notes about the order"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:896
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:221
 msgid "Billing Details"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:908 ../inc/sys/core-hacks.class.php:1011
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:47
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:94
 msgid "Company"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:912 ../inc/sys/core-hacks.class.php:1015
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:51
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:98
 msgid "Address 1"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:916 ../inc/sys/core-hacks.class.php:1019
 #: ../inc/venues/post-type.class.php:114
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:55
@@ -1439,6 +1797,8 @@ msgstr ""
 msgid "Address 2"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:920 ../inc/sys/core-hacks.class.php:1023
 #: ../inc/venues/post-type.class.php:115
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:59
@@ -1446,12 +1806,16 @@ msgstr ""
 msgid "City"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:924 ../inc/sys/core-hacks.class.php:1027
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:63
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:110
 msgid "Postcode"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:928 ../inc/sys/core-hacks.class.php:1031
 #: ../inc/venues/post-type.class.php:118
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:67
@@ -1459,48 +1823,65 @@ msgstr ""
 msgid "Country"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:931 ../inc/sys/core-hacks.class.php:1034
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:70
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:117
 msgid "Select a country&hellip;"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:934 ../inc/sys/core-hacks.class.php:1037
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:73
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:120
 msgid "State/County"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:951
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:229
 msgid "No billing address set."
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:964
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:247
 msgid "Load billing address"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:999
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:313
 msgid "Shipping Details"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:1048
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:321
 msgid "No shipping address set."
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:1061
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:345
 msgid "Load shipping address"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:1061
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:345
 msgid "Copy from billing"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/db-upgrade.php:83
 #, php-format
 msgid ""
@@ -1508,112 +1889,136 @@ msgid ""
 "upgrade them."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/db-upgrade.php:122
 msgid "types dont match"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/db-upgrade.php:127
 msgid "nulls dont match"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/db-upgrade.php:132
 msgid "extras dont match"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/db-upgrade.php:138
 #, php-format
 msgid "Update to DB, table [%s], was NOT successful. %s"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/db-upgrade.php:141
 #, php-format
 msgid "Update to DB, table [%s], was successful."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/mba.class.php:441
 msgid "Use this image"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/mba.class.php:449
 msgid "Delete Permanently"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/mba.class.php:453
 msgid "Delete"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/mba.class.php:456
 #, php-format
 msgid "You are about to delete <strong>%s</strong>."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/mba.class.php:459
 msgid "Continue"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/mba.class.php:468
 msgid "Move to Trash"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/mba.class.php:472
 msgid "Undo"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/mba.class.php:593
 msgid "Select Files"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/obj.php:17
 msgid "Could not extend. Invalid type."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/registry.php:21
 #, php-format
 msgid "Only one instance of %s can be created."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/pages/base-page.class.php:81
 #: ../inc/sys/pages/base-page.class.php:82
 #, fuzzy
 msgid "Base Page"
 msgstr "Pagine"
 
+# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:44
 #: ../inc/sys/pages/system-status.page.php:45
 #, fuzzy
 msgid "System Status"
 msgstr "Stato"
 
+# @ opentickets-community
 #: ../inc/sys/pages/system-status.page.php:107
 msgid "Purged the OTCE table versions, forcing a reinitialize of the tables."
 msgstr ""
 
+# @ opentickets-community
 #: ../inc/sys/pages/system-status.page.php:114
 msgid "The order-item to ticket-table resync has been completed."
 msgstr ""
 
+# @ opentickets-community
 #: ../inc/sys/pages/system-status.page.php:121
 msgid ""
 "We started the order-item to ticket-table resync. This will take a few "
 "minute to complete. You will receive an email upon completion."
 msgstr ""
 
+# @ opentickets-community
 #: ../inc/sys/pages/system-status.page.php:128
 msgid ""
 "A problem occurred during the order-item to ticket-table resync. It did not "
 "complete."
 msgstr ""
 
+# @ opentickets-community
 #: ../inc/sys/pages/system-status.page.php:135
 msgid ""
 "We could not start the background process that resyncs your order-items to "
 "the ticket-table. Try using the non-background method."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:161
 msgid "Resync order items to tickets table"
 msgstr ""
 
+# @ openticket-community-edition
 #: ../inc/sys/pages/system-status.page.php:165
 msgid ""
 "Looks up all order items that are ticket which have been paid for, and makes "
@@ -1622,35 +2027,42 @@ msgid ""
 "close this window.</strong>"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:172
 msgid "Background: resync order items to tickets table"
 msgstr ""
 
+# @ openticket-community-edition
 #: ../inc/sys/pages/system-status.page.php:176
 msgid ""
 "Same as above, only all processing is done behind the scenes. This takes "
 "longer, but does not require that you keep this window open."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:183
 msgid "Force the DB tables to re-initialize"
 msgstr ""
 
+# @ openticket-community-edition
 #: ../inc/sys/pages/system-status.page.php:187
 msgid ""
 "In some very rare cases, you may need to force the db tables to be "
 "recreated. This button, does that."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:254
 msgid "FAILED:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:254
 #: ../inc/sys/pages/system-status.page.php:260
 msgid "Background Order-Item -> Tickets Table"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:256
 msgid ""
 "There was a problem trying to resync your order-items to the ticket-table. "
@@ -1658,18 +2070,22 @@ msgid ""
 "href=\"%\">the forums</a>."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:260
 msgid "SUCCESS:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:261
 msgid "Your order-items have been succesfully resynced with the ticket-table."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:544
 msgid "Environment"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:566
 #, php-format
 msgid ""
@@ -1677,12 +2093,14 @@ msgid ""
 "required amount is 48MB. You currently have %s."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:571
 #, php-format
 msgid ""
 "Please <a href=\"%s\">increase your memory allocation</a> to at least 48MB."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:576
 #, php-format
 msgid ""
@@ -1690,6 +2108,7 @@ msgid ""
 "use allocate at least 64MB. You currently have %s."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:581
 #, php-format
 msgid ""
@@ -1697,6 +2116,7 @@ msgid ""
 "allocation</a> to at least 48MB."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:585
 #, php-format
 msgid ""
@@ -1704,6 +2124,7 @@ msgid ""
 "is %s."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:605
 #, php-format
 msgid ""
@@ -1713,254 +2134,308 @@ msgid ""
 "for these reasons."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:617
 msgid "Software"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:629
 msgid "Data"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:717
 #, php-format
 msgid "%s%s by %s"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:718
 #: ../inc/sys/pages/system-status.page.php:724
 msgid "PARENT"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:723
 #: ../inc/sys/pages/system-status.page.php:769
 #, php-format
 msgid "%s%s (%s) by %s (%s)"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:763
 #, php-format
 msgid "<b>%s</b>%s by %s"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:764
 #: ../inc/sys/pages/system-status.page.php:770
 msgid "ON"
 msgstr ""
 
+# @ qsot
 #: ../inc/sys/settings/frontend.php:22
 msgid "Frontend"
 msgstr ""
 
+# @ qsot
 #: ../inc/sys/settings/frontend.php:50
 msgid "Frontend Styles"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:65
 msgid "Ticket Selection UI"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:67
 msgid "Form BG"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:70
 msgid ""
 "Background color of the \"reserve some tickets\" form on the event page."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:73
 msgid "Form Border"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:76
 msgid "Border color around the \"reserve some tickets\" form."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:79
 msgid "Action BG"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:82
 msgid ""
 "Background of the \"action\" section, below the \"reserve some tickets\" "
 "form, where the proceed to cart button appears."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:85
 msgid "Helper"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:88
 msgid "Text color of the \"helper text\" on the \"reserve some tickets\" form."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:93
 msgid "Bad BG"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:96
 msgid ""
 "Background color of the error message block on the \"reserve some tickets\" "
 "form."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:99
 msgid "Bad Border"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:102
 msgid ""
 "Border color around the error message block on the \"reserve some tickets\" "
 "form."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:105
 msgid "Bad Text"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:108
 msgid ""
 "Text color of the error message block on the \"reserve some tickets\" form."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:113
 msgid "Good BG"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:116
 msgid ""
 "Background color of the success message block on the \"reserve some tickets"
 "\" form."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:119
 msgid "Good Border"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:122
 msgid ""
 "Border color around the success message block on the \"reserve some tickets"
 "\" form."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:125
 msgid "Good Text"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:128
 msgid ""
 "Text color of the success message block on the \"reserve some tickets\" form."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:133
 msgid "Remove BG"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:136
 msgid ""
 "Background color of the remove reservation button on the \"reserve some "
 "tickets\" form."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:139
 msgid "Remove Border"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:142
 msgid ""
 "Border color around the remove reservation button on the \"reserve some "
 "tickets\" form."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:145
 msgid "Remove Text"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:148
 msgid ""
 "Text color of the remove reservation button on the \"reserve some tickets\" "
 "form."
 msgstr ""
 
+# @ openticket-community-edition
 #: ../inc/sys/settings/frontend.php:155
 #, fuzzy
 msgid "Calendar"
 msgstr "Calendario"
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:157
 #, fuzzy
 msgid "Calendar Item BG"
 msgstr "Impostazioni Calendario"
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:160
 msgid "The background color of the active items shown on the calendar."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:163
 msgid "Calendar Item Border"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:166
 msgid "The border color of the active items shown on the calendar."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:169
 #, fuzzy
 msgid "Calendar Item Text"
 msgstr "Impostazioni Calendario"
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:172
 msgid "The text color of the active items shown on the calendar."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:175
 msgid "Calendar Item Hover"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:178
 msgid "The HOVER text color of the active items shown on the calendar."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:182
 msgid "Past Item BG"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:185
 msgid ""
 "The background color of the items shown on the calendar, that have already "
 "passed."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:188
 msgid "Past Item Border"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:191
 msgid ""
 "The border color of the active items shown on the calendari, that have "
 "already passed."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:194
 msgid "Past Item Text"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:197
 msgid ""
 "The text color of the active items shown on the calendar, that have already "
 "passed."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:200
 msgid "Past Item Hover"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:203
 msgid ""
 "The HOVER text color of the active items shown on the calendar, that have "
 "already passed."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:225
 #, php-format
 msgid ""
@@ -1968,6 +2443,7 @@ msgid ""
 "a> for more information."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:282
 #, php-format
 msgid ""
@@ -1975,345 +2451,425 @@ msgid ""
 "valid colors code."
 msgstr ""
 
+# @ qsot
 #: ../inc/sys/settings/general.php:22
 msgid "General"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/sys/views/html-admin-settings.php:24
 msgid "Save changes"
 msgstr ""
 
+# @ opentickets-community-edition
+# @ qsot
 #: ../inc/ticket/ticket.class.php:107
 #: ../inc/venues/event-area/pricing.class.php:825
 #: ../templates/tickets/basic-ticket.php:20
 msgid "Ticket"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:108
 #: ../templates/myaccount/my-upcoming-tickets.php:17
 msgid "View your ticket"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:109
 msgid "View this ticket"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:111 ../inc/ticket/ticket.class.php:492
 msgid "Tickets"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:112
 msgid "View your tickets"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:113
 msgid "View these tickets"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:410
 msgid "The information you supplied does not match our record."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:501
 msgid "Left Ticket Image"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:502
 msgid "The image to show in the bottom left corner of the ticket."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:504
 msgid "the Event Featured Image"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:505
 msgid "the Ticket Product Image"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:515
 msgid "Purchaser Info"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:516
 msgid ""
 "Which information to user for the purchaser display information. Either "
 "Billing or Shipping."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:518
 msgid "the Billing Information"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:519
 msgid "the Shipping Information"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:529
 msgid "Show Order #"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:530
 msgid "Show the order number of the ticket, on the ticket."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:116
 msgid "State"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:117
 msgid "Postal Code"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:235
 msgid "Venue:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:242
 #: ../inc/venues/event-area/post-type.class.php:331
 msgid "None"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:290
 msgid "Venue Information"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:299
 msgid "Venue Social Information"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:352
 msgid "Address:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:356
 msgid "Address 2:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:360
 msgid "City:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:364
 msgid "State:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:368
 msgid "Postal Code:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:372
 msgid "Country:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:376
 msgid "Logo Image"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:383
 msgid "Select Logo"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:384
 msgid "Remove"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:392
 msgid "Notes:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:395
 msgid "This is what is displayed on your tickets about this venue."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:399
 msgid "Map Instructions:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:402
 msgid ""
 "Displayed below the map on your event tickets. Meant for extra directions."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:429
 msgid "Phone:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:433
 msgid "Website:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:437
 msgid "Facebook:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:441
 msgid "Twitter:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:445
 msgid "Contact Email:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:479
 msgid "Venues"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:480
 msgid "Venue"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:157
 msgid ""
 "There are currently <span class=\"available\"></span> <span rel=\"tt\"></"
 "span> available."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:158
 msgid ""
 "There are currently <span class=\"available\"></span> more <span rel=\"tt"
 "\"></span> available."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:159
 msgid "We're sorry. There are currently no tickets available."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:160
 #: ../templates/post-content/event-area.php:122
 msgid "We are sorry. This event is sold out!"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:161
 msgid "<h1>One Moment Please...</h1>"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:213
 msgid "Step 1: How Many?"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:216
 #: ../templates/post-content/event-area.php:46
 msgid "Reserve some tickets:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:220
 #: ../templates/post-content/event-area.php:67
 msgid "Reserve"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:228
 msgid "Step 2: Review"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:231
 #: ../templates/post-content/event-area.php:85
 msgid "You currently have:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:236
 #: ../templates/post-content/event-area.php:107
 msgid "Update"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:240
 msgid "Proceed to Cart"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:259
 #: ../inc/venues/event-area/post-type.class.php:263
 msgid "add"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:268
 msgid "There are currently no areas configured. Please add one to continue."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:284
 msgid "edit"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:285
 msgid "delete"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:298
 msgid "Event Area Image"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:304
 msgid "Select Image"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:307
 msgid "Area Name"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:311
 msgid "Capacity"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:315
 msgid "Available Pricing"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:320
 msgid "save"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:321
 msgid "cancel"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:348
 msgid "This event is password protected."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:354
 #: ../inc/venues/event-area/post-type.class.php:577
 #: ../inc/venues/event-area/pricing.class.php:666
 msgid "Invalid request. Please refresh the page and try again."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:372
 #: ../inc/venues/event-area/post-type.class.php:435
 #: ../inc/venues/event-area/post-type.class.php:451
 msgid "Updated your reservations successfully."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:382
 #: ../inc/venues/event-area/post-type.class.php:443
 #: ../inc/venues/event-area/post-type.class.php:448
 msgid "Could not update your reservations."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:385
 #: ../inc/venues/event-area/post-type.class.php:775
 msgid "The quantity must be greater than zero."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:386
 #: ../inc/venues/event-area/post-type.class.php:468
 msgid "Could not load that event."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:387
 #: ../inc/venues/event-area/post-type.class.php:469
 msgid "A problem occurred when loading that event."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:388
 msgid "That event does not currently have any tickets."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:389
 #: ../inc/venues/event-area/post-type.class.php:471
 msgid "The event does not have any tickets."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:442
 msgid "A problem occurred when trying to remove your reservations."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:447
 msgid "A problem occurred when trying to update your reservations."
 msgstr ""
@@ -2325,53 +2881,65 @@ msgid ""
 "There are only %d available."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:470
 msgid "That event does not have currently have any tickets."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:518
 msgid "Event Area:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:525
 msgid "-None-"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:590
 #, php-format
 msgid "Could not find the venue you specified [%s]."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:620
 msgid "Could not find that venue."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:639
 msgid "Could not save the item(s) because not enough information was provided."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:665
 #, php-format
 msgid "There was a problem saving the area [%s]."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:776
 msgid "Could not find that event."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:777
 msgid "That is not a valid order."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:888
 #: ../inc/venues/event-area/post-type.class.php:1241
 msgid "Event Areas"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:1181
 msgid "(Unknown Ticket Type)"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:1185
 #, php-format
 msgid ""
@@ -2379,11 +2947,13 @@ msgid ""
 "Could not temporarily reserve %d %s."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:1196
 #: ../inc/venues/event-area/post-type.class.php:1230
 msgid "The number of tickets must be greater than 0."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:1217
 #, php-format
 msgid ""
@@ -2391,10 +2961,12 @@ msgid ""
 "currently. Could not temporarily reserve %d more %s. You still have %d %s."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:1242
 msgid "Area"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:438
 #, php-format
 msgid ""
@@ -2402,6 +2974,7 @@ msgid ""
 "you instead of the %d you requested."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:446
 #, php-format
 msgid ""
@@ -2409,59 +2982,73 @@ msgid ""
 "cart."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:542
 msgid "(no event selected)"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:627
 msgid "Date:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:629
 msgid "Capacity:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:630
 msgid "Available:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:635
 #: ../inc/venues/event-area/pricing.class.php:640
 msgid "Different Event"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:636
 msgid "Use This Event"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:649
 msgid "Add Tickets"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:654
 msgid "Loading. One moment please..."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:716
 msgid "Invalid order number."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:765
 msgid "Could not find the new event."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:768
 msgid "Could not find that order item on the order."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:771
 msgid "The order item does not appear to be valid."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:778
 msgid "Add tickets"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:826
 #, php-format
 msgid ""
@@ -2469,376 +3056,477 @@ msgid ""
 "a seating chart, for the %s plugin."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/admin/meta-boxes/views/html-order-fee.php:13
 msgid "Fee"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/admin/meta-boxes/views/html-order-fee.php:16
 msgid "Fee Name"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-item.php:12
 msgid "Product ID:"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-item.php:15
 #: ../templates/admin/meta-boxes/views/html-order-item.php:17
 msgid "Variation ID:"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-item.php:17
 msgid "No longer exists"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-item.php:21
 msgid "Product SKU:"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-item.php:138
 msgid "Add&nbsp;meta"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-item.php:200
 #: ../templates/admin/meta-boxes/views/html-order-item.php:243
 msgid "After pre-tax discounts."
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-item.php:203
 #: ../templates/admin/meta-boxes/views/html-order-item.php:246
 msgid "Before pre-tax discounts."
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:22
 msgid "Standard"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:53
 msgid "Item"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:57
 msgid "Cost"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:58
 msgid "Qty"
 msgstr ""
 
+# @ woocommerce
+# @ opentickets-community-edition
 #: ../templates/admin/meta-boxes/views/html-order-items.php:59
 #: ../templates/order/order-details.php:21
 msgid "Total"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:65
 #: ../templates/admin/meta-boxes/views/html-order-items.php:66
 msgid "Tax"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:137
 msgid "Coupon(s) Used"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:152
 msgid "Discount"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:152
 msgid "This is the total discount. Discounts are defined per line item."
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:162
 msgid "This is the shipping and handling total costs for the order."
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:182
 msgid "Order Total"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:202
 msgid "Refunded"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:215
 msgid "Actions"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:218
 msgid "Delete selected line item(s)"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:221
 msgid "Stock Actions"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:222
 msgid "Reduce line item stock"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:223
 msgid "Increase line item stock"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:227
 msgid "Apply"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:231
 msgid "Add line item(s)"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:233
 msgid "This order has been paid for and is no longer editable"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:236
 msgid "Add Tax"
 msgstr ""
 
+# @ woocommerce
+# @ opentickets-community-edition
 #: ../templates/admin/meta-boxes/views/html-order-items.php:239
 msgid "Refund"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:246
 msgid "Calculate Taxes"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:247
 msgid "Calculate Total"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:252
 msgid "Add product(s)"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:253
 msgid "Add fee"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:254
 msgid "Add shipping cost"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:256
 msgid "Save"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:266
 msgid "Restock refunded items"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:270
 msgid "Amount already refunded"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:274
 msgid "Total available to refund"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:278
 msgid "Refund amount"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:285
 msgid "Reason for refund (optional)"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:297
 msgid "Payment Gateway"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:299
 #, php-format
+msgctxt "Refund $amount"
 msgid "Refund %s via %s"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:300
 #, php-format
+msgctxt "Refund $amount manually"
 msgid "Refund %s manually"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:313
 msgid "Add products"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:317
 msgid "Search for a product&hellip;"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:322
 #: ../templates/admin/meta-boxes/views/html-order-items.php:377
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:83
 msgid "Add"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:337
 msgid "Add tax"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:345
 msgid "Rate name"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:346
 msgid "Tax class"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:347
 msgid "Rate code"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:348
 msgid "Rate %"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:369
 msgid "Or, enter tax rate ID:"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:370
 msgid "Optional"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-shipping.php:23
 msgid "Shipping Name"
 msgstr ""
 
+# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-shipping.php:25
 msgid "Shipping Method"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/admin/post-types/meta-boxes/views/html-order-item.php:4
 msgid "OpenTickets WC template override has moved location."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/admin/reports/seating-report.php:10
 msgid "Sort by"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/admin/reports/seating-report.php:23
 msgid "Edit User"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/admin/reports/seating-report.php:33
 msgid "Edit Order"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/admin/reports/seating-report.php:47
 msgid "Edit Product"
 msgstr ""
 
+# @ opentickets-community-edition
+#: ../templates/checkin/already-occupied.php:9
+msgid "Ticket has PREVIOUSLY checked in!"
+msgstr ""
+
+# @ opentickets-community-edition
 #: ../templates/checkin/already-occupied.php:24
 #: ../templates/checkin/occupy-failure.php:24
 #: ../templates/checkin/occupy-success.php:24
 msgid "Owner:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/checkin/already-occupied.php:26
 #: ../templates/checkin/occupy-failure.php:26
 #: ../templates/checkin/occupy-success.php:26
 msgid "Checked-In:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/checkin/no-access.php:7
 msgid "No access"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/checkin/no-access.php:8
 msgid "You do not have sufficient permissions to perform this action!"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/checkin/occupy-failure.php:9
 msgid "Check-In FAILED!"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/checkin/occupy-success.php:9
 msgid "Check-In SUCCESSFUL"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/emails/email-order-items.php:25
 msgid "Product Image"
 msgstr ""
 
+#: ../templates/emails/email-order-items.php:33
+msgid "#"
+msgstr ""
+
+# @ opentickets-community-edition
 #: ../templates/emails/email-order-items.php:46
 #, php-format
 msgid "Download %d"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/emails/email-order-items.php:48
 msgid "Download"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/myaccount/my-upcoming-tickets.php:2
 msgid "Upcoming Tickets"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/myaccount/my-upcoming-tickets.php:19
 #: ../templates/myaccount/my-upcoming-tickets.php:75
 msgid "pending payment"
 msgstr ""
 
+# @ default
 #: ../templates/myaccount/my-upcoming-tickets.php:22
 #, php-format
 msgid "for <a href=\"%s\" title=\"%s\">%s</a>"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/myaccount/my-upcoming-tickets.php:24
 #: ../templates/myaccount/my-upcoming-tickets.php:54
 msgid "Visit the Event page"
 msgstr ""
 
+# @ default
 #: ../templates/myaccount/my-upcoming-tickets.php:29
 #: ../templates/myaccount/my-upcoming-tickets.php:82
 #, php-format
 msgid "(order <a href=\"%s\" title=\"%s\">#%s<a/>)"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/myaccount/my-upcoming-tickets.php:31
 #: ../templates/myaccount/my-upcoming-tickets.php:84
 msgid "Edit order"
 msgstr ""
 
+# @ default
 #: ../templates/myaccount/my-upcoming-tickets.php:52
 #, php-format
 msgid "<a href=\"%s\" title=\"%s\">%s</a>"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/myaccount/my-upcoming-tickets.php:55
 msgid "(View Show Page)"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/order/order-details.php:20
 msgid "Product"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/order/order-details.php:69
 #, php-format
 msgid "Download file%s"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/order/order-details.php:101
 msgid "Customer details"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/order/order-details.php:105
 msgid "Email:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/order/order-details.php:106
 msgid "Telephone:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/order/order-details.php:122
 msgid "Billing Address"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/order/order-details.php:137
 msgid "Shipping Address"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/post-content/event-area-closed.php:3
 msgid "We are sorry. Online registration for this event has closed."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/post-content/event-area.php:8
 msgid ""
 "For a better experience, certain features of javascript area required. "
@@ -2847,12 +3535,14 @@ msgid ""
 "steps."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/post-content/event-area.php:11
 msgid ""
 "<strong>STEP 1:</strong> Below, enter the number of tickets you wish to "
 "purchase, then click <span class=\"button-name\">Reserve Tickets</span>."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/post-content/event-area.php:14
 msgid ""
 "<strong>STEP 2:</strong> Finally, once you have successfully Reserved your "
@@ -2860,14 +3550,17 @@ msgid ""
 "complete your order."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/post-content/event-area.php:33
 msgid "Successfully removed your reservations."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/post-content/event-area.php:42
 msgid "<span class=\"step-name\">STEP 1</span>: How many?"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/post-content/event-area.php:49
 #, php-format
 msgid ""
@@ -2876,10 +3569,12 @@ msgid ""
 "available for purchase."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/post-content/event-area.php:81
 msgid "<span class=\"step-name\">STEP 2</span>: Review"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/post-content/event-area.php:88
 #, php-format
 msgid ""
@@ -2888,65 +3583,77 @@ msgid ""
 "available for purchase."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/post-content/event-area.php:125
 msgid ""
 "We are sorry. There are currently no tickets available for this event. Check "
 "back soon!"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/tickets/basic-ticket.php:28
 msgid "Download PDF"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/tickets/basic-ticket.php:44
 msgid "Starts:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/tickets/basic-ticket.php:44
 #: ../templates/tickets/basic-ticket.php:49
 msgid "D, F jS, Y"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/tickets/basic-ticket.php:45
 msgid " @ "
 msgstr ""
 
-#: ../templates/tickets/basic-ticket.php:45
-#: ../templates/tickets/basic-ticket.php:48
-#: ../templates/tickets/basic-ticket.php:51
-msgid "g:ia"
-msgstr ""
-
+# @ opentickets-community-edition
 #: ../templates/tickets/basic-ticket.php:45
 #: ../templates/tickets/basic-ticket.php:51
 msgid " "
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/tickets/basic-ticket.php:51
 msgid "Ends:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/tickets/basic-ticket.php:52
-#: ../templates/tickets/basic-ticket.php:113
+#: ../templates/tickets/basic-ticket.php:132
 msgid "Area:"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/tickets/basic-ticket.php:69
 msgid "ORDER #"
 msgstr ""
 
-#: ../templates/tickets/basic-ticket.php:85
+# @ opentickets-community-edition
+#: ../templates/tickets/basic-ticket.php:87
+#: ../templates/tickets/basic-ticket.php:90
+#: ../templates/tickets/basic-ticket.php:93
+#: ../templates/tickets/basic-ticket.php:96
+#: ../templates/tickets/basic-ticket.php:99
+#: ../templates/tickets/basic-ticket.php:102
 msgid "Who is OpenTickets?"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/tickets/error-msg.php:8
 msgid "An error has occurred while attempting to view the ticket"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/tickets/verification-form.php:5
 msgid "Additional Information is Required"
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/tickets/verification-form.php:7
 msgid ""
 "In order to allow you to view your ticket, we must first verify who you are, "
@@ -2956,71 +3663,83 @@ msgid ""
 "you."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/tickets/verification-form.php:13
 msgid ""
 "This should be the email you used during the purchase of your ticket, as "
 "your billing email address."
 msgstr ""
 
+# @ opentickets-community-edition
 #: ../templates/tickets/verification-form.php:17
 msgid "Submit"
 msgstr ""
 
+# @ woocommerce
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:158
 #, php-format
 msgid "Order %s details"
 msgstr ""
 
+# @ woocommerce
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:162
 #, php-format
 msgid "Payment via %s"
 msgstr ""
 
+# @ woocommerce
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:175
 msgid "Customer IP"
 msgstr ""
 
+# @ woocommerce
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:183
 msgid "Order date:"
 msgstr ""
 
+# @ woocommerce
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:295
 msgid "Transaction ID"
 msgstr ""
 
+# @ woocommerce
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:339
 msgid "Customer Note"
 msgstr ""
 
+# @ woocommerce
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:52
 #, php-format
 msgid "added on %1$s at %2$s"
 msgstr ""
 
+# @ woocommerce
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:53
 msgid "WooCommerce"
 msgstr ""
 
+# @ woocommerce
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:53
 #, php-format
 msgid "by %s"
 msgstr ""
 
+# @ woocommerce
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:61
 msgid "There are no notes yet."
 msgstr ""
 
+# @ woocommerce
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:67
 msgid "Add note"
 msgstr ""
 
+# @ woocommerce
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:74
 msgid "Customer note"
 msgstr ""
 
+# @ woocommerce
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:81
 msgid "Private note"
 msgstr ""
-
-#~ msgid "Report"
-#~ msgstr "Rapporto"

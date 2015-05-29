@@ -1,12 +1,11 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: OpenTickets Community Edition v1.10.15\n"
+"Project-Id-Version: OpenTickets Community Edition v1.10.19\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-26 09:56-0800\n"
-"PO-Revision-Date: 2015-05-26 09:56-0800\n"
+"POT-Creation-Date: 2015-05-29 07:10-0800\n"
+"PO-Revision-Date: 2015-05-29 07:10-0800\n"
 "Last-Translator: intruder <h.theuer@online.de>\n"
 "Language-Team: \n"
-"Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -456,12 +455,19 @@ msgstr "Max"
 msgid "Status"
 msgstr "Status"
 
-# @ qsot
+# @ opentickets-community-edition
 #: inc/core/post-type.class.php:897 inc/core/post-type.class.php:950
 #: inc/core/post-type.class.php:980
 #, php-format
 msgid "%s on %s @ %s"
 msgstr "%s am %s um %s"
+
+# @ opentickets-community-edition
+#: inc/core/post-type.class.php:897 inc/core/post-type.class.php:950
+#: inc/core/post-type.class.php:980 templates/tickets/basic-ticket.php:45
+#: templates/tickets/basic-ticket.php:48 templates/tickets/basic-ticket.php:51
+msgid "g:ia"
+msgstr "H:i"
 
 # @ opentickets-community-edition
 #: inc/core/post-type.class.php:1074
@@ -507,14 +513,15 @@ msgid "Start Date/Time"
 msgstr "Beginn Start/Zeit"
 
 # @ opentickets-community-edition
+#: inc/core/post-type.class.php:1139 inc/core/post-type.class.php:1160
+#: inc/core/post-type.class.php:1429
+msgid "@"
+msgstr "um"
+
+# @ opentickets-community-edition
 #: inc/core/post-type.class.php:1149
 msgid "End Date/Time:"
 msgstr "Ende Datum/Zeit:"
-
-# @ opentickets-community-edition
-#: inc/core/post-type.class.php:1160 inc/core/post-type.class.php:1429
-msgid "@"
-msgstr "um"
 
 # @ opentickets-community-edition
 #: inc/core/post-type.class.php:1182
@@ -719,6 +726,7 @@ msgid "OK"
 msgstr "OK"
 
 # @ opentickets-community-edition
+# @ woocommerce
 #: inc/core/post-type.class.php:1364 inc/core/post-type.class.php:1399
 #: inc/core/post-type.class.php:1435 inc/sys/mba.class.php:462
 #: inc/venues/post-type.class.php:249
@@ -791,7 +799,6 @@ msgstr "Veröffentlichungsdatum:"
 
 # @ opentickets-community-edition
 #: inc/core/post-type.class.php:1415
-#, fuzzy
 msgid "January"
 msgstr "Januar"
 
@@ -1615,6 +1622,7 @@ msgid "Discounts after tax - user defined."
 msgstr "Rabatt nach Steuer - Benutzerdefiniert."
 
 # @ opentickets-community-edition
+# @ woocommerce
 #: inc/sys/core-hacks.class.php:324
 #: templates/admin/meta-boxes/views/html-order-items.php:162
 #: templates/admin/meta-boxes/views/html-order-shipping.php:20
@@ -3226,208 +3234,212 @@ msgstr "Gebühr"
 msgid "Fee Name"
 msgstr "Gebühren-Name"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-item.php:12
 msgid "Product ID:"
 msgstr "Artikel Nr.:"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-item.php:15
 #: templates/admin/meta-boxes/views/html-order-item.php:17
 msgid "Variation ID:"
 msgstr "Variationsnr.:"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-item.php:17
 msgid "No longer exists"
 msgstr "Nicht mehr vorhanden"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-item.php:21
 msgid "Product SKU:"
 msgstr "Artikelnr.:"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-item.php:138
 msgid "Add&nbsp;meta"
 msgstr "Meta&nbsp;hinzufügen"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-item.php:200
 #: templates/admin/meta-boxes/views/html-order-item.php:243
 msgid "After pre-tax discounts."
 msgstr "Nach Vorsteuer-Rabatten."
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-item.php:203
 #: templates/admin/meta-boxes/views/html-order-item.php:246
 msgid "Before pre-tax discounts."
 msgstr "Vor Vorsteuer-Rabatte."
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:22
 msgid "Standard"
 msgstr "Standard"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:53
 msgid "Item"
 msgstr "Artikel"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:57
 #, fuzzy
 msgid "Cost"
 msgstr "Kosten:"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:58
 msgid "Qty"
 msgstr "Menge"
 
+# @ woocommerce
 # @ opentickets-community-edition
 #: templates/admin/meta-boxes/views/html-order-items.php:59
 #: templates/order/order-details.php:21
 msgid "Total"
 msgstr "Gesamt"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:65
 #: templates/admin/meta-boxes/views/html-order-items.php:66
 msgid "Tax"
 msgstr "Steuer"
 
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:137
 msgid "Coupon(s) Used"
 msgstr ""
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:152
 #, fuzzy
 msgid "Discount"
 msgstr "Rabatte"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:152
 #, fuzzy
 msgid "This is the total discount. Discounts are defined per line item."
 msgstr "Dies ist der Gesamtrabatt nach Steuer"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:162
 msgid "This is the shipping and handling total costs for the order."
 msgstr "Dies sind die Versand- und Bearbeitungskosten der Bestellung"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:182
 msgid "Order Total"
 msgstr "Gesamtsumme"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:202
 msgid "Refunded"
 msgstr "Erstattet"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:215
 msgid "Actions"
 msgstr "Aktionen"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:218
 msgid "Delete selected line item(s)"
 msgstr "Lösche ausgewählte Artikel"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:221
 msgid "Stock Actions"
 msgstr "Lager Aktionen"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:222
 msgid "Reduce line item stock"
 msgstr "Reduziere Lagermenge des Artikels"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:223
 msgid "Increase line item stock"
 msgstr "Erhöhe Lagermenge des Artikels"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:227
 msgid "Apply"
-msgstr "Apply"
+msgstr "Bestätigen"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:231
 msgid "Add line item(s)"
 msgstr "Füge Artikel hinzu"
 
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:233
 msgid "This order has been paid for and is no longer editable"
-msgstr ""
+msgstr "Diese Bestellung wurde bezahlt und kann nicht mehr verändert werden"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:236
 msgid "Add Tax"
 msgstr "Steuer hinzufügen"
 
+# @ woocommerce
 # @ opentickets-community-edition
 #: templates/admin/meta-boxes/views/html-order-items.php:239
 msgid "Refund"
 msgstr "Erstatten"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:246
 msgid "Calculate Taxes"
 msgstr "Steuer berechnen"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:247
 msgid "Calculate Total"
 msgstr "Gesamtsumme berechnen"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:252
 msgid "Add product(s)"
 msgstr "Artikel hinyuf[gen"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:253
 msgid "Add fee"
 msgstr "Bearbeitungsgebühr hinzufügen"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:254
 msgid "Add shipping cost"
 msgstr "Versandkosten hinzufügen"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:256
 msgid "Save"
 msgstr "Speichere"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:266
 msgid "Restock refunded items"
 msgstr "Artikel aus der Erstattung dem Bestand zurückführen."
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:270
 msgid "Amount already refunded"
 msgstr "Menge bereits Rückerstattet"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:274
 msgid "Total available to refund"
 msgstr "Gesamtverfügbar für Rückerstattung"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:278
 msgid "Refund amount"
 msgstr "Höhe der Rückerstattung"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:285
 msgid "Reason for refund (optional)"
 msgstr "Grund der Rückerstattung (Optional)"
@@ -3436,33 +3448,32 @@ msgstr "Grund der Rückerstattung (Optional)"
 #: templates/admin/meta-boxes/views/html-order-items.php:297
 #, fuzzy
 msgid "Payment Gateway"
-msgstr "Bezahlung über %s"
+msgstr "Bezahl-Methode"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:299
 #, php-format
 msgctxt "Refund $amount"
 msgid "Refund %s via %s"
 msgstr "Rückerstattung %s erfolgt über %s"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:300
 #, fuzzy, php-format
 msgctxt "Refund $amount manually"
 msgid "Refund %s manually"
 msgstr "Manuelle Rückerstattung"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:313
 msgid "Add products"
 msgstr "Artikel hinzufügen"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:317
 msgid "Search for a product&hellip;"
 msgstr "Suche nach einem Artikel & hellip:"
 
-# @ opentickets-community-edition
 # @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:322
 #: templates/admin/meta-boxes/views/html-order-items.php:377
@@ -3470,47 +3481,47 @@ msgstr "Suche nach einem Artikel & hellip:"
 msgid "Add"
 msgstr "Hinzufügen"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:337
 msgid "Add tax"
 msgstr "Steuer hinzufügen"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:345
 msgid "Rate name"
 msgstr "Steuername"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:346
 msgid "Tax class"
 msgstr "Steuerklasse"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:347
 msgid "Rate code"
 msgstr "Steuer-Code"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:348
 msgid "Rate %"
 msgstr "Steuer %"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:369
 msgid "Or, enter tax rate ID:"
 msgstr "Oder trage die Steuer-ID ein:"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:370
 msgid "Optional"
 msgstr "Optional"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-shipping.php:23
 msgid "Shipping Name"
 msgstr "Versandname"
 
-# @ opentickets-community-edition
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-shipping.php:25
 msgid "Shipping Method"
 msgstr "Versand-Methode"
@@ -3541,6 +3552,11 @@ msgstr "Bestellung bearbeiten"
 #: templates/admin/reports/seating-report.php:47
 msgid "Edit Product"
 msgstr "Artikel bearbeiten"
+
+# @ opentickets-community-edition
+#: templates/checkin/already-occupied.php:9
+msgid "Ticket has PREVIOUSLY checked in!"
+msgstr "Ticket wurde bereits benutzt!"
 
 # @ opentickets-community-edition
 #: templates/checkin/already-occupied.php:24
@@ -3580,6 +3596,10 @@ msgstr "Check-In ERFOLGREICH"
 #: templates/emails/email-order-items.php:25
 msgid "Product Image"
 msgstr "Artikel-Bild"
+
+#: templates/emails/email-order-items.php:33
+msgid "#"
+msgstr ""
 
 # @ opentickets-community-edition
 #: templates/emails/email-order-items.php:46
@@ -3785,12 +3805,6 @@ msgid " @ "
 msgstr ",  "
 
 # @ opentickets-community-edition
-#: templates/tickets/basic-ticket.php:45 templates/tickets/basic-ticket.php:48
-#: templates/tickets/basic-ticket.php:51
-msgid "g:ia"
-msgstr "H:i"
-
-# @ opentickets-community-edition
 #: templates/tickets/basic-ticket.php:45 templates/tickets/basic-ticket.php:51
 msgid " "
 msgstr "Uhr"
@@ -3802,7 +3816,7 @@ msgstr "Ende:"
 
 # @ opentickets-community-edition
 #: templates/tickets/basic-ticket.php:52
-#: templates/tickets/basic-ticket.php:113
+#: templates/tickets/basic-ticket.php:132
 msgid "Area:"
 msgstr "Bereich:"
 
@@ -3812,7 +3826,10 @@ msgid "ORDER #"
 msgstr "Bestellnummer"
 
 # @ opentickets-community-edition
-#: templates/tickets/basic-ticket.php:85
+#: templates/tickets/basic-ticket.php:87 templates/tickets/basic-ticket.php:90
+#: templates/tickets/basic-ticket.php:93 templates/tickets/basic-ticket.php:96
+#: templates/tickets/basic-ticket.php:99
+#: templates/tickets/basic-ticket.php:102
 msgid "Who is OpenTickets?"
 msgstr "Wer ist OpenTickets?"
 
@@ -3909,19 +3926,16 @@ msgstr "durch %s"
 msgid "There are no notes yet."
 msgstr "Es sind keine Anmerkungen vorhanden."
 
-# @ opentickets-community-edition
 # @ woocommerce
 #: woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:67
 msgid "Add note"
 msgstr "Anmerkung hinzufügen"
 
-# @ opentickets-community-edition
 # @ woocommerce
 #: woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:74
 msgid "Customer note"
 msgstr "Kunden Anmerkung"
 
-# @ opentickets-community-edition
 # @ woocommerce
 #: woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:81
 msgid "Private note"
