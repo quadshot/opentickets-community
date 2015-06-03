@@ -191,10 +191,18 @@ class QSOT {
 		// colorpicker
 		wp_register_script('jqcolorpicker', self::$o->core_url.'assets/js/libs/cp/colorpicker.js', array('jquery'), '23.05.2009');
 		wp_register_style('jqcolorpicker', self::$o->core_url.'assets/css/libs/cp/colorpicker.css', array(), '23.05.2009');
-		// generic set of tools for our js work. almost all written by Loushou
-		wp_register_script('qsot-tools', self::$o->core_url.'assets/js/utils/tools.js', array('jquery', 'json2', 'xdate'), '0.2-beta');
 		// jQueryUI theme for the admin
 		wp_register_style('qsot-jquery-ui', self::$o->core_url.'assets/css/libs/jquery/jquery-ui-1.10.1.custom.min.css', array(), '1.10.1');
+
+		// generic set of tools for our js work. almost all written by Loushou
+		wp_register_script( 'qsot-core-tools', self::$o->core_url . 'assets/js/utils/tools.js', array( 'jquery', 'json2', 'xdate' ), '0.2.0-beta' );
+		// backbone modal, ripped from core WC, and modified to work for our causes
+		wp_register_script( 'qsot-backbone-modal', self::$o->core_url . 'assets/js/utils/backbone-modal.js', array( 'underscore', 'backbone', 'qsot-core-tools' ), '0.1.0-beta' );
+
+		// create the generic qsot-tools bucket
+		$requirements = array( 'qsot-core-tools' );
+		if ( is_admin() ) $requirements[] = 'qsot-backbone-modal';
+		wp_register_script( 'qsot-tools', false, $requirements, self::$o->version );
 	}
 
 	public static function prepend_overtake_autoloader() {
