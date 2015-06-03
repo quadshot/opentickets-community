@@ -12,17 +12,31 @@ body { margin:0; background-color:white; }
 .page-wrap { width:700px; font-family:Helvetica, Arial, sans-serif; }
 .page-wrap .venue-info,
 .page-wrap .ticket-wrap { padding:10px 0; margin:0 10px; page-break-inside:avoid; }
-.page-wrap .ticket-wrap .inner-wrap { border:1px solid #555555; padding:10px 10px 17px; position:relative; }
-.page-wrap table { width:100%; }
-.page-wrap table td { vertical-align:top; padding:0; margin:0; border:0; }
-.page-wrap .ot-tiny-logo { position:absolute; bottom: 0; margin:1px 0 0 -8px; }
+.page-wrap .ticket-wrap .inner-wrap { border:1px solid #555555; padding:10px 10px 0; position:relative; }
+.page-wrap table { width:100%; margin:0; padding:0; border:0 none; }
+.page-wrap table td { vertical-align:top; padding:0; margin:0; }
+.page-wrap table.ticket { margin-bottom:-1px; }
+.page-wrap table.branding { position:relative; top:2px; }
+.page-wrap table.branding a { text-decoration:none; }
+.page-wrap table.branding td { text-align:right; }
+.page-wrap table.branding td .branding-img { max-width:90px; height:auto; }
+.page-wrap table.branding td .fake-branding-img { width:90px; height:15px; }
 
-.page-wrap h2 { margin:0 0 3px 0; padding:0; }
+body.pdf .page-wrap table.ticket { margin-bottom:-8px; }
+body.pdf .page-wrap table.branding { position:relative; top:0; }
+
+.page-wrap .ot-tiny-logo { position:absolute; margin:1px 0 0 -8px; }
+.page-wrap table.branding .ot-tiny-logo { position:static; margin:0; }
+
+.page-wrap h2 { margin:0 0 3px 0; padding:0; font-size:1.7em; line-height:1.2em; }
 
 .page-wrap ul { list-style:none outside none; margin:0; padding:0; border:0; }
 .page-wrap li { list-style:none outside none; margin:0; padding:1px 0; border:0; }
 
-.page-wrap .personalization { font-size:12px; font-weight:bold; }
+.page-wrap .event-information { font-size:13px; line-height:1.1em; }
+.page-wrap .event-information .value { font-style:italic; color:#555; }
+.page-wrap .event-information .label { font-weight:500; }
+.page-wrap .personalization { line-height:1.3em; font-size:12px; font-weight:bold; }
 .page-wrap .right { text-align:right; }
 .page-wrap .map-extra-instructions { font-size:10px; color:#999999; }
 

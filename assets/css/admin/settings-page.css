@@ -1,0 +1,6 @@
+.qsot-image-ids p.description { margin:0 0 0.8em; }
+.image-id-selection { border:1px solid #ccc; padding:1em; margin:0 1em 1em 0; background:#fff; float:left; clear:none; }
+.image-id-selection label { font-weight:700; margin-bottom:0.5em; display:block; }
+.image-id-selection .preview-img { border:1px dashed #888; background:#e0e0e0; margin-bottom:0.5em; min-height:15px; min-width:90px; padding:0; line-height:0; float:left;
+		-webkit-box-sizing:border-box; -moz-box-sizing:border-box; -ms-box-sizing:border-box; box-sizing:border-box; }
+.image-id-selection.no-img .preview-img { border:1px solid #555; background-color:#777; }

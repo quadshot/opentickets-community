@@ -27,6 +27,8 @@ class qsot_Settings_Frontend extends WC_Settings_Page {
 
 		if ( ( $styles = WC_Frontend_Scripts::get_styles() ) && array_key_exists( 'woocommerce-general', $styles ) )
 			add_action( 'woocommerce_admin_field_qsot_frontend_styles', array( $this, 'frontend_styles_setting' ) );
+
+		add_action( 'woocommerce_admin_field_qsot-image-ids', array( $this, 'image_ids_setting' ), 1000, 1 );
 	}
 
 	/**
@@ -36,6 +38,42 @@ class qsot_Settings_Frontend extends WC_Settings_Page {
 	 */
 	public function get_settings() {
 		return apply_filters( 'qsot-get-page-settings', array(), $this->id );
+	}
+
+	// draw the 'qsot-image-ids' setting fields
+	public function image_ids_setting( $value ) {
+		$current = get_option( $value['id'], '' );
+		$current = is_scalar( $current ) ? explode( ',', $current ) : $current;
+
+		?>
+			<tr valign="top" class="qsot-image-ids">
+				<th scope="row" class="titledesc">
+					<?php echo force_balance_tags( $value['title'] ) ?>
+					<?php if ( isset( $value['desc_tip'] ) ): ?>
+						<img class="help_tip" data-tip="<?php echo esc_attr( $value['desc_tip'] ) ?>" src="<?php echo WC()->plugin_url() ?>/assets/images/help.png" height="16" width="16" />
+					<?php endif; ?>
+				</th>
+				<td>
+					<p class="description"><?php echo $value['desc'] ?></p>
+					<?php for ( $i = 0; $i < $value['count']; $i++ ): ?>
+						<?php
+							$img_id = isset( $current[ $i ] ) ? $current[ $i ] : 0;
+							$tag = is_numeric( $img_id ) ? wp_get_attachment_image( $img_id, array( 90, 15 ), false ) : '';
+						?>
+						<div class="image-id-selection <?php echo ( 'noimg' == $img_id ) ? 'no-img' : '' ?>" rel="image-select">
+							<label><?php echo sprintf( __( 'Image #%s', 'opentickets-community-edition' ), $i + 1 ) ?></label>
+							<div class="preview-img" rel="image-preview"><?php echo $tag ?></div>
+							<div class="clear"></div>
+							<input type="hidden" name="<?php echo esc_attr( $value['id'] . '[' . $i . ']' ) ?>" value="<?php echo esc_attr( $img_id ) ?>" class="image-id" rel="img-id" />
+							<input type="button" class="button select-button qsot-popmedia" value="Select Image" rel="select-image-btn" scope="[rel='image-select']" /><br/>
+							<a href="#remove-img" class="remove-img" rel="remove-img" scope="[rel='image-select']"><?php _e( 'remove image', 'opentickets-community-edition' ) ?></a><br/>
+							<a href="#no-img" class="no-image" rel="no-img" scope="[rel='image-select']"><?php _e( 'no image', 'opentickets-community-edition' ) ?></a>
+						</div>
+					<?php endfor; ?>
+					<div class="clear"></div>
+				</td>
+			</tr>
+		<?php
 	}
 
 	/**

@@ -115,6 +115,7 @@ QS.popMediaBox = (function($, qt) {
   function show_mediabox(e, args) {
     e.preventDefault();
 		var self = $(this),
+				args = $.extend( {}, args ),
 				par = qt.is(args.par) ? ( qt.isO(args.par) ? args.par : self.closest(args.par) ) : ( (par = self.attr('scope')) ? self.closest(par) : self.closest('div') ),
 				id_field = qt.is(args.id_field) ? ( qt.isO(args.id_field) ? args.id_field : par.find(args.id_field) ) : ( (id_field = par.find('[rel="img-id"]')) ? id_field : $() ),
 				preview_cont = qt.is(args.pc) ? ( qt.isO(args.pc) ? args.pc : par.find(args.pc) ) : ( (preview_cont = par.find('[rel="image-preview"]')) ? preview_cont : $() ),
@@ -124,12 +125,13 @@ QS.popMediaBox = (function($, qt) {
 					if (id_field.length) id_field.val(attachment.id);
 					if (preview_cont.length) {
 						preview_cont.each(function() {
-							var t = $(this),
-									url = attachment.sizes.thumbnail.url,
-									size = qt.is(args.size) ? args.size : ( ( size = t.attr('size') ) ? size : 'thumb')
+							var t = $( this ),
+									url = qt.is( attachment.sizes.thumbnail ) ? attachment.sizes.thumbnail.url : attachment.sizes.full.url,
+									size = qt.is( args.size ) ? args.size : ( ( size = t.attr( 'size' ) ) ? size : 'thumb' )
 									size = size == 'thumb' ? 'thumbnail' : size;
-							if (qt.is(attachment.sizes[size]) && qt.is(attachment.sizes[size].url)) url = attachment.sizes[size].url;
-							$('<img src="'+url+'" class="preview-image" />').appendTo(t.empty());
+							if ( qt.is( attachment.sizes[ size ] ) && qt.is( attachment.sizes[ size ].url ) )
+								url = attachment.sizes[ size ].url;
+							$( '<img src="' + url + '" class="preview-image" />' ).appendTo( t.empty() );
 						});
 					}
 					with_selection( attachment );

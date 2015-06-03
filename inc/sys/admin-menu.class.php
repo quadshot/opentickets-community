@@ -31,10 +31,12 @@ class qsot_admin_menu {
 
 			add_action('qsot-activate', array(__CLASS__, 'on_activation'), 10);
 
-			add_filter('woocommerce_screen_ids', array(__CLASS__, 'load_woocommerce_admin_assets'), 10);
-			add_filter('woocommerce_reports_screen_ids', array(__CLASS__, 'load_woocommerce_admin_assets'), 10);
-			add_filter('qsot-get-menu-page-uri', array(__CLASS__, 'menu_page_uri'), 10, 3);
-			add_filter('qsot-get-menu-slug', array(__CLASS__, 'menu_page_slug'), 10, 2);
+			// allow some core woocommerce assets to be loaded on our pages
+			add_filter( 'woocommerce_screen_ids', array( __CLASS__, 'load_woocommerce_admin_assets' ), 10 );
+			add_filter( 'woocommerce_reports_screen_ids', array( __CLASS__, 'load_woocommerce_admin_assets' ), 10 );
+			// get the uri/hook/slug of our settings pages for use in asset enqueuing and such
+			add_filter( 'qsot-get-menu-page-uri', array( __CLASS__, 'menu_page_uri' ), 10, 3 );
+			add_filter( 'qsot-get-menu-slug', array( __CLASS__, 'menu_page_slug' ), 10, 2 );
 
 			add_action('admin_menu', array(__CLASS__, 'create_menu_items'), 11);
 			add_action('admin_menu', array(__CLASS__, 'rename_first_menu_item'), 11);
@@ -56,22 +58,41 @@ class qsot_admin_menu {
 		}
 	}
 
+	// register the assets needed by our plugin in the admin
 	public static function register_assets() {
-		wp_register_script('qsot-nag', self::$o->core_url.'assets/js/admin/nag.js', array('qsot-tools'), self::$o->version);
+		// the js to handle the analytics nag
+		wp_register_script( 'qsot-nag', self::$o->core_url . 'assets/js/admin/nag.js', array( 'qsot-tools' ), self::$o->version );
+
+		// used on the various settings pages
+		wp_register_script( 'qsot-admin-settings', self::$o->core_url . 'assets/js/admin/settings-page.js', array( 'qsot-tools' ), self::$o->version );
+		wp_register_style( 'qsot-admin-settings', self::$o->core_url . 'assets/css/admin/settings-page.css', array(), self::$o->version );
 	}
 
 	public static function load_woocommerce_admin_assets($list) {
 		return array_unique(array_merge($list, array_values(self::$menu_page_hooks)));
 	}
 
-	public static function menu_page_slug($current, $which='main') {
-		return !empty($which) && is_scalar($which) && isset(self::$menu_slugs[$which]) ? self::$menu_slugs[$which] : self::$menu_slugs['main'];
+	// fetch the page slug for a given settings page
+	public static function menu_page_slug( $current, $which='main' ) {
+		return ( ! empty( $which ) && is_scalar( $which ) && isset( self::$menu_slugs[ $which ] ) ) ? self::$menu_slugs[ $which ] : self::$menu_slugs['main'];
 	}
 
-	public static function menu_page_uri($current, $which='main', $omit_hook=false) {
-		if (!empty($which) && is_scalar($which) && isset(self::$menu_slugs[$which])) $which = self::$menu_slugs[$which];
-		if ($omit_hook) return add_query_arg(array('page' => $which), 'admin.php');
-		return array(add_query_arg(array('page' => $which), 'admin.php'), isset(self::$menu_page_hooks[$which]) ? self::$menu_page_hooks[$which] : '');
+	// fetch the page uri for a settings page in our plugin
+	public static function menu_page_uri( $current, $which='main', $omit_hook=false ) {
+		$page_slug = isset( self::$menu_slugs['main'] ) ? self::$menu_slugs['main'] : '';
+		// figure out the slug for the page
+		if ( ! empty( $which ) && is_scalar( $which ) && isset( self::$menu_slugs[ $which ] ) )
+			$page_slug = self::$menu_slugs[ $which ];
+
+		// if we are just looking for the page uri, and not the uri and hook, then just return the uri now
+		if ( $omit_hook )
+			return add_query_arg( array( 'page' => $page_slug ), 'admin.php' );
+
+		// otherwise return both
+		return array(
+			add_query_arg( array( 'page' => $page_slug ), 'admin.php' ),
+			isset( self::$menu_page_hooks[ $which ] ) ? self::$menu_page_hooks[ $which ] : ''
+		);
 	}
 
 	public static function register_post_types() {
@@ -130,27 +151,31 @@ class qsot_admin_menu {
 		}
 	}
 
+	// register our custom menu items for our settings pages
 	public static function create_menu_items() {
+		// reports menu item
 		self::$menu_page_hooks['main'] = add_menu_page(
-			__('Reports','opentickets-community-edition' ),
+			__( 'Reports', 'opentickets-community-edition' ),
 			self::$o->product_name,
 			'view_woocommerce_reports',
 			self::$menu_slugs['main'],
-			array(__CLASS__, 'ap_reports_page'),
+			array( __CLASS__, 'ap_reports_page' ),
 			false,
 			21
 		);
 
+		// settings menu item
 		self::$menu_page_hooks['settings'] = add_submenu_page(
 			self::$menu_slugs['main'],
-			__('Settings','opentickets-community-edition'),
-			__('Settings','opentickets-community-edition'),
+			__( 'Settings', 'opentickets-community-edition' ),
+			__( 'Settings', 'opentickets-community-edition' ),
 			'manage_options',
 			self::$menu_slugs['settings'],
-			array(__CLASS__, 'ap_settings_page')
+			array( __CLASS__, 'ap_settings_page' )
 		);
 
-		add_action('load-'.self::$menu_page_hooks['settings'], array(__CLASS__, 'ap_settings_page_head'));
+		// generic function to call some page load logic
+		add_action( 'load-' . self::$menu_page_hooks['settings'], array( __CLASS__, 'ap_settings_page_head' ) );
 	}
 
 	public static function rename_first_menu_item() {

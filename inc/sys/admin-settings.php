@@ -8,19 +8,40 @@ class qsot_admin_settings extends WC_Admin_Settings {
 	private static $errors   = array();
 	private static $messages = array();
 
+	// setup the pages, by loading their classes and assets and such
 	public static function get_settings_pages() {
-		add_action( 'woocommerce_admin_field_wysiwyg', array( __CLASS__, 'field_wysiwyg' ) );
+		// load the settings pages, if they are not already loaded
 		if ( empty( self::$settings ) ) {
+			// load the admin page assets from our plugin
+			add_action( 'admin_enqueue_scripts', array( __CLASS__, 'load_admin_page_assets' ), 1000 );
+
+			// load the woocommerce wysiwyg field js
+			add_action( 'woocommerce_admin_field_wysiwyg', array( __CLASS__, 'field_wysiwyg' ) );
+
 			$settings = array();
 
+			// load the woocoomerce settings api
 			include_once( $GLOBALS['woocommerce']->plugin_path() . '/includes/admin/settings/class-wc-settings-page.php' );
 
+			// load the various settings pages
 			$settings[] = include( 'settings/general.php' );
 			$settings[] = include( 'settings/frontend.php' );
 
+			// allow adding of other pages if needed
 			self::$settings = apply_filters( 'qsot_get_settings_pages', array_filter($settings) );
 		}
+
 		return self::$settings;
+	}
+
+	// load the admin page assets, depending on the page we are viewing
+	public static function load_admin_page_assets( $hook ) {
+		// if the current page is the settings page, then load our settings js
+		$settings = apply_filters( 'qsot-get-menu-page-uri', array(), 'settings' );
+		if ( isset( $settings[1] ) && $hook == $settings[1] ) {
+			wp_enqueue_script( 'qsot-admin-settings' );
+			wp_enqueue_style( 'qsot-admin-settings' );
+		}
 	}
 
 	public static function save() {

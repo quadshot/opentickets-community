@@ -51,6 +51,6 @@ class QSOT_QRImage {
 		ImageCopyResized( $target_image, $base_image, 0, 0, 0, 0, $imgW * $pixelPerPoint, $imgH * $pixelPerPoint, $imgW, $imgH );
 		ImageDestroy( $base_image );
 		
-		return array( $target_image, $imgW, $imgH );
+		return array( $target_image, $imgW * $pixelPerPoint, $imgH * $pixelPerPoint );
 	}
 }

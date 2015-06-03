@@ -224,10 +224,11 @@ class QSOT_checkin {
 
 					// add the image tag for this qr to the list of image tags
 					$ticket->qr_codes[ $i ] = sprintf(
-						'<img src="%s" width="%s" height="%s" alt="%s" />',
-						esc_attr( $img_data[0] ),
+						'<img class="img-%d" width="%s" height="%s" src="%s" alt="%s" />',
+						$i,
 						esc_attr( $img_data[1] ),
 						esc_attr( $img_data[2] ),
+						esc_attr( $img_data[0] ),
 						$ticket->product->get_title().' ('.$ticket->product->get_price().')'
 					);
 				}
@@ -264,7 +265,7 @@ class QSOT_checkin {
 			$maxSize = (int)( QR_PNG_MAXIMUM_SIZE / ( count( $tab ) + 2 * $enc->margin ) );
 
 			// render the image
-			$img_data = QSOT_QRimage::jpg_base64( $tab, min( max( 1, $enc->size ), $maxSize ), $enc->margin, 100 );
+			$img_data = QSOT_QRimage::jpg_base64( $tab, 2.5/*min( max( 1, $enc->size ), $maxSize )*/, $enc->margin, 100 );
 		} catch (Exception $e) {
 			$img_data = array( 'data:image/jpeg;base64,', 0, 0 );
 			// log any exceptions

@@ -272,14 +272,16 @@ class QSOT_tickets {
 		$stylesheet = apply_filters('qsot-locate-template', '', array('tickets/basic-style.css'), false, false);
 		$stylesheet = str_replace(DIRECTORY_SEPARATOR, '/', str_replace(ABSPATH, '/', $stylesheet));
 		$stylesheet = site_url($stylesheet);
+		$branding_image_ids = self::$options->{'qsot-ticket-branding-img-ids'};
+		$branding_image_ids = is_scalar( $branding_image_ids ) ? explode( ',', $branding_image_ids ) : $branding_image_ids;
 
-		$out = self::_get_ticket_html(array('ticket' => $ticket, 'template' => $template, 'stylesheet' => $stylesheet));
+		$out = self::_get_ticket_html( array( 'ticket' => $ticket, 'template' => $template, 'stylesheet' => $stylesheet, 'branding_image_ids' => $branding_image_ids ) );
 
 		$_GET = wp_parse_args($_GET, array('frmt' => 'html'));
 		switch ($_GET['frmt']) {
 			case 'pdf':
 				$title = $ticket->product->get_title().' ('.$ticket->product->get_price().')';
-				self::_print_pdf_tcpdf($out, $title);
+				QSOT_pdf::from_html($out, $title);
 			break;
 			default: echo $out; break;
 		}
@@ -366,114 +368,6 @@ class QSOT_tickets {
 		}
 
 		return $current;
-	}
-
-	// create or find the cache dir
-	protected static function _create_find_cache_dir() {
-		// determine the cache dir name
-		$u = wp_upload_dir();
-		$base_dir_name = 'qsot-cache-' . substr( sha1( home_url() ), 10, 10 );
-		$final_path = $url['basedir'] . DIRECTORY_SEPARATOR . $base_dir_name . DIRECTORY_SEPARATOR;
-
-		// if the cache path already exists, just return the path
-		if ( @file_exists( $final_path ) && @is_dir( $final_path ) && @is_readable( $final_path ) )
-			return $final_path;
-
-		// if the paht is simply not readable, exception saying that
-		if ( @file_exists( $final_path ) && ! @is_readable( $final_path ) )
-			throw new Exception( __( 'The cache path exists, but it cannot be read. Please update the permissions to allow read access.', 'opentickets-community-edition' ) );
-
-		// if the path is there, but is not a dir, exception saying that
-		if ( @file_exists( $final_path ) && ! @is_dir( $final_path ) )
-			throw new Exception( __( 'The cache path exists, but is not a dir. Please remove or rename the existing file, and create a directory with the cache path name.', 'opentickets-community-edition' ) );
-
-		// at this point the path probably does not exist. try to create it.
-
-		// first check if we have permission to create it
-		$parent_dir = dirname( $final_path );
-		if ( ! @is_writable( $parent_dir ) )
-			throw new Exception( __( 'Could not create the cache path directory. Please update the permissions to allow write access.', 'opentickets-community-edition' ) );
-
-		// attempt to create a new dir for the cache path
-		if ( ! @mkdir( $final_path ) )
-			throw new Exception( __( 'Unable to create the cache path directory.', 'opentickets-community-edition' ) );
-
-		return $final_path;
-	}
-
-	// find any and all remote assets in the html of the pdf, and either cache them locally, and use the local url, or embed them directly into the html
-	protected static function _pre_parse_remote_assets( $html ) {
-		static $cache_path = false;
-		return $html;
-	}
-
-	// use the TCPDF library to render the pdf instead
-	protected static function _print_pdf_tcpdf( $html, $title ) {
-		// pre-parse remote or url based assets
-		try {
-			$html = self::_pre_parse_remote_assets( $html );
-		} catch ( Exception $e ) {
-			echo '<h1>Problem parsing html.</h1>';
-			echo '<h2>' . force_balance_tags( $e->getMessage() ) . '</h2>';
-			return;
-		}
-
-		// just in case there is a large number of tickets, increase the max run time
-		ini_set( 'max_execution_time', 180 );
-
-		// load the library
-		require_once QSOT::plugin_dir() . 'libs/tcpdf/tcpdf.php';
-
-		// create the base pdf
-		$pdf = new TCPDF( PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false );
-
-		// set document information
-		$pdf->SetCreator( 'OpenTickets - ' . PDF_CREATOR );
-		$pdf->SetAuthor( 'Quadshot' );
-		$pdf->SetTitle( $title );
-		$pdf->SetSubject( $title );
-		$pdf->SetKeywords( 'tickets, OpenTickets' );
-
-		// set margins
-		$pdf->SetMargins( 0.5, 0.5, 0.5 );
-		$pdf->SetHeaderMargin( 0 );
-		$pdf->SetFooterMargin( 0 );
-
-		// set auto page breaks
-		$pdf->SetAutoPageBreak( TRUE, PDF_MARGIN_BOTTOM );
-
-		// set image scale factor
-		$pdf->setImageScale( PDF_IMAGE_SCALE_RATIO );
-
-		// set font
-		$pdf->SetFont( 'helvetica', 'B', 20 );
-
-		// add a page
-		$pdf->AddPage();
-
-		// add the html to the pdf
-		$pdf->writeHTML( trim( $html ), false, false, false, false, '' );
-
-		// Close and output PDF document
-		$pdf->Output( 'example_048.pdf', 'I' );
-	}
-
-	protected static function _print_pdf($html, $title) {
-		$u = wp_upload_dir();
-		$pth = $u['basedir'];
-		if (empty($pth)) return;
-		$pth = trailingslashit($pth).'tcpdf-cache/';
-		$url = trailingslashit($u['baseurl']).'tcpdf-cache/';
-
-		if (!file_exists($pth) && !mkdir($pth)) return;
-		ini_set( 'max_execution_time', 180 );
-
-		require_once self::$o->core_dir.'libs/dompdf/dompdf_config.inc.php';
-
-		$pdf = new DOMPDF();
-		$pdf->load_html($html);
-		$pdf->render();
-		$pdf->stream( sanitize_title_with_dashes( 'ticket-' . $title ) . '.pdf', array( 'Attachment' => 1 ) );
 	}
 
 	protected static function _can_user_view_ticket($args) {
@@ -571,57 +465,98 @@ class QSOT_tickets {
 		flush_rewrite_rules();
 	}
 
+	// setup the options that are available to control tickets. reachable at WPAdmin -> OpenTickets (menu) -> Settings (menu) -> Frontend (tab) -> Tickets (heading)
 	protected static function _setup_admin_options() {
-		self::$options->def('qsot-ticket-image-shown', 'event');
-		self::$options->def('qsot-ticket-purchaser-info', 'event');
-		self::$options->def('qsot-ticket-show-order-id', 'no');
+		// setup the default values
+		self::$options->def( 'qsot-ticket-image-shown', 'event' );
+		self::$options->def( 'qsot-ticket-image-shown-right', 'venue' );
+		self::$options->def( 'qsot-ticket-purchaser-info', 'event' );
+		self::$options->def( 'qsot-ticket-show-order-id', 'no' );
+		self::$options->def( 'qsot-ticket-branding-img-ids', '' );
 
-		self::$options->add(array(
+		// the 'Tickets' heading on the Frontend tab
+		self::$options->add( array(
 			'order' => 500,
 			'type' => 'title',
-			'title' => __('Tickets', 'opentickets-community-edition'),
+			'title' => __( 'Tickets', 'opentickets-community-edition' ),
 			'id' => 'heading-frontend-tickets-1',
 			'page' => 'frontend',
-		));
+		) );
 
+		// which image is shown on the left side of the ticket. either no image, the Event image, the Venue image, the Ticket Product image
 		self::$options->add(array(
 			'order' => 505,
 			'id' => 'qsot-ticket-image-shown',
 			'type' => 'radio',
-			'title' => __('Left Ticket Image', 'opentickets-community-edition'),
-			'desc_tip' => __('The image to show in the bottom left corner of the ticket.', 'opentickets-community-edition'),
+			'title' => __( 'Left Ticket Image', 'opentickets-community-edition' ),
+			'desc_tip' => __( 'The image to show in the bottom left corner of the ticket.', 'opentickets-community-edition' ),
 			'options' => array(
-				'event' => __('the Event Featured Image', 'opentickets-community-edition'),
-				'product' => __('the Ticket Product Image', 'opentickets-community-edition'),
+				'none' => __( 'no image', 'opentickets-community-edition' ),
+				'event' => __( 'the Event Featured Image', 'opentickets-community-edition' ),
+				'venue' => __( 'the Venue Image', 'opentickets-community-edition' ),
+				'product' => __( 'the Ticket Product Image', 'opentickets-community-edition' ),
 			),
 			'default' => 'event',
 			'page' => 'frontend',
 		));
 
-		self::$options->add(array(
-			'order' => 507,
+		// which image is shown on the right side of the ticket. either no image, the Event image, the Venue image, the Ticket Product image
+		self::$options->add( array(
+			'order' => 505,
+			'id' => 'qsot-ticket-image-shown-right',
+			'type' => 'radio',
+			'title' => __( 'Right Ticket Image', 'opentickets-community-edition' ),
+			'desc_tip' => __( 'The image to show in the bottom right corner of the ticket.', 'opentickets-community-edition' ),
+			'options' => array(
+				'none' => __( 'no image', 'opentickets-community-edition' ),
+				'event' => __( 'the Event Featured Image', 'opentickets-community-edition' ),
+				'venue' => __( 'the Venue Image', 'opentickets-community-edition' ),
+				'product' => __( 'the Ticket Product Image', 'opentickets-community-edition' ),
+			),
+			'default' => 'venue',
+			'page' => 'frontend',
+		) );
+
+		// ticket branding line images.
+		self::$options->add( array(
+			'order' => 509,
+			'id' => 'qsot-ticket-branding-img-ids',
+			'type' => 'qsot-image-ids',
+			'title' => __( 'Ticket Branding Images', 'opentickets-community-edition' ),
+			'desc_tip' => __( 'Images shown in the small line of branding images below each ticket.', 'opentickets-community-edition' ),
+			'desc' => __( 'The recommended size of these images is 90px wide by 15px tall. Images will be constrained to 90px wide, no matter the size. Choosing "no image" will make a blank spot on the ticket branding row.', 'opentickets-community-edition' ),
+			'count' => 5,
+			'preview-size' => array( 90, 15 ),
+			'page' => 'frontend',
+		) );
+
+		// the information about the purchaser to display. either the billing information, or the shipping information
+		self::$options->add( array(
+			'order' => 522,
 			'id' => 'qsot-ticket-purchaser-info',
 			'type' => 'radio',
-			'title' => __('Purchaser Info', 'opentickets-community-edition'),
-			'desc_tip' => __('Which information to user for the purchaser display information. Either Billing or Shipping.', 'opentickets-community-edition'),
+			'title' => __( 'Purchaser Info', 'opentickets-community-edition' ),
+			'desc_tip' => __( 'Which information to user for the purchaser display information. Either Billing or Shipping.', 'opentickets-community-edition' ),
 			'options' => array(
-				'billing' => __('the Billing Information', 'opentickets-community-edition'),
-				'shipping' => __('the Shipping Information', 'opentickets-community-edition'),
+				'billing' => __( 'the Billing Information', 'opentickets-community-edition' ),
+				'shipping' => __( 'the Shipping Information', 'opentickets-community-edition' ),
 			),
 			'default' => 'billing',
 			'page' => 'frontend',
-		));
+		) );
 
-		self::$options->add(array(
-			'order' => 509,
+		// whether or not to show the order # on the ticket.
+		self::$options->add( array(
+			'order' => 529,
 			'id' => 'qsot-ticket-show-order-id',
 			'type' => 'checkbox',
-			'title' => __('Show Order #', 'opentickets-community-edition'),
-			'desc' => __('Show the order number of the ticket, on the ticket.', 'opentickets-community-edition'),
+			'title' => __( 'Show Order #', 'opentickets-community-edition' ),
+			'desc' => __( 'Show the order number of the ticket, on the ticket.', 'opentickets-community-edition' ),
 			'default' => 'no',
 			'page' => 'frontend',
-		));
+		) );
 
+		// end the 'Tickets' section on the page
 		self::$options->add(array(
 			'order' => 599,
 			'type' => 'sectionend',
