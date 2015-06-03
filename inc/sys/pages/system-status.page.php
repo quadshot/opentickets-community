@@ -99,40 +99,63 @@ class QSOT_system_status_page extends QSOT_base_page {
 			<?php
 		}
 
+		// display error and success messages
 		if ( 'tools' == $current && isset( $_GET['performed'] ) ) {
+			// different message depending on the task we completed or failed
 			switch ( $_GET['performed'] ) {
+				// blew out the ticket asset cache
+				case 'removed-ticket-asset-cache':
+					echo sprintf(
+						'<div class="updated"><p>%s</p></div>',
+						__( 'Removed all the locally cached Ticket assets. Every external asset will now be recached.', 'opentickets-community-edition' )
+					);
+				break;
+
+				// forced a table update
 				case 'removed-db-table-versions':
 					echo sprintf(
 						'<div class="updated"><p>%s</p></div>',
-						__( 'Purged the OTCE table versions, forcing a reinitialize of the tables.', 'opentickets-community' )
+						__( 'Purged the OTCE table versions, forcing a reinitialize of the tables.', 'opentickets-community-edition' )
 					);
 				break;
 
+				// forced a ticket resync
 				case 'resync':
 					echo sprintf(
 						'<div class="updated"><p>%s</p></div>',
-						__( 'The order-item to ticket-table resync has been completed.', 'opentickets-community' )
+						__( 'The order-item to ticket-table resync has been completed.', 'opentickets-community-edition' )
 					);
 				break;
 
+				// forced a ticket resync in the background
 				case 'resync-bg':
 					echo sprintf(
 						'<div class="updated"><p>%s</p></div>',
-						__( 'We started the order-item to ticket-table resync. This will take a few minute to complete. You will receive an email upon completion.', 'opentickets-community' )
+						__( 'We started the order-item to ticket-table resync. This will take a few minute to complete. You will receive an email upon completion.', 'opentickets-community-edition' )
 					);
 				break;
 
+				// failed to remove the cached ticket assets
+				case 'failed-ticket-asset-cache':
+					echo sprintf(
+						'<div class="error"><p>%s</p></div>',
+						__( 'Failed to remove the cached ticket assets. Usually this is a permission issue.', 'opentickets-community-edition' )
+					);
+				break;
+
+				// failed the ticket resync
 				case 'failed-resync':
 					echo sprintf(
 						'<div class="error"><p>%s</p></div>',
-						__( 'A problem occurred during the order-item to ticket-table resync. It did not complete.', 'opentickets-community' )
+						__( 'A problem occurred during the order-item to ticket-table resync. It did not complete.', 'opentickets-community-edition' )
 					);
 				break;
 
+				// failed the ticket resync in the background
 				case 'failed-resync-bg':
 					echo sprintf(
 						'<div class="error"><p>%s</p></div>',
-						__( 'We could not start the background process that resyncs your order-items to the ticket-table. Try using the non-background method.', 'opentickets-community' )
+						__( 'We could not start the background process that resyncs your order-items to the ticket-table. Try using the non-background method.', 'opentickets-community-edition' )
 					);
 				break;
 			}
@@ -187,6 +210,19 @@ class QSOT_system_status_page extends QSOT_base_page {
 								<span class="helper"><?php _e( 'In some very rare cases, you may need to force the db tables to be recreated. This button, does that.', 'openticket-community-edition' ) ?></span>
 							</td>
 						</tr>
+
+						<tr class="tool-item">
+							<td>
+								<a class="button" href="<?php echo esc_attr( $this->_action_nonce( 'RmTFC', add_query_arg( array( 'qsot-tool' => 'RmTFC' ), $url ) ) ) ?>"><?php
+									_e( 'Remove Ticket File Cache', 'opentickets-community-edition' )
+								?></a>
+							</td>
+							<td>
+								<span class="helper"><?php _e( 'All non-local assets used to create tickets (like external images [google map] and css [custom tickets]) are cached locally. This will remove that cache, forcing all assets to be recached.', 'openticket-community-edition' ) ?></span>
+							</td>
+						</tr>
+
+						<?php do_action( 'qsot-system-status-tools' ) ?>
 					</tbody>
 				</table>
 			</div>
@@ -204,7 +240,8 @@ class QSOT_system_status_page extends QSOT_base_page {
 
 			// if the tool requested is on our list, then handle it appropriately
 			if ( isset( $_GET['qsot-tool'] ) ) switch ( $_GET['qsot-tool'] ) {
-				case 'RsOi2Tt': // resync tool
+				// force a resync of all the purchased tickets
+				case 'RsOi2Tt':
 					if ( $this->_verify_action_nonce( 'RsOi2Tt' ) ) {
 						$state = $_GET['state'] == 'bg' ? '-bg' : '';
 						if ( $this->_perform_resync_order_items_to_ticket_table() ) $args['performed'] = 'resync' . $state;
@@ -213,11 +250,27 @@ class QSOT_system_status_page extends QSOT_base_page {
 					}
 				break;
 
+				// force a repair of the db tables
 				case 'FdbUg':
 					if ( $this->_verify_action_nonce( 'FdbUg' ) ) {
 						delete_option( '_qsot_upgrader_db_table_versions' );
 						$args['performed'] = 'removed-db-table-versions';
 						$processed = true;
+					}
+				break;
+
+				// remove all the assets that have been cached for ticket pdf creation
+				case 'RmTFC':
+					if ( $this->_verify_action_nonce( 'RmTFC' ) ) {
+						$path = QSOT_cache_helper::create_find_cache_dir();
+						try {
+							self::_empty_dir( $path );
+							$args['performed'] = 'removed-ticket-asset-cache';
+							$processed = true;
+						} catch ( Exception $e ) {
+							$args['performed'] = 'failed-ticket-asset-cache';
+							$processed = true;
+						}
 					}
 				break;
 			}
@@ -228,6 +281,44 @@ class QSOT_system_status_page extends QSOT_base_page {
 				exit;
 			}
 		}
+	}
+
+	// empty all files from a directory (skips subdirs)
+	protected function _empty_dir( $path ) {
+		// track how many files have been missed
+		$missed = 0;
+
+		// if we are not debugging, then hide potential warnings
+		if ( ! WP_DEBUG ) {
+			// if the path is a dir and writable and openable
+			if ( is_writable( $path ) && is_dir( $path ) && ( $dir = @opendir( $path ) ) ) {
+				$path = trailingslashit( $path );
+				// find all the files in the dir
+				while ( $file_basename = @readdir( $dir ) ) {
+					$filename = $path . $file_basename;
+					// if this item is not a regular file, then skip it
+					if ( is_dir( $filename ) || is_link( $filename ) )
+						continue;
+					// if the file is not writable or cannot be removed, then skip it and tally a failure
+					if ( ! is_writable( $filename ) || ! @unlink( $filename ) )
+						$missed++;
+				}
+			}
+		} else {
+			if ( is_writable( $path ) && is_dir( $path ) && ( $dir = opendir( $path ) ) ) {
+				$path = trailingslashit( $path );
+				while ( $file_basename = readdir( $dir ) ) {
+					$filename = $path . $file_basename;
+					if ( is_dir( $filename ) || is_link( $filename ) )
+						continue;
+					if ( ! is_writable( $filename ) || ! unlink( $filename ) )
+						$missed++;
+				}
+			}
+		}
+
+		if ( $missed > 0 )
+			throw new Exception( __( 'Missed one or more file during cache purge.', 'opentickets-community-edition' ) );
 	}
 
 	// handles the resynce process request
