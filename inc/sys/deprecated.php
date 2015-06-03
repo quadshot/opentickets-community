@@ -42,7 +42,7 @@ class QSOT_deprecated {
 					_deprecated_function(
 						sprintf( __( 'The "%s" filter', 'opentickets-community-edition' ), $old_filter ),
 						$deprecation_version, 
-						sprintf( __( 'The "%s" filter', 'opentickets-community-edition' ), $new_filter )
+						sprintf( __( 'The "%s" filter', 'opentickets-community-edition' ), $current_filter )
 					);
 				}
 			}
