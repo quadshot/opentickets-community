@@ -2,6 +2,9 @@
 
 if ( ! class_exists( 'QSOT_pdf' ) ):
 
+if ( ! defined( 'QSOT_DEBUG_PDF' ) )
+	define( 'QSOT_DEBUG_PDF', 0 );
+
 class QSOT_pdf {
 	public static function from_html( $html, $title ) {
 		// give us soem breathing room
@@ -16,12 +19,14 @@ class QSOT_pdf {
 			echo '<h2>' . force_balance_tags( $e->getMessage() ) . '</h2>';
 			return;
 		}
-		/*
-		echo '<pre>';
-		echo htmlspecialchars( $html );
-		echo '</pre>';
-		die();
-		*/
+
+		// if we are debugging the pdf, then depending on the mode, dump the html contents onw
+		if ( QSOT_DEBUG_PDF & 2 ) {
+			echo '<pre>';
+			echo htmlspecialchars( $html );
+			echo '</pre>';
+			die();
+		}
 
 		// include the library
 		require_once QSOT::plugin_dir() . 'libs/dompdf/dompdf_config.inc.php';
@@ -160,25 +165,25 @@ class QSOT_pdf {
 
 		// if there is not an src, bail
 		if ( ! isset( $atts['src'] ) || empty( $atts['src'] ) )
-			return $match[0] . '<!-- NO SRC : BAIL -->';
+			return $match[0] . ( WP_DEBUG ? '<!-- NO SRC : BAIL -->' : '' );
 
 		// roll through embeded images
 		if ( preg_match( '#^data:image\/#', $atts['src'] ) )
-			return $match[0] . '<!-- EMBEDED SRC : BAIL -->';
+			return $match[0] . ( WP_DEBUG ? '<!-- EMBEDED SRC : BAIL -->' : '' );
 
 		// get the image local path
 		$local_path = QSOT_cache_helper::find_local_path( $atts['src'] );
 
 		// if there was not a local path to be found, then remove the image from the output and bail
 		if ( '' == $local_path )
-			return '';
+			return ( WP_DEBUG ? '<!-- NO LOCAL PATH -->' : '' );
 
 		// next, text that the local file is actually an image
 		$img_data = ! WP_DEBUG ? @getimagesize( $local_path ) : getimagesize( $local_path );
 
 		// there was no image data, or is not a vaild supported type, remove and then bail
 		if ( ! is_array( $img_data ) || ! isset( $img_data[0], $img_data[1], $img_data[2] ) || ! in_array( $img_data[2], array( IMAGETYPE_PNG, IMAGETYPE_GIF, IMAGETYPE_JPEG ) ) )
-			return '';
+			return ( WP_DEBUG ? '<!-- INVALID IMAGE TYPE : ' . $local_path . ' : ' . ( is_array( $img_data ) ? http_build_query( $img_data ) : 'NOT-ARRAY' ) . ' -->' : '' );
 
 		// set the image path to the local path
 		$atts['src'] = $local_path;
@@ -194,6 +199,14 @@ class QSOT_pdf {
 		foreach ( $atts as $k => $v )
 			$pieces[] = $k . '="' . esc_attr( $v ) . '"';
 		$tag = '<img ' . implode( ' ', $pieces ) . ' />';
+
+		// if debugging, the add the path that we are looking for right above the image
+		if ( WP_DEBUG && QSOT_DEBUG_PDF & 1 )
+			$tag = sprintf(
+					'<pre style="width:%spx;height:auto;font-size:10px;border:1px solid #000;word-wrap:break-word;display:block;">%s</pre>',
+					$atts['width'],
+					implode( '<br/>', str_split( $local_path, ( $atts['width'] / 6 ) - 1 ) )
+				) . $tag;
 
 		return $tag;
 	}
@@ -280,7 +293,7 @@ class QSOT_cache_helper {
 				);
 
 				// get the final response
-				$response = wp_remote_get( $url, $args );
+				$response = wp_remote_get( html_entity_decode( $url ), $args );
 				if ( WP_DEBUG && is_wp_error( $response ) )
 					die( var_dump( 'WP_Error on wp_remote_get( "'. $url . '", ' . @json_encode( $args ) . ' )', $response ) );
 				$response = is_array( $response ) && isset( $response['body'] ) ? $response['body'] : '';

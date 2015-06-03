@@ -23,7 +23,7 @@ body { margin:0; background-color:white; }
 .page-wrap table.branding td .branding-img { max-width:90px; height:auto; }
 .page-wrap table.branding td .fake-branding-img { width:90px; height:15px; }
 
-body.pdf .page-wrap table.ticket { margin-bottom:-8px; }
+body.pdf .page-wrap table.ticket { margin-bottom:-4px; }
 body.pdf .page-wrap table.branding { position:relative; top:0; }
 
 .page-wrap .ot-tiny-logo { position:absolute; margin:1px 0 0 -8px; }
