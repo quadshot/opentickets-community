@@ -13,6 +13,8 @@ if ( ! defined( 'DOMPDF_ENABLE_REMOTE' ) )
 	define("DOMPDF_ENABLE_REMOTE", true);
 if ( ! defined( 'DOMPDF_ENABLE_IMAGICK' ) )
 	define("DOMPDF_ENABLE_IMAGICK", false);
+if ( ! defined( 'DOMPDF_LOG_OUTPUT_FILE' ) )
+	define( 'DOMPDF_LOG_OUTPUT_FILE', '' );
 
 //define("DOMPDF_TEMP_DIR", "/tmp");
 //define("DOMPDF_FONT_DIR", DOMPDF_DIR."/lib/fonts/");
