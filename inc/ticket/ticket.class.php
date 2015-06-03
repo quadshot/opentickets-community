@@ -71,7 +71,7 @@ class QSOT_tickets {
 		add_filter('qsot-ticket-verification-form-check', array(__CLASS__, 'validate_guest_verification'), 1000, 2);
 
 		// email - add ticket download links
-		add_action('qsot-order-item-list-ticket-info', array(__CLASS__, 'add_view_ticket_link_to_emails'), 2000, 3);
+		add_action( 'woocommerce_order_item_meta_start', array( __CLASS__, 'add_view_ticket_link_to_emails' ), 2000, 3 );
 
 		// any special logic that needs to be run when activating our plugin
 		add_action( 'qsot-activate', array( __CLASS__, 'on_activate' ), 1000 );

@@ -94,7 +94,7 @@ class qsot_post_type {
 			do_action('qsot-restrict-usage', self::$o->core_post_type);
 
 			// add event name to item lists
-			add_action('qsot-order-item-list-ticket-info', array(__CLASS__, 'add_event_name_to_emails'), 10, 3);
+			add_action( 'woocommerce_order_item_meta_start', array( __CLASS__, 'add_event_name_to_emails' ), 10, 3 );
 			add_action('woocommerce_get_item_data', array(__CLASS__, 'add_event_name_to_cart'), 10, 2);
 
 			// order by meta_value cast to date
