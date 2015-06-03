@@ -3,8 +3,18 @@
 define( 'DOMPDF_VERSION', '0.6.1' );
 require_once 'dompdf.custom.functions.php';
 
+define( 'DOMPDF_CHROOT', realpath( DOMPDF_DIR . '/../' ) );
+
+if ( @file_exists( DOMPDF_CHROOT . 'wp.dompdf.config.php' ) ) {
+	require_once DOMPDF_CHROOT . 'wp.dompdf.config.php';
+}
+
+if ( ! defined( 'DOMPDF_ENABLE_REMOTE' ) )
+	define("DOMPDF_ENABLE_REMOTE", true);
+if ( ! defined( 'DOMPDF_ENABLE_IMAGICK' ) )
+	define("DOMPDF_ENABLE_IMAGICK", false);
+
 //define("DOMPDF_TEMP_DIR", "/tmp");
-//define("DOMPDF_CHROOT", DOMPDF_DIR);
 //define("DOMPDF_FONT_DIR", DOMPDF_DIR."/lib/fonts/");
 //define("DOMPDF_FONT_CACHE", DOMPDF_DIR."/lib/fonts/");
 //define("DOMPDF_UNICODE_ENABLED", true);
@@ -14,8 +24,6 @@ require_once 'dompdf.custom.functions.php';
 //define("DOMPDF_DEFAULT_FONT", "serif");
 //define("DOMPDF_DPI", 72);
 //define("DOMPDF_ENABLE_PHP", true);
-define("DOMPDF_ENABLE_REMOTE", true);
-define("DOMPDF_ENABLE_IMAGICK", false);
 //define("DOMPDF_ENABLE_CSS_FLOAT", true);
 //define("DOMPDF_ENABLE_JAVASCRIPT", false);
 //define("DEBUGPNG", true);
