@@ -165,6 +165,10 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.10.21 =
+* updated PO and MO files
+* removed several deprecated templates and files
+
 = 1.10.20 =
 * added PDF file preprocessor, to improve performance and eliminate local & remote asset problems
 * added branding image row to tickets, with configurable images, configured on OT settings page (intruderHT : @ht-2)
@@ -182,7 +186,6 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 * updated ticket format for i18n compat (intruderHT : @ht-2)
 * replaced old media library tool on venue edit screen
 * fixed ticket image alignment
-* removed several deprecated templates and files
 
 = 1.10.19 =
 * fixed shipping order item column alignment in admin
