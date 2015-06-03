@@ -115,7 +115,6 @@ QS.popMediaBox = (function($, qt) {
   function show_mediabox(e, args) {
     e.preventDefault();
 		// before doing anything, make sure we have the media library box object. should prevent non-admin access
-		console.log( 'here', qt.isO( wp ), qt.is( wp.media ), qt.is( wp.media.controller ) );
 		if ( ! qt.isO( wp ) || ! qt.is( wp.media ) || ! qt.is( wp.media.controller ) )
 			return;
 		var self = $(this),
