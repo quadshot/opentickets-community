@@ -39,6 +39,7 @@ class qsot_admin_settings extends WC_Admin_Settings {
 		// if the current page is the settings page, then load our settings js
 		$settings = apply_filters( 'qsot-get-menu-page-uri', array(), 'settings' );
 		if ( isset( $settings[1] ) && $hook == $settings[1] ) {
+			wp_enqueue_media();
 			wp_enqueue_script( 'qsot-admin-settings' );
 			wp_enqueue_style( 'qsot-admin-settings' );
 		}

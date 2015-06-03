@@ -45,9 +45,12 @@ class qsot_venue_post_type {
 			'venue' => '_venue_id',
 		));
 
+		// load different assets depending on the page that we are on in the admin
+		add_action( 'qsot-admin-load-assets-' . self::$o->core_post_type, array( __CLASS__, 'load_event_venue_assets' ), 10, 2 );
+		add_action( 'qsot-admin-load-assets-' . self::$o->{'venue.post_type'}, array( __CLASS__, 'load_venue_admin_assets' ), 10, 2 );
+
 		add_filter('qsot-upcoming-events-query', array(__CLASS__, 'events_query_only_this_venue'), 10, 2);
 		add_filter('qsot-events-core-post-types', array(__CLASS__, 'register_post_type'), 3, 1);
-		add_action('qsot-events-edit-page-assets', array(__CLASS__, 'load_event_venue_assets'), 10, 2);
 		add_action('qsot-events-bulk-edit-settings', array(__CLASS__, 'venue_bulk_edit_settings'), 20, 2);
 		add_filter('qsot-events-save-sub-event-settings', array(__CLASS__, 'save_sub_event_settings'), 10, 3);
 		add_filter('qsot-load-child-event-settings', array(__CLASS__, 'load_child_event_settings'), 10, 3);
@@ -217,8 +220,14 @@ class qsot_venue_post_type {
 		return $args;
 	}
 
-	public static function load_event_venue_assets($exists, $post_id) {
-		wp_enqueue_script('qsot-event-venue-settings');
+	// laod the assets we need on the edit venue pages
+	public static function load_venue_admin_assets( $exists, $post_id ) {
+		wp_enqueue_script( 'qsot-tools' );
+	}
+
+	// load the assets we need on the edit events page, for venues
+	public static function load_event_venue_assets( $exists, $post_id ) {
+		wp_enqueue_script( 'qsot-event-venue-settings' );
 	}
 
 	public static function venue_bulk_edit_settings($post, $mb) {
@@ -374,18 +383,11 @@ class qsot_venue_post_type {
 					</tr>
 					<tr>
 						<th><?php _e('Logo Image','opentickets-community-edition') ?></th>
-						<td>
-							<?php do_action('mba-mediabox-button', array(
-								'post-id' => $post->ID,
-								'id-field' => '.logo-image-id',
-								'preview-container' => '.logo-image-preview',
-								'preview-size' => array(150,150),
-								'upload-button-text' => __('Select Logo','opentickets-community-edition'),
-								'remove-button-text' => __('Remove','opentickets-community-edition'),
-								'remove-button-classes' => ' ',
-							)); ?>
-							<div class="logo-image-preview"><?php echo wp_get_attachment_image($info['logo_image_id'], array(150, 150)) ?></div>
-							<input type="hidden" class="logo-image-id" name="venue[info][logo_image_id]" value="<?php echo esc_attr((int)$info['logo_image_id']) ?>" />
+						<td rel="iamge-selection">
+							<div class="logo-image-preview" rel="image-preview" size="thumbnail"><?php echo force_balance_tags( wp_get_attachment_image( $info['logo_image_id'], array( 150, 150 ) ) ) ?></div>
+							<input type="hidden" name="venue[info][logo_image_id]" class="logo-image-id" rel="img-id" value="<?php echo esc_attr( (int) $info['logo_image_id'] ) ?>" />
+							<input type="button" value="<?php echo esc_attr( __( 'Select Logo', 'opentickets-community-edition' ) ) ?>" class="button select-image-btn qsot-popmedia" rel="qsot-popmedia" />
+							<a href="#remove-img" rel="remove-img" class="remove-image-btn"><?php _e( 'Remove', 'opentickets-community-edition' ) ?></a>
 						</td>
 					</tr>
 					<tr>

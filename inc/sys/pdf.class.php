@@ -392,7 +392,7 @@ class QSOT_cache_helper {
 	// determine the age of a local file
 	protected static function _get_file_age( $path ) {
 		// get the file modify time
-		$ftime = ! WP_DEBUG ? @filemtime( $path ) : filemtime( $path );
+		$ftime = ! WP_DEBUG || ! ( QSOT_DEBUG_PDF & 4 ) ? @filemtime( $path ) : filemtime( $path );
 
 		// if there was no file modify time, then the file does not exist, for bail
 		if ( false === $ftime )

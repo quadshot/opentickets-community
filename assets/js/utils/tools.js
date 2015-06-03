@@ -114,43 +114,73 @@ QS.popMediaBox = (function($, qt) {
 
   function show_mediabox(e, args) {
     e.preventDefault();
+		// before doing anything, make sure we have the media library box object. should prevent non-admin access
+		console.log( 'here', qt.isO( wp ), qt.is( wp.media ), qt.is( wp.media.controller ) );
+		if ( ! qt.isO( wp ) || ! qt.is( wp.media ) || ! qt.is( wp.media.controller ) )
+			return;
 		var self = $(this),
 				args = $.extend( {}, args ),
-				par = qt.is(args.par) ? ( qt.isO(args.par) ? args.par : self.closest(args.par) ) : ( (par = self.attr('scope')) ? self.closest(par) : self.closest('div') ),
-				id_field = qt.is(args.id_field) ? ( qt.isO(args.id_field) ? args.id_field : par.find(args.id_field) ) : ( (id_field = par.find('[rel="img-id"]')) ? id_field : $() ),
-				preview_cont = qt.is(args.pc) ? ( qt.isO(args.pc) ? args.pc : par.find(args.pc) ) : ( (preview_cont = par.find('[rel="image-preview"]')) ? preview_cont : $() ),
+				// find the parent container of the button that triggered this lightbox. this is used to find the other elements of this tool, like the id and preview fields
+				par = qt.is( args.par )
+						? ( qt.isO( args.par ) ? args.par : self.closest( args.par ) )
+						: ( ( par = self.attr( 'scope' ) ) ? self.closest( par ) : self.closest( 'div' ) ),
+				// find the id storage field
+				id_field = qt.is( args.id_field )
+						? ( qt.isO( args.id_field ) ? args.id_field : par.find( args.id_field ) )
+						: ( ( id_field = par.find( '[rel="img-id"]' ) ) ? id_field : $() ),
+				// find the preview container
+				preview_cont = qt.is( args.pc )
+						? ( qt.isO( args.pc ) ? args.pc : par.find( args.pc ) )
+						: ( ( preview_cont = par.find( '[rel="image-preview"]' ) ) ? preview_cont : $() ),
+				// what extra steps to take once an attachment has been selected
 				with_selection = qt.isF( args.with_selection ) ? args.with_selection : function( attachment ) {},
-				on_select = qt.isF(args.on_select) ? args.on_select : function() {
-					var attachment = custom.state().get('selection').first().attributes;
-					if (id_field.length) id_field.val(attachment.id);
-					if (preview_cont.length) {
-						preview_cont.each(function() {
+				// allow to completely over take the function that uses the selection. the default funciton fills the preview container and id fields
+				on_select = qt.isF( args.on_select ) ? args.on_select : function() {
+					// get the information about the selected image
+					var attachment = custom.state().get( 'selection' ).first().attributes;
+					// update the id field
+					if ( id_field.length )
+						id_field.val( attachment.id );
+					// update the preview container
+					if ( preview_cont.length ) {
+						preview_cont.each( function() {
 							var t = $( this ),
 									url = qt.is( attachment.sizes.thumbnail ) ? attachment.sizes.thumbnail.url : attachment.sizes.full.url,
 									size = qt.is( args.size ) ? args.size : ( ( size = t.attr( 'size' ) ) ? size : 'thumb' )
 									size = size == 'thumb' ? 'thumbnail' : size;
+							// find the appropriate image url
 							if ( qt.is( attachment.sizes[ size ] ) && qt.is( attachment.sizes[ size ].url ) )
 								url = attachment.sizes[ size ].url;
-							$( '<img src="' + url + '" class="preview-image" />' ).appendTo( t.empty() );
-						});
+							// if there is no image then empty the preview
+							if ( '' == url )
+								t.empty();
+							// otherwise create the new preview
+							else
+								$( '<img src="' + url + '" class="preview-image" />' ).appendTo( t.empty() );
+						} );
 					}
+					// run our additional logic
 					with_selection( attachment );
 				};
 
+		// if the lightbox already exists, then use it
     if ( custom ) {
-      custom.state('select-image').off('select').on('select', on_select);
+      custom.state( 'select-image' ).off( 'select' ).on( 'select', on_select );
       custom.open();
       return;
+		// otherwise create a new instance of the lightbox
     } else {
-      custom = wp.media({
+			// initialize the base lightbox
+      custom = wp.media( {
         frame: 'select',
         state: 'select-image',
         library: { type:'image' },
         multiple: false
-      });
+      } );
 
-      custom.states.add([
-        new wp.media.controller.Library({
+			// register teh lightbox with the lightbox controller library
+      custom.states.add( [
+        new wp.media.controller.Library( {
           id: 'select-image',
           title: 'Select an Image',
           priority: 20,
@@ -162,10 +192,11 @@ QS.popMediaBox = (function($, qt) {
           displayUserSettings: false,
           displaySettings: true,
           allowLocalEdits: true
-        }),
-      ]);
+        } ),
+      ] );
 
-      custom.state('select-image').off('select').on('select', on_select);
+			// finalize the envents of the lightbox, and pop it
+      custom.state( 'select-image' ).off( 'select' ).on( 'select', on_select );
       custom.open();
     }
   }
@@ -173,39 +204,26 @@ QS.popMediaBox = (function($, qt) {
 	return show_mediabox;
 })(jQuery, QS.Tools);
 
+// on page load, if there are any mediabox
+jQuery( function( $ ) {
+	$( document ).on( 'click', '[rel="remove-img"]', function( e ) {
+		e.preventDefault();
+		var self = $( this ), par = self.closest( self.attr( 'scope' ) );
+		par.find( '[rel="image-preview"]' ).empty();
+		par.find( '[rel="img-id"]' ).val( '0' );
+	} );
+
+	$( document ).on( 'click', '.qsot-popmedia, [rel="qsot-popmedia"]', function( e ) {
+		var self = $( this );
+		QS.popMediaBox.apply( this, [ e, {
+			with_selection: function( attachment ) {
+				self.closest( self.attr( 'scope' ) ).removeClass( 'no-img' );
+			}
+		} ] );
+	} );
+} );
+
 (function($) {
-	/*
-  $.fn.qsBlock = function(settings) {
-    return this.each(function() {
-      var element = $(this), off = element.offset(),
-          sets = $.extend(true, { msg:'<h1>Loading...</h1>', css:{ backgroundColor:'#000000', opacity:0.5 }, msgcss:{ color:'#ffffff' } }, settings),
-          bd = $('<div class="block-backdrop"></div>').appendTo('body'), msg = $('<div class="block-msg"></div>').appendTo('body'),
-					dims = { width:element.outerWidth(), height:element.outerHeight() };
-			$(sets.msg).css({ color:'inherit' }).appendTo(msg);
-      var mhei = msg.height();
-      bd.css($.extend({
-        position: 'absolute',
-        width: dims.width,
-        height: dims.height,
-        top: off.top,
-        left: off.left
-      }, sets.css));
-      msg.css($.extend({
-        textAlign: 'center',
-        position: 'absolute',
-        width: dims.width,
-        top: off.top + ((dims.height - mhei) / 2), 
-        left: off.left
-      }, sets.msgcss));
-			msg.find('h1').css({ fontSize: dims.height > 30 ? 28 : '100%' });
-
-      var ublock = function() { bd.remove(); msg.remove(); element.off('unblock', ublock); }
-      element.on('unblock', ublock);
-    }); 
-  };  
-
-  $.fn.qsUnblock = function(element) { return this.each(function() { $(this).trigger('unblock'); }); };
-	*/
   $.fn.qsBlock = function(settings) {
     return this.each(function() {
       var element = $(this), position = element.css( 'position' ),
