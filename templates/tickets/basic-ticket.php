@@ -103,12 +103,14 @@ for ( $i = 0; $i < 5; $i++ ) {
 									</td>
 								</tr>
 								<tr>
-									<td rowspan="2" class="event-image">
-										<?php echo wp_get_attachment_image($ticket->event->image_id, array(225, 9999)) ?>
-									</td>
-									<td rowspan="2" class="venue-image">
-										<?php echo wp_get_attachment_image($ticket->venue->image_id, array(225, 9999)) ?>
-									</td>
+									<?php
+										$left = wp_get_attachment_image( $ticket->image_id_left, array( 225, 9999 ) );
+										$left = ! empty( $left ) ? $left : '<div class="faux-image left"><div>';
+										$right = wp_get_attachment_image( $ticket->image_id_right, array( 225, 9999 ) );
+										$right = ! empty( $right ) ? $right : '<div class="faux-image right"><div>';
+									?>
+									<td rowspan="2" class="event-image"><?php echo force_balance_tags( $left ) ?></td>
+									<td rowspan="2" class="venue-image"><?php echo force_balance_tags( $right ) ?></td>
 								</tr>
 							</tbody>
 						</table>

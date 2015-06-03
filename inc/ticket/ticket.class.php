@@ -63,6 +63,7 @@ class QSOT_tickets {
 		//add_action('qsot-ticket-intercepted', array(__CLASS__, 'display_ticket'), 1000, 1);
 		add_action('qsot-rewriter-intercepted-qsot-ticket-id', array(__CLASS__, 'display_ticket'), 1000, 1);
 		add_filter('qsot-compile-ticket-info', array(__CLASS__, 'compile_ticket_info'), 1000, 3);
+		add_filter('qsot-compile-ticket-info', array(__CLASS__, 'compile_ticket_info_images'), PHP_INT_MAX, 3);
 		// one-click-email link auth
 		add_filter('qsot-email-link-auth', array(__CLASS__, 'email_link_auth'), 1000, 2);
 		add_filter('qsot-verify-email-link-auth', array(__CLASS__, 'validate_email_link_auth'), 1000, 3);
@@ -301,6 +302,43 @@ class QSOT_tickets {
 		return $out;
 	}
 
+	// configure the images used on the ticket display
+	public static function compile_ticket_info_images( $current, $oiid, $order_id ) {
+		// create the list of pairs to calculate
+		$pairs = array(
+			'image_id_left' => self::$options->{'qsot-ticket-image-shown'},
+			'image_id_right' => self::$options->{'qsot-ticket-image-shown-right'},
+		);
+
+		// calculate each pair
+		foreach ( $pairs as $key => $setting ) {
+			switch ( $setting ) {
+				default:
+				case 'event':
+					if ( isset( $current->event, $current->event->image_id ) )
+						$current->{$key} = $current->event->image_id;
+				break;
+
+				case 'product':
+					$product = wc_get_product( wc_get_order_item_meta( $oiid, '_product_id', true ) );
+					if ( is_object( $product ) )
+						$current->{$key} = get_post_thumbnail_id( $product->id );
+				break;
+
+				case 'venue':
+					if ( isset( $current->venue, $current->venue->image_id ) )
+						$current->{$key} = $current->venue->image_id;
+				break;
+
+				case 'none':
+					$current->{$key} = 0;
+				break;
+			}
+		}
+
+		return $current;
+	}
+
 	public static function compile_ticket_info($current, $oiid, $order_id) {
 		$order = new WC_Order($order_id);
 
@@ -308,7 +346,7 @@ class QSOT_tickets {
 		$order_item = isset($order_items[$oiid]) ? $order_items[$oiid] : false;
 		if (empty($order_item) || !isset($order_item['product_id'], $order_item['event_id'])) return $current;
 
-		$product = get_product($order_item['product_id']);
+		$product = wc_get_product($order_item['product_id']);
 		$event = apply_filters('qsot-get-event', false, $order_item['event_id']);
 		if (empty($event) || empty($product) || is_wp_error($product)) return $current;
 
@@ -319,6 +357,8 @@ class QSOT_tickets {
 		$current->product = $product;
 		$current->event = $event;
 		$current->names = array();
+		$current->image_id_left = 0;
+		$current->image_id_right = 0;
 
 		// choose either the event or product image depending on settings
 		switch ( self::$options->{'qsot-ticket-image-shown'} ) {

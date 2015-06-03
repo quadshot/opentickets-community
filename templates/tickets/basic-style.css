@@ -16,6 +16,7 @@ body { margin:0; background-color:white; }
 .page-wrap table { width:100%; margin:0; padding:0; border:0 none; }
 .page-wrap table td { vertical-align:top; padding:0; margin:0; }
 .page-wrap table.ticket { margin-bottom:-1px; }
+.page-wrap table.ticket .faux-image { width:225px; height:150px; }
 .page-wrap table.branding { position:relative; top:2px; }
 .page-wrap table.branding a { text-decoration:none; }
 .page-wrap table.branding td { text-align:right; }
