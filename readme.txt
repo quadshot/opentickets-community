@@ -165,6 +165,25 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.10.20 =
+* added PDF file preprocessor, to improve performance and eliminate local & remote asset problems
+* added branding image row to tickets, with configurable images, configured on OT settings page (intruderHT : @ht-2)
+* added many blocks of code documentation where previously absent
+* added ability to set both images on ticket
+* added logic to properly handle map images on PDF
+* added system status tool to remove local ticket asset cache
+* added custom DOMPDF settings generator upon install
+* added security to DOMPDF lib core files
+* added backbone modal handler
+* added deprecated action and filter handler
+* tweaked ticket qr code image to have dimensions and to be slightly smaller
+* tweaked permalink flush on install
+* updated all admin order screen takeover templates
+* updated ticket format for i18n compat (intruderHT : @ht-2)
+* replaced old media library tool on venue edit screen
+* fixed ticket image alignment
+* removed several deprecated templates and files
+
 = 1.10.19 =
 * fixed shipping order item column alignment in admin
 * fixed month name typo in admin
