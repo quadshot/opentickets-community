@@ -1,5 +1,4 @@
-#!/usr/bin/php
-<?php
+<?php ( ! defined( 'PHP_SAPI' ) || 'cli' != PHP_SAPI ? die( header( 'Location: /' ) ) : null );
 /**
  * @package dompdf
  * @link    http://dompdf.github.com/
