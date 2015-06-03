@@ -6,6 +6,13 @@ if ( ! defined( 'QSOT_DEBUG_PDF' ) )
 	define( 'QSOT_DEBUG_PDF', 0 );
 
 class QSOT_pdf {
+	// setup our class
+	public static function pre_init() {
+		// during activation, we need to do a couple things
+		add_action( 'qsot-activate', array( __CLASS__, 'on_activate' ), 5000 );
+	}
+
+	// allow some pre-processing to occur on html before it gets integrated into a final pdf
 	public static function from_html( $html, $title ) {
 		// give us soem breathing room
 		ini_set( 'max_execution_time', 180 );
@@ -38,60 +45,6 @@ class QSOT_pdf {
 		$pdf->stream( sanitize_title_with_dashes( 'ticket-' . $title ) . '.pdf', array( 'Attachment' => 1 ) );
 		exit;
 	}
-
-/*
-	public static function from_html( $html, $title='OpenTickets' ) {
-		// just in case there is a large number of tickets, increase the max run time
-		ini_set( 'max_execution_time', 180 );
-
-		// pre-parse remote or url based assets
-		try {
-			$html = self::_pre_parse_remote_assets( $html );
-		} catch ( Exception $e ) {
-			die('error');
-			echo '<h1>Problem parsing html.</h1>';
-			echo '<h2>' . force_balance_tags( $e->getMessage() ) . '</h2>';
-			return;
-		}
-		// die( '<pre>' . htmlspecialchars( $html ) . '</pre>' );
-
-		// load the library
-		require_once QSOT::plugin_dir() . 'libs/tcpdf/tcpdf.php';
-
-		// create the base pdf
-		$pdf = new TCPDF( PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false );
-
-		// set document information
-		$pdf->SetCreator( 'OpenTickets - ' . PDF_CREATOR );
-		$pdf->SetAuthor( 'Quadshot' );
-		$pdf->SetTitle( $title );
-		$pdf->SetSubject( $title );
-		$pdf->SetKeywords( 'tickets, OpenTickets' );
-
-		// set margins
-		$pdf->SetMargins( 0.5, 0.5, 0.5 );
-		$pdf->SetHeaderMargin( 0 );
-		$pdf->SetFooterMargin( 0 );
-
-		// set auto page breaks
-		$pdf->SetAutoPageBreak( TRUE, PDF_MARGIN_BOTTOM );
-
-		// set image scale factor
-		$pdf->setImageScale( PDF_IMAGE_SCALE_RATIO );
-
-		// set font
-		$pdf->SetFont( 'helvetica', 'B', 20 );
-
-		// add a page
-		$pdf->AddPage();
-
-		// add the html to the pdf
-		$pdf->writeHTML( trim( $html ), false, false, false, false, '' );
-
-		// Close and output PDF document
-		$pdf->Output( 'example_048.pdf', 'I' );
-	}
-*/
 
 	// find any and all remote assets in the html of the pdf, and either cache them locally, and use the local url, or embed them directly into the html
 	protected static function _pre_parse_remote_assets( $html ) {
@@ -224,7 +177,84 @@ class QSOT_pdf {
 
 		return $atts;
 	}
+
+	// during activation
+	public static function on_activate() {
+		// determine the cache dir name
+		$u = wp_upload_dir();
+		$base_dir_name = 'qsot-dompdf-fonts-' . substr( sha1( site_url() ), 21, 5 );
+		$final_path = $u['basedir'] . DIRECTORY_SEPARATOR . $base_dir_name . DIRECTORY_SEPARATOR;
+
+		try {
+			$font_path = QSOT_cache_helper::create_find_path( $final_path, 'fonts' );
+			if ( ! is_writable( $font_path ) )
+				throw new Exception( sprintf( __( 'The %s path is not writable. Please update the permissions to allow write access.', 'opentickets-community-edition' ), 'fonts' ) );
+		} catch ( Exception $e ) {
+			// just fail. we can go without the custom config
+			return;
+		}
+
+		// make sure that the libs dir is also writable
+		$libs_dir = QSOT::plugin_dir() . 'libs/';
+		if ( ! @file_exists( $libs_dir ) || ! is_dir( $libs_dir ) || ! is_writable( $libs_dir ) ) 
+			return;
+
+		// find all the fonts that come with the lib we packaged with the plugin, and move them to the new fonts dir, if they are not already there
+		$remove_files = array();
+		$core_fonts_dir = $libs_dir . 'dompdf/lib/fonts/';
+		// open the core included fonts dir
+		if ( @file_exists( $core_fonts_dir ) && is_writable( $core_fonts_dir ) && ( $dir = opendir( $core_fonts_dir ) ) ) {
+			// find all the files in the dir
+			while ( $file_basename = readdir( $dir ) ) {
+				$filename = $core_fonts_dir . $file_basename;
+				$new_filename = $font_path . $file_basename;
+				// if the current file is a dir or link, skip it
+				if ( is_dir( $filename ) || is_link( $filename ) )
+					continue;
+
+				// if the current file already exists in the new location, then add the old path to removal list
+				if ( @file_exists( $new_filename ) )
+					$remove_files[] = $filename;
+				// otherwise, try to move the packaged file to the new fonts dir
+				else if ( @rename( $filename, $new_filename ) )
+					$remove_files[] = $filename;
+			}
+
+			// attempt to create the new custom config file
+			if ( $config_file = fopen( $libs_dir . 'wp.dompdf.config.php', 'w+' ) ) {
+				// create variable names to use in the heredoc
+				$variable_names = array(
+					'$_SERVER["SCRIPT_FILENAME"]',
+				);
+
+				// generate the contents of the config file
+				$contents = <<<CONTENTS
+<?php ( __FILE__ == {$variable_names[0]} ) ? die( header( 'Location: /' ) ) : null;
+if ( ! defined( 'DOMPDF_FONT_DIR' ) )
+	define( 'DOMPDF_FONT_DIR', '$font_path' );
+if ( ! defined( 'DOMPDF_FONT_CACHE' ) )
+	define( 'DOMPDF_FONT_CACHE', '$font_path' );
+CONTENTS;
+				
+				// write the config file, and close it
+				fwrite( $config_file, $contents, strlen( $contents ) );
+				fclose( $config_file );
+
+				// remove any files that are marked to be removed, now that we have successfully written them to the new location, and pointed DOMPDF at them
+				/* skip this for now */
+				/*
+				if ( is_array( $remove_files ) && count( $remove_files ) )
+					foreach ( $remove_files as $remove_file )
+						if ( is_writable( $remove_file ) && ! is_dir( $remove_file ) && ! is_link( $remove_file ) )
+							@unlink( $remove_file );
+				*/
+			}
+		}
+	}
 }
+
+if ( defined( 'ABSPATH' ) && function_exists( 'add_action' ) )
+	QSOT_pdf::pre_init();
 
 endif;
 
@@ -396,20 +426,25 @@ class QSOT_cache_helper {
 		$base_dir_name = 'qsot-cache-' . substr( sha1( site_url() ), 10, 10 );
 		$final_path = $u['basedir'] . DIRECTORY_SEPARATOR . $base_dir_name . DIRECTORY_SEPARATOR;
 
-		// if the cache path already exists, just return the path
+		return self::$cache_path = trailingslashit( self::create_find_path( $final_path ) );
+	}
+
+	// create or find a path
+	public static function create_find_path( $final_path, $path_name='cache' ) {
+		// if the path already exists, just return the path
 		$test = ! WP_DEBUG ? @file_exists( $final_path ) && @is_dir( $final_path ) && @is_readable( $final_path ) : file_exists( $final_path ) && is_dir( $final_path ) && is_readable( $final_path );
 		if ( $test )
-			return self::$cache_path = trailingslashit( $final_path );
+			return trailingslashit( $final_path );
 
-		// if the paht is simply not readable, exception saying that
+		// if the path is simply not readable, exception saying that
 		$test = ! WP_DEBUG ? @file_exists( $final_path ) && ! @is_readable( $final_path ) : file_exists( $final_path ) && ! is_readable( $final_path );
 		if ( $test )
-			throw new Exception( __( 'The cache path exists, but it cannot be read. Please update the permissions to allow read access.', 'opentickets-community-edition' ) );
+			throw new Exception( sprintf( __( 'The %s path exists, but it cannot be read. Please update the permissions to allow read access.', 'opentickets-community-edition' ), $path_name ) );
 
 		// if the path is there, but is not a dir, exception saying that
 		$test = ! WP_DEBUG ? @file_exists( $final_path ) && ! @is_dir( $final_path ) : file_exists( $final_path ) && ! is_dir( $final_path );
 		if ( $test )
-			throw new Exception( __( 'The cache path exists, but is not a dir. Please remove or rename the existing file, and create a directory with the cache path name.', 'opentickets-community-edition' ) );
+			throw new Exception( sprintf( __( 'The %s path exists, but is not a dir. Please remove or rename the existing file, and create a directory with the cache path name.', 'opentickets-community-edition' ), $path_name ) );
 
 		// at this point the path probably does not exist. try to create it.
 
@@ -417,19 +452,19 @@ class QSOT_cache_helper {
 		$parent_dir = dirname( $final_path );
 		$test = ! WP_DEBUG ? ! @is_writable( $parent_dir ) : ! is_writable( $parent_dir );
 		if ( $test )
-			throw new Exception( __( 'Could not create the cache path directory. Please update the permissions to allow write access.', 'opentickets-community-edition' ) );
+			throw new Exception( sprintf( __( 'Could not create the %s path directory. Please update the permissions to allow write access.', 'opentickets-community-edition' ), $path_name ) );
 
-		// attempt to create a new dir for the cache path
+		// attempt to create a new dir for the path
 		$test = ! WP_DEBUG ? ! @mkdir( $final_path ) : ! mkdir( $final_path );
 		if ( $test )
-			throw new Exception( __( 'Unable to create the cache path directory.', 'opentickets-community-edition' ) );
+			throw new Exception( sprintf( __( 'Unable to create the %s path directory.', 'opentickets-community-edition' ), $path_name ) );
 
-		// if thenew path is not writable (unlikely) then fail
+		// if thei new path is not writable (unlikely) then fail
 		$test = ! WP_DEBUG ? ! @is_writeable( $final_path ) : ! is_writeable( $final_path );
 		if ( $test )
-			throw new Exception( __( 'The cache path is not writable. Please update the permissions to allow write access.', 'opentickets-community-edition' ) );
+			throw new Exception( sprintf( __( 'The %s path is not writable. Please update the permissions to allow write access.', 'opentickets-community-edition' ), $path_name ) );
 
-		return self::$cache_path = trailingslashit( $final_path );
+		return $final_path;
 	}
 }
 

@@ -73,8 +73,8 @@ class QSOT_tickets {
 		// email - add ticket download links
 		add_action('qsot-order-item-list-ticket-info', array(__CLASS__, 'add_view_ticket_link_to_emails'), 2000, 3);
 
-		// ticket flush rewrite rules
-		add_action('qsot-activate', array(__CLASS__, 'on_activate'), 1000);
+		// any special logic that needs to be run when activating our plugin
+		add_action( 'qsot-activate', array( __CLASS__, 'on_activate' ), 1000 );
 
 		if (is_admin()) {
 			add_action('admin_footer-options-permalink.php', array(__CLASS__, 'debug_rewrite_rules'));
@@ -501,8 +501,8 @@ class QSOT_tickets {
     return $tables;
 	}
 
+	// do stuff upon activation of our plugin
 	public static function on_activate() {
-		flush_rewrite_rules();
 	}
 
 	// setup the options that are available to control tickets. reachable at WPAdmin -> OpenTickets (menu) -> Settings (menu) -> Frontend (tab) -> Tickets (heading)

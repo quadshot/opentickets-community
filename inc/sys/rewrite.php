@@ -19,6 +19,14 @@ class qsot_rewriter {
 		add_filter( 'query_vars', array( __CLASS__, 'query_vars' ), 10 );
 		add_action( 'wp', array( __CLASS__, 'intercept_ticket_request' ), 11 );
 		add_filter( 'rewrite_rules_array', array( __CLASS__, 'rewrite_rules_array' ), PHP_INT_MAX );
+
+		// during activation, we need to flush the rewrite rules, because there are a few classes that register spcial rules
+		add_action( 'qsot-activate', array( __CLASS__, 'on_activate' ), 1000 );
+	}
+
+	// ona ctivation, flush the rewrite rules so that our cusotm ones can be calculated on page load
+	public static function on_activate() {
+		flush_rewrite_rules();
 	}
 
 	// actually add the rules requested by plugins and classes to our list of rules to create/parse/intercept
