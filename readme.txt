@@ -165,6 +165,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.10.22 =
+* adding css libraries that WC removed
+
 = 1.10.21 =
 * updated PO and MO files
 * removed several deprecated templates and files
