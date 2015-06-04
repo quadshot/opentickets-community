@@ -500,11 +500,21 @@ class QSOT {
 
 		// Write less file
 		if ( is_writable( $base_file ) ) {
-			// Colours changed - recompile less
-			if ( ! class_exists( 'lessc' ) )
-				include_once( WC()->plugin_path() . '/includes/libraries/class-lessc.php' );
-			if ( ! class_exists( 'cssmin' ) )
-				include_once( WC()->plugin_path() . '/includes/libraries/class-cssmin.php' );
+			try {
+				// first check if lessc is available
+				$file = self::$plugin_dir . 'libs/css/lessc.php';
+				if ( self::_check_one_lib( $file, 'LESSC' ) )
+					include $file;
+				
+				// then check if cssmin is available
+				$file = self::$plugin_dir . 'libs/css/cssmin.php';
+				if ( self::_check_one_lib( $file, 'CSSMIN' ) )
+					include $file;
+			} catch ( Exception $e ) {
+				// upon failure to find a library, just fail, with no message, until we can figure out a good way to transport the message
+				include_once 'alskdflkasdfjajlksfljksdfljadlfkja';
+				return;
+			}
 
 			try {
 				// create the base file
@@ -535,6 +545,24 @@ class QSOT {
 				wp_die( sprintf( __( 'Could not write colors to file %s. [%s]', 'opentickets-community-edition' ), $base_file, $ex->getMessage() ) );
 			}
 		}
+	}
+
+	// test if a descreet lib exists
+	protected static function _check_one_lib( $file, $lib_name, $context=false ) {
+		// set the default context for the error message
+		$context = $context ? $context : __( 'the installation process', 'opentickets-community-edition' );
+
+		// if we ar not in debug mode
+		if ( ! WP_DEBUG ) {
+			if ( ! @file_exists( $file ) || ! is_readable( $file ) || is_dir( $file ) )
+				throw new Exception( sprintf( __( 'Could not find the needed library %s, for use in %s.', 'opentickets-community-edition' ), $lib_name, $context ) );
+		// if we ARE in debug mode
+		} else {
+			if ( ! file_exists( $file ) || ! is_readable( $file ) || is_dir( $file ) )
+				throw new Exception( sprintf( __( 'Could not find the needed library %s, for use in %s.', 'opentickets-community-edition' ), $lib_name, $context ) );
+		}
+
+		return true;
 	}
 
 	// do magic 
