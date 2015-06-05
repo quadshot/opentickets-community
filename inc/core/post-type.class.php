@@ -94,7 +94,7 @@ class qsot_post_type {
 			do_action('qsot-restrict-usage', self::$o->core_post_type);
 
 			// add event name to item lists
-			add_action( 'woocommerce_order_item_meta_start', array( __CLASS__, 'add_event_name_to_emails' ), 10, 3 );
+			add_action('qsot-order-item-list-ticket-info', array(__CLASS__, 'add_event_name_to_emails'), 10, 3);
 			add_action('woocommerce_get_item_data', array(__CLASS__, 'add_event_name_to_cart'), 10, 2);
 
 			// order by meta_value cast to date
@@ -487,10 +487,10 @@ class qsot_post_type {
 			$m = wp_parse_args($m, array('purchases' => 0, 'capacity' => 0));
 			$m['available'] = $m['capacity'] - $m['purchases'];
 			switch (true) {
-				case $m['available'] >= ($m['capacity'] - self::$o->always_reserve) * 0.65: $m['availability'] = 'high'; break;
-				case $m['available'] >= ($m['capacity'] - self::$o->always_reserve) * 0.30: $m['availability'] = 'medium'; break;
-				case $m['available'] <= self::$o->always_reserve: $m['availability'] = 'sold-out'; break;
-				default: $m['availability'] = 'low'; break;
+				case $m['available'] >= ($m['capacity'] - self::$o->always_reserve) * 0.65: $m['availability'] = __('high','opentickets-community-edition'); break;
+				case $m['available'] >= ($m['capacity'] - self::$o->always_reserve) * 0.30: $m['availability'] = __('medium','opentickets-community-edition'); break;
+				case $m['available'] <= self::$o->always_reserve: $m['availability'] = __('sold-out','opentickets-community-edition'); break;
+				default: $m['availability'] = __('low','opentickets-community-edition'); break;
 			}
 			$m = apply_filters('qsot-event-meta', $m, $event, $meta);
 			if (isset($m['_event_area_obj'], $m['_event_area_obj']->ticket, $m['_event_area_obj']->ticket->id))
@@ -1153,7 +1153,7 @@ class qsot_post_type {
 							<tr>
 								<td width="60%">
 									<input type="text" class="widefat use-datepicker" name="_qsot_end_date_display"
-											value="<?php echo esc_attr( date( __( 'm-d-Y', 'opentickets-community-edition' ), strtotime( $start ) ) ) ?>" real="[name='_qsot_end_date']" scope=".field-wrap"
+											value="<?php echo esc_attr( date( __( 'm-d-Y', 'opentickets-community-edition' ), strtotime( $start ) ) ) ?>" real="[name='_qsot_start_date']" scope=".field-wrap"
 											frmt="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>" />
 									<input type="hidden" name="_qsot_end_date" value="<?php echo esc_attr($start) ?>" />
 								</td>
@@ -1270,7 +1270,7 @@ class qsot_post_type {
 														<tr>
 															<th><?php _e('Starts on','opentickets-community-edition') ?>:</th>
 															<td>
-																<input type="text" class="widefat date-text use-datepicker" name="repeat-starts-display" real="[name='repeat-starts']" scope="td"
+																<input type="text" class="widefat date-text use-datepicker" name="repeat-starts-display" real="[name='start-date']" scope="td"
 																		frmt="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>"
 																		value="<?php echo esc_attr( date( __( 'm-d-Y', 'opentickets-community-edition' ), $now ) ) ?>" />
 																<input type="hidden" name="repeat-starts" value="<?php echo esc_attr( date( __( 'Y-m-d', 'opentickets-community-edition' ), $now ) ) ?>" />
@@ -1286,7 +1286,7 @@ class qsot_post_type {
 																			<input type="radio" name="repeat-ends-type" value="on" checked="checked" />
 																			<span class="cb-text"><?php _e('On','opentickets-community-edition') ?>:</span>
 																		</span>
-																		<input type="text" class="widefat date-text use-datepicker" name="repeat-ends-on-display" real="[name='repeat-ends-on']" scope="td"
+																		<input type="text" class="widefat date-text use-datepicker" name="repeat-ends-on-display" real="[name='start-date']" scope="td"
 																				frmt="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>"
 																				value="<?php echo date( __( 'm-d-Y', 'opentickets-community-edition' ), $now ) ?>" />
 																		<input type="hidden" name="repeat-ends-on" value="<?php echo date( __('Y-m-d', 'opentickets-community-edition' ), $now ) ?>" />
