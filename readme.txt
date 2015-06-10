@@ -54,7 +54,7 @@ Are you developer? Want to contribute to the source code? Check us out on the [O
 
 = Special Thanks =
 
-@bradleysp (testing), @ht-2 (tranlation)
+@bradleysp (testing), @ht-2 (translation), @luminia (translation)
 
 == Installation ==
 
