@@ -230,6 +230,59 @@ class qsot_order_admin {
 		}
 	}
 
+	// determine the value of a piece of meta, based on the POST values and the original values of the order
+	protected static function _get_value( $key, $order ) {
+		$k = '_' == $key{0} ? substr( $key, 1 ) : $key;
+
+		// if there is a value that was submitted in the POST date
+		if ( ! empty( $_POST[ $key ] ) ) {
+			return wc_clean( $_POST[ $key ] );
+		// otherwise try to find it based on the other available information
+		} else {
+			// allow any plugins to modify the default value if needed, like on checkout
+			$value = apply_filters( 'woocommerce_checkout_get_value', null, $k );
+			if ( $value !== null )
+				return $value;
+
+			// Get the billing_ and shipping_ address fields
+			$address_fields = array_merge( WC()->countries->get_address_fields(), WC()->countries->get_address_fields( '', 'shipping_' ) );
+
+			// see if the order already has values for this field in it's meta. if so, use that
+			if ( $meta = get_post_meta( $order->id, $key, true ) )
+				return $meta;
+
+			// if the user for the order is set, then try to use their personal data if it exists
+			if ( $user_id = get_post_meta( $order->id, '_customer_user', true ) ) {
+				if ( $meta = get_user_meta( $user_id, $k, true ) )
+					return $meta;
+
+				if ( 'billing_email' == $k ) {
+					$u = get_user_by( 'id', $user_id );
+					if ( is_object( $u ) )
+						return $u->user_email;
+				}
+			}
+
+			// finally, fallback on defaults if available
+			switch ( $k ) {
+				case 'billing_country' :
+					return apply_filters( 'default_checkout_country', WC()->countries->get_base_country(), 'billing' );
+				case 'billing_state' :
+					return apply_filters( 'default_checkout_state', '', 'billing' );
+				case 'billing_postcode' :
+					return apply_filters( 'default_checkout_postcode', '', 'billing' );
+				case 'shipping_country' :
+					return apply_filters( 'default_checkout_country', WC()->countries->get_base_country(), 'shipping' );
+				case 'shipping_state' :
+					return apply_filters( 'default_checkout_state', '', 'shipping' );
+				case 'shipping_postcode' :
+					return apply_filters( 'default_checkout_postcode', '', 'shipping' );
+				default :
+					return apply_filters( 'default_checkout_' . $k, null, $k );
+			}
+		}
+	}
+
 	public static function require_billing_information($post_id, $post) {
 		// must be shop order
 		if ($post->post_type != 'shop_order') return;
@@ -240,75 +293,98 @@ class qsot_order_admin {
 		// only when the past is being saved in the admin
 		if (!isset($_POST['action']) || $_POST['action'] != 'editpost') return;
 
+		// load the order
+		$order = wc_get_order( $post_id );
+		if ( ! is_object( $order ) || ! isset( $order->id ) ) return;
+
+		// ****** most of this is adapted from the checkout logic from WC2.3.x
+		// get all the fields that we should be validating. derived from checkout process
+		$fields = WC()->countries->get_address_fields( self::_get_value( '_billing_country', $order ), '_billing_' );
 		$errors = array();
-		$fields = array( // all fields are pre-filtered with trim and a regex that replaces multiple spaces with 1 space (same with dashes)
-			'_billing_first_name' => array(
-				'#^([\w\d][\-\w\d\s\&\.\']+)$#' => __('must be at least 2 letters or numbers','opentickets-community-edition'), // at least 2 letters or numbers
-			),
-			'_billing_last_name' => array(
-				'#^([\w\d][\-\w\d\s\&\.\']+)$#' => __('must be at least 2 letters or numbers','opentickets-community-edition'), // at least 2 letters or numbers
-			),
-			'_billing_address_1' => array(
-				'#^(.{5,})$#' => __('must be at least 7 letters, numbers, or spaces','opentickets-community-edition'), // at least 7 letters numbers and spaces, beginning and ending with letter or number
-			),
-			'_billing_city' => array(
-				'#^([\w\d][\w\d\s]{2,}[\w\d])$#' => __('must be at least 4 letters, numbers, or spaces','opentickets-community-edition'), // at least 4 letters numbers and spaces, beginning and ending with letter or number
-			),
-			'_billing_postcode' => array(
-				'functions' => array(
-					array(
-						'func' => array(__CLASS__, 'is_postcode'),
-						'msg' => __('must be at least 5 letters, numbers, or spaces','opentickets-community-edition'), // at least 5 letters numbers and dashes, beginning and ending with letter or number
-					),
-				),
-			),
-			'_billing_country' => array(
-				'#^([\w\d][\w\d\s]*?[\w\d])$#' => __('must be at least 2 letters, numbers, or spaces','opentickets-community-edition'), // at least 3 letters numbers and spaces, beginning and ending with letter or number
-			),
-			/* not valid for international
-			'_billing_state' => array(
-				'#^([\w\d][\w\d\s]*?[\w\d])$#' => 'must be at least 2 letters, numbers, or spaces', // at least 2 letters numbers and spaces, beginning and ending with letter or number
-			),
-			*/
-			'_billing_email' => array(
-				'#^([\w\d].+[\w])$#' => __('must be at least 3 letters, numbers, or spaces','opentickets-community-edition'), // at least 3 characters long, beginning with letter or number and ending with letter
-				'functions' => array(
-					array(
-						'func' => 'is_email',
-						'msg' => __('must be a valid email','opentickets-community-edition'),
-					),
-				),
-			),
-			'_billing_phone' => array(
-				'functions' => array(
-					array(
-						'func' => array(__CLASS__, 'is_phone'),
-						'msg' => __('must be a valid phone number','opentickets-community-edition'),
-					),
-				),
-			),
-		);
 
-		foreach ($fields as $k => $rules) {
-			$name = ucwords(trim(preg_replace('#_+#', ' ', $k)));
-			$value = isset($_POST[$k]) ? $_POST[$k] : '';
-			$value = trim(preg_replace('#\s+#', ' ', preg_replace('#\-+#', '-', $value)));
-			$msgs = array();
+		// cycle through each field, and validate the input
+		foreach ( $fields as $key => $field ) {
+			// make sure we have a field type
+			if ( ! isset( $field['type'] ) )
+				$field['type'] = 'text';
 
-			foreach ($rules as $rule_key => $msg) {
-				if ($rule_key == 'functions') {
-					foreach ($msg as $rule) {
-						$func = $rule['func'];
-						$m = $rule['msg'];
-						if (is_callable($func) && !call_user_func($func, $value)) $msgs[] = $m.' '.$value;
-					}
-				} else {
-					if (!preg_match($rule_key, $value)) $msgs[] = $msg.' '.$value;
-				}
+			// find the submitted value of the field
+			switch ( $field['type'] ) {
+				// checkboxes are on or off
+				case 'checkbox':
+					$value = isset( $_POST[ $key ] ) ? 1 : 0;
+				break;
+
+				// multiselect boxes have multiple values that need cleaning
+				case 'multiselect':
+					$value = isset( $_POST[ $key ] ) ? implode( ', ', array_map( 'wc_clean', $_POST[ $key ] ) ) : '';
+				break;
+
+				// textareas allow for lots of text, so clean that up
+				case 'textarea':
+					$value = isset( $_POST[ $key ] ) ? wp_strip_all_tags( wp_check_invalid_utf8( stripslashes( $_POST[ $key ] ) ) ) : '';
+				break;
+
+				// all other fields should be cleaned as well
+				default:
+					$value = isset( $_POST[ $key ] ) ? ( is_array( $_POST[ $key ] ) ? array_map( 'wc_clean', $_POST[ $key ] ) : wc_clean( $_POST[ $key ] ) ) : '';
+				break;
 			}
 
-			if ($msgs) {
-				$errors[] = '- '.$name.' '.implode(', ', $msgs);
+			// allow modification of resulting value
+			$value = apply_filters( 'woocommerce_process_checkout_' . sanitize_title( $field['type'] ) . '_field', $value );
+			$value = apply_filters( 'woocommerce_process_checkout_field_' . $key, $value );
+
+			// check required fields
+			if ( isset( $field['required'] ) && $field['required'] && empty( $value ) )
+				$error[] = '<strong>' . $field['label'] . '</strong> ' . __( 'is a required field.', 'woocommerce' );
+
+			// some non-empty fields need addtiional validation. handle that here
+			if ( ! empty( $value ) ) {
+				// cycle through the rules
+				if ( isset( $field['validate'] ) ) foreach ( $field['validate'] as $rule ) {
+					// process each rule if it is in the list
+					switch ( $rule ) {
+						// postcodes vary from country to country
+						case 'postcode':
+							$value = strtoupper( str_replace( ' ', '', $value ) );
+							if ( ! WC_Validation::is_postcode( $value, $_POST[ $key ] ) )
+								$errors[] = __( 'Please enter a valid postcode/ZIP.', 'woocommerce' );
+						break;
+
+						// phone digit count and format varies from country to country
+						case 'phone':
+							$value = wc_format_phone_number( $value );
+							if ( ! WC_Validation::is_phone( $value ) )
+								$errors[] = '<strong>' . $field['label'] . '</strong> ' . __( 'is not a valid phone number.', 'woocommerce' );
+						break;
+
+						// validate email addresses
+						case 'email':
+							$value = strtolower( $value );
+							if ( ! is_email( $value ) )
+								$errors[] = '<strong>' . $field['label'] . '</strong> ' . __( 'is not a valid email address.', 'woocommerce' );
+						break;
+
+						// states cound be in different formats or have different values based on the country
+						case 'state':
+							$states = WC()->countries->get_states( self::_get_value( '_billing_country', $order ) );
+
+							if ( ! empty( $states ) && is_array( $states ) ) {
+								$states = array_flip( array_map( 'strtolower', $states ) );
+								// look up correct value if key exists
+								if ( isset( $states[ strtolower( $value ) ] ) )
+									$value = $states[ strtolower( $value ) ];
+							}
+
+							if ( ! empty( $states ) && is_array( $states ) && count( $states ) > 0 ) {
+								if ( ! in_array( $value, $states ) ) {
+									$errors[] = '<strong>' . $field['label'] . '</strong> ' . strtolower( $value ) . ' ' . __( 'is not valid. Please enter one of the following:', 'woocommerce' ) . ' ' . implode( ', ', $states ) . '<pre>' . var_export( $states, true) . '</pre>';
+								}
+							}
+						break;
+					}
+				}
 			}
 		}
 
