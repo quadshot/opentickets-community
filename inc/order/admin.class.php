@@ -297,6 +297,9 @@ class qsot_order_admin {
 		$order = wc_get_order( $post_id );
 		if ( ! is_object( $order ) || ! isset( $order->id ) ) return;
 
+		// do not perform this check on cancelled orders, because they are irrelevant checks at that point
+		if ( 'cancelled' == $order->get_status() ) return;
+
 		// ****** most of this is adapted from the checkout logic from WC2.3.x
 		// get all the fields that we should be validating. derived from checkout process
 		$fields = WC()->countries->get_address_fields( self::_get_value( '_billing_country', $order ), '_billing_' );
@@ -395,18 +398,13 @@ class qsot_order_admin {
 			self::_disable_emails();
 
 			do_action('qsot-before-guest-check-update-order-status', $post);
-			if ( QSOT::is_wc_latest() ) {
-				$order = wc_get_order( $post_id );
-				$ostatus = $order->get_status();
+
+			// if the order is not pending, cancelled or failed, then update the state to pending, so that the admin knows that there is a problem
+			if ( ! in_array( $order->get_status(), array( 'pending', 'cancelled', 'failed' ) ) ) {
+				$order->update_status( 'pending', __( 'Your current settings require you to provide most billing information for each order.', 'opentickets-community-edition' ) );
+			// otherwise, just log a message saying that it is still messed up
 			} else {
-				$order = new WC_Order($post_id);
-				$stati = wp_get_object_terms( array( $post_id ), array( 'shop_order_status' ), 'slugs' );
-				$ostatus = substr( $ostatus = current( $stati ), 0, 3 ) == 'wc-' ? substr( $ostatus, 3 ) : $ostatus;
-			}
-			if ( $ostatus != 'pending' ) {
-				$order->update_status('pending', __('Your current settings require you to provide most billing information for each order.','opentickets-community-edition'));
-			} else {
-				$order->add_order_note(__('Your current settings require you to provide most billing information for each order.','opentickets-community-edition'), false);
+				$order->add_order_note( __( 'Your current settings require you to provide most billing information for each order.', 'opentickets-community-edition' ), false );
 			}
 
 			self::_enable_emails();
