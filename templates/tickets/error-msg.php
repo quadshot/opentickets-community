@@ -1,6 +1,6 @@
 <?php get_header(); ?>
 <style>
-	.message-wrapper { margin-bottom:20px; }
+	.message-wrapper { margin-bottom:20px; padding:1em; }
 </style>
 <div id="primary" class="content-area">
 	<div id="content" class="site-content" role="main">

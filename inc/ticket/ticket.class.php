@@ -269,6 +269,23 @@ class QSOT_tickets {
 		if (!self::_can_user_view_ticket($args)) return false;
 
 		$ticket = apply_filters('qsot-compile-ticket-info', false, $args['order_item_id'], $args['order_id']);
+
+		// do not display the ticket unless we have all needed information
+		if (
+				! is_object( $ticket ) ||
+				! isset( $ticket->order, $ticket->product, $ticket->event, $ticket->venue, $ticket->order_item, $ticket->event_area ) ||
+				! is_object( $ticket->order ) || ! is_object( $ticket->product ) || ! is_object( $ticket->event ) || ! is_object( $ticket->venue ) || ! is_array( $ticket->order_item ) || ! is_object( $ticket->event_area )
+		) {
+			self::_no_access( __( 'There was a problem loading your ticket.', 'opentickets-community-edition' ) );
+			exit;
+		}
+
+		// do not display the ticket unless the order is complete
+		if ( 'completed' != $ticket->order->get_status() ) {
+			self::_no_access( __( 'The ticket cannot be displayed, because the order is not complete.', 'opentickets-community-edition' ) );
+			exit;
+		}
+
 		$template = apply_filters('qsot-locate-template', '', array('tickets/basic-ticket.php'), false, false);
 		$stylesheet = apply_filters('qsot-locate-template', '', array('tickets/basic-style.css'), false, false);
 		$stylesheet = str_replace(DIRECTORY_SEPARATOR, '/', str_replace(ABSPATH, '/', $stylesheet));
@@ -346,7 +363,7 @@ class QSOT_tickets {
 		$order_item = isset($order_items[$oiid]) ? $order_items[$oiid] : false;
 		if (empty($order_item) || !isset($order_item['product_id'], $order_item['event_id'])) return $current;
 
-		$product = wc_get_product($order_item['product_id']);
+		$product = wc_get_product( isset( $order_item['variation_id'] ) && $order_item['variation_id'] ? $order_item['variation_id'] : $order_item['product_id'] );
 		$event = apply_filters('qsot-get-event', false, $order_item['event_id']);
 		if (empty($event) || empty($product) || is_wp_error($product)) return $current;
 
