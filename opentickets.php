@@ -512,7 +512,6 @@ class QSOT {
 					include $file;
 			} catch ( Exception $e ) {
 				// upon failure to find a library, just fail, with no message, until we can figure out a good way to transport the message
-				include_once 'alskdflkasdfjajlksfljksdfljadlfkja';
 				return;
 			}
 
