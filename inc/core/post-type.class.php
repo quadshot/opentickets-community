@@ -352,21 +352,31 @@ class qsot_post_type {
 		return array_filter(array_unique($list));
 	}
 
-	public static function the_content($content) {
+	// insert the event synopsis into the post content of the child events, so it is displayed on the individual event pages, when the synopsis options are turned on
+	public static function the_content( $content ) {
 		$post = get_post();
+		// if the post has a password, then require it
 		if ( post_password_required( $post ) ) return $content;
 
-		if (($event = get_post()) && is_object($event) && $event->post_type == self::$o->core_post_type && $event->post_parent != 0) {
-			if (self::$options->{'qsot-single-synopsis'} && self::$options->{'qsot-single-synopsis'} != 'no') {
+		// if this is a child event post, then ...
+		if ( ( $event = get_post() ) && is_object( $event ) && $event->post_type == self::$o->core_post_type && $event->post_parent != 0 ) {
+			// if we are supposed to show the synopsis, then add it
+			if ( self::$options->{'qsot-single-synopsis'} && 'no' != self::$options->{'qsot-single-synopsis'} ) {
+				// emulate that the 'current post' is actually the parent post, so that we can run the the_content filters, without an infinite recursion loop
 				$p = clone $GLOBALS['post'];
-				$GLOBALS['post'] = get_post($event->post_parent);
-				setup_postdata($GLOBALS['post']);
-				$content = get_the_content();
+				$GLOBALS['post'] = get_post( $event->post_parent );
+				setup_postdata( $GLOBALS['post'] );
+
+				// get the parent post content, and pass it through the appropriate filters for texturization
+				$content = apply_filters( 'the_content', get_the_content() );
+
+				// restore the original post
 				$GLOBALS['post'] = $p;
-				setup_postdata($p);
+				setup_postdata( $p );
 			}
 
-			$content = apply_filters('qsot-event-the-content', $content, $event);
+			// inform other classes and plugins of our new content
+			$content = apply_filters( 'qsot-event-the-content', $content, $event );
 		}
 
 		return $content;
@@ -1559,6 +1569,7 @@ class qsot_post_type {
 				'below' => __( 'Below the Ticket Selection UI', 'opentickets-community-edition' ),
 			),
 			'default' => 'below',
+			'page' => 'frontend',
 		) );
 
 		self::$options->add(array(

@@ -1012,20 +1012,24 @@ class qsot_event_area {
 		}
 	}
 
+	// add the ticket selection UI to the output of the individual event pages
 	public static function draw_event_area($content, $event) {
 		$out = '';
 
 		$reserved = $interests = array();
+		// load the event area
 		$area = apply_filters( 'qsot-get-event-event-area', false, $event->ID );
+		// container for the name of the template to use
 		$template_file = 'post-content/event-area-closed.php';
 
-		global $woocommerce;
-
+		// check to make sure that we can sell tickets to this event. usually this is only false if we are too close to the start of the event.
+		// if we can then change the template to the ticket selection UI enabled template, and load the list of reservations
 		if ( apply_filters( 'qsot-can-sell-tickets-to-event', false, $event->ID ) ) {
 			$reserved = apply_filters( 'qsot-zoner-owns-current-user', 0, $event->ID, $area->ticket->post->ID, self::$o->{'z.states.r'} );
 			$template_file = 'post-content/event-area.php';
 		}
 
+		// if we have the event area, then go ahead and render the appropriate interface
 		if ( is_object( $area ) ) {
 			ob_start();
 			$template = apply_filters( 'qsot-locate-template', '', array( $template_file, 'post-content/event-area.php' ), false, false );
@@ -1035,8 +1039,10 @@ class qsot_event_area {
 			ob_end_clean();
 		}
 
+		// allow modification if needed
 		$out = apply_filters( 'qsot-no-js-seat-selection-form', $out, $area, $event, $interests, $reserved );
 
+		// put the UI in the appropriate location, depending on our settings
 		if ( self::$options->{'qsot-synopsis-position'} == 'above' )
 			return $content . $out;
 		else
