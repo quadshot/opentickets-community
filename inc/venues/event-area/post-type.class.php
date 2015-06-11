@@ -169,12 +169,19 @@ class qsot_event_area {
 		wp_enqueue_script('qsot-event-event-area-settings');
 	}
 
-	public static function add_event_area_data($current, $oiid, $order_id) {
-		if (!is_object($current)) return $current;
-		if (!isset($current->event, $current->event->meta, $current->event->meta->_event_area_obj)) return $current;
+	// load the event area information and attach it to the ticket information. used when rendering the ticket
+	public static function add_event_area_data( $current, $oiid, $order_id ) {
+		// skip this function if the ticket has not already been loaded, or if it is a wp error
+		if ( ! is_object( $current ) || is_wp_error( $current ) )
+			return $current;
 
+		// also skip this function if the event info has not been loaded, or the event area core object has not been loaded
+		if ( ! isset( $current->event, $current->event->meta, $current->event->meta->_event_area_obj ) )
+			return $current;
+
+		// move the event area object to top level scope so we dont have to dig for it
 		$current->event_area = $current->event->meta->_event_area_obj;
-		unset($current->event->meta->_event_area_obj);
+		unset( $current->event->meta->_event_area_obj );
 
 		return $current;
 	}
@@ -595,7 +602,7 @@ class qsot_event_area {
 
 		return $resp;
 	}
-	
+
 	public static function aaj_delete_item($resp, $data) {
 		$resp['s'] = false;
 		$resp['e'] = array();
@@ -610,7 +617,7 @@ class qsot_event_area {
 
 		return $resp;
 	}
-	
+
 	public static function aaj_save_item($resp, $data) {
 		$resp['s'] = false;
 		$resp['e'] = array();
@@ -683,7 +690,7 @@ class qsot_event_area {
 		$event = apply_filters( 'qsot-get-event', false, $event_id );
 		$order = new WC_Order( $oid );
 
-		// if both event and order exist, then 
+		// if both event and order exist, then
 		if ( is_object( $event ) && is_object( $order ) ) {
 			// determine an appropriate 'customer id' to use when editing the ticket reservations
 			$customer_id = $data['customer_user'];
@@ -897,16 +904,16 @@ class qsot_event_area {
 	public static function add_event_meta($m, $event, $raw_meta) {
 		$m['_event_area_obj'] = apply_filters('qsot-get-event-event-area', false, $event->ID);
 		$m['capacity'] = $m['purchases'] = $m['available'] = 0;
-		$m['availability'] = 'sold-out';
+		$m['availability'] = __('sold-out','opentickets-community-edition');
 		if (is_object($m['_event_area_obj'])) {
 			$m['capacity'] = $m['_event_area_obj']->meta['purchased'] + $m['_event_area_obj']->meta['available'];
 			$m['purchases'] = $m['_event_area_obj']->meta['purchased'];
 			$m['available'] = $m['_event_area_obj']->meta['available'];
 			switch (true) {
-				case $m['available'] >= ($m['capacity'] - self::$o->always_reserve) * 0.65: $m['availability'] = 'high'; break;
-				case $m['available'] >= ($m['capacity'] - self::$o->always_reserve) * 0.30: $m['availability'] = 'medium'; break;
-				case $m['available'] <= self::$o->always_reserve: $m['availability'] = 'sold-out'; break;
-				default: $m['availability'] = 'low'; break;
+				case $m['available'] >= ($m['capacity'] - self::$o->always_reserve) * 0.65: $m['availability'] = __('high','opentickets-community-edition'); break;
+				case $m['available'] >= ($m['capacity'] - self::$o->always_reserve) * 0.30: $m['availability'] = __('medium','opentickets-community-edition'); break;
+				case $m['available'] <= self::$o->always_reserve: $m['availability'] = __('sold-out','opentickets-community-edition'); break;
+				default: $m['availability'] = __('low','opentickets-community-edition'); break;
 			}
 		}
 		return $m;

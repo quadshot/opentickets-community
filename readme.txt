@@ -54,7 +54,7 @@ Are you developer? Want to contribute to the source code? Check us out on the [O
 
 = Special Thanks =
 
-@bradleysp (testing), @ht-2 (tranlation)
+@bradleysp (testing), @ht-2 (translation), @luminia (translation)
 
 == Installation ==
 
@@ -164,6 +164,15 @@ Setup an 'Event':
 The FAQ's for OpenTickets Community Edition is currently located on [our website's FAQs Page](http://opentickets.com/faq).
 
 == Changelog ==
+
+= 1.10.23 =
+* added dutch translation (@luminia)
+* added data requirements check to ticket display template
+* added css to ticket selection UI to handle float issues above and below
+* tweaked settings for synopsis so they are adjacent
+* tweaked billing data check on admin order save for pending and cancelled orders
+* tweaked ticket printing styles
+* changed admin order save billing data validation to mirror checkout
 
 = 1.10.22 =
 * adding css libraries that WC removed

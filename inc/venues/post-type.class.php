@@ -5,6 +5,9 @@ class qsot_venue_post_type {
 	// holder for event plugin options
 	protected static $o = null;
 
+	// holder for plugin settings
+	protected static $options = null;
+
 	public static function pre_init() {
 		// first thing, load all the options, and share them with all other parts of the plugin
 		$settings_class_name = apply_filters('qsot-settings-class-name', '');
@@ -45,6 +48,13 @@ class qsot_venue_post_type {
 			'venue' => '_venue_id',
 		));
 
+		// load all the options, and share them with all other parts of the plugin
+		$options_class_name = apply_filters('qsot-options-class-name', '');
+		if (!empty($options_class_name)) {
+			self::$options = call_user_func_array(array($options_class_name, "instance"), array());
+			self::_setup_admin_options();
+		}
+
 		// load different assets depending on the page that we are on in the admin
 		add_action( 'qsot-admin-load-assets-' . self::$o->core_post_type, array( __CLASS__, 'load_event_venue_assets' ), 10, 2 );
 		add_action( 'qsot-admin-load-assets-' . self::$o->{'venue.post_type'}, array( __CLASS__, 'load_venue_admin_assets' ), 10, 2 );
@@ -72,27 +82,100 @@ class qsot_venue_post_type {
 		add_filter('qsot-get-venue-map', array(__CLASS__, 'get_map'), 10, 2);
 		add_filter('qsot-get-venue-address', array(__CLASS__, 'get_address'), 10, 2);
 
+		add_filter( 'qsot-formatted-venue-info', array( __CLASS__, 'get_formatted_venue_info' ), 100, 2 );
+		add_filter( 'the_content', array( __CLASS__, 'add_venue_info' ), 100, 2 );
+
 		do_action('qsot-restrict-usage', 'qsot-venue');
 	}
 
-	public static function venue_template_default($template) {
-		$post = get_queried_object();
-		if ($post->post_type != 'qsot-venue') return $template;
+	// add the venue information below the venue description
+	public static function add_venue_info( $content, $post_id=false ) {
+		// if the current post is not a venue, then skip this function
+		$post_id = ! empty( $post_id ) ? $post_id : get_the_ID();
+		if ( self::$o->{'venue.post_type'} != get_post_type( $post_id ) )
+			return;
 
-		return apply_filters('qsot-maybe-override-theme_default', $template, 'single-qsot-venue.php', 'single.php');
+		return $content . apply_filters( 'qsot-formatted-venue-info', '', array( 'venue_id' => $post_id ) );
 	}
 
-	public static function add_venue_data($current, $oiid, $order_id) {
-		if (!is_object($current)) return $current;
-		if (!isset($current->event, $current->event->meta)) return $current;
+	// find the appropriate template to display the venue post type
+	public static function venue_template_default( $template ) {
+		// only dod this for single venue posts
+		if ( ! is_singular( self::$o->{'venue.post_type'} ) ) return $template;
 
-		$venue = get_post($current->event->meta->venue);
-		if (is_object($venue) && isset($venue->ID)) {
-			$venue->meta = apply_filters('qsot-get-all-venue-meta', array(), $venue->ID);
-			$venue->image_id = get_post_thumbnail_id($venue->ID);
-			$venue->map_image = apply_filters('qsot-venue-map-string', '', $venue->meta['info']);
-			$venue->map_image_only = apply_filters('qsot-venue-map-string', '', $venue->meta['info'], array('type' => 'img'));
+		// find the appropriate template
+		// first try to find the individual post type template
+		$templ = apply_filters( 'qsot-locate-template', '', array(
+			'single-qsot-venue.php',
+		) );
+		// if that failed, try the fallbacks
+		$templ = '' !== $templ ? $templ : apply_filters( 'qsot-locate-template', '', array(
+			$template,
+			'single.php',
+		) );
+
+		return $templ ? $templ : $template;
+	}
+
+	// get a formatted version of the venue information
+	public static function get_formatted_venue_info( $current, $args ) {
+		$args = wp_parse_args( $args, array(
+			'venue_id' => get_the_ID(),
+			'only_meta' => false,
+		) );
+		extract( $args );
+
+		// start collecting output so it can be returned
+		ob_start();
+
+		// fetch the venue post, the meta, and determine the template to use
+		$venue = get_post( $venue_id );
+		if ( ! is_object( $venue ) || ! isset( $venue->ID, $venue->post_type ) || self::$o->{'venue.post_type'} != $venue->post_type )
+			return $current;
+
+		$only_meta = is_string( $only_meta ) ? preg_split( '#\s*,\s*#', $only_meta ) : $only_meta;
+		$only_meta = is_array( $only_meta ) ? array_filter( array_map( 'strtolower', $only_meta ) ) : $only_meta;
+		$meta = apply_filters( 'qsot-get-all-venue-meta', array(), $venue_id );
+		if ( is_array( $only_meta ) && count( $only_meta ) )
+			foreach ( $meta as $k => $v )
+				if ( ! in_array( strtolower( $k ), $only_meta ) )
+					unset( $meta[ $k ] );
+
+		$template = apply_filters( 'qsot-locate-template', '', array( 'post-content/venue-info.php' ), false, false );
+
+		// if there is a template, include it
+		if ( $template )
+			include $template;
+
+		// fetch the output
+		$out = ob_get_contents();
+		ob_end_clean();
+
+		return $current . $out;
+	}
+
+	// add the data about the venue to the ticket information. used to create the ticket output
+	public static function add_venue_data( $current, $oiid, $order_id ) {
+		// skip this function if the ticket is not loaded yet, or if it is a wp_error
+		if ( ! is_object( $current ) || is_wp_error( $current ) )
+			return $current;
+
+		// skip this function if the event information is not present either
+		if ( ! isset( $current->event, $current->event->meta ) )
+			return $current;
+
+		// load the venue
+		$venue = get_post( $current->event->meta->venue );
+
+		// if the venue was loaded, then populate the venue information
+		if ( is_object( $venue ) && isset( $venue->ID ) ) {
+			$venue->meta = apply_filters( 'qsot-get-all-venue-meta', array(), $venue->ID );
+			$venue->image_id = isset( $venue->meta['info'], $venue->meta['info']['logo_image_id'] ) && $venue->meta['info']['logo_image_id'] ? $venue->meta['info']['logo_image_id'] : get_post_thumbnail_id( $venue->ID );
+			$venue->map_image = apply_filters( 'qsot-venue-map-string', '', $venue->meta['info'] );
+			$venue->map_image_only = apply_filters( 'qsot-venue-map-string', '', $venue->meta['info'], array( 'type' => 'img' ) );
 			$current->venue = $venue;
+		} else {
+			return new WP_Error( 'missing_data', __( 'Could not load the venue information for this ticket.', 'opentickets-community-edition' ), array( 'venue_id' => $current->event->meta->venue ) );
 		}
 
 		return $current;
@@ -100,7 +183,7 @@ class qsot_venue_post_type {
 
 	public static function get_map($current, $venue) {
 		$venue = get_post($venue);
-		if (!is_object($venue) || !isset($venue->post_type) || $venue->post_type !== 'qsot-venue') return $current;
+		if ( ! is_object( $venue ) || ! isset( $venue->post_type ) || $venue->post_type !== self::$o->{'venue.post_type'} ) return $current;
 
 		$venue_info = get_post_meta($venue->ID, '_venue_information', true);
 		$map_instructions = isset($venue_info['instructions']) && !empty($venue_info['instructions']) ? '<div class="map-instructions">'.$venue_info['instructions'].'</div>' : '';
@@ -110,7 +193,7 @@ class qsot_venue_post_type {
 
 	public static function get_address($current, $venue) {
 		$venue = get_post($venue);
-		if (!is_object($venue) || !isset($venue->post_type) || $venue->post_type !== 'qsot-venue') return $current;
+		if ( ! is_object( $venue ) || ! isset( $venue->post_type ) || $venue->post_type !== self::$o->{'venue.post_type'} ) return $current;
 
 		$kmap = array(
 			'address1' => __('Address','opentickets-community-edition'),
@@ -315,14 +398,27 @@ class qsot_venue_post_type {
 		do_action('qsot-events-venue-metaboxes', $post);
 	}
 
-	public static function get_all_venue_meta($current, $post_id) {
-		$all = get_post_custom($post_id);
+	// fetch and normalize all the venue meta data
+	public static function get_all_venue_meta( $current, $post_id ) {
+		// get all meta data for the venue
+		$all = get_post_custom( $post_id );
 		$out = array();
-		foreach ($all as $k => $v) {
-			$key = array_search($k, self::$o->{'venue.meta_key'});
-			if ($key === false) $key = $k;
-			$out[$key] = maybe_unserialize(array_shift($v));
+
+		// for each meta data key values pair
+		foreach ( $all as $k => $v ) {
+			// if there is a mapped 'short name' for the meta key, use that instead of the long name
+			$key = array_search( $k, self::$o->{'venue.meta_key'} );
+			if ( $key === false )
+				$key = $k;
+
+			// unserialize any arrays that are still in serial form
+			$out[ $key ] = maybe_unserialize( current( $v ) );
+			
+			// if there are default values for the meta key, then normalize the values by overlaying the settings on top of the defaults
+			if ( $defaults = self::$o->{ 'venue.defaults.' . $key } )
+				$out[ $key ] = wp_parse_args( $out[ $key ], $defaults );
 		}
+
 		return $out;
 	}
 
@@ -343,9 +439,13 @@ class qsot_venue_post_type {
 		return $info;
 	}
 
-	public static function save_venue_meta($meta, $post_id, $name) {
-		$k = isset(self::$o->{'venue.meta_key.'.$name}) ? self::$o->{'venue.meta_key.'.$name} : $name;
-		update_post_meta($post_id, $k, $meta);
+	// save venue meta, based on key name
+	public static function save_venue_meta( $meta, $post_id, $name ) {
+		// determine the appropriate meta key
+		$k = isset( self::$o->{ 'venue.meta_key.' . $name } ) ? self::$o->{ 'venue.meta_key.' . $name } : $name;
+
+		// update the metakey with the new data
+		update_post_meta( $post_id, $k, $meta );
 	}
 
 	public static function mb_venue_information($post, $mb) {
@@ -411,15 +511,27 @@ class qsot_venue_post_type {
 		<?php
 	}
 
-	public static function mb_venue_social_information($post, $mb) {
-		$info = apply_filters('qsot-get-venue-meta', array(), $post->ID, 'info');
-		$info = wp_parse_args($info, array(
+	// social / contact info metabox
+	public static function mb_venue_social_information( $post, $mb ) {
+		// compensate for old typos that lead to bad meta storage
+		$old_info = apply_filters( 'qsot-get-venue-meta', array(), $post->ID, 'info' );
+		$info = apply_filters( 'qsot-get-venue-meta', array(), $post->ID, 'social' );
+		foreach ( $info as $k => $v ) {
+			if ( '' == $v && isset( $old_info[ $k ] ) && '' != $old_info[ $k ] ) {
+				$info[ $k ] = $old_info[ $k ];
+			}
+		}
+
+		// normalize the data
+		$info = wp_parse_args( $info, array(
 			'phone' => '',
 			'website' => '',
 			'facebook' => '',
 			'twitter' => '',
 			'contact_email' => ''
-		));
+		) );
+
+		// render the metabox
 		?>
 			<style>
 				table.venue-social-information-table { width:100%; margin:0; }
@@ -429,49 +541,70 @@ class qsot_venue_post_type {
 				<tbody>
 					<tr>
 						<th width="1%"><?php _e('Phone:','opentickets-community-edition') ?></th>
-						<td><input type="text" class="widefat" name="venue[info][phone]" value="<?php echo esc_attr($info['phone']) ?>" /></td>
+						<td><input type="text" class="widefat" name="venue[social][phone]" value="<?php echo esc_attr( $info['phone'] ) ?>" /></td>
 					</tr>
 					<tr>
 						<th><?php _e('Website:','opentickets-community-edition') ?></th>
-						<td><input type="text" class="widefat" name="venue[info][website]" value="<?php echo esc_attr($info['website']) ?>" /></td>
+						<td><input title="<?php echo esc_attr( __( 'Full URL', 'opentickets-community-edition' ) ) ?>" type="text" class="widefat" name="venue[social][website]" value="<?php echo esc_attr( $info['website'] ) ?>" /></td>
 					</tr>
 					<tr>
 						<th><?php _e('Facebook:','opentickets-community-edition') ?></th>
-						<td><input type="text" class="widefat" name="venue[info][facebook]" value="<?php echo esc_attr($info['facebook']) ?>" /></td>
+						<td><input title="<?php echo esc_attr( __( 'Full URL', 'opentickets-community-edition' ) ) ?>" type="text" class="widefat" name="venue[social][facebook]" value="<?php echo esc_attr( $info['facebook'] ) ?>" /></td>
 					</tr>
 					<tr>
 						<th><?php _e('Twitter:','opentickets-community-edition') ?></th>
-						<td><input type="text" class="widefat" name="venue[info][twitter]" value="<?php echo esc_attr($info['twitter']) ?>" /></td>
+						<td><input title="<?php echo esc_attr( __( 'Full URL', 'opentickets-community-edition' ) ) ?>" type="text" class="widefat" name="venue[social][twitter]" value="<?php echo esc_attr( $info['twitter'] ) ?>" /></td>
 					</tr>
 					<tr>
 						<th><?php _e('Contact Email:','opentickets-community-edition') ?></th>
-						<td><input type="text" class="widefat" name="venue[info][contact_email]" value="<?php echo esc_attr($info['contact_email']) ?>" /></td>
+						<td><input type="text" class="widefat" name="venue[social][contact_email]" value="<?php echo esc_attr( $info['contact_email'] ) ?>" /></td>
 					</tr>
-					<?php do_action('qsot-venue-social-info-rows', $info, $post, $mb) ?>
+					<?php do_action( 'qsot-venue-social-info-rows', $info, $post, $mb ) ?>
 				</tbody>
 			</table>
-			<?php do_action('qsot-venue-social-info-meta-box', $info, $post, $mb) ?>
+			<?php do_action( 'qsot-venue-social-info-meta-box', $info, $post, $mb ) ?>
 		<?php
 	}
 
-	public static function save_venue($post_id, $post) {
-		if ($post->post_type != self::$o->{'venue.post_type'}) return;
+	// when saving the venue posts, try to update the meta data
+	public static function save_venue( $post_id, $post ) {
+		// only do this for venue posts
+		if ( $post->post_type != self::$o->{'venue.post_type'} )
+			return;
 
-		if (isset($_POST['venue'], $_POST['venue']['info'])) {
-			do_action(
-				'qsot-save-venue-meta',
-				wp_parse_args(
+		// if there is venue data to save
+		if ( isset( $_POST['venue'] ) && is_array( $_POST['venue'] ) ) {
+			// update the social and contact venue info
+			if ( isset( $_POST['venue']['social'] ) ) {
+				// aggregate the social and contact info, compensating for old data saving bug
+				$old_data = apply_filters( 'qsot-get-venue-meta', array(), $post_id, 'social' );
+				$info = apply_filters( 'qsot-get-venue-meta', array(), $post_id, 'info' );
+				foreach ( $old_data as $k => $v ) {
+					if ( '' === $v && isset( $info[ $k ] ) && '' !== $info[ $k ] )
+						$old_data[ $k ] = $info[ $k ];
+				}
+
+				$data = wp_parse_args( $_POST['venue']['social'], $old_data);
+
+				// merge the new settings on top of the old ones for the final values, and then save them
+				do_action( 'qsot-save-venue-meta', $data, $post_id, 'social' );
+			}
+
+			// update the basic venue info
+			if ( isset( $_POST['venue']['info'] ) ) {
+				// aggregate the new info, and compensate for old data saving bug
+				$data = wp_parse_args(
 					$_POST['venue']['info'],
-					apply_filters(
-						'qsot-get-venue-meta',
-						array(),
-						$post_id,
-						'info'
-					)
-				),
-				$post_id,
-				'info'
-			);
+					apply_filters( 'qsot-get-venue-meta', array(), $post_id, 'info' )
+				);
+
+				$social = apply_filters( 'qsot-get-venue-meta', array(), $post_id, 'social' );
+				foreach ( $social as $k => $v )
+					unset( $data[ $k ] );
+
+				// merge the new settings on top of the old ones for the final values, and then save them
+				do_action( 'qsot-save-venue-meta', $data, $post_id, 'info' );
+			}
 		}
 	}
 
@@ -503,6 +636,64 @@ class qsot_venue_post_type {
 		);
 
 		return $list;
+	}
+
+	// setup the options that are available to control tickets. reachable at WPAdmin -> OpenTickets (menu) -> Settings (menu) -> Frontend (tab) -> Venue (heading)
+	protected static function _setup_admin_options() {
+		// setup the default values
+		self::$options->def( 'qsot-venue-show-address', 'yes' );
+		self::$options->def( 'qsot-venue-show-social', 'yes' );
+		self::$options->def( 'qsot-venue-show-notes', 'no' );
+
+		// the 'Tickets' heading on the Frontend tab
+		self::$options->add( array(
+			'order' => 600,
+			'type' => 'title',
+			'title' => __( 'Venues', 'opentickets-community-edition' ),
+			'id' => 'heading-frontend-venues-1',
+			'page' => 'frontend',
+		) );
+
+		// whether or not to show the venue address below the venue description
+		self::$options->add( array(
+			'order' => 605,
+			'id' => 'qsot-venue-show-address',
+			'type' => 'checkbox',
+			'title' => __( 'Show Address', 'opentickets-community-edition' ),
+			'desc' => __( 'Display the venue address below the venue description?', 'opentickets-community-edition' ),
+			'default' => 'yes',
+			'page' => 'frontend',
+		) );
+
+		// whether or not to show the venue social contact info below the venue description
+		self::$options->add( array(
+			'order' => 610,
+			'id' => 'qsot-venue-show-social',
+			'type' => 'checkbox',
+			'title' => __( 'Show Contact Info', 'opentickets-community-edition' ),
+			'desc' => __( 'Display the venue contact information and social links below the venue description?', 'opentickets-community-edition' ),
+			'default' => 'yes',
+			'page' => 'frontend',
+		) );
+
+		// whether or not to show the venue address below the venue description
+		self::$options->add( array(
+			'order' => 615,
+			'id' => 'qsot-venue-show-notes',
+			'type' => 'checkbox',
+			'title' => __( 'Show Notes', 'opentickets-community-edition' ),
+			'desc' => __( 'Display the additional venue notes (a meta field on the edit venue page) below the venue description?', 'opentickets-community-edition' ),
+			'default' => 'no',
+			'page' => 'frontend',
+		) );
+
+		// end the 'Tickets' section on the page
+		self::$options->add(array(
+			'order' => 699,
+			'type' => 'sectionend',
+			'id' => 'heading-frontend-venues-1',
+			'page' => 'frontend',
+		));
 	}
 }
 

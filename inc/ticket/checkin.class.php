@@ -114,19 +114,19 @@ class QSOT_checkin {
 	}
 
 	// create the QR Codes that are added to the ticket display, based on the existing ticket information, order_item_id, and order_id
-	public static function add_qr_code($ticket, $order_item_id, $order_id) {
-		// if the $ticket has not been loaded, or could not be loaded, and thus is not an object, then gracefully skip this function
-		if ( ! is_object( $ticket ) ) return $ticket;
+	public static function add_qr_code( $ticket, $order_item_id, $order_id ) {
+		// if the $ticket has not been loaded, or could not be loaded, and thus is not an object or is a wp_error, then gracefully skip this function
+		if ( ! is_object( $ticket ) || is_wp_error( $ticket ) ) return $ticket;
 
-		// validate that the $order_id supplied is a valid order
-		$order = wc_get_order( $order_id );
-		if ( ! is_object( $order ) ) return $ticket;
+		// verify that the order was loaded
+		if ( ! isset( $ticket->order, $ticket->order->id ) )
+			return new WP_Error( 'missing_data', __( 'Could not laod the order that this ticket belongs to.', 'opentickets-community-edition' ), array( 'order_id' => $order_id ) );
+		$order = $ticket->order;
 
-		// validate that the $order_item_id supplied is present on the supplied order
-		$items = $order->get_items();
-		if ( ! is_array( $items ) || ! isset( $items[ $order_item_id . '' ] ) ) return $ticket;
-		$item = $items[ $order_item_id . '' ];
-		unset( $order, $items );
+		// verify that the order item was loaded
+		if ( ! isset( $ticket->order_item ) || empty( $ticket->order_item ) || ! isset( $ticket->order_item['product_id'], $ticket->order_item['event_id'] ) )
+			return new WP_Error( 'missing_data', __( 'Could not load the order item associated with this ticket.', 'opentickets-community-edition' ), array( 'oiid' => $order_item_id ) );
+		$item = $ticket->order_item;
 
 		// determine the quantity of the tickets that were purchased for this item
 		$qty = isset( $item['qty'] ) ? $item['qty'] : 1;
@@ -141,9 +141,9 @@ class QSOT_checkin {
 				'order_id' => $ticket->order->id,
 				'event_id' => $ticket->event->ID,
 				'order_item_id' => $order_item_id,
-				'title' => $ticket->product->get_title().' ('.$ticket->product->get_price_html().')',
+				'title' => $ticket->product->get_title() . ' (' . $ticket->product->get_price_html() . ')',
 				'price' => $ticket->product->get_price(),
-				'uniq' => md5(sha1(microtime(true).rand(0, PHP_INT_MAX))),
+				'uniq' => md5( sha1( microtime( true ) . rand( 0, PHP_INT_MAX ) ) ),
 				'ticket_num' => 0,
 			);
 
@@ -177,7 +177,7 @@ class QSOT_checkin {
 					esc_attr( $img_data[0] ),
 					esc_attr( $img_data[1] ),
 					esc_attr( $img_data[2] ),
-					$ticket->product->get_title().' ('.$ticket->product->get_price().')'
+					$ticket->product->get_title() . ' (' . $ticket->product->get_price() . ')'
 				);
 			}
 		// if we have more than one qty, then use slightly different logic to generate each individual qr code
@@ -190,9 +190,9 @@ class QSOT_checkin {
 				'order_id' => $ticket->order->id,
 				'event_id' => $ticket->event->ID,
 				'order_item_id' => $order_item_id,
-				'title' => $ticket->product->get_title().' ('.$ticket->product->get_price_html().')',
+				'title' => $ticket->product->get_title() . ' (' . $ticket->product->get_price_html() . ')',
 				'price' => $ticket->product->get_price(),
-				'uniq' => md5(sha1(microtime(true).rand(0, PHP_INT_MAX))),
+				'uniq' => md5( sha1( microtime( true ) . rand( 0, PHP_INT_MAX ) ) ),
 			);
 
 			// for each one of the entire qty, assign each discrete one it's own index, so that it's url is slightly different, causing a different QR
@@ -229,7 +229,7 @@ class QSOT_checkin {
 						esc_attr( $img_data[1] ),
 						esc_attr( $img_data[2] ),
 						esc_attr( $img_data[0] ),
-						$ticket->product->get_title().' ('.$ticket->product->get_price().')'
+						$ticket->product->get_title() . ' (' . $ticket->product->get_price() . ')'
 					);
 				}
 				// if this is the first qr in the list, fill the qr_code property, for backwards compatibility, since some override templates may be out of date
