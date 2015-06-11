@@ -497,10 +497,10 @@ class qsot_post_type {
 			$m = wp_parse_args($m, array('purchases' => 0, 'capacity' => 0));
 			$m['available'] = $m['capacity'] - $m['purchases'];
 			switch (true) {
-				case $m['available'] >= ($m['capacity'] - self::$o->always_reserve) * 0.65: $m['availability'] = 'high'; break;
-				case $m['available'] >= ($m['capacity'] - self::$o->always_reserve) * 0.30: $m['availability'] = 'medium'; break;
-				case $m['available'] <= self::$o->always_reserve: $m['availability'] = 'sold-out'; break;
-				default: $m['availability'] = 'low'; break;
+				case $m['available'] >= ($m['capacity'] - self::$o->always_reserve) * 0.65: $m['availability'] = __('high','opentickets-community-edition'); break;
+				case $m['available'] >= ($m['capacity'] - self::$o->always_reserve) * 0.30: $m['availability'] = __('medium','opentickets-community-edition'); break;
+				case $m['available'] <= self::$o->always_reserve: $m['availability'] = __('sold-out','opentickets-community-edition'); break;
+				default: $m['availability'] = __('low','opentickets-community-edition'); break;
 			}
 			$m = apply_filters('qsot-event-meta', $m, $event, $meta);
 			if (isset($m['_event_area_obj'], $m['_event_area_obj']->ticket, $m['_event_area_obj']->ticket->id))
