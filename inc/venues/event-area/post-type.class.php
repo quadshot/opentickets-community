@@ -169,12 +169,19 @@ class qsot_event_area {
 		wp_enqueue_script('qsot-event-event-area-settings');
 	}
 
-	public static function add_event_area_data($current, $oiid, $order_id) {
-		if (!is_object($current)) return $current;
-		if (!isset($current->event, $current->event->meta, $current->event->meta->_event_area_obj)) return $current;
+	// load the event area information and attach it to the ticket information. used when rendering the ticket
+	public static function add_event_area_data( $current, $oiid, $order_id ) {
+		// skip this function if the ticket has not already been loaded, or if it is a wp error
+		if ( ! is_object( $current ) || is_wp_error( $current ) )
+			return $current;
 
+		// also skip this function if the event info has not been loaded, or the event area core object has not been loaded
+		if ( ! isset( $current->event, $current->event->meta, $current->event->meta->_event_area_obj ) )
+			return $current;
+
+		// move the event area object to top level scope so we dont have to dig for it
 		$current->event_area = $current->event->meta->_event_area_obj;
-		unset($current->event->meta->_event_area_obj);
+		unset( $current->event->meta->_event_area_obj );
 
 		return $current;
 	}

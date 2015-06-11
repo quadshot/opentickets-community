@@ -82,17 +82,28 @@ class qsot_venue_post_type {
 		return apply_filters('qsot-maybe-override-theme_default', $template, 'single-qsot-venue.php', 'single.php');
 	}
 
-	public static function add_venue_data($current, $oiid, $order_id) {
-		if (!is_object($current)) return $current;
-		if (!isset($current->event, $current->event->meta)) return $current;
+	// add the data about the venue to the ticket information. used to create the ticket output
+	public static function add_venue_data( $current, $oiid, $order_id ) {
+		// skip this function if the ticket is not loaded yet, or if it is a wp_error
+		if ( ! is_object( $current ) || is_wp_error( $current ) )
+			return $current;
 
-		$venue = get_post($current->event->meta->venue);
-		if (is_object($venue) && isset($venue->ID)) {
-			$venue->meta = apply_filters('qsot-get-all-venue-meta', array(), $venue->ID);
-			$venue->image_id = get_post_thumbnail_id($venue->ID);
-			$venue->map_image = apply_filters('qsot-venue-map-string', '', $venue->meta['info']);
-			$venue->map_image_only = apply_filters('qsot-venue-map-string', '', $venue->meta['info'], array('type' => 'img'));
+		// skip this function if the event information is not present either
+		if ( ! isset( $current->event, $current->event->meta ) )
+			return $current;
+
+		// load the venue
+		$venue = get_post( $current->event->meta->venue );
+
+		// if the venue was loaded, then populate the venue information
+		if ( is_object( $venue ) && isset( $venue->ID ) ) {
+			$venue->meta = apply_filters( 'qsot-get-all-venue-meta', array(), $venue->ID );
+			$venue->image_id = isset( $venue->meta['info'], $venue->meta['info']['logo_image_id'] ) && $venue->meta['info']['logo_image_id'] ? $venue->meta['info']['logo_image_id'] : get_post_thumbnail_id( $venue->ID );
+			$venue->map_image = apply_filters( 'qsot-venue-map-string', '', $venue->meta['info'] );
+			$venue->map_image_only = apply_filters( 'qsot-venue-map-string', '', $venue->meta['info'], array( 'type' => 'img' ) );
 			$current->venue = $venue;
+		} else {
+			return new WP_Error( 'missing_data', __( 'Could not load the venue information for this ticket.', 'opentickets-community-edition' ), array( 'venue_id' => $current->event->meta->venue ) )
 		}
 
 		return $current;

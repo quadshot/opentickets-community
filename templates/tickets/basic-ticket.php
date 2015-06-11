@@ -76,8 +76,8 @@ for ( $i = 0; $i < 5; $i++ ) {
 											<li><?php
 												echo '<span class="label">' . __( 'Ends:', 'opentickets-community-edition' ) . '</span>'
 														. '<span class="value">'
-															. ( $same_day ? '' : ' ' . date( __( 'D, F jS, Y', 'opentickets-community-edition' ), $stime ) . __( ' @ ', 'opentickets-community-edition' ) )
-															. ' ' . date( __( 'g:ia', 'opentickets-community-edition' ), $stime )
+															. ( $same_day ? '' : ' ' . date( __( 'D, F jS, Y', 'opentickets-community-edition' ), $etime ) . __( ' @ ', 'opentickets-community-edition' ) )
+															. ' ' . date( __( 'g:ia', 'opentickets-community-edition' ), $etime )
 														. '</span>';
 											?></li>
 											<li><?php echo '<span class="label">' . __( 'Area:', 'opentickets-community-edition' ) . '</span><span class="value"> ' . $ticket->event_area->post_title . '</span>' ?></li>
@@ -138,6 +138,8 @@ for ( $i = 0; $i < 5; $i++ ) {
 								<td class="column column-left">
 									<div class="inner">
 										<h2><?php echo $ticket->venue->post_title ?></h2>
+
+										<div class="venue-image"><?php echo wp_get_attachment_image( $ticket->venue->image_id, array( 249, 9999 ) ) ?></div>
 
 										<ul class="venue-address">
 											<li><?php echo $ticket->venue->meta['info']['address1'] ?></li>

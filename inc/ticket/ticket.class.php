@@ -263,20 +263,53 @@ class QSOT_tickets {
 		return $check === $auth;
 	}
 
-	public static function display_ticket($code) {
-		$args = apply_filters('qsot-decode-ticket-code', array(), $code);
-		if (empty($args['order_id']) || empty($args['order_item_id'])) return false;
-		if (!self::_can_user_view_ticket($args)) return false;
+	// display the ticket, or an error, depending on if we can load the ticket or not
+	public static function display_ticket( $code ) {
+		// parse the args from the ticket code
+		$args = apply_filters( 'qsot-decode-ticket-code', array(), $code );
 
-		$ticket = apply_filters('qsot-compile-ticket-info', false, $args['order_item_id'], $args['order_id']);
+		// make sure we have the basic required data for loading the ticket
+		if ( ! is_array( $args ) || ! isset( $args['order_id'], $args['order_item_id'] ) || empty( $args['order_id'] ) || empty( $args['order_item_id'] ) )
+			return false;
 
-		// do not display the ticket unless we have all needed information
-		if (
-				! is_object( $ticket ) ||
-				! isset( $ticket->order, $ticket->product, $ticket->event, $ticket->venue, $ticket->order_item, $ticket->event_area ) ||
-				! is_object( $ticket->order ) || ! is_object( $ticket->product ) || ! is_object( $ticket->event ) || ! is_object( $ticket->venue ) || ! is_array( $ticket->order_item ) || ! is_object( $ticket->event_area )
-		) {
+		// make sure that the current user can view this ticket
+		if ( ! self::_can_user_view_ticket( $args ) )
+			return false;
+
+		// load all the data needed to render the ticket
+		$ticket = apply_filters( 'qsot-compile-ticket-info', false, $args['order_item_id'], $args['order_id'] );
+
+		// if ticket was not loaded, then fail
+		if ( ! is_object( $ticket ) ) {
 			self::_no_access( __( 'There was a problem loading your ticket.', 'opentickets-community-edition' ) );
+			exit;
+		}
+
+		// if the resulting ticket we a wp_error, print the message from the error, to be more specific about the problem
+		if ( is_wp_error( $ticket ) ) {
+			$message = __( 'There was a problem loading your ticket.', 'opentickets-community-edition' ) . '<br/><em>' . implode( '</br>', $ticket->get_error_messages() ) . '</em>';
+			self::_no_access( $message );
+			exit;
+		}
+
+		$errors = array();
+		// find out if any of the needed data is missing, or if any of it is in a format that is un expected, and generate a list of errors to report
+		if ( ! isset( $ticket->order, $ticket->order->id ) )
+			$errors[] = __( 'the order', 'opentickets-community-edition' );
+		if ( ! isset( $ticket->product, $ticket->product->id ) )
+			$errors[] = __( 'the ticket product information', 'opentickets-community-edition' );
+		if ( ! isset( $ticket->event, $ticket->event->ID ) )
+			$errors[] = __( 'the event information', 'opentickets-community-edition' );
+		if ( ! isset( $ticket->venue, $ticket->venue->ID ) )
+			$errors[] = __( 'the venue information', 'opentickets-community-edition' );
+		if ( ! isset( $ticket->order_item ) || ! is_array( $ticket->order_item ) )
+			$errors[] = __( 'the order item information', 'opentickets-community-edition' );
+		if ( ! isset( $ticket->event_area, $ticket->event_area->ID ) )
+			$errors[] = __( 'the event area information', 'opentickets-community-edition' );
+
+		// if there area any errors from above to report, then display an error message showing those problems
+		if ( ! empty( $errors ) ) {
+			self::_no_access( sprintf( __( 'The following ticket data could not be loaded: %s', 'opentickets-community-edition' ), '<br/>' . implode( ',<br/>', $errors ) ) );
 			exit;
 		}
 
@@ -286,20 +319,25 @@ class QSOT_tickets {
 			exit;
 		}
 
-		$template = apply_filters('qsot-locate-template', '', array('tickets/basic-ticket.php'), false, false);
-		$stylesheet = apply_filters('qsot-locate-template', '', array('tickets/basic-style.css'), false, false);
-		$stylesheet = str_replace(DIRECTORY_SEPARATOR, '/', str_replace(ABSPATH, '/', $stylesheet));
-		$stylesheet = site_url($stylesheet);
+		// determine the file location for the template and it's stylesheet
+		$template = apply_filters( 'qsot-locate-template', '', array( 'tickets/basic-ticket.php' ), false, false );
+		$stylesheet = apply_filters( 'qsot-locate-template', '', array( 'tickets/basic-style.css' ), false, false );
+		$stylesheet = str_replace( DIRECTORY_SEPARATOR, '/', str_replace( ABSPATH, '/', $stylesheet ) );
+		$stylesheet = site_url( $stylesheet );
+
+		// load the branding image ids from our settings page
 		$branding_image_ids = self::$options->{'qsot-ticket-branding-img-ids'};
 		$branding_image_ids = is_scalar( $branding_image_ids ) ? explode( ',', $branding_image_ids ) : $branding_image_ids;
 
+		// get the html for the ticket itself
 		$out = self::_get_ticket_html( array( 'ticket' => $ticket, 'template' => $template, 'stylesheet' => $stylesheet, 'branding_image_ids' => $branding_image_ids ) );
 
-		$_GET = wp_parse_args($_GET, array('frmt' => 'html'));
-		switch ($_GET['frmt']) {
+		$_GET = wp_parse_args( $_GET, array( 'frmt' => 'html' ) );
+		// do something different depending on the requested format
+		switch ( $_GET['frmt'] ) {
 			case 'pdf':
-				$title = $ticket->product->get_title().' ('.$ticket->product->get_price().')';
-				QSOT_pdf::from_html($out, $title);
+				$title = $ticket->product->get_title() . ' (' . $ticket->product->get_price() . ')';
+				QSOT_pdf::from_html( $out, $title );
 			break;
 			default: echo $out; break;
 		}
@@ -326,6 +364,8 @@ class QSOT_tickets {
 			'image_id_left' => self::$options->{'qsot-ticket-image-shown'},
 			'image_id_right' => self::$options->{'qsot-ticket-image-shown-right'},
 		);
+
+		$current = is_object( $current ) ? $current : new stdClass();
 
 		// calculate each pair
 		foreach ( $pairs as $key => $setting ) {
@@ -356,20 +396,44 @@ class QSOT_tickets {
 		return $current;
 	}
 
-	public static function compile_ticket_info($current, $oiid, $order_id) {
-		$order = new WC_Order($order_id);
+	// aggregate all the basic ticket information
+	public static function compile_ticket_info( $current, $oiid, $order_id ) {
+		// load the order
+		$order = wc_get_order($order_id);
+		if ( ! isset( $order, $order->id ) )
+			return new WP_Error( 'missing_data', __( 'Could not laod the order that this ticket belongs to.', 'opentickets-community-edition' ), array( 'order_id' => $order_id ) );
 
+		// load the order item that was specified by oiid
 		$order_items = $order->get_items();
-		$order_item = isset($order_items[$oiid]) ? $order_items[$oiid] : false;
-		if (empty($order_item) || !isset($order_item['product_id'], $order_item['event_id'])) return $current;
+		$order_item = isset( $order_items[ $oiid ] ) ? $order_items[ $oiid ] : false;
+		// if the order item could not be loaded, then fail
+		if ( empty( $order_item ) || ! isset( $order_item['product_id'], $order_item['event_id'] ) )
+			return new WP_Error( 'missing_data', __( 'Could not load the order item associated with this ticket.', 'opentickets-community-edition' ), array( 'oiid' => $oiid, 'items' => $order_items ) );
 
+		// load the product specified by the order item
 		$product = wc_get_product( isset( $order_item['variation_id'] ) && $order_item['variation_id'] ? $order_item['variation_id'] : $order_item['product_id'] );
-		$event = apply_filters('qsot-get-event', false, $order_item['event_id']);
-		if (empty($event) || empty($product) || is_wp_error($product)) return $current;
+		// if the product cannot be loaded, then fail
+		if ( ! is_object( $product ) || is_wp_error( $product ) )
+			return new WP_Error(
+				'missing_data',
+				__( 'The ticket product associated with the ticket order item, could not be found.', 'opentickets-community-edition' ),
+				array( 'product_id' => $order_item['product_id'], 'variation_id' => $order_item['variation_id'], 'order_item' => $order_item )
+			);
 
+		// load the event specified by the order item
+		$event = apply_filters('qsot-get-event', false, $order_item['event_id']);
+		// fail if the event cannot be loaded
+		if ( ! is_object( $event ) || ! isset( $event->ID ) )
+			return new WP_Error(
+				'missing_data',
+				__( 'The event information for the ticket could not be found. Perhaps the event has been removed.', 'opentickets-community-edition' ),
+				array( 'event_id' => $order_item['event_id'], 'order_item' => $order_item )
+			);
+
+		// populate the data we need in the ticket display
 		$current = is_object($current) ? $current : new stdClass();
 		$current->order = $order;
-		$current->show_order_number = self::$options->{'qsot-ticket-show-order-id'} == 'yes';
+		$current->show_order_number = 'yes' == self::$options->{'qsot-ticket-show-order-id'};
 		$current->order_item = $order_item;
 		$current->product = $product;
 		$current->event = $event;
@@ -377,19 +441,9 @@ class QSOT_tickets {
 		$current->image_id_left = 0;
 		$current->image_id_right = 0;
 
-		// choose either the event or product image depending on settings
-		switch ( self::$options->{'qsot-ticket-image-shown'} ) {
-			default:
-			case 'event':
-				$current->event->image_id = get_post_thumbnail_id( $current->event->ID );
-				$current->event->image_id = empty($current->event->image_id) ? get_post_thumbnail_id($current->event->post_parent) : $current->event->image_id;
-			break;
-
-			case 'product':
-				$current->event->image_id = get_post_thumbnail_id( $product->id );
-			break;
-		}
-
+		// populate the event image id
+		$current->event->image_id = get_post_thumbnail_id( $current->event->ID );
+		$current->event->image_id = empty( $current->event->image_id ) ? get_post_thumbnail_id( $current->event->post_parent ) : $current->event->image_id;
 
 		// if the options say use the shipping name, then attempt to use it
 		if ( self::$options->{'qsot-ticket-purchaser-info'} == 'shipping' ) {
