@@ -103,6 +103,14 @@ class qsot_post_type {
 			// work around for core hierarchical permalink bug - loushou
 			// https://core.trac.wordpress.org/ticket/29615
 			add_filter('post_type_link', array(__CLASS__, 'qsot_event_link'), 1000, 4);
+
+			// handle adjacent_post_link logic
+			add_filter( 'get_previous_post_where', array( __CLASS__, 'adjacent_post_link_where' ), 1000, 3 );
+			add_filter( 'get_previous_post_join', array( __CLASS__, 'adjacent_post_link_join' ), 1000, 3 );
+			add_filter( 'get_previous_post_sort', array( __CLASS__, 'adjacent_post_link_sort' ), 1000, 1 );
+			add_filter( 'get_next_post_where', array( __CLASS__, 'adjacent_post_link_where' ), 1000, 3 );
+			add_filter( 'get_next_post_join', array( __CLASS__, 'adjacent_post_link_join' ), 1000, 3 );
+			add_filter( 'get_next_post_sort', array( __CLASS__, 'adjacent_post_link_sort' ), 1000, 1 );
 		}
 	}
 
@@ -133,6 +141,53 @@ class qsot_post_type {
 		}
 
 		return $post_link;
+	}
+
+	// handle adjacent_post_link 'where' logic
+	public static function adjacent_post_link_where( $where, $in_same_term, $excluded_terms ) {
+		$post = get_post();
+		// only make changes if we are talking about event posts
+		if ( self::$o->core_post_type == $post->post_type ) {
+			global $wpdb;
+
+			// using start date as the sorter not the post_date
+			$start = get_post_meta( $post->ID, '_start', true );
+			$format = $wpdb->prepare( 'cast( qspm.meta_value as datetime ) $1 %s AND', $start );
+			$where = preg_replace( '#p\.post_date ([^\s]+) .*?AND#', $format, $where );
+
+			// only get child events, if viewing child events, and only get parent events, if viewing parent events
+			if ( $post->post_parent ) {
+				$where = preg_replace( '#(AND p.post_type = )#', 'AND p.post_parent != 0 \1', $where );
+			} else {
+				$where = preg_replace( '#(AND p.post_type = )#', 'AND p.post_parent = 0 \1', $where );
+			}
+		}
+
+		return $where;
+	}
+
+	// handle adjacent_post_link 'join' logic
+	public static function adjacent_post_link_join( $join, $in_same_term, $excluded_terms ) {
+		$post = get_post();
+		// only make changes if we are talking about event posts
+		if ( self::$o->core_post_type == $post->post_type ) {
+			global $wpdb;
+			// using start date as the sorter not the post_date
+			$join .= $wpdb->prepare( ' inner join ' . $wpdb->postmeta . ' as qspm on qspm.post_id = p.ID AND qspm.meta_key = %s', '_start' );
+		}
+
+		return $join;
+	}
+
+	// handle adjacent_post_link 'sort' logic
+	public static function adjacent_post_link_sort( $orderby ) {
+		$post = get_post();
+		// only make changes if we are talking about event posts
+		if ( self::$o->core_post_type == $post->post_type ) {
+			$orderby = preg_replace( '#ORDER BY .*? ([^\s]+) LIMIT#', 'ORDER BY cast( qspm.meta_value as datetime ) \1 LIMIT', $orderby );
+		}
+
+		return $orderby;
 	}
 
 	public static function add_event_name_to_cart($list, $item) {
