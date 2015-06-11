@@ -81,33 +81,55 @@ class qsot_templates {
 		return $current;
 	}
 
-	public static function locate_template($current='', $files=array(), $load=false, $require_once=false) {
-		$files = !empty($files) ? (array) $files : $files;
-		if (is_array($files) && count($files)) {
-			$templ = locate_template($files, $load, $require_once);
-			if (empty($templ)) {
-				$dirs = apply_filters('qsot-template-dirs', array(
-					//get_stylesheet_directory().'/templates/',
-					//get_template_directory().'/templates/',
-					self::$o->core_dir.'templates/',
-				));
+	// locate a given template. first check the theme for it, then our plugin dirs for fallbacks
+	public static function locate_template( $current='', $files=array(), $load=false, $require_once=false ) {
+		// normalize the list of potential files
+		$files = ! empty( $files ) ? (array)$files : $files;
+
+		// if we have a list of files
+		if ( is_array( $files ) && count( $files ) ) {
+			// first search the theme
+			$templ = locate_template( $files, $load, $require_once );
+
+			// if there was not a matching file in the theme, then search our backup dirs
+			if ( empty( $templ ) ) {
+				// aggregate a list of backup dirs to search
+				$dirs = apply_filters( 'qsot-template-dirs', array( self::$o->core_dir . 'templates/' ) );
 				$qsot_path = '';
-				array_unshift($dirs, get_stylesheet_directory().'/'.$qsot_path, get_template_directory().'/'.$qsot_path);
-				foreach ($files as $file) {
-					foreach ($dirs as $dir) {
-						$dir = trailingslashit($dir);
-						if (file_exists($dir.$file) && is_readable($dir.$file)) {
-							$templ = $dir.$file;
+
+				// add the legacy directory within the theme that holds the legacy OTCE templates
+				array_unshift( $dirs, get_stylesheet_directory() . '/' . $qsot_path, get_template_directory() . '/' . $qsot_path );
+
+				// for each file in the list, try to find it in each backup dir
+				foreach ( $files as $file ) {
+					// normalize the filename, and skip any empty ones
+					$file = trim( $file );
+					if ( '' === $file )
+						continue;
+
+					// check each backup dir for this file
+					foreach ( $dirs as $dir ) {
+						$dir = trailingslashit( $dir );
+						// if the file exists, then use that one, and bail the remainder of the search
+						if ( file_exists( $dir . $file ) && is_readable( $dir . $file ) ) {
+							$templ = $dir . $file;
 							break 2;
 						}
 					}
 				}
-				if (!empty($templ) && $load) {
-					if ($require_once) require_once $templ;
-					else include $templ;
-				}
 			}
-			if (!empty($templ)) $current = $templ;
+
+			// if there is a template found, and we are being asked to include it, the include it, by either 'require' or 'include' depending on the passed params
+			if ( ! empty( $templ ) && $load ) {
+				if ( $require_once )
+					require_once $templ;
+				else
+					include $templ;
+			}
+
+			// if we found a template, make sure to update the return value with the full path to the file
+			if ( ! empty( $templ ) )
+				$current = $templ;
 		}
 
 		return $current;
