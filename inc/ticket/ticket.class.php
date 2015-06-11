@@ -359,13 +359,15 @@ class QSOT_tickets {
 
 	// configure the images used on the ticket display
 	public static function compile_ticket_info_images( $current, $oiid, $order_id ) {
+		// do not process this unless the ticket information has been loaded
+		if ( ! is_object( $current ) || is_wp_error( $current ) )
+			return $current;
+
 		// create the list of pairs to calculate
 		$pairs = array(
 			'image_id_left' => self::$options->{'qsot-ticket-image-shown'},
 			'image_id_right' => self::$options->{'qsot-ticket-image-shown-right'},
 		);
-
-		$current = is_object( $current ) ? $current : new stdClass();
 
 		// calculate each pair
 		foreach ( $pairs as $key => $setting ) {
