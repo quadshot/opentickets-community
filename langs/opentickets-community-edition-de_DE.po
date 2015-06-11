@@ -1,5 +1,8 @@
+#, fuzzy
 msgid ""
 msgstr ""
+"#-#-#-#-#  opentickets-community-edition-de_DE.po.ours (OpenTickets "
+"Community Edition v1.10.19)  #-#-#-#-#\n"
 "Project-Id-Version: OpenTickets Community Edition v1.10.19\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-06-10 14:42-0800\n"
@@ -17,6 +20,28 @@ msgstr ""
 "X-Poedit-Basepath: ../\n"
 "X-Textdomain-Support: yes\n"
 "X-Poedit-SearchPath-0: .\n"
+"#-#-#-#-#  opentickets-community-edition-de_DE.po.theirs (OpenTickets "
+"Community Edition v1.10.22)  #-#-#-#-#\n"
+"Project-Id-Version: OpenTickets Community Edition v1.10.22\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-06-03 12:26-0800\n"
+"PO-Revision-Date: 2015-06-05 21:45:28+0000\n"
+"Last-Translator: intruder <h.theuer@online.de>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 1.5.7\n"
+"X-Poedit-Language: \n"
+"X-Poedit-Country: \n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Textdomain-Support: yes"
 
 # @ opentickets-community-edition
 #: launcher.php:196
@@ -126,32 +151,34 @@ msgstr ""
 "ignorieren."
 
 # @ opentickets-community-edition
-#: opentickets.php:537
+#: opentickets.php:537 opentickets.php:538
 #, php-format
 msgid "Could not compile stylesheet %s. [%s]"
 msgstr "Kann das Stylesheet %s nicht kompilieren. [%s]"
 
 # @ opentickets-community-edition
-#: opentickets.php:540
+#: opentickets.php:540 opentickets.php:541
 #, php-format
 msgid "Could not write to stylesheet file %s."
 msgstr "Kann nicht in die Stylesheet-Datei %s schreiben."
 
 # @ opentickets-community-edition
-#: opentickets.php:544
+#: opentickets.php:544 opentickets.php:545
 #, php-format
 msgid "Could not write colors to file %s. [%s]"
 msgstr "Kann die Farben nicht in die Datei %s schreiben. [%s]"
 
-#: opentickets.php:552
+# @ opentickets-community-edition
+#: opentickets.php:553
 msgid "the installation process"
-msgstr ""
+msgstr "Der Installationsprozess"
 
 # @ opentickets-community-edition
-#: opentickets.php:557 opentickets.php:561
-#, fuzzy, php-format
+#: opentickets.php:558 opentickets.php:562
+#, php-format
 msgid "Could not find the needed library %s, for use in %s."
-msgstr "Kann den gesuchten Veranstaltungsort nicht finden [%s]."
+msgstr ""
+"Kann die erforderliche Bibliothek %s, für die Nutzung in %s, nicht finden."
 
 # @ opentickets-community-edition
 #: inc/core/calendar.class.php:127
@@ -208,6 +235,9 @@ msgstr "Start-Datum Methode"
 #: inc/core/post-type.class.php:1166 inc/core/post-type.class.php:1196
 #: inc/core/post-type.class.php:1202 inc/core/post-type.class.php:1285
 #: inc/core/post-type.class.php:1301 inc/sys/pages/system-status.page.php:355
+#: inc/core/post-type.class.php:1135 inc/core/post-type.class.php:1156
+#: inc/core/post-type.class.php:1186 inc/core/post-type.class.php:1192
+#: inc/core/post-type.class.php:1275 inc/core/post-type.class.php:1291
 msgid "m-d-Y"
 msgstr "d-m-Y"
 
@@ -215,7 +245,10 @@ msgstr "d-m-Y"
 #: inc/core/calendar.class.php:390 inc/core/post-type.class.php:1146
 #: inc/core/post-type.class.php:1167 inc/core/post-type.class.php:1195
 #: inc/core/post-type.class.php:1201 inc/core/post-type.class.php:1284
-#: inc/core/post-type.class.php:1300
+#: inc/core/post-type.class.php:1300 inc/core/post-type.class.php:1136
+#: inc/core/post-type.class.php:1157 inc/core/post-type.class.php:1185
+#: inc/core/post-type.class.php:1191 inc/core/post-type.class.php:1274
+#: inc/core/post-type.class.php:1290
 msgid "mm-dd-yy"
 msgstr "dd-mm-yy"
 
@@ -405,7 +438,7 @@ msgstr "Wenn der Nutzer sich eingeloggt hat, bleibt er eingeloggt."
 
 # @ opentickets-community-edition
 #: inc/core/post-type.class.php:143 inc/core/post-type.class.php:683
-#: inc/reporting/seating.report.class.php:500
+#: inc/reporting/seating.report.class.php:500 inc/core/post-type.class.php:673
 msgid "Event"
 msgstr "Veranstaltung"
 
@@ -416,6 +449,7 @@ msgstr "Veranstaltung anzeigen"
 
 # @ opentickets-community-edition
 #: inc/core/post-type.class.php:300 inc/core/post-type.class.php:682
+#: inc/core/post-type.class.php:672
 msgid "Events"
 msgstr "Veranstaltungen"
 
@@ -425,13 +459,13 @@ msgid "Top Level Events"
 msgstr "Top Level Veranstaltungen"
 
 # @ qsot
-#: inc/core/post-type.class.php:610
+#: inc/core/post-type.class.php:610 inc/core/post-type.class.php:600
 msgctxt "post"
 msgid "Hidden"
 msgstr "Versteckt"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:627
+#: inc/core/post-type.class.php:627 inc/core/post-type.class.php:617
 #, php-format
 msgid "Hidden <span class=\"count\">(%s)</span>"
 msgid_plural "Hidden <span class=\"count\">(%s)</span>"
@@ -439,35 +473,36 @@ msgstr[0] "Versteckt <span class=\"count\">(%s)</span>"
 msgstr[1] "Versteckt <span class=\"count\">(%s)</span>"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:731
+#: inc/core/post-type.class.php:731 inc/core/post-type.class.php:721
 msgid "MM-dd-yyyy"
 msgstr "dd-MM-yyyy"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:732
+#: inc/core/post-type.class.php:732 inc/core/post-type.class.php:722
 msgid "ddd MM-dd-yyyy"
 msgstr "ddd dd-MM-yyyy"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:733
+#: inc/core/post-type.class.php:733 inc/core/post-type.class.php:723
 msgid "hh:mmtt"
 msgstr "HH:mm"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:852
+#: inc/core/post-type.class.php:852 inc/core/post-type.class.php:842
 msgid "Max"
 msgstr "Max"
 
 # @ qsot
 # @ opentickets-community-edition
 #: inc/core/post-type.class.php:855 inc/reporting/seating.report.class.php:497
-#: inc/sys/admin-menu.class.php:386
+#: inc/sys/admin-menu.class.php:386 inc/core/post-type.class.php:845
 msgid "Status"
 msgstr "Status"
 
 # @ opentickets-community-edition
 #: inc/core/post-type.class.php:907 inc/core/post-type.class.php:960
-#: inc/core/post-type.class.php:990
+#: inc/core/post-type.class.php:990 inc/core/post-type.class.php:897
+#: inc/core/post-type.class.php:950 inc/core/post-type.class.php:980
 #, php-format
 msgid "%s on %s @ %s"
 msgstr "%s am %s um %s"
@@ -475,32 +510,34 @@ msgstr "%s am %s um %s"
 # @ opentickets-community-edition
 #: inc/core/post-type.class.php:907 inc/core/post-type.class.php:960
 #: inc/core/post-type.class.php:990 templates/tickets/basic-ticket.php:73
-#: templates/tickets/basic-ticket.php:80
+#: templates/tickets/basic-ticket.php:80 inc/core/post-type.class.php:897
+#: inc/core/post-type.class.php:950 inc/core/post-type.class.php:980
 msgid "g:ia"
 msgstr "H:i"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1084
+#: inc/core/post-type.class.php:1084 inc/core/post-type.class.php:1074
 msgid "Event Date Time Settings"
 msgstr "Veranstaltungsdatum Zeit-Einstellung"
 
 # @ opentickets-community-edition
 #: inc/core/post-type.class.php:1094 inc/core/post-type.class.php:1544
+#: inc/core/post-type.class.php:1084 inc/core/post-type.class.php:1534
 msgid "Stop Sales Before Show"
 msgstr "Verkauf stoppen bevor Veranstaltung beginnt"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1103
+#: inc/core/post-type.class.php:1103 inc/core/post-type.class.php:1093
 msgid "Event Run Date Range"
 msgstr "Veranstaltungszeitraum"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1115
+#: inc/core/post-type.class.php:1115 inc/core/post-type.class.php:1105
 msgid "Formula"
 msgstr "Formel"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1122
+#: inc/core/post-type.class.php:1122 inc/core/post-type.class.php:1112
 msgid ""
 "This is the formula to calculate when tickets should stop being sold on the "
 "frontend for this show. For example, if you wish to stop selling tickets 2 "
@@ -518,175 +555,180 @@ msgstr ""
 "Formelfeld leer um die Zeitvorgabe aus der Grundeinstellung zu nutzen."
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1138
+#: inc/core/post-type.class.php:1138 inc/core/post-type.class.php:1128
 msgid "Start Date/Time"
 msgstr "Beginn Start/Zeit"
 
 # @ opentickets-community-edition
 #: inc/core/post-type.class.php:1149 inc/core/post-type.class.php:1170
-#: inc/core/post-type.class.php:1439
+#: inc/core/post-type.class.php:1439 inc/core/post-type.class.php:1139
+#: inc/core/post-type.class.php:1160 inc/core/post-type.class.php:1429
 msgid "@"
 msgstr "um"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1159
+#: inc/core/post-type.class.php:1159 inc/core/post-type.class.php:1149
 msgid "End Date/Time:"
 msgstr "Ende Datum/Zeit:"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1192
+#: inc/core/post-type.class.php:1192 inc/core/post-type.class.php:1182
 msgid "Basic Settings"
 msgstr "Grundeinstellungen"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1196
+#: inc/core/post-type.class.php:1196 inc/core/post-type.class.php:1186
 msgid "Start Date"
 msgstr "Start Datum"
 
 # @ opentickets-community-edition
 #: inc/core/post-type.class.php:1197 inc/core/post-type.class.php:1203
 #: inc/core/post-type.class.php:1286 inc/core/post-type.class.php:1302
+#: inc/core/post-type.class.php:1187 inc/core/post-type.class.php:1193
+#: inc/core/post-type.class.php:1276 inc/core/post-type.class.php:1292
 msgid "Y-m-d"
 msgstr "d-m-Y"
 
 # @ opentickets-community-edition
 #: inc/core/post-type.class.php:1198 inc/core/post-type.class.php:1204
+#: inc/core/post-type.class.php:1188 inc/core/post-type.class.php:1194
 msgid "h:ia"
 msgstr "H:i"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1198
+#: inc/core/post-type.class.php:1198 inc/core/post-type.class.php:1188
 msgid "Start Time"
 msgstr "Beginn Uhrzeit"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1199
+#: inc/core/post-type.class.php:1199 inc/core/post-type.class.php:1189
 msgid "to"
 msgstr "bis"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1202
+#: inc/core/post-type.class.php:1202 inc/core/post-type.class.php:1192
 msgid "End Date"
 msgstr "Ende Datum"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1204
+#: inc/core/post-type.class.php:1204 inc/core/post-type.class.php:1194
 msgid "End Time"
 msgstr "Ende Uhrzeit"
 
 # @ opentickets-community-edition
 #: inc/core/post-type.class.php:1210 inc/core/post-type.class.php:1219
+#: inc/core/post-type.class.php:1200 inc/core/post-type.class.php:1209
 msgid "Repeat"
 msgstr "Wiederholen"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1224
+#: inc/core/post-type.class.php:1224 inc/core/post-type.class.php:1214
 msgid "Repeats"
 msgstr "Wiederholungen"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1228
+#: inc/core/post-type.class.php:1228 inc/core/post-type.class.php:1218
 msgid "Weekly"
 msgstr "Wöchentlich"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1234
+#: inc/core/post-type.class.php:1234 inc/core/post-type.class.php:1224
 msgid "Repeats Every"
 msgstr "Wiederholt alle"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1241
+#: inc/core/post-type.class.php:1241 inc/core/post-type.class.php:1231
 msgid "days"
 msgstr "Tage"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1242
+#: inc/core/post-type.class.php:1242 inc/core/post-type.class.php:1232
 msgid "weeks"
 msgstr "Wochen"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1247
+#: inc/core/post-type.class.php:1247 inc/core/post-type.class.php:1237
 msgid "Repeat on"
 msgstr "Wiederholung am"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1251
+#: inc/core/post-type.class.php:1251 inc/core/post-type.class.php:1241
 msgid "Su"
 msgstr "So"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1255
+#: inc/core/post-type.class.php:1255 inc/core/post-type.class.php:1245
 msgid "Mo"
 msgstr "Mo"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1259
+#: inc/core/post-type.class.php:1259 inc/core/post-type.class.php:1249
 msgid "Tu"
 msgstr "Di"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1263
+#: inc/core/post-type.class.php:1263 inc/core/post-type.class.php:1253
 msgid "We"
 msgstr "Mi"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1267
+#: inc/core/post-type.class.php:1267 inc/core/post-type.class.php:1257
 msgid "Th"
 msgstr "Do"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1271
+#: inc/core/post-type.class.php:1271 inc/core/post-type.class.php:1261
 msgid "Fr"
 msgstr "Fr"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1275
+#: inc/core/post-type.class.php:1275 inc/core/post-type.class.php:1265
 msgid "Sa"
 msgstr "Sa"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1281
+#: inc/core/post-type.class.php:1281 inc/core/post-type.class.php:1271
 msgid "Starts on"
 msgstr "Beginnt um"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1291
+#: inc/core/post-type.class.php:1291 inc/core/post-type.class.php:1281
 msgid "Ends"
 msgstr "Endet"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1297
+#: inc/core/post-type.class.php:1297 inc/core/post-type.class.php:1287
 msgid "On"
 msgstr "Am"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1307
+#: inc/core/post-type.class.php:1307 inc/core/post-type.class.php:1297
 msgid "After"
 msgstr "Nach"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1310
+#: inc/core/post-type.class.php:1310 inc/core/post-type.class.php:1300
 msgid "occurences"
 msgstr "Ereignisse"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1331
+#: inc/core/post-type.class.php:1331 inc/core/post-type.class.php:1321
 msgid "Add to Calendar"
 msgstr "Zum Kalender hinzufügen"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1347
+#: inc/core/post-type.class.php:1347 inc/core/post-type.class.php:1337
 msgid "Event Date/Times"
 msgstr "Veranstaltungs- Datum/Uhrzeit"
 
 # @ opentickets-community-edition
 #: inc/core/post-type.class.php:1353 inc/sys/admin-menu.class.php:170
-#: inc/sys/admin-menu.class.php:171
+#: inc/sys/admin-menu.class.php:171 inc/core/post-type.class.php:1343
 msgid "Settings"
 msgstr "Einstellungen"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1358
+#: inc/core/post-type.class.php:1358 inc/core/post-type.class.php:1348
 msgid "Status:"
 msgstr "Status:"
 
@@ -699,31 +741,33 @@ msgstr "Status:"
 #: templates/admin/meta-boxes/views/html-order-items.php:217
 #: woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:221
 #: woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:313
+#: inc/core/post-type.class.php:1350 inc/core/post-type.class.php:1373
+#: inc/core/post-type.class.php:1408
 msgid "Edit"
 msgstr "Bearbeiten"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1365
+#: inc/core/post-type.class.php:1365 inc/core/post-type.class.php:1355
 msgid "Published"
 msgstr "Veröffentlicht"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1366
+#: inc/core/post-type.class.php:1366 inc/core/post-type.class.php:1356
 msgid "Privately Published"
 msgstr "Privat Veröffentlicht"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1367
+#: inc/core/post-type.class.php:1367 inc/core/post-type.class.php:1357
 msgid "Scheduled"
 msgstr "Geplant"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1369
+#: inc/core/post-type.class.php:1369 inc/core/post-type.class.php:1359
 msgid "Pending Review"
 msgstr "wird Überprüft"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1370
+#: inc/core/post-type.class.php:1370 inc/core/post-type.class.php:1360
 msgid "Draft"
 msgstr "Entwurf"
 
@@ -731,6 +775,8 @@ msgstr "Entwurf"
 #: inc/core/post-type.class.php:1373 inc/core/post-type.class.php:1408
 #: inc/core/post-type.class.php:1444 inc/venues/post-type.class.php:257
 #: inc/venues/event-area/post-type.class.php:543
+#: inc/core/post-type.class.php:1363 inc/core/post-type.class.php:1398
+#: inc/core/post-type.class.php:1434
 msgid "OK"
 msgstr "OK"
 
@@ -742,26 +788,28 @@ msgstr "OK"
 #: inc/venues/event-area/post-type.class.php:544
 #: templates/admin/meta-boxes/views/html-order-items.php:255
 #: templates/admin/meta-boxes/views/html-order-items.php:301
+#: inc/core/post-type.class.php:1364 inc/core/post-type.class.php:1399
+#: inc/core/post-type.class.php:1435
 msgid "Cancel"
 msgstr "Abbrechen"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1381
+#: inc/core/post-type.class.php:1381 inc/core/post-type.class.php:1371
 msgid "Visibility"
 msgstr "Sichtbarkeit"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1387
+#: inc/core/post-type.class.php:1387 inc/core/post-type.class.php:1377
 msgid "Viewable to the public"
 msgstr "Sichtbar für alle"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1389
+#: inc/core/post-type.class.php:1389 inc/core/post-type.class.php:1379
 msgid "Public"
 msgstr "Öffentlich"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1391
+#: inc/core/post-type.class.php:1391 inc/core/post-type.class.php:1381
 msgid ""
 "Visible on the calendar, but only those with the password can view to make "
 "reservations"
@@ -770,109 +818,109 @@ msgstr ""
 "können es ansehen und eine Reservierung tätigen."
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1393
+#: inc/core/post-type.class.php:1393 inc/core/post-type.class.php:1383
 msgid "Password Protected"
 msgstr "Passwort geschützt"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1395
+#: inc/core/post-type.class.php:1395 inc/core/post-type.class.php:1385
 msgid "Password:"
 msgstr "Passwort:"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1399
+#: inc/core/post-type.class.php:1399 inc/core/post-type.class.php:1389
 msgid "Hidden from the calendar, but open to anyone with the url"
 msgstr ""
 "Auf dem Kalender versteckt, aber erreichbar für diejenigen die die URL "
 "kennen."
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1401
+#: inc/core/post-type.class.php:1401 inc/core/post-type.class.php:1391
 msgid "Hidden"
 msgstr "Versteckt"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1403
+#: inc/core/post-type.class.php:1403 inc/core/post-type.class.php:1393
 msgid "Only logged in admin users or the event author can view it"
 msgstr "Nur eingeloggte Admins oder Veranstaltungsautoren können das sehen"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1405
+#: inc/core/post-type.class.php:1405 inc/core/post-type.class.php:1395
 msgid "Private"
 msgstr "Privat"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1416
+#: inc/core/post-type.class.php:1416 inc/core/post-type.class.php:1406
 msgid "Publish Date:"
 msgstr "Veröffentlichungsdatum:"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1425
+#: inc/core/post-type.class.php:1425 inc/core/post-type.class.php:1415
 msgid "January"
 msgstr "Januar"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1426
+#: inc/core/post-type.class.php:1426 inc/core/post-type.class.php:1416
 msgid "February"
 msgstr "Februar"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1427
+#: inc/core/post-type.class.php:1427 inc/core/post-type.class.php:1417
 msgid "March"
 msgstr "März"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1428
+#: inc/core/post-type.class.php:1428 inc/core/post-type.class.php:1418
 msgid "April"
 msgstr "April"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1429
+#: inc/core/post-type.class.php:1429 inc/core/post-type.class.php:1419
 msgid "May"
 msgstr "Mai"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1430
+#: inc/core/post-type.class.php:1430 inc/core/post-type.class.php:1420
 msgid "June"
 msgstr "Juni"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1431
+#: inc/core/post-type.class.php:1431 inc/core/post-type.class.php:1421
 msgid "July"
 msgstr "Juli"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1432
+#: inc/core/post-type.class.php:1432 inc/core/post-type.class.php:1422
 msgid "August"
 msgstr "August"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1433
+#: inc/core/post-type.class.php:1433 inc/core/post-type.class.php:1423
 msgid "September"
 msgstr "September"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1434
+#: inc/core/post-type.class.php:1434 inc/core/post-type.class.php:1424
 msgid "October"
 msgstr "Oktober"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1435
+#: inc/core/post-type.class.php:1435 inc/core/post-type.class.php:1425
 msgid "November"
 msgstr "November"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1436
+#: inc/core/post-type.class.php:1436 inc/core/post-type.class.php:1426
 msgid "December"
 msgstr "Dezember"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1473
+#: inc/core/post-type.class.php:1473 inc/core/post-type.class.php:1463
 msgid "Event base"
 msgstr "Veranstaltungsbase"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1477
+#: inc/core/post-type.class.php:1477 inc/core/post-type.class.php:1467
 #, php-format
 msgid ""
 "Enter a custom base to use. This url segment will prefix the event name in "
@@ -882,17 +930,17 @@ msgstr ""
 "Veranstaltungsnamen vorangestellt.<br/><code>Beispiel: %s</code>"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1493
+#: inc/core/post-type.class.php:1493 inc/core/post-type.class.php:1483
 msgid "Event permalink base"
 msgstr "Veranstaltungs-Permalink Basis"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1535
+#: inc/core/post-type.class.php:1535 inc/core/post-type.class.php:1525
 msgid "Event Display"
 msgstr "Veranstaltungs-Anzeige"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1545
+#: inc/core/post-type.class.php:1545 inc/core/post-type.class.php:1535
 msgid ""
 "Amount of time to stop sales for a show, before show time. (ie: stop sales "
 "two hour before show time <code>2 hours</code>)"
@@ -901,7 +949,7 @@ msgstr ""
 "den Verkauf 2 Stunden vor Veranstaltungsbeginn<code>2 hours</code>)"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1546
+#: inc/core/post-type.class.php:1546 inc/core/post-type.class.php:1536
 msgid ""
 "valid units: hour, hours, minute, minutes, second, seconds, day, days, week, "
 "weeks, month, months, year, years"
@@ -910,17 +958,17 @@ msgstr ""
 "Tage, Woche, Wochen, Monat, Monate, Jahr, Jahre"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1554
+#: inc/core/post-type.class.php:1554 inc/core/post-type.class.php:1544
 msgid "Single Event Synopsis"
 msgstr "Einzel Veranstaltung Übersicht"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1555
+#: inc/core/post-type.class.php:1555 inc/core/post-type.class.php:1545
 msgid "Show event synopsis on single event pages"
 msgstr "Zeige Veranstaltungsübersicht auf der Einzelveranstaltungsseite."
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1556
+#: inc/core/post-type.class.php:1556 inc/core/post-type.class.php:1546
 msgid ""
 "By default, just the event logo, and the event pricing options are shown. "
 "This feature will additionally show the description of the event to the user."
@@ -930,24 +978,24 @@ msgstr ""
 "Beschreibung der Veranstaltung."
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1565
+#: inc/core/post-type.class.php:1565 inc/core/post-type.class.php:1555
 msgid "Single Event Synopsis Position"
 msgstr "Einzel Veranstaltung Übersicht"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1566
+#: inc/core/post-type.class.php:1566 inc/core/post-type.class.php:1556
 msgid "The display position of the Event Synopsis on the single event page."
 msgstr ""
 "Die Anzeige-Position der Veranstaltungsbeschreibung auf der "
 "Einzelveranstaltungsseite."
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1568
+#: inc/core/post-type.class.php:1568 inc/core/post-type.class.php:1558
 msgid "Above the Ticket Selection UI"
 msgstr "Über dem Ticket-Auswahl UI"
 
 # @ opentickets-community-edition
-#: inc/core/post-type.class.php:1569
+#: inc/core/post-type.class.php:1569 inc/core/post-type.class.php:1559
 msgid "Below the Ticket Selection UI"
 msgstr "Unter dem Ticket-Auswahl UI"
 
@@ -1019,6 +1067,7 @@ msgstr ""
 
 # @ opentickets-community-edition
 #: inc/order/admin.class.php:404 inc/order/admin.class.php:407
+#: inc/order/admin.class.php:331 inc/order/admin.class.php:333
 msgid ""
 "Your current settings require you to provide most billing information for "
 "each order."
@@ -1027,22 +1076,22 @@ msgstr ""
 "Rechnungsinformationen zu jeder Bestellung."
 
 # @ opentickets-community-edition
-#: inc/order/admin.class.php:447
+#: inc/order/admin.class.php:447 inc/order/admin.class.php:373
 msgid "New User"
 msgstr "Neuer Nutzer"
 
 # @ opentickets-community-edition
-#: inc/order/admin.class.php:475
+#: inc/order/admin.class.php:475 inc/order/admin.class.php:401
 msgid "The username is a required field."
 msgstr "Nutzername ist ein Pflichtfeld"
 
 # @ opentickets-community-edition
-#: inc/order/admin.class.php:477
+#: inc/order/admin.class.php:477 inc/order/admin.class.php:403
 msgid "That user name contains illegal characters."
 msgstr "Der Nutzername beinhaltet ungültige Zeichen"
 
 # @ opentickets-community-edition
-#: inc/order/admin.class.php:479
+#: inc/order/admin.class.php:479 inc/order/admin.class.php:405
 msgid ""
 "is already being used by another user. Please enter a different username."
 msgstr ""
@@ -1050,17 +1099,17 @@ msgstr ""
 "anderen Nutzernamen."
 
 # @ opentickets-community-edition
-#: inc/order/admin.class.php:484
+#: inc/order/admin.class.php:484 inc/order/admin.class.php:410
 msgid "The email address is required."
 msgstr "Eine E-Mail Adresse ist erforderlich."
 
 # @ opentickets-community-edition
-#: inc/order/admin.class.php:486
+#: inc/order/admin.class.php:486 inc/order/admin.class.php:412
 msgid "That is not a valid email address."
 msgstr "Dies ist keine gültige E-Mail Adresse."
 
 # @ opentickets-community-edition
-#: inc/order/admin.class.php:488
+#: inc/order/admin.class.php:488 inc/order/admin.class.php:414
 msgid ""
 "is already in use by another user. Please use a different email address."
 msgstr ""
@@ -1068,37 +1117,37 @@ msgstr ""
 "andere E-Mail Adresse."
 
 # @ opentickets-community-edition
-#: inc/order/admin.class.php:492
+#: inc/order/admin.class.php:492 inc/order/admin.class.php:418
 msgid "The first name is a required field."
 msgstr "Vorname ist ein Pflichtfeld"
 
 # @ opentickets-community-edition
-#: inc/order/admin.class.php:496
+#: inc/order/admin.class.php:496 inc/order/admin.class.php:422
 msgid "The last name is a required field."
 msgstr "NAchname ist ein Pflichtfeld"
 
 # @ opentickets-community-edition
-#: inc/order/admin.class.php:500
+#: inc/order/admin.class.php:500 inc/order/admin.class.php:426
 msgid "The information you supplied passed validation."
 msgstr "Die übermittelten Informationen wurden überprüft."
 
 # @ opentickets-community-edition
-#: inc/order/admin.class.php:512
+#: inc/order/admin.class.php:512 inc/order/admin.class.php:438
 msgid "User creation failed:"
 msgstr "Nutzererstellung fehlgeschlagen:"
 
 # @ opentickets-community-edition
-#: inc/order/admin.class.php:515
+#: inc/order/admin.class.php:515 inc/order/admin.class.php:441
 msgid "The user was created successfully."
 msgstr "Der Nutzer wurde erstellt:"
 
 # @ opentickets-community-edition
-#: inc/order/admin.class.php:549
+#: inc/order/admin.class.php:549 inc/order/admin.class.php:475
 msgid "New User Form"
 msgstr "Neues Nutzer Formular"
 
 # @ opentickets-community-edition
-#: inc/order/admin.class.php:560
+#: inc/order/admin.class.php:560 inc/order/admin.class.php:486
 msgid "Username"
 msgstr "Nutzername"
 
@@ -1107,6 +1156,7 @@ msgstr "Nutzername"
 #: inc/order/admin.class.php:564 inc/reporting/seating.report.class.php:493
 #: inc/sys/core-hacks.class.php:938 templates/tickets/verification-form.php:10
 #: woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:77
+#: inc/order/admin.class.php:490
 msgid "Email"
 msgstr "E-Mail"
 
@@ -1116,6 +1166,7 @@ msgstr "E-Mail"
 #: inc/sys/core-hacks.class.php:1003
 #: woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:39
 #: woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:86
+#: inc/order/admin.class.php:494
 msgid "First Name"
 msgstr "Vorname"
 
@@ -1125,21 +1176,23 @@ msgstr "Vorname"
 #: inc/sys/core-hacks.class.php:1007
 #: woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:43
 #: woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:90
+#: inc/order/admin.class.php:498
 msgid "Last Name"
 msgstr "Nachname"
 
 # @ opentickets-community-edition
-#: inc/order/admin.class.php:683
+#: inc/order/admin.class.php:683 inc/order/admin.class.php:609
 msgid "Additional Email Settings"
 msgstr "weitere E-Mail Einstellungen"
 
 # @ opentickets-community-edition
-#: inc/order/admin.class.php:692
+#: inc/order/admin.class.php:692 inc/order/admin.class.php:618
 msgid "Custom Completed Order Message (Above Order Items)"
 msgstr "Eigene \\\"Completed\\\" Bestell-Nachricht (steht über den Artikeln)"
 
 # @ opentickets-community-edition
 #: inc/order/admin.class.php:693 inc/order/admin.class.php:703
+#: inc/order/admin.class.php:619 inc/order/admin.class.php:629
 msgid ""
 "This html appears near the top of the default Completed Order email, sent to "
 "the customer upon completion of their order, above the order items."
@@ -1149,19 +1202,19 @@ msgstr ""
 "seiner Bestellung übermittelt wird."
 
 # @ opentickets-community-edition
-#: inc/order/admin.class.php:702
+#: inc/order/admin.class.php:702 inc/order/admin.class.php:628
 msgid "Custom Completed Order Message - Text only version (Above Order Items)"
 msgstr ""
 "Eigene \\\"Completed Order\\\" Nachricht - Nur-Text Version (Überhalb der "
 "Artikelliste)"
 
 # @ opentickets-community-edition
-#: inc/order/admin.class.php:712
+#: inc/order/admin.class.php:712 inc/order/admin.class.php:638
 msgid "Custom Completed Order Message (Below Address)"
 msgstr "Eigene \\\"Completed Order\\\" Nachricht (Unterhalb der Adresse)"
 
 # @ opentickets-community-edition
-#: inc/order/admin.class.php:713
+#: inc/order/admin.class.php:713 inc/order/admin.class.php:639
 msgid ""
 "This html appears at the bottom of the default Completed Order email, sent "
 "to the customer upon completion of their order, below their address "
@@ -1172,14 +1225,14 @@ msgstr ""
 "seiner Bestellung übermittelt wird."
 
 # @ opentickets-community-edition
-#: inc/order/admin.class.php:722
+#: inc/order/admin.class.php:722 inc/order/admin.class.php:648
 msgid "Custom Completed Order Message - Text only version (Below Address)"
 msgstr ""
 "Eigene \\\"Completed Order\\\" Nachricht - Nur Text Version (Unterhalb der "
 "Adresse)"
 
 # @ opentickets-community-edition
-#: inc/order/admin.class.php:723
+#: inc/order/admin.class.php:723 inc/order/admin.class.php:649
 msgid ""
 "This text appears at the bottom of the default Completed Order email, sent "
 "to the customer upon completion of their order, below their address "
@@ -1454,46 +1507,55 @@ msgstr "Haupt-Theme"
 
 # @ opentickets-community-edition
 #: inc/sys/admin-menu.class.php:450
+#, php-format
 msgid "Add %singular%"
 msgstr "Neue(r) %singular%"
 
 # @ opentickets-community-edition
 #: inc/sys/admin-menu.class.php:451
+#, php-format
 msgid "Add New %singular%"
 msgstr "Neu Hinzufügen %singular%"
 
 # @ opentickets-community-edition
 #: inc/sys/admin-menu.class.php:452
+#, php-format
 msgid "Edit %singular%"
 msgstr "Bearbeiten %singular%"
 
 # @ opentickets-community-edition
 #: inc/sys/admin-menu.class.php:453
+#, php-format
 msgid "New %singular%"
 msgstr "Neu %singular%"
 
 # @ opentickets-community-edition
 #: inc/sys/admin-menu.class.php:454
+#, php-format
 msgid "All %plural%"
 msgstr "Alle %plural%"
 
 # @ opentickets-community-edition
 #: inc/sys/admin-menu.class.php:455
+#, php-format
 msgid "View %singular%"
 msgstr "Zeige %singular%"
 
 # @ opentickets-community-edition
 #: inc/sys/admin-menu.class.php:456
+#, php-format
 msgid "Search %plural%"
 msgstr "Suche %plural%"
 
 # @ opentickets-community-edition
 #: inc/sys/admin-menu.class.php:457
+#, php-format
 msgid "No %lplural% found"
 msgstr "Kein %plural% gefunden"
 
 # @ opentickets-community-edition
 #: inc/sys/admin-menu.class.php:458
+#, php-format
 msgid "No %lplural% found in Trash"
 msgstr "Keine %plural% im Papierkorb gefunden"
 
@@ -2012,10 +2074,11 @@ msgstr "Update der Datenbank, Tabelle [%s] war NICHT erfolgreich. %s"
 msgid "Update to DB, table [%s], was successful."
 msgstr "Update der Datenbank, Tabelle [%s] erfolgreich."
 
+# @ opentickets-community-edition
 #: inc/sys/deprecated.php:43 inc/sys/deprecated.php:45
 #, php-format
 msgid "The \"%s\" filter"
-msgstr ""
+msgstr "Der \"%s\" Filter"
 
 # @ opentickets-community-edition
 #: inc/sys/mba.class.php:441
@@ -2063,26 +2126,36 @@ msgstr "Dateien auswählen"
 msgid "Could not extend. Invalid type."
 msgstr "Entpacken Fehlgeschlagen. Falscher Typ."
 
+# @ opentickets-community-edition
 #: inc/sys/pdf.class.php:191 inc/sys/pdf.class.php:465
 #, php-format
 msgid ""
 "The %s path is not writable. Please update the permissions to allow write "
 "access."
 msgstr ""
+"Der %s Pfad ist nicht beschreibbar. Bitte ändere die Berechtigungen um das "
+"Schreiben zu zulassen."
 
+# @ opentickets-community-edition
 #: inc/sys/pdf.class.php:442
 #, php-format
 msgid ""
 "The %s path exists, but it cannot be read. Please update the permissions to "
 "allow read access."
 msgstr ""
+"Der %s Pfad existiert bereits, aber kann nicht gelesen werden. Bitte änderen "
+"Sie die Berechtigungen, um das Lasen zu erlauben."
 
+# @ opentickets-community-edition
 #: inc/sys/pdf.class.php:447
 #, php-format
 msgid ""
 "The %s path exists, but is not a dir. Please remove or rename the existing "
 "file, and create a directory with the cache path name."
 msgstr ""
+"Der %s Pfad existiert bereits, ist aber kein Ordner. Bitte entfernen Sie die "
+"Datei oder benennen Sie sie um und erstellen Sie einen Ordner mit dem Cache-"
+"Pfad-Namen."
 
 # @ opentickets-community-edition
 #: inc/sys/pdf.class.php:455
@@ -2095,10 +2168,11 @@ msgstr ""
 "dass die Berechtigungen für '%s' dem Webserver erlauben ein Verzeichnis zu "
 "erstellen, und versuche es dann erneut."
 
+# @ opentickets-community-edition
 #: inc/sys/pdf.class.php:460
 #, php-format
 msgid "Unable to create the %s path directory."
-msgstr ""
+msgstr "Der %s Pfad kann nicht erstellt werden."
 
 # @ opentickets-community-edition
 #: inc/sys/registry.php:21
@@ -2117,48 +2191,66 @@ msgstr "Haupt-Seite"
 msgid "System Status"
 msgstr "System-Status"
 
+# @ opentickets-community-edition
 #: inc/sys/pages/system-status.page.php:110
 msgid ""
 "Removed all the locally cached Ticket assets. Every external asset will now "
 "be recached."
 msgstr ""
+"Alle lokal zwischengespeicherten Ticket-Assets wurden entfernt. Alle "
+"Externen-Assets werden nun neu zwischengespeichert."
 
-# @ opentickets-community
+# @ opentickets-community-edition
 #: inc/sys/pages/system-status.page.php:118
 msgid "Purged the OTCE table versions, forcing a reinitialize of the tables."
 msgstr ""
+"Alle OTCE Tabellen-Versionen wurden gelöscht, um eine Reinitiallisierung der "
+"Tabellen zu veranlassen."
 
-# @ opentickets-community
+# @ opentickets-community-edition
 #: inc/sys/pages/system-status.page.php:126
 msgid "The order-item to ticket-table resync has been completed."
 msgstr ""
+"Die Resynchronisierung der bestellten Artikel in die Ticket-Tabelle wurde "
+"abgeschlossen."
 
-# @ opentickets-community
+# @ opentickets-community-edition
 #: inc/sys/pages/system-status.page.php:134
 msgid ""
 "We started the order-item to ticket-table resync. This will take a few "
 "minute to complete. You will receive an email upon completion."
 msgstr ""
+"Die Resynchronisierung der bestellten Artikel in die Ticket-Tabelle wurde "
+"gestartet. Dies nimmt einige Zeit in Anspruch. Sie erhalten eine E-Mail, "
+"wenn dies abgeschlossen ist."
 
+# @ opentickets-community-edition
 #: inc/sys/pages/system-status.page.php:142
 msgid ""
 "Failed to remove the cached ticket assets. Usually this is a permission "
 "issue."
 msgstr ""
+"Das entfernen der Ticket-Assets ist fehlgeschlagen. Oft ist dies eine "
+"falsche Einstellung der Berechtigungen."
 
-# @ opentickets-community
+# @ opentickets-community-edition
 #: inc/sys/pages/system-status.page.php:150
 msgid ""
 "A problem occurred during the order-item to ticket-table resync. It did not "
 "complete."
 msgstr ""
+"Ein Problem ist während der Resynchronisierung der bestellten Artikel zur "
+"Ticket-Tabelle aufgetreten. Vorgang wurde nicht fertiggestellt."
 
-# @ opentickets-community
+# @ opentickets-community-edition
 #: inc/sys/pages/system-status.page.php:158
 msgid ""
 "We could not start the background process that resyncs your order-items to "
 "the ticket-table. Try using the non-background method."
 msgstr ""
+"Wir können den Background-Prozess, welche die Resynchronisierung der "
+"bestellten Artikel zur Ticket-Tabelle durchführt, nicht starten. Versuchen "
+"Sie bitte die Non-Background Methode."
 
 # @ opentickets-community-edition
 #: inc/sys/pages/system-status.page.php:184
@@ -2198,10 +2290,13 @@ msgid ""
 "recreated. This button, does that."
 msgstr ""
 
+# @ opentickets-community-edition
 #: inc/sys/pages/system-status.page.php:217
 msgid "Remove Ticket File Cache"
-msgstr ""
+msgstr "Entferne Ticket-Datei-Cache"
 
+# #-#-#-#-#  opentickets-community-edition-de_DE.po.theirs (OpenTickets Community Edition v1.10.22)  #-#-#-#-#
+# @ openticket-community-edition
 #: inc/sys/pages/system-status.page.php:221
 msgid ""
 "All non-local assets used to create tickets (like external images [google "
@@ -2209,9 +2304,11 @@ msgid ""
 "cache, forcing all assets to be recached."
 msgstr ""
 
+# @ opentickets-community-edition
 #: inc/sys/pages/system-status.page.php:321
 msgid "Missed one or more file during cache purge."
 msgstr ""
+"Es wurde ein oder mehrere Dateien während des Löschvorganges nicht gefunden."
 
 # @ opentickets-community-edition
 #: inc/sys/pages/system-status.page.php:345
@@ -2360,10 +2457,11 @@ msgstr "AN"
 msgid "Frontend"
 msgstr "Frontend"
 
+# @ opentickets-community-edition
 #: inc/sys/settings/frontend.php:64
 #, php-format
 msgid "Image #%s"
-msgstr ""
+msgstr "Bild Nr: %s"
 
 # @ opentickets-community-edition
 #: inc/sys/settings/frontend.php:69
@@ -2373,7 +2471,7 @@ msgstr "Entfernen Text"
 
 # @ opentickets-community-edition
 #: inc/sys/settings/frontend.php:70 inc/ticket/ticket.class.php:551
-#: inc/ticket/ticket.class.php:568
+#: inc/ticket/ticket.class.php:568 inc/ticket/ticket.class.php:534
 #, fuzzy
 msgid "no image"
 msgstr "Logo"
@@ -2710,6 +2808,7 @@ msgstr "Dieses Ticket ansehen"
 
 # @ opentickets-community-edition
 #: inc/ticket/ticket.class.php:112 inc/ticket/ticket.class.php:538
+#: inc/ticket/ticket.class.php:521
 msgid "Tickets"
 msgstr "Tickets"
 
@@ -2734,77 +2833,85 @@ msgid "The ticket cannot be displayed, because the order is not complete."
 msgstr ""
 
 # @ opentickets-community-edition
-#: inc/ticket/ticket.class.php:451
+#: inc/ticket/ticket.class.php:451 inc/ticket/ticket.class.php:434
 msgid "The information you supplied does not match our record."
 msgstr "Es befinden sich keine Übereinstimmungen in unserer Datenbank."
 
 # @ opentickets-community-edition
-#: inc/ticket/ticket.class.php:548
+#: inc/ticket/ticket.class.php:548 inc/ticket/ticket.class.php:531
 msgid "Left Ticket Image"
 msgstr "Linkes Ticket Bild"
 
 # @ opentickets-community-edition
-#: inc/ticket/ticket.class.php:549
+#: inc/ticket/ticket.class.php:549 inc/ticket/ticket.class.php:532
 msgid "The image to show in the bottom left corner of the ticket."
 msgstr ""
 "Das Bild welches in der unteren linken Ecke des Tickets angezeigt wird."
 
 # @ opentickets-community-edition
 #: inc/ticket/ticket.class.php:552 inc/ticket/ticket.class.php:569
+#: inc/ticket/ticket.class.php:535
 msgid "the Event Featured Image"
 msgstr "das Veranstaltungsbild"
 
 # @ opentickets-community-edition
 #: inc/ticket/ticket.class.php:553 inc/ticket/ticket.class.php:570
+#: inc/ticket/ticket.class.php:536
 #, fuzzy
 msgid "the Venue Image"
 msgstr "das Veranstaltungsbild"
 
 # @ opentickets-community-edition
 #: inc/ticket/ticket.class.php:554 inc/ticket/ticket.class.php:571
+#: inc/ticket/ticket.class.php:537
 msgid "the Ticket Product Image"
 msgstr "das Artikel Bild"
 
 # @ opentickets-community-edition
-#: inc/ticket/ticket.class.php:565
+#: inc/ticket/ticket.class.php:565 inc/ticket/ticket.class.php:548
 #, fuzzy
 msgid "Right Ticket Image"
 msgstr "Linkes Ticket Bild"
 
 # @ opentickets-community-edition
-#: inc/ticket/ticket.class.php:566
+#: inc/ticket/ticket.class.php:566 inc/ticket/ticket.class.php:549
 #, fuzzy
 msgid "The image to show in the bottom right corner of the ticket."
 msgstr ""
 "Das Bild welches in der unteren linken Ecke des Tickets angezeigt wird."
 
 # @ opentickets-community-edition
-#: inc/ticket/ticket.class.php:582
+#: inc/ticket/ticket.class.php:582 inc/ticket/ticket.class.php:565
 #, fuzzy
 msgid "Ticket Branding Images"
 msgstr "das Artikel Bild"
 
 # @ opentickets-community-edition
-#: inc/ticket/ticket.class.php:583
+#: inc/ticket/ticket.class.php:583 inc/ticket/ticket.class.php:566
 #, fuzzy
 msgid "Images shown in the small line of branding images below each ticket."
 msgstr ""
 "Das Bild welches in der unteren linken Ecke des Tickets angezeigt wird."
 
-#: inc/ticket/ticket.class.php:584
+# @ opentickets-community-edition
+#: inc/ticket/ticket.class.php:567
 msgid ""
 "The recommended size of these images is 90px wide by 15px tall. Images will "
 "be constrained to 90px wide, no matter the size. Choosing \"no image\" will "
 "make a blank spot on the ticket branding row."
 msgstr ""
+"Die empfohlene Größe der Bilder liegt bei einer Breite von 90px und einer "
+"Höhe von 15px. Egal welche Größe das Bild hat, es wird auf eine Breite von "
+"90px reduziert. Wenn Sie \"no image\" wählen, wird die untere Branding-Reihe "
+"auf dem Ticket nicht angezeigt."
 
 # @ opentickets-community-edition
-#: inc/ticket/ticket.class.php:595
+#: inc/ticket/ticket.class.php:595 inc/ticket/ticket.class.php:578
 msgid "Purchaser Info"
 msgstr "Käufer Informationen"
 
 # @ opentickets-community-edition
-#: inc/ticket/ticket.class.php:596
+#: inc/ticket/ticket.class.php:596 inc/ticket/ticket.class.php:579
 msgid ""
 "Which information to user for the purchaser display information. Either "
 "Billing or Shipping."
@@ -2813,22 +2920,22 @@ msgstr ""
 "werden. Entweder die Rechnung oder Lieferschein"
 
 # @ opentickets-community-edition
-#: inc/ticket/ticket.class.php:598
+#: inc/ticket/ticket.class.php:598 inc/ticket/ticket.class.php:581
 msgid "the Billing Information"
 msgstr "Die Rechnungsinformationen"
 
 # @ opentickets-community-edition
-#: inc/ticket/ticket.class.php:599
+#: inc/ticket/ticket.class.php:599 inc/ticket/ticket.class.php:582
 msgid "the Shipping Information"
 msgstr "Die Versandinformationen"
 
 # @ opentickets-community-edition
-#: inc/ticket/ticket.class.php:610
+#: inc/ticket/ticket.class.php:610 inc/ticket/ticket.class.php:593
 msgid "Show Order #"
 msgstr "Zeige Bestellnummer"
 
 # @ opentickets-community-edition
-#: inc/ticket/ticket.class.php:611
+#: inc/ticket/ticket.class.php:611 inc/ticket/ticket.class.php:594
 msgid "Show the order number of the ticket, on the ticket."
 msgstr "Zeige die Bestellnummer auf dem Ticket an"
 
@@ -2993,6 +3100,7 @@ msgstr "Es tut uns Leid. Es sind derzeit leider keine Tickets verfügbar."
 # @ opentickets-community-edition
 #: inc/venues/event-area/post-type.class.php:160
 #: templates/post-content/event-area.php:123
+#: templates/post-content/event-area.php:122
 msgid "We are sorry. This event is sold out!"
 msgstr "Es tut uns Leid. Die Veranstaltung ist ausverkauft!"
 
@@ -3009,12 +3117,14 @@ msgstr "Schritt 1: Wieviele Tickets?"
 # @ opentickets-community-edition
 #: inc/venues/event-area/post-type.class.php:216
 #: templates/post-content/event-area.php:47
+#: templates/post-content/event-area.php:46
 msgid "Reserve some tickets:"
 msgstr "Anzahl Tickets:"
 
 # @ opentickets-community-edition
 #: inc/venues/event-area/post-type.class.php:220
 #: templates/post-content/event-area.php:68
+#: templates/post-content/event-area.php:67
 msgid "Reserve"
 msgstr "bestellen"
 
@@ -3026,12 +3136,14 @@ msgstr "Schritt 2: Überprüfung"
 # @ opentickets-community-edition
 #: inc/venues/event-area/post-type.class.php:231
 #: templates/post-content/event-area.php:86
+#: templates/post-content/event-area.php:85
 msgid "You currently have:"
 msgstr "Sie haben derzeit:"
 
 # @ opentickets-community-edition
 #: inc/venues/event-area/post-type.class.php:236
 #: templates/post-content/event-area.php:108
+#: templates/post-content/event-area.php:107
 msgid "Update"
 msgstr "aktualisieren"
 
@@ -3222,16 +3334,19 @@ msgstr "Dies ist keine gültige Bestellung."
 # @ opentickets-community-edition
 #: inc/venues/event-area/post-type.class.php:888
 #: inc/venues/event-area/post-type.class.php:1247
+#: inc/venues/event-area/post-type.class.php:1241
 msgid "Event Areas"
 msgstr "Veranstaltungsbereiche"
 
 # @ opentickets-community-edition
 #: inc/venues/event-area/post-type.class.php:1187
+#: inc/venues/event-area/post-type.class.php:1181
 msgid "(Unknown Ticket Type)"
 msgstr "(Unbekannter Ticket-Typ)"
 
 # @ opentickets-community-edition
 #: inc/venues/event-area/post-type.class.php:1191
+#: inc/venues/event-area/post-type.class.php:1185
 #, php-format
 msgid ""
 "There are only <span class=\"available\">%s</span> %s available currently. "
@@ -3243,11 +3358,14 @@ msgstr ""
 # @ opentickets-community-edition
 #: inc/venues/event-area/post-type.class.php:1202
 #: inc/venues/event-area/post-type.class.php:1236
+#: inc/venues/event-area/post-type.class.php:1196
+#: inc/venues/event-area/post-type.class.php:1230
 msgid "The number of tickets must be greater than 0."
 msgstr "Die Anzahl der Tickets muss größer 0 sein."
 
 # @ opentickets-community-edition
 #: inc/venues/event-area/post-type.class.php:1223
+#: inc/venues/event-area/post-type.class.php:1217
 #, php-format
 msgid ""
 "There are only <span class=\"available\">%s</span> more %s available "
@@ -3258,6 +3376,7 @@ msgstr ""
 
 # @ opentickets-community-edition
 #: inc/venues/event-area/post-type.class.php:1248
+#: inc/venues/event-area/post-type.class.php:1242
 msgid "Area"
 msgstr "Bereich"
 
@@ -3356,12 +3475,18 @@ msgstr ""
 "Erlaubt diesem Artikel als Ticket für das PlugIn %s ausgewählt zu werden, "
 "wenn die Preiskonfiguration auf einem Sitzplan beruht."
 
+# #-#-#-#-#  opentickets-community-edition-de_DE.po.ours (OpenTickets Community Edition v1.10.19)  #-#-#-#-#
 # @ opentickets-community-edition
+# #-#-#-#-#  opentickets-community-edition-de_DE.po.theirs (OpenTickets Community Edition v1.10.22)  #-#-#-#-#
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-fee.php:13
 msgid "Fee"
 msgstr "Gebühr"
 
+# #-#-#-#-#  opentickets-community-edition-de_DE.po.ours (OpenTickets Community Edition v1.10.19)  #-#-#-#-#
 # @ opentickets-community-edition
+# #-#-#-#-#  opentickets-community-edition-de_DE.po.theirs (OpenTickets Community Edition v1.10.22)  #-#-#-#-#
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-fee.php:16
 msgid "Fee Name"
 msgstr "Gebühren-Name"
@@ -3425,8 +3550,11 @@ msgstr "Kosten:"
 msgid "Qty"
 msgstr "Menge"
 
+# #-#-#-#-#  opentickets-community-edition-de_DE.po.ours (OpenTickets Community Edition v1.10.19)  #-#-#-#-#
 # @ woocommerce
 # @ opentickets-community-edition
+# #-#-#-#-#  opentickets-community-edition-de_DE.po.theirs (OpenTickets Community Edition v1.10.22)  #-#-#-#-#
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:59
 msgid "Total"
 msgstr "Gesamt"
@@ -3514,9 +3642,13 @@ msgstr "Diese Bestellung wurde bezahlt und kann nicht mehr verändert werden"
 msgid "Add Tax"
 msgstr "Steuer hinzufügen"
 
+# #-#-#-#-#  opentickets-community-edition-de_DE.po.ours (OpenTickets Community Edition v1.10.19)  #-#-#-#-#
 # @ woocommerce
 # @ opentickets-community-edition
+# #-#-#-#-#  opentickets-community-edition-de_DE.po.theirs (OpenTickets Community Edition v1.10.22)  #-#-#-#-#
+# @ woocommerce
 #: templates/admin/meta-boxes/views/html-order-items.php:239
+#: templates/admin/meta-boxes/views/html-order-refund.php:18
 msgid "Refund"
 msgstr "Erstatten"
 
@@ -3779,6 +3911,7 @@ msgstr ""
 
 # @ opentickets-community-edition
 #: templates/post-content/event-area.php:9
+#: templates/post-content/event-area.php:8
 msgid ""
 "For a better experience, certain features of javascript area required. "
 "Currently you either do not have these features, or you do not have them "
@@ -3792,6 +3925,7 @@ msgstr ""
 
 # @ opentickets-community-edition
 #: templates/post-content/event-area.php:12
+#: templates/post-content/event-area.php:11
 msgid ""
 "<strong>STEP 1:</strong> Below, enter the number of tickets you wish to "
 "purchase, then click <span class=\"button-name\">Reserve Tickets</span>."
@@ -3802,6 +3936,7 @@ msgstr ""
 
 # @ opentickets-community-edition
 #: templates/post-content/event-area.php:15
+#: templates/post-content/event-area.php:14
 msgid ""
 "<strong>STEP 2:</strong> Finally, once you have successfully Reserved your "
 "Tickets, click <span class=\"button-name\">Proceed to Cart</span> to "
@@ -3812,16 +3947,19 @@ msgstr ""
 
 # @ opentickets-community-edition
 #: templates/post-content/event-area.php:34
+#: templates/post-content/event-area.php:33
 msgid "Successfully removed your reservations."
 msgstr "Die Reservierung wurde storniert."
 
 # @ opentickets-community-edition
 #: templates/post-content/event-area.php:43
+#: templates/post-content/event-area.php:42
 msgid "<span class=\"step-name\">STEP 1</span>: How many?"
 msgstr "<span class=\"step-name\">Schritt 1</span>: Wie viele?"
 
 # @ opentickets-community-edition
 #: templates/post-content/event-area.php:50
+#: templates/post-content/event-area.php:49
 #, php-format
 msgid ""
 "Currently, there are <span class=\"available\">%s</span> \"<span class="
@@ -3834,11 +3972,13 @@ msgstr ""
 
 # @ opentickets-community-edition
 #: templates/post-content/event-area.php:82
+#: templates/post-content/event-area.php:81
 msgid "<span class=\"step-name\">STEP 2</span>: Review"
 msgstr "<span class=\"step-name\">Schritt 2</span>: Überprüfung"
 
 # @ opentickets-community-edition
 #: templates/post-content/event-area.php:89
+#: templates/post-content/event-area.php:88
 #, php-format
 msgid ""
 "Currently, there are <span class=\"available\">%s</span> more \"<span class="
@@ -3851,6 +3991,7 @@ msgstr ""
 
 # @ opentickets-community-edition
 #: templates/post-content/event-area.php:126
+#: templates/post-content/event-area.php:125
 msgid ""
 "We are sorry. There are currently no tickets available for this event. Check "
 "back soon!"
@@ -3907,7 +4048,10 @@ msgstr "Bereich:"
 msgid "ORDER #"
 msgstr "Bestellnummer"
 
+# #-#-#-#-#  opentickets-community-edition-de_DE.po.ours (OpenTickets Community Edition v1.10.19)  #-#-#-#-#
 # @ woocommerce
+# #-#-#-#-#  opentickets-community-edition-de_DE.po.theirs (OpenTickets Community Edition v1.10.22)  #-#-#-#-#
+# @ opentickets-community-edition
 #: templates/tickets/basic-ticket.php:96
 #, fuzzy, php-format
 msgid "%1$s of %2$s"
@@ -4020,3 +4164,105 @@ msgstr "Kunden Anmerkung"
 #: woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:81
 msgid "Private note"
 msgstr "Private Anmerkung"
+
+# @ opentickets-community-edition
+#: inc/order/admin.class.php:246 inc/order/admin.class.php:249
+msgid "must be at least 2 letters or numbers"
+msgstr "mindestens 2 Buchstaben oder Zahlen"
+
+# @ opentickets-community-edition
+#: inc/order/admin.class.php:252
+msgid "must be at least 7 letters, numbers, or spaces"
+msgstr "mindest 7 Buchstaben, Zahlen oder Leerzeichen"
+
+# @ opentickets-community-edition
+#: inc/order/admin.class.php:255
+msgid "must be at least 4 letters, numbers, or spaces"
+msgstr "mindestens 4 Buchstaben, Zahlen oder Leerzeichen"
+
+# @ opentickets-community-edition
+#: inc/order/admin.class.php:261
+msgid "must be at least 5 letters, numbers, or spaces"
+msgstr "mindestens 5 Buchstaben, Zahlen oder Leerzeichen"
+
+# @ opentickets-community-edition
+#: inc/order/admin.class.php:266
+msgid "must be at least 2 letters, numbers, or spaces"
+msgstr "mindestens 2 Buchstaben, Zahlen oder Leerzeichen"
+
+# @ opentickets-community-edition
+#: inc/order/admin.class.php:274
+msgid "must be at least 3 letters, numbers, or spaces"
+msgstr "mindesten 3 Buchstaben, Zahlen oder Leerzeichen"
+
+# @ opentickets-community-edition
+#: inc/order/admin.class.php:278
+msgid "must be a valid email"
+msgstr "E-Mail Adresse muss gültig sein"
+
+# @ opentickets-community-edition
+#: inc/order/admin.class.php:286
+msgid "must be a valid phone number"
+msgstr "Telefonnummer muss gültig sein"
+
+# @ woocommerce
+#: templates/admin/meta-boxes/views/html-order-items.php:233
+msgid "To edit this order change the status back to \"Pending\""
+msgstr ""
+
+# @ woocommerce
+#: templates/admin/meta-boxes/views/html-order-items.php:299
+msgid ""
+"The payment gateway used to place this order does not support automatic "
+"refunds."
+msgstr ""
+
+# @ woocommerce
+#: templates/admin/meta-boxes/views/html-order-items.php:300
+msgid ""
+"You will need to manually issue a refund through your payment gateway after "
+"using this."
+msgstr ""
+
+# @ woocommerce
+#: templates/admin/meta-boxes/views/html-order-refund.php:21
+msgctxt "Ex: Refund - $date >by< $username"
+msgid "by"
+msgstr "durch"
+
+# @ woocommerce
+#: templates/admin/meta-boxes/views/html-order-refund.php:21
+msgid "ID: "
+msgstr ""
+
+# @ woocommerce
+#: woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:67
+msgid ""
+"Add a note for your reference, or add a customer note (the user will be "
+"notified)."
+msgstr ""
+
+# @ opentickets-community-edition
+#: inc/core/post-type.class.php:490
+#: inc/venues/event-area/post-type.class.php:906
+msgid "high"
+msgstr "Hoch"
+
+# @ opentickets-community-edition
+#: inc/core/post-type.class.php:491
+#: inc/venues/event-area/post-type.class.php:907
+msgid "medium"
+msgstr "Mittel"
+
+# @ opentickets-community-edition
+#: inc/core/post-type.class.php:492
+#: inc/venues/event-area/post-type.class.php:900
+#: inc/venues/event-area/post-type.class.php:908
+msgid "sold-out"
+msgstr "Ausverkauft"
+
+# @ opentickets-community-edition
+#: inc/core/post-type.class.php:493
+#: inc/venues/event-area/post-type.class.php:909
+msgid "low"
+msgstr "Niedrig"
