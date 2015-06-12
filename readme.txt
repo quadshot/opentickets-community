@@ -165,6 +165,14 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.10.24 =
+* added venue image to ticket page
+* added more informative error messages for ticket display problems
+* added venue information print out on venue pages, with options
+* added strings for availability labels
+* fixed end time bug on ticket
+* fixed ticket data aggregation warning
+
 = 1.10.23 =
 * added dutch translation (@luminia)
 * added data requirements check to ticket display template
