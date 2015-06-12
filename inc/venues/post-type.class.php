@@ -93,7 +93,7 @@ class qsot_venue_post_type {
 		// if the current post is not a venue, then skip this function
 		$post_id = ! empty( $post_id ) ? $post_id : get_the_ID();
 		if ( self::$o->{'venue.post_type'} != get_post_type( $post_id ) )
-			return;
+			return $content;
 
 		return $content . apply_filters( 'qsot-formatted-venue-info', '', array( 'venue_id' => $post_id ) );
 	}
