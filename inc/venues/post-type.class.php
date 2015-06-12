@@ -79,7 +79,7 @@ class qsot_venue_post_type {
 
 		add_filter('single_template', array(__CLASS__, 'venue_template_default'), 10, 1);
 		add_filter('qsot-venue-map-string', array(__CLASS__, 'map_string'), 10, 3);
-		add_filter('qsot-get-venue-map', array(__CLASS__, 'get_map'), 10, 2);
+		add_filter( 'qsot-get-venue-map', array( __CLASS__, 'get_map' ), 10, 3 );
 		add_filter('qsot-get-venue-address', array(__CLASS__, 'get_address'), 10, 2);
 
 		add_filter( 'qsot-formatted-venue-info', array( __CLASS__, 'get_formatted_venue_info' ), 100, 2 );
@@ -181,14 +181,22 @@ class qsot_venue_post_type {
 		return $current;
 	}
 
-	public static function get_map($current, $venue) {
-		$venue = get_post($venue);
-		if ( ! is_object( $venue ) || ! isset( $venue->post_type ) || $venue->post_type !== self::$o->{'venue.post_type'} ) return $current;
+	// get the venue map
+	public static function get_map( $current, $venue, $include_instructions=true) {
+		// load the venue, and bail if this is not a venue
+		$venue = get_post( $venue );
+		if ( ! is_object( $venue ) || ! isset( $venue->post_type ) || $venue->post_type !== self::$o->{'venue.post_type'} )
+			return $current;
 
-		$venue_info = get_post_meta($venue->ID, '_venue_information', true);
-		$map_instructions = isset($venue_info['instructions']) && !empty($venue_info['instructions']) ? '<div class="map-instructions">'.$venue_info['instructions'].'</div>' : '';
+		// load the map address
+		$venue_info = get_post_meta( $venue->ID, '_venue_information', true );
 
-		return apply_filters('qsot-venue-map-string', '', $venue_info).$map_instructions;
+		// load the map instructions if they need to be printed
+		$map_instructions = $include_instructions && isset( $venue_info['instructions'] ) && ! empty( $venue_info['instructions'] )
+			? '<div class="map-instructions">'.$venue_info['instructions'].'</div>'
+			: '';
+
+		return apply_filters( 'qsot-venue-map-string', '', $venue_info ) . $map_instructions;
 	}
 
 	public static function get_address($current, $venue) {
@@ -303,9 +311,36 @@ class qsot_venue_post_type {
 		return $args;
 	}
 
-	// laod the assets we need on the edit venue pages
+	// prepare to load the assets we need on the edit venue pages, by queuing up a later action to do so
 	public static function load_venue_admin_assets( $exists, $post_id ) {
+		add_action( 'woocommerce_screen_ids', array( __CLASS__, 'load_venue_admin_assets_later_pre' ), 1 );
+		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'load_venue_admin_assets_later' ), 1000000 );
+	}
+
+	// trick woocommerce into loading it's core assets, so that we can use select2 in the admin. we will probably change this down the road
+	public static function load_venue_admin_assets_later_pre( $list ) {
+		return array_unique( array_merge( $list, array( self::$o->{'venue.post_type'} ) ) );
+	}
+
+	// load the assets needed to edit the venues
+	public static function load_venue_admin_assets_later( $hook ) {
+		if ( ! function_exists( 'WC' ) ) return;
+
+		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+
+		// load our plugin tools
 		wp_enqueue_script( 'qsot-tools' );
+
+		// copied from class-wc-admin-assets.php. used for handling country-state switching
+		wp_enqueue_script( 'wc-users', WC()->plugin_url() . '/assets/js/admin/users' . $suffix . '.js', array( 'jquery', 'wc-enhanced-select' ), WC_VERSION, true );
+		wp_localize_script(
+			'wc-users',
+			'wc_users_params',
+			array(
+				'countries' => json_encode( array_merge( WC()->countries->get_allowed_country_states(), WC()->countries->get_shipping_country_states() ) ),
+				'i18n_select_state_text' => esc_attr__( 'Select an option&hellip;', 'woocommerce' ),
+			)
+		);
 	}
 
 	// load the assets we need on the edit events page, for venues
@@ -450,12 +485,13 @@ class qsot_venue_post_type {
 
 	public static function mb_venue_information($post, $mb) {
 		$info = apply_filters('qsot-get-venue-meta', array(), $post->ID, 'info');
+		$country = isset( $info['country'] ) && $info['country'] ? $info['country'] : WC()->countries->get_base_country();
 		?>
 			<style>
 				table.venue-information-table { width:100%; margin:0; }
 				table.venue-information-table tbody th { font-weight:bold; text-align:right; white-space:nowrap; vertical-align:top; }
 			</style>
-			<table class="venue-information-table">
+			<table class="venue-information-table form-table">
 				<tbody>
 					<tr>
 						<th width="1%"><?php _e('Address:','opentickets-community-edition') ?></th>
@@ -470,8 +506,14 @@ class qsot_venue_post_type {
 						<td><input type="text" class="widefat" name="venue[info][city]" value="<?php echo esc_attr($info['city']) ?>" /></td>
 					</tr>
 					<tr>
-						<th><?php _e('State:','opentickets-community-edition') ?></th>
-						<td><input type="text" class="widefat" name="venue[info][state]" value="<?php echo esc_attr($info['state']) ?>" /></td>
+						<th><?php _e('State or County:','opentickets-community-edition') ?></th>
+						<td>
+							<select name="venue[info][state]" class="widefat js_field-state">
+								<?php $states = WC()->countries->get_states( $country ); foreach ( $states as $abbr => $name ): ?>
+									<option value="<?php echo esc_attr( $abbr ) ?>" <?php selected( $abbr, $info['state'] ) ?>><?php echo force_balance_tags( $name ) ?></option>
+								<?php endforeach; ?>
+							</select>
+						</td>
 					</tr>
 					<tr>
 						<th><?php _e('Postal Code:','opentickets-community-edition') ?></th>
@@ -479,29 +521,35 @@ class qsot_venue_post_type {
 					</tr>
 					<tr>
 						<th><?php _e('Country:','opentickets-community-edition') ?></th>
-						<td><input type="text" class="widefat" name="venue[info][country]" value="<?php echo esc_attr($info['country']) ?>" /></td>
+						<td>
+							<select name="venue[info][country]" class="widefat js_field-country">
+								<?php $countries = WC()->countries->get_countries(); foreach ( $countries as $abbr => $name ): ?>
+									<option value="<?php echo esc_attr( $abbr ) ?>" <?php selected( $abbr, $info['country'] ) ?>><?php echo force_balance_tags( $name ) ?></option>
+								<?php endforeach; ?>
+							</select>
+						</td>
 					</tr>
 					<tr>
 						<th><?php _e('Logo Image','opentickets-community-edition') ?></th>
-						<td rel="iamge-selection">
+						<td rel="image-selection">
 							<div class="logo-image-preview" rel="image-preview" size="thumbnail"><?php echo force_balance_tags( wp_get_attachment_image( $info['logo_image_id'], array( 150, 150 ) ) ) ?></div>
 							<input type="hidden" name="venue[info][logo_image_id]" class="logo-image-id" rel="img-id" value="<?php echo esc_attr( (int) $info['logo_image_id'] ) ?>" />
-							<input type="button" value="<?php echo esc_attr( __( 'Select Logo', 'opentickets-community-edition' ) ) ?>" class="button select-image-btn qsot-popmedia" rel="qsot-popmedia" />
-							<a href="#remove-img" rel="remove-img" class="remove-image-btn"><?php _e( 'Remove', 'opentickets-community-edition' ) ?></a>
+							<input type="button" value="<?php echo esc_attr( __( 'Select Logo', 'opentickets-community-edition' ) ) ?>" class="button select-image-btn qsot-popmedia" rel="qsot-popmedia" scope="[rel='image-selection']" />
+							<a href="#remove-img" rel="remove-img" class="remove-image-btn" scope="[rel='image-selection']"><?php _e( 'Remove', 'opentickets-community-edition' ) ?></a>
 						</td>
 					</tr>
 					<tr>
 						<th><?php _e('Notes:','opentickets-community-edition') ?></th>
 						<td>
 							<textarea class="widefat tinymce" name="venue[info][notes]"><?php echo $info['notes'] ?></textarea>
-							<span class="helper" style="font-size:9px; color:#888888;"><?php _e('This is what is displayed on your tickets about this venue.','opentickets-community-edition') ?></span>
+							<div class="helper" style="font-size:9px; color:#888888;"><?php _e('This is what is displayed on your tickets about this venue.','opentickets-community-edition') ?></div>
 						</td>
 					</tr>
 					<tr>
 						<th><?php _e('Map Instructions:','opentickets-community-edition') ?></th>
 						<td>
 							<textarea class="widefat tinymce" name="venue[info][instructions]"><?php echo $info['instructions'] ?></textarea>
-							<span class="helper" style="font-size:9px; color:#888888;"><?php _e('Displayed below the map on your event tickets. Meant for extra directions.','opentickets-community-edition') ?></span>
+							<div class="helper" style="font-size:9px; color:#888888;"><?php _e('Displayed below the map on your event tickets. Meant for extra directions.','opentickets-community-edition') ?></div>
 						</td>
 					</tr>
 					<?php do_action('qsot-venue-info-rows', $info, $post, $mb) ?>
@@ -537,7 +585,7 @@ class qsot_venue_post_type {
 				table.venue-social-information-table { width:100%; margin:0; }
 				table.venue-social-information-table tbody th { font-weight:bold; text-align:right; white-space:nowrap; vertical-align:top; }
 			</style>
-			<table class="venue-social-information-table">
+			<table class="venue-social-information-table form-table">
 				<tbody>
 					<tr>
 						<th width="1%"><?php _e('Phone:','opentickets-community-edition') ?></th>
@@ -642,6 +690,7 @@ class qsot_venue_post_type {
 	protected static function _setup_admin_options() {
 		// setup the default values
 		self::$options->def( 'qsot-venue-show-address', 'yes' );
+		self::$options->def( 'qsot-venue-show-map', 'yes' );
 		self::$options->def( 'qsot-venue-show-social', 'yes' );
 		self::$options->def( 'qsot-venue-show-notes', 'no' );
 
@@ -661,6 +710,17 @@ class qsot_venue_post_type {
 			'type' => 'checkbox',
 			'title' => __( 'Show Address', 'opentickets-community-edition' ),
 			'desc' => __( 'Display the venue address below the venue description?', 'opentickets-community-edition' ),
+			'default' => 'yes',
+			'page' => 'frontend',
+		) );
+
+		// whether or not to show the venue map below the venue description
+		self::$options->add( array(
+			'order' => 605,
+			'id' => 'qsot-venue-show-map',
+			'type' => 'checkbox',
+			'title' => __( 'Show Map', 'opentickets-community-edition' ),
+			'desc' => __( 'Display the venue MAP below the venue description?', 'opentickets-community-edition' ),
 			'default' => 'yes',
 			'page' => 'frontend',
 		) );

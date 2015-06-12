@@ -207,9 +207,9 @@ QS.popMediaBox = (function($, qt) {
 jQuery( function( $ ) {
 	$( document ).on( 'click', '[rel="remove-img"]', function( e ) {
 		e.preventDefault();
-		var self = $( this ), par = self.closest( self.attr( 'scope' ) );
-		par.find( '[rel="image-preview"]' ).empty();
-		par.find( '[rel="img-id"]' ).val( '0' );
+		var self = $( this ), par = self.closest( self.attr( 'scope' ) || 'div' );
+		par.find( self.attr( 'preview' ) || '[rel="image-preview"]' ).empty();
+		par.find( self.attr( 'id-field' ) || '[rel="img-id"]' ).val( '0' );
 	} );
 
 	$( document ).on( 'click', '.qsot-popmedia, [rel="qsot-popmedia"]', function( e ) {

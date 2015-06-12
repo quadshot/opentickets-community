@@ -309,6 +309,7 @@ class qsot_event_area {
 								.'<div class="clear"></div>'
 							.'</div>'
 							.'<button class="button" rel="change-img">'.__('Select Image','opentickets-community-edition').'</button>'
+							. '<a href="#remove-img" rel="remove-img" class="remove-img-btn" scope="[rel=\'field\']" preview="[rel=\'img-wrap\']">remove</a>'
 						.'</div>',
 					'area-name' => '<div class="edit-field area-name-wrap" rel="field">'
 							.'<label for="area-name[{{id}}]"><strong>'.__('Area Name','opentickets-community-edition').'</strong></label>'
@@ -863,7 +864,8 @@ class qsot_event_area {
 				#available-event-areas .item:first-child { padding-top:0; border-top:0; }
 				#available-event-areas .view .image-preview { width:75px; height:75px; overflow:hidden; }
 				#available-event-areas .view .image-preview img { width:75px; height:auto; }
-				#available-event-areas .edit .image-preview { margin-bottom:3px; }
+				#available-event-areas .edit .image-preview { margin-bottom:3px; max-width:100%; }
+				#available-event-areas .edit .image-preview img { max-width:100%; }
 				#available-event-areas .view .area-name,
 				#available-event-areas .view .info,
 				#available-event-areas .view .actions { margin-left:83px; }
