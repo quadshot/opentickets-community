@@ -165,6 +165,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.10.25 =
+* fixed blank site bug
+
 = 1.10.24 =
 * added venue image to ticket page
 * added more informative error messages for ticket display problems
