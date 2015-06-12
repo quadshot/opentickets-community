@@ -207,4 +207,4 @@ ul#adminmenu a.qsot-special-arrow:after {
 #venue-information .form-table td,
 #venue-social .form-table td { padding-top:5px; padding-bottom:5px; }
 #venue-information .form-table th,
-#venue-social .form-table th { padding-top:10px; padding-bottom:10px; }
+#venue-social .form-table th { padding-top:10px; padding-bottom:10px; width:120px; }

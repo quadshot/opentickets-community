@@ -541,14 +541,44 @@ class qsot_venue_post_type {
 					<tr>
 						<th><?php _e('Notes:','opentickets-community-edition') ?></th>
 						<td>
-							<textarea class="widefat tinymce" name="venue[info][notes]"><?php echo $info['notes'] ?></textarea>
+							<?php
+								wp_editor(
+									$info['notes'],
+									'venue-info-notes',
+									array(
+										'quicktags' => false,
+										'teeny' => true,
+										'textarea_name' => 'venue[info][notes]',
+										'textarea_rows' => 2,
+										'media_buttons' => false,
+										'wpautop' => false,
+										'editor_class' => 'widefat',
+										'tinymce' => array( 'wp_autoresize_on' => '', 'paste_as_text' => true ),
+									)   
+								);
+							?>
 							<div class="helper" style="font-size:9px; color:#888888;"><?php _e('This is what is displayed on your tickets about this venue.','opentickets-community-edition') ?></div>
 						</td>
 					</tr>
 					<tr>
 						<th><?php _e('Map Instructions:','opentickets-community-edition') ?></th>
 						<td>
-							<textarea class="widefat tinymce" name="venue[info][instructions]"><?php echo $info['instructions'] ?></textarea>
+							<?php
+								wp_editor(
+									$info['instructions'],
+									'venue-info-instructions',
+									array(
+										'quicktags' => false,
+										'teeny' => true,
+										'textarea_name' => 'venue[info][instructions]',
+										'textarea_rows' => 2,
+										'media_buttons' => false,
+										'wpautop' => false,
+										'editor_class' => 'widefat',
+										'tinymce' => array( 'wp_autoresize_on' => '', 'paste_as_text' => true ),
+									)   
+								);
+							?>
 							<div class="helper" style="font-size:9px; color:#888888;"><?php _e('Displayed below the map on your event tickets. Meant for extra directions.','opentickets-community-edition') ?></div>
 						</td>
 					</tr>

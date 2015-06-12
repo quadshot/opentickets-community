@@ -74,7 +74,7 @@ class qsot_admin_settings extends WC_Admin_Settings {
 		) );
 		if ( empty( $args['id'] ) ) return;
 
-		$args['title'] = ( empty( $title['title'] ) ) ? ucwords( implode( ' ', explode( '-', str_replace( '_', '-', $args['id'] ) ) ) ) : $args['title'];
+		$args['title'] = ( empty( $args['title'] ) ) ? ucwords( implode( ' ', explode( '-', str_replace( '_', '-', $args['id'] ) ) ) ) : $args['title'];
 
 		?><tr valign="top" class="woocommerce_wysiwyg">
 			<th scope="row" class="titledesc">
