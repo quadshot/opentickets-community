@@ -165,6 +165,11 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.10.26 =
+* added country and state selection to venue info form, modeled after WC user info
+* added map to venue info page output
+* added wysiwyg to notes and instructions fields for venues
+
 = 1.10.25 =
 * added adjacent post code fixes
 * fixed blank site bug
