@@ -84,6 +84,9 @@ class qsot_post_type {
 
 			add_filter('qsot-can-sell-tickets-to-event', array(__CLASS__, 'check_event_sale_time'), 10, 2);
 
+			// get the event availability
+			add_filter( 'qsot-get-availability', array( __CLASS__, 'get_availability' ), 10, 2 );
+
 			add_action('add_meta_boxes', array(__CLASS__, 'core_setup_meta_boxes'), 10, 1);
 
 			add_filter('qsot-order-id-from-order-item-id', array(__CLASS__, 'order_item_id_to_order_id'), 10, 2);
@@ -540,6 +543,27 @@ class qsot_post_type {
 		return $event;
 	}
 
+	// determine the availability of an event
+	public static function get_availability( $count=0, $event_id=0 ) {
+		// normalize the event_id to anumber
+		if ( is_object( $event_id ) )
+			$event_id = $event_id->ID;
+
+		// use the global post if the event_id is not supplied
+		if ( ! is_numeric( $event_id ) || $event_id <= 0 )
+			$event_id = isset( $GLOBALS['post'] ) && is_object( $GLOBALS['post'] ) ? $GLOBALS['post']->ID : $event_id;
+
+		// bail if the event id does not exist
+		if ( ! is_numeric( $event_id ) || $event_id <= 0 )
+			return $count;
+
+		// fetch the needed data
+		$capacity = (int)get_post_meta( $event_id, self::$o->{'meta_key.capacity'}, true );
+		$purchases = (int)get_post_meta( $event_id, self::$o->{'meta_key.purchases'}, true );
+
+		return $capacity - $purchases;
+	}
+
 	public static function add_meta($event) {
 		if (is_object($event) && isset($event->ID, $event->post_type) && $event->post_type == self::$o->core_post_type) {
 			$km = self::$o->meta_key;
@@ -550,7 +574,7 @@ class qsot_post_type {
 				$m[$k] = maybe_unserialize(array_shift($v));
 			}
 			$m = wp_parse_args($m, array('purchases' => 0, 'capacity' => 0));
-			$m['available'] = $m['capacity'] - $m['purchases'];
+			$m['available'] = apply_filters( 'qsot-get-availability', 0, $event->ID );
 			switch (true) {
 				case $m['available'] >= ($m['capacity'] - self::$o->always_reserve) * 0.65: $m['availability'] = __('high','opentickets-community-edition'); break;
 				case $m['available'] >= ($m['capacity'] - self::$o->always_reserve) * 0.30: $m['availability'] = __('medium','opentickets-community-edition'); break;
