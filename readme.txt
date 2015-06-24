@@ -165,6 +165,12 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.10.27 =
+* added filter to obtain event availability
+* added ability to augment 'Tools' page
+* tweaked event area frontend image sizing css
+* fixed PDF render problems
+
 = 1.10.26 =
 * added country and state selection to venue info form, modeled after WC user info
 * added map to venue info page output
