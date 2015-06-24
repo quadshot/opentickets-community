@@ -230,7 +230,7 @@ class Font_Metrics {
    * @see save_font_families()
    */
   static function load_font_families() {
-    $dist_fonts = require_once DOMPDF_DIR . "/lib/fonts/dompdf_font_family_cache.dist.php";
+    $dist_fonts = require_once DOMPDF_FONT_DIR . "dompdf_font_family_cache.dist.php";
     
     // FIXME: temporary step for font cache created before the font cache fix
     if ( is_readable( DOMPDF_FONT_DIR . "dompdf_font_family_cache" ) ) {
