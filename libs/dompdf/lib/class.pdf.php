@@ -334,6 +334,7 @@ class Cpdf {
     $this->fontcache = $fontcache;
     $this->tmp = $tmp;
     $this->newDocument($pageSize);
+		$this->defaultFont = DOMPDF_FONT_DIR . 'Helvetica.afm';
 
     $this->compressionReady = function_exists('gzcompress');
     

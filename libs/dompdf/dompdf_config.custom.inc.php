@@ -3,7 +3,7 @@
 define( 'DOMPDF_VERSION', '0.6.1' );
 require_once 'dompdf.custom.functions.php';
 
-define( 'DOMPDF_CHROOT', realpath( DOMPDF_DIR . '/../' ) );
+define( 'DOMPDF_CHROOT', realpath( DOMPDF_DIR . '/../' ) . '/' );
 
 if ( @file_exists( DOMPDF_CHROOT . 'wp.dompdf.config.php' ) ) {
 	require_once DOMPDF_CHROOT . 'wp.dompdf.config.php';
