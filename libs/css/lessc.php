@@ -37,6 +37,7 @@
  * The `lessc_formatter` takes a CSS tree, and dumps it to a formatted string,
  * handling things like indentation.
  */
+if ( ! class_exists( 'lessc' ) ):
 class lessc {
 	static public $VERSION = "v0.4.0";
 
@@ -2266,9 +2267,11 @@ class lessc {
 		'yellowgreen' => '154,205,50'
 	);
 }
+endif;
 
 // responsible for taking a string of LESS code and converting it into a
 // syntax tree
+if ( ! class_exists( 'lessc_parser' ) ):
 class lessc_parser {
 	static protected $nextBlockId = 0; // used to uniquely identify blocks
 
@@ -3649,7 +3652,9 @@ class lessc_parser {
 	}
 
 }
+endif;
 
+if ( ! class_exists( 'lessc_formatter_classic' ) ):
 class lessc_formatter_classic {
 	public $indentChar = "  ";
 
@@ -3744,7 +3749,9 @@ class lessc_formatter_classic {
 		}
 	}
 }
+endif;
 
+if ( ! class_exists( 'lessc_formatter_compressed' ) ):
 class lessc_formatter_compressed extends lessc_formatter_classic {
 	public $disableSingle = true;
 	public $open = "{";
@@ -3757,11 +3764,13 @@ class lessc_formatter_compressed extends lessc_formatter_classic {
 		return "";
 	}
 }
+endif;
 
+if ( ! class_exists( 'lessc_formatter_lessjs' ) ):
 class lessc_formatter_lessjs extends lessc_formatter_classic {
 	public $disableSingle = true;
 	public $breakSelectors = true;
 	public $assignSeparator = ": ";
 	public $selectorSeparator = ",";
 }
-
+endif;
