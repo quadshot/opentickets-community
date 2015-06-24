@@ -1,6 +1,6 @@
 <?php
 /**
- * OpenTickets General Settings
+ * OpenTickets Frontend Settings
  *
  * @author 		Quadshot (modeled from work done by WooThemes)
  * @category 	Admin
@@ -19,7 +19,7 @@ class qsot_Settings_Frontend extends WC_Settings_Page {
 	 */
 	public function __construct() {
 		$this->id    = 'frontend';
-		$this->label = __( 'Frontend', 'qsot' );
+		$this->label = __( 'Frontend', 'opentickets-community-edition' );
 
 		add_filter( 'qsot_settings_tabs_array', array( $this, 'add_settings_page' ), 20 );
 		add_action( 'qsot_settings_' . $this->id, array( $this, 'output' ) );
@@ -45,6 +45,21 @@ class qsot_Settings_Frontend extends WC_Settings_Page {
 		$current = get_option( $value['id'], '' );
 		$current = is_scalar( $current ) ? explode( ',', $current ) : $current;
 
+		// normalize the args
+		$value = wp_parse_args( $value, array(
+			'static_at_front' => false,
+			'static_at_end' => true,
+			'hide_static' => false,
+			'static_url' => QSOT::plugin_url() . 'assets/imgs/opentickets-tiny.jpg',
+		) );
+
+		// add to the description if any images are static and unchangeable
+		if ( ! $value['hide_static'] && $value['static_at_front'] )
+			$value['desc'] .= ' ' . __( 'The first image cannot be changed.', 'opentickets-community-edition' );
+		elseif ( ! $value['hide_static'] && $value['static_at_end'] )
+			$value['desc'] .= ' ' . __( 'The last image cannot be changed.', 'opentickets-community-edition' );
+
+		$offset = 0;
 		?>
 			<tr valign="top" class="qsot-image-ids">
 				<th scope="row" class="titledesc">
@@ -55,7 +70,18 @@ class qsot_Settings_Frontend extends WC_Settings_Page {
 				</th>
 				<td>
 					<p class="description"><?php echo $value['desc'] ?></p>
-					<?php for ( $i = 0; $i < $value['count']; $i++ ): ?>
+
+					<?php if ( ! $value['hide_static'] && $value['static_at_front'] ): // if there is a static image up front, then show that there is, and that it is not editable ?>
+						<?php $tag = sprintf( '<img src="%s" class="static-img" />', $value['static_url'] ) ?>
+						<div class="image-id-selection">
+							<label><?php echo sprintf( __( 'Image #%s', 'opentickets-community-edition' ), 1 ) ?></label>
+							<div class="preview-img" rel="image-preview"><?php echo $tag ?></div>
+							<div class="clear"></div>
+							<span class="not-editable"><em><?php _e( 'static image', 'opentickets-community-edition' ) ?></em></span>
+						</div>
+					<?php $offset = 1; endif; ?>
+
+					<?php for ( $i = $offset; $i < $value['count'] + $offset; $i++ ): ?>
 						<?php
 							$img_id = isset( $current[ $i ] ) ? $current[ $i ] : 0;
 							$tag = is_numeric( $img_id ) ? wp_get_attachment_image( $img_id, array( 90, 15 ), false ) : '';
@@ -70,6 +96,17 @@ class qsot_Settings_Frontend extends WC_Settings_Page {
 							<a href="#no-img" class="no-image" rel="no-img" scope="[rel='image-select']"><?php _e( 'no image', 'opentickets-community-edition' ) ?></a>
 						</div>
 					<?php endfor; ?>
+
+					<?php if ( ! $value['hide_static'] && $value['static_at_end'] ): // if there is a static image at the end, then show that there is, and that it is not editable ?>
+						<?php $tag = sprintf( '<img src="%s" class="static-img" />', $value['static_url'] ) ?>
+						<div class="image-id-selection">
+							<label><?php echo sprintf( __( 'Image #%s', 'opentickets-community-edition' ), $value['count'] + $offset + 1 ) ?></label>
+							<div class="preview-img" rel="image-preview"><?php echo $tag ?></div>
+							<div class="clear"></div>
+							<span class="not-editable"><em><?php _e( 'static image', 'opentickets-community-edition' ) ?></em></span>
+						</div>
+					<?php $offset = 1; endif; ?>
+
 					<div class="clear"></div>
 				</td>
 			</tr>
