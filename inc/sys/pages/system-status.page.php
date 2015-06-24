@@ -18,7 +18,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 		}
 
 		// otherwise, create a new version of the page
-		return new QSOT_system_status_page();
+		return self::$instance = new QSOT_system_status_page();
 	}
 
 	// the ?page=<slug> of the page
@@ -103,6 +103,12 @@ class QSOT_system_status_page extends QSOT_base_page {
 		if ( 'tools' == $current && isset( $_GET['performed'] ) ) {
 			// different message depending on the task we completed or failed
 			switch ( $_GET['performed'] ) {
+				// when not in this list, call any specialized functions
+				default:
+					if ( has_action( 'qsot-ss-performed-' . $_GET['performed'] ) )
+						do_action( 'qsot-ss-performed-' . $_GET['performed'], $_GET['performed'] );
+				break;
+
 				// blew out the ticket asset cache
 				case 'removed-ticket-asset-cache':
 					echo sprintf(
@@ -185,7 +191,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 								?></a>
 							</td>
 							<td>
-								<span class="helper"><?php _e( 'Looks up all order items that are ticket which have been paid for, and makes sure that they are marked in the tickets table as paid for. <strong>If you have many orders, this could take a while, during which time you should not close this window.</strong>', 'openticket-community-edition' ) ?></span>
+								<span class="helper"><?php _e( 'Looks up all order items that are ticket which have been paid for, and makes sure that they are marked in the tickets table as paid for. <strong>If you have many orders, this could take a while, during which time you should not close this window.</strong>', 'opentickets-community-edition' ) ?></span>
 							</td>
 						</tr>
 
@@ -196,7 +202,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 								?></a>
 							</td>
 							<td>
-								<span class="helper"><?php _e( 'Same as above, only all processing is done behind the scenes. This takes longer, but does not require that you keep this window open.', 'openticket-community-edition' ) ?></span>
+								<span class="helper"><?php _e( 'Same as above, only all processing is done behind the scenes. This takes longer, but does not require that you keep this window open.', 'opentickets-community-edition' ) ?></span>
 							</td>
 						</tr>
 
@@ -207,7 +213,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 								?></a>
 							</td>
 							<td>
-								<span class="helper"><?php _e( 'In some very rare cases, you may need to force the db tables to be recreated. This button, does that.', 'openticket-community-edition' ) ?></span>
+								<span class="helper"><?php _e( 'In some very rare cases, you may need to force the db tables to be recreated. This button, does that.', 'opentickets-community-edition' ) ?></span>
 							</td>
 						</tr>
 
@@ -218,7 +224,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 								?></a>
 							</td>
 							<td>
-								<span class="helper"><?php _e( 'All non-local assets used to create tickets (like external images [google map] and css [custom tickets]) are cached locally. This will remove that cache, forcing all assets to be recached.', 'openticket-community-edition' ) ?></span>
+								<span class="helper"><?php _e( 'All non-local assets used to create tickets (like external images [google map] and css [custom tickets]) are cached locally. This will remove that cache, forcing all assets to be recached.', 'opentickets-community-edition' ) ?></span>
 							</td>
 						</tr>
 
@@ -240,6 +246,13 @@ class QSOT_system_status_page extends QSOT_base_page {
 
 			// if the tool requested is on our list, then handle it appropriately
 			if ( isset( $_GET['qsot-tool'] ) ) switch ( $_GET['qsot-tool'] ) {
+				// when not in this list, call an specialized functions for this
+				default:
+					if ( has_action( 'qsot-ss-tool-' . $_GET['qsot-tool'] ) ) {
+						list( $processed, $args ) = apply_filters( 'qsot-ss-tool-' . $_GET['qsot-tool'], false, $args );
+					}
+				break;
+
 				// force a resync of all the purchased tickets
 				case 'RsOi2Tt':
 					if ( $this->_verify_action_nonce( 'RsOi2Tt' ) ) {
