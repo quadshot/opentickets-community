@@ -1,4 +1,5 @@
 <?php
+if ( ! class_exists( 'qrstr' ) ):
 /*
  * PHP QR Code encoder
  *
@@ -40,4 +41,4 @@
 	include $QR_BASEDIR."qrrscode.php";
 	include $QR_BASEDIR."qrmask.php";
 	include $QR_BASEDIR."qrencode.php";
-
+endif;

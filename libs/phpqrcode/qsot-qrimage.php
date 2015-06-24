@@ -1,5 +1,6 @@
 <?php
 
+if ( ! class_exists( 'QSOT_QRImage' ) ):
 // qsot version of the qrimage class, so that we dont get the headers
 class QSOT_QRImage {
 	// create a base64 version of the jpeg output
@@ -54,3 +55,4 @@ class QSOT_QRImage {
 		return array( $target_image, $imgW * $pixelPerPoint, $imgH * $pixelPerPoint );
 	}
 }
+endif;
