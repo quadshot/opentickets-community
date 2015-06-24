@@ -200,7 +200,7 @@ class QSOT_pdf {
 			return;
 
 		// find all the fonts that come with the lib we packaged with the plugin, and move them to the new fonts dir, if they are not already there
-		$remove_files = array();
+		$remove_files = $updated_files = array();
 		$core_fonts_dir = $libs_dir . 'dompdf/lib/fonts/';
 		// open the core included fonts dir
 		if ( @file_exists( $core_fonts_dir ) && is_writable( $core_fonts_dir ) && ( $dir = opendir( $core_fonts_dir ) ) ) {
@@ -212,13 +212,14 @@ class QSOT_pdf {
 				if ( is_dir( $filename ) || is_link( $filename ) )
 					continue;
 
-				// if the current file already exists in the new location, then add the old path to removal list
-				if ( @file_exists( $new_filename ) )
+				// overwrite any existing copy of the file, with the new version from the updated plugin
+				if ( copy( $filename, $new_filename ) ) {
 					$remove_files[] = $filename;
-				// otherwise, try to move the packaged file to the new fonts dir
-				else if ( @rename( $filename, $new_filename ) )
-					$remove_files[] = $filename;
+					$updated_files[] = basename( $filename );
+				}
 			}
+
+			file_put_contents( $font_path . 'updated', 'updated on ' . date( 'Y-m-d H:i:s' ) . ":\n" . implode( "\n", $remove_files ) );
 
 			// attempt to create the new custom config file
 			if ( $config_file = fopen( $libs_dir . 'wp.dompdf.config.php', 'w+' ) ) {
