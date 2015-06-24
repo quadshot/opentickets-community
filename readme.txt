@@ -165,6 +165,10 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.10.28 =
+* added a wrapper to each lib that bails if lib is already present
+* added an indication on the settings page that the 6th ticket image is static
+
 = 1.10.27 =
 * added filter to obtain event availability
 * added ability to augment 'Tools' page
