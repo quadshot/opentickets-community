@@ -631,20 +631,22 @@ class qsot_event_area {
 
 		$items = array();
 
-		foreach ($data['area-id'] as $id => $ids) {
-			if (!empty($data['area-name'][$id.''])) {
-				$items[$id.''] = array(
+		// organize the submitted data into a format that we can understand for updates
+		foreach ( $data['area-id'] as $id => $ids ) {
+			if ( isset( $data['area-name'], $data['area-name'][ $id ] ) && ! empty( $data['area-name'][ $id ] ) ) {
+				$items[ $id ] = array(
 					'id' => $id,
-					'image_id' => $data['img-id'][$id.''],
-					'name' => $data['area-name'][$id.''],
-					'capacity' => $data['capacity'][$id.''],
-					'ttid' => $data['price-option-tt-id'][$id.''],
+					'image_id' => isset( $data['img-id'], $data['img-id'][ $id ] ) ? $data['img-id'][ $id ] : 0,
+					'name' => $data['area-name'][ $id ],
+					'capacity' => isset( $data['capacity'], $data['capacity'][ $id ] ) ? $data['capacity'][ $id ] : 0,
+					'ttid' => isset( $data['price-option-tt-id'], $data['price-option-tt-id'][ $id ] ) ? $data['price-option-tt-id'][ $id ] : 0,
 				);
 			}
 		}
 
-		if (empty($items)) {
-			$resp['e'][] = __('Could not save the item(s) because not enough information was provided.','opentickets-community-edition');
+		// if the data could not be formatted, then bail
+		if ( empty( $items ) ) {
+			$resp['e'][] = __( 'Could not save the item(s) because not enough information was provided.', 'opentickets-community-edition' );
 			return $resp;
 		}
 
