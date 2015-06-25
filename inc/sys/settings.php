@@ -16,6 +16,9 @@ class qsot_settings {
 		}
 		// declare the initial value of the settings class name, which will be used elsewhere in the plugin. NOTE: this can be overriden by external plugins
 		add_filter('qsot-settings-class-name', array(__CLASS__, 'settings_class_name'), 0, 0);
+
+		// public filter to fetch settings
+		add_filter( 'qsot-setting', array( __CLASS__, 'get_setting' ), 10, 2 );
 	}
 
 	// give the default name of the events subplugin class name
@@ -29,6 +32,12 @@ class qsot_settings {
 			self::$instance = new $class();
 		// return the instance
 		return self::$instance;
+	}
+
+	// fetch a setting value
+	public static function get_setting( $current, $name ) {
+		$res = self::instance()->{ $name };
+		return null === $res ? $current : $res;
 	}
 
 	// setup the object
