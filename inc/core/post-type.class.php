@@ -86,6 +86,7 @@ class qsot_post_type {
 
 			// get the event availability
 			add_filter( 'qsot-get-availability', array( __CLASS__, 'get_availability' ), 10, 2 );
+			add_filter( 'qsot-get-availability-text', array( __CLASS__, 'get_availability_text' ), 10, 4 );
 
 			add_action('add_meta_boxes', array(__CLASS__, 'core_setup_meta_boxes'), 10, 1);
 
@@ -421,6 +422,7 @@ class qsot_post_type {
 			// if we are supposed to show the synopsis, then add it
 			if ( self::$options->{'qsot-single-synopsis'} && 'no' != self::$options->{'qsot-single-synopsis'} ) {
 				// emulate that the 'current post' is actually the parent post, so that we can run the the_content filters, without an infinite recursion loop
+				$q = clone $GLOBALS['wp_query'];
 				$p = clone $GLOBALS['post'];
 				$GLOBALS['post'] = get_post( $event->post_parent );
 				setup_postdata( $GLOBALS['post'] );
@@ -429,6 +431,7 @@ class qsot_post_type {
 				$content = apply_filters( 'the_content', get_the_content() );
 
 				// restore the original post
+				$GLOBALS['wp_query'] = $q;
 				$GLOBALS['post'] = $p;
 				setup_postdata( $p );
 			}
@@ -564,6 +567,37 @@ class qsot_post_type {
 		return $capacity - $purchases;
 	}
 
+	// determine a language equivalent for describing the number of remaining tickets
+	public static function get_availability_text( $current, $available, $event_id=null ) {
+		// normalize the args
+		if ( null === $event_id && self::$o->core_post_type == get_post_type() )
+			$event_id = get_the_ID();
+		if ( null === $event_id )
+			return $current;
+		$available = max( 0, (int)$available );
+
+		// get the capacity and calculate the ratio of remaining tickets
+		$capacity = max( 0, (int)get_post_meta( $event_id, self::$o->{'meta_key.capacity'}, true ) );
+		$percent = 100 * ( ( $capacity ) ? $available / $capacity : 1 );
+		// always_reserve is the number of tickets kept as a buffer, usually reserved for staff, but occassionally used as an overflow buffer for high selling events
+		$adjust = 100 * ( ( $capacity ) ? self::$o->always_reserve / $capacity : 0.5 );
+
+		// if the event is sold 
+		if ( $percent <= apply_filters( 'qsot-availability-threshold-sold-out', $adjust ) )
+			$current = __( 'sold-out', 'opentickets-community-edition' );
+		// if the event is less than 30% available, then it is low availability
+		else if ( $percent < apply_filters( 'qsot-availability-threshold-low', 30 ) )
+			$current = __( 'low', 'opentickets-community-edition' );
+		// if the event is less than 65% available but more than 29%, then it is low availability
+		else if ( $percent < apply_filters( 'qsot-availability-threshold-low', 65 ) )
+			$current = __( 'medium', 'opentickets-community-edition' );
+		// otherwise, the number of sold tickets so far is inconsequential, so the availability is 'high'
+		else
+			$current = __( 'high', 'opentickets-community-edition' );
+
+		return $current;
+	}
+
 	public static function add_meta($event) {
 		if (is_object($event) && isset($event->ID, $event->post_type) && $event->post_type == self::$o->core_post_type) {
 			$km = self::$o->meta_key;
@@ -575,12 +609,7 @@ class qsot_post_type {
 			}
 			$m = wp_parse_args($m, array('purchases' => 0, 'capacity' => 0));
 			$m['available'] = apply_filters( 'qsot-get-availability', 0, $event->ID );
-			switch (true) {
-				case $m['available'] >= ($m['capacity'] - self::$o->always_reserve) * 0.65: $m['availability'] = __('high','opentickets-community-edition'); break;
-				case $m['available'] >= ($m['capacity'] - self::$o->always_reserve) * 0.30: $m['availability'] = __('medium','opentickets-community-edition'); break;
-				case $m['available'] <= self::$o->always_reserve: $m['availability'] = __('sold-out','opentickets-community-edition'); break;
-				default: $m['availability'] = __('low','opentickets-community-edition'); break;
-			}
+			$m['availability'] = apply_filters( 'qsot-get-availability-text', __( 'available', 'opentickets-community-edition' ), $m['available'], $event->ID );
 			$m = apply_filters('qsot-event-meta', $m, $event, $meta);
 			if (isset($m['_event_area_obj'], $m['_event_area_obj']->ticket, $m['_event_area_obj']->ticket->id))
 				$m['reserved'] = apply_filters('qsot-zoner-owns', 0, $event, $m['_event_area_obj']->ticket->id, self::$o->{'z.states.r'});
