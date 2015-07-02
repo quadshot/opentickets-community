@@ -54,7 +54,7 @@ Are you developer? Want to contribute to the source code? Check us out on the [O
 
 = Special Thanks =
 
-@bradleysp (testing), @ht-2 (translation), @luminia (translation)
+@bradleysp (testing), @ht-2 (translation), @luminia (translation), @ton (translation)
 
 == Installation ==
 
@@ -164,6 +164,16 @@ Setup an 'Event':
 The FAQ's for OpenTickets Community Edition is currently located on [our website's FAQs Page](http://opentickets.com/faq).
 
 == Changelog ==
+
+= 1.10.29 =
+* added public api to fetch plugin settings
+* added new js for i18n datepicker
+* updated nl_NL translation. @Ton
+* tweaked report page tab rendering
+* tweaked report js to remove legacy jquery functions
+* fixed a bug in the_content filter for event descriptions
+* fixed report related notices
+* fixed PDF render when installation in subdirectory
 
 = 1.10.28 =
 * added a wrapper to each lib that bails if lib is already present
@@ -567,6 +577,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 * initial public release
 
 == Upgrade Notice ==
+
+= 1.10.29 =
+Have you had problems with the PDF output for tickets? This patch finalizes the changes that will resolve these issues.
 
 = 1.10.16 =
 Thanks to H.T. (@ht-2) we now have a German Translation. 1.10.16 includes this translation.
