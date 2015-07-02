@@ -85,7 +85,7 @@
 		setTimeout(_doit, 1);
 	};
 
-	$('form select[change-action]').live('change', function() {
+	$( document ).on( 'change', '.form-container form select[change-action]', function() {
 		var f = $(this).closest('form');
 		var data = f.louSerialize();
 		data.raction = 'refresh-form';
@@ -98,7 +98,7 @@
 		_rajax(data, target);
 	});
 
-	$('form').live('submit', function(e) {
+	$( document ).on( 'submit', '.form-container form', function(e) {
 		e.preventDefault();
 		var f = $(this);
 
@@ -123,7 +123,7 @@
 		return false;
 	});
 
-	$('table th .sorter').live('click', function(e) {
+	$( document ).on( 'click', 'table th .sorter', function(e) {
 		e.preventDefault();
 		$('input[name="sort"]').val($(this).attr('sort')).closest('form').submit();
 	});
