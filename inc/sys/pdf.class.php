@@ -273,7 +273,7 @@ class QSOT_cache_helper {
 
 	// figure out the local path of the asset, based on the found url
 	public static function find_local_path( $url ) {
-		static $local = false, $whats_old_in_seconds = false;
+		static $local = false, $local_url = false, $whats_old_in_seconds = false;
 
 		// determine if this is a force recache
 		if ( null === self::$force_recache )
@@ -285,7 +285,7 @@ class QSOT_cache_helper {
 
 		// figure out the local url
 		if ( false === $local )
-			$local = ! WP_DEBUG ? @parse_url( site_url() ) : parse_url( site_url() );
+			$local = ! WP_DEBUG ? @parse_url( $local_url = site_url() ) : parse_url( $local_url = site_url() );
 
 		// if we have already cached the local path of this asset, then just use the cached value
 		if ( isset( self::$cache_map[ $url ] ) )
@@ -301,7 +301,7 @@ class QSOT_cache_helper {
 		// try to find/create a relevant local copy of the src
 
 		// if this is a URL to a resource outside of this site, then
-		if ( isset( $parsed_url['scheme'], $parsed_url['host'] ) && strlen( $parsed_url['scheme'] ) && 'file' != $parsed_url['scheme'] && ! empty( $parsed_url['host'] ) && $parsed_url['host'] != $local['host'] ) {
+		if ( ! self::_is_local_file( $parse_url, $local, $url, $local_url ) ) {
 			// figure out the cache dir now, since we definitely need it
 			if ( false === self::$cache_path )
 				self::create_find_cache_dir();
@@ -351,7 +351,7 @@ class QSOT_cache_helper {
 
 		// if it is a relative path, then figure out the part of the path that would make it absolute
 		$extra_path = '';
-		if ( '/' != $parsed_url['path']{0} && '\\' != $parsed_url['path']{0} ) {
+		if ( '/' !== $parsed_url['path']{0} && '\\' !== $parsed_url['path']{0} ) {
 			// find the request path
 			$req_purl = ! WP_DEBUG ? @parse_url( isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : '' ) : parse_url( isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : '' );
 
@@ -361,8 +361,13 @@ class QSOT_cache_helper {
 				$extra_path = trailingslashit( is_dir( $test_path ) ? $req_purl['path'] : dirname( $req_purl['path'] ) );
 		}
 
+		// adjust the parsed_url path to account for the wordpress install being in a subdir of the domain
+		$parsed_path = $parsed_url['path'];
+		if ( ( '/' === $parsed_path{0} || '\\' === $parsed_path{0} ) && isset( $local['path'] ) && ( $local_adjust = untrailingslashit( $local['path'] ) ) && 0 === strpos( $parsed_path, $local_adjust ) )
+			$parsed_path = substr( $parsed_path, strlen( $local_adjust ) );
+
 		// if the file exists, is a file, and is readable, then success
-		$test_path = realpath( ABSPATH . $extra_path . $parsed_url['path'] );
+		$test_path = realpath( ABSPATH . $extra_path . $parsed_path );
 		$test = ! WP_DEBUG
 				? $test_path && @file_exists( $test_path ) && @is_file( $test_path ) && @is_readable( $test_path )
 				: $test_path && file_exists( $test_path ) && is_file( $test_path ) && is_readable( $test_path );
@@ -371,6 +376,28 @@ class QSOT_cache_helper {
 
 		// otherwise bail on absolute paths
 		return self::$cache_map[ $url ] = '';
+	}
+
+	// determine if a url is of a local resource
+	protected static function _is_local_file( $parsed_url, $parsed_local, $url, $local_url ) {
+		// if there is no url host, then it is assumed that the host is the local host, meaning it is a local file
+		if ( ! isset( $parsed_url['host'] ) )
+			return true;
+
+		// if the scheme is present, and set to 'file' then it is definitely supposed to be a local asset
+		if ( isset( $parsed_url['scheme'] ) && 'file' === strtolower( $parsed_url['scheme'] ) )
+			return true;
+
+		// figure out the host and path of both urls. this will help determine if this asset lives at a local path. the site_url() could be a host with a path, if the installation is in a subdir
+		$remote_path = strtolower( end( explode( '/', $url, 3 ) ) );
+		$local_path = strtolower( end( explode( '/', $local_url, 3 ) ) );
+
+		// if the local path is present at the beginning of the remote path string, then it is a local path
+		if ( 0 === strpos( $remote_path, $local_path ) )
+			return true;
+
+		// otherwise it is most logically a remote file
+		return false;
 	}
 
 	// build a local filename based on the remote url path
