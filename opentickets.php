@@ -195,7 +195,7 @@ class QSOT {
 		wp_register_style('qsot-jquery-ui', self::$o->core_url.'assets/css/libs/jquery/jquery-ui-1.10.1.custom.min.css', array(), '1.10.1');
 
 		// generic set of tools for our js work. almost all written by Loushou
-		wp_register_script( 'qsot-core-tools', self::$o->core_url . 'assets/js/utils/tools.js', array( 'jquery', 'json2', 'xdate' ), '0.2.0-beta' );
+		wp_register_script( 'qsot-core-tools', self::$o->core_url . 'assets/js/utils/tools.js', array( 'jquery', 'json2', 'xdate', 'jquery-ui-datepicker' ), '0.2.0-beta' );
 		// backbone modal, ripped from core WC, and modified to work for our causes
 		wp_register_script( 'qsot-backbone-modal', self::$o->core_url . 'assets/js/utils/backbone-modal.js', array( 'underscore', 'backbone', 'qsot-core-tools' ), '0.1.0-beta', 1 );
 
