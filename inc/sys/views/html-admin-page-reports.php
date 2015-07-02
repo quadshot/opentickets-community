@@ -44,11 +44,11 @@
 		if ( ! isset( $report['hide_title'] ) || $report['hide_title'] != true )
 			echo '<h3>' . $report['title'] . '</h3>';
 
-		if ( $report['description'] )
+		if ( isset( $report['description'] ) && $report['description'] )
 			echo '<p>' . $report['description'] . '</p>';
 
-		if ( $report['function'] && ( is_callable( $report['function'] ) ) )
-			call_user_func( $report['function'], $current_report );
+		if ( isset( $report['callback'] ) && $report['callback'] && ( is_callable( $report['callback'] ) ) )
+			call_user_func( $report['callback'], $current_report );
 	}
 	?>
 </div>
