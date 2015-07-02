@@ -25,11 +25,11 @@ class qsot_admin_settings {
 	public function get_reports() {
 		$reports = array();
 
-		//$reports = apply_filters( 'qsot-reports', $reports);
-		$reports = apply_filters( 'qsot_admin_reports', $reports );
-
 		// Backwards compat
 		$reports = apply_filters( 'qsot_reports_charts', $reports );
+
+		//$reports = apply_filters( 'qsot-reports', $reports);
+		$reports = apply_filters( 'qsot_admin_reports', $reports );
 
 		foreach ( $reports as $key => $report_group ) {
 			if ( isset( $reports[ $key ]['charts'] ) )
