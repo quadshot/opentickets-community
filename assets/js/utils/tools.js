@@ -1009,12 +1009,11 @@ QS.EditSetting = (function($, undefined) {
 			var data = {};
 			var self = this;
 			$(selector).filter(':not(:disabled)').each(function() {
-				if ($(this).attr('type') == 'checkbox' || $(this).attr('type') == 'radio')
-					if ($(this).filter(':checked').length == 0) return;
-				if (typeof $(this).attr('name') == 'string' && $(this).attr('name').length != 0) {
-					var res = $(this).attr('name').match(/^([^\[\]]+)(\[.*\])?$/);
-					var name = res[1];
-					var val = $(this).val();
+				var me = $( this );
+				if (me.attr('type') == 'checkbox' || me.attr('type') == 'radio')
+					if (me.filter(':checked').length == 0) return;
+				if (typeof me.attr('name') == 'string' && me.attr('name').length != 0) {
+					var res = me.attr('name').match(/^([^\[\]]+)(\[.*\])?$/), name = res[1], val = ! me.hasClass( 'wp-editor-area' ) || ! me.attr( 'id' ) ? me.val() : tinymce.editors[ me.attr( 'id' ) ].getContent();
 					if (res[2]) {
 						var list = res[2].match(/\[[^\[\]]*\]/gi);
 						if (list instanceof Array && list.length > 0) {
