@@ -207,7 +207,7 @@ class qsot_event_area {
 	}
 
 	public static function frontend_templates($list, $event) {
-		global $woocommerce;
+		$woocommerce = WC();
 		$cart_url = '#';
 		if (is_object($woocommerce) && is_object($woocommerce->cart)) $cart_url = $woocommerce->cart->get_cart_url();
 

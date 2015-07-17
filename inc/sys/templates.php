@@ -156,13 +156,11 @@ class qsot_templates {
 	}
 
 	public static function locate_woo_template($name, $type=false) {
-		global $woocommerce;
-
 		//self::_lg( '>>>> req template', $name );
 
 		$found = locate_template(array($name), false, false);
 		if (!$found) {
-			$woodir = trailingslashit( $woocommerce->plugin_path() );
+			$woodir = trailingslashit( WC()->plugin_path() );
 			switch ($type) {
 				case 'admin': $qsot_path = 'templates/admin/'; $woo_path = 'includes/admin/'; break;
 				default: $qsot_path = 'templates/'; $woo_path = 'templates/';

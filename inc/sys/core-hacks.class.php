@@ -142,8 +142,6 @@ class qsot_core_hacks {
 
 	// add subtotal to fees also, for proper accounting
 	public static function update_service_fee_subtotal_on_order_creation($order_id, $posted) {
-		global $woocommerce;
-
 		$order = new WC_Order($order_id);
 		foreach ($order->get_fees() as $oiid => $fee) {
 			if (woocommerce_get_order_item_meta($oiid, '_line_subtotal', true) === '')
@@ -154,8 +152,6 @@ class qsot_core_hacks {
 	// copied from woocommerce/woocommerce-ajax.php
 	// modified to allow class assignment and template overriding
 	function woocommerce_ajax_add_order_fee() {
-		global $woocommerce;
-
 		check_ajax_referer( 'order-item', 'security' );
 
 		$order_id 	= absint( $_POST['order_id'] );
@@ -191,8 +187,6 @@ class qsot_core_hacks {
 	// copied from woocommerce/woocommerce-ajax.php
 	// modified to allow template overriding
 	function woocommerce_ajax_add_order_item() {
-		global $woocommerce, $wpdb;
-
 		check_ajax_referer( 'order-item', 'security' );
 
 		$item_to_add = sanitize_text_field( $_POST['item_to_add'] );
@@ -263,7 +257,8 @@ class qsot_core_hacks {
 	 * @return void
 	 */
 	public function woocommerce_order_totals_meta_box( $post ) {
-		global $woocommerce, $theorder, $wpdb;
+		global $theorder, $wpdb;
+		$woocommerce = WC();
 
 		if ( ! is_object( $theorder ) )
 			$theorder = new WC_Order( $post->ID );
@@ -490,9 +485,6 @@ class qsot_core_hacks {
 	// copied from woocommerce/woocommerce-ajax.php
 	// modified to allow other comment types to have an action to save info on
 	function woocommerce_add_order_note() {
-
-		global $woocommerce;
-
 		check_ajax_referer( 'add-order-note', 'security' );
 
 		$post_id 	= (int) $_POST['post_id'];
@@ -712,7 +704,8 @@ class qsot_core_hacks {
 	// modified to allow defaults
 	//@@@@LOUSHOU - deprecated from WC2.2.0
 	public static function woocommerce_order_data_meta_box($post) {
-		global $post, $wpdb, $thepostid, $theorder, $order_status, $woocommerce;
+		global $post, $wpdb, $thepostid, $theorder, $order_status;
+		$woocommerce = WC();
 
 		$thepostid = absint( $post->ID );
 

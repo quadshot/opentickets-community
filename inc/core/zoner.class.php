@@ -266,7 +266,7 @@ class qsot_zoner {
 
 	// current_user is the id we use to lookup tickets in relation to a product in a cart. once we have an order number this pretty much becomes obsolete
 	public static function current_user($current, $order_id=false, $data='') {
-		global $woocommerce;
+		$woocommerce = WC();
 		$res = false;
 		$data = wp_parse_args($data, array('customer_user' => false));
 		if ($data['customer_user']) $res = $data['customer_user'];
