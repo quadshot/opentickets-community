@@ -200,37 +200,52 @@ class qsot_seating_report extends qsot_admin_report {
 		<?php
 	}
 
+	// once a parent event has been selected, then we need to provide a list of child events to show
 	protected static function _form_extended($data) {
-		$shows = get_posts(array(
+		// remove the filter that adds teh date and time to the title. this could double both, and look confusing
+		remove_filter( 'the_title', array( 'qsot_post_type', 'the_title_date_time' ), 10, 2 );
+
+		// find a list of child event ids for the parent event
+		$shows = get_posts( array(
 			'posts_per_page' => -1,
 			'post_type' => self::$o->core_post_type,
-			'post_status' => array('publish', 'hidden'),
-			'orderby' => 'title',
-			'order' => 'asc',
+			'post_status' => array( 'publish', 'hidden' ),
 			'post_parent' => $data['parent_event'],
+			'meta_key' => '_start',
+			'orderby' => 'meta_value',
+			'order' => 'asc',
+			'fields' => 'ids',
 			'suppress_filters' => false,
-		));
+		) );
 
-		$sort = isset($_REQUEST['sort']) ? $_REQUEST['sort'] : '';
+		// establish the selected sort param
+		$sort = isset( $_REQUEST['sort'] ) ? $_REQUEST['sort'] : '';
 
+		// draw the new form with all required params and the updated list of child events
 		?>
 			<form method="post" action="">
 				<label for="showing"><?php _e('Showing:','opentickets-community-edition') ?></label>
 				<select name="showing" id="showing">
-					<?php foreach ($shows as $show): ?>
-						<option value="<?php echo esc_attr($show->ID) ?>" <?php echo selected($show->ID, $data['showing']) ?>><?php echo esc_html($show->post_title) ?></option>
+					<?php foreach ( $shows as $show_id ): ?>
+						<?php $start_time = date( __( 'm-d-Y g:ia', 'opentickets-community-edition' ), strtotime( get_post_meta( $show_id, '_start', true ) ) ); ?>
+						<option value="<?php echo esc_attr( $show_id ) ?>" <?php echo selected( $show_id, $data['showing'] ) ?>><?php
+							echo esc_html( sprintf( __( '%s [%s]', 'opentickets-community-edition' ), get_the_title( $show_id ), $start_time ) )
+						?></option>
 					<?php endforeach; ?>
 				</select>
-				<input type="hidden" name="parent_event" value="<?php echo esc_attr($data['parent_event']) ?>" />
+				<input type="hidden" name="parent_event" value="<?php echo esc_attr( $data['parent_event'] ) ?>" />
 				<input type="hidden" name="action" value="show-results" />
 				<input type="hidden" name="sort" value="<?php echo $sort ?>" />
 				<input type="hidden" name="report" value="seating" />
-				<input type="submit" value="<?php _e('Show Report','opentickets-community-edition') ?>" />
+				<input type="submit" value="<?php echo esc_attr( __( 'Show Report', 'opentickets-community-edition' ) ) ?>" />
 			</form>
 		<?php
+
+		// restore removed filter
+		add_filter( 'the_title', array( 'qsot_post_type', 'the_title_date_time' ), 10, 2 );
 	}
 
-	protected static function _ticket_ois_from_event($event_id) {
+	protected static function _ticket_is_from_event($event_id) {
 		global $wpdb;
 		$tickets = $ticket_types = $order_ids = array();
 
@@ -332,7 +347,7 @@ class qsot_seating_report extends qsot_admin_report {
 		$event = apply_filters('qsot-get-event', false, $data['showing']);
 		if (!is_object($event) || !isset($event->ID)) return $ticket_data;
 
-		list($tickets, $ticket_type_ids, $order_ids) = self::_ticket_ois_from_event($event->ID);
+		list($tickets, $ticket_type_ids, $order_ids) = self::_ticket_is_from_event($event->ID);
 		list($tickets, $orders) = self::_get_order_info($tickets, $order_ids);
 		$ticket_types = self::_get_ticket_types($ticket_type_ids);
 

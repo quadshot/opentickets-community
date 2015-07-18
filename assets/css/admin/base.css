@@ -208,3 +208,17 @@ ul#adminmenu a.qsot-special-arrow:after {
 #venue-social .form-table td { padding-top:5px; padding-bottom:5px; }
 #venue-information .form-table th,
 #venue-social .form-table th { padding-top:10px; padding-bottom:10px; width:120px; }
+
+/* meta boxes */
+.qsot-mb {}
+.qsot-mb label { font-weight:700; font-style:italic; margin-bottom:0; }
+.qsot-mb input[type="text"],
+.qsot-mb input[type="password"],
+.qsot-mb input[type="text"],
+.qsot-mb input[type="email"],
+.qsot-mb input[type="number"] { margin-top:0.2em; }
+.qsot-mb .field { padding-top:0.5em; }
+.qsot-mb .field:first-child { padding-top:0; }
+.qsot-mb .helper { padding-top:0.4em; font-size:0.8em; color:#777; font-style:italic; }
+.qsot-mb code { font-size:inherit; font-style:normal; font-weight:400; color:inherit; }
+.qsot-mb .option-row { padding-top:0.3em; }

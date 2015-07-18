@@ -44,7 +44,7 @@ class qsot_post_type {
 			add_filter('_admin_menu', array(__CLASS__, 'patch_menu'), 10);
 			add_action('admin_head', array(__CLASS__, 'patch_menu_second_hack'), 10);
 			// handle saving of the parent event post
-			add_action('save_post', array(__CLASS__, 'save_event'), 999, 2);
+			add_action( 'save_post', array( __CLASS__, 'save_event' ), 999, 2 );
 			// protect save_event() from 'remove_action' global variable violation bug, brought to light by using OpenTickets in tandem with TheEventCalendar
 			// ** when calling remove_action() from a function that is called by that action, the $GLOBALS['wp_filter'] is directly modified.
 			// ** at the same time the do_action/apply_filters function uses this exact same variable to cycle through the function callback list.
@@ -115,6 +115,11 @@ class qsot_post_type {
 			add_filter( 'get_next_post_where', array( __CLASS__, 'adjacent_post_link_where' ), 1000, 3 );
 			add_filter( 'get_next_post_join', array( __CLASS__, 'adjacent_post_link_join' ), 1000, 3 );
 			add_filter( 'get_next_post_sort', array( __CLASS__, 'adjacent_post_link_sort' ), 1000, 1 );
+
+			// get the settings of whether the current child event should show the date and time in the details page title
+			add_filter( 'qsot-show-date-time', array( __CLASS__, 'get_show_date_time' ), 10, 2 );
+			// add the date/time to the end of a title if the seetings permit
+			add_filter( 'the_title', array( __CLASS__, 'the_title_date_time' ), 10, 2 );
 		}
 	}
 
@@ -972,308 +977,543 @@ class qsot_post_type {
 		return apply_filters('qsot-ui-templates', $list, $post_id);
 	}
 
+	// when rendering the title for an event, see if the date/tiem is required. if so, append it
+	public static function the_title_date_time( $title, $post_id=0 ) {
+		// if the post_id is not supplied, then there is no way to know if we could possibly need this
+		if ( (int)$post_id <= 0 )
+			return $title;
+
+		// if the post is not an event, then bail
+		if ( self::$o->core_post_type != get_post_type( $post_id ) )
+			return $title;
+
+		// if this is not a child event, then bail, because parent posts dont need dates or times
+		if ( wp_get_post_parent_id( $post_id ) <= 0 )
+			return $title;
+
+		// figure out if the date or time is needed. if not, bail
+		$needs = apply_filters( 'qsot-show-date-time', array( 'date' => true, 'time' => false ), $post_id );
+		if ( ! $needs['date'] && ! $needs['time'] )
+			return $title;
+
+		// otherwise figure out what bits need to be added
+		$start = strtotime( get_post_meta( $post_id, '_start', true ) );
+		// bail if the date is invalid
+		if ( 0 == $start )
+			return $title;
+
+		// add the date/time to the title
+		$date = date_i18n( __( 'm/d/Y', 'opentickets-community-edition' ), $start );
+		$time = date_i18n( __( 'g:ia', 'opentickets-community-edition' ), $start );
+		$format = '%1$s';
+		if ( $needs['date'] )
+			$format .= ' ' . __( 'on %2$s', 'opentickets-community-edition' );
+		if ( $needs['time'] )
+			$format .= ' ' . __( '@ %3$s', 'opentickets-community-edition' );
+		
+		return sprintf( $format, $title, $date, $time );
+	}
+
+	// fetch the current settings for a sub-event's 'show_date' and 'show_time' settings
+	public static function get_show_date_time( $current, $post_id ) {
+		// get the cache for this, if it has already been fetched, cause this can get overly heavy
+		$current = wp_cache_get( 'show-date-time-' . $post_id, 'qsot' );
+		if ( false && false !== $current )
+			return $current;
+
+		// find the current values
+		$current = array(
+			'date' => get_post_meta( $post_id, '_qsot_show_date', true ),
+			'time' => get_post_meta( $post_id, '_qsot_show_time', true ),
+		);
+
+		// if there is no value for either, then try to determine it from the parent
+		if ( '' === $current['date'] || '' === $current['time'] ) {
+			$parent_id = wp_get_post_parent_id( $post_id );
+			if ( '' === $current['date'] )
+				$current['date'] = get_post_meta( $parent_id, '_qsot_show_date', true );
+			if ( '' === $current['time'] )
+				$current['time'] = get_post_meta( $parent_id, '_qsot_show_time', true );
+		}
+
+		// if we are still empty, default to global options
+		if ( '' === $current['date'] || '' === $current['time'] ) {
+			if ( '' === $current['date'] )
+				$current['date'] = 'yes' === get_option( self::$options->{'qsot-show-date'}, 'yes' );
+			if ( '' === $current['time'] )
+				$current['time'] = 'yes' === get_option( self::$options->{'qsot-show-time'}, 'no' );
+		}
+
+		$final = array( 'date' => !!$current['date'], 'time' => !!$current['time'] );
+
+		// update the cache
+		wp_cache_set( 'show-date-time-' . $post_id, $final, 'qsot', DAY_IN_SECONDS );
+
+		return $final;
+	}
+
 	// save function for the parent events
-	public static function save_event($post_id, $post) {
-		if ($post->post_type != self::$o->core_post_type) return; // only run for our event post type
-		if ($post->post_parent != 0) return; // this is only for parent event posts
+	public static function save_event( $post_id, $post ) {
+		if ( $post->post_type != self::$o->core_post_type ) return; // only run for our event post type
+		if ( $post->post_parent != 0 ) return; // this is only for parent event posts
 
 		// if there were settings for the sub events sent, then process those settings
-		if (isset($_POST['_qsot_event_settings'])) {
-			$date_format = get_option( 'date_format', 'Y-m-d' );
+		if ( isset( $_POST['_qsot_event_settings'], $_POST['_qsot_event_settings'] ) )
+			self::save_sub_events( $post_id, $post, $_POST );
 
-			$need_lookup = $updates = $matched = array();
-			// default post_arr to send to wp_insert_post
-			$defs = array(
-				'post_type' => self::$o->core_post_type,
-				'post_status' => 'pending',
-				'post_password' => '',
-				'post_parent' => $post_id,
+		// if the 'show date' and 'show time' settings are present, update them as needed
+		if ( isset( $_POST['qsot-event-title-settings'] ) && wp_verify_nonce( $_POST['qsot-event-title-settings'], 'qsot-event-title' ) )
+			self::save_event_title_settings( $post_id, $post, $_POST );
+	}
+
+	// save the event title settings from the 'Event Titles' metabox
+	public static function save_event_title_settings( $post_id, $post, $data ) {
+		// figure out the current settings
+		//$current = apply_filters( 'qsot-show-date-time', array( 'date' => true, 'time' => false ), $post_id );
+
+		// figure out the new settings
+		//   true = yes show the date/time
+		//   false = no do not show the date/time
+		//   '' = use the global settings
+		$new_settings = array(
+			'date' => isset( $data['qsot-show-date'] ) && '' !== $data['qsot-show-date'] && $data['qsot-show-date'] ? !!$data['qsot-show-date'] : '',
+			'time' => isset( $data['qsot-show-time'] ) && '' !== $data['qsot-show-time'] && $data['qsot-show-time'] ? !!$data['qsot-show-time'] : '',
+		);
+
+		update_post_meta( $post_id, '_qsot_show_date', $new_settings['date'] );
+		update_post_meta( $post_id, '_qsot_show_time', $new_settings['time'] );
+
+		// clear the cache
+		wp_cache_delete( 'show-date-time-' . $post_id, 'qsot' );
+	}
+
+	// handle the saving of sub events, when a parent event is saved in the admin
+	public static function save_sub_events( $post_id, $post, $data ) {
+		$need_lookup = $updates = $matched = array();
+		// default post_arr to send to wp_insert_post
+		$defs = array(
+			'post_type' => self::$o->core_post_type,
+			'post_status' => 'pending',
+			'post_password' => '',
+			'post_parent' => $post_id,
+		);
+		$now = time();
+
+		// cycle through all the subevent settings that were sent. some will be new, some will be modified, some will be modified but have lost their post id. determine what each is,
+		// and properly group them for possible later processing
+		foreach ( $data['_qsot_event_settings'] as $item ) {
+			// expand the settings
+			$tmp = @json_decode( stripslashes( $item ) );
+			// if the settings are a valid set of settings, then continue with this item
+			if ( is_object( $tmp ) ) {
+				// change the title to be the date, which makes for better permalinks
+				$tmp->title = date_i18n( _x( 'Y-m-d_gia', 'Permalink date', 'opentickets-community-edition' ), strtotime( $tmp->start ) );
+				// if the post_id was passed in with the settings, then we know what subevent post to modify with these settings already. therefore we do not need to match it up to an existing
+				// subevent or create a new subevent. lets throw it directly into the update list for usage later
+				if ( isset( $tmp->post_id ) && is_numeric( $tmp->post_id ) && $tmp->post_id > 0 ) {
+					// parse the date so that we can use it to make a proper post_title
+					$d = strtotime( $tmp->start );
+					// if the post is set to publish in the future, then adjust the status
+					$pub = strtotime( $tmp->pub_date );
+					if ( $pub > $now ) $tmp->status = 'future';
+					// add the settings to the list of posts to update
+					$updates[] = array(
+						'post_arr' => wp_parse_args( array(
+							// be sure to set the id of the post to update, otherwise we get a completely new post
+							'ID' => $tmp->post_id,
+							// use the title from the parent event. later, during display, the date and time will be added to the title if needed
+							'post_title' => $post->post_title,
+							// set the post status of the event
+							'post_status' => in_array( $tmp->visibility, array( 'public', 'protected' ) ) ? $tmp->status : $tmp->visibility,
+							// protected events have passwords
+							'post_password' => 'protected' == $tmp->visibility ? $tmp->password : '',
+							// use that normalized title we made earlier, as to create a pretty url
+							'post_name' => $tmp->title,
+							'post_date' => $tmp->pub_date == '' || $tmp->pub_date == 'now' ? '' : date_i18n( 'Y-m-d H:i:s', strtotime( $tmp->pub_date ) ),
+						), $defs),
+						'meta' => array( // setup the meta to save
+							self::$o->{'meta_key.capacity'} => $tmp->capacity, // max occupants
+							self::$o->{'meta_key.end'} => $tmp->end, // end time, for lookup and display purposes later
+							self::$o->{'meta_key.start'} => $tmp->start, // start time for lookup and display purposes later
+						),
+						'submitted' => $tmp,
+					);
+					$matched[] = $tmp->post_id; // track the post_ids we have matched up to settings. will use later to determine subevents to delete
+				// if no post id was passed, then we need to attempt to match this item up to an existing subevent
+				} else {
+					// add this item to the needs lookup list
+					$need_lookup[ $tmp->title ] = $tmp;
+				}
+			}
+		}
+
+		// if there are subevent settings that did not contain a post_id, we need to attempt to match them up to existing, unmatched subevents of this event
+		if ( count( $need_lookup ) > 0 ) {
+			// args for looking up existing subevents to this event
+			$args = array(
+				'post_type' => self::$o->core_post_type, // of event post type
+				'post_parent' => $post_id, // is a child of this event
+				'post_status' => 'any', // any status, including our special hidden status
+				'posts_per_page' => -1, // lookup all of them, not just some
 			);
-			$now = time();
 
-			// cycle through all the subevent settings that were sent. some will be new, some will be modified, some will be modified but have lost their post id. determine what each is,
-			// and properly group them for possible later processing
-			foreach ($_POST['_qsot_event_settings'] as $item) {
-				// expand the settings
-				$tmp = @json_decode(stripslashes($item));
-				// if the settings are a valid set of settings, then continue with this item
-				if (is_object($tmp)) {
-					// change the title to be the date, which makes for better permalinks
-					$tmp->title = date('Y-m-d_gia', strtotime($tmp->start));
-					// if the post_id was passed in with the settings, then we know what subevent post to modify with these settings already. therefore we do not need to match it up to an existing
-					// subevent or create a new subevent. lets throw it directly into the update list for usage later
-					if (isset($tmp->post_id) && is_numeric($tmp->post_id) && $tmp->post_id > 0) {
-						// parse the date so that we can use it to make a proper post_title
-						$d = strtotime($tmp->start);
+			// if any hve yet been matched, exclude them from the lookup
+			if ( ! empty( $matched ) )
+				$args['post__not_in'] = $matched;
+
+			// fetch the list of existing, unmatched subevents
+			$existing = get_posts( $args );
+
+			// if there are any existing, unmatched subevents, then
+			if ( is_array( $existing ) && count( $existing ) ) {
+				// cycle through the list of them
+				foreach ( $existing as $exist ) {
+					// if the name of this subevent match any of the normalized names of the passed subevent settings, then lets assume that they are a match, so that we dont needlessly create extra
+					// subevents just because we are missing a post_id above
+					if ( isset( $need_lookup[ $exist->post_name ] ) ) {
+						$tmp = $need_lookup[ $exist->post_name ];
+						// get the date in timestamp form so that we can use it to make a pretty title
+						$d = strtotime( $tmp->start );
 						// if the post is set to publish in the future, then adjust the status
 						$pub = strtotime( $tmp->pub_date );
 						if ( $pub > $now ) $tmp->status = 'future';
+						// remove the settings from the list that needs a match up, since we just matched it
+						unset( $need_lookup[ $exist->post_name ] );
 						// add the settings to the list of posts to update
 						$updates[] = array(
-							'post_arr' => wp_parse_args(array(
-								'ID' => $tmp->post_id, // be sure to set the id of the post to update, otherwise we get a completely new post
-								'post_title' => sprintf(__('%s on %s @ %s','opentickets-community-edition'), $post->post_title, date( $date_format, $d), date(__('g:ia','opentickets-community-edition'), $d)), // create a pretty proper title
-								'post_status' => in_array( $tmp->visibility, array( 'public', 'protected' ) ) ? $tmp->status : $tmp->visibility, // set the post status of the event
-								'post_password' => 'protected' == $tmp->visibility ? $tmp->password : '', // protected events have passwords
-								'post_name' => $tmp->title, // use that normalized title we made earlier, as to create a pretty url
+							'post_arr' => wp_parse_args( array(
+								// be sure to set the post_id so that we don't create a new post
+								'ID' => $exist->ID,
+								// use the title of the parent post as the base name, and then add the date/time when needed later
+								'post_title' => $post->post_title,
+								// use the normalized event slug for pretty urls
+								'post_name' => $tmp->title,
+								// set the post status of the event
+								'post_status' => in_array( $tmp->visibility, array( 'public', 'protected' ) ) ? $tmp->status : $tmp->visibility,
+								// protected events have passwords
+								'post_password' => 'protected' == $tmp->visibility ? $tmp->password : '',
+								// update to the proper publish date
 								'post_date' => $tmp->pub_date == '' || $tmp->pub_date == 'now' ? '' : date_i18n( 'Y-m-d H:i:s', strtotime( $tmp->pub_date ) ),
-							), $defs),
-							'meta' => array( // setup the meta to save
-								self::$o->{'meta_key.capacity'} => $tmp->capacity, // max occupants
-								self::$o->{'meta_key.end'} => $tmp->end, // end time, for lookup and display purposes later
-								self::$o->{'meta_key.start'} => $tmp->start, // start time for lookup and display purposes later
+							), $defs ),
+							'meta' => array( // set the meta
+								self::$o->{'meta_key.capacity'} => $tmp->capacity, // occupant capacity
+								self::$o->{'meta_key.end'} => $tmp->end, // event end date/time for later lookup and display
+								self::$o->{'meta_key.start'} => $tmp->start, // event start data/time for later lookup and display
 							),
 							'submitted' => $tmp,
 						);
-						$matched[] = $tmp->post_id; // track the post_ids we have matched up to settings. will use later to determine subevents to delete
-					// if no post id was passed, then we need to attempt to match this item up to an existing subevent
-					} else {
-						// add this item to the needs lookup list
-						$need_lookup[$tmp->title] = $tmp;
+						$matched[] = $exist->ID; // mark as matched
 					}
 				}
 			}
 
-			// if there are subevent settings that did not contain a post_id, we need to attempt to match them up to existing, unmatched subevents of this event
-			if (count($need_lookup) > 0) {
-				// args for looking up existing subevents to this event
-				$args = array(
-					'post_type' => self::$o->core_post_type, // of event post type
-					'post_parent' => $post_id, // is a child of this event
-					'post_status' => 'any', // any status, including our special hidden status
-					'posts_per_page' => -1, // lookup all of them, not just some
-				);
-				if (!empty($matched)) $args['post__not_in'] = $matched; // if any hve yet been matched, exclude them from the lookup
-				$existing = get_posts($args); // fetch the list of existing, unmatched subevents
-
-				// if there are any existing, unmatched subevents, then
-				if (is_array($existing) && count($existing)) {
-					// cycle through the list of them
-					foreach ($existing as $exist) {
-						// if the name of this subevent match any of the normalized names of the passed subevent settings, then lets assume that they are a match, so that we dont needlessly create extra
-						// subevents just because we are missing a post_id above
-						if (isset($need_lookup[$exist->post_name])) {
-							$tmp = $need_lookup[$exist->post_name];
-							// get the date in timestamp form so that we can use it to make a pretty title
-							$d = strtotime($tmp->start);
-							// if the post is set to publish in the future, then adjust the status
-							$pub = strtotime( $tmp->pub_date );
-							if ( $pub > $now ) $tmp->status = 'future';
-							// remove the settings from the list that needs a match up, since we just matched it
-							unset($need_lookup[$exist->post_name]);
-							// add the settings to the list of posts to update
-							$updates[] = array(
-								'post_arr' => wp_parse_args(array(
-									'ID' => $exist->ID, // be sure to set the post_id so that we don't create a new post
-									'post_title' => sprintf(__('%s on %s @ %s','opentickets-community-edition'), $post->post_title, date( $date_format, $d), date(__('g:ia','opentickets-community-edition'), $d)),// make a pretty title to describe the event
-									'post_name' => $tmp->title, // use the normalized event slug for pretty urls
-									'post_status' => in_array( $tmp->visibility, array( 'public', 'protected' ) ) ? $tmp->status : $tmp->visibility, // set the post status of the event
-									'post_password' => 'protected' == $tmp->visibility ? $tmp->password : '', // protected events have passwords
-									'post_date' => $tmp->pub_date == '' || $tmp->pub_date == 'now' ? '' : date_i18n( 'Y-m-d H:i:s', strtotime( $tmp->pub_date ) ),
-								), $defs),
-								'meta' => array( // set the meta
-									self::$o->{'meta_key.capacity'} => $tmp->capacity, // occupant capacity
-									self::$o->{'meta_key.end'} => $tmp->end, // event end date/time for later lookup and display
-									self::$o->{'meta_key.start'} => $tmp->start, // event start data/time for later lookup and display
-								),
-								'submitted' => $tmp,
-							);
-							$matched[] = $exist->ID; // mark as matched
-						}
-					}
-				}
-
-				// if there are still un matched sub event settings (always will be on new events with sub events)
-				if (count($need_lookup)) {
-					// cycle through them
-					foreach ($need_lookup as $k => $data) {
-						// get the date in timestamp form so that we can use it to make a pretty title
-						$d = strtotime($data->start);
-						// if the post is set to publish in the future, then adjust the status
-						$pub = strtotime( $data->pub_date );
-						if ( $pub > $now ) $data->status = 'future';
-						// add the settings to the list of posts to update/insert
-						$updates[] = array(
-							'post_arr' => wp_parse_args(array( // will INSERT because there is no post_id
-								'post_title' => sprintf(__('%s on %s @ %s','opentickets-community-edition'), $post->post_title, date( $date_format, $d), date(__('g:ia','opentickets-community-edition'), $d)), // create a pretty title
-								'post_name' => $data->title, // user pretty url slug
-								'post_status' => in_array( $tmp->visibility, array( 'public', 'protected' ) ) ? $tmp->status : $tmp->visibility, // set the post status of the event
-								'post_password' => 'protected' == $tmp->visibility ? $tmp->password : '', // protected events have passwords
-								'post_date' => $data->pub_date == '' || $data->pub_date == 'now' ? '' : date_i18n( 'Y-m-d H:i:s', strtotime( $data->pub_date ) ),
-							), $defs),
-							'meta' => array( // set meta
-								self::$o->{'meta_key.capacity'} => $data->capacity, // occupant copacity
-								self::$o->{'meta_key.end'} => $data->end, // end data for lookup and display
-								self::$o->{'meta_key.start'} => $data->start, // start date for lookup and display
-							),
-							'submitted' => $data,
-						);
-					}
+			// if there are still un matched sub event settings (always will be on new events with sub events)
+			if ( count( $need_lookup ) ) {
+				// cycle through them
+				foreach ( $need_lookup as $k => $data ) {
+					// get the date in timestamp form so that we can use it to make a pretty title
+					$d = strtotime( $data->start );
+					// if the post is set to publish in the future, then adjust the status
+					$pub = strtotime( $data->pub_date );
+					if ( $pub > $now ) $data->status = 'future';
+					// add the settings to the list of posts to update/insert
+					$updates[] = array(
+						'post_arr' => wp_parse_args( array( // will INSERT because there is no post_id
+							// use the parent event title, and then add the date and time as needed later
+							'post_title' => $post->post_title,
+							// user pretty url slug
+							'post_name' => $data->title,
+							// set the post status of the event
+							'post_status' => in_array( $tmp->visibility, array( 'public', 'protected' ) ) ? $tmp->status : $tmp->visibility,
+							// protected events have passwords
+							'post_password' => 'protected' == $tmp->visibility ? $tmp->password : '',
+							// set the appropriate publish date
+							'post_date' => $data->pub_date == '' || $data->pub_date == 'now' ? '' : date_i18n( 'Y-m-d H:i:s', strtotime( $data->pub_date ) ),
+						), $defs ),
+						'meta' => array( // set meta
+							self::$o->{'meta_key.capacity'} => $data->capacity, // occupant copacity
+							self::$o->{'meta_key.end'} => $data->end, // end data for lookup and display
+							self::$o->{'meta_key.start'} => $data->start, // start date for lookup and display
+						),
+						'submitted' => $data,
+					);
 				}
 			}
-
-			// if the event ui has marked that there have been events removed, then remove any unmatched events, assuming that any we did not get settings for, should be removed.
-			if (isset($_POST['events-removed']) && $_POST['events-removed'] == 1) {
-				// remove non-matched/non-updated sub posts before updating existing posts and creating new ones
-				// args to lookup posts to remove
-				$args = array(
-					'post_type' => self::$o->core_post_type, // must be an event
-					'post_parent' => $post_id, // and a child of the current event
-					'post_status' => 'any', // can be of any status, even our special ones
-					'posts_per_page' => -1, // fetch a comprehensive list
-				);
-				if (!empty($matched)) $args['post__not_in'] = $matched; // only fetch the unmatched ones
-				$delete = get_posts($args); // get the list
-				if (is_array($delete)) foreach ($delete as $del) wp_delete_post($del->ID, true); // delete all posts in the list
-			}
-
-			// for every item in the update list, either update or create a subevent
-			foreach ($updates as $update) {
-				$update = apply_filters('qsot-events-save-sub-event-settings', $update, $post_id, $post);
-				if (isset($update['post_arr']) && is_array($update['post_arr'])) {
-					$event_id = wp_insert_post($update['post_arr']); // update/insert the subevent
-					if (is_numeric($event_id)) {
-						foreach ($update['meta'] as $k => $v) update_post_meta($event_id, $k, $v); // update/add the meta to the new subevent
-
-						// keep track of the earliest start time of all sub events
-						if (isset($update['meta'][self::$o->{'meta_key.start'}])) {
-							$start_date = empty($start_date) ? strtotime($update['meta'][self::$o->{'meta_key.start'}]) : min($start_date, strtotime($update['meta'][self::$o->{'meta_key.start'}]));
-						}
-						// keep track of the latest end time of all sub events
-						if (isset($update['meta'][self::$o->{'meta_key.end'}])) {
-							$end_date = empty($end_date) ? strtotime($update['meta'][self::$o->{'meta_key.end'}]) : max($end_date, strtotime($update['meta'][self::$o->{'meta_key.end'}]));
-						}
-
-						do_action( 'qsot-events-save-sub-event', $event_id, $update, $post_id, $post );
-					}
-				}
-			}
-
-			// update the start and end time fo the parent event
-			$current_start = get_post_meta($post_id, self::$o->{'meta_key.start'}, true);
-			$current_end = get_post_meta($post_id, self::$o->{'meta_key.end'}, true);
-
-			@list($actual_start, $actual_end) = apply_filters('qsot-event-date-range', array(), array('event_id' => $post_id));
-
-			$submit_start_date = $submit_end_date = array();
-			if (isset($_POST['_qsot_start_date']) && !empty($_POST['_qsot_start_date'])) $submit_start_date[] = $_POST['_qsot_start_date'];
-			if (isset($_POST['_qsot_start_time']) && !empty($_POST['_qsot_start_time'])) $submit_start_date[] = $_POST['_qsot_start_time'];
-			if (isset($_POST['_qsot_end_date']) && !empty($_POST['_qsot_end_date'])) $submit_end_date[] = $_POST['_qsot_end_date'];
-			if (isset($_POST['_qsot_end_time']) && !empty($_POST['_qsot_end_time'])) $submit_end_date[] = $_POST['_qsot_end_time'];
-
-			$submit_start_date = count($submit_start_date) == 2 ? implode(' ', $submit_start_date) : '';
-			$submit_end_date = count($submit_end_date) == 2 ? implode(' ', $submit_end_date) : '';
-
-			if ($submit_start_date == $current_start && $current_start != $actual_start) $submit_start_date = $actual_start;
-			if ($submit_end_date == $current_end && $current_end != $actual_end) $submit_end_date = $actual_end;
-
-			// if we have a min start time and max end time, then save them to the main parent event, for use in lookup of the featured event ordering
-			if (!empty($submit_start_date))
-				update_post_meta($post_id, self::$o->{'meta_key.start'}, $submit_start_date);
-			else if (!empty($actual_start))
-				update_post_meta($post_id, self::$o->{'meta_key.start'}, $actual_start);
-
-			if (!empty($submit_end_date))
-				update_post_meta($post_id, self::$o->{'meta_key.end'}, $submit_end_date);
-			else if (!empty($actual_end))
-				update_post_meta($post_id, self::$o->{'meta_key.end'}, $actual_end);
-
-			// save the stop selling formula
-			$formula = $_POST['_qsot_stop_sales_before_show'];
-			update_post_meta($post_id, '_stop_sales_before_show', $formula);
 		}
+
+		// if the event ui has marked that there have been events removed, then remove any unmatched events, assuming that any we did not get settings for, should be removed.
+		if ( isset( $data['events-removed'] ) && $data['events-removed'] == 1 ) {
+			// remove non-matched/non-updated sub posts before updating existing posts and creating new ones
+			// args to lookup posts to remove
+			$args = array(
+				'post_type' => self::$o->core_post_type, // must be an event
+				'post_parent' => $post_id, // and a child of the current event
+				'post_status' => 'any', // can be of any status, even our special ones
+				'posts_per_page' => -1, // fetch a comprehensive list
+			);
+
+			// only fetch the unmatched ones
+			if ( ! empty( $matched ) )
+				$args['post__not_in'] = $matched;
+
+			// get the list
+			$delete = get_posts( $args );
+
+			// delete all posts in the list
+			if ( is_array( $delete ) )
+				foreach ( $delete as $del )
+					wp_delete_post( $del->ID, true );
+		}
+
+		// for every item in the update list, either update or create a subevent
+		foreach ( $updates as $update ) {
+			// allow injection/modification of the insert/update data
+			$update = apply_filters( 'qsot-events-save-sub-event-settings', $update, $post_id, $post );
+
+			// if there is data to update, then
+			if ( isset( $update['post_arr'] ) && is_array( $update['post_arr'] ) ) {
+				// insert/update the sub-event
+				$event_id = wp_insert_post( $update['post_arr'] );
+
+				// if the update was a success, then
+				if ( is_numeric( $event_id ) ) {
+					// update/add the meta to the new subevent
+					foreach ( $update['meta'] as $k => $v )
+						update_post_meta( $event_id, $k, $v );
+
+					// keep track of the earliest start time of all sub events
+					if ( isset( $update['meta'][ self::$o->{'meta_key.start'} ] ) )
+						$start_date = empty( $start_date )
+								? strtotime( $update['meta'][ self::$o->{'meta_key.start'} ] )
+								: min( $start_date, strtotime( $update['meta'][ self::$o->{'meta_key.start'} ] ) );
+
+					// keep track of the latest end time of all sub events
+					if ( isset( $update['meta'][ self::$o->{'meta_key.end'} ] ) )
+						$end_date = empty( $end_date )
+								? strtotime( $update['meta'][ self::$o->{'meta_key.end'} ] )
+								: max( $end_date, strtotime( $update['meta'][ self::$o->{'meta_key.end'} ] ) );
+
+					// notify externals of an update to the sub event
+					do_action( 'qsot-events-save-sub-event', $event_id, $update, $post_id, $post );
+				}
+			}
+		}
+
+		// update the start and end time fo the parent event
+		$current_start = get_post_meta( $post_id, self::$o->{'meta_key.start'}, true );
+		$current_end = get_post_meta( $post_id, self::$o->{'meta_key.end'}, true );
+
+		// calculate the real start and end times over all child events
+		@list( $actual_start, $actual_end ) = apply_filters( 'qsot-event-date-range', array(), array( 'event_id' => $post_id ) );
+
+		$submit_start_date = $submit_end_date = array();
+		if ( isset( $data['_qsot_start_date'] ) && ! empty( $data['_qsot_start_date'] ) ) $submit_start_date[] = $data['_qsot_start_date'];
+		if ( isset( $data['_qsot_start_time'] ) && ! empty( $data['_qsot_start_time'] ) ) $submit_start_date[] = $data['_qsot_start_time'];
+		if ( isset( $data['_qsot_end_date'] ) && ! empty( $data['_qsot_end_date'] ) ) $submit_end_date[] = $data['_qsot_end_date'];
+		if ( isset( $data['_qsot_end_time'] ) && ! empty( $data['_qsot_end_time'] ) ) $submit_end_date[] = $data['_qsot_end_time'];
+
+		$submit_start_date = count( $submit_start_date ) == 2 ? implode( ' ', $submit_start_date ) : '';
+		$submit_end_date = count( $submit_end_date ) == 2 ? implode( ' ', $submit_end_date ) : '';
+
+		// if new start an end times did not get submitted (or the submitted value is not changed from what it was) then update the value to the real start and end time, based on all child events
+		if ( $submit_start_date == $current_start && $current_start != $actual_start )
+			$submit_start_date = $actual_start;
+		if ( $submit_end_date == $current_end && $current_end != $actual_end )
+			$submit_end_date = $actual_end;
+
+		// if we have a min start time and max end time, then save them to the main parent event, for use in lookup of the featured event ordering
+		if ( ! empty( $submit_start_date ) )
+			update_post_meta( $post_id, self::$o->{'meta_key.start'}, $submit_start_date );
+		else if ( ! empty( $actual_start ) )
+			update_post_meta( $post_id, self::$o->{'meta_key.start'}, $actual_start );
+
+		if ( ! empty( $submit_end_date ) )
+			update_post_meta( $post_id, self::$o->{'meta_key.end'}, $submit_end_date );
+		else if ( ! empty( $actual_end ) )
+			update_post_meta( $post_id, self::$o->{'meta_key.end'}, $actual_end );
+
+		// save the stop selling formula
+		$formula = isset( $data['_qsot_stop_sales_before_show'] ) ? $data['_qsot_stop_sales_before_show'] : get_option( 'qsot-stop-sales-before-show', '2 hours' );
+		update_post_meta( $post_id, '_stop_sales_before_show', $formula );
 	}
 
-	public static function core_setup_meta_boxes($post_type) {
+	// add meta boxes on the edit event pages
+	public static function core_setup_meta_boxes( $post_type ) {
 		global $post;
-		if ($post->post_parent == 0) {
+
+		// some only belong on parent event edit pages
+		if ( $post->post_parent == 0 ) {
+			// metabox for assigning child events. contains calendar and event list
 			add_meta_box(
 				'event-date-time',
-				__('Event Date Time Settings','opentickets-community-edition'),
-				array(__CLASS__, 'mb_event_date_time_settings'),
+				_x( 'Event Date Time Settings', 'metabox title', 'opentickets-community-edition' ),
+				array( __CLASS__, 'mb_event_date_time_settings' ),
 				self::$o->core_post_type,
 				'normal',
 				'high'
 			);
+
+			// allows control to show or not show the date and time of child events when they are shown on their details pages on the frontend
+			add_meta_box(
+				'qsot-child-show-date-time',
+				_x( 'Event Titles', 'metabox title', 'opentickets-community-edition' ),
+				array( __CLASS__, 'mb_event_title_settings' ),
+				self::$o->core_post_type,
+				'side',
+				'core'
+			);
+			
+			// allows controlling of when to stop sales to an event online. applies to all child events
+			add_meta_box(
+				'stop-sales-before-show',
+				_x( 'Stop Sales Before Show', 'metabox title', 'opentickets-community-edition' ),
+				array( __CLASS__, 'mb_stop_sales_before_show' ),
+				self::$o->core_post_type,
+				'side',
+				'core'
+			);
 		}
 
-		add_meta_box(
-			'stop-sales-before-show',
-			__('Stop Sales Before Show','opentickets-community-edition'),
-			array(__CLASS__, 'mb_stop_sales_before_show'),
-			self::$o->core_post_type,
-			'side',
-			'core'
-		);
-
+		// allows specification of when the events (includes child events) start and stop. controls chronology of dislay order
 		add_meta_box(
 			'event-run-date-range',
-			__('Event Run Date Range','opentickets-community-edition'),
-			array(__CLASS__, 'mb_event_run_date_range'),
+			_x( 'Event Run Date Range', 'metabox title', 'opentickets-community-edition' ),
+			array( __CLASS__, 'mb_event_run_date_range' ),
 			self::$o->core_post_type,
 			'side',
 			'core'
 		);
 	}
 
-	public static function mb_stop_sales_before_show($post, $mb) {
-		$formula = get_post_meta($post->ID, '_stop_sales_before_show', true);
+	// render the metabox that allows control over whether event titles include the date and time
+	public static function mb_event_title_settings( $post, $mb ) {
+		// load the current settings
+		$current = array(
+			'show_date' => get_post_meta( $post->ID, '_qsot_show_date', true ),
+			'show_time' => get_post_meta( $post->ID, '_qsot_show_time', true ),
+		);
+
+		$dis_date = ( '' === $current['show_date'] ) ? 'disabled="disabled"' : '';
+		$dis_time = ( '' === $current['show_time'] ) ? 'disabled="disabled"' : '';
+
+		// render the form fields
 		?>
-			<div class="field-wrap">
-				<div class="label"><label><?php echo __('Formula','opentickets-community-edition'); ?>:</label></div>
+			<div class="qsot-mb">
+				<input type="hidden" name="qsot-event-title-settings" value="<?php echo esc_attr( wp_create_nonce( 'qsot-event-title' ) ) ?>" />
+
 				<div class="field">
-					<input type="text" class="widefat" name="_qsot_stop_sales_before_show" value="<?php echo esc_attr($formula) ?>" />
+					<label><?php _ex( 'Show Date', 'metabox field heading', 'opentickets-community-edition' ) ?></label>
+					<input type="hidden" name="qsot-show-date" value="" />
+
+					<div class="option-row">
+						<span class="cb-wrap">
+							<input type="checkbox"name="qsot-show-date" value="" <?php checked( !!$dis_date, true ) ?> data-toggle-disabled="[role='date-option']" scope=".field" />
+							<span class="cb-text"><?php _ex( 'Use the site wide default setting', 'checkbox description', 'opentickets-community-edition' ) ?></span>
+						</span><br/>
+					</div>
+
+					<div class="option-row">
+						<span class="cb-wrap">
+							<input role="date-option" type="radio" name="qsot-show-date" value="1" <?php checked( !!$current['show_date'], true ); echo $dis_date; ?> />
+							<span class="cb-text"><?php _ex( 'Yes, show the date', 'radio button description', 'opentickets-community-edition' ) ?></span>
+						</span>
+						<span class="cb-wrap">
+							<input role="date-option" type="radio" name="qsot-show-date" value="0" <?php checked( !!$current['show_date'], false ); echo $dis_date; ?> />
+							<span class="cb-text"><?php _ex( 'No, hide the date', 'radio button description', 'opentickets-community-edition' ) ?></span>
+						</span>
+					</div>
+
+					<div class="helper"><?php echo sprintf( _x(
+						'Decided whether to use the global "%s" setting, or if you want to specify a specific value for these events.',
+						'field helper text',
+						'opentickets-community-edition'
+					), _x( 'Show Date', 'option name', 'opentickets-community-edition' ) ) ?></div>
+				</div>
+
+				<div class="field">
+					<label><?php _ex( 'Show Time', 'metabox field heading', 'opentickets-community-edition' ) ?></label>
+					<input type="hidden" name="qsot-show-time" value="" />
+
+					<div class="option-row">
+						<span class="cb-wrap">
+							<input type="checkbox"name="qsot-show-time" value="" <?php checked( !!$dis_time, true ) ?> data-toggle-disabled="[role='time-option']" scope=".field" />
+							<span class="cb-text"><?php _ex( 'Use the site wide default setting', 'checkbox description', 'opentickets-community-edition' ) ?></span>
+						</span>
+					</div>
+
+					<div class="option-row">
+						<span class="cb-wrap">
+							<input role="time-option" type="radio" name="qsot-show-time" value="1" <?php checked( !!$current['show_time'], true ); echo $dis_time; ?> />
+							<span class="cb-text"><?php _ex( 'Yes, show the time', 'radio button description', 'opentickets-community-edition' ) ?></span>
+						</span>
+						<span class="cb-wrap">
+							<input role="time-option" type="radio" name="qsot-show-time" value="0" <?php checked( !!$current['show_time'], false ); echo $dis_time; ?> />
+							<span class="cb-text"><?php _ex( 'No, hide the time', 'radio button description', 'opentickets-community-edition' ) ?></span>
+						</span>
+					</div>
+
+					<div class="helper"><?php echo sprintf( _x(
+						'Decided whether to use the global "%s" setting, or if you want to specify a specific value for these events.',
+						'field helper text',
+						'opentickets-community-edition'
+					), _x( 'Show Time', 'option name', 'opentickets-community-edition' ) ) ?></div>
 				</div>
 			</div>
-
-			<p>
-				<?php _e('This is the formula to calculate when tickets should stop being sold on the frontend for this show. For example, if you wish to stop selling tickets 2 hours and 30 minutes before the show, use: <code>2 hours 30 minutes</code>. Valid units include: hour, hours, minute, minutes, second, seconds, day, days, week, weeks, month, months, year, years. Leave the formula empty to just use the Global Setting for this formula.','opentickets-community-edition'); ?>
-			</p>
 		<?php
 	}
 
-	public static function mb_event_run_date_range($post, $mb) {
-		@list($start, $start_time) = explode(' ', get_post_meta($post->ID, '_start', true));
-		@list($end, $end_time) = explode(' ', get_post_meta($post->ID, '_end', true));
+	// metabox to allow control of when to stop sales for these events, before they are set to launch
+	public static function mb_stop_sales_before_show( $post, $mb ) {
+		// get the current setting
+		$formula = get_post_meta( $post->ID, '_stop_sales_before_show', true );
 
 		?>
-			<style>
-				#event-run-date-range .field-wrap { margin-bottom:6px; }
-				#event-run-date-range .field-wrap label { font-weight:bold; margin-bottom:2px; }
-			</style>
-
-			<div class="field-wrap">
-				<label><?php _e('Start Date/Time','opentickets-community-edition') ?>:</label>
+			<div class="qsot-mb">
 				<div class="field">
+					<div class="label"><label><?php echo __( 'Formula', 'opentickets-community-edition' ); ?>:</label></div>
+					<input type="text" class="widefat" name="_qsot_stop_sales_before_show" value="<?php echo esc_attr( $formula ) ?>" />
+				</div>
+
+				<div class="helper">
+					<?php _e( 'This is the formula to calculate when tickets should stop being sold on the frontend for this show. For example, if you wish to stop selling tickets 2 hours and 30 minutes before the show, use: <code>2 hours 30 minutes</code>. Valid units include: hour, hours, minute, minutes, second, seconds, day, days, week, weeks, month, months, year, years. Leave the formula empty to just use the Global Setting for this formula.', 'opentickets-community-edition' ); ?>
+				</div>
+			</div>
+		<?php
+	}
+
+	// allows control over the start and end time of a run of events
+	public static function mb_event_run_date_range( $post, $mb ) {
+		// load the current start and end time, and break each into date and time components
+		@list( $start, $start_time ) = explode( ' ', get_post_meta( $post->ID, '_start', true ) );
+		@list( $end, $end_time ) = explode( ' ', get_post_meta( $post->ID, '_end', true ) );
+
+		?>
+			<div class="qsot-mb">
+				<div class="field">
+					<label><?php _e( 'Start Date/Time', 'opentickets-community-edition' ) ?>:</label>
 					<table cellspacing="0">
 						<tbody>
 							<tr>
 								<td width="60%">
-									<input type="text" class="widefat use-datepicker" name="_qsot_start_date_display"
-											value="<?php echo esc_attr( date( __( 'm-d-Y', 'opentickets-community-edition' ), strtotime( $start ) ) ) ?>" real="[name='_qsot_start_date']" scope=".field-wrap"
-											frmt="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>" />
-									<input type="hidden" name="_qsot_start_date" value="<?php echo esc_attr($start) ?>" />
+									<input type="text" class="use-i18n-datepicker widefat" name="_qsot_start_date" value="<?php echo esc_attr( $start ) ?>" scope="td"
+											data-display-format="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>" />
 								</td>
-								<td width="1%"><?php _e('@','opentickets-community-edition') ?></td>
+								<td width="1%"><?php _e( '@', 'opentickets-community-edition' ) ?></td>
 								<td width="39%">
-									<input type="text" class="widefat use-timepicker" name="_qsot_start_time" value="<?php echo esc_attr($start_time) ?>" />
+									<input type="text" class="widefat use-timepicker" name="_qsot_start_time" value="<?php echo esc_attr( $start_time ) ?>" />
 								</td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
-			</div>
-			<div class="field-wrap">
-				<label><?php _e('End Date/Time:','opentickets-community-edition') ?></label>
 				<div class="field">
+					<label><?php _e( 'End Date/Time:', 'opentickets-community-edition' ) ?></label>
 					<table cellspacing="0">
 						<tbody>
 							<tr>
 								<td width="60%">
-									<input type="text" class="widefat use-datepicker" name="_qsot_end_date_display"
-											value="<?php echo esc_attr( date( __( 'm-d-Y', 'opentickets-community-edition' ), strtotime( $start ) ) ) ?>" real="[name='_qsot_end_date']" scope=".field-wrap"
-											frmt="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>" />
-									<input type="hidden" name="_qsot_end_date" value="<?php echo esc_attr($start) ?>" />
+									<input type="text" class="use-i18n-datepicker widefat" name="_qsot_end_date" value="<?php echo esc_attr( $end ) ?>" scope="td"
+											data-display-format="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>" />
 								</td>
 								<td width="1%"><?php _e('@','opentickets-community-edition') ?></td>
 								<td width="39%">
@@ -1612,30 +1852,44 @@ class qsot_post_type {
 		}
 	}
 
+	// add items to the OpenTickets -> Settings page
 	protected static function _setup_admin_options() {
 		$colors = array();
 
+		// primary seat selection form colors
 		$colors['form_bg'] = '#f4f4f4';
 		$colors['form_border'] = '#888888';
 		$colors['form_action_bg'] = '#888888';
 		$colors['form_helper'] = '#757575';
 
+		// when something positive happens, a message appears. these colors control how that looks
 		$colors['good_msg_bg'] = '#eeffee';
 		$colors['good_msg_border'] = '#008800';
 		$colors['good_msg_text'] = '#008800';
 
+		// when something negative happens, a message appears. these colors control how that looks
 		$colors['bad_msg_bg'] = '#ffeeee';
 		$colors['bad_msg_border'] = '#880000';
 		$colors['bad_msg_text'] = '#880000';
 
+		// this controls the color of the remove buttons
 		$colors['remove_bg'] = '#880000';
 		$colors['remove_border'] = '#660000';
 		$colors['remove_text'] = '#ffffff';
 
+		// whether to display the event synopsis (updated on the parent event edit page) on the child event details pages
 		self::$options->def( 'qsot-single-synopsis', 'no' );
 		self::$options->def( 'qsot-synopsis-position', 'below' );
+
+		// formula to determine when to stop selling tickets before a show launches. like '1 hour' means stop oune hour before the show starts
 		self::$options->def( 'qsot-stop-sales-before-show', '' );
+
+		// container for all the color settings above
 		self::$options->def( 'qsot-event-frontend-colors', $colors );
+
+		// whether to show the date and time in the titles of the child event details pages
+		self::$options->def( 'qsot-show-date', 'yes' );
+		self::$options->def( 'qsot-show-time', 'no' );
 
 		self::$options->add(array(
 			'order' => 100,
@@ -1677,6 +1931,30 @@ class qsot_post_type {
 				'below' => __( 'Below the Ticket Selection UI', 'opentickets-community-edition' ),
 			),
 			'default' => 'below',
+			'page' => 'frontend',
+		) );
+
+		// setting for controlling display of the date in the event titles
+		self::$options->add( array(
+			'order' => 130,
+			'id' => 'qsot-show-date',
+			'type' => 'checkbox',
+			'title' => __( 'Show Date', 'opentickets-community-edition' ),
+			'desc' => __( 'Show the date in the title of events, on the event details pages.', 'opentickets-community-edition' ),
+			'desc_tip' => __( 'This is the difference between a title reading "My Event" and "My Event on 09/12/2015".', 'opentickets-community-edition' ),
+			'default' => 'yes',
+			'page' => 'frontend',
+		) );
+
+		// setting for controlling display of the time in the event titles
+		self::$options->add( array(
+			'order' => 131,
+			'id' => 'qsot-show-time',
+			'type' => 'checkbox',
+			'title' => __( 'Show Time', 'opentickets-community-edition' ),
+			'desc' => __( 'Show the time in the title of events, on the event details pages.', 'opentickets-community-edition' ),
+			'desc_tip' => __( 'This is the difference between a title reading "My Event" and "My Event @ 6:00pm".', 'opentickets-community-edition' ),
+			'default' => 'no',
 			'page' => 'frontend',
 		) );
 

@@ -232,7 +232,7 @@ QS.popMediaBox = (function($, qt) {
 					d = new Date( me.val() ),
 					min = me.data( 'min-date' ) || '',
 					max = me.data( 'max-date' ) || '',
-					def = me.data( 'default' ),
+					def = me.data( 'default' ) || '',
 					def = '' === me.val() ? ( qt.is( def ) ? def : d ) : d;
 
 			// if the selected element is not a hidden element, then make it so
@@ -245,7 +245,8 @@ QS.popMediaBox = (function($, qt) {
 			}
 
 			// create a display version above the hidden on
-			var display = $( '<input type="date" />' ).insertBefore( me ).attr( { id:( me.attr( 'id' ) || me.attr( 'name' ) ) + '-display', role:role + '-display' } );
+			var display = $( '<input type="date" />' ).insertBefore( me ).attr( { id:( me.attr( 'id' ) || me.attr( 'name' ) ) + '-display', role:role + '-display' } )
+					.addClass( me.attr( 'class' ).replace( new RegExp( selector.replace( /^\.#/, '' ), 'g' ), '' ) );
 			me.data( 'display', display );
 
 			// setup some basic settings for the datepicker
@@ -1129,6 +1130,37 @@ QS.EditSetting = (function($, undefined) {
 		return true;
 	};
 })(jQuery);
+
+( function( $, undefined ) {
+	// allow for checkboxes to be specified that control enabling and disabling other form elements
+	$( document ).on( 'change', '[data-toggle-disabled]', function( e ) {
+		console.log( 'changed', me, 'scope', scope, 'tar', tar );
+		var me = $( this ), scope = me.closest( me.attr( 'scope' ) || '.field' ), tar = scope.find( me.data( 'toggle-disabled' ) || me.attr( 'data-toggle-disabled' ) );
+		// if there are actually elements to toggle the enabled status on, then
+		if ( tar.length ) {
+			// if the box is checked, disable them.
+			if ( me.is( ':checked' ) )
+				tar.prop( 'disabled', 'disabled' );
+			// if un checked, enabled them
+			else
+				tar.removeProp( 'disabled' );
+		}
+	} );
+
+	// allow for checkboxes to be specified that control enabling and disabling other form elements
+	$( document ).on( 'change', '[data-toggle-enabled]', function( e ) {
+		var me = $( this ), scope = me.closest( me.attr( 'scope' ) || '.field' ), tar = scope.find( me.data( 'toggle-enabled' ) || me.attr( 'data-toggle-enabled' ) );
+		// if there are actually elements to toggle the enabled status on, then
+		if ( tar.length ) {
+			// if the box is checked, enable them.
+			if ( me.is( ':checked' ) )
+				tar.removeProp( 'disabled' );
+			// if un checked, enabled them
+			else
+				tar.prop( 'disabled', 'disabled' );
+		}
+	} );
+} )( jQuery );
 
 (function($, undefined) {
 	function forParse(str) { return typeof str == 'string' ? str.replace(/^0+/g, '') : str; }
