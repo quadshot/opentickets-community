@@ -54,7 +54,11 @@ Are you developer? Want to contribute to the source code? Check us out on the [O
 
 = Special Thanks =
 
-@bradleysp (testing), @ht-2 (translation), @luminia (translation), @ton (translation)
+*testing and bug reports*
+@bradleysp, @petervandoorn
+
+*tranlations*
+@ht-2, @luminia, @ton, @firgolitsch, @jtiihonen, @diplopito
 
 == Installation ==
 
@@ -164,6 +168,18 @@ Setup an 'Event':
 The FAQ's for OpenTickets Community Edition is currently located on [our website's FAQs Page](http://opentickets.com/faq).
 
 == Changelog ==
+
+= 1.11.0 =
+* [new] the ability to toggle date and time on child event titles
+* [new] FI translation
+* [new] ES translation
+* [update] NL translation
+* [update] all translation files have new strings
+* [update] legacy global $woocommerce replaced with WC()
+* [tweak] some js libs are now more accurate
+* [fix] calendar template loader (edge case php warning)
+* [fix] event area display limit corrected in venue edit page
+* [fix] PDF ticket map issue now resolved
 
 = 1.10.29 =
 * added public api to fetch plugin settings
@@ -577,6 +593,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 * initial public release
 
 == Upgrade Notice ==
+
+= 1.11.0 =
+Was your map not showing on your PDFs? This fixes it. Is your site using fi_FI, nl_NL, or es_ES languages? Congrats! You now have a translation thanks to the community! Want to remove the date/time from your event titles!? You got it!
 
 = 1.10.29 =
 Have you had problems with the PDF output for tickets? This patch finalizes the changes that will resolve these issues.
