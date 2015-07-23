@@ -169,6 +169,10 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.11.1 =
+* [fix] repaired event save issue
+* [fix] mediabox image selection bug
+
 = 1.11.0 =
 * [new] the ability to toggle date and time on child event titles
 * [new] FI translation
@@ -593,6 +597,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 * initial public release
 
 == Upgrade Notice ==
+
+= 1.11.1 =
+I want to personally apologize for first allowing an event save bug to get pushed to the live plugin and second for the delay in a fix. There are plenty of excuses to go around, but the responsibility falls square on my shoulders, and for that I apologize. This patch repairs that functionality.
 
 = 1.11.0 =
 Was your map not showing on your PDFs? This fixes it. Is your site using fi_FI, nl_NL, or es_ES languages? Congrats! You now have a translation thanks to the community! Want to remove the date/time from your event titles!? You got it!
