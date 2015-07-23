@@ -21,8 +21,6 @@ class qsot_order_admin {
 			add_action('qsot-admin-load-assets-shop_order', array(__CLASS__, 'load_assets'), 5000, 2);
 			add_filter('woocommerce_found_customer_details', array(__CLASS__, 'add_default_country_state'), 10, 1);
 
-			add_action('plugins_loaded', array(__CLASS__, 'plugins_loaded'), 10000);
-
 			add_action('admin_notices', array(__CLASS__, 'generic_errors'), 10);
 			add_filter('qsot-order-can-accept-payments', array(__CLASS__, 'block_payments_for_generic_errors'), 10, 2);
 			add_filter('qsot-admin-payments-error', array(__CLASS__, 'block_payments_generic_error_message'), 10, 2);
@@ -35,14 +33,9 @@ class qsot_order_admin {
 			add_action('woocommerce_email_customer_details', array(__CLASS__, 'print_custom_email_message'), 1000);
 			add_action('woocommerce_email_before_order_table', array(__CLASS__, 'print_custom_email_message_top'), 1000);
 			add_filter('qsot-order-has-tickets', array(__CLASS__, 'has_tickets'), 10, 2);
-		}
-	}
 
-	public static function plugins_loaded() {
-		if (current_user_can('create_users')) {
-			add_action('woocommerce_after_customer_user', array(__CLASS__, 'add_new_user_button'), 10, 3);
-			add_action('woocommerce_admin_order_data_after_order_details', array(__CLASS__, 'new_user_btn'), 10, 1);
-			add_action('wp_ajax_qsot-new-user', array(__CLASS__, 'admin_new_user_handle_ajax'), 10);
+			// add the new user button to the interface
+			add_action( 'woocommerce_admin_order_data_after_order_details', array( __CLASS__, 'new_user_btn' ), 10, 1 );
 		}
 	}
 
@@ -442,21 +435,20 @@ class qsot_order_admin {
 		return strlen($compare) >= 7 && preg_match('#^\d+$#', $compare);
 	}
 
-	public static function add_new_user_button($customer_user, $post, $post_id) {
-		?>
-			<a href="#" class="new-user" rel="new-user-btn"><?php _e('New User','opentickets-community-edition') ?></a>
-		<?php
-	}
-
+	// handle the ajax request that creates new users
 	public static function admin_new_user_handle_ajax() {
-		switch ($_POST['sa']) {
+		// handle the ajax request depending on the defined SubAction
+		switch ( $_POST['sa'] ) {
+			// handle the create user action
 			case 'create': self::_aj_new_user_create(); break;
-			default: do_action('qsot-new-user-ajax-'.$_POST['sa']); break;
+			// handle any custom actions defined elsewhere
+			default: do_action( 'qsot-new-user-ajax-' .$_POST['sa'] ); break;
 		}
 
 		exit();
 	}
 
+	// create a new user, using ajax request info
 	protected static function _aj_new_user_create() {
 		$res = array(
 			's' => false,
@@ -465,66 +457,95 @@ class qsot_order_admin {
 			'c' => array(),
 		);
 
-		$username = trim($_POST['new_user_login']);
-		$email = trim(urldecode($_POST['new_user_email']));
-		$first_name = trim($_POST['new_user_first_name']);
-		$last_name = trim($_POST['new_user_last_name']);
+		// first verify that the current user has permissions to add user
+		if ( ! current_user_can( 'create_users' ) ) {
+			$res['e'][] = __( 'You do not have permission to create users. Sorry.', 'opentickets-community-edition' );
+			wp_send_json( $res );
+		}
 
-		if (get_option('woocommerce_registration_email_for_username', 'no') == 'no') {
-			if (empty($username)) {
-				$res['e'][] = __('The username is a required field.','opentickets-community-edition');
-			} else if (!validate_username($username)) {
-				$res['e'][] = __('That user name contains illegal characters.','opentickets-community-edition');
-			} else if (username_exists($username)) {
-				$res['e'][] = $username.' '.__('is already being used by another user. Please enter a different username.','opentickets-community-edition');
+		// begin sanitizing data
+		$username = sanitize_user( trim( $_POST['new_user_login'] ) );
+		$email = trim( urldecode( $_POST['new_user_email'] ) );
+		$first_name = trim( $_POST['new_user_first_name'] );
+		$last_name = trim( $_POST['new_user_last_name'] );
+
+		// if we are not using the email as the username, then
+		if ( get_option( 'woocommerce_registration_email_for_username', 'no' ) == 'no' ) {
+			// if there is no specified username, then error out to that effect
+			if ( empty( $username ) ) {
+				$res['e'][] = __( 'The username is a required field.', 'opentickets-community-edition' );
+			// if the username is not valid, error out
+			} else if ( ! validate_username( $username ) ) {
+				$res['e'][] = __( 'That user name contains illegal characters.', 'opentickets-community-edition' );
+			// if that username already exists, error out
+			} else if ( username_exists( $username ) ) {
+				$res['e'][] = $username . ' ' . __( 'is already being used by another user. Please enter a different username.', 'opentickets-community-edition' );
 			}
 		}
 
-		if (empty($email)) {
-			$res['e'][] = __('The email address is required.','opentickets-community-edition');
-		} else if (!is_email($email)) {
-			$res['e'][] = __('That is not a valid email address.','opentickets-community-edition');
-		} else if (email_exists($email)) {
-			$res['e'][] = $email.' '.__('is already in use by another user. Please use a different email address.','opentickets-community-edition');
+		// if there is no email, error out, because it is required
+		if ( empty( $email ) ) {
+			$res['e'][] = __( 'The email address is required.', 'opentickets-community-edition' );
+		// if the supplied value is NOT a valid email, error out
+		} else if ( ! is_email( $email ) ) {
+			$res['e'][] = __( 'That is not a valid email address.', 'opentickets-community-edition' );
+		// if that email address is already registered, the error out
+		} else if ( email_exists( $email ) ) {
+			$res['e'][] = $email . ' ' . __( 'is already in use by another user. Please use a different email address.', 'opentickets-community-edition' );
 		}
 
-		if (empty($first_name)) {
-			$res['e'][] = __('The first name is a required field.','opentickets-community-edition');
+		// validate that there is a first name present
+		if ( empty( $first_name ) ) {
+			$res['e'][] = __( 'The first name is a required field.', 'opentickets-community-edition' );
 		}
 
-		if (empty($last_name)) {
-			$res['e'][] = __('The last name is a required field.','opentickets-community-edition');
+		// validate that there is a last naem present
+		if ( empty( $last_name ) ) {
+			$res['e'][] = __( 'The last name is a required field.', 'opentickets-community-edition' );
 		}
 
-		if (empty($res['e'])) {
-			$res['m'][] = __('The information you supplied passed validation.','opentickets-community-edition');
+		// if there are no validation errors, then try to create the user
+		if ( empty( $res['e'] ) ) {
+			// add a message confirming validation
+			$res['m'][] = __( 'The information you supplied passed validation.', 'opentickets-community-edition' );
+
+			// compile the information we will use to create the user
 			$user_info = array(
-				'user_login' => get_option('woocommerce_registration_email_for_username', 'no') == 'yes' ? $email : $username,
+				'user_login' => ( get_option( 'woocommerce_registration_email_for_username', 'no' ) == 'yes' ) ? $email : $username,
 				'user_email' => $email,
-				'user_pass' => self::_random_pass(8),
+				'user_pass' => self::_random_pass( 8 ),
 				'first_name' => $first_name,
 				'last_name' => $last_name,
-				'display_name' => $first_name.' '.$last_name,
+				'display_name' => $first_name . ' ' . $last_name,
 				'role' => 'customer',
 			);
-			$user_id = wp_insert_user($user_info);
-			if (is_wp_error($user_id)) {
-				$res['e'][] = __('User creation failed:','opentickets-community-edition').' '.$user_id->get_error_message();
+
+			// attempt to add the user
+			$user_id = wp_insert_user( $user_info );
+
+			// if it was a hard fail for some reason, report it
+			if ( is_wp_error( $user_id ) ) {
+				$res['e'][] = __( 'User creation failed:', 'opentickets-community-edition' ) . ' ' . $user_id->get_error_message();
+			// otherwise, assume we passed, and the user was created, so finish up creation and formulate an appropriate response
 			} else {
 				$res['s'] = true;
-				$res['m'][] = __('The user was created successfully.','opentickets-community-edition');
-				$user = new WP_User($user_id);
+				$res['m'][] = __( 'The user was created successfully.', 'opentickets-community-edition' );
+				$user = new WP_User( $user_id );
 				$res['c']['id'] = $user_id;
-				$res['c']['displayed_value'] = sprintf('%s %s (#%d - %s)', $first_name, $last_name, $user_id, $email);
-				wp_new_user_notification($user_id, $user_info['user_pass']);
-				update_user_meta($user_id, 'billing_first_name', $first_name);
-				update_user_meta($user_id, 'billing_last_name', $last_name);
-				update_user_meta($user_id, 'billing_email', $email);
+				$res['c']['displayed_value'] = sprintf( '%s %s (#%d - %s)', $first_name, $last_name, $user_id, $email );
+
+				// notify the user of the password
+				wp_new_user_notification( $user_id, $user_info['user_pass'] );
+
+				// add the user name and email for woo, so we dont have to fill it out
+				update_user_meta( $user_id, 'billing_first_name', $first_name );
+				update_user_meta( $user_id, 'billing_last_name', $last_name );
+				update_user_meta( $user_id, 'billing_email', $email );
 			}
 		}
 
-		header('Content-Type: text/json');
-		echo @json_encode($res);
+		// respond
+		wp_send_json( $res );
 	}
 
 	protected static function _random_pass($length) {

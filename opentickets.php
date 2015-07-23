@@ -27,7 +27,7 @@ class QSOT {
 		self::$plugin_url = self::$o->core_url;
 		self::$product_url = self::$o->product_url;
 
-		add_action( 'plugins_loaded', array( __CLASS__, 'admin_deactivate' ), 0 );
+		//add_action( 'plugins_loaded', array( __CLASS__, 'admin_deactivate' ), 0 );
 
 		if (!self::_memory_check()) return;
 

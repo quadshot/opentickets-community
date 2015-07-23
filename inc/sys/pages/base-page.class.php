@@ -10,8 +10,8 @@ class QSOT_base_page_launcher {
 
 	// defered loading / actions / filters
 	public static function plugins_loaded() {
-		// if are in the admin, and the current user has the abilty to manage the settings of the site (aka: they are an admin)
-		if ( self::is_backport_request() || ( is_admin() && current_user_can( 'manage_options' ) ) ) {
+		// if are in the admin or running a verified backport request
+		if ( self::is_backport_request() || is_admin() ) {
 			// load all the 'pages'
 			do_action( 'qsot-load-includes', 'sys/pages', '#^.+\.page\.php$#i' );
 		}
