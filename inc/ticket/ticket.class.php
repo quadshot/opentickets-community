@@ -434,6 +434,7 @@ class QSOT_tickets {
 
 		// populate the data we need in the ticket display
 		$current = is_object($current) ? $current : new stdClass();
+		$current->order_item_id = $oiid;
 		$current->order = $order;
 		$current->show_order_number = 'yes' == self::$options->{'qsot-ticket-show-order-id'};
 		$current->order_item = $order_item;
