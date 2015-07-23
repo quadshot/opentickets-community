@@ -1210,32 +1210,32 @@ class qsot_post_type {
 			// if there are still un matched sub event settings (always will be on new events with sub events)
 			if ( count( $need_lookup ) ) {
 				// cycle through them
-				foreach ( $need_lookup as $k => $data ) {
+				foreach ( $need_lookup as $k => $item ) {
 					// get the date in timestamp form so that we can use it to make a pretty title
-					$d = strtotime( $data->start );
+					$d = strtotime( $item->start );
 					// if the post is set to publish in the future, then adjust the status
-					$pub = strtotime( $data->pub_date );
-					if ( $pub > $now ) $data->status = 'future';
+					$pub = strtotime( $item->pub_date );
+					if ( $pub > $now ) $item->status = 'future';
 					// add the settings to the list of posts to update/insert
 					$updates[] = array(
 						'post_arr' => wp_parse_args( array( // will INSERT because there is no post_id
 							// use the parent event title, and then add the date and time as needed later
 							'post_title' => $post->post_title,
 							// user pretty url slug
-							'post_name' => $data->title,
+							'post_name' => $item->title,
 							// set the post status of the event
 							'post_status' => in_array( $tmp->visibility, array( 'public', 'protected' ) ) ? $tmp->status : $tmp->visibility,
 							// protected events have passwords
 							'post_password' => 'protected' == $tmp->visibility ? $tmp->password : '',
 							// set the appropriate publish date
-							'post_date' => $data->pub_date == '' || $data->pub_date == 'now' ? '' : date_i18n( 'Y-m-d H:i:s', strtotime( $data->pub_date ) ),
+							'post_date' => $item->pub_date == '' || $item->pub_date == 'now' ? '' : date_i18n( 'Y-m-d H:i:s', strtotime( $item->pub_date ) ),
 						), $defs ),
 						'meta' => array( // set meta
-							self::$o->{'meta_key.capacity'} => $data->capacity, // occupant copacity
-							self::$o->{'meta_key.end'} => $data->end, // end data for lookup and display
-							self::$o->{'meta_key.start'} => $data->start, // start date for lookup and display
+							self::$o->{'meta_key.capacity'} => $item->capacity, // occupant copacity
+							self::$o->{'meta_key.end'} => $item->end, // end data for lookup and display
+							self::$o->{'meta_key.start'} => $item->start, // start date for lookup and display
 						),
-						'submitted' => $data,
+						'submitted' => $item,
 					);
 				}
 			}
