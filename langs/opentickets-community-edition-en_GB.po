@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: OpenTickets Community Edition v1.10.19\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-07-17 18:47-0800\n"
-"PO-Revision-Date: 2015-07-17 18:47-0800\n"
+"PO-Revision-Date: 2015-07-23 07:27-0800\n"
 "Last-Translator: \n"
 "Language-Team: Quadshot <info@quadshot.com>\n"
 "MIME-Version: 1.0\n"
@@ -447,7 +447,7 @@ msgstr ""
 
 #: ../inc/core/post-type.class.php:1006
 msgid "m/d/Y"
-msgstr ""
+msgstr "d/m/Y"
 
 # @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1007
@@ -1280,9 +1280,8 @@ msgstr ""
 
 # @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:230
-#, fuzzy
 msgid "m-d-Y g:ia"
-msgstr "d-m-Y"
+msgstr "d-m-Y g:ia"
 
 #: ../inc/reporting/seating.report.class.php:232
 #, php-format
@@ -1614,7 +1613,7 @@ msgstr ""
 # @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:275
 msgid "Cart Discount:"
-msgstr ""
+msgstr "Basket Discount:"
 
 # @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:275
@@ -2377,6 +2376,8 @@ msgid ""
 "Background of the \"action\" section, below the \"reserve some tickets\" "
 "form, where the proceed to cart button appears."
 msgstr ""
+"Background of the \"action\" section, below the \"reserve some tickets\" "
+"form, where the proceed to basket button appears."
 
 # @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:160
@@ -3036,7 +3037,7 @@ msgstr ""
 # @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:247
 msgid "Proceed to Cart"
-msgstr ""
+msgstr "Proceed to Basket"
 
 # @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:266
@@ -3266,6 +3267,8 @@ msgid ""
 "There were no %s for %s available to give you. We have removed it from your "
 "cart."
 msgstr ""
+"There were no %s for %s available to give you. We have removed it from your "
+"basket."
 
 # @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:542
@@ -3777,6 +3780,9 @@ msgid ""
 "Tickets, click <span class=\"button-name\">Proceed to Cart</span> to "
 "complete your order."
 msgstr ""
+"<strong>STEP 2:</strong> Finally, once you have successfully Reserved your "
+"Tickets, click <span class=\"button-name\">Proceed to Basket</span> to "
+"complete your order."
 
 # @ opentickets-community-edition
 #: ../templates/post-content/event-area.php:34
