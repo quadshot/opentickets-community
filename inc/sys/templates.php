@@ -18,64 +18,67 @@ class qsot_templates {
 		add_filter('qsot-woo-template', array(__CLASS__, 'locate_woo_template'), 10, 2);
 		add_filter('woocommerce_locate_template', array(__CLASS__, 'wc_locate_template'), 10, 3);
 
-		add_filter('init', array(__CLASS__, 'rig_theme_page_template_cache'), 0);
-		add_filter('theme_page_templates', array(__CLASS__, 'add_extra_templates'), 10, 1);
-		add_filter('template_include', array(__CLASS__, 'intercept_page_template_request'), 100, 1);
+		// add our plugin page templates to the list of acceptable page templates
+		add_filter( 'init', array( __CLASS__, 'rig_theme_page_template_cache' ), 0 );
+
+		// add our templates to the list of templates to show in the admin, which is crosschecked with the list of acceptable page templates
+		add_filter( 'theme_page_templates', array( __CLASS__, 'add_extra_templates' ), 10, 1 );
+
+		// load our plugin page templates when they are needed, since core does not allow doing this from a plugin dir itself
+		add_filter( 'template_include', array( __CLASS__, 'intercept_page_template_request' ), 100, 1 );
 	}
 
+	// we need to add our plugin's callendar template to the theme cache of page templates, because for some dumb reason, core started requiring that a page template exist in the theme in order to appear on the list.
+	// this function allows us to use our page template that is packaged with the plugin, regardless of whether it lives in the theme or not
+	// this is needed because if you look in WP_Theme::get_page_templates(), there is no way to inject a page template if there is not one in the theme directory
 	public static function rig_theme_page_template_cache() {
 		// get a list of page templates not in the theme
 		$extras = apply_filters('qsot-templates-page-templates', array());
-		// load the theme
+
+		// load the exisitng list of templates for the theme. start by loading the theme
 		$theme = wp_get_theme();
-		// build the cache hash, used for the cache keys
-		$cache_hash = md5($theme->get_theme_root().'/'.$theme->get_stylesheet());
+		// build the cache hash, used for the cache keys. copied from WP_Theme::__construct()
+		$cache_hash = md5( $theme->get_theme_root() . '/' . $theme->get_stylesheet() );
 		// force the cache key to generate, in case it hasn't already
 		$theme->get_page_templates();
-		// fetch the current list of templates
-		$list = wp_cache_get('page_templates-'.$cache_hash, 'themes');
-		// add our list
-		$list = array_merge($list, $extras);
-		// save the list again
-		wp_cache_set('page_templates-'.$cache_hash, $list, 'themes', 1800);
+		// fetch the current list of templates. copied from WP_Theme::cache_get
+		$list = wp_cache_get( 'page_templates-' . $cache_hash, 'themes' );
+
+		// add our list to the original list
+		$list = array_merge( is_array( $list ) ? $list : array(), $extras );
+		// save the list again, once our page templates have been added. copied from WP_Theme::cache_add
+		wp_cache_set( 'page_templates-' . $cache_hash, $list, 'themes', 1800 );
 		// profit!
 	}
 
-	public static function add_extra_templates($list) {
-		$extras = apply_filters('qsot-templates-page-templates', array());
-		return array_merge($list, $extras);
+	// add our page template to the list of page templates
+	public static function add_extra_templates( $list ) {
+		$extras = apply_filters( 'qsot-templates-page-templates', array() );
+		return array_merge( $list, $extras );
 	}
 
-	public static function intercept_page_template_request($current) {
-		if ( is_page() ) {
-			$intercept = apply_filters('qsot-templates-page-templates', array());
+	// when a page template that existing in our plugin is requested, we need to load it from the plugin if it does not exist in the theme dir. this function handles that
+	public static function intercept_page_template_request( $current ) {
+		// only perform this logic if the current requested assset is a page
+		if ( ! is_page() )
+			return $current;
 
-			$id = get_queried_object_id();
-			$template = get_page_template_slug();
-			$pagename = get_query_var('pagename');
+		// get a list of our plugin page templates
+		$intercept = apply_filters( 'qsot-templates-page-templates', array() );
 
-			if ( isset( $intercept[ $template ] ) ) {
-				if ( ! $pagename && $id ) {
-					// If a static page is set as the front page, $pagename will not be set. Retrieve it from the queried object
-					$post = get_queried_object();
-					if ( $post )
-						$pagename = $post->post_name;
-				}
+		// find the name of the template requested by this page
+		$template = get_page_template_slug();
 
-				$templates = array();
+		// if the template is on the list of templates inside our plugin, then
+		if ( isset( $intercept[ $template ] ) ) {
+			$templates = array();
 
-				if ( $template && 0 === validate_file( $template ) )
-					$templates[] = $template;
-				/*
-				if ( $pagename )
-					$templates[] = "page-$pagename.php";
-				if ( $id )
-					$templates[] = "page-$id.php";
-				$templates[] = 'page.php';
-				*/
+			// add our file to a list of files to search for in the plugin template dir
+			if ( $template && 0 === validate_file( $template ) )
+				$templates[] = $template;
 
-				$current = apply_filters('qsot-locate-template', $current, $templates);
-			}
+			// find any files that match the filename in the stylesheet dir, then the theme dir, then our plugin dir. if none are found, then use whatever the $current was when the function was called
+			$current = apply_filters( 'qsot-locate-template', $current, $templates );
 		}
 
 		return $current;
@@ -153,13 +156,11 @@ class qsot_templates {
 	}
 
 	public static function locate_woo_template($name, $type=false) {
-		global $woocommerce;
-
 		//self::_lg( '>>>> req template', $name );
 
 		$found = locate_template(array($name), false, false);
 		if (!$found) {
-			$woodir = trailingslashit( $woocommerce->plugin_path() );
+			$woodir = trailingslashit( WC()->plugin_path() );
 			switch ($type) {
 				case 'admin': $qsot_path = 'templates/admin/'; $woo_path = 'includes/admin/'; break;
 				default: $qsot_path = 'templates/'; $woo_path = 'templates/';

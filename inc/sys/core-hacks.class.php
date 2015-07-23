@@ -18,7 +18,6 @@ class qsot_core_hacks {
 			add_action('qsot-draw-page-template-list', array(__CLASS__, 'page_draw_page_template_list'), 10, 1);
 			add_filter('qsot-page-templates-list', array(__CLASS__, 'page_templates_list'), 10, 2);
 			add_filter('qsot-get-page-template-list', array(__CLASS__, 'page_get_page_template_list'), 10, 1);
-			add_action('add_meta_boxes', array(__CLASS__, 'page_add_meta_boxes'), 100, 2);
 			add_action('add_meta_boxes', array(__CLASS__, 'order_add_late_meta_boxes'), 100000, 2);
 			add_filter('page_template', array(__CLASS__, 'page_template_default'), 10, 1);
 			add_filter('qsot-maybe-override-theme_default', array(__CLASS__, 'maybe_override_template'), 10, 3);
@@ -143,8 +142,6 @@ class qsot_core_hacks {
 
 	// add subtotal to fees also, for proper accounting
 	public static function update_service_fee_subtotal_on_order_creation($order_id, $posted) {
-		global $woocommerce;
-
 		$order = new WC_Order($order_id);
 		foreach ($order->get_fees() as $oiid => $fee) {
 			if (woocommerce_get_order_item_meta($oiid, '_line_subtotal', true) === '')
@@ -155,8 +152,6 @@ class qsot_core_hacks {
 	// copied from woocommerce/woocommerce-ajax.php
 	// modified to allow class assignment and template overriding
 	function woocommerce_ajax_add_order_fee() {
-		global $woocommerce;
-
 		check_ajax_referer( 'order-item', 'security' );
 
 		$order_id 	= absint( $_POST['order_id'] );
@@ -192,8 +187,6 @@ class qsot_core_hacks {
 	// copied from woocommerce/woocommerce-ajax.php
 	// modified to allow template overriding
 	function woocommerce_ajax_add_order_item() {
-		global $woocommerce, $wpdb;
-
 		check_ajax_referer( 'order-item', 'security' );
 
 		$item_to_add = sanitize_text_field( $_POST['item_to_add'] );
@@ -264,7 +257,8 @@ class qsot_core_hacks {
 	 * @return void
 	 */
 	public function woocommerce_order_totals_meta_box( $post ) {
-		global $woocommerce, $theorder, $wpdb;
+		global $theorder, $wpdb;
+		$woocommerce = WC();
 
 		if ( ! is_object( $theorder ) )
 			$theorder = new WC_Order( $post->ID );
@@ -491,9 +485,6 @@ class qsot_core_hacks {
 	// copied from woocommerce/woocommerce-ajax.php
 	// modified to allow other comment types to have an action to save info on
 	function woocommerce_add_order_note() {
-
-		global $woocommerce;
-
 		check_ajax_referer( 'add-order-note', 'security' );
 
 		$post_id 	= (int) $_POST['post_id'];
@@ -662,20 +653,6 @@ class qsot_core_hacks {
 		return $template;
 	}
 
-	public static function page_add_meta_boxes($post_type, $post) {
-		if (!post_type_supports($post_type, 'page-attributes')) return;
-
-		remove_meta_box('pageparentdiv', null, 'side');
-		add_meta_box(
-			'qsot-pageparentdiv',
-			'page' == $post_type ? __('Page Attributes') : __('Attributes'),
-			array(__CLASS__, 'page_attributes_meta_box'),
-			null,
-			'side',
-			'core'
-		);
-	}
-
 	public static function page_draw_page_template_list($default) {
 		$templates = apply_filters('qsot-get-page-template-list', array());
 		ksort( $templates );
@@ -723,58 +700,12 @@ class qsot_core_hacks {
 		return $list;
 	}
 
-	/** @@@@OpenTickets - direct copy from /wp-admin/includes/meta-boxes.php - with a few modifications for readability and the changing of the function that draws the page list
-	 * Display page attributes form fields.
-	 *
-	 * @since 2.7.0
-	 *
-	 * @param object $post
-	 */
-	public static function page_attributes_meta_box($post) {
-		$post_type_object = get_post_type_object($post->post_type);
-		if ( $post_type_object->hierarchical ):
-			$dropdown_args = array(
-				'post_type'        => $post->post_type,
-				'exclude_tree'     => $post->ID,
-				'selected'         => $post->post_parent,
-				'name'             => 'parent_id',
-				'show_option_none' => __('(no parent)'),
-				'sort_column'      => 'menu_order, post_title',
-				'echo'             => 0,
-			);
-
-			$dropdown_args = apply_filters( 'page_attributes_dropdown_pages_args', $dropdown_args, $post );
-			$pages = wp_dropdown_pages( $dropdown_args );
-			?>
-			<?php if ( ! empty($pages) ): ?>
-				<p><strong><?php _e('Parent') ?></strong></p>
-				<label class="screen-reader-text" for="parent_id"><?php _e('Parent') ?></label>
-				<?php echo $pages; ?>
-			<?php endif; // pages ?>
-		<?php endif; // hierarchial ?>
-		<?php if ( 'page' == $post->post_type && 0 != count( apply_filters('qsot-page-templates-list', get_page_templates(), $post->page_template) ) ): ?>
-			<?php $template = !empty($post->page_template) ? $post->page_template : false; ?>
-			<p><strong><?php _e('Template') ?></strong></p>
-			<label class="screen-reader-text" for="page_template"><?php _e('Page Template') ?></label>
-			<select name="page_template" id="page_template">
-				<option value='default'><?php _e('Default Template'); ?></option>
-				<?php do_action('qsot-draw-page-template-list', $template); ?>
-			</select>
-		<?php endif; ?>
-		<p><strong><?php _e('Order') ?></strong></p>
-		<p>
-			<label class="screen-reader-text" for="menu_order"><?php _e('Order') ?></label>
-			<input name="menu_order" type="text" size="4" id="menu_order" value="<?php echo esc_attr($post->menu_order) ?>" />
-		</p>
-		<p><?php if ( 'page' == $post->post_type ) _e( 'Need help? Use the Help tab in the upper right of your screen.' ); ?></p>
-	<?php
-	}
-
 	// copied from woocommerce/admin/post-types/writepanels/writepanel-order_data.php
 	// modified to allow defaults
 	//@@@@LOUSHOU - deprecated from WC2.2.0
 	public static function woocommerce_order_data_meta_box($post) {
-		global $post, $wpdb, $thepostid, $theorder, $order_status, $woocommerce;
+		global $post, $wpdb, $thepostid, $theorder, $order_status;
+		$woocommerce = WC();
 
 		$thepostid = absint( $post->ID );
 

@@ -1,32 +1,28 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: OpenTickets Community Edition v1.10.19\n"
+"Project-Id-Version: OpenTickets Community Edition\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-17 18:56-0800\n"
-"PO-Revision-Date: 2015-07-17 18:56-0800\n"
+"POT-Creation-Date: 2015-07-17 18:55-0800\n"
+"PO-Revision-Date: 2015-07-17 18:55-0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: fi_FI\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Poedit 1.5.7\n"
-"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
 "_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
-"X-Poedit-Basepath: .\n"
-"X-Textdomain-Support: yes\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-# @ opentickets-community-edition
 #: ../launcher.php:196
-#, fuzzy
 msgid "Required Plugin Not Up-to-date"
-msgstr "Benötigtes Plugin nicht aktuell"
+msgstr "Vaadittava liitännäinen ei ole ajan tasalla"
 
-# @ opentickets-community-edition
 #: ../launcher.php:199
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "The <em><a href=\"%s\" target=\"_blank\">%s</a></em> plugin "
 "<strong>requires</strong> that <em><a href=\"http://www.woothemes.com/"
@@ -38,24 +34,21 @@ msgid ""
 "\"http://www.woothemes.com/woocommerce/\" target=\"_blank\">WooCommerce</a></"
 "em>."
 msgstr ""
-"Das <em><a href=\"%s\" target=\"_blank\">%s</a></em> PlugIn "
-"<strong>erfordert</strong> das <em><a href=\"http://www.woothemes.com/"
-"woocommerce/\" target=\"_blank\">WooCommerce</a></em> mindestens in der "
-"Version <u><strong>%s</strong></u> vorliegt. Es ist bei Ihnen die Version "
-"<em>%s</em> aktiv. Aus diesem Grund wurde das PlugIn <em><a href=\"%s\" "
-"target=\"_blank\">%s</a></em> nicht initialisiert. Um das PlugIn nutzen zu "
-"können, aktivieren Sie die letzte Version von <em><a href=\"http://www."
-"woothemes.com/woocommerce/\" target=\"_blank\">WooCommerce</a></em>."
+"Liitännäinen <em><a href=\"%s\" target=\"_blank\">%s</a></em> "
+"<strong>vaatii</strong>, että <em><a href=\"http://www.woothemes.com/"
+"woocommerce/\" target=\"_blank\">WooCommercen</a></em> versio on vähintään "
+"<u><strong>%s</strong></u>; käytössäsi on tällä hetkellä versio <em>%s</em>. "
+"Tämän vuoksi liitännäinen <em><a href=\"%s\" target=\"_blank\">%s</a></em> "
+"ei vielä käynnisty. Lataa ja aktivoi uusin <em><a href=\"http://www."
+"woothemes.com/woocommerce/\" target=\"_blank\">WooCommercen</a></em> uusin "
+"versio saadaksesi tämän liitännäisen ominaisuudet käyttöösi."
 
-# @ opentickets-community-edition
 #: ../launcher.php:217
-#, fuzzy
 msgid "Missing Required Plugin"
-msgstr "Benötigtes PlugIn nicht gefunden"
+msgstr "Tarvittava liitännäinen puuttuu"
 
-# @ opentickets-community-edition
 #: ../launcher.php:220
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "The <em><a href=\"%s\" target=\"_blank\">%s</a></em> plugin "
 "<strong>requires</strong> that <em><a href=\"http://www.woothemes.com/"
@@ -65,32 +58,26 @@ msgid ""
 "install and activate <em><a href=\"http://www.woothemes.com/woocommerce/\" "
 "target=\"_blank\">WooCommerce</a></em>."
 msgstr ""
-"Das <em><a href=\"%s\" target=\"_blank\">%s</a></em> PlugIn "
-"<strong>erfordert</strong> das, <em><a href=\"http://www.woothemes.com/"
-"woocommerce/\" target=\"_blank\">WooCommerce</a></em>\\\\\\\tWooCommerce "
-"aktiviert wird, um die meisten Funktion bereit zu stellen. Deshalb hat das "
-"PlugIn keine seiner Funktionalitäten initialisiert. Um diese Features nutzen "
-"zu können, installieren und aktivieren Sie <em><a href=\"http://www."
-"woothemes.com/woocommerce/\" target=\"_blank\">WooCommerce</a></em>."
+"Liitännäinen <em><a href=\"%s\" target=\"_blank\">%s</a></em> plugin "
+"<strong>vaatii toimiakseen</strong>, että <em><a href=\"http://www.woothemes."
+"com/woocommerce/\" target=\"_blank\">WooCommerce</a></em>on aktivoitu; "
+"niinpä se ei ole vielä toiminnassa. Aktivoi uusin <em><a href=\"http://www."
+"woothemes.com/woocommerce/\" target=\"_blank\">WooCommerce</a></em> "
+"saadaksesi tämän liitännäisen ominaisuudet käyttöösi."
 
-# @ opentickets-community-edition
 #: ../opentickets.php:116
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "<a href=\"%s\" title=\"Visit the License Key settings page\">Settings</a>"
 msgstr ""
-"<a href=\"%s\" title=\"Besuche die Lizenzschlüssel-Einstellung"
-"\">Einstellungen</a>"
+"<a href=\"%s\" title=\"Käy Lisenssiavaimen hallintasivulla\">Asetukset</a>"
 
-# @ opentickets-community-edition
 #: ../opentickets.php:367
-#, fuzzy
 msgid "Memory Requirement Problem"
-msgstr "Speicheranforderungsproblem"
+msgstr "Muistinhallinnan ongelma"
 
-# @ opentickets-community-edition
 #: ../opentickets.php:395
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "The %%%%PRODUCT%%%% plugin <strong>requires</strong> that your server allow "
 "at least %s of memory to WordPress. We recommend at least %s for optimum "
@@ -101,19 +88,17 @@ msgid ""
 "you have raised your server settings to at least the minimum memory "
 "requirement, we will turn OpenTickets back on automatically."
 msgstr ""
-"Das %%%%ARTIKEL%%%% PlugIn <strong>erfordert</strong> das Ihr Server "
-"WordPress %s Speicher zur Verfügung stellt. Wir empfehlen, dass Ihr Server "
-"%s bereitstellt, um eine optimale Performance zu bieten. Wir haben versucht "
-"das Limit automatisch auf die minimal Anforderungen zu erhöhen, aber die "
-"Einstellungen des Servers haben dies verhindert. Ihr Server erlaubt derzeit "
-"nur %s, was unter dem geforderten Minimum liegt. Wir haben das laden von "
-"OpenTickets gestoppt um den allgemeinen Zugang zu Ihrer Webseite zu "
-"gewährleisten. Wenn der freie Speicher auf das Minimum angehoben wird, "
-"startet OpenTickets wieder automatisch."
+"Liitännäinen %%%%PRODUCT%%%% <strong>vaatii</strong>, että Wordpressin "
+"käytössä on palvelimella vähintään %s muistia. Optimaaliseen käyttöön "
+"suosittelemme vähintään %s (kuten myös WooCommerce). Muistin rajoitusta "
+"yritettiin kasvattaa automaattisesti, mutta palvelimen asetukset eivät "
+"hyväksyneet sitä. Palvelin hyväksyy ainoastaan %s, mikä on "
+"vähimmäisvaatimusta vähemmän. OpenTickets-lisäosan lataaminen on pysäytetty, "
+"jotta pääse sivustolle säilyy. OpenTickets palautuu päälle automaattisesti, "
+"kun palvelinasetusten muistiraja on vähintään minimivaatimuksissa."
 
-# @ opentickets-community-edition
 #: ../opentickets.php:405
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "The %%%%PRODUCT%%%% plugin <strong>requires</strong> that your server allow "
 "at least %s of memory to WordPress. Currently, yoru server is set to allow "
@@ -121,457 +106,373 @@ msgid ""
 "performance (as does WooCommerce). If you cannot raise the limit to the "
 "recommended amount, or do not wish to, then simply ignore this message."
 msgstr ""
-"Das %%%%ARTIKEL%%%% PlugIn <strong>erfordert</strong> das Ihr Server "
-"WordPress %s Speicher zur Verfügung stellt. Derzeit stellt Ihr Server %s zur "
-"Verfügung. Dies liegt über den minimal Anforderungen. Wir empfehlen, dass "
-"Ihr Server %s bereitstellt, um eine optimale Performance zu bieten. Wenn Sie "
-"das Limit nicht erhöhen können, oder wollen, können Sie die Nachricht "
-"ignorieren."
+"Liitännäinen %%%%PRODUCT%%%% <strong>vaatii</strong>, että Wordpressin "
+"käytössä on palvelimella vähintään %s muistia. Tällä hetkellä palvelin "
+"muistirajoitus on %s, mikä ylittää vähimmäisvaatimuksen. Optimaaliseen "
+"käyttöön suosittelemme rajoitukseksi vähintään %s (kuten myös WooCommerce). "
+"Jos et voi tai halua kasvattaa rajoitusta suositellulle tasolle, voit jättää "
+"tämän viestin huomiotta."
 
-# @ opentickets-community-edition
 #: ../opentickets.php:535
-#, fuzzy, php-format
+#, php-format
 msgid "Could not compile stylesheet %s. [%s]"
-msgstr "Kann das Stylesheet %s nicht kompilieren. [%s]"
+msgstr "Tyylitiedostoa %s ei voitu käsitellä. [%s]"
 
-# @ opentickets-community-edition
 #: ../opentickets.php:538
-#, fuzzy, php-format
+#, php-format
 msgid "Could not write to stylesheet file %s."
-msgstr "Kann nicht in die Stylesheet-Datei %s schreiben."
+msgstr "Tyylitiedostoon %s kirjoittaminen epäonnistui."
 
-# @ opentickets-community-edition
 #: ../opentickets.php:542
-#, fuzzy, php-format
+#, php-format
 msgid "Could not write colors to file %s. [%s]"
-msgstr "Kann die Farben nicht in die Datei %s schreiben. [%s]"
+msgstr "Tiedostoon %s ei voitu kirjoittaa väritietoja. [%s]"
 
 #: ../opentickets.php:550
-#, fuzzy
 msgid "the installation process"
-msgstr "Der Installationsprozess"
+msgstr "asennusprosessi"
 
 #: ../opentickets.php:555 ../opentickets.php:559
-#, fuzzy, php-format
+#, php-format
 msgid "Could not find the needed library %s, for use in %s."
-msgstr ""
-"Kann die erforderliche Bibliothek %s, für die Nutzung in %s, nicht finden."
+msgstr "Tarvittavaa kirjastoa %s ei löytynyt (%s)."
 
-# @ opentickets-community-edition
 #: ../inc/core/calendar.class.php:127
-#, fuzzy
 msgid "OpenTickets Calendar"
-msgstr "OpenTickets Kalender"
+msgstr "OpenTickets kalenteri"
 
-# @ opentickets-community-edition
 #: ../inc/core/calendar.class.php:151
-#, fuzzy
 msgid "Non-JS Calendar Page"
-msgstr "Nicht-JS Kalenderseite"
+msgstr "Kalenteri (ei-JS)"
 
-# @ opentickets-community-edition
 #: ../inc/core/calendar.class.php:152
-#, fuzzy
 msgid ""
 "Widget area on calendar template that shows when a user does not have "
 "javascript enabled."
 msgstr ""
-"Widget-Bereich der Kalendervorlage der anzeigt, wenn ein Nutzer JavaScript "
-"nicht aktiviert hat."
+"Kalenterin mallineen vimpainalue, joka näyttää, jos käyttäjällä ei ole "
+"javasript käytössä."
 
-# @ opentickets-community-edition
 #: ../inc/core/calendar.class.php:208
 msgid "Calendar Settings"
-msgstr "Impostazioni Calendario"
+msgstr "Kalenterin asetukset"
 
-# @ opentickets-community-edition
 #: ../inc/core/calendar.class.php:326
 msgid "Ended"
-msgstr "Finito"
+msgstr "Loppu"
 
-# @ opentickets-community-edition
 #: ../inc/core/calendar.class.php:360 ../inc/core/calendar.class.php:408
 msgid "Today"
-msgstr "Oggi"
+msgstr "Tänään"
 
-# @ opentickets-community-edition
 #: ../inc/core/calendar.class.php:361 ../inc/core/calendar.class.php:409
 msgid "Date of next Event"
-msgstr "Prossimo evento"
+msgstr "Seuraava tapahtuma"
 
-# @ opentickets-community-edition
 #: ../inc/core/calendar.class.php:362 ../inc/core/calendar.class.php:386
 #: ../inc/core/calendar.class.php:387 ../inc/core/calendar.class.php:410
 msgid "Manually entered date"
-msgstr "Data manuale"
+msgstr "Itse valittava päivämäärä"
 
-# @ opentickets-community-edition
 #: ../inc/core/calendar.class.php:374
 msgid "Starting Date Method"
-msgstr "Metodo della data d'inizio"
+msgstr "Aloituspäivämäärän valinta"
 
-# @ opentickets-community-edition
 #: ../inc/core/calendar.class.php:389 ../inc/core/post-type.class.php:1544
 #: ../inc/core/post-type.class.php:1550 ../inc/core/post-type.class.php:1633
 #: ../inc/core/post-type.class.php:1649
 #: ../inc/sys/pages/system-status.page.php:368
-#, fuzzy
 msgid "m-d-Y"
 msgstr "d-m-Y"
 
-# @ opentickets-community-edition
 #: ../inc/core/calendar.class.php:390 ../inc/core/post-type.class.php:1499
 #: ../inc/core/post-type.class.php:1516 ../inc/core/post-type.class.php:1543
 #: ../inc/core/post-type.class.php:1549 ../inc/core/post-type.class.php:1632
 #: ../inc/core/post-type.class.php:1648
-#, fuzzy
 msgid "mm-dd-yy"
 msgstr "dd-mm-yy"
 
-# @ opentickets-community-edition
 #: ../inc/core/calendar.class.php:473 ../inc/core/calendar.class.php:497
 msgid "Event Calendar"
-msgstr "Calendario"
+msgstr "Tapahtumakalenteri"
 
-# @ opentickets-community-edition
 #: ../inc/core/calendar.class.php:491
 msgid "Event Pages"
-msgstr "Pagine"
+msgstr "Tapahtumasivut"
 
-# @ opentickets-community-edition
 #: ../inc/core/calendar.class.php:493
 msgid "These pages are used to display the upcoming events."
-msgstr "Queste pagine servono a mostrare i prossimi eventi."
+msgstr "Näillä sivuilla näytetään tulevat tapahtumat."
 
-# @ opentickets-community-edition
 #: ../inc/core/calendar.class.php:498
 msgid "Page to display the calendar of upcoming events."
-msgstr "Pagina con il calendario dei prossimi eventi."
+msgstr "Tulevien tapahtumien kalenteriin näyttämiseen tarkoitettu sivu"
 
-# @ opentickets-community-edition
 #: ../inc/core/event-reporting.class.php:37
 msgid "Download CSV"
-msgstr "Scarica CSV"
+msgstr "Lataa CSV"
 
-# @ opentickets-community-edition
 #: ../inc/core/event-reporting.class.php:44
 msgid "Printer Friendly Version"
-msgstr "Versione per la stampa"
+msgstr "Tulostinystävällinen versio"
 
-# @ opentickets-community-edition
 #: ../inc/core/event-reporting.class.php:110
 msgid "Network Admin"
-msgstr "Amministrazione Globale"
+msgstr "Verkon admin"
 
-# @ opentickets-community-edition
 #: ../inc/core/event-reporting.class.php:112
 msgid "Global Dashboard"
-msgstr "Pannello Globale"
+msgstr "Yleinen Ohjauspaneeli"
 
-# @ opentickets-community-edition
 #: ../inc/core/event-reporting.class.php:117
 #, php-format
 msgid "%1$s &#8212; WordPress"
 msgstr "%1$s &#8212; WordPress"
 
-# @ opentickets-community-edition
 #: ../inc/core/event-reporting.class.php:119
 #, php-format
 msgid "%1$s &lsaquo; %2$s &#8212; WordPress"
 msgstr "%1$s &lsaquo; %2$s &#8212; WordPress"
 
-# @ opentickets-community-edition
 #: ../inc/core/event-reporting.class.php:249
 #, php-format
 msgid ""
 "Could not create the report cache directory. Make sure that the permissions "
 "for '%s' allow the webserver to create a directory, and try again."
 msgstr ""
-"Impossibile creare la cartella temporanea per i rapporti. Assicurarsi che i "
-"permessi per '%s' consentano al server web di creare una directory, e "
-"riprovare."
+"Raporttivälimuistin tiedostoa ei voitu luoda. Varmista, että web-palvelimen "
+"oikeudet kohteessa '%s' riittävät hakemiston luomiseen, ja yritä uudelleen."
 
-# @ opentickets-community-edition
 #: ../inc/core/event-reporting.class.php:318
 msgid "An un expected error occurred during report generation."
-msgstr ""
-"Si &egrave; verificato un errore inatteso durante la generazione del "
-"rapporto."
+msgstr "Raportin luomisessa tapahtui odottamaton virhe."
 
-# @ opentickets-community-edition
 #: ../inc/core/event-reporting.class.php:335
 msgid ""
 "Could not find the report result template. Below is the list of raw CSV "
 "results."
 msgstr ""
-"Impossibile trovare il template per il rapport. Di seguito &egrave; mostrato "
-"il rapporto CSV."
+"Raportin tulosten mallinetta ei löytynyt. Alla on lista tuloksista CSV-"
+"raakamuodossa."
 
-# @ opentickets-community-edition
 #: ../inc/core/event-reporting.class.php:340
 msgid "View report for"
-msgstr "Mastra rapporto per"
+msgstr "Katso raportti aiheesta"
 
-# @ opentickets-community-edition
 #: ../inc/core/event-reporting.class.php:341
 msgid "Report for"
-msgstr "Rapporto per"
+msgstr "Raportti aiheesta"
 
-# @ opentickets-community-edition
 #: ../inc/core/event-reporting.class.php:368
 msgid "(unknown)"
-msgstr "(sconosciuto)"
+msgstr "(tuntematon)"
 
-# @ opentickets-community-edition
 #: ../inc/core/event-reporting.class.php:368
 msgid "-free-"
-msgstr "-gratuito-"
+msgstr "-vapaa-"
 
-# @ opentickets-community-edition
 #: ../inc/core/my-account-takeover.class.php:45
 msgid "Shows"
-msgstr "Spettacoli"
+msgstr "Näytökset"
 
-# @ opentickets-community-edition
 #: ../inc/core/my-account-takeover.class.php:69
 msgid "(none)"
-msgstr "(nessuno)"
+msgstr "(ei yhtään)"
 
-# @ woocommerce
 #: ../inc/core/my-account-takeover.class.php:123
 msgid "Invalid order."
-msgstr "Ordine non valido."
+msgstr "Virheellinen tilaus."
 
-# @ opentickets-community-edition
 #: ../inc/core/my-account-takeover.class.php:123
 msgid "My Account &rarr;"
-msgstr "Il mio profilo &rarr;"
+msgstr "Oma tili &rarr;"
 
-# @ opentickets-community-edition
 #: ../inc/core/my-account-takeover.class.php:134
 #, php-format
 msgid ""
 "Order <mark class=\"order-number\">%s</mark> made on <mark class=\"order-date"
 "\">%s</mark>"
 msgstr ""
-"Ordine <mark class=\"order-number\">%s</mark> inviato il <mark class=\"order-"
-"date\">%s</mark>"
+"Tilaus <mark class=\"order-number\">%s</mark> tehty <mark class=\"order-date"
+"\">%s</mark>"
 
-# @ opentickets-community-edition
 #: ../inc/core/my-account-takeover.class.php:135
 #, php-format
 msgid "Order status: <mark class=\"order-status\">%s</mark>"
-msgstr "Stato ordine: <mark class=\"order-status\">%s</mark>"
+msgstr "Tilauksen tila: <mark class=\"order-status\">%s</mark>"
 
-# @ opentickets-community-edition
 #: ../inc/core/my-account-takeover.class.php:141
 msgid "Order Updates"
-msgstr "Aggiornamenti ordine"
+msgstr "Tilauksen muutokset"
 
-# @ opentickets-community-edition
 #: ../inc/core/my-account-takeover.class.php:147
 msgid "l jS \\of F Y, h:ia"
-msgstr "l jS \\di F Y, H:i"
+msgstr "l jS \\of F Y, h:ia"
 
-# @ opentickets-community-edition
 #: ../inc/core/my-account-takeover.class.php:312
 msgid "My Account Page"
-msgstr "Il mio profilo"
+msgstr "Oma käyttäjä"
 
-# @ opentickets-community-edition
 #: ../inc/core/my-account-takeover.class.php:321
 msgid "Display Upcoming Tickets"
-msgstr "Prossimi biglietti"
+msgstr "Näytä tulevat liput"
 
-# @ opentickets-community-edition
 #: ../inc/core/my-account-takeover.class.php:322
 msgid ""
 "Format to display the upcoming tickets list in. The list appears on the end "
 "user's \"My Account\" page."
 msgstr ""
-"Formato della lista dei biglietti. Questa lista viene mostrata nella pagina "
-"del profilo utente."
+"Tulevien pääsylippujen esitysmuoto. Lista esiintyy loppukäyttäjän \"Oma Tili"
+"\"-sivulla."
 
-# @ opentickets-community-edition
 #: ../inc/core/my-account-takeover.class.php:324
 msgid "By Event"
-msgstr "Per evento"
+msgstr "Tapahtuman mukaan"
 
-# @ opentickets-community-edition
 #: ../inc/core/my-account-takeover.class.php:325
 msgid "As Line Item List"
-msgstr "Per riga"
+msgstr "Tuotelistauksena"
 
-# @ opentickets-community-edition
 #: ../inc/core/my-account-takeover.class.php:342
 msgid "Infinite Login"
-msgstr "Login permanente"
+msgstr "Jatkuva sisäänkirjaus"
 
-# @ opentickets-community-edition
 #: ../inc/core/my-account-takeover.class.php:343
 msgid "Once a user logs in, they stay logged in, forever."
-msgstr "Una volta autenticato, l'utente rimane tale a tempo indeterminato."
+msgstr "Kun käyttäjä kirjautuu sisään, istunto jatkuu äärettömän pitkään."
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:207 ../inc/core/post-type.class.php:796
 #: ../inc/reporting/seating.report.class.php:515
 msgid "Event"
-msgstr "Evento"
+msgstr "Tapahtuma"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:224
 msgid "View this event"
-msgstr "Mostra evento"
+msgstr "Tarkastele tapahtumaa"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:364 ../inc/core/post-type.class.php:795
 msgid "Events"
-msgstr "Eventi"
+msgstr "Tapahtumat"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:392
 msgid "Top Level Events"
-msgstr "Eventi principali"
+msgstr "Produktiot"
 
 #: ../inc/core/post-type.class.php:592
 #: ../inc/venues/event-area/post-type.class.php:912
 #: ../inc/venues/event-area/post-type.class.php:920
-#, fuzzy
 msgid "sold-out"
-msgstr "Ausverkauft"
+msgstr "loppuunmyyty"
 
 #: ../inc/core/post-type.class.php:595
 #: ../inc/venues/event-area/post-type.class.php:921
-#, fuzzy
 msgid "low"
-msgstr "Niedrig"
+msgstr "vähän"
 
 #: ../inc/core/post-type.class.php:598
 #: ../inc/venues/event-area/post-type.class.php:919
-#, fuzzy
 msgid "medium"
-msgstr "Mittel"
+msgstr "kohtalaisesti"
 
 #: ../inc/core/post-type.class.php:601
 #: ../inc/venues/event-area/post-type.class.php:918
-#, fuzzy
 msgid "high"
-msgstr "Hoch"
+msgstr "runsaasti"
 
 #: ../inc/core/post-type.class.php:617
 #, fuzzy
 msgid "available"
-msgstr "Verfügbar"
+msgstr "Saatavilla:"
 
-# @ qsot
 #: ../inc/core/post-type.class.php:723
-#, fuzzy
 msgctxt "post"
 msgid "Hidden"
-msgstr "Nascosto"
+msgstr "Piilotettu"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:740
-#, fuzzy, php-format
+#, php-format
 msgid "Hidden <span class=\"count\">(%s)</span>"
 msgid_plural "Hidden <span class=\"count\">(%s)</span>"
-msgstr[0] "Versteckt <span class=\"count\">(%s)</span>"
-msgstr[1] ""
+msgstr[0] "Piilotettu <span class=\"count\">(%s)</span>"
+msgstr[1] "Piilotettu <span class=\"count\">(%s)</span>"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:844
-#, fuzzy
 msgid "MM-dd-yyyy"
 msgstr "dd-MM-yyyy"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:845
-#, fuzzy
 msgid "ddd MM-dd-yyyy"
 msgstr "ddd dd-MM-yyyy"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:846
-#, fuzzy
 msgid "hh:mmtt"
-msgstr "HH:mm"
+msgstr "hh:mm:tt"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:965
 msgid "Max"
 msgstr "Max"
 
-# @ qsot
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:968
 #: ../inc/reporting/seating.report.class.php:512
 #: ../inc/sys/admin-menu.class.php:311
 msgid "Status"
-msgstr "Stato"
+msgstr "Status"
 
 #: ../inc/core/post-type.class.php:1006
 msgid "m/d/Y"
 msgstr ""
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1007
 #: ../templates/tickets/basic-ticket.php:73
 #: ../templates/tickets/basic-ticket.php:80
-#, fuzzy
 msgid "g:ia"
-msgstr "H:i"
+msgstr "G:i"
 
 #: ../inc/core/post-type.class.php:1010
 #, fuzzy, php-format
 msgid "on %2$s"
-msgstr "Am:"
+msgstr "%1$s/%2$s"
 
 #: ../inc/core/post-type.class.php:1012
 #, php-format
 msgid "@ %3$s"
 msgstr ""
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1110
 #, fuzzy
 msgctxt "Permalink date"
 msgid "Y-m-d_gia"
-msgstr "d-m-Y"
+msgstr "V-k-p"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1349
 #, fuzzy
 msgctxt "metabox title"
 msgid "Event Date Time Settings"
-msgstr "Einstellung des Eventzeitpunktes"
+msgstr "Tapahtuman päivämäärän asetukset"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1359
 #, fuzzy
 msgctxt "metabox title"
 msgid "Event Titles"
-msgstr "Veranstaltungskalender"
+msgstr "Tapahtumien ajankohdat"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1369
 #, fuzzy
 msgctxt "metabox title"
 msgid "Stop Sales Before Show"
-msgstr "Verkaufsstop vor Veranstanstaltung"
+msgstr "Lopeta myynti ennen esitystä"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1380
 #, fuzzy
 msgctxt "metabox title"
 msgid "Event Run Date Range"
-msgstr "Veranstaltungsdauer"
+msgstr "Produktion aikaväli"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1405
 #, fuzzy
 msgctxt "metabox field heading"
 msgid "Show Date"
-msgstr "Data di creazione:"
+msgstr "Näytä huomautukset"
 
 #: ../inc/core/post-type.class.php:1411 ../inc/core/post-type.class.php:1440
 msgctxt "checkbox description"
@@ -579,16 +480,14 @@ msgid "Use the site wide default setting"
 msgstr ""
 
 #: ../inc/core/post-type.class.php:1418
-#, fuzzy
 msgctxt "radio button description"
 msgid "Yes, show the date"
-msgstr "Formato data/ora"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1422
-#, fuzzy
 msgctxt "radio button description"
 msgid "No, hide the date"
-msgstr "Formato data/ora"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1427 ../inc/core/post-type.class.php:1456
 #, php-format
@@ -598,47 +497,39 @@ msgid ""
 "a specific value for these events."
 msgstr ""
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1430
 #, fuzzy
 msgctxt "option name"
 msgid "Show Date"
-msgstr "Data di creazione:"
+msgstr "Näytä huomautukset"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1434
 #, fuzzy
 msgctxt "metabox field heading"
 msgid "Show Time"
-msgstr "Formato ora"
+msgstr "Alkamisaika"
 
 #: ../inc/core/post-type.class.php:1447
-#, fuzzy
 msgctxt "radio button description"
 msgid "Yes, show the time"
-msgstr "Confronta data &modifica"
+msgstr ""
 
 #: ../inc/core/post-type.class.php:1451
-#, fuzzy
 msgctxt "radio button description"
 msgid "No, hide the time"
-msgstr "Confronta data &modifica"
+msgstr ""
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1459
 #, fuzzy
 msgctxt "option name"
 msgid "Show Time"
-msgstr "Formato ora"
+msgstr "Alkamisaika"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1473
 msgid "Formula"
-msgstr "Formula"
+msgstr "Lauseke"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1478
-#, fuzzy
 msgid ""
 "This is the formula to calculate when tickets should stop being sold on the "
 "frontend for this show. For example, if you wish to stop selling tickets 2 "
@@ -647,189 +538,152 @@ msgid ""
 "days, week, weeks, month, months, year, years. Leave the formula empty to "
 "just use the Global Setting for this formula."
 msgstr ""
-"Mit diesem Formular kalkulieren Sie das Ende des Ticketvorverkaufs im "
-"Frontend für die Veranstaltung. Wenn Sie zum Beispiel 2 Stunden 30 Minuten "
-"vor Veranstaltungsbeginn den Vorverkauf beenden möchten, dann benutzen Sie: "
-"<code>2 hours 30 minutes</code>. Gültige Eingaben: hour, hours, minute, "
-"minutes, second, seconds, day, days, week, weeks, month, months, year, "
-"years. Um die Globalen Einstellungen für dieses Formular zu benutzen, lassen "
-"Sie das Formular leer."
+"Tämä asetus määrittelee kaavan, jonka perusteella esityksen lipunmyynti "
+"lopetetaan ennen esityksen alkua. Esimerkiksi 2 tuntia ja 30 minuuttia "
+"syötetään <code>2 hours 30 minutes</code>. Kelvolliset aikamääreet ovat "
+"(englanniksi): <em>hour, hours, minute, minutes, second, seconds, day, days, "
+"week, weeks, month, months, year, years</em>. Tyhjäksi jätettynä kentässä "
+"sovelletaan yleisiä asetuksia."
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1493
 msgid "Start Date/Time"
-msgstr "Data/Ora inizio"
+msgstr "Alkamisajankohta"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1501 ../inc/core/post-type.class.php:1518
 #: ../inc/core/post-type.class.php:1787
 msgid "@"
-msgstr "alle"
+msgstr "klo"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1510
 msgid "End Date/Time:"
-msgstr "Data/Ora fine:"
+msgstr "Päättymisajankohta"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1540
 msgid "Basic Settings"
-msgstr "Impostazioni di base"
+msgstr "Perusasetukset"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1544
 msgid "Start Date"
-msgstr "Data d'inizio"
+msgstr "Alkamispäivämäärä"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1545 ../inc/core/post-type.class.php:1551
 #: ../inc/core/post-type.class.php:1634 ../inc/core/post-type.class.php:1650
 msgid "Y-m-d"
-msgstr "d-m-Y"
+msgstr "V-k-p"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1546 ../inc/core/post-type.class.php:1552
 msgid "h:ia"
-msgstr "H:i"
+msgstr "h:ia"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1546
 msgid "Start Time"
-msgstr "Ora d'inizio"
+msgstr "Alkamisaika"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1547
 msgid "to"
-msgstr "al"
+msgstr "–"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1550
 msgid "End Date"
-msgstr "Data fine"
+msgstr "Päättymispäivämäärä"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1552
 msgid "End Time"
-msgstr "Ora fine"
+msgstr "Päättymisaika"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1558 ../inc/core/post-type.class.php:1567
 msgid "Repeat"
-msgstr "Ripeti"
+msgstr "Toista"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1572
 msgid "Repeats"
-msgstr "Occorrenze"
+msgstr "Toistoa"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1576
 msgid "Weekly"
-msgstr "Settimanale"
+msgstr "Viikottain"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1582
 msgid "Repeats Every"
-msgstr "Ripeti ogni"
+msgstr "Toista joka"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1589
 msgid "days"
-msgstr "giorni"
+msgstr "päivä"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1590
 msgid "weeks"
-msgstr "settimane"
+msgstr "viikko"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1595
 msgid "Repeat on"
-msgstr "Ripeti di"
+msgstr "Toista"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1599
 msgid "Su"
-msgstr "Do"
+msgstr "Su"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1603
 msgid "Mo"
-msgstr "Lu"
-
-# @ opentickets-community-edition
-#: ../inc/core/post-type.class.php:1607
-msgid "Tu"
 msgstr "Ma"
 
-# @ opentickets-community-edition
+#: ../inc/core/post-type.class.php:1607
+msgid "Tu"
+msgstr "Ti"
+
 #: ../inc/core/post-type.class.php:1611
 msgid "We"
-msgstr "Me"
+msgstr "Ke"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1615
 msgid "Th"
-msgstr "Gi"
+msgstr "To"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1619
 msgid "Fr"
-msgstr "Ve"
+msgstr "Pe"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1623
 msgid "Sa"
-msgstr "Sa"
+msgstr "La"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1629
 msgid "Starts on"
-msgstr "Inizia il"
+msgstr "Alkaa"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1639
 msgid "Ends"
-msgstr "Finisce"
+msgstr "Päättyy"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1645
 msgid "On"
-msgstr "Il"
+msgstr " "
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1655
 msgid "After"
-msgstr "Dopo"
+msgstr "Jälkeen"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1658
 msgid "occurences"
-msgstr "occorrenze"
+msgstr "esiintymiset"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1679
 msgid "Add to Calendar"
-msgstr "Aggiungi al calendario"
+msgstr "Lisää Kalenteriin"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1695
 msgid "Event Date/Times"
-msgstr "Data/Ora Eventi"
+msgstr "Tapahtumien ajankohdat"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1701 ../inc/sys/admin-menu.class.php:170
 #: ../inc/sys/admin-menu.class.php:171
 msgid "Settings"
-msgstr "Impostazioni"
+msgstr "Asetukset"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1706
 msgid "Status:"
-msgstr "Stato:"
+msgstr "Status:"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/core/post-type.class.php:1708 ../inc/core/post-type.class.php:1731
 #: ../inc/core/post-type.class.php:1766 ../inc/sys/core-hacks.class.php:827
 #: ../inc/sys/core-hacks.class.php:930 ../inc/venues/post-type.class.php:364
@@ -838,42 +692,34 @@ msgstr "Stato:"
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:221
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:313
 msgid "Edit"
-msgstr "Modifica"
+msgstr "Muokkaa"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1713
 msgid "Published"
-msgstr "Pubblico"
+msgstr "Julkaistu"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1714
 msgid "Privately Published"
-msgstr "Privato e Pubblicato"
+msgstr "Julkaistu yksityisesti"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1715
 msgid "Scheduled"
-msgstr "Programmato"
+msgstr "Aikataulutettu"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1717
 msgid "Pending Review"
-msgstr "In Revisione"
+msgstr "Odottaa tarkastusta"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1718
 msgid "Draft"
-msgstr "Bozza"
+msgstr "Luonnos"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1721 ../inc/core/post-type.class.php:1756
 #: ../inc/core/post-type.class.php:1792 ../inc/venues/post-type.class.php:375
 #: ../inc/venues/event-area/post-type.class.php:551
 msgid "OK"
 msgstr "OK"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/core/post-type.class.php:1722 ../inc/core/post-type.class.php:1757
 #: ../inc/core/post-type.class.php:1793 ../inc/sys/mba.class.php:462
 #: ../inc/venues/post-type.class.php:376
@@ -881,242 +727,186 @@ msgstr "OK"
 #: ../templates/admin/meta-boxes/views/html-order-items.php:255
 #: ../templates/admin/meta-boxes/views/html-order-items.php:301
 msgid "Cancel"
-msgstr "Annulla"
+msgstr "Peruuta"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1729
 msgid "Visibility"
-msgstr "Visibilit&agrave;"
+msgstr "Näkyvyys"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1735
 msgid "Viewable to the public"
-msgstr "Visibile al pubblico"
+msgstr "Julkisesti näkyvä"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1737
 msgid "Public"
-msgstr "Pubblico"
+msgstr "Julkinen"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1739
-#, fuzzy
 msgid ""
 "Visible on the calendar, but only those with the password can view to make "
 "reservations"
-msgstr ""
-"Auf dem Kalender sichtbar, aber nur für diejenigen die ein Passwort haben, "
-"können es ansehen und eine Reservierung tätigen."
+msgstr "Näkyy kalenterissa, mutta vain salasanan avulla voi tehdä varauksia"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1741
 msgid "Password Protected"
-msgstr "Protetto da password"
+msgstr "Salasanasuojattu"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1743
 msgid "Password:"
-msgstr "Password:"
+msgstr "Salasana:"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1747
 msgid "Hidden from the calendar, but open to anyone with the url"
-msgstr "Non in calendario, ma accessibile a chi ha l'indirizzo web"
+msgstr "Piilotettu kalenterista, mutta saatavilla url:n avulla"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1749
 msgid "Hidden"
-msgstr "Nascosto"
+msgstr "Piilotettu"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1751
 msgid "Only logged in admin users or the event author can view it"
-msgstr "Visibile solo agli utenti autenticati ed all'autore"
+msgstr ""
+"Näkyvillä vain sisäänkirjautuneille pääkäyttäjille ja tapahtuman tekijälle"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1753
 msgid "Private"
-msgstr "Privato"
+msgstr "Yksityinen"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1764
 msgid "Publish Date:"
-msgstr "Pubblicato il:"
+msgstr "Julkaisupäivämäärä:"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1773
-#, fuzzy
 msgid "January"
-msgstr "Januar"
+msgstr "Tammikuu"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1774
 msgid "February"
-msgstr "Febbraio"
+msgstr "Helmikuu"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1775
 msgid "March"
-msgstr "Marzo"
+msgstr "Maaliskuu"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1776
 msgid "April"
-msgstr "Aprile"
+msgstr "Huhtikuu"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1777
 msgid "May"
-msgstr "Maggio"
+msgstr "Toukokuu"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1778
 msgid "June"
-msgstr "Giugno"
+msgstr "Kesäkuu"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1779
 msgid "July"
-msgstr "Luglio"
+msgstr "Heinäkuu"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1780
 msgid "August"
-msgstr "Agosto"
+msgstr "Elokuu"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1781
 msgid "September"
-msgstr "Settembre"
+msgstr "Syyskuu"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1782
 msgid "October"
-msgstr "Ottobre"
+msgstr "Lokakuu"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1783
 msgid "November"
-msgstr "Novembre"
+msgstr "Marraskuu"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1784
 msgid "December"
-msgstr "Dicembre"
+msgstr "Joulukuu"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1821
-#, fuzzy
 msgid "Event base"
-msgstr "Veranstaltungsbase"
+msgstr "Tapahtumien etuliite"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1825
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Enter a custom base to use. This url segment will prefix the event name in "
 "the url.<br/><code>example: %s</code>"
 msgstr ""
-"Trage eine Benutzerdefinierte Basis ein. Dieses URL-Segment wird dem "
-"Veranstaltungsnamen vorangestellt.<br/><code>Beispiel: %s</code>"
+"Syötä haluamasi etuliite tapahtumille. Se edeltää tapahtuman nimeä URL:ssa. "
+"<br/><code>esimerkki: %s</code>"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1841
-#, fuzzy
 msgid "Event permalink base"
-msgstr "Veranstaltungs-Permalink Basis"
+msgstr "Tapahtumien kestolinkkien etuliite"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1897
-#, fuzzy
 msgid "Event Display"
-msgstr "Veranstaltungs-Anzeige"
+msgstr "Tapahtumien esitys"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1906
 msgid "Stop Sales Before Show"
-msgstr "Ferma le vendite prima dello spettacolo"
+msgstr "Lopeta myynti ennen esitystä"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1907
-#, fuzzy
 msgid ""
 "Amount of time to stop sales for a show, before show time. (ie: stop sales "
 "two hour before show time <code>2 hours</code>)"
 msgstr ""
-"Zeitangabe zhum stoppen des Verkaufs vor Veranstaltungsbeginn. (z.B.: Stoppe "
-"den Verkauf 2 Stunden vor Veranstaltungsbeginn<code>2 hours</code>)"
+"Aikamääre lipunmyynnin lopettamiseen ennen esityksen alkua. (eli: <code>2 "
+"hours</code> lopettaa myynnin kaksi tuntia ennen esitystä)"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1908
-#, fuzzy
 msgid ""
 "valid units: hour, hours, minute, minutes, second, seconds, day, days, week, "
 "weeks, month, months, year, years"
 msgstr ""
-"Gültige Einheiten: Stunde, Stunden, Minute, Minuten, Sekunde, Sekunden, Tag, "
-"Tage, Woche, Wochen, Monat, Monate, Jahr, Jahre"
+"kelvolliset aikamääreet (englanniksi): hour, hours, minute, minutes, second, "
+"seconds, day, days, week, weeks, month, months, year, years"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1916
-#, fuzzy
 msgid "Single Event Synopsis"
-msgstr "Übersicht Einzelveranstaltung"
+msgstr "Yksittäisen tapahtuman esittelyteksti"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1917
-#, fuzzy
 msgid "Show event synopsis on single event pages"
-msgstr "Anzeige der Veranstaltungsübersicht auf einzelnen Veranstaltungsseiten"
+msgstr "Näytä tapahtuman esittelyteksti yksittäisten tapahtumien sivuilla"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1918
-#, fuzzy
 msgid ""
 "By default, just the event logo, and the event pricing options are shown. "
 "This feature will additionally show the description of the event to the user."
 msgstr ""
-"Bei Vorgabe werden nur das Veranstaltungslogo und die Preisoptionen der "
-"Veranstaltung gezeigt. Dieses Feature zeigt dem Nutzer zusätzlich die "
-"Veranstaltungsbeschreibung."
+"Oletuksena esillä ovat vain vain tapahtuman logo ja hinnoitteluvaihtoehdot. "
+"Tämän asetuksen myötä käyttäjälle näytetään lisäksi tapahtuman kuvaus."
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1927
-#, fuzzy
 msgid "Single Event Synopsis Position"
-msgstr "Position der Einzelveranstaltungsübersicht"
+msgstr "Yksittäisen tapahtuman esittelytekstin sijainti"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1928
-#, fuzzy
 msgid "The display position of the Event Synopsis on the single event page."
 msgstr ""
-"Die Anzeigeposition der Veranstaltungsübersicht auf der "
-"Einzelveranstaltungsseite."
+"Sijainti, jossa esittelyteksti näytetään yksittäisen tapahtuman sivulla."
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1930
-#, fuzzy
 msgid "Above the Ticket Selection UI"
-msgstr "Oberhalb der Ticketauswahl UI"
+msgstr "Lippukäyttöliittymän yläpuolella"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1931
-#, fuzzy
 msgid "Below the Ticket Selection UI"
-msgstr "Unterhalb der Ticketauswahl UI"
+msgstr "Lippukäyttöliittymän alapuolella"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1942
 #, fuzzy
 msgid "Show Date"
-msgstr "Data di creazione:"
+msgstr "Näytä huomautukset"
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1943
 #, fuzzy
 msgid "Show the date in the title of events, on the event details pages."
-msgstr "Zeige die Bestellnummer des Tickets auf dem Ticket."
+msgstr "Näytä pääsylipussa lipun tilausnumero."
 
 #: ../inc/core/post-type.class.php:1944
 msgid ""
@@ -1124,11 +914,10 @@ msgid ""
 "on 09/12/2015\"."
 msgstr ""
 
-# @ opentickets-community-edition
 #: ../inc/core/post-type.class.php:1954
 #, fuzzy
 msgid "Show Time"
-msgstr "Formato ora"
+msgstr "Alkamisaika"
 
 #: ../inc/core/post-type.class.php:1955
 msgid "Show the time in the title of events, on the event details pages."
@@ -1140,402 +929,287 @@ msgid ""
 "6:00pm\"."
 msgstr ""
 
-# @ opentickets-community-edition
 #: ../inc/core/zoner.class.php:317 ../inc/core/zoner.class.php:328
-#, fuzzy, php-format
+#, php-format
 msgid "There are not %s tickets available to reserve."
-msgstr "Es sind noch %s Tickets verfügbar."
+msgstr "Lippuja (%s) ei ole varattavissa"
 
-# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:154
-#, fuzzy
 msgid ""
 "The current settings disallow using \"<strong>Guest</strong>\" as the "
 "customer for the order. You have attempted to use \"<strong>Guest</strong>\" "
 "as the customer. You will not be able to process payments or complete an "
 "order until a user has been selected as the customer."
 msgstr ""
-"Die derzeitigen Einstellungen erlauben es nicht, das \"<strong>Gäste</strong>"
-"\" Bestellungen aufgeben können. Sie müssen  \"<strong>Gästen</strong>\" "
-"erlauben Kunde zu werden. Sie können keine Zahlungen zu einer Bestellung "
-"durchführen oder abschließen bis der Nutzer als Kunde ausgewählt wurde."
+"Nykyiset asetukset eivät salli \"<strong>Vieraskäyttäjän</strong>\" tekemiä "
+"tilauksia. Yritit käyttää \"<strong>Vieraskäyttäjää</strong>\" asiakkaana. "
+"Et voi suorittaa maksua tai viimeistellä tilausta ennen kuin asiakkaaksi on "
+"valittu varsinainen käyttäjä."
 
-# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:189
-#, fuzzy
 msgid ""
 "Additionally, because of the current Woocommerce settings, \"<strong>Guest</"
 "strong>\" is not allowed as the customer user. Please select a user first."
 msgstr ""
-"Zusätzlich ist es  wegen den gegenwärtigen Woocommerce-Einstellungen nicht "
-"erlaubt, als \"<strong>Gast</strong>\" Bestellungen aufzugeben. Wählen Sie "
-"bitte vorher einen Nutzer aus."
+"Lisäksi nykyisten WooCommercen asetusten vuoksi  \"<strong>Vieraskäyttäjää</"
+"strong>\" ei hyväksytä asiakkaaksi. Ole hyvä ja valitse ensin varsinainen "
+"käyttäjätili."
 
-# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:221 ../inc/order/admin.class.php:223
-#, fuzzy
 msgid ""
 "You cannot use \"Guest\" as the owner of the order, due to current "
 "Woocommerce settings."
 msgstr ""
-"SIe können, wegen der Einstellungen in WooCommerce, keinen \"Gast\" als "
-"Besitzer der Bestellung einsetzen."
+"WooCommercen asetusten vuoksi et voi käyttää \"Vieraskäyttäjää\" tilauksen "
+"tekemiseen."
 
 #: ../inc/order/admin.class.php:343
-#, fuzzy
 msgid "is a required field."
-msgstr "Der Nutzername ist ein Pflichtfeld"
+msgstr "on vaadittu kenttä."
 
 #: ../inc/order/admin.class.php:355
 msgid "Please enter a valid postcode/ZIP."
-msgstr ""
+msgstr "Syötä kelvollinen postinumero."
 
 #: ../inc/order/admin.class.php:362
-#, fuzzy
 msgid "is not a valid phone number."
-msgstr "Muss eine gültige Telefonnummer sein"
+msgstr "puhelinnumero ei kelpaa"
 
 #: ../inc/order/admin.class.php:369
-#, fuzzy
 msgid "is not a valid email address."
-msgstr "Ungültige Emailadresse."
+msgstr "Sähköpostiosoite ei ole kelvollinen"
 
 #: ../inc/order/admin.class.php:385
 msgid "is not valid. Please enter one of the following:"
-msgstr ""
+msgstr "ei ole kelvollinen. Käytä jotain seuraavista:"
 
-# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:404 ../inc/order/admin.class.php:407
-#, fuzzy
 msgid ""
 "Your current settings require you to provide most billing information for "
 "each order."
 msgstr ""
-"Ihre aktuellen Einstellungen machen es nötig bei jeder Bestellung die "
-"wichtigsten Rechnungsdaten einzugeben."
+"Nykyiset asetuksen vaativat antamaan laskutustiedot jokaiselle tilaukselle."
 
-# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:447
-#, fuzzy
 msgid "New User"
-msgstr "Neuer Nutzer"
+msgstr "Uusi käyttäjä"
 
-# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:475
-#, fuzzy
 msgid "The username is a required field."
-msgstr "Der Nutzername ist ein Pflichtfeld"
+msgstr "Käyttäjätunnus on vaadittu kenttä."
 
-# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:477
-#, fuzzy
 msgid "That user name contains illegal characters."
-msgstr "Dieser Nutzername enthält unerlaubte Bestandteile."
+msgstr "Käyttäjänimessä on kiellettyjä merkkejä."
 
-# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:479
-#, fuzzy
 msgid ""
 "is already being used by another user. Please enter a different username."
-msgstr ""
-"wird schon von einem anderen Nutzer belegt. Bitte geben Sie einen anderen "
-"Nutzernamen ein."
+msgstr "on jo toisen käyttäjän käytössä. Valitse uusi käyttäjätunnus"
 
-# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:484
-#, fuzzy
 msgid "The email address is required."
-msgstr "Die Emailadresse wird benötigt."
+msgstr "Sähköpostiosoite tarvitaan."
 
-# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:486
-#, fuzzy
 msgid "That is not a valid email address."
-msgstr "Ungültige Emailadresse."
+msgstr "Sähköpostiosoite ei ole kelvollinen"
 
-# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:488
-#, fuzzy
 msgid ""
 "is already in use by another user. Please use a different email address."
-msgstr ""
-"wird schon von einem anderen Nutzer belegt. Bitte geben Sie eine andere "
-"Emailadresse ein."
+msgstr "on jo toisen käyttäjän käytössä. Valitse uusi sähköpostiosoite."
 
-# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:492
-#, fuzzy
 msgid "The first name is a required field."
-msgstr "Der Vorname ist ein Pflichtfeld."
+msgstr "Anna etunimi."
 
-# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:496
-#, fuzzy
 msgid "The last name is a required field."
-msgstr "Der Nachname ist ein Pflichtfeld."
+msgstr "Anna sukunimi."
 
-# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:500
-#, fuzzy
 msgid "The information you supplied passed validation."
-msgstr "Ihre Informationen sind überprüft und gültig."
+msgstr "Antamasi tiedot läpäisivät tarkistuksen."
 
-# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:512
-#, fuzzy
 msgid "User creation failed:"
-msgstr "Anlegen des Nutzers schlug fehl:"
+msgstr "Käyttäjän luonti epäonnistui:"
 
-# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:515
-#, fuzzy
 msgid "The user was created successfully."
-msgstr "Der Nutzer wurde erfolgreich angelegt."
+msgstr "Käyttäjän luominen onnistui."
 
-# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:549
-#, fuzzy
 msgid "New User Form"
-msgstr "Neues Nutzer Formular"
+msgstr "Uusi käyttäjä -lomake"
 
-# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:560
-#, fuzzy
 msgid "Username"
-msgstr "Nutzername"
+msgstr "Käyttäjätunnus"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/order/admin.class.php:564
 #: ../inc/reporting/seating.report.class.php:508
 #: ../inc/sys/core-hacks.class.php:869
 #: ../templates/tickets/verification-form.php:10
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:77
-#, fuzzy
 msgid "Email"
-msgstr "Email"
+msgstr "Sähköposti"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/order/admin.class.php:568 ../inc/sys/core-hacks.class.php:831
 #: ../inc/sys/core-hacks.class.php:934
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:39
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:86
-#, fuzzy
 msgid "First Name"
-msgstr "Vorname"
+msgstr "Etunimi"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/order/admin.class.php:572 ../inc/sys/core-hacks.class.php:835
 #: ../inc/sys/core-hacks.class.php:938
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:43
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:90
-#, fuzzy
 msgid "Last Name"
-msgstr "Nachname"
+msgstr "Sukunimi"
 
-# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:683
-#, fuzzy
 msgid "Additional Email Settings"
-msgstr "weitere E-Mail Einstellungen"
+msgstr "Sähköpostin asetukset"
 
-# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:692
-#, fuzzy
 msgid "Custom Completed Order Message (Above Order Items)"
-msgstr "Eigene \\\"Completed\\\" Bestell-Nachricht (steht über den Artikeln)"
+msgstr "Oma \"Tilaus onnistui\"-viesti (tilaustietojen yläpuolella)"
 
-# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:693 ../inc/order/admin.class.php:703
-#, fuzzy
 msgid ""
 "This html appears near the top of the default Completed Order email, sent to "
 "the customer upon completion of their order, above the order items."
 msgstr ""
-"Dieses HTML erscheint oberhalb der Artikelliste in der Standard \\"
-"\"Completed Order\\\" E-Mail, welche dem Kunden Aufgrund der Fertigstellung "
-"seiner Bestellung übermittelt wird."
+"Tämä html-teksti esiintyy tavallisen \"Tilaus onnistui\"-viestin yläosassa "
+"tilaustietojen yläpuolella. Se lähetetään asiakkaalle tilauksen valmistuessa."
 
-# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:702
-#, fuzzy
 msgid "Custom Completed Order Message - Text only version (Above Order Items)"
 msgstr ""
-"Eigene \\\"Completed Order\\\" Nachricht - Nur-Text Version (Überhalb der "
-"Artikelliste)"
+"Oma \"Tilaus onnistui\"-viesti - vain teksti (tilaustietojen yläpuolella)"
 
-# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:712
-#, fuzzy
 msgid "Custom Completed Order Message (Below Address)"
-msgstr "Eigene \\\"Completed Order\\\" Nachricht (Unterhalb der Adresse)"
+msgstr "Oma \"Tilaus onnistui\"-viesti (osoitetietojen alapuolella)"
 
-# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:713
-#, fuzzy
 msgid ""
 "This html appears at the bottom of the default Completed Order email, sent "
 "to the customer upon completion of their order, below their address "
 "information."
 msgstr ""
-"Diese html erscheint unten auf der voreingestellten Fertiggestellte "
-"Bestellungen Email, die dem Nutzer nach Fertigstellung der Bestellung "
-"zugeschickt wird, unter deren Adressinformationen."
+"Tämä html-teksti esiintyy tavallisen \"Tilaus onnistui\"-viestin alaosassa "
+"osoitetietojen alapuolella. Se lähetetään asiakkaalle tilauksen valmistuessa."
 
-# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:722
-#, fuzzy
 msgid "Custom Completed Order Message - Text only version (Below Address)"
 msgstr ""
-"Eigene \\\"Completed Order\\\" Nachricht - Nur Text Version (Unterhalb der "
-"Adresse)"
+"Oma \"Tilaus onnistui\"-viesti - vain teksti (osoitetietojen alapuolella)"
 
-# @ opentickets-community-edition
 #: ../inc/order/admin.class.php:723
-#, fuzzy
 msgid ""
 "This text appears at the bottom of the default Completed Order email, sent "
 "to the customer upon completion of their order, below their address "
 "information."
 msgstr ""
-"Dieser Text erscheint unten auf der voreingestellten Fertiggestellte "
-"Bestellungen Email, die dem Nutzer nach Fertigstellung der Bestellung "
-"zugeschickt wird, unter deren Adressinformationen."
+"Tämä teksti esiintyy tavallisen \"Tilaus onnistui\"-viestin alaosassa "
+"osoitetietojen alapuolella. Se lähetetään asiakkaalle tilauksen valmistuessa."
 
-# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:17
 #: ../inc/reporting/seating.report.class.php:97
-#, fuzzy
 msgid "Seating"
-msgstr "Stuhlplan"
+msgstr "Istumajärjestys"
 
-# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:18
-#, fuzzy
 msgid ""
 "List all seats for a show, as wells as their availability and occupancy."
 msgstr ""
-"Liste alle Plätze der Veranstaltung auf. Sowohl Freie als auch Belegte."
+"Listaa näytöksen kaikki istumapaikat sekä niiden saatavuuden ja käytön."
 
-# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:24
-#, fuzzy
 msgid "Not Paid"
-msgstr "Nicht bezahlt"
+msgstr "Ei maksettu"
 
-# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:25
-#, fuzzy
 msgid "Paid"
-msgstr "Bezahlt"
+msgstr "Maksettu"
 
-# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:26
-#, fuzzy
 msgid "Checked In"
-msgstr "Eingechecked"
+msgstr "Kirjattu sisään"
 
-# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:83
-#, fuzzy
 msgid "Seating Report note"
-msgstr "Sitzplan Information"
+msgstr "Istumajärjestyksen raportti"
 
-# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:173
-#, fuzzy
 msgid "Year:"
-msgstr "Jahr:"
+msgstr "Vuosi:"
 
-# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:176
-#, fuzzy
 msgid "[All Years]"
-msgstr "[Alle Jahre]"
+msgstr "[Kaikki vuodet]"
 
-# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:182
 #: ../inc/venues/event-area/pricing.class.php:559
 #: ../inc/venues/event-area/pricing.class.php:626
 #: ../templates/checkin/already-occupied.php:25
 #: ../templates/checkin/occupy-failure.php:25
 #: ../templates/checkin/occupy-success.php:25
-#, fuzzy
 msgid "Event:"
-msgstr "Veranstaltung"
+msgstr "Tapahtuma:"
 
-# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:195
-#, fuzzy
 msgid "Lookup Showings"
-msgstr "Auswahl anzeigen"
+msgstr "Hae näytökset"
 
-# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:227
-#, fuzzy
 msgid "Showing:"
-msgstr "Veranstaltung:"
+msgstr "Näytös"
 
-# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:230
 #, fuzzy
 msgid "m-d-Y g:ia"
-msgstr "H:i"
+msgstr "d-m-Y"
 
 #: ../inc/reporting/seating.report.class.php:232
 #, php-format
 msgid "%s [%s]"
 msgstr ""
 
-# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:240
-#, fuzzy
 msgid "Show Report"
-msgstr "Zeige Bericht"
+msgstr "Näytä raportti"
 
-# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:366
-#, fuzzy
 msgid "<p><em>Could not find that event.</em></p>"
-msgstr "<p><em>Kann diese Veranstaltung nicht finden.</em></p>"
+msgstr "<p><em>Tapahtumaa ei löytynyt.</em></p>"
 
-# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:504
-#, fuzzy
 msgid "Purchaser"
-msgstr "Besteller"
+msgstr "Ostaja"
 
-# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:505
-#, fuzzy
 msgid "Order #"
-msgstr "Bestellnummer"
+msgstr "Tilaus #"
 
-# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:506
-#, fuzzy
 msgid "Ticket Type"
-msgstr "Ticketart"
+msgstr "Lipun tyyppi"
 
-# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:507
-#, fuzzy
 msgid "Quantity"
-msgstr "Menge"
+msgstr "Määrä"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/reporting/seating.report.class.php:509
 #: ../inc/sys/core-hacks.class.php:872
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:80
-#, fuzzy
 msgid "Phone"
-msgstr "Telefon"
+msgstr "Puhelin"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/reporting/seating.report.class.php:510
 #: ../inc/sys/core-hacks.class.php:880 ../inc/sys/core-hacks.class.php:882
 #: ../inc/sys/core-hacks.class.php:977 ../inc/sys/core-hacks.class.php:979
@@ -1544,37 +1218,26 @@ msgstr "Telefon"
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:229
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:319
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:321
-#, fuzzy
 msgid "Address"
-msgstr "Adresse"
+msgstr "Osoite"
 
-# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:511
-#, fuzzy
 msgid "Note"
-msgstr "Hinweis"
+msgstr "Huomio"
 
-# @ opentickets-community-edition
 #: ../inc/reporting/seating.report.class.php:516
-#, fuzzy
 msgid "Ticket Url"
-msgstr "Ticket Url"
+msgstr "Lipun Url"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:158
-#, fuzzy
 msgid "Reports"
-msgstr "Bericht"
+msgstr "Raportit"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:237
-#, fuzzy
 msgid "Allow OpenTickets Stats?"
-msgstr "Erlaube OpenTickets Stats?"
+msgstr "Hyväksy statistiikan kerääminen OpenTicketsille?"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:238
-#, fuzzy
 msgid ""
 "OpenTickets is always being improved, thanks to users like you. To help us "
 "improve this product, would you allow us collect some basic information "
@@ -1584,991 +1247,686 @@ msgid ""
 "installation, and will be used to help us understand which plugins and "
 "themes we need to be compatible with."
 msgstr ""
-"Dank Nutzer wie dir, wird OpenTicket ständig verbessert. Würdest du uns "
-"erlauben ein paar Grundinformationen über deine Installation zu sammeln, um "
-"das Produkt weiterhin zu verbessern, so wie es schon viele andere getan "
-"haben? Wir Rückverfolgen keine Informationen unserer Nutzer. Ihre "
-"Datensicherheit und Privatsphäre wird respektiert. Die Informationen die mit "
-"uns geteilt werden sind lediglich Informationen zu Ihrer WordPress "
-"Installation. Diese sollen uns dabei helfen zu erfahren mit welchen PlugIns "
-"und Themes OpenTicket kompatibel sein muss."
+"OpenTicketsiä parannetaan jatkuvasti, kiitos kaltaistesi käyttäjien. "
+"Antamalla monien muiden tavoin kehittäjille luvan kerätä joitakin "
+"perustietoja asennuksestasi autat kehitystyötä edelleen. Mitään käyttäjien "
+"tietoja ei kerätä, joten turvallisuus ja yksityisyys eivät kärsi. "
+"Tarkasteltavat tiedot koskevat puhtaasti WordPress-asennusta ja niitä "
+"käytetään määrittämään, minkä lisäosien ja teemojen kanssa OpenTicketsin "
+"tulisi olla yhteensopiva."
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:242
-#, fuzzy
 msgid "Yes"
-msgstr "Sì"
+msgstr "Kyllä"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:249
-#, fuzzy
 msgid "Dismiss"
-msgstr "Ablehnen"
+msgstr "Hylkää"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:280
-#, fuzzy
 msgid "Fair enough. Thanks anyways."
-msgstr "Fair genug. Danke trotzdem."
+msgstr "Hyvä on. Kiitos kuitenkin."
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:286
-#, fuzzy
 msgid "Thanks a bunch."
-msgstr "Riesen Dank."
+msgstr "Kiitos paljon."
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:305
-#, fuzzy
 msgid "Title"
-msgstr "Titel"
+msgstr "Otsikko"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:306
-#, fuzzy
 msgid "Author"
-msgstr "Autor"
+msgstr "Kirjoittaja"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:307
-#, fuzzy
 msgid "Author Name"
-msgstr "Autoren-Name"
+msgstr "Kirjoittajan nimi"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:308
-#, fuzzy
 msgid "Author URI"
-msgstr "Autoren URI"
+msgstr "Kirjoittajan URI"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:309
-#, fuzzy
 msgid "Description"
-msgstr "Beschreibung"
+msgstr "Kuvaus"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:310
-#, fuzzy
 msgid "Version"
-msgstr "Version"
+msgstr "Versio"
 
-# @ opentickets-community-edition
-# @ default
 #: ../inc/sys/admin-menu.class.php:312
-#, fuzzy
 msgid "Template"
-msgstr "Vorlage"
+msgstr "Malline"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:313
-#, fuzzy
 msgid "Stylesheet"
-msgstr "Stylesheet"
+msgstr "Tyylitiedosto"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:314 ../inc/sys/admin-menu.class.php:324
-#, fuzzy
 msgid "Template Files"
-msgstr "Template-Dateien"
+msgstr "Mallineet"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:315 ../inc/sys/admin-menu.class.php:324
-#, fuzzy
 msgid "Stylesheet Files"
-msgstr "Stylesheet-Dateien"
+msgstr "Tyylitiedostot"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:316
-#, fuzzy
 msgid "Template Dir"
-msgstr "Template-Ordner"
+msgstr "Mallineiden hakemisto"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:317
-#, fuzzy
 msgid "Stylesheet Dir"
-msgstr "Stylesheet-Ordner"
+msgstr "Tyylitiedostojen hakemisto"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:318
-#, fuzzy
 msgid "Screenshot"
-msgstr "Screenshot"
+msgstr "Kuvakaappaus"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:319
-#, fuzzy
 msgid "Tags"
-msgstr "Schlagwörter"
+msgstr "Tagit"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:320
-#, fuzzy
 msgid "Theme Root"
-msgstr "Theme-Hauptverzeichnis"
+msgstr "Teeman juuri"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:321
-#, fuzzy
 msgid "Theme Root URI"
-msgstr "Theme-Hauptverzeichnis URI"
+msgstr "Teeman juuren URI"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:322
-#, fuzzy
 msgid "Parent Theme"
-msgstr "Haupt-Theme"
+msgstr "Alkuperäinen teema"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:375
-#, fuzzy
 msgid "Add %singular%"
-msgstr "Hinzufügen"
+msgstr "Lisää %singular%"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:376
-#, fuzzy
 msgid "Add New %singular%"
-msgstr "neu hinzufügen"
+msgstr "Lisää uusi %singular%"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:377
-#, fuzzy
 msgid "Edit %singular%"
-msgstr "Anpassen"
+msgstr "Muokkaa %singular%"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:378
-#, fuzzy
 msgid "New %singular%"
-msgstr "neu"
+msgstr "Uusi %singular%"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:379
-#, fuzzy
 msgid "All %plural%"
-msgstr "Alle  "
+msgstr "Kaikki %plural%"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:380
-#, fuzzy
 msgid "View %singular%"
-msgstr "Ansehen"
+msgstr "Tarkastele %singular%"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:381
-#, fuzzy
 msgid "Search %plural%"
-msgstr "Suchen "
+msgstr "Etsi %plural%"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:382
-#, fuzzy
 msgid "No %lplural% found"
-msgstr "Nichts  gefunden"
+msgstr "%lplural% ei löytynyt"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:383
-#, fuzzy
 msgid "No %lplural% found in Trash"
-msgstr "Nichts im Papierkorb gefunden"
+msgstr "Ei %lplular% Roskakorissa"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:452
-#, fuzzy
 msgid "Global Settings"
-msgstr "Grundeinstellungen"
+msgstr "Globaalit asetukset"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:460
-#, fuzzy
 msgid "Allow Statistics"
-msgstr "Erlaube Statistik"
+msgstr "Salli statistiikka"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:461
-#, fuzzy
 msgid ""
 "Allow OpenTickets to gather information about your WordPress installation."
-msgstr ""
-"Erlaube OpenTickets Informationen über Ihre WordPress Installation zu "
-"sammeln."
+msgstr "Salli OpenTicketsin kerätä tietoa WordPress-asennuksestasi."
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:462
-#, fuzzy
 msgid ""
 "This information is strictly used to make this product better and more "
 "compatible with other plugins."
 msgstr ""
-"Diese Informationen werden ausschließlich nur zur Verbesserung dieses "
-"Produktes und zur Steigerung der Kompatibilität mit anderen PlugIns genutzt."
+"Tätä tietoa käytetään vain ja ainoastaan tuotteen toimintojen ja "
+"yhteensopivuuden parantamiseen."
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:470
-#, fuzzy
 msgid "Event Link Slug"
-msgstr "Veranstaltungs-Link Reglette"
+msgstr "Tapahtumalinkkien etuliite"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:471
-#, fuzzy
 msgid ""
 "The url slug that is prepended to the event name in the url. (ex: "
 "<code>http://example.com/<strong>event</strong>/my-event/</code>)"
 msgstr ""
-"Die url Reglette die dem Veranstaltungsnamen in der url vorangestellt wird. "
-"(Bsp.: <code>http://example.com/<strong>Veranstaltung</strong>/my-event/</"
-"code>)"
+"URL-etuliite, joka esiintyy tapahtumien nimissä (esim: <code>http://example."
+"com/<strong>event</strong>/my-event/</code> )"
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-menu.class.php:472
-#, fuzzy
 msgid "This is the segment of the url that preceeds the event name."
-msgstr ""
-"Dies ist das Segment der url, welches dem Veranstaltungsnamen voraus geht."
+msgstr "Tämä on tapahtuman nimeä edeltävä osa URL:ia."
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-settings.php:52
-#, fuzzy
 msgid "Action failed. Please refresh the page and retry."
-msgstr ""
-"Vorgang fehlgeschlagen. Bitte aktualisieren Sie die Seite und wiederholen "
-"den Vorgang."
+msgstr "Toiminto epäonnistui. Päivitä sivu ja yritä uudelleen."
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-settings.php:59
-#, fuzzy
 msgid "Your settings have been saved."
-msgstr "Die Einstellungen wurden gespeichert."
+msgstr "Asetukset on tallennettu."
 
-# @ opentickets-community-edition
 #: ../inc/sys/admin-settings.php:139
-#, fuzzy
 msgid "The changes you made will be lost if you navigate away from this page."
-msgstr ""
-"Wenn Sie von der Seite wegnavigieren werden Ihre Änderungen verloren gehen."
+msgstr "Tekemäsi muutokset katoavat, jos poistut tältä sivulta."
 
-# @ opentickets-community-edition
 #: ../inc/sys/base-widget.class.php:28
-#, fuzzy
 msgid "New Widget"
-msgstr "Neues Widget"
+msgstr "Uusi Vimpain"
 
-# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:101
-#, fuzzy
 msgid "View Order Receipt"
-msgstr "Bestellschein ansehen"
+msgstr "Katso tilauksen kuitti"
 
-# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:113
-#, fuzzy
 msgid "Preview"
-msgstr "Vorschau"
+msgstr "Esikatselu"
 
-# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:126
-#, fuzzy
 msgid "Bypass Process"
-msgstr "Umleitungsprozess"
+msgstr "Ohita prosessointi"
 
-# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:127
-#, fuzzy
 msgid ""
 "Checking this box bypasses the Processing step and marks the order as "
 "Complete. (if other products in an order require processing, the order will "
 "still goto processing)"
 msgstr ""
-"Aktivieren Sie dieses Kästchen dann wird der Prozessschritt übergangen und "
-"die Bestellung als fertiggestellt markiert. (Falls andere Produkte in einer "
-"Bestellung den Verarbeitungsprozess durchlaufen, wird die Bestellung "
-"trotzdem weiter bearbeitet)"
+"Tämän valitseminen ohittaa \"Prosessoidaan\"-vaiheen ja merkitsee tilauksen "
+"Valmiiksi. (Jos tilaukset muut tuotteet vaativat prosessointia, tilaus jää "
+"silloin prosessoitavaksi)."
 
-# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:271
-#, fuzzy
 msgid "Discounts"
-msgstr "Nachlässe"
+msgstr "Alennus"
 
-# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:275
-#, fuzzy
 msgid "Cart Discount:"
-msgstr "Einkaufswagennachlass"
+msgstr "Ostoskorin alennus:"
 
-# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:275
-#, fuzzy
 msgid "Discounts before tax - calculated by comparing subtotals to totals."
 msgstr ""
-"Nachlässe vor Steuer - Berechnung durch Vergleich Zwischensummen mit Summen."
+"Alennukset ennen veroa - lasketaan vertaamalla välisummaa ja loppusummaa."
 
-# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:283
-#, fuzzy
 msgid "Order Discount:"
-msgstr "Bestellrabatt:"
+msgstr "Tilauksen alennus:"
 
-# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:283
-#, fuzzy
 msgid "Discounts after tax - user defined."
-msgstr "Nachlässe nach Steuer - Nutzer festgelegt"
+msgstr "Alennus veron jälkeen - käyttäjän määrittämä."
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:318
 #: ../templates/admin/meta-boxes/views/html-order-items.php:162
 #: ../templates/admin/meta-boxes/views/html-order-shipping.php:20
-#, fuzzy
 msgid "Shipping"
-msgstr "Versand"
+msgstr "Toimitus"
 
-# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:322
-#, fuzzy
 msgid "Label:"
-msgstr "Etikett:"
+msgstr "Tunniste:"
 
-# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:323
-#, fuzzy
 msgid "The shipping title the customer sees"
-msgstr "Versandadresse welche der Kunde sieht"
+msgstr "Asiakkaan näkemä toimitusnimi"
 
-# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:330
-#, fuzzy
 msgid "Cost:"
-msgstr "Kosten:"
+msgstr "Hinta:"
 
-# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:331
-#, fuzzy
 msgid "(ex. tax)"
-msgstr "(exkl. Steuer)"
+msgstr "(veroton)"
 
-# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:338
-#, fuzzy
 msgid "Method:"
-msgstr "Methode:"
+msgstr "Menetelmä"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:340 ../inc/sys/core-hacks.class.php:446
 #: ../templates/admin/meta-boxes/views/html-order-shipping.php:26
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:272
-#, fuzzy
 msgid "N/A"
-msgstr "N/A"
+msgstr "Ei saatavilla"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:360 ../inc/sys/core-hacks.class.php:362
 #: ../inc/sys/core-hacks.class.php:462 ../inc/sys/core-hacks.class.php:464
 #: ../templates/admin/meta-boxes/views/html-order-shipping.php:42
 #: ../templates/admin/meta-boxes/views/html-order-shipping.php:44
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:286
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:288
-#, fuzzy
 msgid "Other"
-msgstr "Andere"
+msgstr "Muu"
 
-# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:377
-#, fuzzy
 msgid "Tax Rows"
-msgstr "Steuer Zeilen"
+msgstr "Verotus"
 
-# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:402
-#, fuzzy
 msgid "+ Add tax row"
-msgstr "+ Steuer Zeilen hinzufügen"
+msgstr "+ Lisää verotus"
 
-# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:402
-#, fuzzy
 msgid ""
 "These rows contain taxes for this order. This allows you to display multiple "
 "or compound taxes rather than a single total."
 msgstr ""
-"Diese Zeilen beinhalten Steuern für diese Bestellung. Dies ermöglicht die "
-"Anzeige mehrerer Steuersätze oder zusammengesetzter Steuersätze als auch "
-"eines Gesamtsteuersatzes."
+"Nämä rivit sisältävät tilauksen verotuksen. Näin voidaan esittää "
+"moninkertainen tai yhdistetty verotus yksittäisen loppusumman sijaan."
 
-# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:406
-#, fuzzy
 msgid "Tax Totals"
-msgstr "Gesamtsteuer"
+msgstr "Verot yhteensä"
 
-# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:410
-#, fuzzy
 msgid "Sales Tax:"
-msgstr "Umsatzsteuer:"
+msgstr "Myynnin verot:"
 
-# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:410
-#, fuzzy
 msgid "Total tax for line items + fees."
-msgstr "Gesamtsteuer für Einzelposten + Gebühren."
+msgstr "Tuotteiden kokonaisverot +maksut."
 
-# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:418
-#, fuzzy
 msgid "Shipping Tax:"
-msgstr "Umsatzsteuer für Verand:"
+msgstr "Toimituksen verot:"
 
-# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:432
-#, fuzzy
 msgid "Order Totals"
-msgstr "Summe Bestellungen"
+msgstr "Tilauksen loppusumma"
 
-# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:436
-#, fuzzy
 msgid "Order Total:"
-msgstr "Summe Bestellung:"
+msgstr "Tilaus yhteensä:"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:444
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:270
-#, fuzzy
 msgid "Payment Method:"
-msgstr "Zahlungsmethode:"
+msgstr "Maksutapa:"
 
-# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:478
-#, fuzzy
 msgid "Calc taxes"
-msgstr "Berechnete Steuern"
+msgstr "Laske verot"
 
-# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:480
-#, fuzzy
 msgid "Calc totals"
-msgstr "Berechnete Summen"
+msgstr "Laske loppusumma"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:507
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:54
-#, fuzzy
 msgid "Delete note"
-msgstr "Anmerkung löschen"
+msgstr "Poista huomio"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:539 ../inc/sys/core-hacks.class.php:778
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:208
-#, fuzzy
 msgid "Guest"
-msgstr "Gast"
+msgstr "Vieras"
 
-# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:744
-#, fuzzy
 msgid "Order Details"
-msgstr "Bestelldetails"
+msgstr "Tilauksen tiedot"
 
-# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:747
-#, fuzzy
 msgid "Order number"
-msgstr "Bestellnummer"
+msgstr "Tilausnumero"
 
-# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:752
-#, fuzzy
 msgid "Customer IP:"
-msgstr "Kunden IP:"
+msgstr "Asiakkaan IP:"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:759
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:181
-#, fuzzy
 msgid "General Details"
-msgstr "Allgemeine Details"
+msgstr "Yleiset tiedot"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:761
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:187
-#, fuzzy
 msgid "Order status:"
-msgstr "Bestellstatus:"
+msgstr "Tilauksen tila:"
 
-# @ opentickets-community-edition
 #: ../inc/sys/core-hacks.class.php:771
-#, fuzzy
 msgid "Order Date:"
-msgstr "Bestelldatum:"
+msgstr "Tilauksen päivämäärä"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:772
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:184
-#, fuzzy
 msgid "h"
-msgstr "h"
+msgstr "t"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:772
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:184
-#, fuzzy
 msgid "m"
 msgstr "m"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:776
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:206
-#, fuzzy
 msgid "Customer:"
-msgstr "Kunde:"
+msgstr "Asiakas:"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:818
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:366
-#, fuzzy
 msgid "Customer Note:"
-msgstr "Kundenmitteilung:"
+msgstr "Asiakashuomautus:"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:819
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:367
-#, fuzzy
 msgid "Customer's notes about the order"
-msgstr "Kundenmitteilung die Bestellung betreffend"
+msgstr "Asiakkaan huomautukset tilauksesta:"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:827
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:221
-#, fuzzy
 msgid "Billing Details"
-msgstr "Rechnungsdetails"
+msgstr "Laskutustiedot"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:839 ../inc/sys/core-hacks.class.php:942
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:47
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:94
-#, fuzzy
 msgid "Company"
-msgstr "Firma/Unternehmen"
+msgstr "Yritys"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:843 ../inc/sys/core-hacks.class.php:946
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:51
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:98
-#, fuzzy
 msgid "Address 1"
-msgstr "Adresse 1"
+msgstr "Osoite 1"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:847 ../inc/sys/core-hacks.class.php:950
 #: ../inc/venues/post-type.class.php:208
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:55
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:102
-#, fuzzy
 msgid "Address 2"
-msgstr "Adresse 2"
+msgstr "Osoite 2"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:851 ../inc/sys/core-hacks.class.php:954
 #: ../inc/venues/post-type.class.php:209
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:59
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:106
-#, fuzzy
 msgid "City"
-msgstr "Stadt"
+msgstr "Kaupunki"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:855 ../inc/sys/core-hacks.class.php:958
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:63
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:110
-#, fuzzy
 msgid "Postcode"
-msgstr "Postleitzahl"
+msgstr "Postinumero"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:859 ../inc/sys/core-hacks.class.php:962
 #: ../inc/venues/post-type.class.php:212
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:67
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:114
-#, fuzzy
 msgid "Country"
-msgstr "Land"
+msgstr "Maa"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:862 ../inc/sys/core-hacks.class.php:965
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:70
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:117
-#, fuzzy
 msgid "Select a country&hellip;"
-msgstr "Wählen sie ein Land&hellip;"
+msgstr "Valitse maa&hellip;"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:865 ../inc/sys/core-hacks.class.php:968
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:73
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:120
-#, fuzzy
 msgid "State/County"
-msgstr "Bundesland/Kreis"
+msgstr "Maakunta"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:882
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:229
-#, fuzzy
 msgid "No billing address set."
-msgstr "Keine Rechnungsadresse hinterlegt."
+msgstr "Laskutusosoitetta ei asetettu."
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:895
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:247
-#, fuzzy
 msgid "Load billing address"
-msgstr "Lade Rechnungsadresse"
+msgstr "Lataa laskutusosoite"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:930
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:313
-#, fuzzy
 msgid "Shipping Details"
-msgstr "Versanddetails"
+msgstr "Toimitustiedot"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:979
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:321
-#, fuzzy
 msgid "No shipping address set."
-msgstr "Keine Versandadresse hinterlegt."
+msgstr "Toimitusosoitetta ei asetettu."
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:992
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:345
-#, fuzzy
 msgid "Load shipping address"
-msgstr "Lade Versandadresse"
+msgstr "Lataa toimitusosoite"
 
-# @ opentickets-community-edition
-# @ woocommerce
 #: ../inc/sys/core-hacks.class.php:992
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:345
-#, fuzzy
 msgid "Copy from billing"
-msgstr "Von der Rechnung kopieren"
+msgstr "Kopioi laskutustiedoista"
 
-# @ opentickets-community-edition
 #: ../inc/sys/db-upgrade.php:83
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "The DB tables [%s] are not at the most current versions. Attempting to "
 "upgrade them."
 msgstr ""
-"Die DB [%s] Tabellen sind nicht auf den neuesten Stand. Versuchen Sie diese "
-"zu aktualisieren."
+"Tietokantataulut [%s] eivät vastaa viimeisintä versiota. Yritetään "
+"päivitystä."
 
-# @ opentickets-community-edition
 #: ../inc/sys/db-upgrade.php:122
-#, fuzzy
 msgid "types dont match"
-msgstr "Typen stimmen nicht überein"
+msgstr "tyypit eivät vastaa toisiaan"
 
-# @ opentickets-community-edition
 #: ../inc/sys/db-upgrade.php:127
-#, fuzzy
 msgid "nulls dont match"
-msgstr "nulls stimmen nicht überein"
+msgstr "tyhjät eivät vastaa toisiaan"
 
-# @ opentickets-community-edition
 #: ../inc/sys/db-upgrade.php:132
-#, fuzzy
 msgid "extras dont match"
-msgstr "Extras stimmen nicht überein"
+msgstr "extrat eivät vastaa toisiaan"
 
-# @ opentickets-community-edition
 #: ../inc/sys/db-upgrade.php:138
-#, fuzzy, php-format
+#, php-format
 msgid "Update to DB, table [%s], was NOT successful. %s"
-msgstr "Update der Datenbank, Tabelle [%s] war NICHT erfolgreich. %s"
+msgstr "Päivitys tietokantaan, tauluun [%s], EI onnistunut. %s"
 
-# @ opentickets-community-edition
 #: ../inc/sys/db-upgrade.php:141
-#, fuzzy, php-format
+#, php-format
 msgid "Update to DB, table [%s], was successful."
-msgstr "Aktualisierung DB, Tabelle [%s] war erfolgreich."
+msgstr "Päivitys tietokantaan, tauluun [%s] onnistui."
 
 #: ../inc/sys/deprecated.php:43 ../inc/sys/deprecated.php:45
-#, fuzzy, php-format
+#, php-format
 msgid "The \"%s\" filter"
-msgstr "Der \"%s\" Filter"
+msgstr "\"%s\"-suodin"
 
-# @ opentickets-community-edition
 #: ../inc/sys/mba.class.php:441
-#, fuzzy
 msgid "Use this image"
-msgstr "Benutze das Image"
+msgstr "Käytä tätä kuvaa"
 
-# @ opentickets-community-edition
 #: ../inc/sys/mba.class.php:449
-#, fuzzy
 msgid "Delete Permanently"
-msgstr "Dauerhaft löschen"
+msgstr "Poista pysyvästi"
 
-# @ opentickets-community-edition
 #: ../inc/sys/mba.class.php:453
-#, fuzzy
 msgid "Delete"
-msgstr "Löschen"
+msgstr "Poista"
 
-# @ opentickets-community-edition
 #: ../inc/sys/mba.class.php:456
-#, fuzzy, php-format
+#, php-format
 msgid "You are about to delete <strong>%s</strong>."
-msgstr "Sie löschen gerdade <strong>%s</strong>."
+msgstr "Olet poistamassa <strong>%s</strong>."
 
-# @ opentickets-community-edition
 #: ../inc/sys/mba.class.php:459
-#, fuzzy
 msgid "Continue"
-msgstr "Fortfahren"
+msgstr "Jatka"
 
-# @ opentickets-community-edition
 #: ../inc/sys/mba.class.php:468
-#, fuzzy
 msgid "Move to Trash"
-msgstr "Gehe zum Papierkorb"
+msgstr "Siirrä roskakoriin"
 
-# @ opentickets-community-edition
 #: ../inc/sys/mba.class.php:472
-#, fuzzy
 msgid "Undo"
-msgstr "Rückgängig machen"
+msgstr "Peruuta"
 
-# @ opentickets-community-edition
 #: ../inc/sys/mba.class.php:593
-#, fuzzy
 msgid "Select Files"
-msgstr "Wähle File"
+msgstr "Valitse tiedostot"
 
-# @ opentickets-community-edition
 #: ../inc/sys/obj.php:17
-#, fuzzy
 msgid "Could not extend. Invalid type."
-msgstr "Entpackung nicht möglich. Beschädigter Tpy."
+msgstr "Ei voitu laajentaa, virheellinen tyyppi."
 
 #: ../inc/sys/pdf.class.php:191 ../inc/sys/pdf.class.php:493
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "The %s path is not writable. Please update the permissions to allow write "
 "access."
-msgstr ""
-"Der %s Pfad ist nicht beschreibbar. Bitte ändere die Berechtigungen um das "
-"Schreiben zu zulassen."
+msgstr "Kohteeseen %s ei voida kirjoittaa. Lisää kirjoitusoikeudet."
 
 #: ../inc/sys/pdf.class.php:470
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "The %s path exists, but it cannot be read. Please update the permissions to "
 "allow read access."
-msgstr ""
-"Der %s Pfad existiert bereits, aber kann nicht gelesen werden. Bitte änderen "
-"Sie die Berechtigungen, um das Lasen zu erlauben."
+msgstr "Kohde %s on olemassa, mutta sitä ei voida lukea. Lisää lukuoikeudet."
 
 #: ../inc/sys/pdf.class.php:475
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "The %s path exists, but is not a dir. Please remove or rename the existing "
 "file, and create a directory with the cache path name."
 msgstr ""
-"Der %s Pfad existiert bereits, ist aber kein Ordner. Bitte entfernen Sie die "
-"Datei oder benennen Sie sie um und erstellen Sie einen Ordner mit dem Cache-"
-"Pfad-Namen."
+"Kohde %s on olemassa, mutta ei ole hakemisto. Poista tai nimeä tiedosto "
+"uudelleen, ja luo sen tilalle hakemisto välimuistille (cache)."
 
-# @ opentickets-community-edition
 #: ../inc/sys/pdf.class.php:483
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Could not create the %s path directory. Please update the permissions to "
 "allow write access."
-msgstr ""
-"Impossibile creare la cartella temporanea per i rapporti. Assicurarsi che i "
-"permessi per '%s' consentano al server web di creare una directory, e "
-"riprovare."
+msgstr "Kohteeseen %s ei voitu luoda hakemistoa. Lisää kirjoitusoikeudet."
 
 #: ../inc/sys/pdf.class.php:488
-#, fuzzy, php-format
+#, php-format
 msgid "Unable to create the %s path directory."
-msgstr "Der %s Pfad kann nicht erstellt werden."
+msgstr "Kohteeseen %s ei voitu luoda hakemistoa."
 
-# @ opentickets-community-edition
 #: ../inc/sys/registry.php:21
-#, fuzzy, php-format
+#, php-format
 msgid "Only one instance of %s can be created."
-msgstr "Es kann nur eine Instanz von %s erstellt werden."
+msgstr "Voitiin luoda vain yksi instanssi %s."
 
-# @ opentickets-community-edition
 #: ../inc/sys/pages/base-page.class.php:73
 #: ../inc/sys/pages/base-page.class.php:74
-#, fuzzy
 msgid "Base Page"
-msgstr "Haupt-Seite"
+msgstr "Kotisivu"
 
-# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:44
 #: ../inc/sys/pages/system-status.page.php:45
-#, fuzzy
 msgid "System Status"
-msgstr "System-Status"
+msgstr "Järjestelmän tila"
 
 #: ../inc/sys/pages/system-status.page.php:116
-#, fuzzy
 msgid ""
 "Removed all the locally cached Ticket assets. Every external asset will now "
 "be recached."
 msgstr ""
-"Alle lokal zwischengespeicherten Ticket-Assets wurden entfernt. Alle "
-"Externen-Assets werden nun neu zwischengespeichert."
+"Kaikkien paikallisten Lippujen välimuisti on tyhjennetty. Välimuisti luodaan "
+"nyt uudestaan."
 
-# @ opentickets-community
 #: ../inc/sys/pages/system-status.page.php:124
-#, fuzzy
 msgid "Purged the OTCE table versions, forcing a reinitialize of the tables."
-msgstr ""
-"Alle OTCE Tabellen-Versionen wurden gelöscht, um eine Reinitiallisierung der "
-"Tabellen zu veranlassen."
+msgstr "OTCE-taulujen versiot tuhottu, taulujen uudelleen alustus pakotettu."
 
-# @ opentickets-community
 #: ../inc/sys/pages/system-status.page.php:132
-#, fuzzy
 msgid "The order-item to ticket-table resync has been completed."
-msgstr ""
-"Die Resynchronisierung der bestellten Artikel in die Ticket-Tabelle wurde "
-"abgeschlossen."
+msgstr "Tuote- ja lipputaulujen uudelleensynkronointi on valmis."
 
-# @ opentickets-community
 #: ../inc/sys/pages/system-status.page.php:140
-#, fuzzy
 msgid ""
 "We started the order-item to ticket-table resync. This will take a few "
 "minute to complete. You will receive an email upon completion."
 msgstr ""
-"Die Resynchronisierung der bestellten Artikel in die Ticket-Tabelle wurde "
-"gestartet. Dies nimmt einige Zeit in Anspruch. Sie erhalten eine E-Mail, "
-"wenn dies abgeschlossen ist."
+"Tuote- ja lipputaulujen uudelleensynkronointi on aloitettu. Sen "
+"valmistuminen kestää muutaman minuutin. Saat silloin ilmoituksen "
+"sähköpostiin."
 
 #: ../inc/sys/pages/system-status.page.php:148
-#, fuzzy
 msgid ""
 "Failed to remove the cached ticket assets. Usually this is a permission "
 "issue."
 msgstr ""
-"Das entfernen der Ticket-Assets ist fehlgeschlagen. Oft ist dies eine "
-"falsche Einstellung der Berechtigungen."
+"Lippujen välimuistin poistaminen epäonnistui. Yleensä tämä johtuu tiedosto-"
+"oikeuksista."
 
-# @ opentickets-community
 #: ../inc/sys/pages/system-status.page.php:156
-#, fuzzy
 msgid ""
 "A problem occurred during the order-item to ticket-table resync. It did not "
 "complete."
 msgstr ""
-"Ein Problem ist während der Resynchronisierung der bestellten Artikel zur "
-"Ticket-Tabelle aufgetreten. Vorgang wurde nicht fertiggestellt."
+"Tuote- ja lipputaulujen uudelleensynkronoinnissa tapahtui ongelma. Se ei "
+"tullut valmiiksi."
 
-# @ opentickets-community
 #: ../inc/sys/pages/system-status.page.php:164
-#, fuzzy
 msgid ""
 "We could not start the background process that resyncs your order-items to "
 "the ticket-table. Try using the non-background method."
 msgstr ""
-"Wir können den Background-Prozess, welche die Resynchronisierung der "
-"bestellten Artikel zur Ticket-Tabelle durchführt, nicht starten. Versuchen "
-"Sie bitte die Non-Background Methode."
+"Taustaprosessin luominen tuote- ja lipputaulujen uudelleensynkronoinnille ei "
+"onnistunut. Yritä käyttää suoraa menetelmää."
 
-# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:190
-#, fuzzy
 msgid "Resync order items to tickets table"
-msgstr "Resynchronisiere bestellte Artikel zur Ticket Tabelle"
+msgstr "Uudelleensynkronoi tuote- ja lipputaulut."
 
-# @ openticket-community-edition
 #: ../inc/sys/pages/system-status.page.php:194
-#, fuzzy
 msgid ""
 "Looks up all order items that are ticket which have been paid for, and makes "
 "sure that they are marked in the tickets table as paid for. <strong>If you "
 "have many orders, this could take a while, during which time you should not "
 "close this window.</strong>"
 msgstr ""
-"Zoekt naar alle order-items die ook een ticket zijn en voor welke betaald is "
-"en controleerd of deze in de ticket-table staan als betaald. <strong>Als u "
-"veel orders heeft kan dit even duren. Sluit in de tussentijd dit browser "
-"vernster niet.</strong>"
+"Etsii kaikki tuotetilauksen, jotka ovat maksettuja lippuja ja varmistaa, "
+"että ne on merkitty lipputauluun maksetuiksi.<strong> Jos tilauksia on "
+"paljon, tässä voi vierähtää hetki, jonka aikana tätä ikkunaa ei tule sulkea. "
+"</strong>"
 
-# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:201
-#, fuzzy
 msgid "Background: resync order items to tickets table"
-msgstr "Bachground: resynchronisiere Bestell- Artikel zur Ticket-Tabelle"
+msgstr "Taustaprosessi: uudelleensynkronoi tuote- ja lipputaulut."
 
-# @ openticket-community-edition
 #: ../inc/sys/pages/system-status.page.php:205
-#, fuzzy
 msgid ""
 "Same as above, only all processing is done behind the scenes. This takes "
 "longer, but does not require that you keep this window open."
 msgstr ""
-"Zelfde als de optie hier boven, alleen draait het proces in de achtergrond. "
-"Dit duurt langer maar het browser scherm hoeft niet open te blijven."
+"Sama kuin yllä, mutta prosessointi tapahtuu taustalla. Tämä kestää "
+"pidempään, mutta ei vaadi ikkunan pitämistä auki."
 
-# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:212
-#, fuzzy
 msgid "Force the DB tables to re-initialize"
-msgstr "DB-Tabellen Zwangsreinitialisieren"
+msgstr "Pakota tietokantataulujen alustus"
 
-# @ openticket-community-edition
 #: ../inc/sys/pages/system-status.page.php:216
-#, fuzzy
 msgid ""
 "In some very rare cases, you may need to force the db tables to be "
 "recreated. This button, does that."
 msgstr ""
-"In sommige zeldzame gevallen is het nodig om de DB tabellen opnieuw op te "
-"bouwen. Deze knop doet dat."
+"Joissain harvinaisissa tapauksissa tietokantataulut täytyy luoda uudelleen. "
+"Se tapahtuu tästä napista."
 
 #: ../inc/sys/pages/system-status.page.php:223
-#, fuzzy
 msgid "Remove Ticket File Cache"
-msgstr "Entferne Ticket-Datei-Cache"
+msgstr "Tyhjennä Lippujen tiedostojen välimuisti"
 
 #: ../inc/sys/pages/system-status.page.php:227
 msgid ""
@@ -2576,170 +1934,141 @@ msgid ""
 "map] and css [custom tickets]) are cached locally. This will remove that "
 "cache, forcing all assets to be recached."
 msgstr ""
+"Kaikki lippujen luomiseen käytetyt paikalliset apuvälineet (kuten ulkoiset "
+"kuvat [google map] ja css [kustomoidut liput]) tallennetaan paikalliseen "
+"välimuistiin. Tämä toiminto tyhjentää välimuistin ja pakottaa työkalut "
+"luomaan sen uudelleen."
 
 #: ../inc/sys/pages/system-status.page.php:334
-#, fuzzy
 msgid "Missed one or more file during cache purge."
 msgstr ""
-"Es wurde ein oder mehrere Dateien während des Löschvorganges nicht gefunden."
+"Yhden tai useamman tiedoston poistaminen epäonnistui välimuistin "
+"tyhjennyksessä."
 
-# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:358
-#, fuzzy
 msgid "FAILED:"
-msgstr "FEHLGESCHLAGEN:"
+msgstr "EPÄONNISTUI:"
 
-# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:358
 #: ../inc/sys/pages/system-status.page.php:364
-#, fuzzy
 msgid "Background Order-Item -> Tickets Table"
-msgstr "Background Bestell-Artikel-> Ticket-Tabelle"
+msgstr "Taustaprosessi: tuotetaulu -> lipputaulu"
 
-# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:360
-#, fuzzy
 msgid ""
 "There was a problem trying to resync your order-items to the ticket-table. "
 "Try using the non-background version. If that also fails, report a bug on <a "
 "href=\"%\">the forums</a>."
 msgstr ""
-"Es gab ein Problem bei der Resynchronisierung Ihrer Bestell-Artikel zur "
-"Ticket-Tabelle. Versuchen Sie die es mit der Non-Background Version. Wenn "
-"dies ebenfalls fehlschlägt melden Sie dies als Bug im <a href=\"%\">Forum</"
-"a>."
+"Tuote- ja lipputaulujen uudelleensynkronoinnissa oli ongelma. Yritä käyttää "
+"toiminnon suoraa versiota. Jos sekään ei toimi, raportoi ongelmasta <a href="
+"\"%\">foorumilla</a>."
 
-# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:364
-#, fuzzy
 msgid "SUCCESS:"
-msgstr "ERFOLGREICH:"
+msgstr "ONNISTUI:"
 
-# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:365
-#, fuzzy
 msgid "Your order-items have been succesfully resynced with the ticket-table."
 msgstr ""
-"Ihre Bestell-Artikel wurden erfolgreich mit der Ticket-Tabelle "
-"resynchronisiert."
+"Tuotetilauksesi on onnistuneesti uudelleensynkronoitu lipputaulun kanssa."
 
-# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:648
-#, fuzzy
 msgid "Environment"
-msgstr "Umgebung"
+msgstr "Ympäristö"
 
-# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:670
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "You have less than the required amount of memory allocated. The minimum "
 "required amount is 48MB. You currently have %s."
 msgstr ""
-"Sie haben weniger als die geforderte Menge an Speicher zugewiesen. Das "
-"Minimum beträgt 48MD. Sie haben derzeit %s."
+"Sinulla on käytössä vähemmän muistia kuin tarvitset. Vähimmäisvaatimus on "
+"48MB, sinulla on vain %s."
 
-# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:675
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Please <a href=\"%s\">increase your memory allocation</a> to at least 48MB."
-msgstr "Bitte <a href=\"%s\">erhöhen Sie die Speicherzuweisung</a> auf 48MB."
+msgstr "<a href=\"%s\">Nosta muistin määräksi</a> vähintään 48MB."
 
-# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:680
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "You have more than the minimum required memory, but we still recommend you "
 "use allocate at least 64MB. You currently have %s."
 msgstr ""
-"Sie haben mehr als das erforderliche Minimun an erforderlichen Speicher, "
-"aber wir empfehlen 64MB zu zuteilen. Sie haben derzeit %s."
+"Käytössäsi oleva muistin määrä on suurempi kuin vähimmäisvaatimus, mutta "
+"suosittelemme silti vähintään 64MB. Tällä hetkellä sinulla on %s."
 
-# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:685
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "We strongly recommend that you <a href=\"%s\">increase your memory "
 "allocation</a> to at least 48MB."
 msgstr ""
-"Wir empfehlen dringend das Sie <a href=\"%s\">den zugewiesenen Speicher auf</"
-"a> 48MB erhöhen."
+"Suosittelemme vahvasti, että <a href=\"%s\">nostaisit muistin määräksi</a> "
+"vähintään 48MB."
 
-# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:689
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "You have more than the required minimum memory of 64MB. Your current total "
 "is %s."
 msgstr ""
-"Sie haben mehr als das erforderliche Minimum von 64 MB. Ihr derzeitiger "
-"Gesamtspeicher beträgt %s."
+"Sinulla on käytössä enemmän muistia kuin vähimmäisvaatimus 64MB. Nykyinen "
+"määrä on %s."
 
-# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:709
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Having your uploads directory writable not only allows you to upload your "
 "media files, but also allows OpenTickets (and other plugins) to store their "
 "file caches. Please <a href=\"%s\">make your uploads directory writable</a> "
 "for these reasons."
 msgstr ""
-"Wenn Ihr Upload-Verzeichnis beschreibbar gemacht wurde, können Sie nicht nur "
-"Media-Files hoch laden, sondern erlaubt OpenTickets ( und anderen PlugIns) "
-"ihren File-Cache zu speichern. Aus diesem Grund sollten Sie bitte <a href="
-"\"%s\">Ihr Upload-Verzeichnis beschreibbar</a> machen."
+"Kun lataushakemistoon (\"uploads\") on kirjoitusoikeudet voit lisätä sinne "
+"omia mediatiedostojasi. Lisäksi OpenTickets (ja muut liitännäiset) voivat "
+"tallentaa sinne väliaikaistiedostojaan. Näistä syistä <a href=\"%s\">lisää "
+"kirjoitusoikeudet lataushakemistoon</a>."
 
-# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:721
-#, fuzzy
 msgid "Software"
-msgstr "Software"
+msgstr "Ohjelmisto"
 
-# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:733
-#, fuzzy
 msgid "Data"
-msgstr "data"
+msgstr "Data"
 
-# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:821
-#, fuzzy, php-format
+#, php-format
 msgid "%s%s by %s"
-msgstr "%s%s durch %s"
+msgstr "%s%s tekijältä %s"
 
-# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:822
 #: ../inc/sys/pages/system-status.page.php:828
-#, fuzzy
 msgid "PARENT"
-msgstr "HAUPT"
+msgstr "POHJAUTUU"
 
-# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:827
 #: ../inc/sys/pages/system-status.page.php:873
-#, fuzzy, php-format
+#, php-format
 msgid "%s%s (%s) by %s (%s)"
-msgstr "%s%s (%s) durch %s (%s)"
+msgstr "%s%s (%s) tekijältä %s (%s)"
 
-# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:867
-#, fuzzy, php-format
+#, php-format
 msgid "<b>%s</b>%s by %s"
-msgstr "<b>%s</b>%s duch %s"
+msgstr "<b>%s</b>%s tekijältä %s"
 
-# @ opentickets-community-edition
 #: ../inc/sys/pages/system-status.page.php:868
 #: ../inc/sys/pages/system-status.page.php:874
-#, fuzzy
 msgid "ON"
-msgstr "AN"
+msgstr "PÄÄLLÄ"
 
-# @ qsot
 #: ../inc/sys/settings/frontend.php:22
-#, fuzzy
 msgid "Frontend"
-msgstr "Frontend"
+msgstr "Käyttöliittymä"
 
 #: ../inc/sys/settings/frontend.php:58
 msgid "The first image cannot be changed."
@@ -2751,1941 +2080,1389 @@ msgstr ""
 
 #: ../inc/sys/settings/frontend.php:77 ../inc/sys/settings/frontend.php:90
 #: ../inc/sys/settings/frontend.php:103
-#, fuzzy, php-format
+#, php-format
 msgid "Image #%s"
-msgstr "Bild Nr: %s"
+msgstr "Kuva #%s"
 
 #: ../inc/sys/settings/frontend.php:80 ../inc/sys/settings/frontend.php:106
 #, fuzzy
 msgid "static image"
-msgstr "Entferne Image"
+msgstr "Käytä tätä kuvaa"
 
 #: ../inc/sys/settings/frontend.php:95
-#, fuzzy
 msgid "remove image"
-msgstr "Entferne Image"
+msgstr "poista kuva"
 
 #: ../inc/sys/settings/frontend.php:96 ../inc/ticket/ticket.class.php:607
 #: ../inc/ticket/ticket.class.php:624
-#, fuzzy
 msgid "no image"
-msgstr "Entferne Image"
+msgstr "ei kuvaa"
 
-# @ qsot
 #: ../inc/sys/settings/frontend.php:125
-#, fuzzy
 msgid "Frontend Styles"
-msgstr "Frontend"
+msgstr "Käyttöliittymän ulkoasu"
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:140
-#, fuzzy
 msgid "Ticket Selection UI"
-msgstr "Ticket Auswahl UI"
+msgstr "Lipun valinnan käyttöliittymä"
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:142
-#, fuzzy
 msgid "Form BG"
-msgstr "Formular BG"
+msgstr "Kyselyn taustaväri"
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:145
-#, fuzzy
 msgid ""
 "Background color of the \"reserve some tickets\" form on the event page."
-msgstr ""
-"Hintergrundfarbe des \"Wieviele Tickets\"-Formulars auf der "
-"Veranstaltungsseite."
+msgstr "Taustan väri \"varaa lippuja\"-kyselyllä tapahtumasivulla"
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:148
-#, fuzzy
 msgid "Form Border"
-msgstr "Formular-Rahmen"
+msgstr "Kyselyn reunat"
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:151
-#, fuzzy
 msgid "Border color around the \"reserve some tickets\" form."
-msgstr "Rahmenfarbe um das \"Wieviele Tickets\"-Formular."
+msgstr "Reunojen väri \"varaa lippuja\"-kyselyn ympärillä."
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:154
-#, fuzzy
 msgid "Action BG"
-msgstr "Aktion BG"
+msgstr "Toiminnon taustaväri"
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:157
-#, fuzzy
 msgid ""
 "Background of the \"action\" section, below the \"reserve some tickets\" "
 "form, where the proceed to cart button appears."
 msgstr ""
-"Hintergrund der \"Aktion\"-Sektion unterhalb des \"Wieviele Tickets\"-"
-"Formulars, wo der \"zum Warenkorb\" Button erscheint."
+"Taustan väri \"toiminto\"-osiolle  \"varaa lippuja\"-kyselyn alapuolella, "
+"jonne \"jatka ostoskoriin\"-painike ilmestyy."
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:160
-#, fuzzy
 msgid "Helper"
-msgstr "Helfer"
+msgstr "Avustaja"
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:163
-#, fuzzy
 msgid "Text color of the \"helper text\" on the \"reserve some tickets\" form."
-msgstr ""
-"Textfarbe des \"Helfer Text\" auf dem \\\"\\Wieviele Tickets\"-Formular."
+msgstr "Tekstin väri \"Avustaja\"-tekstille \"varaa lippuja\"-kyselyssä."
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:168
-#, fuzzy
 msgid "Bad BG"
-msgstr "Fehler BG"
+msgstr "Virheen taustaväri"
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:171
-#, fuzzy
 msgid ""
 "Background color of the error message block on the \"reserve some tickets\" "
 "form."
-msgstr ""
-"Hintergrundfarbe des Fehler-Nachrichten Blocks auf dem \"Wieviele Tickets\"-"
-"Formulars."
+msgstr "Taustaväri virheilmoitukselle \"varaa lippuja\"-kyselyssä."
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:174
-#, fuzzy
 msgid "Bad Border"
-msgstr "Fehler Rahmen"
+msgstr "Virheen reuna"
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:177
-#, fuzzy
 msgid ""
 "Border color around the error message block on the \"reserve some tickets\" "
 "form."
-msgstr ""
-"Rahmenfarbe um den Fehler-Nachrichten Block auf dem \"Wieviele Tickets\"-"
-"Formular."
+msgstr "Reunan väri virheilmoitukselle \"varaa lippuja\"-kyselyssä."
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:180
-#, fuzzy
 msgid "Bad Text"
-msgstr "Fehler Text"
+msgstr "Virheen teksti"
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:183
-#, fuzzy
 msgid ""
 "Text color of the error message block on the \"reserve some tickets\" form."
-msgstr ""
-"Textfarbe des Fehler-Nachrichten Blocks auf dem \"Wieviele Tickets\"-"
-"Formular."
+msgstr "Tekstin väri virheilmoituksessa \"varaa lippuja\"-kyselyssä."
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:188
-#, fuzzy
 msgid "Good BG"
-msgstr "Gut BG"
+msgstr "Onnistumisen tausta"
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:191
-#, fuzzy
 msgid ""
 "Background color of the success message block on the \"reserve some tickets"
 "\" form."
-msgstr ""
-"Hintergrundfarbe des Erfolgsmeldung-Blocks auf dem \"Wieviele Tickets\"-"
-"Formular."
+msgstr "Taustaväri onnistumisviestille \"varaa lippuja\"-kyselyssä."
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:194
-#, fuzzy
 msgid "Good Border"
-msgstr "Gut Rahmen"
+msgstr "Onnistumisen reuna"
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:197
-#, fuzzy
 msgid ""
 "Border color around the success message block on the \"reserve some tickets"
 "\" form."
-msgstr ""
-"Rahmenfarbe des Erfolgsmeldung-Blocks auf dem \"Wieviele Tickets\"-Formular."
+msgstr "Reunan väri onnistumisviestille \"varaa lippuja\"-kyselyssä."
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:200
-#, fuzzy
 msgid "Good Text"
-msgstr "Gut Text"
+msgstr "Onnistumisen teksti"
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:203
-#, fuzzy
 msgid ""
 "Text color of the success message block on the \"reserve some tickets\" form."
-msgstr ""
-"Textfarbe des Erfolgsmeldung-Blocks auf dem \"Wieviele Tickets\"-Formular."
+msgstr "Tekstin väri onnistumisviestille \"varaa lippuja\"-kyselyssä."
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:208
-#, fuzzy
 msgid "Remove BG"
-msgstr "Entfernen BG"
+msgstr "Poiston taustaväri"
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:211
-#, fuzzy
 msgid ""
 "Background color of the remove reservation button on the \"reserve some "
 "tickets\" form."
-msgstr ""
-"Hintergrundfarbe des Reservierung-Entfernen.Buttons auf dem \"Wieviele "
-"Tickets\"-Formular."
+msgstr "Tausta väri poistopainikkeelle \"varaa lippuja\"-kyselyssä."
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:214
-#, fuzzy
 msgid "Remove Border"
-msgstr "Entfernen Rahmen"
+msgstr "Poiston reuna"
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:217
-#, fuzzy
 msgid ""
 "Border color around the remove reservation button on the \"reserve some "
 "tickets\" form."
-msgstr ""
-"Rahmenfarbe des Reservierung-Entfernen-Buttons auf dem \"Wieviele Tickets\"-"
-"Formular."
+msgstr "Reunan väri poistopainikkeelle \"varaa lippuja\"-kyselyssä."
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:220
-#, fuzzy
 msgid "Remove Text"
-msgstr "Entfernen Text"
+msgstr "Poiston teksti"
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:223
-#, fuzzy
 msgid ""
 "Text color of the remove reservation button on the \"reserve some tickets\" "
 "form."
-msgstr ""
-"Textfarbe des Reservierung-Entfernen-Buttons auf dem \"Wieviele Tickets\"-"
-"Formular."
+msgstr "Tekstin väri poistopainikkeelle \"varaa lippuja\"-kyselyssä."
 
-# @ openticket-community-edition
 #: ../inc/sys/settings/frontend.php:230
-#, fuzzy
 msgid "Calendar"
-msgstr "Kalender"
+msgstr "Tapahtumakalenteri"
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:232
-#, fuzzy
 msgid "Calendar Item BG"
-msgstr "Kalender Gegenstand BG"
+msgstr "Kalenteritapahtuman taustaväri"
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:235
-#, fuzzy
 msgid "The background color of the active items shown on the calendar."
-msgstr ""
-"Hintergrundfarbe des auf dem im Kalender gezeigten aktiven Gegenstandes."
+msgstr "Taustaväri kalenterin aktiivisille tapahtumille."
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:238
-#, fuzzy
 msgid "Calendar Item Border"
-msgstr "Kalender Gegenstand Rahmen"
+msgstr "Kalenteritapahtuman reuna"
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:241
-#, fuzzy
 msgid "The border color of the active items shown on the calendar."
-msgstr "Rahmenfarbe des auf dem im Kalender gezeigten aktiven Gegenstandes."
+msgstr "Reunan väri kalenterin aktiiviselle tapahtumalle."
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:244
-#, fuzzy
 msgid "Calendar Item Text"
-msgstr "Kalender Gegenstand Text"
+msgstr "Kalenteritapahtuman teksti"
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:247
-#, fuzzy
 msgid "The text color of the active items shown on the calendar."
-msgstr "Textfarbe des auf dem im Kalender gezeigten aktiven Gegenstandes."
+msgstr "Tekstin väri kalenterin aktiivisille tapahtumille."
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:250
-#, fuzzy
 msgid "Calendar Item Hover"
-msgstr "Kalender Gegenstand Hover"
+msgstr "Kalenteritapahtuman väri kursorin kohdalla"
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:253
-#, fuzzy
 msgid "The HOVER text color of the active items shown on the calendar."
 msgstr ""
-"HOVER Textfarbe des auf dem im Kalender gezeigten aktiven Gegenstandes."
+"Tekstin väri kalenterin tapahtumille hiiren kursorin ollessa tapahtuman "
+"päällä."
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:257
-#, fuzzy
 msgid "Past Item BG"
-msgstr "Vergangener Gegenstand BG"
+msgstr "Menneen tapahtuman taustaväri"
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:260
-#, fuzzy
 msgid ""
 "The background color of the items shown on the calendar, that have already "
 "passed."
-msgstr ""
-"Hintergrundfarbe des auf dem im Kalender gezeigten Gegenstandes der "
-"abgelaufen ist."
+msgstr "Taustaväri menneille kalenteritapahtumille."
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:263
-#, fuzzy
 msgid "Past Item Border"
-msgstr "Vergangener Gegenstand Rahmen"
+msgstr "Menneen tapahtuman reuna"
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:266
-#, fuzzy
 msgid ""
 "The border color of the active items shown on the calendari, that have "
 "already passed."
-msgstr ""
-"Rahmenfarbe des auf dem im Kalender gezeigten Gegenstandes der abgelaufen "
-"ist."
+msgstr "Reunan väri menneille kalenteritapahtumille."
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:269
-#, fuzzy
 msgid "Past Item Text"
-msgstr "Vergangener Gegenstand Text"
+msgstr "Menneen tapahtuman teksti"
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:272
-#, fuzzy
 msgid ""
 "The text color of the active items shown on the calendar, that have already "
 "passed."
-msgstr ""
-"Textfarbe des auf dem im Kalender gezeigten Gegenstandes der abgelaufen ist."
+msgstr "Tekstin värin menneille kalenteritapahtumille."
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:275
-#, fuzzy
 msgid "Past Item Hover"
-msgstr "Vergangener Gegenstand Hover"
+msgstr "Menneen tapahtuman väri kursorin kohdalla."
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:278
-#, fuzzy
 msgid ""
 "The HOVER text color of the active items shown on the calendar, that have "
 "already passed."
 msgstr ""
-"HOVER Textfarbe des auf dem im Kalender gezeigten Gegenstandes der "
-"abgelaufen ist."
+"Tekstin väri kalenterin menneille tapahtumille hiiren kurson ollessa "
+"tapahtuman päällä."
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:300
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "To edit colours %s and %s need to be writable. See <a href=\"%s\">the Codex</"
 "a> for more information."
 msgstr ""
-"Die Bearbeitungsfarben %s und %s müssen beschreibbar sein. Für mehr "
-"Informationen beachte <a href=\"%s\">den Codex</a> "
+"Värien muokkaamiseksi %s ja %s täytyy olla ylikirjoitettavia. Katso "
+"lisätietoa <a href=\"%s\">rajapintamäärittelyistä</a>."
 
-# @ opentickets-community-edition
 #: ../inc/sys/settings/frontend.php:357
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Error saving the Frontend Styles, %s is not a valid color, please use only "
 "valid colors code."
 msgstr ""
-"Fehler beim Speichern des Frontend-Styles. %s ist keine gültige Farbe. Bitte "
-"verwenden Sie einen gültigen Farbcode."
+"Virhe tallennettaessa Käyttöliittymän ulkoasua: %s ei ole kelvollinen väri. "
+"Käytä vain kelvollisia värikoodeja."
 
-# @ qsot
 #: ../inc/sys/settings/general.php:22
-#, fuzzy
 msgid "General"
-msgstr "Generale"
+msgstr "Yleiset"
 
-# @ opentickets-community-edition
 #: ../inc/sys/views/html-admin-settings.php:24
-#, fuzzy
 msgid "Save changes"
-msgstr "Änderungen Speichern"
+msgstr "Tallenna muutokset"
 
 #: ../inc/ticket/checkin.class.php:123 ../inc/ticket/ticket.class.php:406
 msgid "Could not laod the order that this ticket belongs to."
-msgstr ""
+msgstr "Tähän lippuun liittyvän tilauksen lataaminen ei onnistunut."
 
 #: ../inc/ticket/checkin.class.php:128 ../inc/ticket/ticket.class.php:413
 msgid "Could not load the order item associated with this ticket."
-msgstr ""
+msgstr "Tähän lippuun liittyvän tilauksen lataaminen ei onnistunut."
 
-# @ opentickets-community-edition
-# @ qsot
 #: ../inc/ticket/ticket.class.php:108
 #: ../inc/venues/event-area/pricing.class.php:825
 #: ../templates/tickets/basic-ticket.php:40
-#, fuzzy
 msgid "Ticket"
-msgstr "Ticket"
+msgstr "Lippu"
 
-# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:109
 #: ../templates/myaccount/my-upcoming-tickets.php:17
-#, fuzzy
 msgid "View your ticket"
-msgstr "Ihr Ticket ansehen"
+msgstr "Katso lippusi tästä"
 
-# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:110
-#, fuzzy
 msgid "View this ticket"
-msgstr "Dieses Ticket ansehen"
+msgstr "Katso tämä lippu"
 
-# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:112 ../inc/ticket/ticket.class.php:594
-#, fuzzy
 msgid "Tickets"
-msgstr "Tickets"
+msgstr "Liput"
 
-# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:113
-#, fuzzy
 msgid "View your tickets"
-msgstr "Ihre Tickets ansehen"
+msgstr "Katso pääsylippusi"
 
-# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:114
-#, fuzzy
 msgid "View these tickets"
-msgstr "Diese Tickets ansehen"
+msgstr "Katso nämä pääsyliput"
 
 #: ../inc/ticket/ticket.class.php:284 ../inc/ticket/ticket.class.php:290
 msgid "There was a problem loading your ticket."
-msgstr ""
+msgstr "Lipun lataamisessa tuli ongelma."
 
 #: ../inc/ticket/ticket.class.php:298
-#, fuzzy
 msgid "the order"
-msgstr "Bestellung ["
+msgstr "tilaus"
 
 #: ../inc/ticket/ticket.class.php:300
-#, fuzzy
 msgid "the ticket product information"
-msgstr "das Artikel Bild"
+msgstr "lipun tuotetiedot"
 
 #: ../inc/ticket/ticket.class.php:302
-#, fuzzy
 msgid "the event information"
-msgstr "Informazioni versione"
+msgstr "tapahtumatiedot"
 
 #: ../inc/ticket/ticket.class.php:304
-#, fuzzy
 msgid "the venue information"
-msgstr "Informationen über den Ort"
+msgstr "näyttämön tiedot"
 
 #: ../inc/ticket/ticket.class.php:306
-#, fuzzy
 msgid "the order item information"
-msgstr "Es fehlen benötigte Informationen: Bestellnummer."
+msgstr "tilauksen tiedot"
 
 #: ../inc/ticket/ticket.class.php:308
-#, fuzzy
 msgid "the event area information"
-msgstr "Veranstaltungsort Bild"
+msgstr "katsomon tiedot"
 
 #: ../inc/ticket/ticket.class.php:312
 #, php-format
 msgid "The following ticket data could not be loaded: %s"
-msgstr ""
+msgstr "Seuraavan lipun tietoja ei voitu ladata: %s"
 
 #: ../inc/ticket/ticket.class.php:318
 msgid "The ticket cannot be displayed, because the order is not complete."
-msgstr ""
+msgstr "Lippua ei voida näyttää, koska tilaus ei ole valmis."
 
 #: ../inc/ticket/ticket.class.php:421
 msgid ""
 "The ticket product associated with the ticket order item, could not be found."
-msgstr ""
+msgstr "Lippuun liittyvää tuotetta ei voitu löytää."
 
 #: ../inc/ticket/ticket.class.php:431
 msgid ""
 "The event information for the ticket could not be found. Perhaps the event "
 "has been removed."
 msgstr ""
+"Lippuun löytyvää tapahtumaa ei voitu löytää. Ehkä tapahtuma on poistettu."
 
-# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:507
-#, fuzzy
 msgid "The information you supplied does not match our record."
-msgstr ""
-"Die von Ihnen bereitgestellten Informationen entsprechen nicht den von uns "
-"gespeicherten."
+msgstr "Antamasi informaatio ei vastaa tietokantoja."
 
-# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:604
-#, fuzzy
 msgid "Left Ticket Image"
-msgstr "Linkes Ticket Bild"
+msgstr "Vasen lippukuva"
 
-# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:605
-#, fuzzy
 msgid "The image to show in the bottom left corner of the ticket."
-msgstr "Das Bild welches im Ticket rechts unten angezeigt wird."
+msgstr "Kuva, joka näytetään lipun vasemmassa alanurkassa."
 
-# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:608 ../inc/ticket/ticket.class.php:625
-#, fuzzy
 msgid "the Event Featured Image"
-msgstr "Das Featured Image des Events"
+msgstr "Tapahtumakuva"
 
 #: ../inc/ticket/ticket.class.php:609 ../inc/ticket/ticket.class.php:626
-#, fuzzy
 msgid "the Venue Image"
-msgstr "Entferne Image"
+msgstr "Tapahtumakuva"
 
-# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:610 ../inc/ticket/ticket.class.php:627
-#, fuzzy
 msgid "the Ticket Product Image"
-msgstr "das Artikel Bild"
+msgstr "Lipun tuotekuva"
 
 #: ../inc/ticket/ticket.class.php:621
-#, fuzzy
 msgid "Right Ticket Image"
-msgstr "Linkes Ticket Bild"
+msgstr "Oikeanpuoleinen lippukuva"
 
 #: ../inc/ticket/ticket.class.php:622
-#, fuzzy
 msgid "The image to show in the bottom right corner of the ticket."
-msgstr "Das Bild welches im Ticket rechts unten angezeigt wird."
+msgstr "Kuva, joka näytetään lipun oikeassa alanurkassa."
 
 #: ../inc/ticket/ticket.class.php:638
-#, fuzzy
 msgid "Ticket Branding Images"
-msgstr "Nessuna immagine disponibile"
+msgstr "Lipun tuotekuva"
 
 #: ../inc/ticket/ticket.class.php:639
 msgid "Images shown in the small line of branding images below each ticket."
-msgstr ""
+msgstr "Kuvat, jotka näytetään joka lipun alaosassa."
 
 #: ../inc/ticket/ticket.class.php:640
-#, fuzzy
 msgid ""
 "The recommended size of these images is 90px wide by 15px tall. Images will "
 "be constrained to 90px wide, no matter the size. Choosing \"no image\" will "
 "make a blank spot on the ticket branding row."
 msgstr ""
-"Die empfohlene Größe der Bilder liegt bei einer Breite von 90px und einer "
-"Höhe von 15px. Egal welche Größe das Bild hat, es wird auf eine Breite von "
-"90px reduziert. Wenn Sie \"no image\" wählen, wird die untere Branding-Reihe "
-"auf dem Ticket nicht angezeigt."
+"Suositeltu koko näille kuville on 90 pikseliä leveä ja 15 pikseliä korkea. "
+"Kuvat rajataan 90 pikselin leveyteen koosta riippumatta. Vaihtoehto \"ei "
+"kuvaa\" jättää pääsylippuun tyhjän kohdan."
 
-# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:651
-#, fuzzy
 msgid "Purchaser Info"
-msgstr "Käuferinformationen"
+msgstr "Asiakkaan tiedot"
 
-# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:652
-#, fuzzy
 msgid ""
 "Which information to user for the purchaser display information. Either "
 "Billing or Shipping."
 msgstr ""
-"Welche AnzeigeInformationen über den Nutzer sollen dem Käufer angezeigt "
-"werden. Entweder die Rechnung oder Lieferschein"
+"Mitä käyttäjän tietoja esitetään asikastietoina: laskutus- vai "
+"toimitustietoja."
 
-# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:654
-#, fuzzy
 msgid "the Billing Information"
-msgstr "die Rechnungsinformationen"
+msgstr "Laskutustiedot"
 
-# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:655
-#, fuzzy
 msgid "the Shipping Information"
-msgstr "die Lieferinformationen"
+msgstr "Toimitustiedot"
 
-# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:666
-#, fuzzy
 msgid "Show Order #"
-msgstr "Zeige Bestellnummer"
+msgstr "Näytä tilauksen numero"
 
-# @ opentickets-community-edition
 #: ../inc/ticket/ticket.class.php:667
-#, fuzzy
 msgid "Show the order number of the ticket, on the ticket."
-msgstr "Zeige die Bestellnummer des Tickets auf dem Ticket."
+msgstr "Näytä pääsylipussa lipun tilausnumero."
 
 #: ../inc/venues/post-type.class.php:178
 msgid "Could not load the venue information for this ticket."
-msgstr ""
+msgstr "Tämän lipun tapahtumapaikan tietoja ei voitu ladata."
 
-# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:210
-#, fuzzy
 msgid "State"
-msgstr "Bundesland"
+msgstr "Maakunta"
 
-# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:211
-#, fuzzy
 msgid "Postal Code"
-msgstr "Postleitzahl"
+msgstr "Postinumero"
 
-# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:362
-#, fuzzy
 msgid "Venue:"
-msgstr "Ort:"
+msgstr "Näyttämö:"
 
-# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:369
 #: ../inc/venues/event-area/post-type.class.php:339
-#, fuzzy
 msgid "None"
-msgstr "Nessuno"
+msgstr "Ei yhtään"
 
-# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:417
-#, fuzzy
 msgid "Venue Information"
-msgstr "Informationen über den Ort"
+msgstr "Näyttämön tiedot:"
 
-# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:426
-#, fuzzy
 msgid "Venue Social Information"
-msgstr "Soziale Informationen des Ortes"
+msgstr "Näyttämö sosiaalisessa mediassa"
 
-# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:497
-#, fuzzy
 msgid "Address:"
-msgstr "Adresse:"
+msgstr "Osoite:"
 
-# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:501
-#, fuzzy
 msgid "Address 2:"
-msgstr "Adresse 2:"
+msgstr "Osoite 2:"
 
-# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:505
-#, fuzzy
 msgid "City:"
-msgstr "Stadt:"
+msgstr "Kaupunki:"
 
 #: ../inc/venues/post-type.class.php:509
 #, fuzzy
 msgid "State or County:"
-msgstr "Provincia:"
+msgstr "Maakunta"
 
-# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:519
-#, fuzzy
 msgid "Postal Code:"
-msgstr "Postleitzahl:"
+msgstr "Postinumero:"
 
-# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:523
-#, fuzzy
 msgid "Country:"
-msgstr "Nazione:"
+msgstr "Maa:"
 
-# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:533
-#, fuzzy
 msgid "Logo Image"
-msgstr "Logo Image"
+msgstr "Logo"
 
-# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:537
-#, fuzzy
 msgid "Select Logo"
-msgstr "Wähle Logo"
+msgstr "Valitse logo"
 
-# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:538
-#, fuzzy
 msgid "Remove"
-msgstr "Entfernen"
+msgstr "Poista"
 
-# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:542
 #: ../templates/post-content/venue/contact-info.php:40
-#, fuzzy
 msgid "Notes:"
-msgstr "Anmerkungen:"
+msgstr "Huomautukset:"
 
-# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:560
-#, fuzzy
 msgid "This is what is displayed on your tickets about this venue."
-msgstr "Dies wird auf Ihren Tickets über diesen Ort stehen."
+msgstr "Tämä tulostetaan pääsylippuihin kuvauksena tapahtumapaikasta."
 
-# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:564
-#, fuzzy
 msgid "Map Instructions:"
-msgstr "Kartenanweisungen:"
+msgstr "Saapumisohjeet:"
 
-# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:582
-#, fuzzy
 msgid ""
 "Displayed below the map on your event tickets. Meant for extra directions."
-msgstr ""
-"Das wird unter der Karte auf den Veranstaltungstickets angezeigt. Gedacht "
-"für extra Anfahrtsbeschreibungen."
+msgstr "Näytetään pääsylipuissa kartan alapuolella, tarkoitettu lisäohjeille."
 
-# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:621
 #: ../templates/post-content/venue/social.php:13
-#, fuzzy
 msgid "Phone:"
-msgstr "Telefon:"
+msgstr "Puhelinnumero:"
 
-# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:625
 #: ../templates/post-content/venue/social.php:18
-#, fuzzy
 msgid "Website:"
-msgstr "Webseite:"
+msgstr "Kotisivu:"
 
 #: ../inc/venues/post-type.class.php:626 ../inc/venues/post-type.class.php:630
 #: ../inc/venues/post-type.class.php:634
-#, fuzzy
 msgid "Full URL"
-msgstr "URL FTP"
+msgstr "Täysi URL"
 
-# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:629
 #: ../templates/post-content/venue/social.php:23
-#, fuzzy
 msgid "Facebook:"
 msgstr "Facebook:"
 
-# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:633
 #: ../templates/post-content/venue/social.php:28
-#, fuzzy
 msgid "Twitter:"
 msgstr "Twitter:"
 
-# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:637
 #: ../templates/post-content/venue/social.php:33
-#, fuzzy
 msgid "Contact Email:"
-msgstr "Kontaktemail:"
+msgstr "Sähköposti:"
 
-# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:692 ../inc/venues/post-type.class.php:731
-#, fuzzy
 msgid "Venues"
-msgstr "Orte"
+msgstr "Näyttämöt"
 
-# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:693
-#, fuzzy
 msgid "Venue"
-msgstr "Ort"
+msgstr "Näyttämö"
 
 #: ../inc/venues/post-type.class.php:741
-#, fuzzy
 msgid "Show Address"
-msgstr "Risoluzione dell'indirizzo IP %s in corso"
+msgstr "Näytä osoite"
 
 #: ../inc/venues/post-type.class.php:742
 msgid "Display the venue address below the venue description?"
-msgstr ""
+msgstr "Näytetäänkö tapahtumapaikan osoite kuvauksen alapuolella?"
 
-# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:752
 #, fuzzy
 msgid "Show Map"
-msgstr "Kartenanweisungen:"
+msgstr "Näytä raportti"
 
 #: ../inc/venues/post-type.class.php:753
+#, fuzzy
 msgid "Display the venue MAP below the venue description?"
-msgstr ""
+msgstr "Näytetäänkö tapahtumapaikan osoite kuvauksen alapuolella?"
 
 #: ../inc/venues/post-type.class.php:763
-#, fuzzy
 msgid "Show Contact Info"
-msgstr "Benötige Rechnungsinformationen"
+msgstr "Näytä yhteystiedot"
 
 #: ../inc/venues/post-type.class.php:764
 msgid ""
 "Display the venue contact information and social links below the venue "
 "description?"
 msgstr ""
+"Näytetäänkö tapahtumapaikan yhteystiedot ja sosiaalisen median linkit "
+"kuvauksen alapuolella?"
 
-# @ opentickets-community-edition
 #: ../inc/venues/post-type.class.php:774
-#, fuzzy
 msgid "Show Notes"
-msgstr "Bestellanmerkungen"
+msgstr "Näytä huomautukset"
 
 #: ../inc/venues/post-type.class.php:775
 msgid ""
 "Display the additional venue notes (a meta field on the edit venue page) "
 "below the venue description?"
 msgstr ""
+"Näytetäänkö tapahtumapaikan ylimääräiset huomautukset (lisätietokenttä) "
+"kuvauksen alapuolella?"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:157
-#, fuzzy
 msgid ""
 "There are currently <span class=\"available\"></span> <span rel=\"tt\"></"
 "span> available."
-msgstr ""
-"Es sind derzeit noch <span class=\"available\"></span> <span rel=\"tt\"></"
-"span> verfügbar."
+msgstr "Tapahtumaan on vapaita paikkoja."
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:158
-#, fuzzy
 msgid ""
 "There are currently <span class=\"available\"></span> more <span rel=\"tt"
 "\"></span> available."
-msgstr ""
-"Es sind derzeit <span class=\"available\"></span>zusätzlich <span rel=\"tt"
-"\"></span> verfügbar."
+msgstr "Tapahtumaan on vapaita paikkoja."
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:159
-#, fuzzy
 msgid "We're sorry. There are currently no tickets available."
-msgstr "Es tut uns Leid. Es sind derzeit leider keine Tickets verfügbar."
+msgstr "Valitettavasti lippuja ei ole enää saatavilla."
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:160
 #: ../templates/post-content/event-area.php:123
-#, fuzzy
 msgid "We are sorry. This event is sold out!"
-msgstr "Es tut uns Leid. Die Veranstaltung ist ausverkauft!"
+msgstr "Valitettavasti tapahtuma on loppuunmyyty!"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:161
-#, fuzzy
 msgid "<h1>One Moment Please...</h1>"
-msgstr "<h1>Einen Moment bitte...</h1>"
+msgstr "<h1>Pieni hetki...</h1>"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:220
-#, fuzzy
 msgid "Step 1: How Many?"
-msgstr "Schritt 1: Wieviele Tickets?"
+msgstr "Vaihe 1: Määrän valinta"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:223
 #: ../templates/post-content/event-area.php:47
-#, fuzzy
 msgid "Reserve some tickets:"
-msgstr "Anzahl Tickets:"
+msgstr "Varaa lippuja:"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:227
 #: ../templates/post-content/event-area.php:68
-#, fuzzy
 msgid "Reserve"
-msgstr "bestellen"
+msgstr "Varaa"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:235
-#, fuzzy
 msgid "Step 2: Review"
-msgstr "Schritt 2: Überprüfung"
+msgstr "Vaihe 2: yhteenveto"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:238
 #: ../templates/post-content/event-area.php:86
-#, fuzzy
 msgid "You currently have:"
-msgstr "Sie haben derzeit:"
+msgstr "Sinulla on:"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:243
 #: ../templates/post-content/event-area.php:108
-#, fuzzy
 msgid "Update"
-msgstr "aktualisieren"
+msgstr "Päivitä"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:247
-#, fuzzy
 msgid "Proceed to Cart"
-msgstr "Zum Einkaufswagen"
+msgstr "Jatka Ostoskoriin"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:266
 #: ../inc/venues/event-area/post-type.class.php:270
-#, fuzzy
 msgid "add"
-msgstr "hinzufügen"
+msgstr "lisää"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:275
-#, fuzzy
 msgid "There are currently no areas configured. Please add one to continue."
 msgstr ""
-"Es sind derzeit keine Bereiche konfiguriert. Bitte fügen Sie einen Bereich "
-"hinzu um fortzufahren."
+"Yhtään katsomoa ei ole määritelty. Lisää ainakin yksi katsomo jatkaaksesi."
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:291
-#, fuzzy
 msgid "edit"
-msgstr "Bearbeiten"
+msgstr "muokkaa"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:292
-#, fuzzy
 msgid "delete"
-msgstr "löschen"
+msgstr "poista"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:305
-#, fuzzy
 msgid "Event Area Image"
-msgstr "Veranstaltungsort Bild"
+msgstr "Katsomon kuva"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:311
-#, fuzzy
 msgid "Select Image"
-msgstr "Wähle Bild"
+msgstr "Valitse kuva"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:315
-#, fuzzy
 msgid "Area Name"
-msgstr "Bezeichnung des Bereichs"
+msgstr "Katsomon nimi"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:319
-#, fuzzy
 msgid "Capacity"
-msgstr "Kapazität"
+msgstr "Kapasiteetti"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:323
-#, fuzzy
 msgid "Available Pricing"
-msgstr "Verfügbare Preiskategorien"
+msgstr "Hinnasto"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:328
-#, fuzzy
 msgid "save"
-msgstr "speichern"
+msgstr "tallenna"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:329
-#, fuzzy
 msgid "cancel"
-msgstr "abbrechen"
+msgstr "peru"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:356
-#, fuzzy
 msgid "This event is password protected."
-msgstr "Diese Veranstaltung ist Passwort geschützt"
+msgstr "Tämä tapahtuma on salasanasuojattu."
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:362
 #: ../inc/venues/event-area/post-type.class.php:585
 #: ../inc/venues/event-area/pricing.class.php:666
-#, fuzzy
 msgid "Invalid request. Please refresh the page and try again."
-msgstr "Ungültige Anfrage. Bitte aktualisieren Sie Ihren Browser (F5 drücken)"
+msgstr "Virheellinen pyyntö. Yritä ladata sivu uudelleen."
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:380
 #: ../inc/venues/event-area/post-type.class.php:443
 #: ../inc/venues/event-area/post-type.class.php:459
-#, fuzzy
 msgid "Updated your reservations successfully."
-msgstr "Aktualisierung der Reservierung erfolgreich."
+msgstr "Varauksen päivittäminen onnistui."
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:390
 #: ../inc/venues/event-area/post-type.class.php:451
 #: ../inc/venues/event-area/post-type.class.php:456
-#, fuzzy
 msgid "Could not update your reservations."
-msgstr "Konnte Ihre Reservierung nicht aktualisieren."
+msgstr "Varauksen päivittäminen epäonnistui."
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:393
 #: ../inc/venues/event-area/post-type.class.php:785
-#, fuzzy
 msgid "The quantity must be greater than zero."
-msgstr "Die Menge muss größer als Null sein."
+msgstr "Määrän täytyy olla suurempi kuin nolla."
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:394
 #: ../inc/venues/event-area/post-type.class.php:476
-#, fuzzy
 msgid "Could not load that event."
-msgstr "Kann die Veranstaltung nicht laden"
+msgstr "Tapahtumaa ei voitu ladata."
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:395
 #: ../inc/venues/event-area/post-type.class.php:477
-#, fuzzy
 msgid "A problem occurred when loading that event."
-msgstr "Während des Ladens ist ein Fehler aufgetreten."
+msgstr "Tapahtuman lataamisessa tapahtui virhe"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:396
-#, fuzzy
 msgid "That event does not currently have any tickets."
-msgstr "Diese Veranstaltung verfügt derzeit über keine Tickets."
+msgstr "Tapahtumaan ei ole tällä hetkellä pääsylippuja."
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:397
 #: ../inc/venues/event-area/post-type.class.php:479
-#, fuzzy
 msgid "The event does not have any tickets."
-msgstr "Die Veranstaltung verfügt über keine Tickets"
+msgstr "Tapahtumaan ei ole pääsylippuja."
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:450
-#, fuzzy
 msgid "A problem occurred when trying to remove your reservations."
-msgstr "Während der Stornierung Ihrer Reservierung ist ein Fehler aufgetreten."
+msgstr "Varauksen poistamisen yhteydessä tapahtui virhe."
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:455
-#, fuzzy
 msgid "A problem occurred when trying to update your reservations."
-msgstr "Bei der Aktualisierung Ihrer Reservierung ist ein Fehler aufgetreten."
+msgstr "Varauksen päivittämisen yhteydessä tapahtui virhe."
 
 #: ../inc/venues/event-area/post-type.class.php:469
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "There are not enough available tickets to increase the quantity of %s to %d. "
 "There are only %d available."
 msgstr ""
-"Er zijn het genoeg tickets beschikbaar op de hoeveilheid te verhogen van %s "
-"naar %d. Er zijn er maar %d beschikbaar."
+"Pääsylippuja ei ole tarpeeksi saatavilla, jotta tuotteita %s voitaisiin "
+"varata %d. Jäljellä on vain %d."
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:478
-#, fuzzy
 msgid "That event does not have currently have any tickets."
-msgstr "Diese Veranstaltung hat derzeit keine Tickets zur Verfügung."
+msgstr "Tapahtumaan ei tällä hetkellä ole pääsylippuja"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:526
-#, fuzzy
 msgid "Event Area:"
-msgstr "Veranstaltungsort:"
+msgstr "Tapahtuma-alue:"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:533
-#, fuzzy
 msgid "-None-"
-msgstr "-Keine-"
+msgstr "-Ei yhtään-"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:598
-#, fuzzy, php-format
+#, php-format
 msgid "Could not find the venue you specified [%s]."
-msgstr "Kann den gesuchten Veranstaltungsort nicht finden [%s]."
+msgstr "Määrittelemääsi tapahtumapaikkaa ei löytynyt [%s]."
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:628
-#, fuzzy
 msgid "Could not find that venue."
-msgstr "Kann diesen Veranstaltungsort nicht finden."
+msgstr "Kyseistä tapahtumapaikkaa ei löytynyt."
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:649
-#, fuzzy
 msgid "Could not save the item(s) because not enough information was provided."
-msgstr ""
-"Aufgrund zu weniger Informationen konnten die/das Item nicht gespeichert "
-"werden."
+msgstr "Kohteita ei voitu tallentaa, koska tietoja ei annettu riittävästi."
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:675
-#, fuzzy, php-format
+#, php-format
 msgid "There was a problem saving the area [%s]."
-msgstr "Es gab ein Problem bei der Speicherung des Bereiches [%s]."
+msgstr "Katsomon tallentamisessa oli ongelma [%s]."
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:786
-#, fuzzy
 msgid "Could not find that event."
-msgstr "Kann diese Veranstaltung nicht finden."
+msgstr "Tapahtumaa ei löytynyt."
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:787
-#, fuzzy
 msgid "That is not a valid order."
-msgstr "Dies ist keine gültige Bestellung."
+msgstr "Tilaus ei ole kelvollinen"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:900
 #: ../inc/venues/event-area/post-type.class.php:1259
-#, fuzzy
 msgid "Event Areas"
-msgstr "Veranstaltungsbereiche"
+msgstr "Tapahtuma-alueet"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:1199
-#, fuzzy
 msgid "(Unknown Ticket Type)"
-msgstr "(Unbekannter Ticket-Typ)"
+msgstr "(Tuntematon lipputyyppi)"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:1203
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "There are only <span class=\"available\">%s</span> %s available currently. "
 "Could not temporarily reserve %d %s."
 msgstr ""
-"Es sind nur <span class=\"available\">%s</span> %s derzeit Verfügbar. %d %s "
-"können nicht reserviert werden."
+"Tapahtumaan on tällä hetkellä vain <span class=\"available\">%s</span> %s "
+"lippuja jäljellä. %d %s ei voitu väliaikaisesti varata."
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:1214
 #: ../inc/venues/event-area/post-type.class.php:1248
-#, fuzzy
 msgid "The number of tickets must be greater than 0."
-msgstr "Die Anzahl der Tickets muss größer 0 sein."
+msgstr "Lippujen määrän täytyy olla suurempi kuin 0."
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:1235
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "There are only <span class=\"available\">%s</span> more %s available "
 "currently. Could not temporarily reserve %d more %s. You still have %d %s."
 msgstr ""
-"Es sind nur <span class=\"available\">%s</span> zusätzlich %s Verfügbar. "
-"Kann derzeit nicht %d zusätzlich %s reservieren. Sie haben %d %s."
+"Tapahtumaan on tällä hetkellä vain <span class=\"available\">%s</span> %s "
+"lippuja jäljellä. %d %s ei voitu väliaikaisesti varata. Sinulla on edelleen "
+"%d %s varattuna."
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/post-type.class.php:1260
-#, fuzzy
 msgid "Area"
-msgstr "Bereich"
+msgstr "Alue"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:438
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "There were only %d of the %s for %s available. We reserved all of them for "
 "you instead of the %d you requested."
 msgstr ""
-"Es sind nur %d von den %s für %s Verfügbar. Wir reservieren alle restlichen "
-"für Sie, anstatt der %d angefragten Tickets."
+"Vain %d %s tapahtumaan %s saatavilla. Niistä kaikki on varattuna sinulle %d "
+"sijaan, jota pyysit."
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:446
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "There were no %s for %s available to give you. We have removed it from your "
 "cart."
 msgstr ""
-"Es waren keine %s für %s verfügbar. Artikel wurde aus dem Warenkorb entfernt."
+"Ainuttakaan %s tapahtumaan %s ei ollut saatavilla. Poistimme tuotteet "
+"ostoskoristasi."
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:542
-#, fuzzy
 msgid "(no event selected)"
-msgstr "(keine Veranstaltung ausgewählt)"
+msgstr "(ei tapahtumaa valittuna)"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:627
-#, fuzzy
 msgid "Date:"
-msgstr "Datum:"
+msgstr "Päivämäärä:"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:629
-#, fuzzy
 msgid "Capacity:"
-msgstr "Kapazität:"
+msgstr "Kapasiteetti:"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:630
-#, fuzzy
 msgid "Available:"
-msgstr "Verfügbar:"
+msgstr "Saatavilla:"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:635
 #: ../inc/venues/event-area/pricing.class.php:640
-#, fuzzy
 msgid "Different Event"
-msgstr "Unterschiedliche Veranstaltung"
+msgstr "Eri tapahtuma"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:636
-#, fuzzy
 msgid "Use This Event"
-msgstr "Verwende diese Veranstaltung"
+msgstr "Käytä tätä tapahtumaa"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:649
-#, fuzzy
 msgid "Add Tickets"
-msgstr "Tickets hinzufügen"
+msgstr "Lisää lippuja"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:654
-#, fuzzy
 msgid "Loading. One moment please..."
-msgstr "Lade. Bitte warten..."
+msgstr "Ladataan. Pieni hetki..."
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:716
-#, fuzzy
 msgid "Invalid order number."
-msgstr "Ungültige Bestellnummer."
+msgstr "Virheellinen tilausnumero."
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:765
-#, fuzzy
 msgid "Could not find the new event."
-msgstr "Die neue Veranstaltung konnte nicht gefunden werden."
+msgstr "Uutta tapahtumaa ei löytynyt."
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:768
-#, fuzzy
 msgid "Could not find that order item on the order."
-msgstr "Der gesuchte Artikel konnte in der Bestellung nicht gefunden werden."
+msgstr "Kyseistä tuotetta ei löytynyt tilauksesta."
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:771
-#, fuzzy
 msgid "The order item does not appear to be valid."
-msgstr "Der bestellte Artikel scheinen nicht gültig zu sein."
+msgstr "Tilauksen tuote vaikuttaisi olevan virheellinen."
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:778
-#, fuzzy
 msgid "Add tickets"
-msgstr "Tickets hinzufügen"
+msgstr "Lisää lippuja"
 
-# @ opentickets-community-edition
 #: ../inc/venues/event-area/pricing.class.php:826
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Allows this product to be assigned as a ticket, when configuring pricing on "
 "a seating chart, for the %s plugin."
 msgstr ""
-"Erlaubt diesen Produkt als Ticket markiert zu sein, wenn die Konfiguration "
-"der Preistabelle auf dem Sitzplan stattfindet, für das %s Plug-In."
+"Tekee tästä tuotteesta Pääsylipun, jota käytetään katsomon hinnoittelemiseen "
+"%s-liitännäisessä."
 
-# @ opentickets-community-edition
 #: ../templates/admin/meta-boxes/views/html-order-fee.php:13
-#, fuzzy
 msgid "Fee"
-msgstr "Gebühren"
+msgstr "Maksu"
 
-# @ opentickets-community-edition
 #: ../templates/admin/meta-boxes/views/html-order-fee.php:16
-#, fuzzy
 msgid "Fee Name"
-msgstr "Gebührenbezeichnung"
+msgstr "Maksun nimi"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-item.php:12
-#, fuzzy
 msgid "Product ID:"
-msgstr "Produktnummer"
+msgstr "Tuotteen ID:"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-item.php:15
 #: ../templates/admin/meta-boxes/views/html-order-item.php:17
-#, fuzzy
 msgid "Variation ID:"
-msgstr "Variantennummer:"
+msgstr "Muunnelman ID:"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-item.php:17
-#, fuzzy
 msgid "No longer exists"
-msgstr "Existiert nicht mehr"
+msgstr "Ei ole enää olemassa"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-item.php:21
-#, fuzzy
 msgid "Product SKU:"
-msgstr "Produkt SKU"
+msgstr "Tuotteen SKU:"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-item.php:138
-#, fuzzy
 msgid "Add&nbsp;meta"
-msgstr "Hinzufügen&nbsp;meta"
+msgstr "Lisää&nbsp;meta"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-item.php:200
 #: ../templates/admin/meta-boxes/views/html-order-item.php:243
-#, fuzzy
 msgid "After pre-tax discounts."
-msgstr "Nach VOR-Steuer-Nachlässe."
+msgstr "Verottomien alennuksien jälkeen."
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-item.php:203
 #: ../templates/admin/meta-boxes/views/html-order-item.php:246
-#, fuzzy
 msgid "Before pre-tax discounts."
-msgstr "Vor VOR-Steuer-Nachlässe."
+msgstr "Ennen verottomia alennuksia."
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:22
-#, fuzzy
 msgid "Standard"
-msgstr "Standard"
+msgstr "Tavallinen"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:53
-#, fuzzy
 msgid "Item"
-msgstr "Artikel"
+msgstr "Tuote"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:57
-#, fuzzy
 msgid "Cost"
-msgstr "Kosten"
+msgstr "Hinta"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:58
-#, fuzzy
 msgid "Qty"
-msgstr "Menge"
+msgstr "Määrä"
 
-# @ woocommerce
-# @ opentickets-community-edition
 #: ../templates/admin/meta-boxes/views/html-order-items.php:59
-#, fuzzy
 msgid "Total"
-msgstr "Summe"
+msgstr "Yhteensä"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:65
 #: ../templates/admin/meta-boxes/views/html-order-items.php:66
-#, fuzzy
 msgid "Tax"
-msgstr "Steuer"
+msgstr "Vero"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:137
-#, fuzzy
 msgid "Coupon(s) Used"
-msgstr "Gebruikte Coupon(s)"
+msgstr "Käytetyt kupongit"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:152
-#, fuzzy
 msgid "Discount"
-msgstr "Nachlass"
+msgstr "Alennus"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:152
-#, fuzzy
 msgid "This is the total discount. Discounts are defined per line item."
-msgstr "Dit is de totale korting. Kortingen zijn gedefineerd per line item."
+msgstr "Tämä on kokonaisalennus. Alennukset määritellään tuotekohtaisesti."
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:162
-#, fuzzy
 msgid "This is the shipping and handling total costs for the order."
-msgstr ""
-"Das ist die Gesamtsumme der Versand- und Bearbeitungskosten der Bestellung."
+msgstr "Tämä on tilauksen toimituksen ja käsittelyn kokonaiskustannus."
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:182
-#, fuzzy
 msgid "Order Total"
-msgstr "Gesamtsumme"
+msgstr "Tilauksen loppusumma"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:202
-#, fuzzy
 msgid "Refunded"
-msgstr "Erstattet"
+msgstr "Hyvitetty"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:215
-#, fuzzy
 msgid "Actions"
-msgstr "Vorgänge"
+msgstr "Toimenpiteet"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:218
-#, fuzzy
 msgid "Delete selected line item(s)"
-msgstr "Lösche ausgewählte Einzelartikel"
+msgstr "Poista valitut tuotteet"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:221
-#, fuzzy
 msgid "Stock Actions"
-msgstr "Lagerbewegungen"
+msgstr "Varastotoiminnot"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:222
-#, fuzzy
 msgid "Reduce line item stock"
-msgstr "Reduziere Einzelartikelbestand"
+msgstr "Vähennä tuote varastosta"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:223
-#, fuzzy
 msgid "Increase line item stock"
-msgstr "Erhöhe Einzelartikelbestand"
+msgstr "Lisää tuote varastoon"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:227
-#, fuzzy
 msgid "Apply"
-msgstr "Applica"
+msgstr "Hyväksy"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:231
-#, fuzzy
 msgid "Add line item(s)"
-msgstr "Einzelartikel hinzufügen"
+msgstr "Lisää tuotteita"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:233
-#, fuzzy
 msgid "This order has been paid for and is no longer editable"
-msgstr "Diese Bestellung wurde bezahlt und kann nicht mehr verändert werden"
+msgstr "Tämä tilaus on maksettu eikä sitä voi enää muokata"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:236
-#, fuzzy
 msgid "Add Tax"
-msgstr "Steuer hinzufügen"
+msgstr "Lisää vero"
 
-# @ woocommerce
-# @ opentickets-community-edition
 #: ../templates/admin/meta-boxes/views/html-order-items.php:239
-#, fuzzy
 msgid "Refund"
-msgstr "Erstatten"
+msgstr "Hyvitä"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:246
-#, fuzzy
 msgid "Calculate Taxes"
-msgstr "Steuer berechnen"
+msgstr "Laske verot"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:247
-#, fuzzy
 msgid "Calculate Total"
-msgstr "Summe berechnen"
+msgstr "Laske loppusumma"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:252
-#, fuzzy
 msgid "Add product(s)"
-msgstr "Produkt(e) hinzufügen"
+msgstr "Lisää tuotteita"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:253
-#, fuzzy
 msgid "Add fee"
-msgstr "Gebühren hinzufügen"
+msgstr "Lisää maksu"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:254
-#, fuzzy
 msgid "Add shipping cost"
-msgstr "Versandkosten hinzufügen"
+msgstr "Lisää toimituskulut"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:256
-#, fuzzy
 msgid "Save"
-msgstr "Speichern"
+msgstr "Tallenna"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:266
-#, fuzzy
 msgid "Restock refunded items"
-msgstr "Erstattete Artikel Wiedereinlagern"
+msgstr "Palauta hyvitetyt tuotteet varastoon"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:270
-#, fuzzy
 msgid "Amount already refunded"
-msgstr "Betrag bereits erstattet"
+msgstr "Hyvitetty summa"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:274
-#, fuzzy
 msgid "Total available to refund"
-msgstr "Erstattung der Summe möglich"
+msgstr "Yhteensä hyvitettävissä"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:278
-#, fuzzy
 msgid "Refund amount"
-msgstr "Betrag erstatten"
+msgstr "Hyvitä summa"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:285
-#, fuzzy
 msgid "Reason for refund (optional)"
-msgstr "Grund für Erstattung (optional)"
+msgstr "Hyvityksen perustelu (vapaaehtoinen)"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:297
-#, fuzzy
 msgid "Payment Gateway"
-msgstr "Betaal Gateway"
+msgstr "Maksutapa"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:299
 #, fuzzy, php-format
 msgctxt "Refund $amount"
 msgid "Refund %s via %s"
-msgstr "Erstatte %s über %s"
+msgstr "Hyvitä %s (%s)"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:300
 #, fuzzy, php-format
 msgctxt "Refund $amount manually"
 msgid "Refund %s manually"
-msgstr "Manuell erstatten"
+msgstr "Hyvitä %s manuaalisesti"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:313
-#, fuzzy
 msgid "Add products"
-msgstr "Artikel hinzufügen"
+msgstr "Lisää tuotteita"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:317
-#, fuzzy
 msgid "Search for a product&hellip;"
-msgstr "Suche nach einem Artikel&hellip;"
+msgstr "Etsi tuotetta&hellip;"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:322
 #: ../templates/admin/meta-boxes/views/html-order-items.php:377
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:83
-#, fuzzy
 msgid "Add"
-msgstr "Hinzufügen"
+msgstr "Lisää"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:337
-#, fuzzy
 msgid "Add tax"
-msgstr "Steuer hinzufügen"
+msgstr "Lisää vero"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:345
-#, fuzzy
 msgid "Rate name"
-msgstr "Tarifbezeichnung"
+msgstr "Verotuluokan nimi"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:346
-#, fuzzy
 msgid "Tax class"
-msgstr "Steuerklasse"
+msgstr "Veroluokka"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:347
-#, fuzzy
 msgid "Rate code"
-msgstr "Rate code"
+msgstr "Verotusluokan koodi"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:348
-#, fuzzy
 msgid "Rate %"
-msgstr "Rate %"
+msgstr "Veroprosentti"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:369
-#, fuzzy
 msgid "Or, enter tax rate ID:"
-msgstr "Oder, geben Sie den Steuersatz-ID ein:"
+msgstr "Tai lisää verotuksen ID:"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-items.php:370
-#, fuzzy
 msgid "Optional"
-msgstr "Optional"
+msgstr "Vapaaehtoinen"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-shipping.php:23
-#, fuzzy
 msgid "Shipping Name"
-msgstr "Versandname"
+msgstr "Toimitusluokan nimi"
 
-# @ woocommerce
 #: ../templates/admin/meta-boxes/views/html-order-shipping.php:25
-#, fuzzy
 msgid "Shipping Method"
-msgstr "Versandart"
+msgstr "Toimitusluokka"
 
-# @ opentickets-community-edition
 #: ../templates/admin/post-types/meta-boxes/views/html-order-item.php:4
-#, fuzzy
 msgid "OpenTickets WC template override has moved location."
-msgstr ""
-"OpenTickets WC Template-Überschreibung befindet sich nicht mehr im letzten "
-"Verzeichnis."
+msgstr "OpenTicketsin WC-malline on vaihtanut paikkaa."
 
-# @ opentickets-community-edition
 #: ../templates/admin/reports/seating-report.php:10
-#, fuzzy
 msgid "Sort by"
-msgstr "Sortierung nach"
+msgstr "Järjestä"
 
-# @ opentickets-community-edition
 #: ../templates/admin/reports/seating-report.php:23
-#, fuzzy
 msgid "Edit User"
-msgstr "Nutzer Bearbeiten"
+msgstr "Muokkaa käyttäjää"
 
-# @ opentickets-community-edition
 #: ../templates/admin/reports/seating-report.php:33
-#, fuzzy
 msgid "Edit Order"
-msgstr "Bestellung ändern"
+msgstr "Muokkaa tilausta"
 
-# @ opentickets-community-edition
 #: ../templates/admin/reports/seating-report.php:47
-#, fuzzy
 msgid "Edit Product"
-msgstr "Artikel bearbeiten"
+msgstr "Muokkaa tuotetta"
 
-# @ opentickets-community-edition
 #: ../templates/checkin/already-occupied.php:9
-#, fuzzy
 msgid "Ticket has PREVIOUSLY checked in!"
-msgstr "Ticket ist BEREITS eingecheckt!"
+msgstr "Lippu on JO kirjattu sisään!"
 
-# @ opentickets-community-edition
 #: ../templates/checkin/already-occupied.php:24
 #: ../templates/checkin/occupy-failure.php:24
 #: ../templates/checkin/occupy-success.php:24
-#, fuzzy
 msgid "Owner:"
-msgstr "Besitzer:"
+msgstr "Omistaja"
 
-# @ opentickets-community-edition
 #: ../templates/checkin/already-occupied.php:26
 #: ../templates/checkin/occupy-failure.php:26
 #: ../templates/checkin/occupy-success.php:26
-#, fuzzy
 msgid "Checked-In:"
-msgstr "Eingechecked:"
+msgstr "Sisäänkirjattu:"
 
-# @ opentickets-community-edition
 #: ../templates/checkin/no-access.php:7
-#, fuzzy
 msgid "No access"
-msgstr "Zutritt verweigert"
+msgstr "Ei pääsyä"
 
-# @ opentickets-community-edition
 #: ../templates/checkin/no-access.php:8
-#, fuzzy
 msgid "You do not have sufficient permissions to perform this action!"
-msgstr "Sie haben nicht die erforderlichen Rechte diese Aktion durchzuführen!"
+msgstr "Sinulla ei ole tähän toimintoon tarvittavia oikeuksia!"
 
-# @ opentickets-community-edition
 #: ../templates/checkin/occupy-failure.php:9
-#, fuzzy
 msgid "Check-In FAILED!"
-msgstr "Check-in-FEHLER!"
+msgstr "Sisäänkirjaus EPÄONNISTUI"
 
-# @ opentickets-community-edition
 #: ../templates/checkin/occupy-success.php:9
-#, fuzzy
 msgid "Check-In SUCCESSFUL"
-msgstr "Check-in ERFOLGREICH"
+msgstr "Sisäänkirjaus ONNISTUI"
 
-# @ opentickets-community-edition
 #: ../templates/myaccount/my-upcoming-tickets.php:2
-#, fuzzy
 msgid "Upcoming Tickets"
-msgstr "Anstehendes Ticket"
+msgstr "Tulevat liput"
 
-# @ opentickets-community-edition
 #: ../templates/myaccount/my-upcoming-tickets.php:19
 #: ../templates/myaccount/my-upcoming-tickets.php:75
-#, fuzzy
 msgid "pending payment"
-msgstr "Ausstehende Zahlung"
+msgstr "odottava maksu"
 
-# @ default
 #: ../templates/myaccount/my-upcoming-tickets.php:22
-#, fuzzy, php-format
+#, php-format
 msgid "for <a href=\"%s\" title=\"%s\">%s</a>"
-msgstr "für <a href=\"%s\" title=\"%s\">%s</a>"
+msgstr "<a href=\"%s\" title=\"%s\">%s</a>"
 
-# @ opentickets-community-edition
 #: ../templates/myaccount/my-upcoming-tickets.php:24
 #: ../templates/myaccount/my-upcoming-tickets.php:54
-#, fuzzy
 msgid "Visit the Event page"
-msgstr "Besuchen Sie die Veranstaltungsseite"
+msgstr "Käy tapahtuman sivulla"
 
-# @ default
 #: ../templates/myaccount/my-upcoming-tickets.php:29
 #: ../templates/myaccount/my-upcoming-tickets.php:82
-#, fuzzy, php-format
+#, php-format
 msgid "(order <a href=\"%s\" title=\"%s\">#%s<a/>)"
-msgstr "(bestelle <a href=\"%s\" title=\"%s\">#%s<a/>)"
+msgstr "(tilaus <a href=\"%s\" title=\"%s\">#%s<a/>)"
 
-# @ opentickets-community-edition
 #: ../templates/myaccount/my-upcoming-tickets.php:31
 #: ../templates/myaccount/my-upcoming-tickets.php:84
-#, fuzzy
 msgid "Edit order"
-msgstr "Bestellung ändern"
+msgstr "Muokkaa tilausta"
 
-# @ default
 #: ../templates/myaccount/my-upcoming-tickets.php:52
-#, fuzzy, php-format
+#, php-format
 msgid "<a href=\"%s\" title=\"%s\">%s</a>"
 msgstr "<a href=\"%s\" title=\"%s\">%s</a>"
 
-# @ opentickets-community-edition
 #: ../templates/myaccount/my-upcoming-tickets.php:55
-#, fuzzy
 msgid "(View Show Page)"
-msgstr "(Showseite ansehen)"
+msgstr "(Katso näytöksen sivu)"
 
-# @ opentickets-community-edition
 #: ../templates/post-content/event-area-closed.php:3
-#, fuzzy
 msgid "We are sorry. Online registration for this event has closed."
-msgstr ""
-"Es tut uns Leid. Online Reservierungen sind für diese Veranstaltung nicht "
-"mehr möglich."
+msgstr "Valitettavasti tämän tapahtuman online-myynti on päättynyt."
 
-# @ opentickets-community-edition
 #: ../templates/post-content/event-area.php:9
-#, fuzzy
 msgid ""
 "For a better experience, certain features of javascript area required. "
 "Currently you either do not have these features, or you do not have them "
 "enabled. Despite this, you can still purchase your tickets, using 2 simple "
 "steps."
 msgstr ""
-"Für eine optimale Darstellung der Seiten sind bestimmte Features von "
-"Javascript erforderlich. Derzeit benutzen Sie kein Javascript oder haben es "
-"deaktiviert. Trotzdem können Sie die Tickets kaufen. Dazu sind 2 Schritte "
-"notwendig."
+"Paremman käyttäjäkokemuksen saat määrättyjen Javascript-ominaisuuksien "
+"avulla. Tällä hetkellä sinulta puuttuu nämä ominaisuudet tai ne on kytketty "
+"pois päältä. Siitä huolimatta voit ostaa liput kahden yksinkertaisen vaiheen "
+"kautta."
 
-# @ opentickets-community-edition
 #: ../templates/post-content/event-area.php:12
-#, fuzzy
 msgid ""
 "<strong>STEP 1:</strong> Below, enter the number of tickets you wish to "
 "purchase, then click <span class=\"button-name\">Reserve Tickets</span>."
 msgstr ""
-"<strong>Schritt 1:</strong> Bitte die Anzahl der gewünschten Tickets unten "
-"eintragen. Zur Bestätigung klicken Sie dann auf <span class=\"button-name"
-"\">Reserviere Tickets</span>."
+"<strong>VAIHE 1:</stron>Kirjoita alle, montako lippua haluaisit ostaa. "
+"Klikkaa sitten <span class=\"button-name\">Varaa liput</span>."
 
-# @ opentickets-community-edition
 #: ../templates/post-content/event-area.php:15
-#, fuzzy
 msgid ""
 "<strong>STEP 2:</strong> Finally, once you have successfully Reserved your "
 "Tickets, click <span class=\"button-name\">Proceed to Cart</span> to "
 "complete your order."
 msgstr ""
-"<strong>Schritt 2:</strong> Um die Reservierung der Tickets abzuschließen, "
-"bitte auf <span class=\"button-name\">zum Warenkorb</span> klicken."
+"<strong>VAIHE 2:</strong> Kun olet Varannut liput onnistuneesti, klikkaa "
+"<span class=\"button-name\">Jatka Ostoskoriin</span> viimeistelemään "
+"tilauksesi."
 
-# @ opentickets-community-edition
 #: ../templates/post-content/event-area.php:34
-#, fuzzy
 msgid "Successfully removed your reservations."
-msgstr "Die Reservierung wurde storniert."
+msgstr "Varaukset poistettu onnistuneesti."
 
-# @ opentickets-community-edition
 #: ../templates/post-content/event-area.php:43
-#, fuzzy
 msgid "<span class=\"step-name\">STEP 1</span>: How many?"
-msgstr "<span class=\"step-name\">Schritt 1</span>: Wie viele?"
+msgstr "<span class=\"step-name\">VAIHE 1</span>: Kuinka monta?"
 
-# @ opentickets-community-edition
 #: ../templates/post-content/event-area.php:50
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Currently, there are <span class=\"available\">%s</span> \"<span class="
 "\"ticket-name\">%s</span>\" (<span class=\"ticket-price\">%s</span>) "
 "available for purchase."
 msgstr ""
-"Es sind derzeit<span class=\"available\">%s</span> \"<span class=\"ticket-"
-"name\">%s</span>\" (<span class=\"ticket-price\">%s</span>) zum Verkauf "
-"verfügbar."
+"Tällä hetkellä \"<span class=\"ticket-name\">%s</span>\"-lippuja (<span "
+"class=\"ticket-price\">%s</span>) on jäljellä <span class=\"available\">%s</"
+"span>"
 
-# @ opentickets-community-edition
 #: ../templates/post-content/event-area.php:82
-#, fuzzy
 msgid "<span class=\"step-name\">STEP 2</span>: Review"
-msgstr "<span class=\"step-name\">Schritt 2</span>: Überprüfung"
+msgstr "<span class=\"step-name\">VAIHE 2</span>: Yhteenveto"
 
-# @ opentickets-community-edition
 #: ../templates/post-content/event-area.php:89
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Currently, there are <span class=\"available\">%s</span> more \"<span class="
 "\"ticket-name\">%s</span>\" (<span class=\"ticket-price\">%s</span>) "
 "available for purchase."
 msgstr ""
-"Es sind derzeit<span class=\"available\">%s</span> zusätzliche \"<span class="
-"\"ticket-name\">%s</span>\" (<span class=\"ticket-price\">%s</span>) zum "
-"Verkauf verfügbar."
+"Tällä hetkellä \"<span class=\"ticket-name\">%s</span>\"-lippuja (<span "
+"class=\"ticket-price\">%s</span>) on jäljellä vielä <span class=\"available"
+"\">%s</span> lisää."
 
-# @ opentickets-community-edition
 #: ../templates/post-content/event-area.php:126
-#, fuzzy
 msgid ""
 "We are sorry. There are currently no tickets available for this event. Check "
 "back soon!"
 msgstr ""
-"Es tut uns Leid. Es sind für diese Veranstaltung derzeit noch keine Tickets "
-"verfügbar. Kommen Sie später noch einmal auf diese Veranstaltungsseite "
-"zurück."
+"Valitettavasti tapahtumaan ei ole juuri nyt lippuja saatavilla. Yritä "
+"uudelleen myöhemmin!"
 
 #: ../templates/post-content/venue/contact-info.php:28
-#, fuzzy
 msgid "Physical Address:"
-msgstr "Risoluzione dell'indirizzo IP %s in corso"
+msgstr "Fyysinen osoite:"
 
 #: ../templates/post-content/venue/social.php:2
-#, fuzzy
 msgid "Contact Information:"
-msgstr "Informazioni versione"
+msgstr "Yhteystiedot:"
 
 #: ../templates/post-content/venue/social.php:19
 #: ../templates/post-content/venue/social.php:24
 #: ../templates/post-content/venue/social.php:29
-#, fuzzy, php-format
+#, php-format
 msgid "Visit the %s"
-msgstr "Besuchen Sie die %s Seite"
+msgstr "Käy tapahtuman sivulla %s"
 
 #: ../templates/post-content/venue/social.php:34
-#, fuzzy
 msgid "Send an email"
-msgstr "Email Thema"
+msgstr "Lähetä sähköposti"
 
-# @ opentickets-community-edition
 #: ../templates/tickets/basic-ticket.php:18
 #: ../templates/tickets/basic-ticket.php:123
-#, fuzzy
 msgid "Who is OpenTickets?"
-msgstr "Wer ist OpenTickets?"
+msgstr "Mikä OpenTickets?"
 
-# @ opentickets-community-edition
 #: ../templates/tickets/basic-ticket.php:39
-#, fuzzy, php-format
+#, php-format
 msgid "%s - %s - %s - %s"
-msgstr "%s il %s alle %s"
+msgstr "%s - %s - %s - %s"
 
-# @ opentickets-community-edition
 #: ../templates/tickets/basic-ticket.php:52
-#, fuzzy
 msgid "Download PDF"
-msgstr "PDF herunterladen"
+msgstr "Lataa PDF"
 
-# @ opentickets-community-edition
 #: ../templates/tickets/basic-ticket.php:70
-#, fuzzy
 msgid "Starts:"
-msgstr "Beginn:"
+msgstr "Alkaa:"
 
-# @ opentickets-community-edition
 #: ../templates/tickets/basic-ticket.php:72
 #: ../templates/tickets/basic-ticket.php:79
-#, fuzzy
 msgid "D, F jS, Y"
-msgstr "D, j F, Y"
+msgstr "D, jS \\of F, Y"
 
-# @ opentickets-community-edition
 #: ../templates/tickets/basic-ticket.php:72
 #: ../templates/tickets/basic-ticket.php:79
-#, fuzzy
 msgid " @ "
-msgstr ",  "
+msgstr "kello"
 
-# @ opentickets-community-edition
 #: ../templates/tickets/basic-ticket.php:77
-#, fuzzy
 msgid "Ends:"
-msgstr "Endet:"
+msgstr "Päättyy:"
 
-# @ opentickets-community-edition
 #: ../templates/tickets/basic-ticket.php:83
 #: ../templates/tickets/basic-ticket.php:156
-#, fuzzy
 msgid "Area:"
-msgstr "Bereich:"
+msgstr "Katsomo:"
 
-# @ opentickets-community-edition
 #: ../templates/tickets/basic-ticket.php:91
-#, fuzzy
 msgid "ORDER #"
-msgstr "Bestellung #"
+msgstr "TILAUS #"
 
 #: ../templates/tickets/basic-ticket.php:96
 #, php-format
 msgid "%1$s of %2$s"
-msgstr ""
+msgstr "%1$s/%2$s"
 
-# @ opentickets-community-edition
 #: ../templates/tickets/error-msg.php:8
-#, fuzzy
 msgid "An error has occurred while attempting to view the ticket"
-msgstr "Bei der Anzeige des Tickets ist ein Fehler aufgetreten"
+msgstr "Lipun katsomisessa tapahtui virhe."
 
-# @ opentickets-community-edition
 #: ../templates/tickets/verification-form.php:5
-#, fuzzy
 msgid "Additional Information is Required"
-msgstr "Es werden zusätzliche Informationen benötigt"
+msgstr "Tarvitaan lisätietoja"
 
-# @ opentickets-community-edition
 #: ../templates/tickets/verification-form.php:7
-#, fuzzy
 msgid ""
 "In order to allow you to view your ticket, we must first verify who you are, "
 "and that you should be able to view this ticket. To do that, we need to "
@@ -4693,151 +3470,210 @@ msgid ""
 "this information matches our record, then your ticket will be available to "
 "you."
 msgstr ""
-"Bevor Ihnen Ihr Ticket gezeigt wird werden Ihre Personalien und Ihre "
-"Berechtigung überprüft. Für diese Verifizierung Ihrer Identität werden Daten "
-"von Ihnen abgefragt. Danach können Sie über Ihr Ticket verfügen."
+"Jotta voit nähdä lippusi, sinun täytyy vahvistaa henkilöllisyytesi ja "
+"oikeutesi lippuun. Sitä varten tarvitsemme sinulta joitakin tietoja. Jos "
+"nämä tiedot vastaavat tietokantaamme, saat liput käyttöösi."
 
-# @ opentickets-community-edition
 #: ../templates/tickets/verification-form.php:13
-#, fuzzy
 msgid ""
 "This should be the email you used during the purchase of your ticket, as "
 "your billing email address."
 msgstr ""
-"Diese Emailadresse haben Sie während des Ticketkaufes als Emailadresse für "
-"die Rechnung angegeben."
+"Valitse se sähköpostiosoite, jota käytit lipun oston yhteydessä "
+"laskutustiedoissa."
 
-# @ opentickets-community-edition
 #: ../templates/tickets/verification-form.php:17
-#, fuzzy
 msgid "Submit"
-msgstr "Bestätigen"
+msgstr "Hyväksy"
 
-# @ woocommerce
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:158
-#, fuzzy, php-format
+#, php-format
 msgid "Order %s details"
-msgstr "Bestell Details %s"
+msgstr "Tilauksen %s tiedot"
 
-# @ woocommerce
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:162
-#, fuzzy, php-format
+#, php-format
 msgid "Payment via %s"
-msgstr "Bezahlung über %s"
+msgstr "Maksu: %s"
 
-# @ woocommerce
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:175
-#, fuzzy
 msgid "Customer IP"
-msgstr "Käufer IP"
+msgstr "Tilaajan IP:"
 
-# @ woocommerce
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:183
-#, fuzzy
 msgid "Order date:"
-msgstr "Kauf Datum:"
+msgstr "Tilaukset ajankohta:"
 
-# @ woocommerce
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:295
-#, fuzzy
 msgid "Transaction ID"
-msgstr "Transaktions ID"
+msgstr "Maksutapahtuman ID"
 
-# @ woocommerce
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:339
-#, fuzzy
 msgid "Customer Note"
-msgstr "Kundennotitz"
+msgstr "Asikashuomautus"
 
-# @ woocommerce
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:52
-#, fuzzy, php-format
+#, php-format
 msgid "added on %1$s at %2$s"
-msgstr "hinzugefügt am %1$s um %2$s"
+msgstr "Lisätty %1$s kello %2$s"
 
-# @ woocommerce
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:53
-#, fuzzy
 msgid "WooCommerce"
 msgstr "WooCommerce"
 
-# @ woocommerce
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:53
-#, fuzzy, php-format
+#, php-format
 msgid "by %s"
-msgstr "von %s"
+msgstr "%s perusteella"
 
-# @ woocommerce
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:61
-#, fuzzy
 msgid "There are no notes yet."
-msgstr "Es sind keine Anmerkungen vorhanden."
+msgstr "Huomautuksia ei vielä ole"
 
-# @ woocommerce
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:67
-#, fuzzy
 msgid "Add note"
-msgstr "Anmerkung hinzufügen"
+msgstr "Lisää huomio"
 
-# @ woocommerce
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:74
-#, fuzzy
 msgid "Customer note"
-msgstr "Bestellerinformation"
+msgstr "Asiakashuomautus"
 
-# @ woocommerce
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:81
-#, fuzzy
 msgid "Private note"
-msgstr "Private Anmerkung"
+msgstr "Yksityinen huomautus"
 
-# @ opentickets-community-edition
 #~ msgid "%s on %s @ %s"
-#~ msgstr "%s il %s alle %s"
+#~ msgstr "%s (%s klo %s)"
 
-# @ opentickets-community-edition
-#, fuzzy
 #~ msgid "There are currently no reports available for"
-#~ msgstr "Es sind derzeit keine Berichte verfügbar für"
+#~ msgstr "Raportteja ei saatavilla tapahtumalle"
 
-# @ default
-#, fuzzy
 #~ msgid "Page Attributes"
-#~ msgstr "Seitenattribute"
+#~ msgstr "Sivun määritteet"
 
-# @ default
-#, fuzzy
 #~ msgid "Attributes"
-#~ msgstr "Attribute"
+#~ msgstr "Määritteet"
 
-# @ default
-#, fuzzy
 #~ msgid "(no parent)"
-#~ msgstr "(no genitore)"
+#~ msgstr "(ei vanhempaa)"
 
-# @ default
-#, fuzzy
 #~ msgid "Parent"
-#~ msgstr "Eltern"
+#~ msgstr "Vanhempi"
 
-# @ default
-#, fuzzy
 #~ msgid "Page Template"
-#~ msgstr "Seitenvorlage"
+#~ msgstr "Sivun malline"
 
-# @ default
-#, fuzzy
 #~ msgid "Default Template"
-#~ msgstr "Voreingestellte Vorlage"
+#~ msgstr "Oletusmalline"
 
-# @ default
-#, fuzzy
 #~ msgid "Order"
-#~ msgstr "Bestellung"
+#~ msgstr "Tilaus"
 
-# @ default
-#, fuzzy
 #~ msgid "Need help? Use the Help tab in the upper right of your screen."
+#~ msgstr "Tarvitset apua? Klikkaa Apua-näppäintä näytön oikeassa ylälaidassa."
+
+#~ msgid "State:"
+#~ msgstr "Maakunta:"
+
+#~ msgid "must be at least 2 letters or numbers"
+#~ msgstr "täytyy olla vähintään 2 kirjainta tai numeroa"
+
+#~ msgid "must be at least 7 letters, numbers, or spaces"
+#~ msgstr "täytyy olla vähintään 7 kirjainta, numeroa tai välilyöntiä"
+
+#~ msgid "must be at least 4 letters, numbers, or spaces"
+#~ msgstr "täytyy olla vähintään 4 kirjainta, numeroa tai välilyöntiä"
+
+#~ msgid "must be at least 5 letters, numbers, or spaces"
+#~ msgstr "täytyy olla vähintään 5 kirjainta, numeroa tai välilyöntiä"
+
+#~ msgid "must be at least 2 letters, numbers, or spaces"
+#~ msgstr "täytyy olla vähintään 2 kirjainta, numeroa tai välilyöntiä"
+
+#~ msgid "must be at least 3 letters, numbers, or spaces"
+#~ msgstr "täytyy olla vähintään 2 kirjainta, numeroa tai välilyöntiä"
+
+#~ msgid "must be a valid email"
+#~ msgstr "sähköpostiosoite ei kelpaa"
+
+#~ msgid "Order Notes"
+#~ msgstr "Tilauksen huomiot"
+
+#~ msgid "Order Items"
+#~ msgstr "Tilatut tuotteet"
+
+#~ msgid ""
+#~ "Note: if you edit quantities or remove items from the order you will need "
+#~ "to manually update stock levels."
 #~ msgstr ""
-#~ "Brauchen Sie Hilfe? Nutzen Sie den den Hilfe-Reiter oben rechts auf Ihren "
-#~ "Bildschirm."
+#~ "Huomaa: jos tilauksen määriä tai poistat tuotteita, joudut päivittämään "
+#~ "varastotilanteen manuaalisesti."
+
+#~ msgid "Tax Class"
+#~ msgstr "Verotusluokka"
+
+#~ msgid "Tax class for the line item"
+#~ msgstr "Tuotteen verotusluokka"
+
+#~ msgid "Totals"
+#~ msgstr "Yhteensä"
+
+#~ msgid "Line subtotals are before pre-tax discounts, totals are after."
+#~ msgstr "Välisumma lasketaan ennen veron alennusta, loppusumma sen jälkeen."
+
+#~ msgid "Delete Lines"
+#~ msgstr "Poista rivejä"
+
+#~ msgid "Reduce Line Stock"
+#~ msgstr "Vähennä varastosta"
+
+#~ msgid "Increase Line Stock"
+#~ msgstr "Lisää varastoon"
+
+#~ msgid "Add item(s)"
+#~ msgstr "Lisää tuotteita"
+
+#~ msgid "added %s ago"
+#~ msgstr "lisätty %s sitten"
+
+#~ msgid "There are no notes for this order yet."
+#~ msgstr "Tälle tilaukselle ei ole huomioita"
+
+#~ msgid "Order Discount"
+#~ msgstr "Tilauksen alennus"
+
+#~ msgid "Product Image"
+#~ msgstr "Tuotekuva"
+
+#~ msgid "Download %d"
+#~ msgstr "Lataa %d"
+
+#~ msgid "Download"
+#~ msgstr "Lataa"
+
+#~ msgid "Product"
+#~ msgstr "Tuote"
+
+#~ msgid "Download file%s"
+#~ msgstr "Lataa tiedosto%s"
+
+#~ msgid "Customer details"
+#~ msgstr "Asiakkaan tiedot"
+
+#~ msgid "Email:"
+#~ msgstr "Sähköposti:"
+
+#~ msgid "Telephone:"
+#~ msgstr "Puhelin:"
+
+#~ msgid "Billing Address"
+#~ msgstr "Laskutusosoite"
+
+#~ msgid "Shipping Address"
+#~ msgstr "Toimitusosoite"
+
+#~ msgid "Report"
+#~ msgstr "Raportti"
+
+#~ msgid "Reserve Tickets"
+#~ msgstr "Varaa lippuja"

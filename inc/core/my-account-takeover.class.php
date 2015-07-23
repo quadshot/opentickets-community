@@ -100,13 +100,10 @@ class qsot_my_account_takeover {
 	}
 
 	public static function view_order_shortcode($atts) {
-		global $woocommerce;
-		return $woocommerce->shortcode_wrapper( array( __CLASS__, 'view_order_shortcode_output' ), $atts );
+		return WC()->shortcode_wrapper( array( __CLASS__, 'view_order_shortcode_output' ), $atts );
 	}
 
 	public static function view_order_shortcode_output($atts) {
-		global $woocommerce;
-
 		if ( ! is_user_logged_in() ) return;
 
 		extract( shortcode_atts( array(
@@ -165,7 +162,7 @@ class qsot_my_account_takeover {
 	}
 
 	public static function add_my_account_to_user_profile($userprofile) {
-		global $woocommerce;
+		$woocommerce = WC();
 
 		$woocommerce->frontend_includes();
 

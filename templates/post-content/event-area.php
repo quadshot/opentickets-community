@@ -113,7 +113,7 @@
 					</div>
 
 					<div class="qsot-form-actions actions">
-						<a href="<?php echo esc_attr($woocommerce->cart->get_cart_url()) ?>" class="button">Proceed to Cart</a>
+						<a href="<?php echo esc_attr(WC()->cart->get_cart_url()) ?>" class="button">Proceed to Cart</a>
 					</div>
 				</div>
 			<?php endif; ?>

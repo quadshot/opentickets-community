@@ -207,7 +207,7 @@ class qsot_event_area {
 	}
 
 	public static function frontend_templates($list, $event) {
-		global $woocommerce;
+		$woocommerce = WC();
 		$cart_url = '#';
 		if (is_object($woocommerce) && is_object($woocommerce->cart)) $cart_url = $woocommerce->cart->get_cart_url();
 
@@ -823,6 +823,7 @@ class qsot_event_area {
 			'post_status' => 'any',
 			'orderby' => 'date',
 			'order' => 'asc',
+			'posts_per_page' => -1,
 		);
 		if ($area_id)
 			$eas_args['include'] = is_array($area_id) ? implode(',', array_map('absint', $area_id)) : $area_id;

@@ -301,7 +301,7 @@ class QSOT_cache_helper {
 		// try to find/create a relevant local copy of the src
 
 		// if this is a URL to a resource outside of this site, then
-		if ( ! self::_is_local_file( $parse_url, $local, $url, $local_url ) ) {
+		if ( ! self::_is_local_file( $parsed_url, $local, $url, $local_url ) ) {
 			// figure out the cache dir now, since we definitely need it
 			if ( false === self::$cache_path )
 				self::create_find_cache_dir();

@@ -286,9 +286,7 @@ class QSOT {
 	}
 
 	public static function overtake_some_woocommerce_core_templates($template, $template_name, $template_path='') {
-		global $woocommerce;
-
-		$default_path = $woocommerce->plugin_path().'/templates/';
+		$default_path = WC()->plugin_path().'/templates/';
 		$default = $default_path.$template_name;
 
 		if (empty($template) || $template == $default) {
@@ -623,8 +621,6 @@ if (!function_exists('qsot_underload_core_class')) {
 // load one of our classes, and update the 'extends' declaration with the appropriate class name if supplied
 if ( ! function_exists( 'qsot_overload_core_class' ) ) {
 	function qsot_overload_core_class( $path, $new_under_class_name='' ) {
-		global $woocommerce;
-
 		QSOT_overload_filter::$replace = $new_under_class_name;
 
 		$filepath = $path;

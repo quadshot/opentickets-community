@@ -10,7 +10,6 @@ class QSOT_base_page_launcher {
 
 	// defered loading / actions / filters
 	public static function plugins_loaded() {
-		//die(var_dump(self::is_backport_request()));
 		// if are in the admin, and the current user has the abilty to manage the settings of the site (aka: they are an admin)
 		if ( self::is_backport_request() || ( is_admin() && current_user_can( 'manage_options' ) ) ) {
 			// load all the 'pages'
@@ -24,13 +23,6 @@ class QSOT_base_page_launcher {
 			return false;
 		}
 
-/*
-		die(var_dump(
-		$_GET['qsot-in-background'],
-		wp_create_nonce( 'qsot-backport-request-' . $_GET['qsotn'] . '-' . $_GET['user'] ),
-		wp_verify_nonce( $_GET['qsot-in-background'], 'qsot-backport-request-' . $_GET['qsotn'] . '-' . $_GET['user'] )
-		));
-*/
 		if ( get_option( 'qsot-backport-request', '' ) != $_GET['qsotn'] . '::' . $_GET['qsot-in-background'] ) {
 			return false;
 		}
