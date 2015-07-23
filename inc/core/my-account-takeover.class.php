@@ -32,7 +32,7 @@ class qsot_my_account_takeover {
 				add_filter('auth_cookie_expire_time', array(__CLASS__, 'long_login_expire'), PHP_INT_MAX, 4);
 				add_filter('wc_session_expiring', array(__CLASS__, 'long_login_expiring'), PHP_INT_MAX, 3);
 				add_filter('wc_session_expiration', array(__CLASS__, 'long_login_expire'), PHP_INT_MAX, 3);
-				add_filter('plugins_loaded', array(__CLASS__, 'extend_login_expiration'), 1);
+				add_filter('init', array(__CLASS__, 'extend_login_expiration'), -1);
 			}
 		}
 	}
