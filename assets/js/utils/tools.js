@@ -139,7 +139,7 @@ QS.popMediaBox = (function($, qt) {
 					var attachment = custom.state().get( 'selection' ).first().attributes;
 					// update the id field
 					if ( id_field.length )
-						id_field.val( attachment.id );
+						id_field.val( attachment.id ).change();
 					// update the preview container
 					if ( preview_cont.length ) {
 						preview_cont.each( function() {
