@@ -199,13 +199,19 @@ class qsot_post_type {
 		return $orderby;
 	}
 
-	public static function add_event_name_to_cart($list, $item) {
-		if (isset($item['event_id'])) {
-			$event = apply_filters('qsot-get-event', false, $item['event_id']);
-			if (is_object($event)) {
+	// add the event name (and possibly date/time) to the order items in the cart
+	public static function add_event_name_to_cart( $list, $item ) {
+		// if we have an event to display the name of
+		if ( isset( $item['event_id'] ) ) {
+			// load the event
+			$event = apply_filters( 'qsot-get-event', false, $item['event_id'] );
+
+			// if the vent actually exists, then
+			if ( is_object( $event ) ) {
+				// add the event label to the list of meta data to display for this cart item
 				$list[] = array(
-					'name' => __('Event','opentickets-community-edition'),
-					'display' => apply_filters('the_title', $event->post_title),
+					'name' => __( 'Event', 'opentickets-community-edition' ),
+					'display' => apply_filters( 'the_title', $event->post_title, $event->ID ), // add event->ID param so that date/time can be added appropriately
 				);
 			}
 		}
@@ -1483,9 +1489,15 @@ class qsot_post_type {
 
 	// allows control over the start and end time of a run of events
 	public static function mb_event_run_date_range( $post, $mb ) {
-		// load the current start and end time, and break each into date and time components
-		@list( $start, $start_time ) = explode( ' ', get_post_meta( $post->ID, '_start', true ) );
-		@list( $end, $end_time ) = explode( ' ', get_post_meta( $post->ID, '_end', true ) );
+		// adjust the start and end times for our WP offset setting
+		$start_raw = QSOT_Utils::gmt_timestamp( get_post_meta( $post->ID, '_start', true ) );
+		$end_raw = QSOT_Utils::gmt_timestamp( get_post_meta( $post->ID, '_end', true ) );
+
+		// create the various date parts
+		$start = date( 'c', $start_raw );
+		$start_time = date( 'H:i:s', $start_raw );
+		$end = date( 'c', $end_raw );
+		$end_time = date( 'H:i:s', $end_raw );
 
 		?>
 			<div class="qsot-mb">
@@ -1495,7 +1507,7 @@ class qsot_post_type {
 						<tbody>
 							<tr>
 								<td width="60%">
-									<input type="text" class="use-i18n-datepicker widefat" name="_qsot_start_date" value="<?php echo esc_attr( $start ) ?>" scope="td"
+									<input type="text" class="use-i18n-datepicker widefat" name="_qsot_start_date" value="" data-init-date="<?php echo esc_attr( $start ) ?>" scope="td"
 											data-display-format="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>" />
 								</td>
 								<td width="1%"><?php _e( '@', 'opentickets-community-edition' ) ?></td>
@@ -1512,7 +1524,7 @@ class qsot_post_type {
 						<tbody>
 							<tr>
 								<td width="60%">
-									<input type="text" class="use-i18n-datepicker widefat" name="_qsot_end_date" value="<?php echo esc_attr( $end ) ?>" scope="td"
+									<input type="text" class="use-i18n-datepicker widefat" name="_qsot_end_date" value="" data-init-date="<?php echo esc_attr( $end ) ?>" scope="td"
 											data-display-format="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>" />
 								</td>
 								<td width="1%"><?php _e('@','opentickets-community-edition') ?></td>

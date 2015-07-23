@@ -537,14 +537,28 @@ class qsot_seat_pricing {
 		self::_draw_item_ticket_info($item_id, $item, $product, true);
 	}
 
-	protected static function _draw_item_ticket_info($item_id, $item, $product, $edit=false) {
-		if ($product->ticket != 'yes') return;
-		$event_display = '<span class="event-name">'.__('(no event selected)','opentickets-community-edition').'</span>';
+	// add the relevant ticket information and meta to each order item that needs it, along with a change button for event swaps
+	protected static function _draw_item_ticket_info( $item_id, $item, $product, $edit=false ) {
+		// if the product is not a ticket, then never display event meta
+		if ( $product->ticket != 'yes' )
+			return;
+
+		// find the event name, defaulting to '(no event selected)'
+		$event_display = '<span class="event-name">' . __( '(no event selected)', 'opentickets-community-edition' ) . '</span>';
 		$event_id = 0;
-		if (isset($item['event_id'])) {
-			$event = get_post($item['event_id']);
-			if (is_object($event)) {
-				$event_display = sprintf('<a rel="edit-event" target="_blank" href="%s">%s</a>', get_edit_post_link($event->ID), apply_filters('the_title', $event->post_title));
+		// if there is an event id, then 
+		if ( isset( $item['event_id'] ) ) {
+			// load the event
+			$event = get_post( $item['event_id'] );
+
+			// if the event exists, then
+			if ( is_object( $event ) ) {
+				// update the event display name
+				$event_display = sprintf(
+					'<a rel="edit-event" target="_blank" href="%s">%s</a>',
+					get_edit_post_link( $event->ID ),
+					apply_filters( 'the_title', $event->post_title, $event->ID )
+				);
 				$event_id = $event->ID;
 			}
 		}
@@ -552,12 +566,12 @@ class qsot_seat_pricing {
 			<div class="meta-list ticket-info" rel="ticket-info">
 				<?php if ($edit): ?>
 					<div><a href="#" class="button change-ticket"
-						item-id="<?php echo esc_attr($item_id) ?>"
-						event-id="<?php echo esc_attr($event_id) ?>"
-						qty="<?php echo esc_attr($item['qty']) ?>">Change</a></div>
+						item-id="<?php echo esc_attr( $item_id ) ?>"
+						event-id="<?php echo esc_attr( $event_id ) ?>"
+						qty="<?php echo esc_attr( $item['qty'] ) ?>">Change</a></div>
 				<?php endif; ?>
-				<div class="info"><strong><?php _e('Event:','opentickets-community-edition') ?></strong> <?php echo $event_display ?></div>
-				<?php do_action('qsot-ticket-item-meta', $item_id, $item, $product) ?>
+				<div class="info"><strong><?php _e( 'Event:', 'opentickets-community-edition' ) ?></strong> <?php echo $event_display ?></div>
+				<?php do_action( 'qsot-ticket-item-meta', $item_id, $item, $product ) ?>
 			</div>
 		<?php
 	}

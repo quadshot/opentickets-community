@@ -22,7 +22,7 @@ class opentickets_community_launcher {
 		// load the db upgrader, so that all plugins can interface with it before it does it's magic
 		require_once 'inc/sys/db-upgrade.php';
 		// load the internal core settings sub plugin early, since it controls all the plugin settings, and the object extender, cause it is important
-		require_once 'inc/sys/obj.php';
+		require_once 'inc/sys/utils.php';
 		require_once 'inc/sys/settings.php';
 		require_once 'inc/sys/options.php';
 		require_once 'inc/sys/templates.php';

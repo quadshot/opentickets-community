@@ -22,7 +22,7 @@
 						__( 'for <a href="%s" title="%s">%s</a>' ),
 						esc_attr( get_permalink( $ticket->event->ID ) ),
 						esc_attr( __( 'Visit the Event page', 'opentickets-community-edition' ) ),
-						apply_filters( 'the_title', $ticket->event->post_title )
+						apply_filters( 'the_title', $ticket->event->post_title, $ticket->event->ID )
 					) ?>
 					<?php if (is_admin() && isset($ticket->__order_id) && !empty($ticket->__order_id)): ?>
 						<?php echo sprintf(
@@ -39,15 +39,15 @@
 	<?php else: ?>
 
 		<table class="event-item section shop_table my_account_upcoming_tickets">
-			<?php foreach ($by_event as $event): ?>
+			<?php foreach ( $by_event as $event ): ?>
 				<thead>
 					<tr>
-            <?php $ticket = current(array_values($event->tickets)) ?>
-            <th colspan="<?php echo is_admin() && isset($ticket->__order_id) && !empty($ticket->__order_id) ? '3' : '2' ?>"
+            <?php $ticket = current( array_values( $event->tickets ) ) ?>
+            <th colspan="<?php echo is_admin() && isset( $ticket->__order_id ) && ! empty( $ticket->__order_id ) ? '3' : '2' ?>"
                 is_admin="<?php echo is_admin() ? 'yes' : 'no' ?>"
-                order_id="<?php echo isset($ticket->__order_id) && !empty($ticket->__order_id) ? $ticket->__order_id : '0' ?>">
+                order_id="<?php echo isset( $ticket->__order_id ) && ! empty( $ticket->__order_id ) ? $ticket->__order_id : '0' ?>">
 							<span class="nobr">
-								<?php echo apply_filters('the_title', $event->post_title); ?>
+								<?php echo apply_filters( 'the_title', $event->post_title, $event->ID ); ?>
 								<?php echo sprintf(
 									__( '<a href="%s" title="%s">%s</a>' ),
 									esc_attr( get_permalink( $event->ID ) ),
@@ -59,7 +59,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<?php foreach ($event->tickets as $ticket): ?>
+					<?php foreach ( $event->tickets as $ticket ): ?>
 						<?php
 							$name = sprintf(
 								'%s @ %s',

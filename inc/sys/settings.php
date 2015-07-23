@@ -62,10 +62,10 @@ class qsot_settings {
 	}
 
 	// special case to set all the settings. only called if the $name var is left blank when calling the 'set' method
-	protected function _set_all($settings) {
+	protected function _set_all( $settings ) {
 		// use the existing settings as a base value, and transpose the new settings on top of them
-		if (!empty($settings))
-			qsobj::extend($this->settings, $settings);
+		if ( ! empty( $settings ) )
+			$this->settings = QSOT_Utils::extend( $this->settings, $settings );
 	}
 
 	// @OPTION-SYNTAX
