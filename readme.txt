@@ -58,7 +58,7 @@ Are you developer? Want to contribute to the source code? Check us out on the [O
 @bradleysp, @petervandoorn
 
 *tranlations*
-@ht-2, @luminia, @ton, @firgolitsch, @jtiihonen, @diplopito
+@ht-2, @luminia, @ton, @firgolitsch, @jtiihonen, @diplopito, @galapas
 
 == Installation ==
 
