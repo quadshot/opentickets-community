@@ -16,6 +16,7 @@ class qsot_post_type {
 				'start' => '_start',
 				'end' => '_end',
 				'capacity' => '_capacity',
+				'capacity' => '_capacity',
 			));
 
 			// load all the options, and share them with all other parts of the plugin
@@ -573,7 +574,7 @@ class qsot_post_type {
 
 		// fetch the needed data
 		$capacity = (int)get_post_meta( $event_id, self::$o->{'meta_key.capacity'}, true );
-		$purchases = (int)get_post_meta( $event_id, self::$o->{'meta_key.purchases'}, true );
+		$purchases = (int)get_post_meta( $event_id, self::$o->{'meta_key.ea_purchased'}, true );
 
 		return $capacity - $purchases;
 	}
