@@ -81,7 +81,7 @@ class qsot_db_upgrader {
 		}
 
 		self::$upgrade_messages[] = sprintf(__('The DB tables [%s] are not at the most current versions. Attempting to upgrade them.','opentickets-community-edition'), implode(', ', $utabs));
-		dbDelta($sql);
+		self::dbDelta($sql);
 
 		if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
 			$wpdb->show_errors = $ERROR_STATUS;
@@ -145,7 +145,8 @@ class qsot_db_upgrader {
 			}
 		}
 		update_option(self::$_table_versions_key, $versions);
-		add_action('admin_notices', array(__CLASS__, 'a_admin_update_notice'));
+		if ( WP_DEBUG )
+			add_action('admin_notices', array(__CLASS__, 'a_admin_update_notice'));
 	}
 
 	protected static function _pre_update_sql( $pre_update, $table_name, $existing_tables, $versions, $desc ) {
@@ -233,6 +234,282 @@ class qsot_db_upgrader {
 			<?= var_dump(self::$on_header) ?>
 		<?php endif; ?>
 		<?php
+	}
+
+	/** COPIED FROM /wp-admin/includes/upgrade.php @ version 4.2.3 -- modified to handle Null updates
+	 * Modifies the database based on specified SQL statements.
+	 *
+	 * Useful for creating new tables and updating existing tables to a new structure.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param string|array $queries Optional. The query to run. Can be multiple queries
+	 *                              in an array, or a string of queries separated by
+	 *                              semicolons. Default empty.
+	 * @param bool         $execute Optional. Whether or not to execute the query right away.
+	 *                              Default true.
+	 * @return array Strings containing the results of the various update queries.
+	 */
+	public static function dbDelta( $queries = '', $execute = true ) {
+		global $wpdb;
+
+		if ( in_array( $queries, array( '', 'all', 'blog', 'global', 'ms_global' ), true ) )
+				$queries = wp_get_db_schema( $queries );
+
+		// Separate individual queries into an array
+		if ( !is_array($queries) ) {
+			$queries = explode( ';', $queries );
+			$queries = array_filter( $queries );
+		}
+
+		/**
+		 * Filter the dbDelta SQL queries.
+		 *
+		 * @since 3.3.0
+		 *
+		 * @param array $queries An array of dbDelta SQL queries.
+		 */
+		$queries = apply_filters( 'dbdelta_queries', $queries );
+
+		$cqueries = array(); // Creation Queries
+		$iqueries = array(); // Insertion Queries
+		$for_update = array();
+
+		// Create a tablename index for an array ($cqueries) of queries
+		foreach($queries as $qry) {
+			if ( preg_match( "|CREATE TABLE ([^ ]*)|", $qry, $matches ) ) {
+				$cqueries[ trim( $matches[1], '`' ) ] = $qry;
+				$for_update[$matches[1]] = 'Created table '.$matches[1];
+			} elseif ( preg_match( "|CREATE DATABASE ([^ ]*)|", $qry, $matches ) ) {
+				array_unshift( $cqueries, $qry );
+			} elseif ( preg_match( "|INSERT INTO ([^ ]*)|", $qry, $matches ) ) {
+				$iqueries[] = $qry;
+			} elseif ( preg_match( "|UPDATE ([^ ]*)|", $qry, $matches ) ) {
+				$iqueries[] = $qry;
+			} else {
+				// Unrecognized query type
+			}
+		}
+
+		/**
+		 * Filter the dbDelta SQL queries for creating tables and/or databases.
+		 *
+		 * Queries filterable via this hook contain "CREATE TABLE" or "CREATE DATABASE".
+		 *
+		 * @since 3.3.0
+		 *
+		 * @param array $cqueries An array of dbDelta create SQL queries.
+		 */
+		$cqueries = apply_filters( 'dbdelta_create_queries', $cqueries );
+
+		/**
+		 * Filter the dbDelta SQL queries for inserting or updating.
+		 *
+		 * Queries filterable via this hook contain "INSERT INTO" or "UPDATE".
+		 *
+		 * @since 3.3.0
+		 *
+		 * @param array $iqueries An array of dbDelta insert or update SQL queries.
+		 */
+		$iqueries = apply_filters( 'dbdelta_insert_queries', $iqueries );
+
+		$global_tables = $wpdb->tables( 'global' );
+		foreach ( $cqueries as $table => $qry ) {
+			// Upgrade global tables only for the main site. Don't upgrade at all if DO_NOT_UPGRADE_GLOBAL_TABLES is defined.
+			if ( in_array( $table, $global_tables ) && ( !is_main_site() || defined( 'DO_NOT_UPGRADE_GLOBAL_TABLES' ) ) ) {
+				unset( $cqueries[ $table ], $for_update[ $table ] );
+				continue;
+			}
+
+			// Fetch the table column structure from the database
+			$suppress = $wpdb->suppress_errors();
+			$tablefields = $wpdb->get_results("DESCRIBE {$table};");
+			$wpdb->suppress_errors( $suppress );
+
+			if ( ! $tablefields )
+				continue;
+
+			// Clear the field and index arrays.
+			$cfields = $indices = array();
+
+			// Get all of the field names in the query from between the parentheses.
+			preg_match("|\((.*)\)|ms", $qry, $match2);
+			$qryline = trim($match2[1]);
+
+			// Separate field lines into an array.
+			$flds = explode("\n", $qryline);
+
+			// todo: Remove this?
+			//echo "<hr/><pre>\n".print_r(strtolower($table), true).":\n".print_r($cqueries, true)."</pre><hr/>";
+
+			// For every field line specified in the query.
+			foreach ($flds as $fld) {
+
+				// Extract the field name.
+				preg_match("|^([^ ]*)|", trim($fld), $fvals);
+				$fieldname = trim( $fvals[1], '`' );
+
+				// Verify the found field name.
+				$validfield = true;
+				switch (strtolower($fieldname)) {
+				case '':
+				case 'primary':
+				case 'index':
+				case 'fulltext':
+				case 'unique':
+				case 'key':
+					$validfield = false;
+					$indices[] = trim(trim($fld), ", \n");
+					break;
+				}
+				$fld = trim($fld);
+
+				// If it's a valid field, add it to the field array.
+				if ($validfield) {
+					$cfields[strtolower($fieldname)] = trim($fld, ", \n");
+				}
+			}
+
+			// For every field in the table.
+			foreach ($tablefields as $tablefield) {
+
+				// If the table field exists in the field array ...
+				if (array_key_exists(strtolower($tablefield->Field), $cfields)) {
+
+					// Get the field type from the query.
+					preg_match("|".$tablefield->Field." ([^ ]*( unsigned)?)|i", $cfields[strtolower($tablefield->Field)], $matches);
+					$fieldtype = $matches[1];
+
+					// @@@@LOUSHOU - get the null status of the column
+					$currentnull = strtolower( $tablefield->Null );
+					$fieldisnull = ( ! preg_match( '#(not\s+null)#i', $cfields[ strtolower( $tablefield->Field ) ] ) ) ? 'yes' : 'no';
+					$fieldnull = ( 'yes' == $fieldisnull ) ? '' : 'NOT NULL';
+
+					// Is actual field type different from the field type in query?
+					if ($tablefield->Type != $fieldtype) {
+						// Add a query to change the column type
+						// @@@@LOUSHOU - changed query to actually update the field, and added the ability to change the null status
+						$cqueries[] = "ALTER TABLE {$table} MODIFY {$tablefield->Field} {$fieldtype} {$fieldnull}";
+						$for_update[$table.'.'.$tablefield->Field] = "Changed type of {$table}.{$tablefield->Field} from {$tablefield->Type} to {$fieldtype}"
+								. ( $currentnull != $fieldisnull ? ", and null from {$currentnull} to {$fieldisnull}" : '' );
+					// @@@@LOUSHOU - added else if to handle non-changed type, but changed null scenario
+					} else if ( $currentnull != $fieldisnull )  {
+						$cqueries[] = "ALTER TABLE {$table} MODIFY {$tablefield->Field} {$tablefield->Type} {$fieldnull}";
+						$for_update[$table.'.'.$tablefield->Field] = "Changed null of {$table}.{$tablefield->Field} from {$currentnull} to {$fieldisnull}";
+					}
+
+					// Get the default value from the array
+						// todo: Remove this?
+						//echo "{$cfields[strtolower($tablefield->Field)]}<br>";
+					if (preg_match("| DEFAULT '(.*?)'|i", $cfields[strtolower($tablefield->Field)], $matches)) {
+						$default_value = $matches[1];
+						if ($tablefield->Default != $default_value) {
+							// Add a query to change the column's default value
+							$cqueries[] = "ALTER TABLE {$table} ALTER COLUMN {$tablefield->Field} SET DEFAULT '{$default_value}'";
+							$for_update[$table.'.'.$tablefield->Field] = "Changed default value of {$table}.{$tablefield->Field} from {$tablefield->Default} to {$default_value}";
+						}
+					}
+
+					// Remove the field from the array (so it's not added).
+					unset($cfields[strtolower($tablefield->Field)]);
+				} else {
+					// This field exists in the table, but not in the creation queries?
+				}
+			}
+
+			// For every remaining field specified for the table.
+			foreach ($cfields as $fieldname => $fielddef) {
+				// Push a query line into $cqueries that adds the field to that table.
+				$cqueries[] = "ALTER TABLE {$table} ADD COLUMN $fielddef";
+				$for_update[$table.'.'.$fieldname] = 'Added column '.$table.'.'.$fieldname;
+			}
+
+			// Index stuff goes here. Fetch the table index structure from the database.
+			$tableindices = $wpdb->get_results("SHOW INDEX FROM {$table};");
+
+			if ($tableindices) {
+				// Clear the index array.
+				$index_ary = array();
+
+				// For every index in the table.
+				foreach ($tableindices as $tableindex) {
+
+					// Add the index to the index data array.
+					$keyname = $tableindex->Key_name;
+					$index_ary[$keyname]['columns'][] = array('fieldname' => $tableindex->Column_name, 'subpart' => $tableindex->Sub_part);
+					$index_ary[$keyname]['unique'] = ($tableindex->Non_unique == 0)?true:false;
+				}
+
+				// For each actual index in the index array.
+				foreach ($index_ary as $index_name => $index_data) {
+
+					// Build a create string to compare to the query.
+					$index_string = '';
+					if ($index_name == 'PRIMARY') {
+						$index_string .= 'PRIMARY ';
+					} elseif ( $index_data['unique'] ) {
+						$index_string .= 'UNIQUE ';
+					}
+					$index_string .= 'KEY ';
+					if ($index_name != 'PRIMARY') {
+						$index_string .= $index_name;
+					}
+					$index_columns = '';
+
+					// For each column in the index.
+					foreach ($index_data['columns'] as $column_data) {
+						if ($index_columns != '') $index_columns .= ',';
+
+						// Add the field to the column list string.
+						$index_columns .= $column_data['fieldname'];
+						if ($column_data['subpart'] != '') {
+							$index_columns .= '('.$column_data['subpart'].')';
+						}
+					}
+
+					// The alternative index string doesn't care about subparts
+					$alt_index_columns = preg_replace( '/\([^)]*\)/', '', $index_columns );
+
+					// Add the column list to the index create string.
+					$index_strings = array(
+						"$index_string ($index_columns)",
+						"$index_string ($alt_index_columns)",
+					);
+
+					foreach( $index_strings as $index_string ) {
+						if ( ! ( ( $aindex = array_search( $index_string, $indices ) ) === false ) ) {
+							unset( $indices[ $aindex ] );
+							break;
+							// todo: Remove this?
+							//echo "<pre style=\"border:1px solid #ccc;margin-top:5px;\">{$table}:<br />Found index:".$index_string."</pre>\n";
+						}
+					}
+					// todo: Remove this?
+					//else echo "<pre style=\"border:1px solid #ccc;margin-top:5px;\">{$table}:<br /><b>Did not find index:</b>".$index_string."<br />".print_r($indices, true)."</pre>\n";
+				}
+			}
+
+			// For every remaining index specified for the table.
+			foreach ( (array) $indices as $index ) {
+				// Push a query line into $cqueries that adds the index to that table.
+				$cqueries[] = "ALTER TABLE {$table} ADD $index";
+				$for_update[] = 'Added index ' . $table . ' ' . $index;
+			}
+
+			// Remove the original table creation query from processing.
+			unset( $cqueries[ $table ], $for_update[ $table ] );
+		}
+
+		$allqueries = array_merge($cqueries, $iqueries);
+		if ($execute) {
+			foreach ($allqueries as $query) {
+				// todo: Remove this?
+				//echo "<pre style=\"border:1px solid #ccc;margin-top:5px;\">".print_r($query, true)."</pre>\n";
+				$wpdb->query($query);
+			}
+		}
+
+		return $for_update;
 	}
 }
 
