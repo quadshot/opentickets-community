@@ -672,7 +672,7 @@ class qsot_event_area {
 				do_action( 'qsot-save-event-area', $old_id, $id, $item );
 				$resp['items'][$old_id] = apply_filters('qsot-get-venue-event-areas', array(), $venue_id, $id);
 			} else {
-				$resp['e'][] = sprintf( __('There was a problem saving the area [%s].','opentickets-community-edition'), $item['area-name']);
+				$resp['e'][] = sprintf( __( 'There was a problem saving the area [%s].', 'opentickets-community-edition' ), isset( $item['area-name'] ) ? $item['area-name'] : '' );
 			}
 		}
 

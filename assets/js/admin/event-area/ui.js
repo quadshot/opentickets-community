@@ -16,6 +16,7 @@ QS.EventAreaUICB = new QS.CB();
 			data: data,
 			type: 'POST',
 			dataType: 'json',
+			contentType: 'application/x-www-form-urlencoded',
 			success: function(r) {
 				if (typeof r == 'object') {
 					if (typeof r.e != 'undefined') console.log('ajax error: ', r.e);
@@ -85,8 +86,8 @@ QS.EventAreaUICB = new QS.CB();
 
 				case 'select':
 					$(this).find('option').each(function() {
-						if ($(this).val() == val) $(this).attr('selected', 'selected');
-						else $(this).removeAttr('selected');
+						if ($(this).val() == val) $(this).prop('selected', 'selected');
+						else $(this).removeProp('selected');
 					});
 				break;
 
@@ -124,12 +125,12 @@ QS.EventAreaUICB = new QS.CB();
 		e.preventDefault();
 		var btn = $(this), item = btn.closest('[rel="item"]');
 		if (item.hasClass('viewing')) {
-			item.removeClass('viewing').addClass('editing').find('input, select, textarea').removeAttr('disabled');
+			item.removeClass('viewing').addClass('editing');
 			update_ticket_list(item, false);
 		} else if (item.hasClass('adding')) {
 			item.closest('[rel="item"]').remove();
 		} else {
-			item.removeClass('editing').addClass('viewing').find('input, select, textarea').attr('disabled', 'disabled');
+			item.removeClass('editing').addClass('viewing');
 			update_ticket_list(item, true);
 		}
 		update_display(item);
