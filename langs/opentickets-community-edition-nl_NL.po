@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OpenTickets Community Edition\n"
-"POT-Creation-Date: 2015-07-17 18:58-0800\n"
-"PO-Revision-Date: 2015-07-23 07:25-0800\n"
+"POT-Creation-Date: 2015-07-23 18:28-0800\n"
+"PO-Revision-Date: 2015-07-23 18:28-0800\n"
 "Last-Translator: \n"
 "Language-Team: Quadshot <info@quadshot.com>\n"
 "Language: nl\n"
@@ -179,17 +179,17 @@ msgstr "Handmatig ingevoerde datum"
 msgid "Starting Date Method"
 msgstr "Begin Datum Methode"
 
-#: ../inc/core/calendar.class.php:389 ../inc/core/post-type.class.php:1544
-#: ../inc/core/post-type.class.php:1550 ../inc/core/post-type.class.php:1633
-#: ../inc/core/post-type.class.php:1649
+#: ../inc/core/calendar.class.php:389 ../inc/core/post-type.class.php:1556
+#: ../inc/core/post-type.class.php:1562 ../inc/core/post-type.class.php:1645
+#: ../inc/core/post-type.class.php:1661
 #: ../inc/sys/pages/system-status.page.php:368
 msgid "m-d-Y"
 msgstr "m-d-J"
 
-#: ../inc/core/calendar.class.php:390 ../inc/core/post-type.class.php:1499
-#: ../inc/core/post-type.class.php:1516 ../inc/core/post-type.class.php:1543
-#: ../inc/core/post-type.class.php:1549 ../inc/core/post-type.class.php:1632
-#: ../inc/core/post-type.class.php:1648
+#: ../inc/core/calendar.class.php:390 ../inc/core/post-type.class.php:1511
+#: ../inc/core/post-type.class.php:1528 ../inc/core/post-type.class.php:1555
+#: ../inc/core/post-type.class.php:1561 ../inc/core/post-type.class.php:1644
+#: ../inc/core/post-type.class.php:1660
 msgid "mm-dd-yy"
 msgstr "mm-dd-jj"
 
@@ -343,156 +343,156 @@ msgstr "Oneindige Login"
 msgid "Once a user logs in, they stay logged in, forever."
 msgstr "Als een gebruiker inlogd, blijft deze ingelogd, voor altijd."
 
-#: ../inc/core/post-type.class.php:207 ../inc/core/post-type.class.php:796
+#: ../inc/core/post-type.class.php:213 ../inc/core/post-type.class.php:802
 #: ../inc/reporting/seating.report.class.php:515
 msgid "Event"
 msgstr "Event"
 
-#: ../inc/core/post-type.class.php:224
+#: ../inc/core/post-type.class.php:230
 msgid "View this event"
 msgstr "Bekijk dit event"
 
-#: ../inc/core/post-type.class.php:364 ../inc/core/post-type.class.php:795
+#: ../inc/core/post-type.class.php:370 ../inc/core/post-type.class.php:801
 msgid "Events"
 msgstr "Events"
 
-#: ../inc/core/post-type.class.php:392
+#: ../inc/core/post-type.class.php:398
 msgid "Top Level Events"
 msgstr "Top Level Events"
 
-#: ../inc/core/post-type.class.php:592
+#: ../inc/core/post-type.class.php:598
 #: ../inc/venues/event-area/post-type.class.php:912
 #: ../inc/venues/event-area/post-type.class.php:920
 msgid "sold-out"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:595
+#: ../inc/core/post-type.class.php:601
 #: ../inc/venues/event-area/post-type.class.php:921
 msgid "low"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:598
+#: ../inc/core/post-type.class.php:604
 #: ../inc/venues/event-area/post-type.class.php:919
 msgid "medium"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:601
+#: ../inc/core/post-type.class.php:607
 #: ../inc/venues/event-area/post-type.class.php:918
 msgid "high"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:617
+#: ../inc/core/post-type.class.php:623
 #, fuzzy
 msgid "available"
 msgstr "Beschikbaar:"
 
-#: ../inc/core/post-type.class.php:723
+#: ../inc/core/post-type.class.php:729
 #, fuzzy
 msgctxt "post"
 msgid "Hidden"
 msgstr "Verborgen"
 
-#: ../inc/core/post-type.class.php:740
+#: ../inc/core/post-type.class.php:746
 #, php-format
 msgid "Hidden <span class=\"count\">(%s)</span>"
 msgid_plural "Hidden <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../inc/core/post-type.class.php:844
+#: ../inc/core/post-type.class.php:850
 msgid "MM-dd-yyyy"
 msgstr "MM-dd-jjjj"
 
-#: ../inc/core/post-type.class.php:845
+#: ../inc/core/post-type.class.php:851
 msgid "ddd MM-dd-yyyy"
 msgstr "ddd MM-dd-jjjj"
 
-#: ../inc/core/post-type.class.php:846
+#: ../inc/core/post-type.class.php:852
 msgid "hh:mmtt"
 msgstr "uu:mmtt"
 
-#: ../inc/core/post-type.class.php:965
+#: ../inc/core/post-type.class.php:971
 msgid "Max"
 msgstr "Max"
 
-#: ../inc/core/post-type.class.php:968
+#: ../inc/core/post-type.class.php:974
 #: ../inc/reporting/seating.report.class.php:512
 #: ../inc/sys/admin-menu.class.php:311
 msgid "Status"
 msgstr "Status"
 
-#: ../inc/core/post-type.class.php:1006
+#: ../inc/core/post-type.class.php:1012
 msgid "m/d/Y"
 msgstr "m/d/J"
 
-#: ../inc/core/post-type.class.php:1007
+#: ../inc/core/post-type.class.php:1013
 #: ../templates/tickets/basic-ticket.php:73
 #: ../templates/tickets/basic-ticket.php:80
 msgid "g:ia"
 msgstr "g:ia"
 
-#: ../inc/core/post-type.class.php:1010
+#: ../inc/core/post-type.class.php:1016
 #, fuzzy, php-format
 msgid "on %2$s"
 msgstr "toegevoeg op %1$s at %2$s"
 
-#: ../inc/core/post-type.class.php:1012
+#: ../inc/core/post-type.class.php:1018
 #, php-format
 msgid "@ %3$s"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1110
+#: ../inc/core/post-type.class.php:1116
 #, fuzzy
 msgctxt "Permalink date"
 msgid "Y-m-d_gia"
 msgstr "J-m-d"
 
-#: ../inc/core/post-type.class.php:1349
+#: ../inc/core/post-type.class.php:1355
 #, fuzzy
 msgctxt "metabox title"
 msgid "Event Date Time Settings"
 msgstr "Event Datum Tijd instellingen"
 
-#: ../inc/core/post-type.class.php:1359
+#: ../inc/core/post-type.class.php:1365
 #, fuzzy
 msgctxt "metabox title"
 msgid "Event Titles"
 msgstr "Event Datum/Tijd"
 
-#: ../inc/core/post-type.class.php:1369
+#: ../inc/core/post-type.class.php:1375
 #, fuzzy
 msgctxt "metabox title"
 msgid "Stop Sales Before Show"
 msgstr "Verkoop Stoppen Voor Show"
 
-#: ../inc/core/post-type.class.php:1380
+#: ../inc/core/post-type.class.php:1386
 #, fuzzy
 msgctxt "metabox title"
 msgid "Event Run Date Range"
 msgstr "Event Looptijd Datum Beriek"
 
-#: ../inc/core/post-type.class.php:1405
+#: ../inc/core/post-type.class.php:1411
 #, fuzzy
 msgctxt "metabox field heading"
 msgid "Show Date"
 msgstr "Geef Rapport Weer"
 
-#: ../inc/core/post-type.class.php:1411 ../inc/core/post-type.class.php:1440
+#: ../inc/core/post-type.class.php:1417 ../inc/core/post-type.class.php:1446
 msgctxt "checkbox description"
 msgid "Use the site wide default setting"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1418
+#: ../inc/core/post-type.class.php:1424
 msgctxt "radio button description"
 msgid "Yes, show the date"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1422
+#: ../inc/core/post-type.class.php:1428
 msgctxt "radio button description"
 msgid "No, hide the date"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1427 ../inc/core/post-type.class.php:1456
+#: ../inc/core/post-type.class.php:1433 ../inc/core/post-type.class.php:1462
 #, php-format
 msgctxt "field helper text"
 msgid ""
@@ -500,39 +500,39 @@ msgid ""
 "a specific value for these events."
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1430
+#: ../inc/core/post-type.class.php:1436
 #, fuzzy
 msgctxt "option name"
 msgid "Show Date"
 msgstr "Geef Rapport Weer"
 
-#: ../inc/core/post-type.class.php:1434
+#: ../inc/core/post-type.class.php:1440
 #, fuzzy
 msgctxt "metabox field heading"
 msgid "Show Time"
 msgstr "Start Tijd"
 
-#: ../inc/core/post-type.class.php:1447
+#: ../inc/core/post-type.class.php:1453
 msgctxt "radio button description"
 msgid "Yes, show the time"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1451
+#: ../inc/core/post-type.class.php:1457
 msgctxt "radio button description"
 msgid "No, hide the time"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1459
+#: ../inc/core/post-type.class.php:1465
 #, fuzzy
 msgctxt "option name"
 msgid "Show Time"
 msgstr "Start Tijd"
 
-#: ../inc/core/post-type.class.php:1473
+#: ../inc/core/post-type.class.php:1479
 msgid "Formula"
 msgstr "Formule"
 
-#: ../inc/core/post-type.class.php:1478
+#: ../inc/core/post-type.class.php:1484
 msgid ""
 "This is the formula to calculate when tickets should stop being sold on the "
 "frontend for this show. For example, if you wish to stop selling tickets 2 "
@@ -549,148 +549,147 @@ msgstr ""
 "jaren. Laat het veld leeg om de globale instellingen voor deze formule te "
 "gebruiken."
 
-#: ../inc/core/post-type.class.php:1493
+#: ../inc/core/post-type.class.php:1505
 msgid "Start Date/Time"
 msgstr "Start Datum/Tijd"
 
-#: ../inc/core/post-type.class.php:1501 ../inc/core/post-type.class.php:1518
-#: ../inc/core/post-type.class.php:1787
+#: ../inc/core/post-type.class.php:1513 ../inc/core/post-type.class.php:1530
+#: ../inc/core/post-type.class.php:1799
 msgid "@"
 msgstr "@"
 
-#: ../inc/core/post-type.class.php:1510
+#: ../inc/core/post-type.class.php:1522
 msgid "End Date/Time:"
 msgstr "Eind Datum/Tijd"
 
-#: ../inc/core/post-type.class.php:1540
+#: ../inc/core/post-type.class.php:1552
 msgid "Basic Settings"
 msgstr "Algemene Instellingen"
 
-#: ../inc/core/post-type.class.php:1544
+#: ../inc/core/post-type.class.php:1556
 msgid "Start Date"
 msgstr "Start Datum"
 
-#: ../inc/core/post-type.class.php:1545 ../inc/core/post-type.class.php:1551
-#: ../inc/core/post-type.class.php:1634 ../inc/core/post-type.class.php:1650
+#: ../inc/core/post-type.class.php:1557 ../inc/core/post-type.class.php:1563
+#: ../inc/core/post-type.class.php:1646 ../inc/core/post-type.class.php:1662
 msgid "Y-m-d"
 msgstr "J-m-d"
 
-#: ../inc/core/post-type.class.php:1546 ../inc/core/post-type.class.php:1552
+#: ../inc/core/post-type.class.php:1558 ../inc/core/post-type.class.php:1564
 msgid "h:ia"
 msgstr "h:ia"
 
-#: ../inc/core/post-type.class.php:1546
+#: ../inc/core/post-type.class.php:1558
 msgid "Start Time"
 msgstr "Start Tijd"
 
-#: ../inc/core/post-type.class.php:1547
+#: ../inc/core/post-type.class.php:1559
 msgid "to"
 msgstr "naar"
 
-#: ../inc/core/post-type.class.php:1550
+#: ../inc/core/post-type.class.php:1562
 msgid "End Date"
 msgstr "Eind Datum"
 
-#: ../inc/core/post-type.class.php:1552
+#: ../inc/core/post-type.class.php:1564
 msgid "End Time"
 msgstr "Eind Tijd"
 
-#: ../inc/core/post-type.class.php:1558 ../inc/core/post-type.class.php:1567
+#: ../inc/core/post-type.class.php:1570 ../inc/core/post-type.class.php:1579
 msgid "Repeat"
 msgstr "Herhalen"
 
-#: ../inc/core/post-type.class.php:1572
+#: ../inc/core/post-type.class.php:1584
 msgid "Repeats"
 msgstr "Herhaald"
 
-#: ../inc/core/post-type.class.php:1576
+#: ../inc/core/post-type.class.php:1588
 msgid "Weekly"
 msgstr "Weekelijks"
 
-#: ../inc/core/post-type.class.php:1582
+#: ../inc/core/post-type.class.php:1594
 msgid "Repeats Every"
 msgstr "Herhaal Elke"
 
-#: ../inc/core/post-type.class.php:1589
+#: ../inc/core/post-type.class.php:1601
 msgid "days"
 msgstr "dagen"
 
-#: ../inc/core/post-type.class.php:1590
+#: ../inc/core/post-type.class.php:1602
 msgid "weeks"
 msgstr "weken"
 
-#: ../inc/core/post-type.class.php:1595
+#: ../inc/core/post-type.class.php:1607
 msgid "Repeat on"
 msgstr "Herhaal op"
 
-#: ../inc/core/post-type.class.php:1599
+#: ../inc/core/post-type.class.php:1611
 msgid "Su"
 msgstr "Zp"
 
-#: ../inc/core/post-type.class.php:1603
+#: ../inc/core/post-type.class.php:1615
 msgid "Mo"
 msgstr "Ma"
 
-#: ../inc/core/post-type.class.php:1607
+#: ../inc/core/post-type.class.php:1619
 msgid "Tu"
 msgstr "Di"
 
-#: ../inc/core/post-type.class.php:1611
+#: ../inc/core/post-type.class.php:1623
 msgid "We"
 msgstr "Wo"
 
-#: ../inc/core/post-type.class.php:1615
+#: ../inc/core/post-type.class.php:1627
 msgid "Th"
 msgstr "Do"
 
-#: ../inc/core/post-type.class.php:1619
+#: ../inc/core/post-type.class.php:1631
 msgid "Fr"
 msgstr "Fr"
 
-#: ../inc/core/post-type.class.php:1623
+#: ../inc/core/post-type.class.php:1635
 msgid "Sa"
 msgstr "Za"
 
-#: ../inc/core/post-type.class.php:1629
+#: ../inc/core/post-type.class.php:1641
 msgid "Starts on"
 msgstr "Start op"
 
-#: ../inc/core/post-type.class.php:1639
+#: ../inc/core/post-type.class.php:1651
 msgid "Ends"
 msgstr "Eindigt"
 
-#: ../inc/core/post-type.class.php:1645
+#: ../inc/core/post-type.class.php:1657
 msgid "On"
 msgstr "Op"
 
-#: ../inc/core/post-type.class.php:1655
+#: ../inc/core/post-type.class.php:1667
 msgid "After"
 msgstr "Na"
 
-#: ../inc/core/post-type.class.php:1658
+#: ../inc/core/post-type.class.php:1670
 msgid "occurences"
 msgstr "voorkomens"
 
-#: ../inc/core/post-type.class.php:1679
+#: ../inc/core/post-type.class.php:1691
 msgid "Add to Calendar"
 msgstr "Toevoegen aan Kalender"
 
-#: ../inc/core/post-type.class.php:1695
+#: ../inc/core/post-type.class.php:1707
 msgid "Event Date/Times"
 msgstr "Event Datum/Tijd"
 
-#: ../inc/core/post-type.class.php:1701 ../inc/sys/admin-menu.class.php:170
+#: ../inc/core/post-type.class.php:1713 ../inc/sys/admin-menu.class.php:170
 #: ../inc/sys/admin-menu.class.php:171
 msgid "Settings"
 msgstr "Instellingen"
 
-#: ../inc/core/post-type.class.php:1706
+#: ../inc/core/post-type.class.php:1718
 msgid "Status:"
 msgstr "Status:"
 
-#: ../inc/core/post-type.class.php:1708 ../inc/core/post-type.class.php:1731
-#: ../inc/core/post-type.class.php:1766 ../inc/sys/core-hacks.class.php:827
-#: ../inc/sys/core-hacks.class.php:930 ../inc/venues/post-type.class.php:364
+#: ../inc/core/post-type.class.php:1720 ../inc/core/post-type.class.php:1743
+#: ../inc/core/post-type.class.php:1778 ../inc/venues/post-type.class.php:364
 #: ../inc/venues/event-area/post-type.class.php:528
 #: ../templates/admin/meta-boxes/views/html-order-items.php:217
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:221
@@ -698,34 +697,34 @@ msgstr "Status:"
 msgid "Edit"
 msgstr "Aanpassen"
 
-#: ../inc/core/post-type.class.php:1713
+#: ../inc/core/post-type.class.php:1725
 msgid "Published"
 msgstr "Gepubliceerd"
 
-#: ../inc/core/post-type.class.php:1714
+#: ../inc/core/post-type.class.php:1726
 msgid "Privately Published"
 msgstr "Prive Gepubliceerd"
 
-#: ../inc/core/post-type.class.php:1715
+#: ../inc/core/post-type.class.php:1727
 msgid "Scheduled"
 msgstr "Gepland"
 
-#: ../inc/core/post-type.class.php:1717
+#: ../inc/core/post-type.class.php:1729
 msgid "Pending Review"
 msgstr "Afwachtende Review"
 
-#: ../inc/core/post-type.class.php:1718
+#: ../inc/core/post-type.class.php:1730
 msgid "Draft"
 msgstr "Concept"
 
-#: ../inc/core/post-type.class.php:1721 ../inc/core/post-type.class.php:1756
-#: ../inc/core/post-type.class.php:1792 ../inc/venues/post-type.class.php:375
+#: ../inc/core/post-type.class.php:1733 ../inc/core/post-type.class.php:1768
+#: ../inc/core/post-type.class.php:1804 ../inc/venues/post-type.class.php:375
 #: ../inc/venues/event-area/post-type.class.php:551
 msgid "OK"
 msgstr "OK"
 
-#: ../inc/core/post-type.class.php:1722 ../inc/core/post-type.class.php:1757
-#: ../inc/core/post-type.class.php:1793 ../inc/sys/mba.class.php:462
+#: ../inc/core/post-type.class.php:1734 ../inc/core/post-type.class.php:1769
+#: ../inc/core/post-type.class.php:1805 ../inc/sys/mba.class.php:462
 #: ../inc/venues/post-type.class.php:376
 #: ../inc/venues/event-area/post-type.class.php:552
 #: ../templates/admin/meta-boxes/views/html-order-items.php:255
@@ -733,19 +732,19 @@ msgstr "OK"
 msgid "Cancel"
 msgstr "Annuleren"
 
-#: ../inc/core/post-type.class.php:1729
+#: ../inc/core/post-type.class.php:1741
 msgid "Visibility"
 msgstr "Zichtbaarheid"
 
-#: ../inc/core/post-type.class.php:1735
+#: ../inc/core/post-type.class.php:1747
 msgid "Viewable to the public"
 msgstr "Zichtbaar in het openbaar"
 
-#: ../inc/core/post-type.class.php:1737
+#: ../inc/core/post-type.class.php:1749
 msgid "Public"
 msgstr "Openbaar"
 
-#: ../inc/core/post-type.class.php:1739
+#: ../inc/core/post-type.class.php:1751
 msgid ""
 "Visible on the calendar, but only those with the password can view to make "
 "reservations"
@@ -753,88 +752,88 @@ msgstr ""
 "Zichtbaar op de kalender maar allen diegene met het wachtwoord kunnen inzien "
 "om te reserveren."
 
-#: ../inc/core/post-type.class.php:1741
+#: ../inc/core/post-type.class.php:1753
 msgid "Password Protected"
 msgstr "Beveiligd met wachtwoord"
 
-#: ../inc/core/post-type.class.php:1743
+#: ../inc/core/post-type.class.php:1755
 msgid "Password:"
 msgstr "Wachtwoord:"
 
-#: ../inc/core/post-type.class.php:1747
+#: ../inc/core/post-type.class.php:1759
 msgid "Hidden from the calendar, but open to anyone with the url"
 msgstr "Verborgen op de kalender maar openbaar voor iedereen met de url"
 
-#: ../inc/core/post-type.class.php:1749
+#: ../inc/core/post-type.class.php:1761
 msgid "Hidden"
 msgstr "Verborgen"
 
-#: ../inc/core/post-type.class.php:1751
+#: ../inc/core/post-type.class.php:1763
 msgid "Only logged in admin users or the event author can view it"
 msgstr "Alleen ingelogde admin users of de event auteur kan inzien."
 
-#: ../inc/core/post-type.class.php:1753
+#: ../inc/core/post-type.class.php:1765
 msgid "Private"
 msgstr "Privé"
 
-#: ../inc/core/post-type.class.php:1764
+#: ../inc/core/post-type.class.php:1776
 msgid "Publish Date:"
 msgstr "Publiceer Datum:"
 
-#: ../inc/core/post-type.class.php:1773
+#: ../inc/core/post-type.class.php:1785
 #, fuzzy
 msgid "January"
 msgstr "Januari"
 
-#: ../inc/core/post-type.class.php:1774
+#: ../inc/core/post-type.class.php:1786
 msgid "February"
 msgstr "Februari"
 
-#: ../inc/core/post-type.class.php:1775
+#: ../inc/core/post-type.class.php:1787
 msgid "March"
 msgstr "Maart"
 
-#: ../inc/core/post-type.class.php:1776
+#: ../inc/core/post-type.class.php:1788
 msgid "April"
 msgstr "April"
 
-#: ../inc/core/post-type.class.php:1777
+#: ../inc/core/post-type.class.php:1789
 msgid "May"
 msgstr "Mei"
 
-#: ../inc/core/post-type.class.php:1778
+#: ../inc/core/post-type.class.php:1790
 msgid "June"
 msgstr "Juni"
 
-#: ../inc/core/post-type.class.php:1779
+#: ../inc/core/post-type.class.php:1791
 msgid "July"
 msgstr "Juli"
 
-#: ../inc/core/post-type.class.php:1780
+#: ../inc/core/post-type.class.php:1792
 msgid "August"
 msgstr "Augustus"
 
-#: ../inc/core/post-type.class.php:1781
+#: ../inc/core/post-type.class.php:1793
 msgid "September"
 msgstr "September"
 
-#: ../inc/core/post-type.class.php:1782
+#: ../inc/core/post-type.class.php:1794
 msgid "October"
 msgstr "October"
 
-#: ../inc/core/post-type.class.php:1783
+#: ../inc/core/post-type.class.php:1795
 msgid "November"
 msgstr "November"
 
-#: ../inc/core/post-type.class.php:1784
+#: ../inc/core/post-type.class.php:1796
 msgid "December"
 msgstr "December"
 
-#: ../inc/core/post-type.class.php:1821
+#: ../inc/core/post-type.class.php:1833
 msgid "Event base"
 msgstr "Event base"
 
-#: ../inc/core/post-type.class.php:1825
+#: ../inc/core/post-type.class.php:1837
 #, php-format
 msgid ""
 "Enter a custom base to use. This url segment will prefix the event name in "
@@ -843,19 +842,19 @@ msgstr ""
 "Voor een custom base in. Dit url segment staat voor de event naam in de url."
 "<br/><code>voorbeeld: %s</code>"
 
-#: ../inc/core/post-type.class.php:1841
+#: ../inc/core/post-type.class.php:1853
 msgid "Event permalink base"
 msgstr "Event permalink base"
 
-#: ../inc/core/post-type.class.php:1897
+#: ../inc/core/post-type.class.php:1909
 msgid "Event Display"
 msgstr "Event Weergave"
 
-#: ../inc/core/post-type.class.php:1906
+#: ../inc/core/post-type.class.php:1918
 msgid "Stop Sales Before Show"
 msgstr "Verkoop Stoppen Voor Show"
 
-#: ../inc/core/post-type.class.php:1907
+#: ../inc/core/post-type.class.php:1919
 msgid ""
 "Amount of time to stop sales for a show, before show time. (ie: stop sales "
 "two hour before show time <code>2 hours</code>)"
@@ -863,7 +862,7 @@ msgstr ""
 "Tijd voor de show waneer de verkoop stopt. (bv. twee uur van te voren "
 "stoppen met verkoop <code>2 uur</code>)"
 
-#: ../inc/core/post-type.class.php:1908
+#: ../inc/core/post-type.class.php:1920
 msgid ""
 "valid units: hour, hours, minute, minutes, second, seconds, day, days, week, "
 "weeks, month, months, year, years"
@@ -871,15 +870,15 @@ msgstr ""
 "gebruikte eenheden: uur, uren, minuut, minuten, seconde, secondes, dag, "
 "dagen, week, weken, maand, maanden, jaar, jaren."
 
-#: ../inc/core/post-type.class.php:1916
+#: ../inc/core/post-type.class.php:1928
 msgid "Single Event Synopsis"
 msgstr "Enkele Event Samenvatting"
 
-#: ../inc/core/post-type.class.php:1917
+#: ../inc/core/post-type.class.php:1929
 msgid "Show event synopsis on single event pages"
 msgstr "Geeft event samenvattingen op enekele event pagina's weer"
 
-#: ../inc/core/post-type.class.php:1918
+#: ../inc/core/post-type.class.php:1930
 msgid ""
 "By default, just the event logo, and the event pricing options are shown. "
 "This feature will additionally show the description of the event to the user."
@@ -888,49 +887,49 @@ msgstr ""
 "weergegeven. Deze feature laat ook de omschrijving van het event aan de "
 "gebruiker zien."
 
-#: ../inc/core/post-type.class.php:1927
+#: ../inc/core/post-type.class.php:1939
 msgid "Single Event Synopsis Position"
 msgstr "Enekele Event Samenvatting Positie"
 
-#: ../inc/core/post-type.class.php:1928
+#: ../inc/core/post-type.class.php:1940
 msgid "The display position of the Event Synopsis on the single event page."
 msgstr ""
 "De weergave positie van de Event Samenvatting op de enkele event pagina"
 
-#: ../inc/core/post-type.class.php:1930
+#: ../inc/core/post-type.class.php:1942
 msgid "Above the Ticket Selection UI"
 msgstr "Boven de Ticket Selectie UI"
 
-#: ../inc/core/post-type.class.php:1931
+#: ../inc/core/post-type.class.php:1943
 msgid "Below the Ticket Selection UI"
 msgstr "Onde de Ticket Selectie UI"
 
-#: ../inc/core/post-type.class.php:1942
+#: ../inc/core/post-type.class.php:1954
 #, fuzzy
 msgid "Show Date"
 msgstr "Geef Rapport Weer"
 
-#: ../inc/core/post-type.class.php:1943
+#: ../inc/core/post-type.class.php:1955
 #, fuzzy
 msgid "Show the date in the title of events, on the event details pages."
 msgstr "Geef het order nummer van het ticket weer op het ticket."
 
-#: ../inc/core/post-type.class.php:1944
+#: ../inc/core/post-type.class.php:1956
 msgid ""
 "This is the difference between a title reading \"My Event\" and \"My Event "
 "on 09/12/2015\"."
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1954
+#: ../inc/core/post-type.class.php:1966
 #, fuzzy
 msgid "Show Time"
 msgstr "Start Tijd"
 
-#: ../inc/core/post-type.class.php:1955
+#: ../inc/core/post-type.class.php:1967
 msgid "Show the time in the title of events, on the event details pages."
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1956
+#: ../inc/core/post-type.class.php:1968
 msgid ""
 "This is the difference between a title reading \"My Event\" and \"My Event @ "
 "6:00pm\"."
@@ -941,7 +940,7 @@ msgstr ""
 msgid "There are not %s tickets available to reserve."
 msgstr "Er zijn geen %s tickets beschikbaar op te reserveren"
 
-#: ../inc/order/admin.class.php:154
+#: ../inc/order/admin.class.php:147
 msgid ""
 "The current settings disallow using \"<strong>Guest</strong>\" as the "
 "customer for the order. You have attempted to use \"<strong>Guest</strong>\" "
@@ -953,7 +952,7 @@ msgstr ""
 "\" te gebruiken als klant voor de order. U kunt niet doorgaan met het "
 "verwerken van de betaling todat er een gebruiker is gekozen."
 
-#: ../inc/order/admin.class.php:189
+#: ../inc/order/admin.class.php:182
 msgid ""
 "Additionally, because of the current Woocommerce settings, \"<strong>Guest</"
 "strong>\" is not allowed as the customer user. Please select a user first."
@@ -961,7 +960,7 @@ msgstr ""
 "Door de huidige Woocommerce settings, \"<strong>Gast</strong>\" is niet "
 "toegestaan als klant gebruiker. Selecteer A.U.B. een gebuiker."
 
-#: ../inc/order/admin.class.php:221 ../inc/order/admin.class.php:223
+#: ../inc/order/admin.class.php:214 ../inc/order/admin.class.php:216
 msgid ""
 "You cannot use \"Guest\" as the owner of the order, due to current "
 "Woocommerce settings."
@@ -969,31 +968,31 @@ msgstr ""
 "Door de Woocommerce settings kunt u niet \"Gast\" gebruiken als eigenaar van "
 "de order."
 
-#: ../inc/order/admin.class.php:343
+#: ../inc/order/admin.class.php:336
 #, fuzzy
 msgid "is a required field."
 msgstr "Gebruikersnaam is een verplicht veld."
 
-#: ../inc/order/admin.class.php:355
+#: ../inc/order/admin.class.php:348
 #, fuzzy
 msgid "Please enter a valid postcode/ZIP."
 msgstr "Dat is geen geldige order."
 
-#: ../inc/order/admin.class.php:362
+#: ../inc/order/admin.class.php:355
 #, fuzzy
 msgid "is not a valid phone number."
 msgstr "moet een geldig telefoon nummer zijn"
 
-#: ../inc/order/admin.class.php:369
+#: ../inc/order/admin.class.php:362
 #, fuzzy
 msgid "is not a valid email address."
 msgstr "Dat is geen geldig email adres."
 
-#: ../inc/order/admin.class.php:385
+#: ../inc/order/admin.class.php:378
 msgid "is not valid. Please enter one of the following:"
 msgstr ""
 
-#: ../inc/order/admin.class.php:404 ../inc/order/admin.class.php:407
+#: ../inc/order/admin.class.php:397 ../inc/order/admin.class.php:400
 msgid ""
 "Your current settings require you to provide most billing information for "
 "each order."
@@ -1001,99 +1000,97 @@ msgstr ""
 "De huidige instellingen vereisen u om de meeste betaalinformatie te geven "
 "voor elke order."
 
-#: ../inc/order/admin.class.php:447
-msgid "New User"
-msgstr "Nieuwe Gebruiker"
+#: ../inc/order/admin.class.php:462
+#, fuzzy
+msgid "You do not have permission to create users. Sorry."
+msgstr "U heeft niet genoeg rechten om deze actie uit te voeren!"
 
-#: ../inc/order/admin.class.php:475
+#: ../inc/order/admin.class.php:476
 msgid "The username is a required field."
 msgstr "Gebruikersnaam is een verplicht veld."
 
-#: ../inc/order/admin.class.php:477
+#: ../inc/order/admin.class.php:479
 msgid "That user name contains illegal characters."
 msgstr "Uw gebeuikers naam bevat niet toegestane tekens."
 
-#: ../inc/order/admin.class.php:479
+#: ../inc/order/admin.class.php:482
 msgid ""
 "is already being used by another user. Please enter a different username."
 msgstr ""
 "word al gebruikt door een andere gebruiker. Kies A.U.B. een andere "
 "gebruikersnaam."
 
-#: ../inc/order/admin.class.php:484
+#: ../inc/order/admin.class.php:488
 msgid "The email address is required."
 msgstr "Het email adres is vereist."
 
-#: ../inc/order/admin.class.php:486
+#: ../inc/order/admin.class.php:491
 msgid "That is not a valid email address."
 msgstr "Dat is geen geldig email adres."
 
-#: ../inc/order/admin.class.php:488
+#: ../inc/order/admin.class.php:494
 msgid ""
 "is already in use by another user. Please use a different email address."
 msgstr ""
 "word al gebruikt door een andere gebuieker. Kies A.U.B. een ander email "
 "adres."
 
-#: ../inc/order/admin.class.php:492
+#: ../inc/order/admin.class.php:499
 msgid "The first name is a required field."
 msgstr "Voornaam is een verplicht veld."
 
-#: ../inc/order/admin.class.php:496
+#: ../inc/order/admin.class.php:504
 msgid "The last name is a required field."
 msgstr "Achetrnaam is een verplicht veld."
 
-#: ../inc/order/admin.class.php:500
+#: ../inc/order/admin.class.php:510
 msgid "The information you supplied passed validation."
 msgstr "De verschafte informatie is goed gekeurd."
 
-#: ../inc/order/admin.class.php:512
+#: ../inc/order/admin.class.php:528
 msgid "User creation failed:"
 msgstr "Gerbruiker aamaken mislukt:"
 
-#: ../inc/order/admin.class.php:515
+#: ../inc/order/admin.class.php:532
 msgid "The user was created successfully."
 msgstr "De gebruiers is succesvol aangemaakt."
 
-#: ../inc/order/admin.class.php:549
+#: ../inc/order/admin.class.php:570
 msgid "New User Form"
 msgstr "Nieuwe Gebuiker Formulier"
 
-#: ../inc/order/admin.class.php:560
+#: ../inc/order/admin.class.php:581
 msgid "Username"
 msgstr "Gebruikersnaam"
 
-#: ../inc/order/admin.class.php:564
+#: ../inc/order/admin.class.php:585
 #: ../inc/reporting/seating.report.class.php:508
-#: ../inc/sys/core-hacks.class.php:869
 #: ../templates/tickets/verification-form.php:10
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:77
 msgid "Email"
 msgstr "Email"
 
-#: ../inc/order/admin.class.php:568 ../inc/sys/core-hacks.class.php:831
-#: ../inc/sys/core-hacks.class.php:934
+#: ../inc/order/admin.class.php:589
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:39
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:86
 msgid "First Name"
 msgstr "Voornaam"
 
-#: ../inc/order/admin.class.php:572 ../inc/sys/core-hacks.class.php:835
-#: ../inc/sys/core-hacks.class.php:938
+#: ../inc/order/admin.class.php:593
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:43
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:90
 msgid "Last Name"
 msgstr "Achternaam"
 
-#: ../inc/order/admin.class.php:683
+#: ../inc/order/admin.class.php:704
 msgid "Additional Email Settings"
 msgstr "Extra Email Instellingen"
 
-#: ../inc/order/admin.class.php:692
+#: ../inc/order/admin.class.php:713
 msgid "Custom Completed Order Message (Above Order Items)"
 msgstr "Aangepast Voltooide Order Bericht (Boven Order Items)"
 
-#: ../inc/order/admin.class.php:693 ../inc/order/admin.class.php:703
+#: ../inc/order/admin.class.php:714 ../inc/order/admin.class.php:724
 msgid ""
 "This html appears near the top of the default Completed Order email, sent to "
 "the customer upon completion of their order, above the order items."
@@ -1101,16 +1098,16 @@ msgstr ""
 "Deze html verschijnt boven in de standaard Voltooide Order email die wordt "
 "verstuurd naar de klant waneer de order voltooid is, boven de order items."
 
-#: ../inc/order/admin.class.php:702
+#: ../inc/order/admin.class.php:723
 msgid "Custom Completed Order Message - Text only version (Above Order Items)"
 msgstr ""
 "Aangepast Voltooide Order Bericht - Text only versie (Boven Oder Items)"
 
-#: ../inc/order/admin.class.php:712
+#: ../inc/order/admin.class.php:733
 msgid "Custom Completed Order Message (Below Address)"
 msgstr "Aangepast Voltooide Order Bericht (Onder Adres)"
 
-#: ../inc/order/admin.class.php:713
+#: ../inc/order/admin.class.php:734
 msgid ""
 "This html appears at the bottom of the default Completed Order email, sent "
 "to the customer upon completion of their order, below their address "
@@ -1119,11 +1116,11 @@ msgstr ""
 "Deze html verschijnt boven in de standaard Voltooide Order email die wordt "
 "verstuurd naar de klant waneer de order voltooid is, onder het adres."
 
-#: ../inc/order/admin.class.php:722
+#: ../inc/order/admin.class.php:743
 msgid "Custom Completed Order Message - Text only version (Below Address)"
 msgstr "Aangepast Voltooide Order Bericht - Text only versie (Onder Adres)"
 
-#: ../inc/order/admin.class.php:723
+#: ../inc/order/admin.class.php:744
 msgid ""
 "This text appears at the bottom of the default Completed Order email, sent "
 "to the customer upon completion of their order, below their address "
@@ -1169,8 +1166,8 @@ msgid "[All Years]"
 msgstr "[Alle Jaren]"
 
 #: ../inc/reporting/seating.report.class.php:182
-#: ../inc/venues/event-area/pricing.class.php:559
-#: ../inc/venues/event-area/pricing.class.php:626
+#: ../inc/venues/event-area/pricing.class.php:573
+#: ../inc/venues/event-area/pricing.class.php:640
 #: ../templates/checkin/already-occupied.php:25
 #: ../templates/checkin/occupy-failure.php:25
 #: ../templates/checkin/occupy-success.php:25
@@ -1220,14 +1217,11 @@ msgid "Quantity"
 msgstr "Aantal"
 
 #: ../inc/reporting/seating.report.class.php:509
-#: ../inc/sys/core-hacks.class.php:872
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:80
 msgid "Phone"
 msgstr "Telefoon"
 
 #: ../inc/reporting/seating.report.class.php:510
-#: ../inc/sys/core-hacks.class.php:880 ../inc/sys/core-hacks.class.php:882
-#: ../inc/sys/core-hacks.class.php:977 ../inc/sys/core-hacks.class.php:979
 #: ../inc/venues/post-type.class.php:207
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:227
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:229
@@ -1588,147 +1582,10 @@ msgstr "Bereken totaal"
 msgid "Delete note"
 msgstr "Verwijder notitie"
 
-#: ../inc/sys/core-hacks.class.php:539 ../inc/sys/core-hacks.class.php:778
+#: ../inc/sys/core-hacks.class.php:539
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:208
 msgid "Guest"
 msgstr "Gast"
-
-#: ../inc/sys/core-hacks.class.php:744
-msgid "Order Details"
-msgstr "Order Details"
-
-#: ../inc/sys/core-hacks.class.php:747
-msgid "Order number"
-msgstr "Order nummer"
-
-#: ../inc/sys/core-hacks.class.php:752
-msgid "Customer IP:"
-msgstr "Kant IP:"
-
-#: ../inc/sys/core-hacks.class.php:759
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:181
-msgid "General Details"
-msgstr "Algemene Details"
-
-#: ../inc/sys/core-hacks.class.php:761
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:187
-msgid "Order status:"
-msgstr "Order status:"
-
-#: ../inc/sys/core-hacks.class.php:771
-msgid "Order Date:"
-msgstr "Oder Datum:"
-
-#: ../inc/sys/core-hacks.class.php:772
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:184
-msgid "h"
-msgstr "u"
-
-#: ../inc/sys/core-hacks.class.php:772
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:184
-msgid "m"
-msgstr "m"
-
-#: ../inc/sys/core-hacks.class.php:776
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:206
-msgid "Customer:"
-msgstr "Klant:"
-
-#: ../inc/sys/core-hacks.class.php:818
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:366
-msgid "Customer Note:"
-msgstr "Klant Bericht:"
-
-#: ../inc/sys/core-hacks.class.php:819
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:367
-msgid "Customer's notes about the order"
-msgstr "Klant Bericht over de order"
-
-#: ../inc/sys/core-hacks.class.php:827
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:221
-msgid "Billing Details"
-msgstr "Factuur Details"
-
-#: ../inc/sys/core-hacks.class.php:839 ../inc/sys/core-hacks.class.php:942
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:47
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:94
-msgid "Company"
-msgstr "Bedrijf"
-
-#: ../inc/sys/core-hacks.class.php:843 ../inc/sys/core-hacks.class.php:946
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:51
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:98
-msgid "Address 1"
-msgstr "Adres"
-
-#: ../inc/sys/core-hacks.class.php:847 ../inc/sys/core-hacks.class.php:950
-#: ../inc/venues/post-type.class.php:208
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:55
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:102
-msgid "Address 2"
-msgstr "Adres 2"
-
-#: ../inc/sys/core-hacks.class.php:851 ../inc/sys/core-hacks.class.php:954
-#: ../inc/venues/post-type.class.php:209
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:59
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:106
-msgid "City"
-msgstr "Plaats"
-
-#: ../inc/sys/core-hacks.class.php:855 ../inc/sys/core-hacks.class.php:958
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:63
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:110
-msgid "Postcode"
-msgstr "Postcode"
-
-#: ../inc/sys/core-hacks.class.php:859 ../inc/sys/core-hacks.class.php:962
-#: ../inc/venues/post-type.class.php:212
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:67
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:114
-msgid "Country"
-msgstr "Land"
-
-#: ../inc/sys/core-hacks.class.php:862 ../inc/sys/core-hacks.class.php:965
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:70
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:117
-msgid "Select a country&hellip;"
-msgstr "Selecteer een land&hellip;"
-
-#: ../inc/sys/core-hacks.class.php:865 ../inc/sys/core-hacks.class.php:968
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:73
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:120
-msgid "State/County"
-msgstr "Provincie"
-
-#: ../inc/sys/core-hacks.class.php:882
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:229
-msgid "No billing address set."
-msgstr "Geen factuure adres bepaald."
-
-#: ../inc/sys/core-hacks.class.php:895
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:247
-msgid "Load billing address"
-msgstr "Laad factuur adres"
-
-#: ../inc/sys/core-hacks.class.php:930
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:313
-msgid "Shipping Details"
-msgstr "Verzend Details"
-
-#: ../inc/sys/core-hacks.class.php:979
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:321
-msgid "No shipping address set."
-msgstr "Geen verzend adres bepaald."
-
-#: ../inc/sys/core-hacks.class.php:992
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:345
-msgid "Load shipping address"
-msgstr "Laad verzend adres"
-
-#: ../inc/sys/core-hacks.class.php:992
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:345
-msgid "Copy from billing"
-msgstr "Zelfde als factuur adres"
 
 #: ../inc/sys/db-upgrade.php:83
 #, php-format
@@ -1799,10 +1656,6 @@ msgstr "Ongedaan Maken"
 msgid "Select Files"
 msgstr "Selecteer Bestanden"
 
-#: ../inc/sys/obj.php:17
-msgid "Could not extend. Invalid type."
-msgstr "Kan niet uitbreiden. Ongeldig type."
-
 #: ../inc/sys/pdf.class.php:191 ../inc/sys/pdf.class.php:493
 #, php-format
 msgid ""
@@ -1842,6 +1695,10 @@ msgstr ""
 #, php-format
 msgid "Only one instance of %s can be created."
 msgstr "Slechts een instantie van %s kan gemaakt worden."
+
+#: ../inc/sys/utils.php:39
+msgid "Could not extend. Invalid type."
+msgstr "Kan niet uitbreiden. Ongeldig type."
 
 #: ../inc/sys/pages/base-page.class.php:73
 #: ../inc/sys/pages/base-page.class.php:74
@@ -2099,8 +1956,8 @@ msgstr "Gebruik deze afbeelding"
 msgid "remove image"
 msgstr "Verwijder Tekst"
 
-#: ../inc/sys/settings/frontend.php:96 ../inc/ticket/ticket.class.php:607
-#: ../inc/ticket/ticket.class.php:624
+#: ../inc/sys/settings/frontend.php:96 ../inc/ticket/ticket.class.php:608
+#: ../inc/ticket/ticket.class.php:625
 #, fuzzy
 msgid "no image"
 msgstr "Logo Afbeelding"
@@ -2380,7 +2237,7 @@ msgid "Could not load the order item associated with this ticket."
 msgstr "Kan dat order item niet vinden in de order."
 
 #: ../inc/ticket/ticket.class.php:108
-#: ../inc/venues/event-area/pricing.class.php:825
+#: ../inc/venues/event-area/pricing.class.php:839
 #: ../templates/tickets/basic-ticket.php:40
 msgid "Ticket"
 msgstr "Ticket"
@@ -2394,7 +2251,7 @@ msgstr "Bekijk uw ticket"
 msgid "View this ticket"
 msgstr "Bekijk dit ticket"
 
-#: ../inc/ticket/ticket.class.php:112 ../inc/ticket/ticket.class.php:594
+#: ../inc/ticket/ticket.class.php:112 ../inc/ticket/ticket.class.php:595
 msgid "Tickets"
 msgstr "Tickets"
 
@@ -2461,67 +2318,67 @@ msgid ""
 "has been removed."
 msgstr ""
 
-#: ../inc/ticket/ticket.class.php:507
+#: ../inc/ticket/ticket.class.php:508
 msgid "The information you supplied does not match our record."
 msgstr ""
 "De informatie die u heeft ingevoerd komt niet overeen met onze gegevens."
 
-#: ../inc/ticket/ticket.class.php:604
+#: ../inc/ticket/ticket.class.php:605
 msgid "Left Ticket Image"
 msgstr "Linker Ticket Afbeelding"
 
-#: ../inc/ticket/ticket.class.php:605
+#: ../inc/ticket/ticket.class.php:606
 msgid "The image to show in the bottom left corner of the ticket."
 msgstr ""
 "Deze afbeelding wordt weergegeven in de linker onder hoek van het ticket."
 
-#: ../inc/ticket/ticket.class.php:608 ../inc/ticket/ticket.class.php:625
+#: ../inc/ticket/ticket.class.php:609 ../inc/ticket/ticket.class.php:626
 msgid "the Event Featured Image"
 msgstr "De Event Uitgelichte Afbeelding"
 
-#: ../inc/ticket/ticket.class.php:609 ../inc/ticket/ticket.class.php:626
+#: ../inc/ticket/ticket.class.php:610 ../inc/ticket/ticket.class.php:627
 #, fuzzy
 msgid "the Venue Image"
 msgstr "De Event Uitgelichte Afbeelding"
 
-#: ../inc/ticket/ticket.class.php:610 ../inc/ticket/ticket.class.php:627
+#: ../inc/ticket/ticket.class.php:611 ../inc/ticket/ticket.class.php:628
 msgid "the Ticket Product Image"
 msgstr "de Ticket Product Afbeelding"
 
-#: ../inc/ticket/ticket.class.php:621
+#: ../inc/ticket/ticket.class.php:622
 #, fuzzy
 msgid "Right Ticket Image"
 msgstr "Linker Ticket Afbeelding"
 
-#: ../inc/ticket/ticket.class.php:622
+#: ../inc/ticket/ticket.class.php:623
 #, fuzzy
 msgid "The image to show in the bottom right corner of the ticket."
 msgstr ""
 "Deze afbeelding wordt weergegeven in de linker onder hoek van het ticket."
 
-#: ../inc/ticket/ticket.class.php:638
+#: ../inc/ticket/ticket.class.php:639
 #, fuzzy
 msgid "Ticket Branding Images"
 msgstr "de Ticket Product Afbeelding"
 
-#: ../inc/ticket/ticket.class.php:639
+#: ../inc/ticket/ticket.class.php:640
 #, fuzzy
 msgid "Images shown in the small line of branding images below each ticket."
 msgstr ""
 "Deze afbeelding wordt weergegeven in de linker onder hoek van het ticket."
 
-#: ../inc/ticket/ticket.class.php:640
+#: ../inc/ticket/ticket.class.php:641
 msgid ""
 "The recommended size of these images is 90px wide by 15px tall. Images will "
 "be constrained to 90px wide, no matter the size. Choosing \"no image\" will "
 "make a blank spot on the ticket branding row."
 msgstr ""
 
-#: ../inc/ticket/ticket.class.php:651
+#: ../inc/ticket/ticket.class.php:652
 msgid "Purchaser Info"
 msgstr "Koper Info"
 
-#: ../inc/ticket/ticket.class.php:652
+#: ../inc/ticket/ticket.class.php:653
 msgid ""
 "Which information to user for the purchaser display information. Either "
 "Billing or Shipping."
@@ -2529,25 +2386,37 @@ msgstr ""
 "Welke informatie gebruiken voor de koper weergave informatie. Factureren of "
 "Verzenden."
 
-#: ../inc/ticket/ticket.class.php:654
+#: ../inc/ticket/ticket.class.php:655
 msgid "the Billing Information"
 msgstr "de Factuur Informatie"
 
-#: ../inc/ticket/ticket.class.php:655
+#: ../inc/ticket/ticket.class.php:656
 msgid "the Shipping Information"
 msgstr "de Verzend Informatie"
 
-#: ../inc/ticket/ticket.class.php:666
+#: ../inc/ticket/ticket.class.php:667
 msgid "Show Order #"
 msgstr "Order #"
 
-#: ../inc/ticket/ticket.class.php:667
+#: ../inc/ticket/ticket.class.php:668
 msgid "Show the order number of the ticket, on the ticket."
 msgstr "Geef het order nummer van het ticket weer op het ticket."
 
 #: ../inc/venues/post-type.class.php:178
 msgid "Could not load the venue information for this ticket."
 msgstr ""
+
+#: ../inc/venues/post-type.class.php:208
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:55
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:102
+msgid "Address 2"
+msgstr "Adres 2"
+
+#: ../inc/venues/post-type.class.php:209
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:59
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:106
+msgid "City"
+msgstr "Plaats"
 
 #: ../inc/venues/post-type.class.php:210
 msgid "State"
@@ -2556,6 +2425,12 @@ msgstr "Status"
 #: ../inc/venues/post-type.class.php:211
 msgid "Postal Code"
 msgstr "Postcode"
+
+#: ../inc/venues/post-type.class.php:212
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:67
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:114
+msgid "Country"
+msgstr "Land"
 
 #: ../inc/venues/post-type.class.php:362
 msgid "Venue:"
@@ -2819,7 +2694,7 @@ msgstr "Dit event is beveiligd met een wachtwoord."
 
 #: ../inc/venues/event-area/post-type.class.php:362
 #: ../inc/venues/event-area/post-type.class.php:585
-#: ../inc/venues/event-area/pricing.class.php:666
+#: ../inc/venues/event-area/pricing.class.php:680
 msgid "Invalid request. Please refresh the page and try again."
 msgstr "Ongeldige aanvraag. Refresh de pagina en probeer het opnieuw."
 
@@ -2971,60 +2846,60 @@ msgstr ""
 "Er waren geen %s voor %s beschikbaar. We hebben ze verwijdered uit uw "
 "winkelwagen."
 
-#: ../inc/venues/event-area/pricing.class.php:542
+#: ../inc/venues/event-area/pricing.class.php:547
 msgid "(no event selected)"
 msgstr "(geen event geselecteerd)"
 
-#: ../inc/venues/event-area/pricing.class.php:627
+#: ../inc/venues/event-area/pricing.class.php:641
 msgid "Date:"
 msgstr "Datum:"
 
-#: ../inc/venues/event-area/pricing.class.php:629
+#: ../inc/venues/event-area/pricing.class.php:643
 msgid "Capacity:"
 msgstr "Capaciteit:"
 
-#: ../inc/venues/event-area/pricing.class.php:630
+#: ../inc/venues/event-area/pricing.class.php:644
 msgid "Available:"
 msgstr "Beschikbaar:"
 
-#: ../inc/venues/event-area/pricing.class.php:635
-#: ../inc/venues/event-area/pricing.class.php:640
+#: ../inc/venues/event-area/pricing.class.php:649
+#: ../inc/venues/event-area/pricing.class.php:654
 msgid "Different Event"
 msgstr "Ander Event"
 
-#: ../inc/venues/event-area/pricing.class.php:636
+#: ../inc/venues/event-area/pricing.class.php:650
 msgid "Use This Event"
 msgstr "Gebruik dit Event"
 
-#: ../inc/venues/event-area/pricing.class.php:649
+#: ../inc/venues/event-area/pricing.class.php:663
 msgid "Add Tickets"
 msgstr "Voeg Tickets Toe"
 
-#: ../inc/venues/event-area/pricing.class.php:654
+#: ../inc/venues/event-area/pricing.class.php:668
 msgid "Loading. One moment please..."
 msgstr "Laden. Even wachten a.u.b."
 
-#: ../inc/venues/event-area/pricing.class.php:716
+#: ../inc/venues/event-area/pricing.class.php:730
 msgid "Invalid order number."
 msgstr "Ongeldig order nummer."
 
-#: ../inc/venues/event-area/pricing.class.php:765
+#: ../inc/venues/event-area/pricing.class.php:779
 msgid "Could not find the new event."
 msgstr "Kan dat event niet vinden."
 
-#: ../inc/venues/event-area/pricing.class.php:768
+#: ../inc/venues/event-area/pricing.class.php:782
 msgid "Could not find that order item on the order."
 msgstr "Kan dat order item niet vinden in de order."
 
-#: ../inc/venues/event-area/pricing.class.php:771
+#: ../inc/venues/event-area/pricing.class.php:785
 msgid "The order item does not appear to be valid."
 msgstr "Het order item is niet geldig."
 
-#: ../inc/venues/event-area/pricing.class.php:778
+#: ../inc/venues/event-area/pricing.class.php:792
 msgid "Add tickets"
 msgstr "Voeg tickets toe"
 
-#: ../inc/venues/event-area/pricing.class.php:826
+#: ../inc/venues/event-area/pricing.class.php:840
 #, php-format
 msgid ""
 "Allows this product to be assigned as a ticket, when configuring pricing on "
@@ -3538,6 +3413,31 @@ msgstr ""
 msgid "Submit"
 msgstr "Verzenden"
 
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:47
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:94
+msgid "Company"
+msgstr "Bedrijf"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:51
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:98
+msgid "Address 1"
+msgstr "Adres"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:63
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:110
+msgid "Postcode"
+msgstr "Postcode"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:70
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:117
+msgid "Select a country&hellip;"
+msgstr "Selecteer een land&hellip;"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:73
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:120
+msgid "State/County"
+msgstr "Provincie"
+
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:158
 #, php-format
 msgid "Order %s details"
@@ -3552,17 +3452,73 @@ msgstr "Betalen via %s"
 msgid "Customer IP"
 msgstr "Kant IP"
 
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:181
+msgid "General Details"
+msgstr "Algemene Details"
+
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:183
 msgid "Order date:"
 msgstr "Oder Datum:"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:184
+msgid "h"
+msgstr "u"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:184
+msgid "m"
+msgstr "m"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:187
+msgid "Order status:"
+msgstr "Order status:"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:206
+msgid "Customer:"
+msgstr "Klant:"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:221
+msgid "Billing Details"
+msgstr "Factuur Details"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:229
+msgid "No billing address set."
+msgstr "Geen factuure adres bepaald."
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:247
+msgid "Load billing address"
+msgstr "Laad factuur adres"
 
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:295
 msgid "Transaction ID"
 msgstr "Transacite ID"
 
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:313
+msgid "Shipping Details"
+msgstr "Verzend Details"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:321
+msgid "No shipping address set."
+msgstr "Geen verzend adres bepaald."
+
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:339
 msgid "Customer Note"
 msgstr "Klant Notitie"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:345
+msgid "Load shipping address"
+msgstr "Laad verzend adres"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:345
+msgid "Copy from billing"
+msgstr "Zelfde als factuur adres"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:366
+msgid "Customer Note:"
+msgstr "Klant Bericht:"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:367
+msgid "Customer's notes about the order"
+msgstr "Klant Bericht over de order"
 
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:52
 #, php-format
@@ -3593,6 +3549,21 @@ msgstr "Klant aantekening"
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:81
 msgid "Private note"
 msgstr "Privé aantekening"
+
+#~ msgid "New User"
+#~ msgstr "Nieuwe Gebruiker"
+
+#~ msgid "Order Details"
+#~ msgstr "Order Details"
+
+#~ msgid "Order number"
+#~ msgstr "Order nummer"
+
+#~ msgid "Customer IP:"
+#~ msgstr "Kant IP:"
+
+#~ msgid "Order Date:"
+#~ msgstr "Oder Datum:"
 
 #~ msgid "%s on %s @ %s"
 #~ msgstr "%s op %s @ %s"
