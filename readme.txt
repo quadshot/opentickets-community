@@ -169,15 +169,25 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.11.2 =
+* [translation] added pt_BR translation
+* [new] added date/time to display on cart, checkout, my account, and edit order screens
+* [update] manually added translation for new date format m/d/Y to all POs
+* [update] changed 'cart' to 'basket' in GB translations
+* [tweak] added order_item_id to $ticket in the ticket template
+* [tweak] updated EA form (and other js forms) to accept accented characters
+* [fix] bbpress (and other plugin) compatibility
+* [fix] solved edge-case problem with date picker on event edit pages
+
 = 1.11.1 =
 * [fix] repaired event save issue
 * [fix] mediabox image selection bug
 
 = 1.11.0 =
+* [translation] added FI translation
+* [translation] added ES translation
+* [translation] NL translation corrections
 * [new] the ability to toggle date and time on child event titles
-* [new] FI translation
-* [new] ES translation
-* [update] NL translation
 * [update] all translation files have new strings
 * [update] legacy global $woocommerce replaced with WC()
 * [tweak] some js libs are now more accurate
