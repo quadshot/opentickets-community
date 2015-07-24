@@ -7,6 +7,7 @@ class qsot_zoner {
 	protected static $o = null;
 	protected static $debug = false;
 	protected static $log_file = null;
+	protected static $def_owns = array();
 
 	public static function pre_init() {
 		$settings_class_name = apply_filters('qsot-settings-class-name', '');
@@ -25,6 +26,9 @@ class qsot_zoner {
 				'r' => 3600, // 1 hour
 			),
 		));
+
+		foreach ( self::$o->{'z.states'} as $k => $v )
+			self::$def_owns[ $v ] = 0;
 
 		// setup the db tables for the zone reserver
 		self::setup_table_names();
@@ -57,6 +61,30 @@ class qsot_zoner {
 
 		// stats
 		add_filter('qsot-count-tickets', array(__CLASS__, 'count_tickets'), 1000, 2);
+
+		// add owns data to ticket object for ticket and checkin templates
+		add_filter( 'qsot-compile-ticket-info', array( __CLASS__, 'add_owns_to_ticket' ), 1000000, 3 );
+	}
+
+	// when loading the ticket info, we need to add the owns information to the ticket object. mostly used in checkin process
+	public static function add_owns_to_ticket( $ticket, $oiid, $order_id ) {
+		// validate that we have all the data we need to do this step
+		if ( ! is_object( $ticket ) || ! is_numeric( $oiid ) )
+			return $ticket;
+
+		// fetch the order item based on the order_item_id and order_id
+		$order = wc_get_order( $order_id );
+		$ois = $order->get_items();
+		$oi = isset( $ois[ $oiid ] ) ? $ois[ $oiid ] : null;
+		if ( empty( $oi ) )
+			return $ticket;
+
+		// add the owns info
+		$ticket->owns = apply_filters( 'qsot-zoner-owns', array(), $ticket->event, $ticket->order_item['product_id'], '*', false, $order_id, $oiid );
+
+		// overlay the result on top the defaults
+		$ticket->owns = wp_parse_args( $ticket->owns, self::$def_owns );
+		return $ticket;
 	}
 
 	public static function get_state_from_order_event_quantity($state, $order_id, $event_id, $qty) {
