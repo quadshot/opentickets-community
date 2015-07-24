@@ -169,6 +169,10 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.11.3 =
+* [fix] capacity bug has been refixed
+* [fix] fixed doing it wrong on legacy code
+
 = 1.11.2 =
 * [translation] added pt_BR translation
 * [new] added date/time to display on cart, checkout, my account, and edit order screens
