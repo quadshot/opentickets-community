@@ -169,6 +169,12 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.11.4 =
+* [new] added global option to control display of the availability counts
+* [update] complete take over of db upgrade, so null are handled
+* [tweak] added cached _price for DO extension
+* [fix] resolved checkin bug when using the seating plugin
+
 = 1.11.3 =
 * [fix] capacity bug has been refixed
 * [fix] fixed doing it wrong on legacy code
