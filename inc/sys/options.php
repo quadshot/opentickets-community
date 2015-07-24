@@ -1,5 +1,7 @@
 <?php (__FILE__ == $_SERVER['SCRIPT_FILENAME']) ? die(header('Location: /')) : null;
 
+// options as set on the 'settings' page in the admin.
+// this differes from qsot_settings, because this holds the user defined settings, whereas qsot_settings hold the internal plugin settings.
 class qsot_options {
 	protected static $instance = null;
 	protected static $option_key = '__qsot-event-options';

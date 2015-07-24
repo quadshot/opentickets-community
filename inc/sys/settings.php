@@ -1,6 +1,6 @@
 <?php (__FILE__ == $_SERVER['SCRIPT_FILENAME']) ? die(header('Location: /')) : null;
 
-/* Settings Singleton. Contains all the settings used throughout the events plugin. */
+/* Settings Singleton. Contains all the settings used throughout the events plugin. INTERNAL SETTINGS ONLY. for the user-input settings (admin page) checkout qsot_options */
 class qsot_settings {
 	protected static $initialized = false; // has this class been initialized? prevents the class from being initialized multiple times on accident (could cause setting overwritting)
 	protected static $instance = null; // holds the singleton instance
