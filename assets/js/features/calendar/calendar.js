@@ -1,4 +1,6 @@
 var QSEventsEventCalendar = (function($, w, d, undefined) {
+	var S = $.extend( { show_count:true }, _qsot_calendar_settings );
+
 	var _defs = {
 		onSelection: false,
 		calendarContainer: '.event-calendar'
@@ -174,7 +176,11 @@ var QSEventsEventCalendar = (function($, w, d, undefined) {
 			}
 
 			$('<span class="event-name">' + evt.title + extra + '</span>').appendTo(e.find('.heading'));
-			$('<span class="event-availability"><span class="lbl">Availability: </span><span class="words">'+evt['avail-words']+' </span><span class="num">('+evt.available+')</span></span>').appendTo(e.find('.meta'));
+			if ( S.show_count ) {
+				$('<span class="event-availability"><span class="lbl">Availability: </span><span class="words">'+evt['avail-words']+' </span><span class="num">('+evt.available+')</span></span>').appendTo(e.find('.meta'));
+			} else {
+				$('<span class="event-availability"><span class="lbl">Availability: </span><span class="words">'+evt['avail-words']+'</span>').appendTo(e.find('.meta'));
+			}
 			var img = $(evt.img).appendTo(e.find('.img'));
 			var key = view.name+'-'+view.title;
 			_image_load_trick(img.attr('src'), key, function() {

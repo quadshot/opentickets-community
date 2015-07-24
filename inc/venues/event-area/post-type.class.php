@@ -154,8 +154,18 @@ class qsot_event_area {
 				'ajaxurl' => admin_url('admin-ajax.php'),
 				'templates' => apply_filters('qsot-event-frontend-templates', array(), $event),
 				'messages' => array(
-					'available' => array('msg' => __('There are currently <span class="available"></span> <span rel="tt"></span> available.','opentickets-community-edition'), 'type' => 'msg'),
-					'more-available' => array('msg' => __('There are currently <span class="available"></span> more <span rel="tt"></span> available.','opentickets-community-edition'), 'type' => 'msg'),
+					'available' => array(
+						'msg' => ( 'yes' == self::$options->{'qsot-show-available-quantity'} )
+								? __( 'There are currently <span class="available"></span> <span rel="tt"></span> available.', 'opentickets-community-edition' )
+								: str_replace( '<span class="available"></span> ', '', __( 'There are currently <span class="available"></span> <span rel="tt"></span> available.', 'opentickets-community-edition' ) ),
+						'type' => 'msg'
+					),
+					'more-available' => array(
+						'msg' => ( 'yes' == self::$options->{'qsot-show-available-quantity'} ) 
+								? __( 'There are currently <span class="available"></span> more <span rel="tt"></span> available.', 'opentickets-community-edition' )
+								: str_replace( '<span class="available"></span> ', '', __( 'There are currently <span class="available"></span> <span rel="tt"></span> available.', 'opentickets-community-edition' ) ),
+						'type' => 'msg'
+					),
 					'not-available' => array('msg' => __('We\'re sorry. There are currently no tickets available.','opentickets-community-edition'), 'type' => 'error'),
 					'sold-out' => array('msg' => __('We are sorry. This event is sold out!','opentickets-community-edition'), 'type' => 'error'),
 					'one-moment' => array('msg' => __('<h1>One Moment Please...</h1>','opentickets-community-edition'), 'type' => 'msg'),

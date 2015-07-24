@@ -1904,6 +1904,9 @@ class qsot_post_type {
 		self::$options->def( 'qsot-show-date', 'yes' );
 		self::$options->def( 'qsot-show-time', 'no' );
 
+		// default for whether to show availability counts to the end user
+		self::$options->def( 'qsot-show-available-quantity', 'yes' );
+
 		self::$options->add(array(
 			'order' => 100,
 			'type' => 'title',
@@ -1983,6 +1986,17 @@ class qsot_post_type {
 			'type' => 'sectionend',
 			'id' => 'heading-frontend-general-1',
 			'page' => 'frontend',
+		));
+
+
+		// show the availabitility quantity to end users
+		self::$options->add(array(
+			'order' => 120,
+			'id' => 'qsot-show-available-quantity',
+			'type' => 'checkbox',
+			'title' => __( 'Availability Quantity', 'opentickets-community-edition' ),
+			'desc' => __( 'Yes, show the quantity that is available, on the frontend, when showing the availability.', 'opentickets-community-edition' ),
+			'default' => 'yes',
 		));
 	}
 }

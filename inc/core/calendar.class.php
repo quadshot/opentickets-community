@@ -131,6 +131,10 @@ class qsot_frontend_calendar {
 	public static function register_assets() {
 		$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
 		wp_register_script('qsot-frontend-calendar', self::$o->core_url.'assets/js/features/calendar/calendar.js', array('fullcalendar'), '0.1.0-beta');
+		wp_localize_script( 'qsot-frontend-calendar', '_qsot_calendar_settings', array(
+			// needs redoing, to include templates and stuff... but sigh, as a patch
+			'show_count' => 'yes' == self::$options->{'qsot-show-available-quantity'},
+		) );
 		wp_register_style('qsot-frontend-calendar-style', self::$o->core_url.'assets/css/features/calendar/calendar.css', array('fullcalendar'), '0.1.0-beta');
 		wp_register_script('qsot-admin-calendar', self::$o->core_url.'assets/js/features/calendar/admin.js', array('jquery-ui-datepicker'), '0.1.0-beta');
 	}
