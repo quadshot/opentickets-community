@@ -1,4 +1,4 @@
-<?php
+<?php ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) ? die( header( 'Location: /' ) ) : null;
 /*
 Checkin Page: Check-In Failure
 */

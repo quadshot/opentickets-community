@@ -1,3 +1,4 @@
+<?php ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) ? die( header( 'Location: /' ) ) : null; ?>
 <?php if (isset($tickets) && is_array($tickets) && !empty($tickets)): ?>
 	<h2><?php echo apply_filters('qsot_my_account_my_upcoming_tickets_title', __('Upcoming Tickets', 'opentickets-community-edition')); ?></h2>
 

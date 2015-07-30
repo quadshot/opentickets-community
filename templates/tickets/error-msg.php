@@ -1,3 +1,4 @@
+<?php ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) ? die( header( 'Location: /' ) ) : null; ?>
 <?php get_header(); ?>
 <style>
 	.message-wrapper { margin-bottom:20px; padding:1em; }

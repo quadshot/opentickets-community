@@ -1,3 +1,6 @@
+<?php ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) ? die( header( 'Location: /' ) ) : null;
+$show_available_qty = apply_filters( 'qsot-get-option-value', true, 'qsot-show-available-quantity' );
+?>
 <div class="qsfix"></div>
 <div class="qsot-event-area-ticket-selection">
 	<?php do_action('qsot-before-ticket-selection-form', $event, $area, $reserved); ?>
@@ -20,21 +23,23 @@
 
 		<div class="event-area-image"><?php do_action('qsot-draw-event-area-image', $event, $area, $reserved) ?></div>
 
+		<?php if (($errors = apply_filters('qsot-zoner-non-js-error-messages', array())) && count($errors)): ?>
+			<div class="messages">
+				<?php foreach ($errors as $e): ?>
+					<div class="error"><?php echo $e ?></div>
+				<?php endforeach; ?>
+			</div>
+			<div class="qs-shim"></div>
+		<?php endif; ?>
+
+		<?php if (isset($_GET['rmvd'])): ?>
+			<div class="messages">
+				<div class="msg"><?php _e('Successfully removed your reservations.','opentickets-community-edition') ?></div>
+			</div>
+			<div class="qs-shim"></div>
+		<?php endif; ?>
+
 		<div class="event-area-ticket-selection-form empty-if-js woocommerce" rel="ticket-selection">
-			<?php if (($errors = apply_filters('qsot-zoner-non-js-error-messages', array())) && count($errors)): ?>
-				<ul class="form-errors">
-					<?php foreach ($errors as $e): ?>
-						<li class="error"><?php echo $e ?></li>
-					<?php endforeach; ?>
-				</ul>
-			<?php endif; ?>
-
-			<?php if (isset($_GET['rmvd'])): ?>
-				<ul class="form-removed">
-					<li class="msg"><?php _e('Successfully removed your reservations.','opentickets-community-edition') ?></li>
-				</ul>
-			<?php endif; ?>
-
 			<?php if (empty($reserved)): ?>
 				<div class="step-one ticket-selection-section">
 					<div class="form-inner">
@@ -48,7 +53,7 @@
 								<div class="availability-message helper">
 									<?php printf(
 										__( 'Currently, there are <span class="available">%s</span> "<span class="ticket-name">%s</span>" (<span class="ticket-price">%s</span>) available for purchase.', 'opentickets-community-edition' ),
-										$area->meta['available'],
+										( 'yes' == $show_available_qty ) ? $area->meta['available'] : '',
 										$area->ticket->get_title(),
 										wc_price( $area->ticket->get_price() )
 									) ?>
@@ -87,7 +92,7 @@
 								<div class="availability-message helper">
 									<?php printf(
 										__( 'Currently, there are <span class="available">%s</span> more "<span class="ticket-name">%s</span>" (<span class="ticket-price">%s</span>) available for purchase.', 'opentickets-community-edition' ),
-										$area->meta['available'],
+										( 'yes' == $show_available_qty ) ? $area->meta['available'] : '',
 										$area->ticket->get_title(),
 										wc_price( $area->ticket->get_price() )
 									) ?>
