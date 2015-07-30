@@ -169,6 +169,12 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.11.5 =
+* [update] added security to all directories for misconfigured server protection
+* [update] added security to top of all templates
+* [tweak] changed some messages to respect new show available counts option
+* [tweak] cleaned up non-js version css
+
 = 1.11.4 =
 * [new] added global option to control display of the availability counts
 * [update] complete take over of db upgrade, so null are handled
