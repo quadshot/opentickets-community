@@ -9,7 +9,7 @@ class qsot_event_area {
 	protected static $options = null;
 
 	// holder for non-js-version errors
-	protected static $nojs_submission_errors = array();
+	public static $nojs_submission_errors = array();
 
 	public static function pre_init() {
 		// first thing, load all the options, and share them with all other parts of the plugin
@@ -475,12 +475,20 @@ class qsot_event_area {
 					}
 				}
 			} else {
-				$resp['e'][] = __( sprintf(
-					__('There are not enough available tickets to increase the quantity of %s to %d. There are only %d available.','opentickets-community-edition'),
-					$event->meta->_event_area_obj->ticket->get_title(),
-					$quantity,
-					$available
-				), 'qsot' );
+				$show_available_qty = apply_filters( 'qsot-get-option-value', true, 'qsot-show-available-quantity' );
+
+				$resp['e'][] = ( 'yes' == $show_available_qty )
+						? sprintf(
+							__( 'There are not enough available tickets to increase the quantity of %s to %d. There are only %d available.', 'opentickets-community-edition' ),
+							$event->meta->_event_area_obj->ticket->get_title(),
+							$quantity,
+							$available
+						)
+						: sprintf(
+							__( 'There are not enough available tickets to increase the quantity of %s to %d.', 'opentickets-community-edition' ),
+							$event->meta->_event_area_obj->ticket->get_title(),
+							$quantity
+						);
 			}
 		} else {
 			if (!is_object($event)) $resp['e'][] = __('Could not load that event.','opentickets-community-edition');
@@ -1071,10 +1079,14 @@ class qsot_event_area {
 
 		// if we have the event area, then go ahead and render the appropriate interface
 		if ( is_object( $area ) ) {
-			ob_start();
 			$template = apply_filters( 'qsot-locate-template', '', array( $template_file, 'post-content/event-area.php' ), false, false );
+			ob_start();
 			if ( ! empty( $template ) )
-				include $template;
+				self::_include_template( $template, apply_filters( 'qsot-draw-event-area-args', array(
+					'event' => $event,
+					'reserved' => $reserved,
+					'area' => $area,
+				), $event, $area ) );
 			$out = ob_get_contents();
 			ob_end_clean();
 		}
@@ -1087,6 +1099,17 @@ class qsot_event_area {
 			return $content . $out;
 		else
 			return $out . $content;
+	}
+
+	// include a template, and make specific $args local vars
+	protected static function _include_template( $template, $args ) {
+		// remove any 'template' overridding
+		unset( $args['template'] );
+
+		// extract args to local vars
+		extract( $args );
+
+		include $template;
 	}
 
 	public static function get_ticket_type_id($current, $event, $post_data=array()) {
@@ -1211,6 +1234,8 @@ class qsot_event_area {
 
 		$ticket_type_id = apply_filters('qsot-ea-non-js-ticket-type-id', 0, $event, $_POST);
 
+		$show_available_qty = apply_filters( 'qsot-get-option-value', true, 'qsot-show-available-quantity' );
+
 		switch ($_POST['qsot-step']) {
 			case 1:
 				if ( post_password_required( $event ) )
@@ -1227,19 +1252,26 @@ class qsot_event_area {
 							is_object($ticket) ? $ticket->get_title() : __('(Unknown Ticket Type)','opentickets-community-edition'),
 							is_object($ticket) ? wc_price($ticket->get_price()) : wc_price(0)
 						);
-						self::$nojs_submission_errors[] = sprintf(
-							__('There are only <span class="available">%s</span> %s available currently. Could not temporarily reserve %d %s.','opentickets-community-edition'),
-							$available,
-							$ticket_name,
-							$requested_count,
-							$ticket_name
-						);
+						self::$nojs_submission_errors[] = ( 'yes' == $show_available_qty )
+								? sprintf(
+									__( 'There are only <span class="available">%s</span> %s available currently. Could not temporarily reserve %d %s.', 'opentickets-community-edition' ),
+									$available,
+									$ticket_name,
+									$requested_count,
+									$ticket_name
+								)
+								: sprintf(
+									__( 'There are not enough %s tickets available currently. Could not temporarily reserve %d %s.', 'opentickets-community-edition' ),
+									$ticket_name,
+									$requested_count,
+									$ticket_name
+								);
 					} else {
-						wp_safe_redirect(add_query_arg(array()));
+						wp_safe_redirect( add_query_arg( array() ) );
 						exit;
 					}
 				} else {
-					self::$nojs_submission_errors[] = __('The number of tickets must be greater than 0.','opentickets-community-edition');
+					self::$nojs_submission_errors[] = __( 'The number of tickets must be greater than 0.', 'opentickets-community-edition' );
 				}
 			break;
 
@@ -1259,15 +1291,24 @@ class qsot_event_area {
 							is_object($ticket) ? $ticket->get_title() : '(Unknown Ticket Type)',
 							is_object($ticket) ? wc_price($ticket->get_price()) : wc_price(0)
 						);
-						self::$nojs_submission_errors[] = sprintf(
-							__('There are only <span class="available">%s</span> more %s available currently. Could not temporarily reserve %d more %s. You still have %d %s.','opentickets-community-edition'),
-							$available - $owns,
-							$ticket_name,
-							$requested_count,
-							$ticket_name,
-							$owns,
-							$ticket_name
-						);
+						self::$nojs_submission_errors[] = ( 'yes' == $show_available_qty )
+								? sprintf(
+									__('There are only <span class="available">%s</span> more %s available currently. Could not temporarily reserve %d more %s. You still have %d %s.','opentickets-community-edition'),
+									$available - $owns,
+									$ticket_name,
+									$requested_count,
+									$ticket_name,
+									$owns,
+									$ticket_name
+								)
+								: sprintf(
+									__('There are not enough %s tickets available currently. Could not temporarily reserve %d more %s. You still have %d %s.','opentickets-community-edition'),
+									$ticket_name,
+									$requested_count,
+									$ticket_name,
+									$owns,
+									$ticket_name
+								);
 					} else {
 						wp_safe_redirect(add_query_arg(array()));
 						exit;
