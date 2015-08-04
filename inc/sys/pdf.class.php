@@ -389,8 +389,10 @@ class QSOT_cache_helper {
 			return true;
 
 		// figure out the host and path of both urls. this will help determine if this asset lives at a local path. the site_url() could be a host with a path, if the installation is in a subdir
-		$remote_path = strtolower( end( explode( '/', $url, 3 ) ) );
-		$local_path = strtolower( end( explode( '/', $local_url, 3 ) ) );
+		$url = explode( '/', $url, 3 );
+		$local_url = explode( '/', $local_url, 3 );
+		$remote_path = strtolower( end( $url ) );
+		$local_path = strtolower( end( $local_url ) );
 
 		// if the local path is present at the beginning of the remote path string, then it is a local path
 		if ( 0 === strpos( $remote_path, $local_path ) )
