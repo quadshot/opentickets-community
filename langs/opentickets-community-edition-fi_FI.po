@@ -2,22 +2,142 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenTickets Community Edition\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-02 18:17+0200\n"
-"PO-Revision-Date: 2015-08-02 19:42+0200\n"
-"Last-Translator: Juha Tiihonen <tiihonen@iki.fi>\n"
+"POT-Creation-Date: 2015-08-04 05:53-0800\n"
+"PO-Revision-Date: 2015-08-04 05:53-0800\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "Language: fi_FI\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 1.7.5\n"
+"X-Generator: Poedit 1.5.7\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
 "_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
 "X-Poedit-Basepath: .\n"
 "X-Textdomain-Support: yes\n"
 "X-Poedit-SearchPath-0: ..\n"
+
+#: ../launcher.php:196
+msgid "Required Plugin Not Up-to-date"
+msgstr "Vaadittava liitännäinen ei ole ajan tasalla"
+
+#: ../launcher.php:199
+#, php-format
+msgid ""
+"The <em><a href=\"%s\" target=\"_blank\">%s</a></em> plugin "
+"<strong>requires</strong> that <em><a href=\"http://www.woothemes.com/"
+"woocommerce/\" target=\"_blank\">WooCommerce</a></em> be at least at version "
+"<u><strong>%s</strong></u>; you are currently running version <em>%s</em>. "
+"Because of this, the <em><a href=\"%s\" target=\"_blank\">%s</a></em> plugin "
+"has not initialized any of its functionality. To enable the features of this "
+"plugin, simply install and activate the latest version of <em><a href="
+"\"http://www.woothemes.com/woocommerce/\" target=\"_blank\">WooCommerce</a></"
+"em>."
+msgstr ""
+"Liitännäinen <em><a href=\"%s\" target=\"_blank\">%s</a></em> "
+"<strong>vaatii</strong>, että <em><a href=\"http://www.woothemes.com/"
+"woocommerce/\" target=\"_blank\">WooCommercen</a></em> versio on vähintään "
+"<u><strong>%s</strong></u>; käytössäsi on tällä hetkellä versio <em>%s</em>. "
+"Tämän vuoksi liitännäinen <em><a href=\"%s\" target=\"_blank\">%s</a></em> "
+"ei vielä käynnisty. Lataa ja aktivoi uusin <em><a href=\"http://www."
+"woothemes.com/woocommerce/\" target=\"_blank\">WooCommercen</a></em> uusin "
+"versio saadaksesi tämän liitännäisen ominaisuudet käyttöösi."
+
+#: ../launcher.php:217
+msgid "Missing Required Plugin"
+msgstr "Tarvittava liitännäinen puuttuu"
+
+#: ../launcher.php:220
+#, php-format
+msgid ""
+"The <em><a href=\"%s\" target=\"_blank\">%s</a></em> plugin "
+"<strong>requires</strong> that <em><a href=\"http://www.woothemes.com/"
+"woocommerce/\" target=\"_blank\">WooCommerce</a></em>\tbe activated in order "
+"to perform most vital functions; therefore, the plugin has not initialized "
+"any of its functionality. To enable the features of this plugin, simply "
+"install and activate <em><a href=\"http://www.woothemes.com/woocommerce/\" "
+"target=\"_blank\">WooCommerce</a></em>."
+msgstr ""
+"Liitännäinen <em><a href=\"%s\" target=\"_blank\">%s</a></em> plugin "
+"<strong>vaatii toimiakseen</strong>, että <em><a href=\"http://www.woothemes."
+"com/woocommerce/\" target=\"_blank\">WooCommerce</a></em>on aktivoitu; "
+"niinpä se ei ole vielä toiminnassa. Aktivoi uusin <em><a href=\"http://www."
+"woothemes.com/woocommerce/\" target=\"_blank\">WooCommerce</a></em> "
+"saadaksesi tämän liitännäisen ominaisuudet käyttöösi."
+
+#: ../opentickets.php:116
+#, php-format
+msgid ""
+"<a href=\"%s\" title=\"Visit the License Key settings page\">Settings</a>"
+msgstr ""
+"<a href=\"%s\" title=\"Käy Lisenssiavaimen hallintasivulla\">Asetukset</a>"
+
+#: ../opentickets.php:367
+msgid "Memory Requirement Problem"
+msgstr "Muistinhallinnan ongelma"
+
+#: ../opentickets.php:395
+#, php-format
+msgid ""
+"The %%%%PRODUCT%%%% plugin <strong>requires</strong> that your server allow "
+"at least %s of memory to WordPress. We recommend at least %s for optimum "
+"performance (as does WooCommerce). We tried to raise the memory limit to the "
+"minimum for your automatically, but your server settings do not allow it. "
+"Your server currently only allows %s, which is below the minimum. We have "
+"stopped loading OpenTickets, in an effort maintain access to your site. Once "
+"you have raised your server settings to at least the minimum memory "
+"requirement, we will turn OpenTickets back on automatically."
+msgstr ""
+"Liitännäinen %%%%PRODUCT%%%% <strong>vaatii</strong>, että Wordpressin "
+"käytössä on palvelimella vähintään %s muistia. Optimaaliseen käyttöön "
+"suosittelemme vähintään %s (kuten myös WooCommerce). Muistin rajoitusta "
+"yritettiin kasvattaa automaattisesti, mutta palvelimen asetukset eivät "
+"hyväksyneet sitä. Palvelin hyväksyy ainoastaan %s, mikä on "
+"vähimmäisvaatimusta vähemmän. OpenTickets-lisäosan lataaminen on pysäytetty, "
+"jotta pääse sivustolle säilyy. OpenTickets palautuu päälle automaattisesti, "
+"kun palvelinasetusten muistiraja on vähintään minimivaatimuksissa."
+
+#: ../opentickets.php:405
+#, php-format
+msgid ""
+"The %%%%PRODUCT%%%% plugin <strong>requires</strong> that your server allow "
+"at least %s of memory to WordPress. Currently, yoru server is set to allow "
+"%s, which is above the minimum. We recommend at least %s for optimum "
+"performance (as does WooCommerce). If you cannot raise the limit to the "
+"recommended amount, or do not wish to, then simply ignore this message."
+msgstr ""
+"Liitännäinen %%%%PRODUCT%%%% <strong>vaatii</strong>, että Wordpressin "
+"käytössä on palvelimella vähintään %s muistia. Tällä hetkellä palvelin "
+"muistirajoitus on %s, mikä ylittää vähimmäisvaatimuksen. Optimaaliseen "
+"käyttöön suosittelemme rajoitukseksi vähintään %s (kuten myös WooCommerce). "
+"Jos et voi tai halua kasvattaa rajoitusta suositellulle tasolle, voit jättää "
+"tämän viestin huomiotta."
+
+#: ../opentickets.php:535
+#, php-format
+msgid "Could not compile stylesheet %s. [%s]"
+msgstr "Tyylitiedostoa %s ei voitu käsitellä. [%s]"
+
+#: ../opentickets.php:538
+#, php-format
+msgid "Could not write to stylesheet file %s."
+msgstr "Tyylitiedostoon %s kirjoittaminen epäonnistui."
+
+#: ../opentickets.php:542
+#, php-format
+msgid "Could not write colors to file %s. [%s]"
+msgstr "Tiedostoon %s ei voitu kirjoittaa väritietoja. [%s]"
+
+#: ../opentickets.php:550
+msgid "the installation process"
+msgstr "asennusprosessi"
+
+#: ../opentickets.php:555 ../opentickets.php:559
+#, php-format
+msgid "Could not find the needed library %s, for use in %s."
+msgstr "Tarvittavaa kirjastoa %s ei löytynyt (%s)."
 
 #: ../inc/core/calendar.class.php:127
 msgid "OpenTickets Calendar"
@@ -559,9 +679,8 @@ msgid "Status:"
 msgstr "Status:"
 
 #: ../inc/core/post-type.class.php:1721 ../inc/core/post-type.class.php:1744
-#: ../inc/core/post-type.class.php:1779
+#: ../inc/core/post-type.class.php:1779 ../inc/venues/post-type.class.php:364
 #: ../inc/venues/event-area/post-type.class.php:546
-#: ../inc/venues/post-type.class.php:364
 #: ../templates/admin/meta-boxes/views/html-order-items.php:217
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:221
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:313
@@ -589,16 +708,15 @@ msgid "Draft"
 msgstr "Luonnos"
 
 #: ../inc/core/post-type.class.php:1734 ../inc/core/post-type.class.php:1769
-#: ../inc/core/post-type.class.php:1805
+#: ../inc/core/post-type.class.php:1805 ../inc/venues/post-type.class.php:375
 #: ../inc/venues/event-area/post-type.class.php:569
-#: ../inc/venues/post-type.class.php:375
 msgid "OK"
 msgstr "OK"
 
 #: ../inc/core/post-type.class.php:1735 ../inc/core/post-type.class.php:1770
 #: ../inc/core/post-type.class.php:1806 ../inc/sys/mba.class.php:462
-#: ../inc/venues/event-area/post-type.class.php:570
 #: ../inc/venues/post-type.class.php:376
+#: ../inc/venues/event-area/post-type.class.php:570
 #: ../templates/admin/meta-boxes/views/html-order-items.php:255
 #: ../templates/admin/meta-boxes/views/html-order-items.php:301
 msgid "Cancel"
@@ -1525,6 +1643,50 @@ msgstr "Peruuta"
 msgid "Select Files"
 msgstr "Valitse tiedostot"
 
+#: ../inc/sys/pdf.class.php:191 ../inc/sys/pdf.class.php:493
+#, php-format
+msgid ""
+"The %s path is not writable. Please update the permissions to allow write "
+"access."
+msgstr "Kohteeseen %s ei voida kirjoittaa. Lisää kirjoitusoikeudet."
+
+#: ../inc/sys/pdf.class.php:470
+#, php-format
+msgid ""
+"The %s path exists, but it cannot be read. Please update the permissions to "
+"allow read access."
+msgstr "Kohde %s on olemassa, mutta sitä ei voida lukea. Lisää lukuoikeudet."
+
+#: ../inc/sys/pdf.class.php:475
+#, php-format
+msgid ""
+"The %s path exists, but is not a dir. Please remove or rename the existing "
+"file, and create a directory with the cache path name."
+msgstr ""
+"Kohde %s on olemassa, mutta ei ole hakemisto. Poista tai nimeä tiedosto "
+"uudelleen, ja luo sen tilalle hakemisto välimuistille (cache)."
+
+#: ../inc/sys/pdf.class.php:483
+#, php-format
+msgid ""
+"Could not create the %s path directory. Please update the permissions to "
+"allow write access."
+msgstr "Kohteeseen %s ei voitu luoda hakemistoa. Lisää kirjoitusoikeudet."
+
+#: ../inc/sys/pdf.class.php:488
+#, php-format
+msgid "Unable to create the %s path directory."
+msgstr "Kohteeseen %s ei voitu luoda hakemistoa."
+
+#: ../inc/sys/registry.php:21
+#, php-format
+msgid "Only one instance of %s can be created."
+msgstr "Voitiin luoda vain yksi instanssi %s."
+
+#: ../inc/sys/utils.php:39
+msgid "Could not extend. Invalid type."
+msgstr "Ei voitu laajentaa, virheellinen tyyppi."
+
 #: ../inc/sys/pages/base-page.class.php:73
 #: ../inc/sys/pages/base-page.class.php:74
 msgid "Base Page"
@@ -1765,46 +1927,6 @@ msgstr "<b>%s</b>%s tekijältä %s"
 #: ../inc/sys/pages/system-status.page.php:874
 msgid "ON"
 msgstr "PÄÄLLÄ"
-
-#: ../inc/sys/pdf.class.php:191 ../inc/sys/pdf.class.php:493
-#, php-format
-msgid ""
-"The %s path is not writable. Please update the permissions to allow write "
-"access."
-msgstr "Kohteeseen %s ei voida kirjoittaa. Lisää kirjoitusoikeudet."
-
-#: ../inc/sys/pdf.class.php:470
-#, php-format
-msgid ""
-"The %s path exists, but it cannot be read. Please update the permissions to "
-"allow read access."
-msgstr "Kohde %s on olemassa, mutta sitä ei voida lukea. Lisää lukuoikeudet."
-
-#: ../inc/sys/pdf.class.php:475
-#, php-format
-msgid ""
-"The %s path exists, but is not a dir. Please remove or rename the existing "
-"file, and create a directory with the cache path name."
-msgstr ""
-"Kohde %s on olemassa, mutta ei ole hakemisto. Poista tai nimeä tiedosto "
-"uudelleen, ja luo sen tilalle hakemisto välimuistille (cache)."
-
-#: ../inc/sys/pdf.class.php:483
-#, php-format
-msgid ""
-"Could not create the %s path directory. Please update the permissions to "
-"allow write access."
-msgstr "Kohteeseen %s ei voitu luoda hakemistoa. Lisää kirjoitusoikeudet."
-
-#: ../inc/sys/pdf.class.php:488
-#, php-format
-msgid "Unable to create the %s path directory."
-msgstr "Kohteeseen %s ei voitu luoda hakemistoa."
-
-#: ../inc/sys/registry.php:21
-#, php-format
-msgid "Only one instance of %s can be created."
-msgstr "Voitiin luoda vain yksi instanssi %s."
 
 #: ../inc/sys/settings/frontend.php:22
 msgid "Frontend"
@@ -2072,10 +2194,6 @@ msgstr ""
 msgid "General"
 msgstr "Yleiset"
 
-#: ../inc/sys/utils.php:39
-msgid "Could not extend. Invalid type."
-msgstr "Ei voitu laajentaa, virheellinen tyyppi."
-
 #: ../inc/sys/views/html-admin-settings.php:24
 msgid "Save changes"
 msgstr "Tallenna muutokset"
@@ -2242,6 +2360,185 @@ msgstr "Näytä tilauksen numero"
 msgid "Show the order number of the ticket, on the ticket."
 msgstr "Näytä pääsylipussa lipun tilausnumero."
 
+#: ../inc/venues/post-type.class.php:178
+msgid "Could not load the venue information for this ticket."
+msgstr "Tämän lipun tapahtumapaikan tietoja ei voitu ladata."
+
+#: ../inc/venues/post-type.class.php:208
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:55
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:102
+msgid "Address 2"
+msgstr "Osoite 2"
+
+#: ../inc/venues/post-type.class.php:209
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:59
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:106
+msgid "City"
+msgstr "Kaupunki"
+
+#: ../inc/venues/post-type.class.php:210
+msgid "State"
+msgstr "Maakunta"
+
+#: ../inc/venues/post-type.class.php:211
+msgid "Postal Code"
+msgstr "Postinumero"
+
+#: ../inc/venues/post-type.class.php:212
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:67
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:114
+msgid "Country"
+msgstr "Maa"
+
+#: ../inc/venues/post-type.class.php:362
+msgid "Venue:"
+msgstr "Näyttämö:"
+
+#: ../inc/venues/post-type.class.php:369
+#: ../inc/venues/event-area/post-type.class.php:349
+msgid "None"
+msgstr "Ei yhtään"
+
+#: ../inc/venues/post-type.class.php:417
+msgid "Venue Information"
+msgstr "Näyttämön tiedot:"
+
+#: ../inc/venues/post-type.class.php:426
+msgid "Venue Social Information"
+msgstr "Näyttämö sosiaalisessa mediassa"
+
+#: ../inc/venues/post-type.class.php:497
+msgid "Address:"
+msgstr "Osoite:"
+
+#: ../inc/venues/post-type.class.php:501
+msgid "Address 2:"
+msgstr "Osoite 2:"
+
+#: ../inc/venues/post-type.class.php:505
+msgid "City:"
+msgstr "Kaupunki:"
+
+#: ../inc/venues/post-type.class.php:509
+msgid "State or County:"
+msgstr "Maakunta:"
+
+#: ../inc/venues/post-type.class.php:519
+msgid "Postal Code:"
+msgstr "Postinumero:"
+
+#: ../inc/venues/post-type.class.php:523
+msgid "Country:"
+msgstr "Maa:"
+
+#: ../inc/venues/post-type.class.php:533
+msgid "Logo Image"
+msgstr "Logo"
+
+#: ../inc/venues/post-type.class.php:537
+msgid "Select Logo"
+msgstr "Valitse logo"
+
+#: ../inc/venues/post-type.class.php:538
+msgid "Remove"
+msgstr "Poista"
+
+#: ../inc/venues/post-type.class.php:542
+#: ../templates/post-content/venue/contact-info.php:40
+msgid "Notes:"
+msgstr "Huomautukset:"
+
+#: ../inc/venues/post-type.class.php:560
+msgid "This is what is displayed on your tickets about this venue."
+msgstr "Tämä tulostetaan pääsylippuihin kuvauksena tapahtumapaikasta."
+
+#: ../inc/venues/post-type.class.php:564
+msgid "Map Instructions:"
+msgstr "Saapumisohjeet:"
+
+#: ../inc/venues/post-type.class.php:582
+msgid ""
+"Displayed below the map on your event tickets. Meant for extra directions."
+msgstr "Näytetään pääsylipuissa kartan alapuolella, tarkoitettu lisäohjeille."
+
+#: ../inc/venues/post-type.class.php:621
+#: ../templates/post-content/venue/social.php:13
+msgid "Phone:"
+msgstr "Puhelinnumero:"
+
+#: ../inc/venues/post-type.class.php:625
+#: ../templates/post-content/venue/social.php:18
+msgid "Website:"
+msgstr "Kotisivu:"
+
+#: ../inc/venues/post-type.class.php:626 ../inc/venues/post-type.class.php:630
+#: ../inc/venues/post-type.class.php:634
+msgid "Full URL"
+msgstr "Täysi URL"
+
+#: ../inc/venues/post-type.class.php:629
+#: ../templates/post-content/venue/social.php:23
+msgid "Facebook:"
+msgstr "Facebook:"
+
+#: ../inc/venues/post-type.class.php:633
+#: ../templates/post-content/venue/social.php:28
+msgid "Twitter:"
+msgstr "Twitter:"
+
+#: ../inc/venues/post-type.class.php:637
+#: ../templates/post-content/venue/social.php:33
+msgid "Contact Email:"
+msgstr "Sähköposti:"
+
+#: ../inc/venues/post-type.class.php:692 ../inc/venues/post-type.class.php:731
+msgid "Venues"
+msgstr "Näyttämöt"
+
+#: ../inc/venues/post-type.class.php:693
+msgid "Venue"
+msgstr "Näyttämö"
+
+#: ../inc/venues/post-type.class.php:741
+msgid "Show Address"
+msgstr "Näytä osoite"
+
+#: ../inc/venues/post-type.class.php:742
+msgid "Display the venue address below the venue description?"
+msgstr "Näytetäänkö tapahtumapaikan osoite kuvauksen alapuolella?"
+
+#: ../inc/venues/post-type.class.php:752
+msgid "Show Map"
+msgstr "Näytä kartta"
+
+#: ../inc/venues/post-type.class.php:753
+msgid "Display the venue MAP below the venue description?"
+msgstr "Näytä näyttämön KARTTA kuvauksen alapuolella"
+
+#: ../inc/venues/post-type.class.php:763
+msgid "Show Contact Info"
+msgstr "Näytä yhteystiedot"
+
+#: ../inc/venues/post-type.class.php:764
+msgid ""
+"Display the venue contact information and social links below the venue "
+"description?"
+msgstr ""
+"Näytetäänkö tapahtumapaikan yhteystiedot ja sosiaalisen median linkit "
+"kuvauksen alapuolella?"
+
+#: ../inc/venues/post-type.class.php:774
+msgid "Show Notes"
+msgstr "Näytä huomautukset"
+
+#: ../inc/venues/post-type.class.php:775
+msgid ""
+"Display the additional venue notes (a meta field on the edit venue page) "
+"below the venue description?"
+msgstr ""
+"Näytetäänkö tapahtumapaikan ylimääräiset huomautukset (lisätietokenttä) "
+"kuvauksen alapuolella?"
+
 #: ../inc/venues/event-area/post-type.class.php:159
 #: ../inc/venues/event-area/post-type.class.php:160
 #: ../inc/venues/event-area/post-type.class.php:166
@@ -2346,11 +2643,6 @@ msgstr "tallenna"
 #: ../inc/venues/event-area/post-type.class.php:339
 msgid "cancel"
 msgstr "peru"
-
-#: ../inc/venues/event-area/post-type.class.php:349
-#: ../inc/venues/post-type.class.php:369
-msgid "None"
-msgstr "Ei yhtään"
 
 #: ../inc/venues/event-area/post-type.class.php:366
 msgid "This event is password protected."
@@ -2595,300 +2887,6 @@ msgid ""
 msgstr ""
 "Tekee tästä tuotteesta Pääsylipun, jota käytetään katsomon hinnoittelemiseen "
 "%s-liitännäisessä."
-
-#: ../inc/venues/post-type.class.php:178
-msgid "Could not load the venue information for this ticket."
-msgstr "Tämän lipun tapahtumapaikan tietoja ei voitu ladata."
-
-#: ../inc/venues/post-type.class.php:208
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:55
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:102
-msgid "Address 2"
-msgstr "Osoite 2"
-
-#: ../inc/venues/post-type.class.php:209
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:59
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:106
-msgid "City"
-msgstr "Kaupunki"
-
-#: ../inc/venues/post-type.class.php:210
-msgid "State"
-msgstr "Maakunta"
-
-#: ../inc/venues/post-type.class.php:211
-msgid "Postal Code"
-msgstr "Postinumero"
-
-#: ../inc/venues/post-type.class.php:212
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:67
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:114
-msgid "Country"
-msgstr "Maa"
-
-#: ../inc/venues/post-type.class.php:362
-msgid "Venue:"
-msgstr "Näyttämö:"
-
-#: ../inc/venues/post-type.class.php:417
-msgid "Venue Information"
-msgstr "Näyttämön tiedot:"
-
-#: ../inc/venues/post-type.class.php:426
-msgid "Venue Social Information"
-msgstr "Näyttämö sosiaalisessa mediassa"
-
-#: ../inc/venues/post-type.class.php:497
-msgid "Address:"
-msgstr "Osoite:"
-
-#: ../inc/venues/post-type.class.php:501
-msgid "Address 2:"
-msgstr "Osoite 2:"
-
-#: ../inc/venues/post-type.class.php:505
-msgid "City:"
-msgstr "Kaupunki:"
-
-#: ../inc/venues/post-type.class.php:509
-msgid "State or County:"
-msgstr "Maakunta:"
-
-#: ../inc/venues/post-type.class.php:519
-msgid "Postal Code:"
-msgstr "Postinumero:"
-
-#: ../inc/venues/post-type.class.php:523
-msgid "Country:"
-msgstr "Maa:"
-
-#: ../inc/venues/post-type.class.php:533
-msgid "Logo Image"
-msgstr "Logo"
-
-#: ../inc/venues/post-type.class.php:537
-msgid "Select Logo"
-msgstr "Valitse logo"
-
-#: ../inc/venues/post-type.class.php:538
-msgid "Remove"
-msgstr "Poista"
-
-#: ../inc/venues/post-type.class.php:542
-#: ../templates/post-content/venue/contact-info.php:40
-msgid "Notes:"
-msgstr "Huomautukset:"
-
-#: ../inc/venues/post-type.class.php:560
-msgid "This is what is displayed on your tickets about this venue."
-msgstr "Tämä tulostetaan pääsylippuihin kuvauksena tapahtumapaikasta."
-
-#: ../inc/venues/post-type.class.php:564
-msgid "Map Instructions:"
-msgstr "Saapumisohjeet:"
-
-#: ../inc/venues/post-type.class.php:582
-msgid ""
-"Displayed below the map on your event tickets. Meant for extra directions."
-msgstr "Näytetään pääsylipuissa kartan alapuolella, tarkoitettu lisäohjeille."
-
-#: ../inc/venues/post-type.class.php:621
-#: ../templates/post-content/venue/social.php:13
-msgid "Phone:"
-msgstr "Puhelinnumero:"
-
-#: ../inc/venues/post-type.class.php:625
-#: ../templates/post-content/venue/social.php:18
-msgid "Website:"
-msgstr "Kotisivu:"
-
-#: ../inc/venues/post-type.class.php:626 ../inc/venues/post-type.class.php:630
-#: ../inc/venues/post-type.class.php:634
-msgid "Full URL"
-msgstr "Täysi URL"
-
-#: ../inc/venues/post-type.class.php:629
-#: ../templates/post-content/venue/social.php:23
-msgid "Facebook:"
-msgstr "Facebook:"
-
-#: ../inc/venues/post-type.class.php:633
-#: ../templates/post-content/venue/social.php:28
-msgid "Twitter:"
-msgstr "Twitter:"
-
-#: ../inc/venues/post-type.class.php:637
-#: ../templates/post-content/venue/social.php:33
-msgid "Contact Email:"
-msgstr "Sähköposti:"
-
-#: ../inc/venues/post-type.class.php:692 ../inc/venues/post-type.class.php:731
-msgid "Venues"
-msgstr "Näyttämöt"
-
-#: ../inc/venues/post-type.class.php:693
-msgid "Venue"
-msgstr "Näyttämö"
-
-#: ../inc/venues/post-type.class.php:741
-msgid "Show Address"
-msgstr "Näytä osoite"
-
-#: ../inc/venues/post-type.class.php:742
-msgid "Display the venue address below the venue description?"
-msgstr "Näytetäänkö tapahtumapaikan osoite kuvauksen alapuolella?"
-
-#: ../inc/venues/post-type.class.php:752
-msgid "Show Map"
-msgstr "Näytä kartta"
-
-#: ../inc/venues/post-type.class.php:753
-msgid "Display the venue MAP below the venue description?"
-msgstr "Näytä näyttämön KARTTA kuvauksen alapuolella"
-
-#: ../inc/venues/post-type.class.php:763
-msgid "Show Contact Info"
-msgstr "Näytä yhteystiedot"
-
-#: ../inc/venues/post-type.class.php:764
-msgid ""
-"Display the venue contact information and social links below the venue "
-"description?"
-msgstr ""
-"Näytetäänkö tapahtumapaikan yhteystiedot ja sosiaalisen median linkit "
-"kuvauksen alapuolella?"
-
-#: ../inc/venues/post-type.class.php:774
-msgid "Show Notes"
-msgstr "Näytä huomautukset"
-
-#: ../inc/venues/post-type.class.php:775
-msgid ""
-"Display the additional venue notes (a meta field on the edit venue page) "
-"below the venue description?"
-msgstr ""
-"Näytetäänkö tapahtumapaikan ylimääräiset huomautukset (lisätietokenttä) "
-"kuvauksen alapuolella?"
-
-#: ../launcher.php:196
-msgid "Required Plugin Not Up-to-date"
-msgstr "Vaadittava liitännäinen ei ole ajan tasalla"
-
-#: ../launcher.php:199
-#, php-format
-msgid ""
-"The <em><a href=\"%s\" target=\"_blank\">%s</a></em> plugin "
-"<strong>requires</strong> that <em><a href=\"http://www.woothemes.com/"
-"woocommerce/\" target=\"_blank\">WooCommerce</a></em> be at least at version "
-"<u><strong>%s</strong></u>; you are currently running version <em>%s</em>. "
-"Because of this, the <em><a href=\"%s\" target=\"_blank\">%s</a></em> plugin "
-"has not initialized any of its functionality. To enable the features of this "
-"plugin, simply install and activate the latest version of <em><a href="
-"\"http://www.woothemes.com/woocommerce/\" target=\"_blank\">WooCommerce</a></"
-"em>."
-msgstr ""
-"Liitännäinen <em><a href=\"%s\" target=\"_blank\">%s</a></em> "
-"<strong>vaatii</strong>, että <em><a href=\"http://www.woothemes.com/"
-"woocommerce/\" target=\"_blank\">WooCommercen</a></em> versio on vähintään "
-"<u><strong>%s</strong></u>; käytössäsi on tällä hetkellä versio <em>%s</em>. "
-"Tämän vuoksi liitännäinen <em><a href=\"%s\" target=\"_blank\">%s</a></em> "
-"ei vielä käynnisty. Lataa ja aktivoi uusin <em><a href=\"http://www."
-"woothemes.com/woocommerce/\" target=\"_blank\">WooCommercen</a></em> uusin "
-"versio saadaksesi tämän liitännäisen ominaisuudet käyttöösi."
-
-#: ../launcher.php:217
-msgid "Missing Required Plugin"
-msgstr "Tarvittava liitännäinen puuttuu"
-
-#: ../launcher.php:220
-#, php-format
-msgid ""
-"The <em><a href=\"%s\" target=\"_blank\">%s</a></em> plugin "
-"<strong>requires</strong> that <em><a href=\"http://www.woothemes.com/"
-"woocommerce/\" target=\"_blank\">WooCommerce</a></em>\tbe activated in order "
-"to perform most vital functions; therefore, the plugin has not initialized "
-"any of its functionality. To enable the features of this plugin, simply "
-"install and activate <em><a href=\"http://www.woothemes.com/woocommerce/\" "
-"target=\"_blank\">WooCommerce</a></em>."
-msgstr ""
-"Liitännäinen <em><a href=\"%s\" target=\"_blank\">%s</a></em> plugin "
-"<strong>vaatii toimiakseen</strong>, että <em><a href=\"http://www.woothemes."
-"com/woocommerce/\" target=\"_blank\">WooCommerce</a></em>on aktivoitu; "
-"niinpä se ei ole vielä toiminnassa. Aktivoi uusin <em><a href=\"http://www."
-"woothemes.com/woocommerce/\" target=\"_blank\">WooCommerce</a></em> "
-"saadaksesi tämän liitännäisen ominaisuudet käyttöösi."
-
-#: ../opentickets.php:116
-#, php-format
-msgid ""
-"<a href=\"%s\" title=\"Visit the License Key settings page\">Settings</a>"
-msgstr ""
-"<a href=\"%s\" title=\"Käy Lisenssiavaimen hallintasivulla\">Asetukset</a>"
-
-#: ../opentickets.php:367
-msgid "Memory Requirement Problem"
-msgstr "Muistinhallinnan ongelma"
-
-#: ../opentickets.php:395
-#, php-format
-msgid ""
-"The %%%%PRODUCT%%%% plugin <strong>requires</strong> that your server allow "
-"at least %s of memory to WordPress. We recommend at least %s for optimum "
-"performance (as does WooCommerce). We tried to raise the memory limit to the "
-"minimum for your automatically, but your server settings do not allow it. "
-"Your server currently only allows %s, which is below the minimum. We have "
-"stopped loading OpenTickets, in an effort maintain access to your site. Once "
-"you have raised your server settings to at least the minimum memory "
-"requirement, we will turn OpenTickets back on automatically."
-msgstr ""
-"Liitännäinen %%%%PRODUCT%%%% <strong>vaatii</strong>, että Wordpressin "
-"käytössä on palvelimella vähintään %s muistia. Optimaaliseen käyttöön "
-"suosittelemme vähintään %s (kuten myös WooCommerce). Muistin rajoitusta "
-"yritettiin kasvattaa automaattisesti, mutta palvelimen asetukset eivät "
-"hyväksyneet sitä. Palvelin hyväksyy ainoastaan %s, mikä on "
-"vähimmäisvaatimusta vähemmän. OpenTickets-lisäosan lataaminen on pysäytetty, "
-"jotta pääse sivustolle säilyy. OpenTickets palautuu päälle automaattisesti, "
-"kun palvelinasetusten muistiraja on vähintään minimivaatimuksissa."
-
-#: ../opentickets.php:405
-#, php-format
-msgid ""
-"The %%%%PRODUCT%%%% plugin <strong>requires</strong> that your server allow "
-"at least %s of memory to WordPress. Currently, yoru server is set to allow "
-"%s, which is above the minimum. We recommend at least %s for optimum "
-"performance (as does WooCommerce). If you cannot raise the limit to the "
-"recommended amount, or do not wish to, then simply ignore this message."
-msgstr ""
-"Liitännäinen %%%%PRODUCT%%%% <strong>vaatii</strong>, että Wordpressin "
-"käytössä on palvelimella vähintään %s muistia. Tällä hetkellä palvelin "
-"muistirajoitus on %s, mikä ylittää vähimmäisvaatimuksen. Optimaaliseen "
-"käyttöön suosittelemme rajoitukseksi vähintään %s (kuten myös WooCommerce). "
-"Jos et voi tai halua kasvattaa rajoitusta suositellulle tasolle, voit jättää "
-"tämän viestin huomiotta."
-
-#: ../opentickets.php:535
-#, php-format
-msgid "Could not compile stylesheet %s. [%s]"
-msgstr "Tyylitiedostoa %s ei voitu käsitellä. [%s]"
-
-#: ../opentickets.php:538
-#, php-format
-msgid "Could not write to stylesheet file %s."
-msgstr "Tyylitiedostoon %s kirjoittaminen epäonnistui."
-
-#: ../opentickets.php:542
-#, php-format
-msgid "Could not write colors to file %s. [%s]"
-msgstr "Tiedostoon %s ei voitu kirjoittaa väritietoja. [%s]"
-
-#: ../opentickets.php:550
-msgid "the installation process"
-msgstr "asennusprosessi"
-
-#: ../opentickets.php:555 ../opentickets.php:559
-#, php-format
-msgid "Could not find the needed library %s, for use in %s."
-msgstr "Tarvittavaa kirjastoa %s ei löytynyt (%s)."
 
 #: ../templates/admin/meta-boxes/views/html-order-fee.php:13
 msgid "Fee"

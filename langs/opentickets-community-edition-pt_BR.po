@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OpenTickets Community Edition 1.10.12\n"
-"POT-Creation-Date: 2015-07-24 15:47-0800\n"
-"PO-Revision-Date: 2015-07-24 15:47-0800\n"
+"POT-Creation-Date: 2015-08-04 05:55-0800\n"
+"PO-Revision-Date: 2015-08-04 05:55-0800\n"
 "Last-Translator: \n"
 "Language-Team: Quadshot <info@opentickets.com>\n"
 "Language: en_US\n"
@@ -360,23 +360,23 @@ msgid "Top Level Events"
 msgstr "Eventos de alto nível"
 
 #: ../inc/core/post-type.class.php:599
-#: ../inc/venues/event-area/post-type.class.php:940
 #: ../inc/venues/event-area/post-type.class.php:948
+#: ../inc/venues/event-area/post-type.class.php:956
 msgid "sold-out"
 msgstr ""
 
 #: ../inc/core/post-type.class.php:602
-#: ../inc/venues/event-area/post-type.class.php:949
+#: ../inc/venues/event-area/post-type.class.php:957
 msgid "low"
 msgstr ""
 
 #: ../inc/core/post-type.class.php:605
-#: ../inc/venues/event-area/post-type.class.php:947
+#: ../inc/venues/event-area/post-type.class.php:955
 msgid "medium"
 msgstr ""
 
 #: ../inc/core/post-type.class.php:608
-#: ../inc/venues/event-area/post-type.class.php:946
+#: ../inc/venues/event-area/post-type.class.php:954
 msgid "high"
 msgstr ""
 
@@ -588,7 +588,7 @@ msgstr ""
 
 #: ../inc/core/post-type.class.php:1721 ../inc/core/post-type.class.php:1744
 #: ../inc/core/post-type.class.php:1779 ../inc/venues/post-type.class.php:364
-#: ../inc/venues/event-area/post-type.class.php:538
+#: ../inc/venues/event-area/post-type.class.php:546
 #: ../templates/admin/meta-boxes/views/html-order-items.php:217
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:221
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:313
@@ -617,14 +617,14 @@ msgstr "Rascunho"
 
 #: ../inc/core/post-type.class.php:1734 ../inc/core/post-type.class.php:1769
 #: ../inc/core/post-type.class.php:1805 ../inc/venues/post-type.class.php:375
-#: ../inc/venues/event-area/post-type.class.php:561
+#: ../inc/venues/event-area/post-type.class.php:569
 msgid "OK"
 msgstr ""
 
 #: ../inc/core/post-type.class.php:1735 ../inc/core/post-type.class.php:1770
 #: ../inc/core/post-type.class.php:1806 ../inc/sys/mba.class.php:462
 #: ../inc/venues/post-type.class.php:376
-#: ../inc/venues/event-area/post-type.class.php:562
+#: ../inc/venues/event-area/post-type.class.php:570
 #: ../templates/admin/meta-boxes/views/html-order-items.php:255
 #: ../templates/admin/meta-boxes/views/html-order-items.php:301
 msgid "Cancel"
@@ -972,7 +972,7 @@ msgstr "Nome de Usuário"
 
 #: ../inc/order/admin.class.php:585
 #: ../inc/reporting/seating.report.class.php:508
-#: ../templates/tickets/verification-form.php:10
+#: ../templates/tickets/verification-form.php:11
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:77
 msgid "Email"
 msgstr ""
@@ -2156,7 +2156,7 @@ msgid "Ticket"
 msgstr "Ingresso"
 
 #: ../inc/ticket/ticket.class.php:109
-#: ../templates/myaccount/my-upcoming-tickets.php:17
+#: ../templates/myaccount/my-upcoming-tickets.php:18
 msgid "View your ticket"
 msgstr "Ver seu ingresso"
 
@@ -2515,7 +2515,7 @@ msgid "We're sorry. There are currently no tickets available."
 msgstr "Desculpe. Não há ingressos disponíveis no momento."
 
 #: ../inc/venues/event-area/post-type.class.php:170
-#: ../templates/post-content/event-area.php:123
+#: ../templates/post-content/event-area.php:128
 msgid "We are sorry. This event is sold out!"
 msgstr "Desculpe. Este evento está esgotado."
 
@@ -2528,12 +2528,12 @@ msgid "Step 1: How Many?"
 msgstr "Passo 1: Quantos?"
 
 #: ../inc/venues/event-area/post-type.class.php:233
-#: ../templates/post-content/event-area.php:47
+#: ../templates/post-content/event-area.php:52
 msgid "Reserve some tickets:"
 msgstr "Reservar alguns ingressos:"
 
 #: ../inc/venues/event-area/post-type.class.php:237
-#: ../templates/post-content/event-area.php:68
+#: ../templates/post-content/event-area.php:73
 msgid "Reserve"
 msgstr "Reservar"
 
@@ -2542,12 +2542,12 @@ msgid "Step 2: Review"
 msgstr "Passo 2: Revisão"
 
 #: ../inc/venues/event-area/post-type.class.php:248
-#: ../templates/post-content/event-area.php:86
+#: ../templates/post-content/event-area.php:91
 msgid "You currently have:"
 msgstr "Você possui no momento:"
 
 #: ../inc/venues/event-area/post-type.class.php:253
-#: ../templates/post-content/event-area.php:108
+#: ../templates/post-content/event-area.php:113
 msgid "Update"
 msgstr "Atualizar"
 
@@ -2606,7 +2606,7 @@ msgid "This event is password protected."
 msgstr "Este evento é protegido por senha."
 
 #: ../inc/venues/event-area/post-type.class.php:372
-#: ../inc/venues/event-area/post-type.class.php:613
+#: ../inc/venues/event-area/post-type.class.php:621
 #: ../inc/venues/event-area/pricing.class.php:680
 msgid "Invalid request. Please refresh the page and try again."
 msgstr "Requisição inválida. Por favor atualize a página e tente novamente."
@@ -2624,17 +2624,17 @@ msgid "Could not update your reservations."
 msgstr "Não foi possível atualizar suas reservas."
 
 #: ../inc/venues/event-area/post-type.class.php:403
-#: ../inc/venues/event-area/post-type.class.php:813
+#: ../inc/venues/event-area/post-type.class.php:821
 msgid "The quantity must be greater than zero."
 msgstr "A quantidade deve ser maior que zero."
 
 #: ../inc/venues/event-area/post-type.class.php:404
-#: ../inc/venues/event-area/post-type.class.php:486
+#: ../inc/venues/event-area/post-type.class.php:494
 msgid "Could not load that event."
 msgstr "Não foi possível carregar este evento."
 
 #: ../inc/venues/event-area/post-type.class.php:405
-#: ../inc/venues/event-area/post-type.class.php:487
+#: ../inc/venues/event-area/post-type.class.php:495
 msgid "A problem occurred when loading that event."
 msgstr "Ocorreu um problema ao carregar o evento."
 
@@ -2643,7 +2643,7 @@ msgid "That event does not currently have any tickets."
 msgstr "O evento não possui nenhum ingresso no momento."
 
 #: ../inc/venues/event-area/post-type.class.php:407
-#: ../inc/venues/event-area/post-type.class.php:489
+#: ../inc/venues/event-area/post-type.class.php:497
 msgid "The event does not have any tickets."
 msgstr "O evento não possui nenhum ingresso."
 
@@ -2655,7 +2655,7 @@ msgstr "Ocorreu um problema ao tentar remover suas reservas."
 msgid "A problem occurred when trying to update your reservations."
 msgstr "Ocorreu um problema ao tentar atualizar suas reservas."
 
-#: ../inc/venues/event-area/post-type.class.php:479
+#: ../inc/venues/event-area/post-type.class.php:482
 #, php-format
 msgid ""
 "There are not enough available tickets to increase the quantity of %s to %d. "
@@ -2665,55 +2665,63 @@ msgstr ""
 "para %d. Existem apenas %d disponíveis."
 
 #: ../inc/venues/event-area/post-type.class.php:488
+#, fuzzy, php-format
+msgid ""
+"There are not enough available tickets to increase the quantity of %s to %d."
+msgstr ""
+"Não há ingressos disponíveis suficientes para aumentar a quantidade de %s "
+"para %d. Existem apenas %d disponíveis."
+
+#: ../inc/venues/event-area/post-type.class.php:496
 msgid "That event does not have currently have any tickets."
 msgstr "Este evento não possui nenhum ingresso no momento."
 
-#: ../inc/venues/event-area/post-type.class.php:536
+#: ../inc/venues/event-area/post-type.class.php:544
 msgid "Event Area:"
 msgstr "Área do Evento:"
 
-#: ../inc/venues/event-area/post-type.class.php:543
+#: ../inc/venues/event-area/post-type.class.php:551
 msgid "-None-"
 msgstr "-Nenhum-"
 
-#: ../inc/venues/event-area/post-type.class.php:626
+#: ../inc/venues/event-area/post-type.class.php:634
 #, php-format
 msgid "Could not find the venue you specified [%s]."
 msgstr "Não foi possível encontrar o local que você especificou [%s]."
 
-#: ../inc/venues/event-area/post-type.class.php:656
+#: ../inc/venues/event-area/post-type.class.php:664
 msgid "Could not find that venue."
 msgstr "Não foi possível encontrar este local."
 
-#: ../inc/venues/event-area/post-type.class.php:677
+#: ../inc/venues/event-area/post-type.class.php:685
 msgid "Could not save the item(s) because not enough information was provided."
 msgstr ""
 "Não foi possível salvar o(s) item(s) por que não foram fornecidas "
 "informações suficientes."
 
-#: ../inc/venues/event-area/post-type.class.php:703
+#: ../inc/venues/event-area/post-type.class.php:711
 #, php-format
 msgid "There was a problem saving the area [%s]."
 msgstr "Houve um problema ao salvar a área [%s]."
 
-#: ../inc/venues/event-area/post-type.class.php:814
+#: ../inc/venues/event-area/post-type.class.php:822
 msgid "Could not find that event."
 msgstr "Não foi possível encontrar este evento."
 
-#: ../inc/venues/event-area/post-type.class.php:815
+#: ../inc/venues/event-area/post-type.class.php:823
 msgid "That is not a valid order."
 msgstr "Este não é um pedido válido."
 
-#: ../inc/venues/event-area/post-type.class.php:928
-#: ../inc/venues/event-area/post-type.class.php:1287
+#: ../inc/venues/event-area/post-type.class.php:936
+#: ../inc/venues/event-area/post-type.class.php:1328
 msgid "Event Areas"
 msgstr "Áreas do Evento"
 
-#: ../inc/venues/event-area/post-type.class.php:1227
+#: ../inc/venues/event-area/post-type.class.php:1252
 msgid "(Unknown Ticket Type)"
 msgstr "(Tipo de Ingresso Desconhecido)"
 
-#: ../inc/venues/event-area/post-type.class.php:1231
+#: ../inc/venues/event-area/post-type.class.php:1257
 #, php-format
 msgid ""
 "There are only <span class=\"available\">%s</span> %s available currently. "
@@ -2722,12 +2730,21 @@ msgstr ""
 "Há somente <span class=\"available\">%s</span> %s disponíveis no momento. "
 "Não foi possível reservar temporariamente %d %s."
 
-#: ../inc/venues/event-area/post-type.class.php:1242
-#: ../inc/venues/event-area/post-type.class.php:1276
+#: ../inc/venues/event-area/post-type.class.php:1264
+#, fuzzy, php-format
+msgid ""
+"There are not enough %s tickets available currently. Could not temporarily "
+"reserve %d %s."
+msgstr ""
+"Há somente <span class=\"available\">%s</span> %s disponíveis no momento. "
+"Não foi possível reservar temporariamente %d %s."
+
+#: ../inc/venues/event-area/post-type.class.php:1274
+#: ../inc/venues/event-area/post-type.class.php:1317
 msgid "The number of tickets must be greater than 0."
 msgstr "O número de ingressos deve ser maior que 0."
 
-#: ../inc/venues/event-area/post-type.class.php:1263
+#: ../inc/venues/event-area/post-type.class.php:1296
 #, php-format
 msgid ""
 "There are only <span class=\"available\">%s</span> more %s available "
@@ -2737,7 +2754,17 @@ msgstr ""
 "momento. Não foi possível reservar temporariamente %d mais %s. Você ainda "
 "tem %d %s."
 
-#: ../inc/venues/event-area/post-type.class.php:1288
+#: ../inc/venues/event-area/post-type.class.php:1305
+#, fuzzy, php-format
+msgid ""
+"There are not enough %s tickets available currently. Could not temporarily "
+"reserve %d more %s. You still have %d %s."
+msgstr ""
+"Há somente <span class=\"available\">%s</span> mais %s disponíveis no "
+"momento. Não foi possível reservar temporariamente %d mais %s. Você ainda "
+"tem %d %s."
+
+#: ../inc/venues/event-area/post-type.class.php:1329
 msgid "Area"
 msgstr "Área"
 
@@ -3097,50 +3124,50 @@ msgstr "Check-In FALHOU!"
 msgid "Check-In SUCCESSFUL"
 msgstr "Check-In BEM SUCEDIDO"
 
-#: ../templates/myaccount/my-upcoming-tickets.php:2
+#: ../templates/myaccount/my-upcoming-tickets.php:3
 msgid "Upcoming Tickets"
 msgstr "Próximos Ingressos"
 
-#: ../templates/myaccount/my-upcoming-tickets.php:19
-#: ../templates/myaccount/my-upcoming-tickets.php:75
+#: ../templates/myaccount/my-upcoming-tickets.php:20
+#: ../templates/myaccount/my-upcoming-tickets.php:76
 msgid "pending payment"
 msgstr "pagamento pendente"
 
-#: ../templates/myaccount/my-upcoming-tickets.php:22
+#: ../templates/myaccount/my-upcoming-tickets.php:23
 #, php-format
 msgid "for <a href=\"%s\" title=\"%s\">%s</a>"
 msgstr "para <a href=\"%s\" title=\"%s\">%s</a>"
 
-#: ../templates/myaccount/my-upcoming-tickets.php:24
-#: ../templates/myaccount/my-upcoming-tickets.php:54
+#: ../templates/myaccount/my-upcoming-tickets.php:25
+#: ../templates/myaccount/my-upcoming-tickets.php:55
 msgid "Visit the Event page"
 msgstr "Visite a página do Evento"
 
-#: ../templates/myaccount/my-upcoming-tickets.php:29
-#: ../templates/myaccount/my-upcoming-tickets.php:82
+#: ../templates/myaccount/my-upcoming-tickets.php:30
+#: ../templates/myaccount/my-upcoming-tickets.php:83
 #, php-format
 msgid "(order <a href=\"%s\" title=\"%s\">#%s<a/>)"
 msgstr "(pedido <a href=\"%s\" title=\"%s\">#%s<a/>)"
 
-#: ../templates/myaccount/my-upcoming-tickets.php:31
-#: ../templates/myaccount/my-upcoming-tickets.php:84
+#: ../templates/myaccount/my-upcoming-tickets.php:32
+#: ../templates/myaccount/my-upcoming-tickets.php:85
 msgid "Edit order"
 msgstr "Editar pedido"
 
-#: ../templates/myaccount/my-upcoming-tickets.php:52
+#: ../templates/myaccount/my-upcoming-tickets.php:53
 #, php-format
 msgid "<a href=\"%s\" title=\"%s\">%s</a>"
 msgstr ""
 
-#: ../templates/myaccount/my-upcoming-tickets.php:55
+#: ../templates/myaccount/my-upcoming-tickets.php:56
 msgid "(View Show Page)"
 msgstr "(Ver Página do Show)"
 
-#: ../templates/post-content/event-area-closed.php:3
+#: ../templates/post-content/event-area-closed.php:4
 msgid "We are sorry. Online registration for this event has closed."
 msgstr "Desculpe. O registro online para este evento encerrou."
 
-#: ../templates/post-content/event-area.php:9
+#: ../templates/post-content/event-area.php:12
 msgid ""
 "For a better experience, certain features of javascript area required. "
 "Currently you either do not have these features, or you do not have them "
@@ -3152,7 +3179,7 @@ msgstr ""
 "habilitou. Apesar disso, você ainda pode comprar seus ingressos, usando 2 "
 "passos simples."
 
-#: ../templates/post-content/event-area.php:12
+#: ../templates/post-content/event-area.php:15
 msgid ""
 "<strong>STEP 1:</strong> Below, enter the number of tickets you wish to "
 "purchase, then click <span class=\"button-name\">Reserve Tickets</span>."
@@ -3161,7 +3188,7 @@ msgstr ""
 "deseja comprar, depois clique em <span class=\"button-name\">Reservar "
 "Ingressos</span>."
 
-#: ../templates/post-content/event-area.php:15
+#: ../templates/post-content/event-area.php:18
 msgid ""
 "<strong>STEP 2:</strong> Finally, once you have successfully Reserved your "
 "Tickets, click <span class=\"button-name\">Proceed to Cart</span> to "
@@ -3171,15 +3198,15 @@ msgstr ""
 "seus ingressos, clique <span class=\"button-name\">Proceder ao Carrinho</"
 "span> para completar seu pedido."
 
-#: ../templates/post-content/event-area.php:34
+#: ../templates/post-content/event-area.php:37
 msgid "Successfully removed your reservations."
 msgstr "Suas reservas foram removidas com sucesso."
 
-#: ../templates/post-content/event-area.php:43
+#: ../templates/post-content/event-area.php:48
 msgid "<span class=\"step-name\">STEP 1</span>: How many?"
 msgstr "<span class=\"step-name\">PASSO 1</span>: Quantos?"
 
-#: ../templates/post-content/event-area.php:50
+#: ../templates/post-content/event-area.php:55
 #, php-format
 msgid ""
 "Currently, there are <span class=\"available\">%s</span> \"<span class="
@@ -3190,11 +3217,11 @@ msgstr ""
 "\"ticket-name\">%s</span>\" (<span class=\"ticket-price\">%s</span>) "
 "disponíveis para compra."
 
-#: ../templates/post-content/event-area.php:82
+#: ../templates/post-content/event-area.php:87
 msgid "<span class=\"step-name\">STEP 2</span>: Review"
 msgstr "<span class=\"step-name\">PASSO 2</span>: Revisão"
 
-#: ../templates/post-content/event-area.php:89
+#: ../templates/post-content/event-area.php:94
 #, php-format
 msgid ""
 "Currently, there are <span class=\"available\">%s</span> more \"<span class="
@@ -3205,7 +3232,7 @@ msgstr ""
 "\"ticket-name\">%s</span>\" (<span class=\"ticket-price\">%s</span>) "
 "disponíveis para compra."
 
-#: ../templates/post-content/event-area.php:126
+#: ../templates/post-content/event-area.php:131
 msgid ""
 "We are sorry. There are currently no tickets available for this event. Check "
 "back soon!"
@@ -3280,15 +3307,15 @@ msgstr "PEDIDO #"
 msgid "%1$s of %2$s"
 msgstr "adicionado em %1$s às %2$s"
 
-#: ../templates/tickets/error-msg.php:8
+#: ../templates/tickets/error-msg.php:9
 msgid "An error has occurred while attempting to view the ticket"
 msgstr "Ocorreu um erro ao tentar ver o ingresso."
 
-#: ../templates/tickets/verification-form.php:5
+#: ../templates/tickets/verification-form.php:6
 msgid "Additional Information is Required"
 msgstr "Informações Adicionais são Necessárias"
 
-#: ../templates/tickets/verification-form.php:7
+#: ../templates/tickets/verification-form.php:8
 msgid ""
 "In order to allow you to view your ticket, we must first verify who you are, "
 "and that you should be able to view this ticket. To do that, we need to "
@@ -3302,7 +3329,7 @@ msgstr ""
 "para verificar quem você é. Se esta informação corresponder ao nosso "
 "registro, então seu ingresso será disponibilizado para você."
 
-#: ../templates/tickets/verification-form.php:13
+#: ../templates/tickets/verification-form.php:14
 msgid ""
 "This should be the email you used during the purchase of your ticket, as "
 "your billing email address."
@@ -3310,7 +3337,7 @@ msgstr ""
 "Este deveria ser o email que você usou durante a compra do seu ingresso, "
 "conforme o seu endereço de email de cobrança."
 
-#: ../templates/tickets/verification-form.php:17
+#: ../templates/tickets/verification-form.php:18
 msgid "Submit"
 msgstr "Submeter"
 

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OpenTickets Community Edition\n"
-"POT-Creation-Date: 2015-07-24 15:47-0800\n"
-"PO-Revision-Date: 2015-07-24 15:47-0800\n"
+"POT-Creation-Date: 2015-08-04 05:55-0800\n"
+"PO-Revision-Date: 2015-08-04 05:55-0800\n"
 "Last-Translator: \n"
 "Language-Team: Quadshot <info@quadshot.com>\n"
 "Language: nl\n"
@@ -361,23 +361,23 @@ msgid "Top Level Events"
 msgstr "Top Level Events"
 
 #: ../inc/core/post-type.class.php:599
-#: ../inc/venues/event-area/post-type.class.php:940
 #: ../inc/venues/event-area/post-type.class.php:948
+#: ../inc/venues/event-area/post-type.class.php:956
 msgid "sold-out"
 msgstr ""
 
 #: ../inc/core/post-type.class.php:602
-#: ../inc/venues/event-area/post-type.class.php:949
+#: ../inc/venues/event-area/post-type.class.php:957
 msgid "low"
 msgstr ""
 
 #: ../inc/core/post-type.class.php:605
-#: ../inc/venues/event-area/post-type.class.php:947
+#: ../inc/venues/event-area/post-type.class.php:955
 msgid "medium"
 msgstr ""
 
 #: ../inc/core/post-type.class.php:608
-#: ../inc/venues/event-area/post-type.class.php:946
+#: ../inc/venues/event-area/post-type.class.php:954
 msgid "high"
 msgstr ""
 
@@ -690,7 +690,7 @@ msgstr "Status:"
 
 #: ../inc/core/post-type.class.php:1721 ../inc/core/post-type.class.php:1744
 #: ../inc/core/post-type.class.php:1779 ../inc/venues/post-type.class.php:364
-#: ../inc/venues/event-area/post-type.class.php:538
+#: ../inc/venues/event-area/post-type.class.php:546
 #: ../templates/admin/meta-boxes/views/html-order-items.php:217
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:221
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:313
@@ -719,14 +719,14 @@ msgstr "Concept"
 
 #: ../inc/core/post-type.class.php:1734 ../inc/core/post-type.class.php:1769
 #: ../inc/core/post-type.class.php:1805 ../inc/venues/post-type.class.php:375
-#: ../inc/venues/event-area/post-type.class.php:561
+#: ../inc/venues/event-area/post-type.class.php:569
 msgid "OK"
 msgstr "OK"
 
 #: ../inc/core/post-type.class.php:1735 ../inc/core/post-type.class.php:1770
 #: ../inc/core/post-type.class.php:1806 ../inc/sys/mba.class.php:462
 #: ../inc/venues/post-type.class.php:376
-#: ../inc/venues/event-area/post-type.class.php:562
+#: ../inc/venues/event-area/post-type.class.php:570
 #: ../templates/admin/meta-boxes/views/html-order-items.php:255
 #: ../templates/admin/meta-boxes/views/html-order-items.php:301
 msgid "Cancel"
@@ -1075,7 +1075,7 @@ msgstr "Gebruikersnaam"
 
 #: ../inc/order/admin.class.php:585
 #: ../inc/reporting/seating.report.class.php:508
-#: ../templates/tickets/verification-form.php:10
+#: ../templates/tickets/verification-form.php:11
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:77
 msgid "Email"
 msgstr "Email"
@@ -2253,7 +2253,7 @@ msgid "Ticket"
 msgstr "Ticket"
 
 #: ../inc/ticket/ticket.class.php:109
-#: ../templates/myaccount/my-upcoming-tickets.php:17
+#: ../templates/myaccount/my-upcoming-tickets.php:18
 msgid "View your ticket"
 msgstr "Bekijk uw ticket"
 
@@ -2615,7 +2615,7 @@ msgid "We're sorry. There are currently no tickets available."
 msgstr "Helaas, er zijn op dit moment geen ticets beschikbaar."
 
 #: ../inc/venues/event-area/post-type.class.php:170
-#: ../templates/post-content/event-area.php:123
+#: ../templates/post-content/event-area.php:128
 msgid "We are sorry. This event is sold out!"
 msgstr "Helaas, het event is uitverkocht!"
 
@@ -2628,12 +2628,12 @@ msgid "Step 1: How Many?"
 msgstr "Stap 1: Hoe Veel?"
 
 #: ../inc/venues/event-area/post-type.class.php:233
-#: ../templates/post-content/event-area.php:47
+#: ../templates/post-content/event-area.php:52
 msgid "Reserve some tickets:"
 msgstr "Reserveer tickets:"
 
 #: ../inc/venues/event-area/post-type.class.php:237
-#: ../templates/post-content/event-area.php:68
+#: ../templates/post-content/event-area.php:73
 msgid "Reserve"
 msgstr "Reserveer"
 
@@ -2642,12 +2642,12 @@ msgid "Step 2: Review"
 msgstr "Stap 2: Overzicht"
 
 #: ../inc/venues/event-area/post-type.class.php:248
-#: ../templates/post-content/event-area.php:86
+#: ../templates/post-content/event-area.php:91
 msgid "You currently have:"
 msgstr "U heeft:"
 
 #: ../inc/venues/event-area/post-type.class.php:253
-#: ../templates/post-content/event-area.php:108
+#: ../templates/post-content/event-area.php:113
 msgid "Update"
 msgstr "Update"
 
@@ -2705,7 +2705,7 @@ msgid "This event is password protected."
 msgstr "Dit event is beveiligd met een wachtwoord."
 
 #: ../inc/venues/event-area/post-type.class.php:372
-#: ../inc/venues/event-area/post-type.class.php:613
+#: ../inc/venues/event-area/post-type.class.php:621
 #: ../inc/venues/event-area/pricing.class.php:680
 msgid "Invalid request. Please refresh the page and try again."
 msgstr "Ongeldige aanvraag. Refresh de pagina en probeer het opnieuw."
@@ -2723,17 +2723,17 @@ msgid "Could not update your reservations."
 msgstr "Kan uw reservering niet updaten."
 
 #: ../inc/venues/event-area/post-type.class.php:403
-#: ../inc/venues/event-area/post-type.class.php:813
+#: ../inc/venues/event-area/post-type.class.php:821
 msgid "The quantity must be greater than zero."
 msgstr "De hoeveelheid moet hoger zijn dan nul."
 
 #: ../inc/venues/event-area/post-type.class.php:404
-#: ../inc/venues/event-area/post-type.class.php:486
+#: ../inc/venues/event-area/post-type.class.php:494
 msgid "Could not load that event."
 msgstr "Kan dat event niet laden."
 
 #: ../inc/venues/event-area/post-type.class.php:405
-#: ../inc/venues/event-area/post-type.class.php:487
+#: ../inc/venues/event-area/post-type.class.php:495
 msgid "A problem occurred when loading that event."
 msgstr "Er is een probleem onstaan tijdens het laden van dat event."
 
@@ -2742,7 +2742,7 @@ msgid "That event does not currently have any tickets."
 msgstr "Dat event heeft op dit moment geen tickets."
 
 #: ../inc/venues/event-area/post-type.class.php:407
-#: ../inc/venues/event-area/post-type.class.php:489
+#: ../inc/venues/event-area/post-type.class.php:497
 msgid "The event does not have any tickets."
 msgstr "Dat even heeft geen tickets."
 
@@ -2755,7 +2755,7 @@ msgstr ""
 msgid "A problem occurred when trying to update your reservations."
 msgstr "Er is een probleem onststaan tijdens het updaten van uw reservering."
 
-#: ../inc/venues/event-area/post-type.class.php:479
+#: ../inc/venues/event-area/post-type.class.php:482
 #, php-format
 msgid ""
 "There are not enough available tickets to increase the quantity of %s to %d. "
@@ -2765,54 +2765,62 @@ msgstr ""
 "naar %d. Er zijn er maar %d beschikbaar."
 
 #: ../inc/venues/event-area/post-type.class.php:488
+#, fuzzy, php-format
+msgid ""
+"There are not enough available tickets to increase the quantity of %s to %d."
+msgstr ""
+"Er zijn het genoeg tickets beschikbaar op de hoeveilheid te verhogen van %s "
+"naar %d. Er zijn er maar %d beschikbaar."
+
+#: ../inc/venues/event-area/post-type.class.php:496
 msgid "That event does not have currently have any tickets."
 msgstr "Dat event heeft op dit moment geen tickets."
 
-#: ../inc/venues/event-area/post-type.class.php:536
+#: ../inc/venues/event-area/post-type.class.php:544
 msgid "Event Area:"
 msgstr "Event Locatie:"
 
-#: ../inc/venues/event-area/post-type.class.php:543
+#: ../inc/venues/event-area/post-type.class.php:551
 msgid "-None-"
 msgstr "-Geen-"
 
-#: ../inc/venues/event-area/post-type.class.php:626
+#: ../inc/venues/event-area/post-type.class.php:634
 #, php-format
 msgid "Could not find the venue you specified [%s]."
 msgstr "Kan de opgegeven locatie niet vinden [%s]."
 
-#: ../inc/venues/event-area/post-type.class.php:656
+#: ../inc/venues/event-area/post-type.class.php:664
 msgid "Could not find that venue."
 msgstr "Kan die locatie niet vinden."
 
-#: ../inc/venues/event-area/post-type.class.php:677
+#: ../inc/venues/event-area/post-type.class.php:685
 msgid "Could not save the item(s) because not enough information was provided."
 msgstr ""
 "Kon het item(s) niet opslaan omdat er niet genoeg informaite is geleverd."
 
-#: ../inc/venues/event-area/post-type.class.php:703
+#: ../inc/venues/event-area/post-type.class.php:711
 #, php-format
 msgid "There was a problem saving the area [%s]."
 msgstr "Er was een probleem met het opslaan van die locatie [%s]."
 
-#: ../inc/venues/event-area/post-type.class.php:814
+#: ../inc/venues/event-area/post-type.class.php:822
 msgid "Could not find that event."
 msgstr "Kan dat event niet vinden."
 
-#: ../inc/venues/event-area/post-type.class.php:815
+#: ../inc/venues/event-area/post-type.class.php:823
 msgid "That is not a valid order."
 msgstr "Dat is geen geldige order."
 
-#: ../inc/venues/event-area/post-type.class.php:928
-#: ../inc/venues/event-area/post-type.class.php:1287
+#: ../inc/venues/event-area/post-type.class.php:936
+#: ../inc/venues/event-area/post-type.class.php:1328
 msgid "Event Areas"
 msgstr "Event Locaties"
 
-#: ../inc/venues/event-area/post-type.class.php:1227
+#: ../inc/venues/event-area/post-type.class.php:1252
 msgid "(Unknown Ticket Type)"
 msgstr "(Onbekend Ticket Type)"
 
-#: ../inc/venues/event-area/post-type.class.php:1231
+#: ../inc/venues/event-area/post-type.class.php:1257
 #, php-format
 msgid ""
 "There are only <span class=\"available\">%s</span> %s available currently. "
@@ -2821,12 +2829,21 @@ msgstr ""
 "Er zijn maar <span class=\"available\">%s</span> %s beschikbaar op dit "
 "moment. Kan tijdelijk niet %d %s reserveren."
 
-#: ../inc/venues/event-area/post-type.class.php:1242
-#: ../inc/venues/event-area/post-type.class.php:1276
+#: ../inc/venues/event-area/post-type.class.php:1264
+#, fuzzy, php-format
+msgid ""
+"There are not enough %s tickets available currently. Could not temporarily "
+"reserve %d %s."
+msgstr ""
+"Er zijn maar <span class=\"available\">%s</span> %s beschikbaar op dit "
+"moment. Kan tijdelijk niet %d %s reserveren."
+
+#: ../inc/venues/event-area/post-type.class.php:1274
+#: ../inc/venues/event-area/post-type.class.php:1317
 msgid "The number of tickets must be greater than 0."
 msgstr "Het aantal tickets moet hoger zijn dan 0."
 
-#: ../inc/venues/event-area/post-type.class.php:1263
+#: ../inc/venues/event-area/post-type.class.php:1296
 #, php-format
 msgid ""
 "There are only <span class=\"available\">%s</span> more %s available "
@@ -2836,7 +2853,17 @@ msgstr ""
 "moment. Kan tijdelijk niet %d meer %s reserveren. Uw heeft er nog steeds %d "
 "%s."
 
-#: ../inc/venues/event-area/post-type.class.php:1288
+#: ../inc/venues/event-area/post-type.class.php:1305
+#, fuzzy, php-format
+msgid ""
+"There are not enough %s tickets available currently. Could not temporarily "
+"reserve %d more %s. You still have %d %s."
+msgstr ""
+"Er zijn maar <span class=\"available\">%s</span> meer %s beschikbaar op dit "
+"moment. Kan tijdelijk niet %d meer %s reserveren. Uw heeft er nog steeds %d "
+"%s."
+
+#: ../inc/venues/event-area/post-type.class.php:1329
 msgid "Area"
 msgstr "Locatie"
 
@@ -3210,50 +3237,50 @@ msgstr "Check-In MISKUKT!"
 msgid "Check-In SUCCESSFUL"
 msgstr "Check-IN GELUKT!"
 
-#: ../templates/myaccount/my-upcoming-tickets.php:2
+#: ../templates/myaccount/my-upcoming-tickets.php:3
 msgid "Upcoming Tickets"
 msgstr "Tickets binnenkort beschikbaar"
 
-#: ../templates/myaccount/my-upcoming-tickets.php:19
-#: ../templates/myaccount/my-upcoming-tickets.php:75
+#: ../templates/myaccount/my-upcoming-tickets.php:20
+#: ../templates/myaccount/my-upcoming-tickets.php:76
 msgid "pending payment"
 msgstr "afwachting van betaling"
 
-#: ../templates/myaccount/my-upcoming-tickets.php:22
+#: ../templates/myaccount/my-upcoming-tickets.php:23
 #, php-format
 msgid "for <a href=\"%s\" title=\"%s\">%s</a>"
 msgstr "voor <a href=\"%s\" title=\"%s\">%s</a>"
 
-#: ../templates/myaccount/my-upcoming-tickets.php:24
-#: ../templates/myaccount/my-upcoming-tickets.php:54
+#: ../templates/myaccount/my-upcoming-tickets.php:25
+#: ../templates/myaccount/my-upcoming-tickets.php:55
 msgid "Visit the Event page"
 msgstr "Bezoek de Event pagina"
 
-#: ../templates/myaccount/my-upcoming-tickets.php:29
-#: ../templates/myaccount/my-upcoming-tickets.php:82
+#: ../templates/myaccount/my-upcoming-tickets.php:30
+#: ../templates/myaccount/my-upcoming-tickets.php:83
 #, php-format
 msgid "(order <a href=\"%s\" title=\"%s\">#%s<a/>)"
 msgstr "(order <a href=\"%s\" title=\"%s\">#%s<a/>)"
 
-#: ../templates/myaccount/my-upcoming-tickets.php:31
-#: ../templates/myaccount/my-upcoming-tickets.php:84
+#: ../templates/myaccount/my-upcoming-tickets.php:32
+#: ../templates/myaccount/my-upcoming-tickets.php:85
 msgid "Edit order"
 msgstr "Order aanpassen"
 
-#: ../templates/myaccount/my-upcoming-tickets.php:52
+#: ../templates/myaccount/my-upcoming-tickets.php:53
 #, php-format
 msgid "<a href=\"%s\" title=\"%s\">%s</a>"
 msgstr "<a href=\"%s\" title=\"%s\">%s</a>"
 
-#: ../templates/myaccount/my-upcoming-tickets.php:55
+#: ../templates/myaccount/my-upcoming-tickets.php:56
 msgid "(View Show Page)"
 msgstr "(Bekijk Show Pagina)"
 
-#: ../templates/post-content/event-area-closed.php:3
+#: ../templates/post-content/event-area-closed.php:4
 msgid "We are sorry. Online registration for this event has closed."
 msgstr "Het spijt ons. Online registratie voor dit event is gesloten."
 
-#: ../templates/post-content/event-area.php:9
+#: ../templates/post-content/event-area.php:12
 msgid ""
 "For a better experience, certain features of javascript area required. "
 "Currently you either do not have these features, or you do not have them "
@@ -3264,7 +3291,7 @@ msgstr ""
 "u heeft deze onderlen niet aanstaan of deze zijn niet beschibaar. Desondanks "
 "kunt u nog steeds uw tickets kopen via 2 simpele stappen."
 
-#: ../templates/post-content/event-area.php:12
+#: ../templates/post-content/event-area.php:15
 msgid ""
 "<strong>STEP 1:</strong> Below, enter the number of tickets you wish to "
 "purchase, then click <span class=\"button-name\">Reserve Tickets</span>."
@@ -3273,7 +3300,7 @@ msgstr ""
 "bestellen. Klik daarna op <span class=\"button-name\">Reserveer Tickets</"
 "span>."
 
-#: ../templates/post-content/event-area.php:15
+#: ../templates/post-content/event-area.php:18
 msgid ""
 "<strong>STEP 2:</strong> Finally, once you have successfully Reserved your "
 "Tickets, click <span class=\"button-name\">Proceed to Cart</span> to "
@@ -3283,15 +3310,15 @@ msgstr ""
 "klik om <span class=\"button-name\">Naar de Winkelwagen</span> te gaan om uw "
 "order te voltooien."
 
-#: ../templates/post-content/event-area.php:34
+#: ../templates/post-content/event-area.php:37
 msgid "Successfully removed your reservations."
 msgstr "Uw reservering is succesvol verwijderd."
 
-#: ../templates/post-content/event-area.php:43
+#: ../templates/post-content/event-area.php:48
 msgid "<span class=\"step-name\">STEP 1</span>: How many?"
 msgstr "<span class=\"step-name\">STAP 1</span>: Hoe Veel?"
 
-#: ../templates/post-content/event-area.php:50
+#: ../templates/post-content/event-area.php:55
 #, php-format
 msgid ""
 "Currently, there are <span class=\"available\">%s</span> \"<span class="
@@ -3302,11 +3329,11 @@ msgstr ""
 "\"ticket-name\">%s</span>\"(<span class=\"ticket-price\">%s</span>) "
 "beschikbaar."
 
-#: ../templates/post-content/event-area.php:82
+#: ../templates/post-content/event-area.php:87
 msgid "<span class=\"step-name\">STEP 2</span>: Review"
 msgstr "<span class=\"step-name\">STAP 2</span>: Overzicht"
 
-#: ../templates/post-content/event-area.php:89
+#: ../templates/post-content/event-area.php:94
 #, php-format
 msgid ""
 "Currently, there are <span class=\"available\">%s</span> more \"<span class="
@@ -3317,7 +3344,7 @@ msgstr ""
 "\"ticket-name\">%s</span>\" (<span class=\"ticket-price\">%s</span>) "
 "beschikbaar."
 
-#: ../templates/post-content/event-area.php:126
+#: ../templates/post-content/event-area.php:131
 msgid ""
 "We are sorry. There are currently no tickets available for this event. Check "
 "back soon!"
@@ -3392,15 +3419,15 @@ msgstr "ORDER #"
 msgid "%1$s of %2$s"
 msgstr "toegevoeg op %1$s at %2$s"
 
-#: ../templates/tickets/error-msg.php:8
+#: ../templates/tickets/error-msg.php:9
 msgid "An error has occurred while attempting to view the ticket"
 msgstr "Er is een fout opgetreden bij het bekijken van het ticket."
 
-#: ../templates/tickets/verification-form.php:5
+#: ../templates/tickets/verification-form.php:6
 msgid "Additional Information is Required"
 msgstr "Meer Informatie is Vereist"
 
-#: ../templates/tickets/verification-form.php:7
+#: ../templates/tickets/verification-form.php:8
 msgid ""
 "In order to allow you to view your ticket, we must first verify who you are, "
 "and that you should be able to view this ticket. To do that, we need to "
@@ -3413,7 +3440,7 @@ msgstr ""
 "vragen die wij zullen gebruiken om te verifiren wie u bent. Komt de "
 "informatie overeen dan wordt het ticket beschikbaar voor u."
 
-#: ../templates/tickets/verification-form.php:13
+#: ../templates/tickets/verification-form.php:14
 msgid ""
 "This should be the email you used during the purchase of your ticket, as "
 "your billing email address."
@@ -3421,7 +3448,7 @@ msgstr ""
 "Dit is het email adres dat u gebruikt heeft tijdens de aankoop van uw "
 "ticket, als uw factuur email adres."
 
-#: ../templates/tickets/verification-form.php:17
+#: ../templates/tickets/verification-form.php:18
 msgid "Submit"
 msgstr "Verzenden"
 
