@@ -164,7 +164,8 @@ class qsot_admin_menu {
 		);
 
 		// reports menu item
-		self::$menu_page_hooks['main'] = add_menu_page(
+		self::$menu_page_hooks['main'] = add_submenu_page(
+			self::$menu_slugs['main'],
 			__( 'Reports', 'opentickets-community-edition' ),
 			__( 'Reports', 'opentickets-community-edition' ),
 			'view_woocommerce_reports',
