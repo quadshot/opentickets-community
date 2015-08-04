@@ -39,7 +39,6 @@ class qsot_admin_menu {
 			add_filter( 'qsot-get-menu-slug', array( __CLASS__, 'menu_page_slug' ), 10, 2 );
 
 			add_action('admin_menu', array(__CLASS__, 'create_menu_items'), 11);
-			add_action('admin_menu', array(__CLASS__, 'rename_first_menu_item'), 11);
 			add_action('admin_menu', array(__CLASS__, 'repair_menu_order'), PHP_INT_MAX);
 			add_action('qsot_daily_stats', array(__CLASS__, 'daily_stats'), 1000);
 			add_action('activate_plugin', array(__CLASS__, 'incremental_stats'), 1000, 2);
@@ -153,10 +152,21 @@ class qsot_admin_menu {
 
 	// register our custom menu items for our settings pages
 	public static function create_menu_items() {
+		// make the main menu item
+		self::$menu_page_hooks['main'] = add_menu_page(
+			self::$o->product_name,
+			self::$o->product_name,
+			'view_woocommerce_reports',
+			self::$menu_slugs['main'],
+			array( __CLASS__, 'ap_reports_page' ),
+			false,
+			21
+		);
+
 		// reports menu item
 		self::$menu_page_hooks['main'] = add_menu_page(
 			__( 'Reports', 'opentickets-community-edition' ),
-			self::$o->product_name,
+			__( 'Reports', 'opentickets-community-edition' ),
 			'view_woocommerce_reports',
 			self::$menu_slugs['main'],
 			array( __CLASS__, 'ap_reports_page' ),
@@ -176,14 +186,6 @@ class qsot_admin_menu {
 
 		// generic function to call some page load logic
 		add_action( 'load-' . self::$menu_page_hooks['settings'], array( __CLASS__, 'ap_settings_page_head' ) );
-	}
-
-	public static function rename_first_menu_item() {
-		global $menu, $submenu;
-
-		if (isset($submenu[self::$menu_slugs['main']], $submenu[self::$menu_slugs['main']][0])) {
-			$submenu[self::$menu_slugs['main']][0][0] = 'Reports';
-		}
 	}
 
 	public static function ap_reports_page() {
@@ -457,9 +459,9 @@ class qsot_admin_menu {
 			'order' => 101,
 			'id' => 'qsot-allow-stats',
 			'type' => 'checkbox',
-			'title' => __('Allow Statistics','opentickets-community-edition'),
-			'desc' => __('Allow OpenTickets to gather information about your WordPress installation.','opentickets-community-edition'),
-			'desc_tip' => __('This information is strictly used to make this product better and more compatible with other plugins.','opentickets-community-edition'),
+			'title' => __( 'Allow Statistics', 'opentickets-community-edition' ),
+			'desc' => __( 'Allow OpenTickets to gather information about your WordPress installation.', 'opentickets-community-edition' ),
+			'desc_tip' => __( 'This information is strictly used to make this product better and more compatible with other plugins.', 'opentickets-community-edition' ),
 			'default' => 'no',
 		));
 
@@ -467,9 +469,9 @@ class qsot_admin_menu {
 			'order' => 103,
 			'id' => 'qsot-event-permalink-slug',
 			'type' => 'text',
-			'title' => __('Event Link Slug','opentickets-community-edition'),
-			'desc' => __('The url slug that is prepended to the event name in the url. (ex: <code>http://example.com/<strong>event</strong>/my-event/</code>)','opentickets-community-edition'),
-			'desc_tip' => __('This is the segment of the url that preceeds the event name.','opentickets-community-edition'),
+			'title' => __( 'Event Link Slug', 'opentickets-community-edition' ),
+			'desc' => __( 'The url slug that is prepended to the event name in the url. (ex: <code>http://example.com/<strong>event</strong>/my-event/</code>)', 'opentickets-community-edition' ),
+			'desc_tip' => __( 'This is the segment of the url that preceeds the event name.', 'opentickets-community-edition' ),
 			'default' => self::$options->{'qsot-event-permalink-slug'},
 		));
 

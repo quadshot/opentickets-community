@@ -26,6 +26,8 @@ class QSOT {
 		self::$plugin_dir = self::$o->core_dir;
 		self::$plugin_url = self::$o->core_url;
 		self::$product_url = self::$o->product_url;
+		
+		load_plugin_textdomain( 'opentickets-community-edition', false, dirname( plugin_basename( __FILE__ ) ) . '/langs/' );
 
 		//add_action( 'plugins_loaded', array( __CLASS__, 'admin_deactivate' ), 0 );
 
@@ -69,8 +71,6 @@ class QSOT {
 
 		// polyfill the hide/show js functions in the head tag, since some themes apparently don't have this
 		add_action( 'wp_head', array( __CLASS__, 'polyfill_hideshow_js' ), 0 );
-		
-		load_plugin_textdomain( 'opentickets-community-edition', false, dirname( plugin_basename( __FILE__ ) ) . '/langs/' );
 	}
 
 	public static function me() { return self::$me; }

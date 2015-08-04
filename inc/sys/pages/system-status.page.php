@@ -37,7 +37,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 	public function __construct() {
 		// protect the singleton
 		if ( is_object( self::$instance ) ) {
-			throw new Exception( 'There can only be one instance of the System Status page.', 101 );
+			throw new Exception( __( 'There can only be one instance of the System Status page.', 'opentickets-community-edition' ), 101 );
 		}
 
 		// setup our titles
@@ -46,11 +46,11 @@ class QSOT_system_status_page extends QSOT_base_page {
 
 		// register our tabs
 		$this->_register_tab( 'system-status', array(
-			'label' => 'System Status',
+			'label' => __( 'System Status', 'opentickets-community-edition' ),
 			'function' => array( &$this, 'page_system_status' ),
 		) );
 		$this->_register_tab( 'tools', array(
-			'label' => 'Tools',
+			'label' => __( 'Tools', 'opentickets-community-edition' ),
 			'function' => array( &$this, 'page_tools' ),
 		) );
 
@@ -79,8 +79,8 @@ class QSOT_system_status_page extends QSOT_base_page {
 		if ( 'system-status' == $current ) {
 			?>
 				<div class="updated system-status-report-msg">
-					<p>Copy and paste this information into your ticket when contacting support:</p>
-					<input type="button" id="show-status-report" class="button" value="Show Report" tar="#system-report-text" />
+					<p><?php _e( 'Copy and paste this information into your ticket when contacting support:', 'opentickets-community-edition' ) ?></p>
+					<input type="button" id="show-status-report" class="button" value="<?php _e( 'Show Report', 'opentickets-community-edition' ) ?>" tar="#system-report-text" />
 					<textarea class="widefat" rows="12" id="system-report-text"><?php echo $this->_draw_report( 'text' ) ?></textarea>
 				</div>
 				<script language="javascript">

@@ -277,6 +277,7 @@ class qsot_order_admin {
 	}
 
 	public static function require_billing_information($post_id, $post) {
+		return; // disable for now until we add this setting back in
 		// must be shop order
 		if ($post->post_type != 'shop_order') return;
 
@@ -692,7 +693,6 @@ class qsot_order_admin {
 	}
 
 	protected static function _setup_admin_options() {
-		self::$options->def( 'qsot-require-billing-information', 'yes' );
 		self::$options->def( 'qsot-completed-order-email-message-top', '' );
 		self::$options->def( 'qsot-completed-order-email-message-text-top', '' );
 		self::$options->def( 'qsot-completed-order-email-message', '' );
