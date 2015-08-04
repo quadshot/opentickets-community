@@ -1,0 +1,3687 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenTickets Community Edition\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-08-02 18:17+0200\n"
+"PO-Revision-Date: 2015-08-02 19:42+0200\n"
+"Last-Translator: Juha Tiihonen <tiihonen@iki.fi>\n"
+"Language-Team: \n"
+"Language: fi_FI\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 1.7.5\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
+"X-Poedit-Basepath: .\n"
+"X-Textdomain-Support: yes\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../inc/core/calendar.class.php:127
+msgid "OpenTickets Calendar"
+msgstr "OpenTickets kalenteri"
+
+#: ../inc/core/calendar.class.php:155
+msgid "Non-JS Calendar Page"
+msgstr "Kalenteri (ei-JS)"
+
+#: ../inc/core/calendar.class.php:156
+msgid ""
+"Widget area on calendar template that shows when a user does not have "
+"javascript enabled."
+msgstr ""
+"Kalenterin mallineen vimpainalue, joka näyttää, jos käyttäjällä ei ole "
+"javasript käytössä."
+
+#: ../inc/core/calendar.class.php:212
+msgid "Calendar Settings"
+msgstr "Kalenterin asetukset"
+
+#: ../inc/core/calendar.class.php:330
+msgid "Ended"
+msgstr "Loppu"
+
+#: ../inc/core/calendar.class.php:364 ../inc/core/calendar.class.php:412
+msgid "Today"
+msgstr "Tänään"
+
+#: ../inc/core/calendar.class.php:365 ../inc/core/calendar.class.php:413
+msgid "Date of next Event"
+msgstr "Seuraava tapahtuma"
+
+#: ../inc/core/calendar.class.php:366 ../inc/core/calendar.class.php:390
+#: ../inc/core/calendar.class.php:391 ../inc/core/calendar.class.php:414
+msgid "Manually entered date"
+msgstr "Itse valittava päivämäärä"
+
+#: ../inc/core/calendar.class.php:378
+msgid "Starting Date Method"
+msgstr "Aloituspäivämäärän valinta"
+
+#: ../inc/core/calendar.class.php:393 ../inc/core/post-type.class.php:1557
+#: ../inc/core/post-type.class.php:1563 ../inc/core/post-type.class.php:1646
+#: ../inc/core/post-type.class.php:1662
+#: ../inc/sys/pages/system-status.page.php:368
+msgid "m-d-Y"
+msgstr "d-m-Y"
+
+#: ../inc/core/calendar.class.php:394 ../inc/core/post-type.class.php:1512
+#: ../inc/core/post-type.class.php:1529 ../inc/core/post-type.class.php:1556
+#: ../inc/core/post-type.class.php:1562 ../inc/core/post-type.class.php:1645
+#: ../inc/core/post-type.class.php:1661
+msgid "mm-dd-yy"
+msgstr "dd-mm-yy"
+
+#: ../inc/core/calendar.class.php:477 ../inc/core/calendar.class.php:501
+msgid "Event Calendar"
+msgstr "Tapahtumakalenteri"
+
+#: ../inc/core/calendar.class.php:495
+msgid "Event Pages"
+msgstr "Tapahtumasivut"
+
+#: ../inc/core/calendar.class.php:497
+msgid "These pages are used to display the upcoming events."
+msgstr "Näillä sivuilla näytetään tulevat tapahtumat."
+
+#: ../inc/core/calendar.class.php:502
+msgid "Page to display the calendar of upcoming events."
+msgstr "Tulevien tapahtumien kalenteriin näyttämiseen tarkoitettu sivu"
+
+#: ../inc/core/event-reporting.class.php:37
+msgid "Download CSV"
+msgstr "Lataa CSV"
+
+#: ../inc/core/event-reporting.class.php:44
+msgid "Printer Friendly Version"
+msgstr "Tulostinystävällinen versio"
+
+#: ../inc/core/event-reporting.class.php:110
+msgid "Network Admin"
+msgstr "Verkon admin"
+
+#: ../inc/core/event-reporting.class.php:112
+msgid "Global Dashboard"
+msgstr "Yleinen Ohjauspaneeli"
+
+#: ../inc/core/event-reporting.class.php:117
+#, php-format
+msgid "%1$s &#8212; WordPress"
+msgstr "%1$s &#8212; WordPress"
+
+#: ../inc/core/event-reporting.class.php:119
+#, php-format
+msgid "%1$s &lsaquo; %2$s &#8212; WordPress"
+msgstr "%1$s &lsaquo; %2$s &#8212; WordPress"
+
+#: ../inc/core/event-reporting.class.php:249
+#, php-format
+msgid ""
+"Could not create the report cache directory. Make sure that the permissions "
+"for '%s' allow the webserver to create a directory, and try again."
+msgstr ""
+"Raporttivälimuistin tiedostoa ei voitu luoda. Varmista, että web-palvelimen "
+"oikeudet kohteessa '%s' riittävät hakemiston luomiseen, ja yritä uudelleen."
+
+#: ../inc/core/event-reporting.class.php:318
+msgid "An un expected error occurred during report generation."
+msgstr "Raportin luomisessa tapahtui odottamaton virhe."
+
+#: ../inc/core/event-reporting.class.php:335
+msgid ""
+"Could not find the report result template. Below is the list of raw CSV "
+"results."
+msgstr ""
+"Raportin tulosten mallinetta ei löytynyt. Alla on lista tuloksista CSV-"
+"raakamuodossa."
+
+#: ../inc/core/event-reporting.class.php:340
+msgid "View report for"
+msgstr "Katso raportti aiheesta"
+
+#: ../inc/core/event-reporting.class.php:341
+msgid "Report for"
+msgstr "Raportti aiheesta"
+
+#: ../inc/core/event-reporting.class.php:368
+msgid "(unknown)"
+msgstr "(tuntematon)"
+
+#: ../inc/core/event-reporting.class.php:368
+msgid "-free-"
+msgstr "-vapaa-"
+
+#: ../inc/core/my-account-takeover.class.php:45
+msgid "Shows"
+msgstr "Näytökset"
+
+#: ../inc/core/my-account-takeover.class.php:69
+msgid "(none)"
+msgstr "(ei yhtään)"
+
+#: ../inc/core/my-account-takeover.class.php:123
+msgid "Invalid order."
+msgstr "Virheellinen tilaus."
+
+#: ../inc/core/my-account-takeover.class.php:123
+msgid "My Account &rarr;"
+msgstr "Oma tili &rarr;"
+
+#: ../inc/core/my-account-takeover.class.php:134
+#, php-format
+msgid ""
+"Order <mark class=\"order-number\">%s</mark> made on <mark class=\"order-date"
+"\">%s</mark>"
+msgstr ""
+"Tilaus <mark class=\"order-number\">%s</mark> tehty <mark class=\"order-date"
+"\">%s</mark>"
+
+#: ../inc/core/my-account-takeover.class.php:135
+#, php-format
+msgid "Order status: <mark class=\"order-status\">%s</mark>"
+msgstr "Tilauksen tila: <mark class=\"order-status\">%s</mark>"
+
+#: ../inc/core/my-account-takeover.class.php:141
+msgid "Order Updates"
+msgstr "Tilauksen muutokset"
+
+#: ../inc/core/my-account-takeover.class.php:147
+msgid "l jS \\of F Y, h:ia"
+msgstr "l jS \\of F Y, h:ia"
+
+#: ../inc/core/my-account-takeover.class.php:312
+msgid "My Account Page"
+msgstr "Oma käyttäjä"
+
+#: ../inc/core/my-account-takeover.class.php:321
+msgid "Display Upcoming Tickets"
+msgstr "Näytä tulevat liput"
+
+#: ../inc/core/my-account-takeover.class.php:322
+msgid ""
+"Format to display the upcoming tickets list in. The list appears on the end "
+"user's \"My Account\" page."
+msgstr ""
+"Tulevien pääsylippujen esitysmuoto. Lista esiintyy loppukäyttäjän \"Oma Tili"
+"\"-sivulla."
+
+#: ../inc/core/my-account-takeover.class.php:324
+msgid "By Event"
+msgstr "Tapahtuman mukaan"
+
+#: ../inc/core/my-account-takeover.class.php:325
+msgid "As Line Item List"
+msgstr "Tuotelistauksena"
+
+#: ../inc/core/my-account-takeover.class.php:342
+msgid "Infinite Login"
+msgstr "Jatkuva sisäänkirjaus"
+
+#: ../inc/core/my-account-takeover.class.php:343
+msgid "Once a user logs in, they stay logged in, forever."
+msgstr "Kun käyttäjä kirjautuu sisään, istunto jatkuu äärettömän pitkään."
+
+#: ../inc/core/post-type.class.php:214 ../inc/core/post-type.class.php:803
+#: ../inc/reporting/seating.report.class.php:515
+msgid "Event"
+msgstr "Tapahtuma"
+
+#: ../inc/core/post-type.class.php:231
+msgid "View this event"
+msgstr "Tarkastele tapahtumaa"
+
+#: ../inc/core/post-type.class.php:371 ../inc/core/post-type.class.php:802
+msgid "Events"
+msgstr "Tapahtumat"
+
+#: ../inc/core/post-type.class.php:399
+msgid "Top Level Events"
+msgstr "Produktiot"
+
+#: ../inc/core/post-type.class.php:599
+#: ../inc/venues/event-area/post-type.class.php:948
+#: ../inc/venues/event-area/post-type.class.php:956
+msgid "sold-out"
+msgstr "loppuunmyyty"
+
+#: ../inc/core/post-type.class.php:602
+#: ../inc/venues/event-area/post-type.class.php:957
+msgid "low"
+msgstr "vähän"
+
+#: ../inc/core/post-type.class.php:605
+#: ../inc/venues/event-area/post-type.class.php:955
+msgid "medium"
+msgstr "kohtalaisesti"
+
+#: ../inc/core/post-type.class.php:608
+#: ../inc/venues/event-area/post-type.class.php:954
+msgid "high"
+msgstr "runsaasti"
+
+#: ../inc/core/post-type.class.php:624
+msgid "available"
+msgstr "saatavilla"
+
+#: ../inc/core/post-type.class.php:730
+msgctxt "post"
+msgid "Hidden"
+msgstr "Piilotettu"
+
+#: ../inc/core/post-type.class.php:747
+#, php-format
+msgid "Hidden <span class=\"count\">(%s)</span>"
+msgid_plural "Hidden <span class=\"count\">(%s)</span>"
+msgstr[0] "Piilotettu <span class=\"count\">(%s)</span>"
+msgstr[1] "Piilotettu <span class=\"count\">(%s)</span>"
+
+#: ../inc/core/post-type.class.php:851
+msgid "MM-dd-yyyy"
+msgstr "dd-MM-yyyy"
+
+#: ../inc/core/post-type.class.php:852
+msgid "ddd MM-dd-yyyy"
+msgstr "ddd dd-MM-yyyy"
+
+#: ../inc/core/post-type.class.php:853
+msgid "hh:mmtt"
+msgstr "hh:mm:tt"
+
+#: ../inc/core/post-type.class.php:972
+msgid "Max"
+msgstr "Max"
+
+#: ../inc/core/post-type.class.php:975
+#: ../inc/reporting/seating.report.class.php:512
+#: ../inc/sys/admin-menu.class.php:311
+msgid "Status"
+msgstr "Status"
+
+#: ../inc/core/post-type.class.php:1013
+msgid "m/d/Y"
+msgstr "j.n.Y"
+
+#: ../inc/core/post-type.class.php:1014
+#: ../templates/tickets/basic-ticket.php:73
+#: ../templates/tickets/basic-ticket.php:80
+msgid "g:ia"
+msgstr "H:i"
+
+#: ../inc/core/post-type.class.php:1017
+#, php-format
+msgid "on %2$s"
+msgstr "%2$s"
+
+#: ../inc/core/post-type.class.php:1019
+#, php-format
+msgid "@ %3$s"
+msgstr "kello %3$s"
+
+#: ../inc/core/post-type.class.php:1117
+msgctxt "Permalink date"
+msgid "Y-m-d_gia"
+msgstr "Y-m-d_H:i"
+
+#: ../inc/core/post-type.class.php:1356
+msgctxt "metabox title"
+msgid "Event Date Time Settings"
+msgstr "Tapahtuman ajankohdan asetukset"
+
+#: ../inc/core/post-type.class.php:1366
+msgctxt "metabox title"
+msgid "Event Titles"
+msgstr "Tapahtuman otsikot"
+
+#: ../inc/core/post-type.class.php:1376
+msgctxt "metabox title"
+msgid "Stop Sales Before Show"
+msgstr "Lopeta myynti ennen esitystä"
+
+#: ../inc/core/post-type.class.php:1387
+msgctxt "metabox title"
+msgid "Event Run Date Range"
+msgstr "Tapahtuman aikaväli"
+
+#: ../inc/core/post-type.class.php:1412
+msgctxt "metabox field heading"
+msgid "Show Date"
+msgstr "Näytä päivämäärä"
+
+#: ../inc/core/post-type.class.php:1418 ../inc/core/post-type.class.php:1447
+msgctxt "checkbox description"
+msgid "Use the site wide default setting"
+msgstr "Käytä sivuston oletusasetuksia"
+
+#: ../inc/core/post-type.class.php:1425
+msgctxt "radio button description"
+msgid "Yes, show the date"
+msgstr "Kyllä, näytä päivämäärä"
+
+#: ../inc/core/post-type.class.php:1429
+msgctxt "radio button description"
+msgid "No, hide the date"
+msgstr "Ei, piilota päivämäärä"
+
+#: ../inc/core/post-type.class.php:1434 ../inc/core/post-type.class.php:1463
+#, php-format
+msgctxt "field helper text"
+msgid ""
+"Decided whether to use the global \"%s\" setting, or if you want to specify "
+"a specific value for these events."
+msgstr ""
+"Päätä, käytätkö näille tapahtumille yleisiä vai itse säädettyjä \"%s\"-"
+"asetuksia."
+
+#: ../inc/core/post-type.class.php:1437
+msgctxt "option name"
+msgid "Show Date"
+msgstr "Näytä päivämäärä"
+
+#: ../inc/core/post-type.class.php:1441
+msgctxt "metabox field heading"
+msgid "Show Time"
+msgstr "Näytä kellonaika"
+
+#: ../inc/core/post-type.class.php:1454
+msgctxt "radio button description"
+msgid "Yes, show the time"
+msgstr "Kyllä, näytä kellonaika"
+
+#: ../inc/core/post-type.class.php:1458
+msgctxt "radio button description"
+msgid "No, hide the time"
+msgstr "Ei, piilota kellonaika"
+
+#: ../inc/core/post-type.class.php:1466
+msgctxt "option name"
+msgid "Show Time"
+msgstr "Näytä kellonaika"
+
+#: ../inc/core/post-type.class.php:1480
+msgid "Formula"
+msgstr "Lauseke"
+
+#: ../inc/core/post-type.class.php:1485
+msgid ""
+"This is the formula to calculate when tickets should stop being sold on the "
+"frontend for this show. For example, if you wish to stop selling tickets 2 "
+"hours and 30 minutes before the show, use: <code>2 hours 30 minutes</code>. "
+"Valid units include: hour, hours, minute, minutes, second, seconds, day, "
+"days, week, weeks, month, months, year, years. Leave the formula empty to "
+"just use the Global Setting for this formula."
+msgstr ""
+"Tämä asetus määrittelee kaavan, jonka perusteella esityksen lipunmyynti "
+"lopetetaan ennen esityksen alkua. Esimerkiksi 2 tuntia ja 30 minuuttia "
+"syötetään <code>2 hours 30 minutes</code>. Kelvolliset aikamääreet ovat "
+"(englanniksi): <em>hour, hours, minute, minutes, second, seconds, day, days, "
+"week, weeks, month, months, year, years</em>. Tyhjäksi jätettynä kentässä "
+"sovelletaan yleisiä asetuksia."
+
+#: ../inc/core/post-type.class.php:1506
+msgid "Start Date/Time"
+msgstr "Alkamisajankohta"
+
+#: ../inc/core/post-type.class.php:1514 ../inc/core/post-type.class.php:1531
+#: ../inc/core/post-type.class.php:1800
+msgid "@"
+msgstr "klo"
+
+#: ../inc/core/post-type.class.php:1523
+msgid "End Date/Time:"
+msgstr "Päättymisajankohta"
+
+#: ../inc/core/post-type.class.php:1553
+msgid "Basic Settings"
+msgstr "Perusasetukset"
+
+#: ../inc/core/post-type.class.php:1557
+msgid "Start Date"
+msgstr "Alkamispäivämäärä"
+
+#: ../inc/core/post-type.class.php:1558 ../inc/core/post-type.class.php:1564
+#: ../inc/core/post-type.class.php:1647 ../inc/core/post-type.class.php:1663
+msgid "Y-m-d"
+msgstr "Y-m-d"
+
+#: ../inc/core/post-type.class.php:1559 ../inc/core/post-type.class.php:1565
+msgid "h:ia"
+msgstr "h:ia"
+
+#: ../inc/core/post-type.class.php:1559
+msgid "Start Time"
+msgstr "Alkamisaika"
+
+#: ../inc/core/post-type.class.php:1560
+msgid "to"
+msgstr "–"
+
+#: ../inc/core/post-type.class.php:1563
+msgid "End Date"
+msgstr "Päättymispäivämäärä"
+
+#: ../inc/core/post-type.class.php:1565
+msgid "End Time"
+msgstr "Päättymisaika"
+
+#: ../inc/core/post-type.class.php:1571 ../inc/core/post-type.class.php:1580
+msgid "Repeat"
+msgstr "Toista"
+
+#: ../inc/core/post-type.class.php:1585
+msgid "Repeats"
+msgstr "Toistoa"
+
+#: ../inc/core/post-type.class.php:1589
+msgid "Weekly"
+msgstr "Viikottain"
+
+#: ../inc/core/post-type.class.php:1595
+msgid "Repeats Every"
+msgstr "Toista joka"
+
+#: ../inc/core/post-type.class.php:1602
+msgid "days"
+msgstr "päivä"
+
+#: ../inc/core/post-type.class.php:1603
+msgid "weeks"
+msgstr "viikko"
+
+#: ../inc/core/post-type.class.php:1608
+msgid "Repeat on"
+msgstr "Toista"
+
+#: ../inc/core/post-type.class.php:1612
+msgid "Su"
+msgstr "Su"
+
+#: ../inc/core/post-type.class.php:1616
+msgid "Mo"
+msgstr "Ma"
+
+#: ../inc/core/post-type.class.php:1620
+msgid "Tu"
+msgstr "Ti"
+
+#: ../inc/core/post-type.class.php:1624
+msgid "We"
+msgstr "Ke"
+
+#: ../inc/core/post-type.class.php:1628
+msgid "Th"
+msgstr "To"
+
+#: ../inc/core/post-type.class.php:1632
+msgid "Fr"
+msgstr "Pe"
+
+#: ../inc/core/post-type.class.php:1636
+msgid "Sa"
+msgstr "La"
+
+#: ../inc/core/post-type.class.php:1642
+msgid "Starts on"
+msgstr "Alkaa"
+
+#: ../inc/core/post-type.class.php:1652
+msgid "Ends"
+msgstr "Päättyy"
+
+#: ../inc/core/post-type.class.php:1658
+msgid "On"
+msgstr " "
+
+#: ../inc/core/post-type.class.php:1668
+msgid "After"
+msgstr "Jälkeen"
+
+#: ../inc/core/post-type.class.php:1671
+msgid "occurences"
+msgstr "esiintymiset"
+
+#: ../inc/core/post-type.class.php:1692
+msgid "Add to Calendar"
+msgstr "Lisää Kalenteriin"
+
+#: ../inc/core/post-type.class.php:1708
+msgid "Event Date/Times"
+msgstr "Tapahtumien ajankohdat"
+
+#: ../inc/core/post-type.class.php:1714 ../inc/sys/admin-menu.class.php:170
+#: ../inc/sys/admin-menu.class.php:171
+msgid "Settings"
+msgstr "Asetukset"
+
+#: ../inc/core/post-type.class.php:1719
+msgid "Status:"
+msgstr "Status:"
+
+#: ../inc/core/post-type.class.php:1721 ../inc/core/post-type.class.php:1744
+#: ../inc/core/post-type.class.php:1779
+#: ../inc/venues/event-area/post-type.class.php:546
+#: ../inc/venues/post-type.class.php:364
+#: ../templates/admin/meta-boxes/views/html-order-items.php:217
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:221
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:313
+msgid "Edit"
+msgstr "Muokkaa"
+
+#: ../inc/core/post-type.class.php:1726
+msgid "Published"
+msgstr "Julkaistu"
+
+#: ../inc/core/post-type.class.php:1727
+msgid "Privately Published"
+msgstr "Julkaistu yksityisesti"
+
+#: ../inc/core/post-type.class.php:1728
+msgid "Scheduled"
+msgstr "Aikataulutettu"
+
+#: ../inc/core/post-type.class.php:1730
+msgid "Pending Review"
+msgstr "Odottaa tarkastusta"
+
+#: ../inc/core/post-type.class.php:1731
+msgid "Draft"
+msgstr "Luonnos"
+
+#: ../inc/core/post-type.class.php:1734 ../inc/core/post-type.class.php:1769
+#: ../inc/core/post-type.class.php:1805
+#: ../inc/venues/event-area/post-type.class.php:569
+#: ../inc/venues/post-type.class.php:375
+msgid "OK"
+msgstr "OK"
+
+#: ../inc/core/post-type.class.php:1735 ../inc/core/post-type.class.php:1770
+#: ../inc/core/post-type.class.php:1806 ../inc/sys/mba.class.php:462
+#: ../inc/venues/event-area/post-type.class.php:570
+#: ../inc/venues/post-type.class.php:376
+#: ../templates/admin/meta-boxes/views/html-order-items.php:255
+#: ../templates/admin/meta-boxes/views/html-order-items.php:301
+msgid "Cancel"
+msgstr "Peruuta"
+
+#: ../inc/core/post-type.class.php:1742
+msgid "Visibility"
+msgstr "Näkyvyys"
+
+#: ../inc/core/post-type.class.php:1748
+msgid "Viewable to the public"
+msgstr "Julkisesti näkyvä"
+
+#: ../inc/core/post-type.class.php:1750
+msgid "Public"
+msgstr "Julkinen"
+
+#: ../inc/core/post-type.class.php:1752
+msgid ""
+"Visible on the calendar, but only those with the password can view to make "
+"reservations"
+msgstr "Näkyy kalenterissa, mutta vain salasanan avulla voi tehdä varauksia"
+
+#: ../inc/core/post-type.class.php:1754
+msgid "Password Protected"
+msgstr "Salasanasuojattu"
+
+#: ../inc/core/post-type.class.php:1756
+msgid "Password:"
+msgstr "Salasana:"
+
+#: ../inc/core/post-type.class.php:1760
+msgid "Hidden from the calendar, but open to anyone with the url"
+msgstr "Piilotettu kalenterista, mutta saatavilla url:n avulla"
+
+#: ../inc/core/post-type.class.php:1762
+msgid "Hidden"
+msgstr "Piilotettu"
+
+#: ../inc/core/post-type.class.php:1764
+msgid "Only logged in admin users or the event author can view it"
+msgstr ""
+"Näkyvillä vain sisäänkirjautuneille pääkäyttäjille ja tapahtuman tekijälle"
+
+#: ../inc/core/post-type.class.php:1766
+msgid "Private"
+msgstr "Yksityinen"
+
+#: ../inc/core/post-type.class.php:1777
+msgid "Publish Date:"
+msgstr "Julkaisupäivämäärä:"
+
+#: ../inc/core/post-type.class.php:1786
+msgid "January"
+msgstr "Tammikuu"
+
+#: ../inc/core/post-type.class.php:1787
+msgid "February"
+msgstr "Helmikuu"
+
+#: ../inc/core/post-type.class.php:1788
+msgid "March"
+msgstr "Maaliskuu"
+
+#: ../inc/core/post-type.class.php:1789
+msgid "April"
+msgstr "Huhtikuu"
+
+#: ../inc/core/post-type.class.php:1790
+msgid "May"
+msgstr "Toukokuu"
+
+#: ../inc/core/post-type.class.php:1791
+msgid "June"
+msgstr "Kesäkuu"
+
+#: ../inc/core/post-type.class.php:1792
+msgid "July"
+msgstr "Heinäkuu"
+
+#: ../inc/core/post-type.class.php:1793
+msgid "August"
+msgstr "Elokuu"
+
+#: ../inc/core/post-type.class.php:1794
+msgid "September"
+msgstr "Syyskuu"
+
+#: ../inc/core/post-type.class.php:1795
+msgid "October"
+msgstr "Lokakuu"
+
+#: ../inc/core/post-type.class.php:1796
+msgid "November"
+msgstr "Marraskuu"
+
+#: ../inc/core/post-type.class.php:1797
+msgid "December"
+msgstr "Joulukuu"
+
+#: ../inc/core/post-type.class.php:1834
+msgid "Event base"
+msgstr "Tapahtumien etuliite"
+
+#: ../inc/core/post-type.class.php:1838
+#, php-format
+msgid ""
+"Enter a custom base to use. This url segment will prefix the event name in "
+"the url.<br/><code>example: %s</code>"
+msgstr ""
+"Syötä haluamasi etuliite tapahtumille. Se edeltää tapahtuman nimeä URL:ssa. "
+"<br/><code>esimerkki: %s</code>"
+
+#: ../inc/core/post-type.class.php:1854
+msgid "Event permalink base"
+msgstr "Tapahtumien kestolinkkien etuliite"
+
+#: ../inc/core/post-type.class.php:1913
+msgid "Event Display"
+msgstr "Tapahtumien esitys"
+
+#: ../inc/core/post-type.class.php:1922
+msgid "Stop Sales Before Show"
+msgstr "Lopeta myynti ennen esitystä"
+
+#: ../inc/core/post-type.class.php:1923
+msgid ""
+"Amount of time to stop sales for a show, before show time. (ie: stop sales "
+"two hour before show time <code>2 hours</code>)"
+msgstr ""
+"Aikamääre lipunmyynnin lopettamiseen ennen esityksen alkua. (eli: <code>2 "
+"hours</code> lopettaa myynnin kaksi tuntia ennen esitystä)"
+
+#: ../inc/core/post-type.class.php:1924
+msgid ""
+"valid units: hour, hours, minute, minutes, second, seconds, day, days, week, "
+"weeks, month, months, year, years"
+msgstr ""
+"kelvolliset aikamääreet (englanniksi): hour, hours, minute, minutes, second, "
+"seconds, day, days, week, weeks, month, months, year, years"
+
+#: ../inc/core/post-type.class.php:1932
+msgid "Single Event Synopsis"
+msgstr "Yksittäisen tapahtuman esittelyteksti"
+
+#: ../inc/core/post-type.class.php:1933
+msgid "Show event synopsis on single event pages"
+msgstr "Näytä tapahtuman esittelyteksti yksittäisten tapahtumien sivuilla"
+
+#: ../inc/core/post-type.class.php:1934
+msgid ""
+"By default, just the event logo, and the event pricing options are shown. "
+"This feature will additionally show the description of the event to the user."
+msgstr ""
+"Oletuksena esillä ovat vain vain tapahtuman logo ja hinnoitteluvaihtoehdot. "
+"Tämän asetuksen myötä käyttäjälle näytetään lisäksi tapahtuman kuvaus."
+
+#: ../inc/core/post-type.class.php:1943
+msgid "Single Event Synopsis Position"
+msgstr "Yksittäisen tapahtuman esittelytekstin sijainti"
+
+#: ../inc/core/post-type.class.php:1944
+msgid "The display position of the Event Synopsis on the single event page."
+msgstr ""
+"Sijainti, jossa esittelyteksti näytetään yksittäisen tapahtuman sivulla."
+
+#: ../inc/core/post-type.class.php:1946
+msgid "Above the Ticket Selection UI"
+msgstr "Lippukäyttöliittymän yläpuolella"
+
+#: ../inc/core/post-type.class.php:1947
+msgid "Below the Ticket Selection UI"
+msgstr "Lippukäyttöliittymän alapuolella"
+
+#: ../inc/core/post-type.class.php:1958
+msgid "Show Date"
+msgstr "Näytä päivämäärä"
+
+#: ../inc/core/post-type.class.php:1959
+msgid "Show the date in the title of events, on the event details pages."
+msgstr ""
+"Näytä päivämäärä yksittäisiä esityksiä koskevien tapahtumasivujen otsikoissa."
+
+#: ../inc/core/post-type.class.php:1960
+msgid ""
+"This is the difference between a title reading \"My Event\" and \"My Event "
+"on 09/12/2015\"."
+msgstr ""
+"Otsikko on muodoltaan joko \"Minun tapahtumani\" tai \"Minun tapahtumani "
+"9.12.2015\"."
+
+#: ../inc/core/post-type.class.php:1970
+msgid "Show Time"
+msgstr "Näytä kellonaika"
+
+#: ../inc/core/post-type.class.php:1971
+msgid "Show the time in the title of events, on the event details pages."
+msgstr ""
+"Näytä kellonaika yksittäisiä esityksiä koskevien tapahtumasivujen otsikoissa."
+
+#: ../inc/core/post-type.class.php:1972
+msgid ""
+"This is the difference between a title reading \"My Event\" and \"My Event @ "
+"6:00pm\"."
+msgstr ""
+"Otsikko voi olla muodoltaan joko \"Minun tapahtumani\" tai \"Minun "
+"tapahtumani kello 18:00\"."
+
+#: ../inc/core/post-type.class.php:1997
+msgid "Availability Quantity"
+msgstr "Jäljellä oleva lukumäärä"
+
+#: ../inc/core/post-type.class.php:1998
+msgid ""
+"Yes, show the quantity that is available, on the frontend, when showing the "
+"availability."
+msgstr "Kyllä, näytä asiakkaalle jäljellä olevian lippujen lukumäärä."
+
+#: ../inc/core/zoner.class.php:345 ../inc/core/zoner.class.php:356
+#, php-format
+msgid "There are not %s tickets available to reserve."
+msgstr "Lippuja (%s) ei ole varattavissa"
+
+#: ../inc/order/admin.class.php:147
+msgid ""
+"The current settings disallow using \"<strong>Guest</strong>\" as the "
+"customer for the order. You have attempted to use \"<strong>Guest</strong>\" "
+"as the customer. You will not be able to process payments or complete an "
+"order until a user has been selected as the customer."
+msgstr ""
+"Nykyiset asetukset eivät salli \"<strong>Vieraskäyttäjän</strong>\" tekemiä "
+"tilauksia. Yritit käyttää \"<strong>Vieraskäyttäjää</strong>\" asiakkaana. "
+"Et voi suorittaa maksua tai viimeistellä tilausta ennen kuin asiakkaaksi on "
+"valittu varsinainen käyttäjä."
+
+#: ../inc/order/admin.class.php:182
+msgid ""
+"Additionally, because of the current Woocommerce settings, \"<strong>Guest</"
+"strong>\" is not allowed as the customer user. Please select a user first."
+msgstr ""
+"Lisäksi nykyisten WooCommercen asetusten vuoksi  \"<strong>Vieraskäyttäjää</"
+"strong>\" ei hyväksytä asiakkaaksi. Ole hyvä ja valitse ensin varsinainen "
+"käyttäjätili."
+
+#: ../inc/order/admin.class.php:214 ../inc/order/admin.class.php:216
+msgid ""
+"You cannot use \"Guest\" as the owner of the order, due to current "
+"Woocommerce settings."
+msgstr ""
+"WooCommercen asetusten vuoksi et voi käyttää \"Vieraskäyttäjää\" tilauksen "
+"tekemiseen."
+
+#: ../inc/order/admin.class.php:336
+msgid "is a required field."
+msgstr "on vaadittu kenttä."
+
+#: ../inc/order/admin.class.php:348
+msgid "Please enter a valid postcode/ZIP."
+msgstr "Syötä kelvollinen postinumero."
+
+#: ../inc/order/admin.class.php:355
+msgid "is not a valid phone number."
+msgstr "puhelinnumero ei kelpaa"
+
+#: ../inc/order/admin.class.php:362
+msgid "is not a valid email address."
+msgstr "Sähköpostiosoite ei ole kelvollinen"
+
+#: ../inc/order/admin.class.php:378
+msgid "is not valid. Please enter one of the following:"
+msgstr "ei ole kelvollinen. Käytä jotain seuraavista:"
+
+#: ../inc/order/admin.class.php:397 ../inc/order/admin.class.php:400
+msgid ""
+"Your current settings require you to provide most billing information for "
+"each order."
+msgstr ""
+"Nykyiset asetuksen vaativat antamaan laskutustiedot jokaiselle tilaukselle."
+
+#: ../inc/order/admin.class.php:462
+msgid "You do not have permission to create users. Sorry."
+msgstr "Valitettavasti sinulla ei ole oikeuksia uusien käyttäjien luomiseen."
+
+#: ../inc/order/admin.class.php:476
+msgid "The username is a required field."
+msgstr "Käyttäjätunnus on vaadittu kenttä."
+
+#: ../inc/order/admin.class.php:479
+msgid "That user name contains illegal characters."
+msgstr "Käyttäjänimessä on kiellettyjä merkkejä."
+
+#: ../inc/order/admin.class.php:482
+msgid ""
+"is already being used by another user. Please enter a different username."
+msgstr "on jo toisen käyttäjän käytössä. Valitse uusi käyttäjätunnus"
+
+#: ../inc/order/admin.class.php:488
+msgid "The email address is required."
+msgstr "Sähköpostiosoite tarvitaan."
+
+#: ../inc/order/admin.class.php:491
+msgid "That is not a valid email address."
+msgstr "Sähköpostiosoite ei ole kelvollinen"
+
+#: ../inc/order/admin.class.php:494
+msgid ""
+"is already in use by another user. Please use a different email address."
+msgstr "on jo toisen käyttäjän käytössä. Valitse uusi sähköpostiosoite."
+
+#: ../inc/order/admin.class.php:499
+msgid "The first name is a required field."
+msgstr "Anna etunimi."
+
+#: ../inc/order/admin.class.php:504
+msgid "The last name is a required field."
+msgstr "Anna sukunimi."
+
+#: ../inc/order/admin.class.php:510
+msgid "The information you supplied passed validation."
+msgstr "Antamasi tiedot läpäisivät tarkistuksen."
+
+#: ../inc/order/admin.class.php:528
+msgid "User creation failed:"
+msgstr "Käyttäjän luonti epäonnistui:"
+
+#: ../inc/order/admin.class.php:532
+msgid "The user was created successfully."
+msgstr "Käyttäjän luominen onnistui."
+
+#: ../inc/order/admin.class.php:570
+msgid "New User Form"
+msgstr "Uusi käyttäjä -lomake"
+
+#: ../inc/order/admin.class.php:581
+msgid "Username"
+msgstr "Käyttäjätunnus"
+
+#: ../inc/order/admin.class.php:585
+#: ../inc/reporting/seating.report.class.php:508
+#: ../templates/tickets/verification-form.php:11
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:77
+msgid "Email"
+msgstr "Sähköposti"
+
+#: ../inc/order/admin.class.php:589
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:39
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:86
+msgid "First Name"
+msgstr "Etunimi"
+
+#: ../inc/order/admin.class.php:593
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:43
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:90
+msgid "Last Name"
+msgstr "Sukunimi"
+
+#: ../inc/order/admin.class.php:704
+msgid "Additional Email Settings"
+msgstr "Sähköpostin asetukset"
+
+#: ../inc/order/admin.class.php:713
+msgid "Custom Completed Order Message (Above Order Items)"
+msgstr "Oma \"Tilaus onnistui\"-viesti (tilaustietojen yläpuolella)"
+
+#: ../inc/order/admin.class.php:714 ../inc/order/admin.class.php:724
+msgid ""
+"This html appears near the top of the default Completed Order email, sent to "
+"the customer upon completion of their order, above the order items."
+msgstr ""
+"Tämä html-teksti esiintyy tavallisen \"Tilaus onnistui\"-viestin yläosassa "
+"tilaustietojen yläpuolella. Se lähetetään asiakkaalle tilauksen valmistuessa."
+
+#: ../inc/order/admin.class.php:723
+msgid "Custom Completed Order Message - Text only version (Above Order Items)"
+msgstr ""
+"Oma \"Tilaus onnistui\"-viesti - vain teksti (tilaustietojen yläpuolella)"
+
+#: ../inc/order/admin.class.php:733
+msgid "Custom Completed Order Message (Below Address)"
+msgstr "Oma \"Tilaus onnistui\"-viesti (osoitetietojen alapuolella)"
+
+#: ../inc/order/admin.class.php:734
+msgid ""
+"This html appears at the bottom of the default Completed Order email, sent "
+"to the customer upon completion of their order, below their address "
+"information."
+msgstr ""
+"Tämä html-teksti esiintyy tavallisen \"Tilaus onnistui\"-viestin alaosassa "
+"osoitetietojen alapuolella. Se lähetetään asiakkaalle tilauksen valmistuessa."
+
+#: ../inc/order/admin.class.php:743
+msgid "Custom Completed Order Message - Text only version (Below Address)"
+msgstr ""
+"Oma \"Tilaus onnistui\"-viesti - vain teksti (osoitetietojen alapuolella)"
+
+#: ../inc/order/admin.class.php:744
+msgid ""
+"This text appears at the bottom of the default Completed Order email, sent "
+"to the customer upon completion of their order, below their address "
+"information."
+msgstr ""
+"Tämä teksti esiintyy tavallisen \"Tilaus onnistui\"-viestin alaosassa "
+"osoitetietojen alapuolella. Se lähetetään asiakkaalle tilauksen valmistuessa."
+
+#: ../inc/reporting/seating.report.class.php:17
+#: ../inc/reporting/seating.report.class.php:97
+msgid "Seating"
+msgstr "Istumajärjestys"
+
+#: ../inc/reporting/seating.report.class.php:18
+msgid ""
+"List all seats for a show, as wells as their availability and occupancy."
+msgstr ""
+"Listaa näytöksen kaikki istumapaikat sekä niiden saatavuuden ja käytön."
+
+#: ../inc/reporting/seating.report.class.php:24
+msgid "Not Paid"
+msgstr "Ei maksettu"
+
+#: ../inc/reporting/seating.report.class.php:25
+msgid "Paid"
+msgstr "Maksettu"
+
+#: ../inc/reporting/seating.report.class.php:26
+msgid "Checked In"
+msgstr "Kirjattu sisään"
+
+#: ../inc/reporting/seating.report.class.php:83
+msgid "Seating Report note"
+msgstr "Istumajärjestyksen raportti"
+
+#: ../inc/reporting/seating.report.class.php:173
+msgid "Year:"
+msgstr "Vuosi:"
+
+#: ../inc/reporting/seating.report.class.php:176
+msgid "[All Years]"
+msgstr "[Kaikki vuodet]"
+
+#: ../inc/reporting/seating.report.class.php:182
+#: ../inc/venues/event-area/pricing.class.php:573
+#: ../inc/venues/event-area/pricing.class.php:640
+#: ../templates/checkin/already-occupied.php:25
+#: ../templates/checkin/occupy-failure.php:25
+#: ../templates/checkin/occupy-success.php:25
+msgid "Event:"
+msgstr "Tapahtuma:"
+
+#: ../inc/reporting/seating.report.class.php:195
+msgid "Lookup Showings"
+msgstr "Hae näytökset"
+
+#: ../inc/reporting/seating.report.class.php:227
+msgid "Showing:"
+msgstr "Näytös"
+
+#: ../inc/reporting/seating.report.class.php:230
+msgid "m-d-Y g:ia"
+msgstr "j.n.Y H:i"
+
+#: ../inc/reporting/seating.report.class.php:232
+#, php-format
+msgid "%s [%s]"
+msgstr "%s [%s]"
+
+#: ../inc/reporting/seating.report.class.php:240
+msgid "Show Report"
+msgstr "Näytä raportti"
+
+#: ../inc/reporting/seating.report.class.php:366
+msgid "<p><em>Could not find that event.</em></p>"
+msgstr "<p><em>Tapahtumaa ei löytynyt.</em></p>"
+
+#: ../inc/reporting/seating.report.class.php:504
+msgid "Purchaser"
+msgstr "Ostaja"
+
+#: ../inc/reporting/seating.report.class.php:505
+msgid "Order #"
+msgstr "Tilaus #"
+
+#: ../inc/reporting/seating.report.class.php:506
+msgid "Ticket Type"
+msgstr "Lipun tyyppi"
+
+#: ../inc/reporting/seating.report.class.php:507
+msgid "Quantity"
+msgstr "Määrä"
+
+#: ../inc/reporting/seating.report.class.php:509
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:80
+msgid "Phone"
+msgstr "Puhelin"
+
+#: ../inc/reporting/seating.report.class.php:510
+#: ../inc/venues/post-type.class.php:207
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:227
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:229
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:319
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:321
+msgid "Address"
+msgstr "Osoite"
+
+#: ../inc/reporting/seating.report.class.php:511
+msgid "Note"
+msgstr "Huomio"
+
+#: ../inc/reporting/seating.report.class.php:516
+msgid "Ticket Url"
+msgstr "Lipun Url"
+
+#: ../inc/sys/admin-menu.class.php:158
+msgid "Reports"
+msgstr "Raportit"
+
+#: ../inc/sys/admin-menu.class.php:237
+msgid "Allow OpenTickets Stats?"
+msgstr "Hyväksy statistiikan kerääminen OpenTicketsille?"
+
+#: ../inc/sys/admin-menu.class.php:238
+msgid ""
+"OpenTickets is always being improved, thanks to users like you. To help us "
+"improve this product, would you allow us collect some basic information "
+"about your installation, like many others already have? We will not track "
+"any of your users' information, so your security and privacy is still safe. "
+"The information we will be tracking is purely about your WordPress "
+"installation, and will be used to help us understand which plugins and "
+"themes we need to be compatible with."
+msgstr ""
+"OpenTicketsiä parannetaan jatkuvasti, kiitos kaltaistesi käyttäjien. "
+"Antamalla monien muiden tavoin kehittäjille luvan kerätä joitakin "
+"perustietoja asennuksestasi autat kehitystyötä edelleen. Mitään käyttäjien "
+"tietoja ei kerätä, joten turvallisuus ja yksityisyys eivät kärsi. "
+"Tarkasteltavat tiedot koskevat puhtaasti WordPress-asennusta ja niitä "
+"käytetään määrittämään, minkä lisäosien ja teemojen kanssa OpenTicketsin "
+"tulisi olla yhteensopiva."
+
+#: ../inc/sys/admin-menu.class.php:242
+msgid "Yes"
+msgstr "Kyllä"
+
+#: ../inc/sys/admin-menu.class.php:249
+msgid "Dismiss"
+msgstr "Hylkää"
+
+#: ../inc/sys/admin-menu.class.php:280
+msgid "Fair enough. Thanks anyways."
+msgstr "Hyvä on. Kiitos kuitenkin."
+
+#: ../inc/sys/admin-menu.class.php:286
+msgid "Thanks a bunch."
+msgstr "Kiitos paljon."
+
+#: ../inc/sys/admin-menu.class.php:305
+msgid "Title"
+msgstr "Otsikko"
+
+#: ../inc/sys/admin-menu.class.php:306
+msgid "Author"
+msgstr "Kirjoittaja"
+
+#: ../inc/sys/admin-menu.class.php:307
+msgid "Author Name"
+msgstr "Kirjoittajan nimi"
+
+#: ../inc/sys/admin-menu.class.php:308
+msgid "Author URI"
+msgstr "Kirjoittajan URI"
+
+#: ../inc/sys/admin-menu.class.php:309
+msgid "Description"
+msgstr "Kuvaus"
+
+#: ../inc/sys/admin-menu.class.php:310
+msgid "Version"
+msgstr "Versio"
+
+#: ../inc/sys/admin-menu.class.php:312
+msgid "Template"
+msgstr "Malline"
+
+#: ../inc/sys/admin-menu.class.php:313
+msgid "Stylesheet"
+msgstr "Tyylitiedosto"
+
+#: ../inc/sys/admin-menu.class.php:314 ../inc/sys/admin-menu.class.php:324
+msgid "Template Files"
+msgstr "Mallineet"
+
+#: ../inc/sys/admin-menu.class.php:315 ../inc/sys/admin-menu.class.php:324
+msgid "Stylesheet Files"
+msgstr "Tyylitiedostot"
+
+#: ../inc/sys/admin-menu.class.php:316
+msgid "Template Dir"
+msgstr "Mallineiden hakemisto"
+
+#: ../inc/sys/admin-menu.class.php:317
+msgid "Stylesheet Dir"
+msgstr "Tyylitiedostojen hakemisto"
+
+#: ../inc/sys/admin-menu.class.php:318
+msgid "Screenshot"
+msgstr "Kuvakaappaus"
+
+#: ../inc/sys/admin-menu.class.php:319
+msgid "Tags"
+msgstr "Tagit"
+
+#: ../inc/sys/admin-menu.class.php:320
+msgid "Theme Root"
+msgstr "Teeman juuri"
+
+#: ../inc/sys/admin-menu.class.php:321
+msgid "Theme Root URI"
+msgstr "Teeman juuren URI"
+
+#: ../inc/sys/admin-menu.class.php:322
+msgid "Parent Theme"
+msgstr "Alkuperäinen teema"
+
+#: ../inc/sys/admin-menu.class.php:375
+msgid "Add %singular%"
+msgstr "Lisää %singular%"
+
+#: ../inc/sys/admin-menu.class.php:376
+msgid "Add New %singular%"
+msgstr "Lisää uusi %singular%"
+
+#: ../inc/sys/admin-menu.class.php:377
+msgid "Edit %singular%"
+msgstr "Muokkaa %singular%"
+
+#: ../inc/sys/admin-menu.class.php:378
+msgid "New %singular%"
+msgstr "Uusi %singular%"
+
+#: ../inc/sys/admin-menu.class.php:379
+msgid "All %plural%"
+msgstr "Kaikki %plural%"
+
+#: ../inc/sys/admin-menu.class.php:380
+msgid "View %singular%"
+msgstr "Tarkastele %singular%"
+
+#: ../inc/sys/admin-menu.class.php:381
+msgid "Search %plural%"
+msgstr "Etsi %plural%"
+
+#: ../inc/sys/admin-menu.class.php:382
+msgid "No %lplural% found"
+msgstr "%lplural% ei löytynyt"
+
+#: ../inc/sys/admin-menu.class.php:383
+msgid "No %lplural% found in Trash"
+msgstr "Ei %lplular% Roskakorissa"
+
+#: ../inc/sys/admin-menu.class.php:452
+msgid "Global Settings"
+msgstr "Globaalit asetukset"
+
+#: ../inc/sys/admin-menu.class.php:460
+msgid "Allow Statistics"
+msgstr "Salli statistiikka"
+
+#: ../inc/sys/admin-menu.class.php:461
+msgid ""
+"Allow OpenTickets to gather information about your WordPress installation."
+msgstr "Salli OpenTicketsin kerätä tietoa WordPress-asennuksestasi."
+
+#: ../inc/sys/admin-menu.class.php:462
+msgid ""
+"This information is strictly used to make this product better and more "
+"compatible with other plugins."
+msgstr ""
+"Tätä tietoa käytetään vain ja ainoastaan tuotteen toimintojen ja "
+"yhteensopivuuden parantamiseen."
+
+#: ../inc/sys/admin-menu.class.php:470
+msgid "Event Link Slug"
+msgstr "Tapahtumalinkkien etuliite"
+
+#: ../inc/sys/admin-menu.class.php:471
+msgid ""
+"The url slug that is prepended to the event name in the url. (ex: "
+"<code>http://example.com/<strong>event</strong>/my-event/</code>)"
+msgstr ""
+"URL-etuliite, joka esiintyy tapahtumien nimissä (esim: <code>http://example."
+"com/<strong>event</strong>/my-event/</code> )"
+
+#: ../inc/sys/admin-menu.class.php:472
+msgid "This is the segment of the url that preceeds the event name."
+msgstr "Tämä on tapahtuman nimeä edeltävä osa URL:ia."
+
+#: ../inc/sys/admin-settings.php:52
+msgid "Action failed. Please refresh the page and retry."
+msgstr "Toiminto epäonnistui. Päivitä sivu ja yritä uudelleen."
+
+#: ../inc/sys/admin-settings.php:59
+msgid "Your settings have been saved."
+msgstr "Asetukset on tallennettu."
+
+#: ../inc/sys/admin-settings.php:139
+msgid "The changes you made will be lost if you navigate away from this page."
+msgstr "Tekemäsi muutokset katoavat, jos poistut tältä sivulta."
+
+#: ../inc/sys/base-widget.class.php:28
+msgid "New Widget"
+msgstr "Uusi Vimpain"
+
+#: ../inc/sys/core-hacks.class.php:101
+msgid "View Order Receipt"
+msgstr "Katso tilauksen kuitti"
+
+#: ../inc/sys/core-hacks.class.php:113
+msgid "Preview"
+msgstr "Esikatselu"
+
+#: ../inc/sys/core-hacks.class.php:126
+msgid "Bypass Process"
+msgstr "Ohita prosessointi"
+
+#: ../inc/sys/core-hacks.class.php:127
+msgid ""
+"Checking this box bypasses the Processing step and marks the order as "
+"Complete. (if other products in an order require processing, the order will "
+"still goto processing)"
+msgstr ""
+"Tämän valitseminen ohittaa \"Prosessoidaan\"-vaiheen ja merkitsee tilauksen "
+"Valmiiksi. (Jos tilaukset muut tuotteet vaativat prosessointia, tilaus jää "
+"silloin prosessoitavaksi)."
+
+#: ../inc/sys/core-hacks.class.php:271
+msgid "Discounts"
+msgstr "Alennus"
+
+#: ../inc/sys/core-hacks.class.php:275
+msgid "Cart Discount:"
+msgstr "Ostoskorin alennus:"
+
+#: ../inc/sys/core-hacks.class.php:275
+msgid "Discounts before tax - calculated by comparing subtotals to totals."
+msgstr ""
+"Alennukset ennen veroa - lasketaan vertaamalla välisummaa ja loppusummaa."
+
+#: ../inc/sys/core-hacks.class.php:283
+msgid "Order Discount:"
+msgstr "Tilauksen alennus:"
+
+#: ../inc/sys/core-hacks.class.php:283
+msgid "Discounts after tax - user defined."
+msgstr "Alennus veron jälkeen - käyttäjän määrittämä."
+
+#: ../inc/sys/core-hacks.class.php:318
+#: ../templates/admin/meta-boxes/views/html-order-items.php:162
+#: ../templates/admin/meta-boxes/views/html-order-shipping.php:20
+msgid "Shipping"
+msgstr "Toimitus"
+
+#: ../inc/sys/core-hacks.class.php:322
+msgid "Label:"
+msgstr "Tunniste:"
+
+#: ../inc/sys/core-hacks.class.php:323
+msgid "The shipping title the customer sees"
+msgstr "Asiakkaan näkemä toimitusnimi"
+
+#: ../inc/sys/core-hacks.class.php:330
+msgid "Cost:"
+msgstr "Hinta:"
+
+#: ../inc/sys/core-hacks.class.php:331
+msgid "(ex. tax)"
+msgstr "(veroton)"
+
+#: ../inc/sys/core-hacks.class.php:338
+msgid "Method:"
+msgstr "Menetelmä"
+
+#: ../inc/sys/core-hacks.class.php:340 ../inc/sys/core-hacks.class.php:446
+#: ../templates/admin/meta-boxes/views/html-order-shipping.php:26
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:272
+msgid "N/A"
+msgstr "Ei saatavilla"
+
+#: ../inc/sys/core-hacks.class.php:360 ../inc/sys/core-hacks.class.php:362
+#: ../inc/sys/core-hacks.class.php:462 ../inc/sys/core-hacks.class.php:464
+#: ../templates/admin/meta-boxes/views/html-order-shipping.php:42
+#: ../templates/admin/meta-boxes/views/html-order-shipping.php:44
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:286
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:288
+msgid "Other"
+msgstr "Muu"
+
+#: ../inc/sys/core-hacks.class.php:377
+msgid "Tax Rows"
+msgstr "Verotus"
+
+#: ../inc/sys/core-hacks.class.php:402
+msgid "+ Add tax row"
+msgstr "+ Lisää verotus"
+
+#: ../inc/sys/core-hacks.class.php:402
+msgid ""
+"These rows contain taxes for this order. This allows you to display multiple "
+"or compound taxes rather than a single total."
+msgstr ""
+"Nämä rivit sisältävät tilauksen verotuksen. Näin voidaan esittää "
+"moninkertainen tai yhdistetty verotus yksittäisen loppusumman sijaan."
+
+#: ../inc/sys/core-hacks.class.php:406
+msgid "Tax Totals"
+msgstr "Verot yhteensä"
+
+#: ../inc/sys/core-hacks.class.php:410
+msgid "Sales Tax:"
+msgstr "Myynnin verot:"
+
+#: ../inc/sys/core-hacks.class.php:410
+msgid "Total tax for line items + fees."
+msgstr "Tuotteiden kokonaisverot +maksut."
+
+#: ../inc/sys/core-hacks.class.php:418
+msgid "Shipping Tax:"
+msgstr "Toimituksen verot:"
+
+#: ../inc/sys/core-hacks.class.php:432
+msgid "Order Totals"
+msgstr "Tilauksen loppusumma"
+
+#: ../inc/sys/core-hacks.class.php:436
+msgid "Order Total:"
+msgstr "Tilaus yhteensä:"
+
+#: ../inc/sys/core-hacks.class.php:444
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:270
+msgid "Payment Method:"
+msgstr "Maksutapa:"
+
+#: ../inc/sys/core-hacks.class.php:478
+msgid "Calc taxes"
+msgstr "Laske verot"
+
+#: ../inc/sys/core-hacks.class.php:480
+msgid "Calc totals"
+msgstr "Laske loppusumma"
+
+#: ../inc/sys/core-hacks.class.php:507
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:54
+msgid "Delete note"
+msgstr "Poista huomio"
+
+#: ../inc/sys/core-hacks.class.php:539
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:208
+msgid "Guest"
+msgstr "Vieras"
+
+#: ../inc/sys/db-upgrade.php:83
+#, php-format
+msgid ""
+"The DB tables [%s] are not at the most current versions. Attempting to "
+"upgrade them."
+msgstr ""
+"Tietokantataulut [%s] eivät vastaa viimeisintä versiota. Yritetään "
+"päivitystä."
+
+#: ../inc/sys/db-upgrade.php:122
+msgid "types dont match"
+msgstr "tyypit eivät vastaa toisiaan"
+
+#: ../inc/sys/db-upgrade.php:127
+msgid "nulls dont match"
+msgstr "tyhjät eivät vastaa toisiaan"
+
+#: ../inc/sys/db-upgrade.php:132
+msgid "extras dont match"
+msgstr "extrat eivät vastaa toisiaan"
+
+#: ../inc/sys/db-upgrade.php:138
+#, php-format
+msgid "Update to DB, table [%s], was NOT successful. %s"
+msgstr "Päivitys tietokantaan, tauluun [%s], EI onnistunut. %s"
+
+#: ../inc/sys/db-upgrade.php:141
+#, php-format
+msgid "Update to DB, table [%s], was successful."
+msgstr "Päivitys tietokantaan, tauluun [%s] onnistui."
+
+#: ../inc/sys/deprecated.php:43 ../inc/sys/deprecated.php:45
+#, php-format
+msgid "The \"%s\" filter"
+msgstr "\"%s\"-suodin"
+
+#: ../inc/sys/mba.class.php:441
+msgid "Use this image"
+msgstr "Käytä tätä kuvaa"
+
+#: ../inc/sys/mba.class.php:449
+msgid "Delete Permanently"
+msgstr "Poista pysyvästi"
+
+#: ../inc/sys/mba.class.php:453
+msgid "Delete"
+msgstr "Poista"
+
+#: ../inc/sys/mba.class.php:456
+#, php-format
+msgid "You are about to delete <strong>%s</strong>."
+msgstr "Olet poistamassa <strong>%s</strong>."
+
+#: ../inc/sys/mba.class.php:459
+msgid "Continue"
+msgstr "Jatka"
+
+#: ../inc/sys/mba.class.php:468
+msgid "Move to Trash"
+msgstr "Siirrä roskakoriin"
+
+#: ../inc/sys/mba.class.php:472
+msgid "Undo"
+msgstr "Peruuta"
+
+#: ../inc/sys/mba.class.php:593
+msgid "Select Files"
+msgstr "Valitse tiedostot"
+
+#: ../inc/sys/pages/base-page.class.php:73
+#: ../inc/sys/pages/base-page.class.php:74
+msgid "Base Page"
+msgstr "Kotisivu"
+
+#: ../inc/sys/pages/system-status.page.php:44
+#: ../inc/sys/pages/system-status.page.php:45
+msgid "System Status"
+msgstr "Järjestelmän tila"
+
+#: ../inc/sys/pages/system-status.page.php:116
+msgid ""
+"Removed all the locally cached Ticket assets. Every external asset will now "
+"be recached."
+msgstr ""
+"Kaikkien paikallisten Lippujen välimuisti on tyhjennetty. Välimuisti luodaan "
+"nyt uudestaan."
+
+#: ../inc/sys/pages/system-status.page.php:124
+msgid "Purged the OTCE table versions, forcing a reinitialize of the tables."
+msgstr "OTCE-taulujen versiot tuhottu, taulujen uudelleen alustus pakotettu."
+
+#: ../inc/sys/pages/system-status.page.php:132
+msgid "The order-item to ticket-table resync has been completed."
+msgstr "Tuote- ja lipputaulujen uudelleensynkronointi on valmis."
+
+#: ../inc/sys/pages/system-status.page.php:140
+msgid ""
+"We started the order-item to ticket-table resync. This will take a few "
+"minute to complete. You will receive an email upon completion."
+msgstr ""
+"Tuote- ja lipputaulujen uudelleensynkronointi on aloitettu. Sen "
+"valmistuminen kestää muutaman minuutin. Saat silloin ilmoituksen "
+"sähköpostiin."
+
+#: ../inc/sys/pages/system-status.page.php:148
+msgid ""
+"Failed to remove the cached ticket assets. Usually this is a permission "
+"issue."
+msgstr ""
+"Lippujen välimuistin poistaminen epäonnistui. Yleensä tämä johtuu tiedosto-"
+"oikeuksista."
+
+#: ../inc/sys/pages/system-status.page.php:156
+msgid ""
+"A problem occurred during the order-item to ticket-table resync. It did not "
+"complete."
+msgstr ""
+"Tuote- ja lipputaulujen uudelleensynkronoinnissa tapahtui ongelma. Se ei "
+"tullut valmiiksi."
+
+#: ../inc/sys/pages/system-status.page.php:164
+msgid ""
+"We could not start the background process that resyncs your order-items to "
+"the ticket-table. Try using the non-background method."
+msgstr ""
+"Taustaprosessin luominen tuote- ja lipputaulujen uudelleensynkronoinnille ei "
+"onnistunut. Yritä käyttää suoraa menetelmää."
+
+#: ../inc/sys/pages/system-status.page.php:190
+msgid "Resync order items to tickets table"
+msgstr "Uudelleensynkronoi tuote- ja lipputaulut."
+
+#: ../inc/sys/pages/system-status.page.php:194
+msgid ""
+"Looks up all order items that are ticket which have been paid for, and makes "
+"sure that they are marked in the tickets table as paid for. <strong>If you "
+"have many orders, this could take a while, during which time you should not "
+"close this window.</strong>"
+msgstr ""
+"Etsii kaikki tuotetilauksen, jotka ovat maksettuja lippuja ja varmistaa, "
+"että ne on merkitty lipputauluun maksetuiksi.<strong> Jos tilauksia on "
+"paljon, tässä voi vierähtää hetki, jonka aikana tätä ikkunaa ei tule sulkea. "
+"</strong>"
+
+#: ../inc/sys/pages/system-status.page.php:201
+msgid "Background: resync order items to tickets table"
+msgstr "Taustaprosessi: uudelleensynkronoi tuote- ja lipputaulut."
+
+#: ../inc/sys/pages/system-status.page.php:205
+msgid ""
+"Same as above, only all processing is done behind the scenes. This takes "
+"longer, but does not require that you keep this window open."
+msgstr ""
+"Sama kuin yllä, mutta prosessointi tapahtuu taustalla. Tämä kestää "
+"pidempään, mutta ei vaadi ikkunan pitämistä auki."
+
+#: ../inc/sys/pages/system-status.page.php:212
+msgid "Force the DB tables to re-initialize"
+msgstr "Pakota tietokantataulujen alustus"
+
+#: ../inc/sys/pages/system-status.page.php:216
+msgid ""
+"In some very rare cases, you may need to force the db tables to be "
+"recreated. This button, does that."
+msgstr ""
+"Joissain harvinaisissa tapauksissa tietokantataulut täytyy luoda uudelleen. "
+"Se tapahtuu tästä napista."
+
+#: ../inc/sys/pages/system-status.page.php:223
+msgid "Remove Ticket File Cache"
+msgstr "Tyhjennä Lippujen tiedostojen välimuisti"
+
+#: ../inc/sys/pages/system-status.page.php:227
+msgid ""
+"All non-local assets used to create tickets (like external images [google "
+"map] and css [custom tickets]) are cached locally. This will remove that "
+"cache, forcing all assets to be recached."
+msgstr ""
+"Kaikki lippujen luomiseen käytetyt paikalliset apuvälineet (kuten ulkoiset "
+"kuvat [google map] ja css [kustomoidut liput]) tallennetaan paikalliseen "
+"välimuistiin. Tämä toiminto tyhjentää välimuistin ja pakottaa työkalut "
+"luomaan sen uudelleen."
+
+#: ../inc/sys/pages/system-status.page.php:334
+msgid "Missed one or more file during cache purge."
+msgstr ""
+"Yhden tai useamman tiedoston poistaminen epäonnistui välimuistin "
+"tyhjennyksessä."
+
+#: ../inc/sys/pages/system-status.page.php:358
+msgid "FAILED:"
+msgstr "EPÄONNISTUI:"
+
+#: ../inc/sys/pages/system-status.page.php:358
+#: ../inc/sys/pages/system-status.page.php:364
+msgid "Background Order-Item -> Tickets Table"
+msgstr "Taustaprosessi: tuotetaulu -> lipputaulu"
+
+#: ../inc/sys/pages/system-status.page.php:360
+msgid ""
+"There was a problem trying to resync your order-items to the ticket-table. "
+"Try using the non-background version. If that also fails, report a bug on <a "
+"href=\"%\">the forums</a>."
+msgstr ""
+"Tuote- ja lipputaulujen uudelleensynkronoinnissa oli ongelma. Yritä käyttää "
+"toiminnon suoraa versiota. Jos sekään ei toimi, raportoi ongelmasta <a href="
+"\"%\">foorumilla</a>."
+
+#: ../inc/sys/pages/system-status.page.php:364
+msgid "SUCCESS:"
+msgstr "ONNISTUI:"
+
+#: ../inc/sys/pages/system-status.page.php:365
+msgid "Your order-items have been succesfully resynced with the ticket-table."
+msgstr ""
+"Tuotetilauksesi on onnistuneesti uudelleensynkronoitu lipputaulun kanssa."
+
+#: ../inc/sys/pages/system-status.page.php:648
+msgid "Environment"
+msgstr "Ympäristö"
+
+#: ../inc/sys/pages/system-status.page.php:670
+#, php-format
+msgid ""
+"You have less than the required amount of memory allocated. The minimum "
+"required amount is 48MB. You currently have %s."
+msgstr ""
+"Sinulla on käytössä vähemmän muistia kuin tarvitset. Vähimmäisvaatimus on "
+"48MB, sinulla on vain %s."
+
+#: ../inc/sys/pages/system-status.page.php:675
+#, php-format
+msgid ""
+"Please <a href=\"%s\">increase your memory allocation</a> to at least 48MB."
+msgstr "<a href=\"%s\">Nosta muistin määräksi</a> vähintään 48MB."
+
+#: ../inc/sys/pages/system-status.page.php:680
+#, php-format
+msgid ""
+"You have more than the minimum required memory, but we still recommend you "
+"use allocate at least 64MB. You currently have %s."
+msgstr ""
+"Käytössäsi oleva muistin määrä on suurempi kuin vähimmäisvaatimus, mutta "
+"suosittelemme silti vähintään 64MB. Tällä hetkellä sinulla on %s."
+
+#: ../inc/sys/pages/system-status.page.php:685
+#, php-format
+msgid ""
+"We strongly recommend that you <a href=\"%s\">increase your memory "
+"allocation</a> to at least 48MB."
+msgstr ""
+"Suosittelemme vahvasti, että <a href=\"%s\">nostaisit muistin määräksi</a> "
+"vähintään 48MB."
+
+#: ../inc/sys/pages/system-status.page.php:689
+#, php-format
+msgid ""
+"You have more than the required minimum memory of 64MB. Your current total "
+"is %s."
+msgstr ""
+"Sinulla on käytössä enemmän muistia kuin vähimmäisvaatimus 64MB. Nykyinen "
+"määrä on %s."
+
+#: ../inc/sys/pages/system-status.page.php:709
+#, php-format
+msgid ""
+"Having your uploads directory writable not only allows you to upload your "
+"media files, but also allows OpenTickets (and other plugins) to store their "
+"file caches. Please <a href=\"%s\">make your uploads directory writable</a> "
+"for these reasons."
+msgstr ""
+"Kun lataushakemistoon (\"uploads\") on kirjoitusoikeudet voit lisätä sinne "
+"omia mediatiedostojasi. Lisäksi OpenTickets (ja muut liitännäiset) voivat "
+"tallentaa sinne väliaikaistiedostojaan. Näistä syistä <a href=\"%s\">lisää "
+"kirjoitusoikeudet lataushakemistoon</a>."
+
+#: ../inc/sys/pages/system-status.page.php:721
+msgid "Software"
+msgstr "Ohjelmisto"
+
+#: ../inc/sys/pages/system-status.page.php:733
+msgid "Data"
+msgstr "Data"
+
+#: ../inc/sys/pages/system-status.page.php:821
+#, php-format
+msgid "%s%s by %s"
+msgstr "%s%s tekijältä %s"
+
+#: ../inc/sys/pages/system-status.page.php:822
+#: ../inc/sys/pages/system-status.page.php:828
+msgid "PARENT"
+msgstr "POHJAUTUU"
+
+#: ../inc/sys/pages/system-status.page.php:827
+#: ../inc/sys/pages/system-status.page.php:873
+#, php-format
+msgid "%s%s (%s) by %s (%s)"
+msgstr "%s%s (%s) tekijältä %s (%s)"
+
+#: ../inc/sys/pages/system-status.page.php:867
+#, php-format
+msgid "<b>%s</b>%s by %s"
+msgstr "<b>%s</b>%s tekijältä %s"
+
+#: ../inc/sys/pages/system-status.page.php:868
+#: ../inc/sys/pages/system-status.page.php:874
+msgid "ON"
+msgstr "PÄÄLLÄ"
+
+#: ../inc/sys/pdf.class.php:191 ../inc/sys/pdf.class.php:493
+#, php-format
+msgid ""
+"The %s path is not writable. Please update the permissions to allow write "
+"access."
+msgstr "Kohteeseen %s ei voida kirjoittaa. Lisää kirjoitusoikeudet."
+
+#: ../inc/sys/pdf.class.php:470
+#, php-format
+msgid ""
+"The %s path exists, but it cannot be read. Please update the permissions to "
+"allow read access."
+msgstr "Kohde %s on olemassa, mutta sitä ei voida lukea. Lisää lukuoikeudet."
+
+#: ../inc/sys/pdf.class.php:475
+#, php-format
+msgid ""
+"The %s path exists, but is not a dir. Please remove or rename the existing "
+"file, and create a directory with the cache path name."
+msgstr ""
+"Kohde %s on olemassa, mutta ei ole hakemisto. Poista tai nimeä tiedosto "
+"uudelleen, ja luo sen tilalle hakemisto välimuistille (cache)."
+
+#: ../inc/sys/pdf.class.php:483
+#, php-format
+msgid ""
+"Could not create the %s path directory. Please update the permissions to "
+"allow write access."
+msgstr "Kohteeseen %s ei voitu luoda hakemistoa. Lisää kirjoitusoikeudet."
+
+#: ../inc/sys/pdf.class.php:488
+#, php-format
+msgid "Unable to create the %s path directory."
+msgstr "Kohteeseen %s ei voitu luoda hakemistoa."
+
+#: ../inc/sys/registry.php:21
+#, php-format
+msgid "Only one instance of %s can be created."
+msgstr "Voitiin luoda vain yksi instanssi %s."
+
+#: ../inc/sys/settings/frontend.php:22
+msgid "Frontend"
+msgstr "Käyttöliittymä"
+
+#: ../inc/sys/settings/frontend.php:58
+msgid "The first image cannot be changed."
+msgstr "Ensimmäistä kuvaa ei voi vaihtaa."
+
+#: ../inc/sys/settings/frontend.php:60
+msgid "The last image cannot be changed."
+msgstr "Viimeistä kuvaa ei voi vaihtaa."
+
+#: ../inc/sys/settings/frontend.php:77 ../inc/sys/settings/frontend.php:90
+#: ../inc/sys/settings/frontend.php:103
+#, php-format
+msgid "Image #%s"
+msgstr "Kuva #%s"
+
+#: ../inc/sys/settings/frontend.php:80 ../inc/sys/settings/frontend.php:106
+msgid "static image"
+msgstr "staattinen kuva"
+
+#: ../inc/sys/settings/frontend.php:95
+msgid "remove image"
+msgstr "poista kuva"
+
+#: ../inc/sys/settings/frontend.php:96 ../inc/ticket/ticket.class.php:608
+#: ../inc/ticket/ticket.class.php:625
+msgid "no image"
+msgstr "ei kuvaa"
+
+#: ../inc/sys/settings/frontend.php:125
+msgid "Frontend Styles"
+msgstr "Käyttöliittymän ulkoasu"
+
+#: ../inc/sys/settings/frontend.php:140
+msgid "Ticket Selection UI"
+msgstr "Lipun valinnan käyttöliittymä"
+
+#: ../inc/sys/settings/frontend.php:142
+msgid "Form BG"
+msgstr "Kyselyn taustaväri"
+
+#: ../inc/sys/settings/frontend.php:145
+msgid ""
+"Background color of the \"reserve some tickets\" form on the event page."
+msgstr "Taustan väri \"varaa lippuja\"-kyselyllä tapahtumasivulla"
+
+#: ../inc/sys/settings/frontend.php:148
+msgid "Form Border"
+msgstr "Kyselyn reunat"
+
+#: ../inc/sys/settings/frontend.php:151
+msgid "Border color around the \"reserve some tickets\" form."
+msgstr "Reunojen väri \"varaa lippuja\"-kyselyn ympärillä."
+
+#: ../inc/sys/settings/frontend.php:154
+msgid "Action BG"
+msgstr "Toiminnon taustaväri"
+
+#: ../inc/sys/settings/frontend.php:157
+msgid ""
+"Background of the \"action\" section, below the \"reserve some tickets\" "
+"form, where the proceed to cart button appears."
+msgstr ""
+"Taustan väri \"toiminto\"-osiolle  \"varaa lippuja\"-kyselyn alapuolella, "
+"jonne \"jatka ostoskoriin\"-painike ilmestyy."
+
+#: ../inc/sys/settings/frontend.php:160
+msgid "Helper"
+msgstr "Avustaja"
+
+#: ../inc/sys/settings/frontend.php:163
+msgid "Text color of the \"helper text\" on the \"reserve some tickets\" form."
+msgstr "Tekstin väri \"Avustaja\"-tekstille \"varaa lippuja\"-kyselyssä."
+
+#: ../inc/sys/settings/frontend.php:168
+msgid "Bad BG"
+msgstr "Virheen taustaväri"
+
+#: ../inc/sys/settings/frontend.php:171
+msgid ""
+"Background color of the error message block on the \"reserve some tickets\" "
+"form."
+msgstr "Taustaväri virheilmoitukselle \"varaa lippuja\"-kyselyssä."
+
+#: ../inc/sys/settings/frontend.php:174
+msgid "Bad Border"
+msgstr "Virheen reuna"
+
+#: ../inc/sys/settings/frontend.php:177
+msgid ""
+"Border color around the error message block on the \"reserve some tickets\" "
+"form."
+msgstr "Reunan väri virheilmoitukselle \"varaa lippuja\"-kyselyssä."
+
+#: ../inc/sys/settings/frontend.php:180
+msgid "Bad Text"
+msgstr "Virheen teksti"
+
+#: ../inc/sys/settings/frontend.php:183
+msgid ""
+"Text color of the error message block on the \"reserve some tickets\" form."
+msgstr "Tekstin väri virheilmoituksessa \"varaa lippuja\"-kyselyssä."
+
+#: ../inc/sys/settings/frontend.php:188
+msgid "Good BG"
+msgstr "Onnistumisen tausta"
+
+#: ../inc/sys/settings/frontend.php:191
+msgid ""
+"Background color of the success message block on the \"reserve some tickets"
+"\" form."
+msgstr "Taustaväri onnistumisviestille \"varaa lippuja\"-kyselyssä."
+
+#: ../inc/sys/settings/frontend.php:194
+msgid "Good Border"
+msgstr "Onnistumisen reuna"
+
+#: ../inc/sys/settings/frontend.php:197
+msgid ""
+"Border color around the success message block on the \"reserve some tickets"
+"\" form."
+msgstr "Reunan väri onnistumisviestille \"varaa lippuja\"-kyselyssä."
+
+#: ../inc/sys/settings/frontend.php:200
+msgid "Good Text"
+msgstr "Onnistumisen teksti"
+
+#: ../inc/sys/settings/frontend.php:203
+msgid ""
+"Text color of the success message block on the \"reserve some tickets\" form."
+msgstr "Tekstin väri onnistumisviestille \"varaa lippuja\"-kyselyssä."
+
+#: ../inc/sys/settings/frontend.php:208
+msgid "Remove BG"
+msgstr "Poiston taustaväri"
+
+#: ../inc/sys/settings/frontend.php:211
+msgid ""
+"Background color of the remove reservation button on the \"reserve some "
+"tickets\" form."
+msgstr "Tausta väri poistopainikkeelle \"varaa lippuja\"-kyselyssä."
+
+#: ../inc/sys/settings/frontend.php:214
+msgid "Remove Border"
+msgstr "Poiston reuna"
+
+#: ../inc/sys/settings/frontend.php:217
+msgid ""
+"Border color around the remove reservation button on the \"reserve some "
+"tickets\" form."
+msgstr "Reunan väri poistopainikkeelle \"varaa lippuja\"-kyselyssä."
+
+#: ../inc/sys/settings/frontend.php:220
+msgid "Remove Text"
+msgstr "Poiston teksti"
+
+#: ../inc/sys/settings/frontend.php:223
+msgid ""
+"Text color of the remove reservation button on the \"reserve some tickets\" "
+"form."
+msgstr "Tekstin väri poistopainikkeelle \"varaa lippuja\"-kyselyssä."
+
+#: ../inc/sys/settings/frontend.php:230
+msgid "Calendar"
+msgstr "Tapahtumakalenteri"
+
+#: ../inc/sys/settings/frontend.php:232
+msgid "Calendar Item BG"
+msgstr "Kalenteritapahtuman taustaväri"
+
+#: ../inc/sys/settings/frontend.php:235
+msgid "The background color of the active items shown on the calendar."
+msgstr "Taustaväri kalenterin aktiivisille tapahtumille."
+
+#: ../inc/sys/settings/frontend.php:238
+msgid "Calendar Item Border"
+msgstr "Kalenteritapahtuman reuna"
+
+#: ../inc/sys/settings/frontend.php:241
+msgid "The border color of the active items shown on the calendar."
+msgstr "Reunan väri kalenterin aktiiviselle tapahtumalle."
+
+#: ../inc/sys/settings/frontend.php:244
+msgid "Calendar Item Text"
+msgstr "Kalenteritapahtuman teksti"
+
+#: ../inc/sys/settings/frontend.php:247
+msgid "The text color of the active items shown on the calendar."
+msgstr "Tekstin väri kalenterin aktiivisille tapahtumille."
+
+#: ../inc/sys/settings/frontend.php:250
+msgid "Calendar Item Hover"
+msgstr "Kalenteritapahtuman väri kursorin kohdalla"
+
+#: ../inc/sys/settings/frontend.php:253
+msgid "The HOVER text color of the active items shown on the calendar."
+msgstr ""
+"Tekstin väri kalenterin tapahtumille hiiren kursorin ollessa tapahtuman "
+"päällä."
+
+#: ../inc/sys/settings/frontend.php:257
+msgid "Past Item BG"
+msgstr "Menneen tapahtuman taustaväri"
+
+#: ../inc/sys/settings/frontend.php:260
+msgid ""
+"The background color of the items shown on the calendar, that have already "
+"passed."
+msgstr "Taustaväri menneille kalenteritapahtumille."
+
+#: ../inc/sys/settings/frontend.php:263
+msgid "Past Item Border"
+msgstr "Menneen tapahtuman reuna"
+
+#: ../inc/sys/settings/frontend.php:266
+msgid ""
+"The border color of the active items shown on the calendari, that have "
+"already passed."
+msgstr "Reunan väri menneille kalenteritapahtumille."
+
+#: ../inc/sys/settings/frontend.php:269
+msgid "Past Item Text"
+msgstr "Menneen tapahtuman teksti"
+
+#: ../inc/sys/settings/frontend.php:272
+msgid ""
+"The text color of the active items shown on the calendar, that have already "
+"passed."
+msgstr "Tekstin värin menneille kalenteritapahtumille."
+
+#: ../inc/sys/settings/frontend.php:275
+msgid "Past Item Hover"
+msgstr "Menneen tapahtuman väri kursorin kohdalla."
+
+#: ../inc/sys/settings/frontend.php:278
+msgid ""
+"The HOVER text color of the active items shown on the calendar, that have "
+"already passed."
+msgstr ""
+"Tekstin väri kalenterin menneille tapahtumille hiiren kurson ollessa "
+"tapahtuman päällä."
+
+#: ../inc/sys/settings/frontend.php:300
+#, php-format
+msgid ""
+"To edit colours %s and %s need to be writable. See <a href=\"%s\">the Codex</"
+"a> for more information."
+msgstr ""
+"Värien muokkaamiseksi %s ja %s täytyy olla ylikirjoitettavia. Katso "
+"lisätietoa <a href=\"%s\">rajapintamäärittelyistä</a>."
+
+#: ../inc/sys/settings/frontend.php:357
+#, php-format
+msgid ""
+"Error saving the Frontend Styles, %s is not a valid color, please use only "
+"valid colors code."
+msgstr ""
+"Virhe tallennettaessa Käyttöliittymän ulkoasua: %s ei ole kelvollinen väri. "
+"Käytä vain kelvollisia värikoodeja."
+
+#: ../inc/sys/settings/general.php:22
+msgid "General"
+msgstr "Yleiset"
+
+#: ../inc/sys/utils.php:39
+msgid "Could not extend. Invalid type."
+msgstr "Ei voitu laajentaa, virheellinen tyyppi."
+
+#: ../inc/sys/views/html-admin-settings.php:24
+msgid "Save changes"
+msgstr "Tallenna muutokset"
+
+#: ../inc/ticket/checkin.class.php:123 ../inc/ticket/ticket.class.php:406
+msgid "Could not laod the order that this ticket belongs to."
+msgstr "Tähän lippuun liittyvän tilauksen lataaminen ei onnistunut."
+
+#: ../inc/ticket/checkin.class.php:128 ../inc/ticket/ticket.class.php:413
+msgid "Could not load the order item associated with this ticket."
+msgstr "Tähän lippuun liittyvän tilauksen lataaminen ei onnistunut."
+
+#: ../inc/ticket/ticket.class.php:108
+#: ../inc/venues/event-area/pricing.class.php:839
+#: ../templates/tickets/basic-ticket.php:40
+msgid "Ticket"
+msgstr "Lippu"
+
+#: ../inc/ticket/ticket.class.php:109
+#: ../templates/myaccount/my-upcoming-tickets.php:18
+msgid "View your ticket"
+msgstr "Katso lippusi tästä"
+
+#: ../inc/ticket/ticket.class.php:110
+msgid "View this ticket"
+msgstr "Katso tämä lippu"
+
+#: ../inc/ticket/ticket.class.php:112 ../inc/ticket/ticket.class.php:595
+msgid "Tickets"
+msgstr "Liput"
+
+#: ../inc/ticket/ticket.class.php:113
+msgid "View your tickets"
+msgstr "Katso pääsylippusi"
+
+#: ../inc/ticket/ticket.class.php:114
+msgid "View these tickets"
+msgstr "Katso nämä pääsyliput"
+
+#: ../inc/ticket/ticket.class.php:284 ../inc/ticket/ticket.class.php:290
+msgid "There was a problem loading your ticket."
+msgstr "Lipun lataamisessa tuli ongelma."
+
+#: ../inc/ticket/ticket.class.php:298
+msgid "the order"
+msgstr "tilaus"
+
+#: ../inc/ticket/ticket.class.php:300
+msgid "the ticket product information"
+msgstr "lipun tuotetiedot"
+
+#: ../inc/ticket/ticket.class.php:302
+msgid "the event information"
+msgstr "tapahtumatiedot"
+
+#: ../inc/ticket/ticket.class.php:304
+msgid "the venue information"
+msgstr "näyttämön tiedot"
+
+#: ../inc/ticket/ticket.class.php:306
+msgid "the order item information"
+msgstr "tilauksen tiedot"
+
+#: ../inc/ticket/ticket.class.php:308
+msgid "the event area information"
+msgstr "katsomon tiedot"
+
+#: ../inc/ticket/ticket.class.php:312
+#, php-format
+msgid "The following ticket data could not be loaded: %s"
+msgstr "Seuraavan lipun tietoja ei voitu ladata: %s"
+
+#: ../inc/ticket/ticket.class.php:318
+msgid "The ticket cannot be displayed, because the order is not complete."
+msgstr "Lippua ei voida näyttää, koska tilaus ei ole valmis."
+
+#: ../inc/ticket/ticket.class.php:421
+msgid ""
+"The ticket product associated with the ticket order item, could not be found."
+msgstr "Lippuun liittyvää tuotetta ei voitu löytää."
+
+#: ../inc/ticket/ticket.class.php:431
+msgid ""
+"The event information for the ticket could not be found. Perhaps the event "
+"has been removed."
+msgstr ""
+"Lippuun löytyvää tapahtumaa ei voitu löytää. Ehkä tapahtuma on poistettu."
+
+#: ../inc/ticket/ticket.class.php:508
+msgid "The information you supplied does not match our record."
+msgstr "Antamasi informaatio ei vastaa tietokantoja."
+
+#: ../inc/ticket/ticket.class.php:605
+msgid "Left Ticket Image"
+msgstr "Vasen lippukuva"
+
+#: ../inc/ticket/ticket.class.php:606
+msgid "The image to show in the bottom left corner of the ticket."
+msgstr "Kuva, joka näytetään lipun vasemmassa alanurkassa."
+
+#: ../inc/ticket/ticket.class.php:609 ../inc/ticket/ticket.class.php:626
+msgid "the Event Featured Image"
+msgstr "Tapahtumakuva"
+
+#: ../inc/ticket/ticket.class.php:610 ../inc/ticket/ticket.class.php:627
+msgid "the Venue Image"
+msgstr "Tapahtumakuva"
+
+#: ../inc/ticket/ticket.class.php:611 ../inc/ticket/ticket.class.php:628
+msgid "the Ticket Product Image"
+msgstr "Lipun tuotekuva"
+
+#: ../inc/ticket/ticket.class.php:622
+msgid "Right Ticket Image"
+msgstr "Oikeanpuoleinen lippukuva"
+
+#: ../inc/ticket/ticket.class.php:623
+msgid "The image to show in the bottom right corner of the ticket."
+msgstr "Kuva, joka näytetään lipun oikeassa alanurkassa."
+
+#: ../inc/ticket/ticket.class.php:639
+msgid "Ticket Branding Images"
+msgstr "Lipun tuotekuva"
+
+#: ../inc/ticket/ticket.class.php:640
+msgid "Images shown in the small line of branding images below each ticket."
+msgstr "Kuvat, jotka näytetään joka lipun alaosassa."
+
+#: ../inc/ticket/ticket.class.php:641
+msgid ""
+"The recommended size of these images is 90px wide by 15px tall. Images will "
+"be constrained to 90px wide, no matter the size. Choosing \"no image\" will "
+"make a blank spot on the ticket branding row."
+msgstr ""
+"Suositeltu koko näille kuville on 90 pikseliä leveä ja 15 pikseliä korkea. "
+"Kuvat rajataan 90 pikselin leveyteen koosta riippumatta. Vaihtoehto \"ei "
+"kuvaa\" jättää pääsylippuun tyhjän kohdan."
+
+#: ../inc/ticket/ticket.class.php:652
+msgid "Purchaser Info"
+msgstr "Asiakkaan tiedot"
+
+#: ../inc/ticket/ticket.class.php:653
+msgid ""
+"Which information to user for the purchaser display information. Either "
+"Billing or Shipping."
+msgstr ""
+"Mitä käyttäjän tietoja esitetään asikastietoina: laskutus- vai "
+"toimitustietoja."
+
+#: ../inc/ticket/ticket.class.php:655
+msgid "the Billing Information"
+msgstr "Laskutustiedot"
+
+#: ../inc/ticket/ticket.class.php:656
+msgid "the Shipping Information"
+msgstr "Toimitustiedot"
+
+#: ../inc/ticket/ticket.class.php:667
+msgid "Show Order #"
+msgstr "Näytä tilauksen numero"
+
+#: ../inc/ticket/ticket.class.php:668
+msgid "Show the order number of the ticket, on the ticket."
+msgstr "Näytä pääsylipussa lipun tilausnumero."
+
+#: ../inc/venues/event-area/post-type.class.php:159
+#: ../inc/venues/event-area/post-type.class.php:160
+#: ../inc/venues/event-area/post-type.class.php:166
+msgid ""
+"There are currently <span class=\"available\"></span> <span rel=\"tt\"></"
+"span> available."
+msgstr "Tapahtumaan on vapaita paikkoja."
+
+#: ../inc/venues/event-area/post-type.class.php:165
+msgid ""
+"There are currently <span class=\"available\"></span> more <span rel=\"tt"
+"\"></span> available."
+msgstr "Tapahtumaan on vapaita paikkoja."
+
+#: ../inc/venues/event-area/post-type.class.php:169
+msgid "We're sorry. There are currently no tickets available."
+msgstr "Valitettavasti lippuja ei ole enää saatavilla."
+
+#: ../inc/venues/event-area/post-type.class.php:170
+#: ../templates/post-content/event-area.php:128
+msgid "We are sorry. This event is sold out!"
+msgstr "Valitettavasti tapahtuma on loppuunmyyty!"
+
+#: ../inc/venues/event-area/post-type.class.php:171
+msgid "<h1>One Moment Please...</h1>"
+msgstr "<h1>Pieni hetki...</h1>"
+
+#: ../inc/venues/event-area/post-type.class.php:230
+msgid "Step 1: How Many?"
+msgstr "Vaihe 1: Määrän valinta"
+
+#: ../inc/venues/event-area/post-type.class.php:233
+#: ../templates/post-content/event-area.php:52
+msgid "Reserve some tickets:"
+msgstr "Varaa lippuja:"
+
+#: ../inc/venues/event-area/post-type.class.php:237
+#: ../templates/post-content/event-area.php:73
+msgid "Reserve"
+msgstr "Varaa"
+
+#: ../inc/venues/event-area/post-type.class.php:245
+msgid "Step 2: Review"
+msgstr "Vaihe 2: yhteenveto"
+
+#: ../inc/venues/event-area/post-type.class.php:248
+#: ../templates/post-content/event-area.php:91
+msgid "You currently have:"
+msgstr "Sinulla on:"
+
+#: ../inc/venues/event-area/post-type.class.php:253
+#: ../templates/post-content/event-area.php:113
+msgid "Update"
+msgstr "Päivitä"
+
+#: ../inc/venues/event-area/post-type.class.php:257
+msgid "Proceed to Cart"
+msgstr "Jatka Ostoskoriin"
+
+#: ../inc/venues/event-area/post-type.class.php:276
+#: ../inc/venues/event-area/post-type.class.php:280
+msgid "add"
+msgstr "lisää"
+
+#: ../inc/venues/event-area/post-type.class.php:285
+msgid "There are currently no areas configured. Please add one to continue."
+msgstr ""
+"Yhtään katsomoa ei ole määritelty. Lisää ainakin yksi katsomo jatkaaksesi."
+
+#: ../inc/venues/event-area/post-type.class.php:301
+msgid "edit"
+msgstr "muokkaa"
+
+#: ../inc/venues/event-area/post-type.class.php:302
+msgid "delete"
+msgstr "poista"
+
+#: ../inc/venues/event-area/post-type.class.php:315
+msgid "Event Area Image"
+msgstr "Katsomon kuva"
+
+#: ../inc/venues/event-area/post-type.class.php:321
+msgid "Select Image"
+msgstr "Valitse kuva"
+
+#: ../inc/venues/event-area/post-type.class.php:325
+msgid "Area Name"
+msgstr "Katsomon nimi"
+
+#: ../inc/venues/event-area/post-type.class.php:329
+msgid "Capacity"
+msgstr "Kapasiteetti"
+
+#: ../inc/venues/event-area/post-type.class.php:333
+msgid "Available Pricing"
+msgstr "Hinnasto"
+
+#: ../inc/venues/event-area/post-type.class.php:338
+msgid "save"
+msgstr "tallenna"
+
+#: ../inc/venues/event-area/post-type.class.php:339
+msgid "cancel"
+msgstr "peru"
+
+#: ../inc/venues/event-area/post-type.class.php:349
+#: ../inc/venues/post-type.class.php:369
+msgid "None"
+msgstr "Ei yhtään"
+
+#: ../inc/venues/event-area/post-type.class.php:366
+msgid "This event is password protected."
+msgstr "Tämä tapahtuma on salasanasuojattu."
+
+#: ../inc/venues/event-area/post-type.class.php:372
+#: ../inc/venues/event-area/post-type.class.php:621
+#: ../inc/venues/event-area/pricing.class.php:680
+msgid "Invalid request. Please refresh the page and try again."
+msgstr "Virheellinen pyyntö. Yritä ladata sivu uudelleen."
+
+#: ../inc/venues/event-area/post-type.class.php:390
+#: ../inc/venues/event-area/post-type.class.php:453
+#: ../inc/venues/event-area/post-type.class.php:469
+msgid "Updated your reservations successfully."
+msgstr "Varauksen päivittäminen onnistui."
+
+#: ../inc/venues/event-area/post-type.class.php:400
+#: ../inc/venues/event-area/post-type.class.php:461
+#: ../inc/venues/event-area/post-type.class.php:466
+msgid "Could not update your reservations."
+msgstr "Varauksen päivittäminen epäonnistui."
+
+#: ../inc/venues/event-area/post-type.class.php:403
+#: ../inc/venues/event-area/post-type.class.php:821
+msgid "The quantity must be greater than zero."
+msgstr "Määrän täytyy olla suurempi kuin nolla."
+
+#: ../inc/venues/event-area/post-type.class.php:404
+#: ../inc/venues/event-area/post-type.class.php:494
+msgid "Could not load that event."
+msgstr "Tapahtumaa ei voitu ladata."
+
+#: ../inc/venues/event-area/post-type.class.php:405
+#: ../inc/venues/event-area/post-type.class.php:495
+msgid "A problem occurred when loading that event."
+msgstr "Tapahtuman lataamisessa tapahtui virhe"
+
+#: ../inc/venues/event-area/post-type.class.php:406
+msgid "That event does not currently have any tickets."
+msgstr "Tapahtumaan ei ole tällä hetkellä pääsylippuja."
+
+#: ../inc/venues/event-area/post-type.class.php:407
+#: ../inc/venues/event-area/post-type.class.php:497
+msgid "The event does not have any tickets."
+msgstr "Tapahtumaan ei ole pääsylippuja."
+
+#: ../inc/venues/event-area/post-type.class.php:460
+msgid "A problem occurred when trying to remove your reservations."
+msgstr "Varauksen poistamisen yhteydessä tapahtui virhe."
+
+#: ../inc/venues/event-area/post-type.class.php:465
+msgid "A problem occurred when trying to update your reservations."
+msgstr "Varauksen päivittämisen yhteydessä tapahtui virhe."
+
+#: ../inc/venues/event-area/post-type.class.php:482
+#, php-format
+msgid ""
+"There are not enough available tickets to increase the quantity of %s to %d. "
+"There are only %d available."
+msgstr ""
+"Pääsylippuja ei ole tarpeeksi saatavilla, jotta tuotteita %s voitaisiin "
+"varata %d. Jäljellä on vain %d."
+
+#: ../inc/venues/event-area/post-type.class.php:488
+#, php-format
+msgid ""
+"There are not enough available tickets to increase the quantity of %s to %d."
+msgstr ""
+"Lippuja ei ole jäljellä riittävästi, jotta tilauksen määrä voidaan %s:sta %d:"
+"en."
+
+#: ../inc/venues/event-area/post-type.class.php:496
+msgid "That event does not have currently have any tickets."
+msgstr "Tapahtumaan ei tällä hetkellä ole pääsylippuja"
+
+#: ../inc/venues/event-area/post-type.class.php:544
+msgid "Event Area:"
+msgstr "Tapahtuma-alue:"
+
+#: ../inc/venues/event-area/post-type.class.php:551
+msgid "-None-"
+msgstr "-Ei yhtään-"
+
+#: ../inc/venues/event-area/post-type.class.php:634
+#, php-format
+msgid "Could not find the venue you specified [%s]."
+msgstr "Määrittelemääsi tapahtumapaikkaa ei löytynyt [%s]."
+
+#: ../inc/venues/event-area/post-type.class.php:664
+msgid "Could not find that venue."
+msgstr "Kyseistä tapahtumapaikkaa ei löytynyt."
+
+#: ../inc/venues/event-area/post-type.class.php:685
+msgid "Could not save the item(s) because not enough information was provided."
+msgstr "Kohteita ei voitu tallentaa, koska tietoja ei annettu riittävästi."
+
+#: ../inc/venues/event-area/post-type.class.php:711
+#, php-format
+msgid "There was a problem saving the area [%s]."
+msgstr "Katsomon tallentamisessa oli ongelma [%s]."
+
+#: ../inc/venues/event-area/post-type.class.php:822
+msgid "Could not find that event."
+msgstr "Tapahtumaa ei löytynyt."
+
+#: ../inc/venues/event-area/post-type.class.php:823
+msgid "That is not a valid order."
+msgstr "Tilaus ei ole kelvollinen"
+
+#: ../inc/venues/event-area/post-type.class.php:936
+#: ../inc/venues/event-area/post-type.class.php:1328
+msgid "Event Areas"
+msgstr "Tapahtuma-alueet"
+
+#: ../inc/venues/event-area/post-type.class.php:1252
+msgid "(Unknown Ticket Type)"
+msgstr "(Tuntematon lipputyyppi)"
+
+#: ../inc/venues/event-area/post-type.class.php:1257
+#, php-format
+msgid ""
+"There are only <span class=\"available\">%s</span> %s available currently. "
+"Could not temporarily reserve %d %s."
+msgstr ""
+"Tapahtumaan on tällä hetkellä vain <span class=\"available\">%s</span> %s "
+"lippuja jäljellä. %d %s ei voitu väliaikaisesti varata."
+
+#: ../inc/venues/event-area/post-type.class.php:1264
+#, php-format
+msgid ""
+"There are not enough %s tickets available currently. Could not temporarily "
+"reserve %d %s."
+msgstr ""
+"%s-lippuja ei ole riittävästi saatavilla. %d %s ei voitu väliaikaisesti "
+"varata."
+
+#: ../inc/venues/event-area/post-type.class.php:1274
+#: ../inc/venues/event-area/post-type.class.php:1317
+msgid "The number of tickets must be greater than 0."
+msgstr "Lippujen määrän täytyy olla suurempi kuin 0."
+
+#: ../inc/venues/event-area/post-type.class.php:1296
+#, php-format
+msgid ""
+"There are only <span class=\"available\">%s</span> more %s available "
+"currently. Could not temporarily reserve %d more %s. You still have %d %s."
+msgstr ""
+"Tapahtumaan on tällä hetkellä vain <span class=\"available\">%s</span> %s "
+"lippuja jäljellä. %d %s ei voitu väliaikaisesti varata. Sinulla on edelleen "
+"%d %s varattuna."
+
+#: ../inc/venues/event-area/post-type.class.php:1305
+#, php-format
+msgid ""
+"There are not enough %s tickets available currently. Could not temporarily "
+"reserve %d more %s. You still have %d %s."
+msgstr ""
+"%s-lippuja ei ole riittävästi saatavilla. %d %s ei voitu väliaikaisesti "
+"varata. Sinulla on edelleen %d %s varattuna."
+
+#: ../inc/venues/event-area/post-type.class.php:1329
+msgid "Area"
+msgstr "Alue"
+
+#: ../inc/venues/event-area/pricing.class.php:438
+#, php-format
+msgid ""
+"There were only %d of the %s for %s available. We reserved all of them for "
+"you instead of the %d you requested."
+msgstr ""
+"Vain %d %s tapahtumaan %s saatavilla. Niistä kaikki on varattuna sinulle %d "
+"sijaan, jota pyysit."
+
+#: ../inc/venues/event-area/pricing.class.php:446
+#, php-format
+msgid ""
+"There were no %s for %s available to give you. We have removed it from your "
+"cart."
+msgstr ""
+"Ainuttakaan %s tapahtumaan %s ei ollut saatavilla. Poistimme tuotteet "
+"ostoskoristasi."
+
+#: ../inc/venues/event-area/pricing.class.php:547
+msgid "(no event selected)"
+msgstr "(ei tapahtumaa valittuna)"
+
+#: ../inc/venues/event-area/pricing.class.php:641
+msgid "Date:"
+msgstr "Päivämäärä:"
+
+#: ../inc/venues/event-area/pricing.class.php:643
+msgid "Capacity:"
+msgstr "Kapasiteetti:"
+
+#: ../inc/venues/event-area/pricing.class.php:644
+msgid "Available:"
+msgstr "Saatavilla:"
+
+#: ../inc/venues/event-area/pricing.class.php:649
+#: ../inc/venues/event-area/pricing.class.php:654
+msgid "Different Event"
+msgstr "Eri tapahtuma"
+
+#: ../inc/venues/event-area/pricing.class.php:650
+msgid "Use This Event"
+msgstr "Käytä tätä tapahtumaa"
+
+#: ../inc/venues/event-area/pricing.class.php:663
+msgid "Add Tickets"
+msgstr "Lisää lippuja"
+
+#: ../inc/venues/event-area/pricing.class.php:668
+msgid "Loading. One moment please..."
+msgstr "Ladataan. Pieni hetki..."
+
+#: ../inc/venues/event-area/pricing.class.php:730
+msgid "Invalid order number."
+msgstr "Virheellinen tilausnumero."
+
+#: ../inc/venues/event-area/pricing.class.php:779
+msgid "Could not find the new event."
+msgstr "Uutta tapahtumaa ei löytynyt."
+
+#: ../inc/venues/event-area/pricing.class.php:782
+msgid "Could not find that order item on the order."
+msgstr "Kyseistä tuotetta ei löytynyt tilauksesta."
+
+#: ../inc/venues/event-area/pricing.class.php:785
+msgid "The order item does not appear to be valid."
+msgstr "Tilauksen tuote vaikuttaisi olevan virheellinen."
+
+#: ../inc/venues/event-area/pricing.class.php:792
+msgid "Add tickets"
+msgstr "Lisää lippuja"
+
+#: ../inc/venues/event-area/pricing.class.php:840
+#, php-format
+msgid ""
+"Allows this product to be assigned as a ticket, when configuring pricing on "
+"a seating chart, for the %s plugin."
+msgstr ""
+"Tekee tästä tuotteesta Pääsylipun, jota käytetään katsomon hinnoittelemiseen "
+"%s-liitännäisessä."
+
+#: ../inc/venues/post-type.class.php:178
+msgid "Could not load the venue information for this ticket."
+msgstr "Tämän lipun tapahtumapaikan tietoja ei voitu ladata."
+
+#: ../inc/venues/post-type.class.php:208
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:55
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:102
+msgid "Address 2"
+msgstr "Osoite 2"
+
+#: ../inc/venues/post-type.class.php:209
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:59
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:106
+msgid "City"
+msgstr "Kaupunki"
+
+#: ../inc/venues/post-type.class.php:210
+msgid "State"
+msgstr "Maakunta"
+
+#: ../inc/venues/post-type.class.php:211
+msgid "Postal Code"
+msgstr "Postinumero"
+
+#: ../inc/venues/post-type.class.php:212
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:67
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:114
+msgid "Country"
+msgstr "Maa"
+
+#: ../inc/venues/post-type.class.php:362
+msgid "Venue:"
+msgstr "Näyttämö:"
+
+#: ../inc/venues/post-type.class.php:417
+msgid "Venue Information"
+msgstr "Näyttämön tiedot:"
+
+#: ../inc/venues/post-type.class.php:426
+msgid "Venue Social Information"
+msgstr "Näyttämö sosiaalisessa mediassa"
+
+#: ../inc/venues/post-type.class.php:497
+msgid "Address:"
+msgstr "Osoite:"
+
+#: ../inc/venues/post-type.class.php:501
+msgid "Address 2:"
+msgstr "Osoite 2:"
+
+#: ../inc/venues/post-type.class.php:505
+msgid "City:"
+msgstr "Kaupunki:"
+
+#: ../inc/venues/post-type.class.php:509
+msgid "State or County:"
+msgstr "Maakunta:"
+
+#: ../inc/venues/post-type.class.php:519
+msgid "Postal Code:"
+msgstr "Postinumero:"
+
+#: ../inc/venues/post-type.class.php:523
+msgid "Country:"
+msgstr "Maa:"
+
+#: ../inc/venues/post-type.class.php:533
+msgid "Logo Image"
+msgstr "Logo"
+
+#: ../inc/venues/post-type.class.php:537
+msgid "Select Logo"
+msgstr "Valitse logo"
+
+#: ../inc/venues/post-type.class.php:538
+msgid "Remove"
+msgstr "Poista"
+
+#: ../inc/venues/post-type.class.php:542
+#: ../templates/post-content/venue/contact-info.php:40
+msgid "Notes:"
+msgstr "Huomautukset:"
+
+#: ../inc/venues/post-type.class.php:560
+msgid "This is what is displayed on your tickets about this venue."
+msgstr "Tämä tulostetaan pääsylippuihin kuvauksena tapahtumapaikasta."
+
+#: ../inc/venues/post-type.class.php:564
+msgid "Map Instructions:"
+msgstr "Saapumisohjeet:"
+
+#: ../inc/venues/post-type.class.php:582
+msgid ""
+"Displayed below the map on your event tickets. Meant for extra directions."
+msgstr "Näytetään pääsylipuissa kartan alapuolella, tarkoitettu lisäohjeille."
+
+#: ../inc/venues/post-type.class.php:621
+#: ../templates/post-content/venue/social.php:13
+msgid "Phone:"
+msgstr "Puhelinnumero:"
+
+#: ../inc/venues/post-type.class.php:625
+#: ../templates/post-content/venue/social.php:18
+msgid "Website:"
+msgstr "Kotisivu:"
+
+#: ../inc/venues/post-type.class.php:626 ../inc/venues/post-type.class.php:630
+#: ../inc/venues/post-type.class.php:634
+msgid "Full URL"
+msgstr "Täysi URL"
+
+#: ../inc/venues/post-type.class.php:629
+#: ../templates/post-content/venue/social.php:23
+msgid "Facebook:"
+msgstr "Facebook:"
+
+#: ../inc/venues/post-type.class.php:633
+#: ../templates/post-content/venue/social.php:28
+msgid "Twitter:"
+msgstr "Twitter:"
+
+#: ../inc/venues/post-type.class.php:637
+#: ../templates/post-content/venue/social.php:33
+msgid "Contact Email:"
+msgstr "Sähköposti:"
+
+#: ../inc/venues/post-type.class.php:692 ../inc/venues/post-type.class.php:731
+msgid "Venues"
+msgstr "Näyttämöt"
+
+#: ../inc/venues/post-type.class.php:693
+msgid "Venue"
+msgstr "Näyttämö"
+
+#: ../inc/venues/post-type.class.php:741
+msgid "Show Address"
+msgstr "Näytä osoite"
+
+#: ../inc/venues/post-type.class.php:742
+msgid "Display the venue address below the venue description?"
+msgstr "Näytetäänkö tapahtumapaikan osoite kuvauksen alapuolella?"
+
+#: ../inc/venues/post-type.class.php:752
+msgid "Show Map"
+msgstr "Näytä kartta"
+
+#: ../inc/venues/post-type.class.php:753
+msgid "Display the venue MAP below the venue description?"
+msgstr "Näytä näyttämön KARTTA kuvauksen alapuolella"
+
+#: ../inc/venues/post-type.class.php:763
+msgid "Show Contact Info"
+msgstr "Näytä yhteystiedot"
+
+#: ../inc/venues/post-type.class.php:764
+msgid ""
+"Display the venue contact information and social links below the venue "
+"description?"
+msgstr ""
+"Näytetäänkö tapahtumapaikan yhteystiedot ja sosiaalisen median linkit "
+"kuvauksen alapuolella?"
+
+#: ../inc/venues/post-type.class.php:774
+msgid "Show Notes"
+msgstr "Näytä huomautukset"
+
+#: ../inc/venues/post-type.class.php:775
+msgid ""
+"Display the additional venue notes (a meta field on the edit venue page) "
+"below the venue description?"
+msgstr ""
+"Näytetäänkö tapahtumapaikan ylimääräiset huomautukset (lisätietokenttä) "
+"kuvauksen alapuolella?"
+
+#: ../launcher.php:196
+msgid "Required Plugin Not Up-to-date"
+msgstr "Vaadittava liitännäinen ei ole ajan tasalla"
+
+#: ../launcher.php:199
+#, php-format
+msgid ""
+"The <em><a href=\"%s\" target=\"_blank\">%s</a></em> plugin "
+"<strong>requires</strong> that <em><a href=\"http://www.woothemes.com/"
+"woocommerce/\" target=\"_blank\">WooCommerce</a></em> be at least at version "
+"<u><strong>%s</strong></u>; you are currently running version <em>%s</em>. "
+"Because of this, the <em><a href=\"%s\" target=\"_blank\">%s</a></em> plugin "
+"has not initialized any of its functionality. To enable the features of this "
+"plugin, simply install and activate the latest version of <em><a href="
+"\"http://www.woothemes.com/woocommerce/\" target=\"_blank\">WooCommerce</a></"
+"em>."
+msgstr ""
+"Liitännäinen <em><a href=\"%s\" target=\"_blank\">%s</a></em> "
+"<strong>vaatii</strong>, että <em><a href=\"http://www.woothemes.com/"
+"woocommerce/\" target=\"_blank\">WooCommercen</a></em> versio on vähintään "
+"<u><strong>%s</strong></u>; käytössäsi on tällä hetkellä versio <em>%s</em>. "
+"Tämän vuoksi liitännäinen <em><a href=\"%s\" target=\"_blank\">%s</a></em> "
+"ei vielä käynnisty. Lataa ja aktivoi uusin <em><a href=\"http://www."
+"woothemes.com/woocommerce/\" target=\"_blank\">WooCommercen</a></em> uusin "
+"versio saadaksesi tämän liitännäisen ominaisuudet käyttöösi."
+
+#: ../launcher.php:217
+msgid "Missing Required Plugin"
+msgstr "Tarvittava liitännäinen puuttuu"
+
+#: ../launcher.php:220
+#, php-format
+msgid ""
+"The <em><a href=\"%s\" target=\"_blank\">%s</a></em> plugin "
+"<strong>requires</strong> that <em><a href=\"http://www.woothemes.com/"
+"woocommerce/\" target=\"_blank\">WooCommerce</a></em>\tbe activated in order "
+"to perform most vital functions; therefore, the plugin has not initialized "
+"any of its functionality. To enable the features of this plugin, simply "
+"install and activate <em><a href=\"http://www.woothemes.com/woocommerce/\" "
+"target=\"_blank\">WooCommerce</a></em>."
+msgstr ""
+"Liitännäinen <em><a href=\"%s\" target=\"_blank\">%s</a></em> plugin "
+"<strong>vaatii toimiakseen</strong>, että <em><a href=\"http://www.woothemes."
+"com/woocommerce/\" target=\"_blank\">WooCommerce</a></em>on aktivoitu; "
+"niinpä se ei ole vielä toiminnassa. Aktivoi uusin <em><a href=\"http://www."
+"woothemes.com/woocommerce/\" target=\"_blank\">WooCommerce</a></em> "
+"saadaksesi tämän liitännäisen ominaisuudet käyttöösi."
+
+#: ../opentickets.php:116
+#, php-format
+msgid ""
+"<a href=\"%s\" title=\"Visit the License Key settings page\">Settings</a>"
+msgstr ""
+"<a href=\"%s\" title=\"Käy Lisenssiavaimen hallintasivulla\">Asetukset</a>"
+
+#: ../opentickets.php:367
+msgid "Memory Requirement Problem"
+msgstr "Muistinhallinnan ongelma"
+
+#: ../opentickets.php:395
+#, php-format
+msgid ""
+"The %%%%PRODUCT%%%% plugin <strong>requires</strong> that your server allow "
+"at least %s of memory to WordPress. We recommend at least %s for optimum "
+"performance (as does WooCommerce). We tried to raise the memory limit to the "
+"minimum for your automatically, but your server settings do not allow it. "
+"Your server currently only allows %s, which is below the minimum. We have "
+"stopped loading OpenTickets, in an effort maintain access to your site. Once "
+"you have raised your server settings to at least the minimum memory "
+"requirement, we will turn OpenTickets back on automatically."
+msgstr ""
+"Liitännäinen %%%%PRODUCT%%%% <strong>vaatii</strong>, että Wordpressin "
+"käytössä on palvelimella vähintään %s muistia. Optimaaliseen käyttöön "
+"suosittelemme vähintään %s (kuten myös WooCommerce). Muistin rajoitusta "
+"yritettiin kasvattaa automaattisesti, mutta palvelimen asetukset eivät "
+"hyväksyneet sitä. Palvelin hyväksyy ainoastaan %s, mikä on "
+"vähimmäisvaatimusta vähemmän. OpenTickets-lisäosan lataaminen on pysäytetty, "
+"jotta pääse sivustolle säilyy. OpenTickets palautuu päälle automaattisesti, "
+"kun palvelinasetusten muistiraja on vähintään minimivaatimuksissa."
+
+#: ../opentickets.php:405
+#, php-format
+msgid ""
+"The %%%%PRODUCT%%%% plugin <strong>requires</strong> that your server allow "
+"at least %s of memory to WordPress. Currently, yoru server is set to allow "
+"%s, which is above the minimum. We recommend at least %s for optimum "
+"performance (as does WooCommerce). If you cannot raise the limit to the "
+"recommended amount, or do not wish to, then simply ignore this message."
+msgstr ""
+"Liitännäinen %%%%PRODUCT%%%% <strong>vaatii</strong>, että Wordpressin "
+"käytössä on palvelimella vähintään %s muistia. Tällä hetkellä palvelin "
+"muistirajoitus on %s, mikä ylittää vähimmäisvaatimuksen. Optimaaliseen "
+"käyttöön suosittelemme rajoitukseksi vähintään %s (kuten myös WooCommerce). "
+"Jos et voi tai halua kasvattaa rajoitusta suositellulle tasolle, voit jättää "
+"tämän viestin huomiotta."
+
+#: ../opentickets.php:535
+#, php-format
+msgid "Could not compile stylesheet %s. [%s]"
+msgstr "Tyylitiedostoa %s ei voitu käsitellä. [%s]"
+
+#: ../opentickets.php:538
+#, php-format
+msgid "Could not write to stylesheet file %s."
+msgstr "Tyylitiedostoon %s kirjoittaminen epäonnistui."
+
+#: ../opentickets.php:542
+#, php-format
+msgid "Could not write colors to file %s. [%s]"
+msgstr "Tiedostoon %s ei voitu kirjoittaa väritietoja. [%s]"
+
+#: ../opentickets.php:550
+msgid "the installation process"
+msgstr "asennusprosessi"
+
+#: ../opentickets.php:555 ../opentickets.php:559
+#, php-format
+msgid "Could not find the needed library %s, for use in %s."
+msgstr "Tarvittavaa kirjastoa %s ei löytynyt (%s)."
+
+#: ../templates/admin/meta-boxes/views/html-order-fee.php:13
+msgid "Fee"
+msgstr "Maksu"
+
+#: ../templates/admin/meta-boxes/views/html-order-fee.php:16
+msgid "Fee Name"
+msgstr "Maksun nimi"
+
+#: ../templates/admin/meta-boxes/views/html-order-item.php:12
+msgid "Product ID:"
+msgstr "Tuotteen ID:"
+
+#: ../templates/admin/meta-boxes/views/html-order-item.php:15
+#: ../templates/admin/meta-boxes/views/html-order-item.php:17
+msgid "Variation ID:"
+msgstr "Muunnelman ID:"
+
+#: ../templates/admin/meta-boxes/views/html-order-item.php:17
+msgid "No longer exists"
+msgstr "Ei ole enää olemassa"
+
+#: ../templates/admin/meta-boxes/views/html-order-item.php:21
+msgid "Product SKU:"
+msgstr "Tuotteen SKU:"
+
+#: ../templates/admin/meta-boxes/views/html-order-item.php:138
+msgid "Add&nbsp;meta"
+msgstr "Lisää&nbsp;meta"
+
+#: ../templates/admin/meta-boxes/views/html-order-item.php:200
+#: ../templates/admin/meta-boxes/views/html-order-item.php:243
+msgid "After pre-tax discounts."
+msgstr "Verottomien alennuksien jälkeen."
+
+#: ../templates/admin/meta-boxes/views/html-order-item.php:203
+#: ../templates/admin/meta-boxes/views/html-order-item.php:246
+msgid "Before pre-tax discounts."
+msgstr "Ennen verottomia alennuksia."
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:22
+msgid "Standard"
+msgstr "Tavallinen"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:53
+msgid "Item"
+msgstr "Tuote"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:57
+msgid "Cost"
+msgstr "Hinta"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:58
+msgid "Qty"
+msgstr "Määrä"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:59
+msgid "Total"
+msgstr "Yhteensä"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:65
+#: ../templates/admin/meta-boxes/views/html-order-items.php:66
+msgid "Tax"
+msgstr "Vero"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:137
+msgid "Coupon(s) Used"
+msgstr "Käytetyt kupongit"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:152
+msgid "Discount"
+msgstr "Alennus"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:152
+msgid "This is the total discount. Discounts are defined per line item."
+msgstr "Tämä on kokonaisalennus. Alennukset määritellään tuotekohtaisesti."
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:162
+msgid "This is the shipping and handling total costs for the order."
+msgstr "Tämä on tilauksen toimituksen ja käsittelyn kokonaiskustannus."
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:182
+msgid "Order Total"
+msgstr "Tilauksen loppusumma"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:202
+msgid "Refunded"
+msgstr "Hyvitetty"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:215
+msgid "Actions"
+msgstr "Toimenpiteet"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:218
+msgid "Delete selected line item(s)"
+msgstr "Poista valitut tuotteet"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:221
+msgid "Stock Actions"
+msgstr "Varastotoiminnot"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:222
+msgid "Reduce line item stock"
+msgstr "Vähennä tuote varastosta"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:223
+msgid "Increase line item stock"
+msgstr "Lisää tuote varastoon"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:227
+msgid "Apply"
+msgstr "Hyväksy"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:231
+msgid "Add line item(s)"
+msgstr "Lisää tuotteita"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:233
+msgid "This order has been paid for and is no longer editable"
+msgstr "Tämä tilaus on maksettu eikä sitä voi enää muokata"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:236
+msgid "Add Tax"
+msgstr "Lisää vero"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:239
+msgid "Refund"
+msgstr "Hyvitä"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:246
+msgid "Calculate Taxes"
+msgstr "Laske verot"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:247
+msgid "Calculate Total"
+msgstr "Laske loppusumma"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:252
+msgid "Add product(s)"
+msgstr "Lisää tuotteita"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:253
+msgid "Add fee"
+msgstr "Lisää maksu"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:254
+msgid "Add shipping cost"
+msgstr "Lisää toimituskulut"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:256
+msgid "Save"
+msgstr "Tallenna"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:266
+msgid "Restock refunded items"
+msgstr "Palauta hyvitetyt tuotteet varastoon"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:270
+msgid "Amount already refunded"
+msgstr "Hyvitetty summa"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:274
+msgid "Total available to refund"
+msgstr "Yhteensä hyvitettävissä"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:278
+msgid "Refund amount"
+msgstr "Hyvitä summa"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:285
+msgid "Reason for refund (optional)"
+msgstr "Hyvityksen perustelu (vapaaehtoinen)"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:297
+msgid "Payment Gateway"
+msgstr "Maksutapa"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:299
+#, php-format
+msgctxt "Refund $amount"
+msgid "Refund %s via %s"
+msgstr "Hyvitä %s (%s)"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:300
+#, php-format
+msgctxt "Refund $amount manually"
+msgid "Refund %s manually"
+msgstr "Hyvitä %s manuaalisesti"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:313
+msgid "Add products"
+msgstr "Lisää tuotteita"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:317
+msgid "Search for a product&hellip;"
+msgstr "Etsi tuotetta&hellip;"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:322
+#: ../templates/admin/meta-boxes/views/html-order-items.php:377
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:83
+msgid "Add"
+msgstr "Lisää"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:337
+msgid "Add tax"
+msgstr "Lisää vero"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:345
+msgid "Rate name"
+msgstr "Verotuluokan nimi"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:346
+msgid "Tax class"
+msgstr "Veroluokka"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:347
+msgid "Rate code"
+msgstr "Verotusluokan koodi"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:348
+msgid "Rate %"
+msgstr "Veroprosentti"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:369
+msgid "Or, enter tax rate ID:"
+msgstr "Tai lisää verotuksen ID:"
+
+#: ../templates/admin/meta-boxes/views/html-order-items.php:370
+msgid "Optional"
+msgstr "Vapaaehtoinen"
+
+#: ../templates/admin/meta-boxes/views/html-order-shipping.php:23
+msgid "Shipping Name"
+msgstr "Toimitusluokan nimi"
+
+#: ../templates/admin/meta-boxes/views/html-order-shipping.php:25
+msgid "Shipping Method"
+msgstr "Toimitusluokka"
+
+#: ../templates/admin/post-types/meta-boxes/views/html-order-item.php:4
+msgid "OpenTickets WC template override has moved location."
+msgstr "OpenTicketsin WC-malline on vaihtanut paikkaa."
+
+#: ../templates/admin/reports/seating-report.php:10
+msgid "Sort by"
+msgstr "Järjestä"
+
+#: ../templates/admin/reports/seating-report.php:23
+msgid "Edit User"
+msgstr "Muokkaa käyttäjää"
+
+#: ../templates/admin/reports/seating-report.php:33
+msgid "Edit Order"
+msgstr "Muokkaa tilausta"
+
+#: ../templates/admin/reports/seating-report.php:47
+msgid "Edit Product"
+msgstr "Muokkaa tuotetta"
+
+#: ../templates/checkin/already-occupied.php:9
+msgid "Ticket has PREVIOUSLY checked in!"
+msgstr "Lippu on JO kirjattu sisään!"
+
+#: ../templates/checkin/already-occupied.php:24
+#: ../templates/checkin/occupy-failure.php:24
+#: ../templates/checkin/occupy-success.php:24
+msgid "Owner:"
+msgstr "Omistaja"
+
+#: ../templates/checkin/already-occupied.php:26
+#: ../templates/checkin/occupy-failure.php:26
+#: ../templates/checkin/occupy-success.php:26
+msgid "Checked-In:"
+msgstr "Sisäänkirjattu:"
+
+#: ../templates/checkin/no-access.php:7
+msgid "No access"
+msgstr "Ei pääsyä"
+
+#: ../templates/checkin/no-access.php:8
+msgid "You do not have sufficient permissions to perform this action!"
+msgstr "Sinulla ei ole tähän toimintoon tarvittavia oikeuksia!"
+
+#: ../templates/checkin/occupy-failure.php:9
+msgid "Check-In FAILED!"
+msgstr "Sisäänkirjaus EPÄONNISTUI"
+
+#: ../templates/checkin/occupy-success.php:9
+msgid "Check-In SUCCESSFUL"
+msgstr "Sisäänkirjaus ONNISTUI"
+
+#: ../templates/myaccount/my-upcoming-tickets.php:3
+msgid "Upcoming Tickets"
+msgstr "Tulevat liput"
+
+#: ../templates/myaccount/my-upcoming-tickets.php:20
+#: ../templates/myaccount/my-upcoming-tickets.php:76
+msgid "pending payment"
+msgstr "odottava maksu"
+
+#: ../templates/myaccount/my-upcoming-tickets.php:23
+#, php-format
+msgid "for <a href=\"%s\" title=\"%s\">%s</a>"
+msgstr "<a href=\"%s\" title=\"%s\">%s</a>"
+
+#: ../templates/myaccount/my-upcoming-tickets.php:25
+#: ../templates/myaccount/my-upcoming-tickets.php:55
+msgid "Visit the Event page"
+msgstr "Käy tapahtuman sivulla"
+
+#: ../templates/myaccount/my-upcoming-tickets.php:30
+#: ../templates/myaccount/my-upcoming-tickets.php:83
+#, php-format
+msgid "(order <a href=\"%s\" title=\"%s\">#%s<a/>)"
+msgstr "(tilaus <a href=\"%s\" title=\"%s\">#%s<a/>)"
+
+#: ../templates/myaccount/my-upcoming-tickets.php:32
+#: ../templates/myaccount/my-upcoming-tickets.php:85
+msgid "Edit order"
+msgstr "Muokkaa tilausta"
+
+#: ../templates/myaccount/my-upcoming-tickets.php:53
+#, php-format
+msgid "<a href=\"%s\" title=\"%s\">%s</a>"
+msgstr "<a href=\"%s\" title=\"%s\">%s</a>"
+
+#: ../templates/myaccount/my-upcoming-tickets.php:56
+msgid "(View Show Page)"
+msgstr "(Katso näytöksen sivu)"
+
+#: ../templates/post-content/event-area-closed.php:4
+msgid "We are sorry. Online registration for this event has closed."
+msgstr "Valitettavasti tämän tapahtuman online-myynti on päättynyt."
+
+#: ../templates/post-content/event-area.php:12
+msgid ""
+"For a better experience, certain features of javascript area required. "
+"Currently you either do not have these features, or you do not have them "
+"enabled. Despite this, you can still purchase your tickets, using 2 simple "
+"steps."
+msgstr ""
+"Paremman käyttäjäkokemuksen saat määrättyjen Javascript-ominaisuuksien "
+"avulla. Tällä hetkellä sinulta puuttuu nämä ominaisuudet tai ne on kytketty "
+"pois päältä. Siitä huolimatta voit ostaa liput kahden yksinkertaisen vaiheen "
+"kautta."
+
+#: ../templates/post-content/event-area.php:15
+msgid ""
+"<strong>STEP 1:</strong> Below, enter the number of tickets you wish to "
+"purchase, then click <span class=\"button-name\">Reserve Tickets</span>."
+msgstr ""
+"<strong>VAIHE 1:</stron>Kirjoita alle, montako lippua haluaisit ostaa. "
+"Klikkaa sitten <span class=\"button-name\">Varaa liput</span>."
+
+#: ../templates/post-content/event-area.php:18
+msgid ""
+"<strong>STEP 2:</strong> Finally, once you have successfully Reserved your "
+"Tickets, click <span class=\"button-name\">Proceed to Cart</span> to "
+"complete your order."
+msgstr ""
+"<strong>VAIHE 2:</strong> Kun olet Varannut liput onnistuneesti, klikkaa "
+"<span class=\"button-name\">Jatka Ostoskoriin</span> viimeistelemään "
+"tilauksesi."
+
+#: ../templates/post-content/event-area.php:37
+msgid "Successfully removed your reservations."
+msgstr "Varaukset poistettu onnistuneesti."
+
+#: ../templates/post-content/event-area.php:48
+msgid "<span class=\"step-name\">STEP 1</span>: How many?"
+msgstr "<span class=\"step-name\">VAIHE 1</span>: Kuinka monta?"
+
+#: ../templates/post-content/event-area.php:55
+#, php-format
+msgid ""
+"Currently, there are <span class=\"available\">%s</span> \"<span class="
+"\"ticket-name\">%s</span>\" (<span class=\"ticket-price\">%s</span>) "
+"available for purchase."
+msgstr ""
+"Tällä hetkellä \"<span class=\"ticket-name\">%s</span>\"-lippuja (<span "
+"class=\"ticket-price\">%s</span>) on jäljellä <span class=\"available\">%s</"
+"span>"
+
+#: ../templates/post-content/event-area.php:87
+msgid "<span class=\"step-name\">STEP 2</span>: Review"
+msgstr "<span class=\"step-name\">VAIHE 2</span>: Yhteenveto"
+
+#: ../templates/post-content/event-area.php:94
+#, php-format
+msgid ""
+"Currently, there are <span class=\"available\">%s</span> more \"<span class="
+"\"ticket-name\">%s</span>\" (<span class=\"ticket-price\">%s</span>) "
+"available for purchase."
+msgstr ""
+"Tällä hetkellä \"<span class=\"ticket-name\">%s</span>\"-lippuja (<span "
+"class=\"ticket-price\">%s</span>) on jäljellä vielä <span class=\"available"
+"\">%s</span> lisää."
+
+#: ../templates/post-content/event-area.php:131
+msgid ""
+"We are sorry. There are currently no tickets available for this event. Check "
+"back soon!"
+msgstr ""
+"Valitettavasti tapahtumaan ei ole juuri nyt lippuja saatavilla. Yritä "
+"uudelleen myöhemmin!"
+
+#: ../templates/post-content/venue/contact-info.php:28
+msgid "Physical Address:"
+msgstr "Fyysinen osoite:"
+
+#: ../templates/post-content/venue/social.php:2
+msgid "Contact Information:"
+msgstr "Yhteystiedot:"
+
+#: ../templates/post-content/venue/social.php:19
+#: ../templates/post-content/venue/social.php:24
+#: ../templates/post-content/venue/social.php:29
+#, php-format
+msgid "Visit the %s"
+msgstr "Käy tapahtuman sivulla %s"
+
+#: ../templates/post-content/venue/social.php:34
+msgid "Send an email"
+msgstr "Lähetä sähköposti"
+
+#: ../templates/tickets/basic-ticket.php:18
+#: ../templates/tickets/basic-ticket.php:123
+msgid "Who is OpenTickets?"
+msgstr "Mikä OpenTickets?"
+
+#: ../templates/tickets/basic-ticket.php:39
+#, php-format
+msgid "%s - %s - %s - %s"
+msgstr "%s - %s - %s - %s"
+
+#: ../templates/tickets/basic-ticket.php:52
+msgid "Download PDF"
+msgstr "Lataa PDF"
+
+#: ../templates/tickets/basic-ticket.php:70
+msgid "Starts:"
+msgstr "Alkaa:"
+
+#: ../templates/tickets/basic-ticket.php:72
+#: ../templates/tickets/basic-ticket.php:79
+msgid "D, F jS, Y"
+msgstr "D, jS \\of F, Y"
+
+#: ../templates/tickets/basic-ticket.php:72
+#: ../templates/tickets/basic-ticket.php:79
+msgid " @ "
+msgstr "kello"
+
+#: ../templates/tickets/basic-ticket.php:77
+msgid "Ends:"
+msgstr "Päättyy:"
+
+#: ../templates/tickets/basic-ticket.php:83
+#: ../templates/tickets/basic-ticket.php:156
+msgid "Area:"
+msgstr "Katsomo:"
+
+#: ../templates/tickets/basic-ticket.php:91
+msgid "ORDER #"
+msgstr "TILAUS #"
+
+#: ../templates/tickets/basic-ticket.php:96
+#, php-format
+msgid "%1$s of %2$s"
+msgstr "%1$s/%2$s"
+
+#: ../templates/tickets/error-msg.php:9
+msgid "An error has occurred while attempting to view the ticket"
+msgstr "Lipun katsomisessa tapahtui virhe."
+
+#: ../templates/tickets/verification-form.php:6
+msgid "Additional Information is Required"
+msgstr "Tarvitaan lisätietoja"
+
+#: ../templates/tickets/verification-form.php:8
+msgid ""
+"In order to allow you to view your ticket, we must first verify who you are, "
+"and that you should be able to view this ticket. To do that, we need to "
+"obtain some information from you, that we will use to verify who you are. If "
+"this information matches our record, then your ticket will be available to "
+"you."
+msgstr ""
+"Jotta voit nähdä lippusi, sinun täytyy vahvistaa henkilöllisyytesi ja "
+"oikeutesi lippuun. Sitä varten tarvitsemme sinulta joitakin tietoja. Jos "
+"nämä tiedot vastaavat tietokantaamme, saat liput käyttöösi."
+
+#: ../templates/tickets/verification-form.php:14
+msgid ""
+"This should be the email you used during the purchase of your ticket, as "
+"your billing email address."
+msgstr ""
+"Valitse se sähköpostiosoite, jota käytit lipun oston yhteydessä "
+"laskutustiedoissa."
+
+#: ../templates/tickets/verification-form.php:18
+msgid "Submit"
+msgstr "Hyväksy"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:47
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:94
+msgid "Company"
+msgstr "Yritys"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:51
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:98
+msgid "Address 1"
+msgstr "Osoite 1"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:63
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:110
+msgid "Postcode"
+msgstr "Postinumero"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:70
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:117
+msgid "Select a country&hellip;"
+msgstr "Valitse maa&hellip;"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:73
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:120
+msgid "State/County"
+msgstr "Maakunta"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:158
+#, php-format
+msgid "Order %s details"
+msgstr "Tilauksen %s tiedot"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:162
+#, php-format
+msgid "Payment via %s"
+msgstr "Maksu: %s"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:175
+msgid "Customer IP"
+msgstr "Tilaajan IP:"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:181
+msgid "General Details"
+msgstr "Yleiset tiedot"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:183
+msgid "Order date:"
+msgstr "Tilaukset ajankohta:"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:184
+msgid "h"
+msgstr "t"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:184
+msgid "m"
+msgstr "m"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:187
+msgid "Order status:"
+msgstr "Tilauksen tila:"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:206
+msgid "Customer:"
+msgstr "Asiakas:"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:221
+msgid "Billing Details"
+msgstr "Laskutustiedot"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:229
+msgid "No billing address set."
+msgstr "Laskutusosoitetta ei asetettu."
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:247
+msgid "Load billing address"
+msgstr "Lataa laskutusosoite"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:295
+msgid "Transaction ID"
+msgstr "Maksutapahtuman ID"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:313
+msgid "Shipping Details"
+msgstr "Toimitustiedot"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:321
+msgid "No shipping address set."
+msgstr "Toimitusosoitetta ei asetettu."
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:339
+msgid "Customer Note"
+msgstr "Asikashuomautus"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:345
+msgid "Load shipping address"
+msgstr "Lataa toimitusosoite"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:345
+msgid "Copy from billing"
+msgstr "Kopioi laskutustiedoista"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:366
+msgid "Customer Note:"
+msgstr "Asiakashuomautus:"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:367
+msgid "Customer's notes about the order"
+msgstr "Asiakkaan huomautukset tilauksesta:"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:52
+#, php-format
+msgid "added on %1$s at %2$s"
+msgstr "Lisätty %1$s kello %2$s"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:53
+msgid "WooCommerce"
+msgstr "WooCommerce"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:53
+#, php-format
+msgid "by %s"
+msgstr "%s perusteella"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:61
+msgid "There are no notes yet."
+msgstr "Huomautuksia ei vielä ole"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:67
+msgid "Add note"
+msgstr "Lisää huomio"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:74
+msgid "Customer note"
+msgstr "Asiakashuomautus"
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:81
+msgid "Private note"
+msgstr "Yksityinen huomautus"
+
+#~ msgid "%s on %s @ %s"
+#~ msgstr "%s (%s klo %s)"
+
+#~ msgid "Event Date Time Settings"
+#~ msgstr "Tapahtuman päivämäärän asetukset"
+
+#~ msgid "Event Run Date Range"
+#~ msgstr "Produktion aikaväli"
+
+#~ msgid "New User"
+#~ msgstr "Uusi käyttäjä"
+
+#~ msgid "There are currently no reports available for"
+#~ msgstr "Raportteja ei saatavilla tapahtumalle"
+
+#~ msgid "Page Attributes"
+#~ msgstr "Sivun määritteet"
+
+#~ msgid "Attributes"
+#~ msgstr "Määritteet"
+
+#~ msgid "(no parent)"
+#~ msgstr "(ei vanhempaa)"
+
+#~ msgid "Parent"
+#~ msgstr "Vanhempi"
+
+#~ msgid "Page Template"
+#~ msgstr "Sivun malline"
+
+#~ msgid "Default Template"
+#~ msgstr "Oletusmalline"
+
+#~ msgid "Order"
+#~ msgstr "Tilaus"
+
+#~ msgid "Need help? Use the Help tab in the upper right of your screen."
+#~ msgstr "Tarvitset apua? Klikkaa Apua-näppäintä näytön oikeassa ylälaidassa."
+
+#~ msgid "Order Details"
+#~ msgstr "Tilauksen tiedot"
+
+#~ msgid "Order number"
+#~ msgstr "Tilausnumero"
+
+#~ msgid "Customer IP:"
+#~ msgstr "Asiakkaan IP:"
+
+#~ msgid "Order Date:"
+#~ msgstr "Tilauksen päivämäärä"
+
+#~ msgid "State:"
+#~ msgstr "Maakunta:"
+
+#~ msgid "must be at least 2 letters or numbers"
+#~ msgstr "täytyy olla vähintään 2 kirjainta tai numeroa"
+
+#~ msgid "must be at least 7 letters, numbers, or spaces"
+#~ msgstr "täytyy olla vähintään 7 kirjainta, numeroa tai välilyöntiä"
+
+#~ msgid "must be at least 4 letters, numbers, or spaces"
+#~ msgstr "täytyy olla vähintään 4 kirjainta, numeroa tai välilyöntiä"
+
+#~ msgid "must be at least 5 letters, numbers, or spaces"
+#~ msgstr "täytyy olla vähintään 5 kirjainta, numeroa tai välilyöntiä"
+
+#~ msgid "must be at least 2 letters, numbers, or spaces"
+#~ msgstr "täytyy olla vähintään 2 kirjainta, numeroa tai välilyöntiä"
+
+#~ msgid "must be at least 3 letters, numbers, or spaces"
+#~ msgstr "täytyy olla vähintään 2 kirjainta, numeroa tai välilyöntiä"
+
+#~ msgid "must be a valid email"
+#~ msgstr "sähköpostiosoite ei kelpaa"
+
+#~ msgid "Order Notes"
+#~ msgstr "Tilauksen huomiot"
+
+#~ msgid "Order Items"
+#~ msgstr "Tilatut tuotteet"
+
+#~ msgid ""
+#~ "Note: if you edit quantities or remove items from the order you will need "
+#~ "to manually update stock levels."
+#~ msgstr ""
+#~ "Huomaa: jos tilauksen määriä tai poistat tuotteita, joudut päivittämään "
+#~ "varastotilanteen manuaalisesti."
+
+#~ msgid "Tax Class"
+#~ msgstr "Verotusluokka"
+
+#~ msgid "Tax class for the line item"
+#~ msgstr "Tuotteen verotusluokka"
+
+#~ msgid "Totals"
+#~ msgstr "Yhteensä"
+
+#~ msgid "Line subtotals are before pre-tax discounts, totals are after."
+#~ msgstr "Välisumma lasketaan ennen veron alennusta, loppusumma sen jälkeen."
+
+#~ msgid "Delete Lines"
+#~ msgstr "Poista rivejä"
+
+#~ msgid "Reduce Line Stock"
+#~ msgstr "Vähennä varastosta"
+
+#~ msgid "Increase Line Stock"
+#~ msgstr "Lisää varastoon"
+
+#~ msgid "Add item(s)"
+#~ msgstr "Lisää tuotteita"
+
+#~ msgid "added %s ago"
+#~ msgstr "lisätty %s sitten"
+
+#~ msgid "There are no notes for this order yet."
+#~ msgstr "Tälle tilaukselle ei ole huomioita"
+
+#~ msgid "Order Discount"
+#~ msgstr "Tilauksen alennus"
+
+#~ msgid "Product Image"
+#~ msgstr "Tuotekuva"
+
+#~ msgid "Download %d"
+#~ msgstr "Lataa %d"
+
+#~ msgid "Download"
+#~ msgstr "Lataa"
+
+#~ msgid "Product"
+#~ msgstr "Tuote"
+
+#~ msgid "Download file%s"
+#~ msgstr "Lataa tiedosto%s"
+
+#~ msgid "Customer details"
+#~ msgstr "Asiakkaan tiedot"
+
+#~ msgid "Email:"
+#~ msgstr "Sähköposti:"
+
+#~ msgid "Telephone:"
+#~ msgstr "Puhelin:"
+
+#~ msgid "Billing Address"
+#~ msgstr "Laskutusosoite"
+
+#~ msgid "Shipping Address"
+#~ msgstr "Toimitusosoite"
+
+#~ msgid "Report"
+#~ msgstr "Raportti"
+
+#~ msgid "Reserve Tickets"
+#~ msgstr "Varaa lippuja"
