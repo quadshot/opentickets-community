@@ -169,6 +169,13 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.11.6 =
+* [update] updated DE and FI translations
+* [tweak] changed how menu is constructed
+* [tweak] removed pdf warnings and streamlined pdf code generation slightly
+* [fix] menu items not getting translations
+* [fix] 'show time' option was not actually showing time. resolved
+
 = 1.11.5 =
 * [update] added security to all directories for misconfigured server protection
 * [update] added security to top of all templates
