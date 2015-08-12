@@ -1024,7 +1024,7 @@ class qsot_post_type {
 	// fetch the current settings for a sub-event's 'show_date' and 'show_time' settings
 	public static function get_show_date_time( $current, $post_id ) {
 		// get the cache for this, if it has already been fetched, cause this can get overly heavy
-		$current = wp_cache_get( 'show-date-time-' . $post_id, 'qsot' );
+		$current = false; //wp_cache_get( 'show-date-time-' . $post_id, 'qsot' );
 		if ( false && false !== $current )
 			return $current;
 
@@ -1046,9 +1046,9 @@ class qsot_post_type {
 		// if we are still empty, default to global options
 		if ( '' === $current['date'] || '' === $current['time'] ) {
 			if ( '' === $current['date'] )
-				$current['date'] = 'yes' === get_option( self::$options->{'qsot-show-date'}, 'yes' );
+				$current['date'] = 'yes' === self::$options->{'qsot-show-date'};
 			if ( '' === $current['time'] )
-				$current['time'] = 'yes' === get_option( self::$options->{'qsot-show-time'}, 'no' );
+				$current['time'] = 'yes' === self::$options->{'qsot-show-time'};
 		}
 
 		$final = array( 'date' => !!$current['date'], 'time' => !!$current['time'] );
