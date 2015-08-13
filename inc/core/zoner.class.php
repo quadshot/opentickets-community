@@ -207,14 +207,16 @@ class qsot_zoner {
 		$res_dec = apply_filters(
 			'qsot-zoner-update-reservation',
 			false,
-			array('event_id' => $event_id, 'qty' => (int)$all[self::$o->{'z.states.c'}], 'state' => self::$o->{'z.states.c'}, 'order_id' => $order_id, 'order_item_id' => $oiid),
+			// removed qty param because $order_item_id param is specific enough to target a single row, which is what we need here
+			array('event_id' => $event_id, 'state' => self::$o->{'z.states.c'}, 'order_id' => $order_id, 'order_item_id' => $oiid),
 			array('qty' => '::DEC::')
 		);
 
 		$res_inc = apply_filters(
 			'qsot-zoner-update-reservation',
 			false,
-			array('event_id' => $event_id, 'qty' => (int)$all[self::$o->{'z.states.o'}], 'state' => self::$o->{'z.states.o'}, 'order_id' => $order_id, 'order_item_id' => $oiid),
+			// removed qty param because $order_item_id param is specific enough to target a single row, which is what we need here
+			array('event_id' => $event_id, 'state' => self::$o->{'z.states.o'}, 'order_id' => $order_id, 'order_item_id' => $oiid),
 			array('qty' => '::INC::')
 		);
 
@@ -638,6 +640,7 @@ class qsot_zoner {
 		// if we actually have updates to make, because we actually have data to filter our updated set by (in other words, do not delete all records accidentally)
 		if (is_array($wheres) && count($wheres)) { // safegaurd against deleting all records
 			$set['qty'] = isset($set['qty']) ? $set['qty'] : 0;
+			$rm_wheres = $wheres;
 			// pull out the existing reservations, and pass them on to external plugins, notifying them that they will be updated
 			$wheres = array_values($wheres);
 			$cur = $wpdb->get_results('select * from '.$wpdb->qsot_event_zone_to_order.' where 1=1'.implode('', $wheres));
@@ -667,6 +670,10 @@ class qsot_zoner {
 
 			// actually run the update, be it delete or update
 			$res = $wpdb->query($q);
+
+			// remove any empty rows that may have beenl eft behind by a ::INC:: or ::DEC::
+			$rm_wheres['qty'] = ' and quantity = 0';
+			$wpdb->query( 'delete from ' . $wpdb->qsot_event_zone_to_order . ' where 1=1' . implode( '', array_values( $rm_wheres ) ) );
 
 			// commit the query. why do i have to do this now, when it was never required before.
 			$wpdb->query('commit');
