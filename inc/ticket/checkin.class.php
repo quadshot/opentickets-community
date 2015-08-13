@@ -55,9 +55,13 @@ class QSOT_checkin {
 			// try to check the seat in
 			$res = apply_filters( 'qsot-occupy-sold', false, $data['order_id'], $data['event_id'], $data['order_item_id'], 1 );
 			// if it was successful, have a message saying that
-			if ( $res ) $template = 'checkin/occupy-success.php';
+			if ( $res && ! is_wp_error( $res ) ) $template = 'checkin/occupy-success.php';
 			// otherwise, have a message saying it failed
-			else $template = 'checkin/occupy-failure.php';
+			else {
+				$template = 'checkin/occupy-failure.php';
+				if ( is_wp_error( $res ) )
+					$extra_msg = implode( ' ', $res->get_error_messages() );
+			}
 		}
 
 		// load the information used by the checkin template
@@ -158,6 +162,7 @@ class QSOT_checkin {
 				$data['sig'] = sha1( NONCE_KEY . @json_encode( $data ) . NONCE_SALT );
 				$data = @json_encode( $data );
 
+				$ticket->qr_data_debug = $url;
 				// add an image tag to represent the qr code
 				$ticket->qr_code = sprintf(
 					'<img src="%s%s" alt="%s" />',
@@ -184,6 +189,8 @@ class QSOT_checkin {
 		} else if ( $qty > 1 ) {
 			$ticket->qr_code = null;
 			$ticket->qr_codes = array();
+			$ticket->qr_data_debug = null;
+			$ticket->qr_data_debugs = array();
 
 			// aggregate the shared information amungst all the qrs
 			$info = array(
@@ -210,6 +217,7 @@ class QSOT_checkin {
 					$data['sig'] = sha1( NONCE_KEY . @json_encode( $data ) . NONCE_SALT );
 					$data = @json_encode( $data );
 
+					$ticket->qr_data_debugs[ $i ] = $url;
 					// add the image tag to the list of image tags
 					$ticket->qr_codes[ $i ] = sprintf(
 						'<img src="%s%s" alt="%s" />',
@@ -233,8 +241,15 @@ class QSOT_checkin {
 					);
 				}
 				// if this is the first qr in the list, fill the qr_code property, for backwards compatibility, since some override templates may be out of date
-				if ( null == $ticket->qr_code ) $ticket->qr_code = $ticket->qr_codes[ $i ];
+				if ( null == $ticket->qr_code ) {
+					$ticket->qr_data_debug = $url;
+					$ticket->qr_code = $ticket->qr_codes[ $i ];
+				}
 			}
+		}
+
+		if ( ! WP_DEBUG ) {
+			unset( $ticket->qr_data_debugs, $ticket->qr_data_debug );
 		}
 
 		return $ticket;
