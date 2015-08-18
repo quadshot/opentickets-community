@@ -196,20 +196,31 @@ class qsot_event_area {
 		return $current;
 	}
 
-	protected static function _get_frontend_event_data($event) {
+	// construct the data array that holds all the info we send to the frontend UI for selecting tickets
+	protected static function _get_frontend_event_data( $event ) {
+		// determine the total number of sold or reserved seats, thus far
+		$reserved_or_confirmed = apply_filters( 'qsot-event-reserved-or-confirmed-since', 0, $event->ID );
+
+		// figure out how many that leaves for the picking
+		$cap = isset( $event->meta->_event_area_obj->meta, $event->meta->_event_area_obj->meta[ self::$o->{'event_area.mk.cap'} ] ) ? $event->meta->_event_area_obj->meta[ self::$o->{'event_area.mk.cap'} ] : 0;
+		$left = max( 0, $cap - $reserved_or_confirmed );
+
+		// start putting together the results
 		$out = array(
 			'id' => $event->ID,
-			'name' => apply_filters('the_title', $event->post_title),
+			'name' => apply_filters( 'the_title', $event->post_title ),
 			'ticket' => false,
-			'link' => get_permalink($event->ID),
-			'parent_link' => get_permalink($event->post_parent),
+			'link' => get_permalink( $event->ID ),
+			'parent_link' => get_permalink( $event->post_parent ),
 			'capacity' => $event->meta->capacity,
-			'available' => $event->meta->available,
+			'available' => $left,
 		);
-		if (is_object($event->meta) && is_object($event->meta->_event_area_obj) && is_object($event->meta->_event_area_obj->ticket)) {
+
+		// if there is a ticket associated to the event, then include the basic display info about the ticket
+		if ( is_object( $event->meta ) && is_object( $event->meta->_event_area_obj ) && is_object( $event->meta->_event_area_obj->ticket ) ) {
 			$out['ticket'] = array(
 				'name' => $event->meta->_event_area_obj->ticket->get_title(),
-				'price' => apply_filters('qsot-price-formatted', $event->meta->_event_area_obj->ticket->get_price()),
+				'price' => apply_filters( 'qsot-price-formatted', $event->meta->_event_area_obj->ticket->get_price() ),
 			);
 		}
 
@@ -377,34 +388,70 @@ class qsot_event_area {
 		exit;
 	}
 
-	public static function faj_reserve($resp, $data) {
+	// process the ajax request from the frontend, that is used to reserve tickets
+	public static function faj_reserve( $resp, $data ) {
+		// start with an empty response
 		$resp['s'] = false;
 		$resp['e'] = array();
 
-		$event = apply_filters('qsot-get-event', false, $data['event_id']);
+		// load the event
+		$event = apply_filters( 'qsot-get-event', false, $data['event_id'] );
+
+		// detemrine the quantity being requested
 		$qty = $data['quantity'];
-		if ($qty > 0 && is_object($event) && is_object($event->meta) && is_object($event->meta->_event_area_obj) && is_object($event->meta->_event_area_obj->ticket)) {
-			$res = apply_filters('qsot-zoner-reserve-current-user', false, $event, $event->meta->_event_area_obj->ticket->id, $qty);
-			if ($res && ! is_wp_error( $res ) ) {
+
+		// if they are qctually requesting a quantity, the event exists, and the event data about the event_area we need is present, then
+		if ( $qty > 0 && is_object( $event ) && is_object( $event->meta ) && is_object( $event->meta->_event_area_obj ) && is_object( $event->meta->_event_area_obj->ticket ) ) {
+			// process the reservation
+			$res = apply_filters( 'qsot-zoner-reserve-current-user', false, $event, $event->meta->_event_area_obj->ticket->id, $qty );
+
+			// if the reservation was a success, then
+			if ( $res && ! is_wp_error( $res ) ) {
+				// construct an affirmative response, with the remainder data if applicable
 				$resp['s'] = true;
-				$resp['m'] = array( __('Updated your reservations successfully.','opentickets-community-edition') );
-				$resp['data'] = array(
-					'owns' => apply_filters('qsot-zoner-owns-current-user', 0, $event, $event->meta->_event_area_obj->ticket->id, self::$o->{'z.states.r'}),
-					'available' => $event->meta->available,
-				);
-				$resp['data']['available_more'] = $resp['data']['available'] - $resp['data']['owns'];
+				$resp['m'] = array( __( 'Updated your reservations successfully.', 'opentickets-community-edition' ) );
+
+				// force the cart to send the cookie, because sometimes it doesnt. stupid bug
 				WC()->cart->maybe_set_cart_cookies();
+			// if there were reported errors, then report them as is
 			} else if ( is_wp_error( $res ) ) {
-				$resp['e'] = array_merge( $res['e'], $res->get_error_messages() );
+				$resp['e'] = array_merge( $resp['e'], $res->get_error_messages() );
+			// if it failed but no error was reported, just give a generic message
 			} else {
-				$resp['e'][] = __('Could not update your reservations.','opentickets-community-edition');
+				$resp['e'][] = __( 'Could not update your reservations.', 'opentickets-community-edition' );
 			}
+		// otherwise try to report an error that will be helpful in some way to figuring out the problem
 		} else {
-			if ($qty <= 0) $resp['e'][] = __('The quantity must be greater than zero.','opentickets-community-edition');
-			if (!is_object($event)) $resp['e'][] = __('Could not load that event.','opentickets-community-edition');
-			if (!is_object($event->meta)) $resp['e'][] = __('A problem occurred when loading that event.','opentickets-community-edition');
-			if (!is_object($event->meta->_event_area_obj)) $resp['e'][] = __('That event does not currently have any tickets.','opentickets-community-edition');
-			if (!is_object($event->meta->_event_area_obj->ticket)) $resp['e'][] = __('The event does not have any tickets.','opentickets-community-edition');
+			if ( $qty <= 0 )
+				$resp['e'][] = __( 'The quantity must be greater than zero.', 'opentickets-community-edition' );
+			if ( ! is_object( $event ) )
+				$resp['e'][] = __( 'Could not load that event.', 'opentickets-community-edition' );
+			if ( ! is_object( $event->meta ) )
+				$resp['e'][] = __( 'A problem occurred when loading that event.', 'opentickets-community-edition' );
+			if ( ! is_object( $event->meta->_event_area_obj ) )
+				$resp['e'][] = __( 'That event does not currently have any tickets.', 'opentickets-community-edition' );
+			if ( ! is_object( $event->meta->_event_area_obj->ticket ) )
+				$resp['e'][] = __( 'The event does not have any tickets.', 'opentickets-community-edition' );
+		}
+
+		// determine the total number of sold or reserved seats, thus far
+		$reserved_or_confirmed = apply_filters( 'qsot-event-reserved-or-confirmed-since', 0, $event->ID );
+
+		// figure out how many that leaves for the picking
+		$cap = isset( $event->meta->_event_area_obj->meta, $event->meta->_event_area_obj->meta[ self::$o->{'event_area.mk.cap'} ] ) ? $event->meta->_event_area_obj->meta[ self::$o->{'event_area.mk.cap'} ] : 0;
+		$left = max( 0, $cap - $reserved_or_confirmed );
+
+		// add the extra data used to update the ui
+		$resp['data'] = array(
+			'owns' => apply_filters( 'qsot-zoner-owns-current-user', 0, $event, $event->meta->_event_area_obj->ticket->id, self::$o->{'z.states.r'} ),
+			'available' => 0,
+			'available_more' => 0,
+		);
+
+		// only show the remaining availability if we are allowed by settings
+		if ( 'yes' == apply_filters( 'qsot-get-option-value', 'yes', 'qsot-show-available-quantity' ) ) {
+			$resp['data']['available'] = $left;
+			$resp['data']['available_more'] = $left;
 		}
 
 		return $resp;
@@ -451,11 +498,6 @@ class qsot_event_area {
 					if (!$owns && $res) {
 						$resp['s'] = true;
 						$resp['m'] = array( __('Updated your reservations successfully.','opentickets-community-edition') );
-						$resp['data'] = array(
-							'owns' => $owns,
-							'available' => $event->meta->available,
-						);
-						$resp['data']['available_more'] = $resp['data']['available'] - $resp['data']['owns'];
 					} else {
 						if ($owns) $resp['e'][] = __('A problem occurred when trying to remove your reservations.','opentickets-community-edition');
 						else $resp['e'][] = __('Could not update your reservations.','opentickets-community-edition');
@@ -467,15 +509,10 @@ class qsot_event_area {
 					} else {
 						$resp['s'] = true;
 						$resp['m'] = array( __('Updated your reservations successfully.','opentickets-community-edition') );
-						$resp['data'] = array(
-							'owns' => $owns,
-							'available' => $event->meta->available,
-						);
-						$resp['data']['available_more'] = $resp['data']['available'] - $resp['data']['owns'];
 					}
 				}
 			} else {
-				$show_available_qty = apply_filters( 'qsot-get-option-value', true, 'qsot-show-available-quantity' );
+				$show_available_qty = apply_filters( 'qsot-get-option-value', 'yes', 'qsot-show-available-quantity' );
 
 				$resp['e'][] = ( 'yes' == $show_available_qty )
 						? sprintf(
@@ -495,6 +532,26 @@ class qsot_event_area {
 			if (!is_object($event->meta)) $resp['e'][] = __('A problem occurred when loading that event.','opentickets-community-edition');
 			if (!is_object($event->meta->_event_area_obj)) $resp['e'][] = __('That event does not have currently have any tickets.','opentickets-community-edition');
 			if (!is_object($event->meta->_event_area_obj->ticket)) $resp['e'][] = __('The event does not have any tickets.','opentickets-community-edition');
+		}
+
+		// determine the total number of sold or reserved seats, thus far
+		$reserved_or_confirmed = apply_filters( 'qsot-event-reserved-or-confirmed-since', 0, $event->ID );
+
+		// figure out how many that leaves for the picking
+		$cap = isset( $event->meta->_event_area_obj->meta, $event->meta->_event_area_obj->meta[ self::$o->{'event_area.mk.cap'} ] ) ? $event->meta->_event_area_obj->meta[ self::$o->{'event_area.mk.cap'} ] : 0;
+		$left = max( 0, $cap - $reserved_or_confirmed );
+
+		// add the extra data used to update the ui
+		$resp['data'] = array(
+			'owns' => apply_filters( 'qsot-zoner-owns-current-user', 0, $event, $event->meta->_event_area_obj->ticket->id, self::$o->{'z.states.r'} ),
+			'available' => 0,
+			'available_more' => 0,
+		);
+
+		// only show the remaining availability if we are allowed by settings
+		if ( 'yes' == apply_filters( 'qsot-get-option-value', 'yes', 'qsot-show-available-quantity' ) ) {
+			$resp['data']['available'] = $left;
+			$resp['data']['available_more'] = $left;
 		}
 
 		return $resp;

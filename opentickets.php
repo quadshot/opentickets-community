@@ -414,6 +414,13 @@ class QSOT {
 		return $allow;
 	}
 
+	// get the current number of milliseconds during execution. used for 'since' in the reservation table, mostly
+	public static function mille() {
+		// get the current microtime
+		$when = explode( '.', microtime( true ) );
+		return (int)end( $when );
+	}
+
 	public static function memory_limit($force=false) {
 		static $max = false;
 

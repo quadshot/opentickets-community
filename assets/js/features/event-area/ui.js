@@ -21,7 +21,7 @@ QS.EATicketSelection = (function($, q, qt) {
 				if (qt.isO(r)) {
 					if (typeof r.e != 'undefined') console.log('ajax error: ', r.e);
 					func(r);
-				} else { efunc(); }
+				} else { efunc( r ); }
 			},
 			error: efunc
 		});
@@ -121,6 +121,9 @@ QS.EATicketSelection = (function($, q, qt) {
 		}
 
 		function _is_valid_response(r, form) {
+			if ( qt.is( r.data ) )
+				_update_availables( r.data );
+
 			if (!qt.isO(r)) {
 				_show_msg('unexpected');
 				form.qsUnblock();
@@ -157,7 +160,7 @@ QS.EATicketSelection = (function($, q, qt) {
 				_display_form('o')
 				if (qt.isA(r.m) && r.m.length) _show_msg('_custom', r.m, 'msg');
 				t.e.ts.qsUnblock();
-			}, function() { _show_msg('unexpected'); t.e.ts.qsUnblock(); });
+			}, function( r ) { _show_msg('unexpected'); t.e.ts.qsUnblock(); if ( qt.is( r.data ) ) _update_availables( r.data ); });
 		}
 
 		function _update_reservations(e) {
@@ -176,7 +179,7 @@ QS.EATicketSelection = (function($, q, qt) {
 				_display_form('o')
 				if (qt.isA(r.m) && r.m.length) _show_msg('_custom', r.m, 'msg');
 				t.e.ts.qsUnblock();
-			}, function() { _show_msg('unexpected'); t.e.ts.qsUnblock(); });
+			}, function( r ) { _show_msg('unexpected'); t.e.ts.qsUnblock(); if ( qt.is( r.data ) ) _update_availables( r.data ); });
 		}
 
 		function _remove_reservations(e) {
@@ -195,7 +198,7 @@ QS.EATicketSelection = (function($, q, qt) {
 				_display_form('ts')
 				if (qt.isA(r.m) && r.m.length) _show_msg('_custom', r.m, 'msg');
 				t.e.ts.qsUnblock();
-			}, function() { _show_msg('unexpected'); t.e.ts.qsUnblock(); });
+			}, function( r ) { _show_msg('unexpected'); t.e.ts.qsUnblock(); if ( qt.is( r.data ) ) _update_availables( r.data ); });
 		}
 
 		_init();
