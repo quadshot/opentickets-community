@@ -435,7 +435,7 @@ class qsot_zoner {
 				// clean up first
 				$wpdb->delete( $wpdb->qsot_event_zone_to_order, array( 'session_customer_id' => $lock_record->session_customer_id ) );
 				// error out
-				return new WP_Error( 5, __( 'There are no tickets available to reserve.', 'opentickets-community-edition' ) . ' : ' . $remainder . ' : ' . $capacity . ' : ' . $total_prior_to_lock );
+				return new WP_Error( 5, __( 'There are no tickets available to reserve.', 'opentickets-community-edition' ) );
 			}
 
 			// at this point the user has obtained a valid lock, and can now actaully have the tickets. proceed with the reservation process
