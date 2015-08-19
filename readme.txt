@@ -169,6 +169,13 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.11.7 =
+* [change] all 'reserved' tickets count against the availability
+* [tweak] more ability to debug checkin process
+* [tweak] better error reporting on checkin process
+* [fix] transition from and too seating plugin
+* [fix] edge case overbooking bug
+
 = 1.11.6 =
 * [update] updated DE and FI translations
 * [tweak] changed how menu is constructed
