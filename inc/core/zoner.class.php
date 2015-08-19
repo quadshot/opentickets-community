@@ -40,7 +40,7 @@ class qsot_zoner {
 		add_filter('qsot-permanent-zone-states', array(__CLASS__, 'permanent_zone_states'), 10, 1);
 
 		// reservation functions
-		add_filter( 'qsot-event-reserved-or-confirmed-since', array( __CLASS__, 'get_event_reserved_or_confirmed_since' ), 1000, 4 );
+		add_filter( 'qsot-event-reserved-or-confirmed-since', array( __CLASS__, 'get_event_reserved_or_confirmed_since' ), 1000, 5 );
 		add_filter('qsot-zoner-item-data-keys', array(__CLASS__, 'item_data_keys_to_maintain'), 10, 2);
 		add_action('qsot-zoner-clear-locks', array(__CLASS__, 'clear_locks'), 10, 2);
 		add_filter('qsot-zoner-reserve-current-user', array(__CLASS__, 'reserve_current_user'), 10, 4);
@@ -309,7 +309,7 @@ class qsot_zoner {
 	}
 
 	// determine the number of reserved or confirmed tickets for a given even, as of a specific time 'qsot-event-reserved-or-confirmed-since'
-	public static function get_event_reserved_or_confirmed_since( $current, $event_id, $since=false, $customer_id=false ) {
+	public static function get_event_reserved_or_confirmed_since( $current, $event_id, $since=false, $customer_id=false, $ticket_type_id=false ) {
 		global $wpdb;
 		// normalize the input
 		$event_id = absint( $event_id );
@@ -334,11 +334,14 @@ class qsot_zoner {
 		);
 
 		// if the customer_id was supplied, then exclude records for that specific customer that are not yet paid for
-		if ( $customer_id )
-			$q .= $wpdb->prepare(
-				' and session_customer_id != %s',
-				$customer_id
-			);
+		if ( $customer_id ) {
+			$q .= $wpdb->prepare( ' and ( session_customer_id != %s', $customer_id );
+
+			if ( $ticket_type_id )
+				$q .= $wpdb->prepare( ' or ticket_type_id != %d', $ticket_type_id );
+
+			$q .= ' )';
+		}
 		$q .= ' ) )';
 
 		// return the total number of sold tickets to that point, making sure to not allow negative numbers
@@ -414,10 +417,10 @@ class qsot_zoner {
 		// if count is > 0 then
 		} else {
 			// obtain a lock for the seats they requested
-			$lock_record = self::_obtain_lock( $event, array( 'ticket_type_id' => $ticket_type_id, 'quantity' => $count, 'customer_id' => $customer_id, 'order_id' => $order_id ) );
+			$lock_record = self::_obtain_lock( $event, array( 'ticket_type_id' => 0, 'quantity' => $count, 'customer_id' => $customer_id, 'order_id' => $order_id ) );
 
 			// now count how many total tickets have been reserved for this event, prior to the lock being acquired, which do not belong to the current user
-			$total_prior_to_lock = apply_filters( 'qsot-event-reserved-or-confirmed-since', 0, $event->ID, $lock_record->since, $customer_id );
+			$total_prior_to_lock = apply_filters( 'qsot-event-reserved-or-confirmed-since', 0, $event->ID, $lock_record->since, $customer_id, $ticket_type_id );
 
 			// now, compare the total before the lock, to the capacity, and see if we have the ability to reserve the tickets or not
 			$capacity = isset( $event->meta, $event->meta->capacity ) ? intval( $event->meta->capacity ) : intval( get_post_meta(

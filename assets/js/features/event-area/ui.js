@@ -54,7 +54,8 @@ QS.EATicketSelection = (function($, q, qt) {
 				_show_msg('not-available');
 				return false;
 			}
-			if (S.edata.available <= 0) {
+			if ( S.edata.available <= 0 && 0 == S.owns ) {
+				console.log( S );
 				_show_msg('sold-out');
 				return false;
 			}

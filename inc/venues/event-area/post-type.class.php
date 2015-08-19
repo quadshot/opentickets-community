@@ -1127,10 +1127,14 @@ class qsot_event_area {
 		// container for the name of the template to use
 		$template_file = 'post-content/event-area-closed.php';
 
+		// figure out if the user has any tickets to this event. this will serve twp purposes.
+		// 1) if they have some, they will become available inside the template, in a moment
+		// 2) if they have some, then even events that register as 'closed' that they have reservations for, will allow them to edit their reservations
+		$has_reserved = apply_filters( 'qsot-zoner-owns-current-user', 0, $event->ID, $area->ticket->post->ID, self::$o->{'z.states.r'} );
+
 		// check to make sure that we can sell tickets to this event. usually this is only false if we are too close to the start of the event.
 		// if we can then change the template to the ticket selection UI enabled template, and load the list of reservations
-		if ( apply_filters( 'qsot-can-sell-tickets-to-event', false, $event->ID ) ) {
-			$reserved = apply_filters( 'qsot-zoner-owns-current-user', 0, $event->ID, $area->ticket->post->ID, self::$o->{'z.states.r'} );
+		if ( apply_filters( 'qsot-can-sell-tickets-to-event', false, $event->ID ) || $has_reserved > 0 ) {
 			$template_file = 'post-content/event-area.php';
 		}
 
