@@ -582,12 +582,14 @@ class qsot_zoner {
 
 		// determine how many tickets they currently have for this event
 		$total_for_event = apply_filters( 'qsot-zoner-owns', 0, $event, $args['ticket_type_id'], self::$o->{'z.states.r'}, $args['customer_id'], $args['order_id'] );
+		if ( is_array( $total_for_event ) )
+			$total_for_event = array_sum( $total_for_event );
 
 		// if the current total they have is great than or equal to the event limit, then bail with an error stating that they are already at the limit
-		if ( $total_for_event >= $limit )
+		if ( $args['quantity'] > $total_for_event && $total_for_event >= $limit )
 			return new WP_Error( 10, __( 'You have reached the ticket limit for this event.', 'opentickets-community-edition' ) );
-		else if ( $total_for_event + $args['quantity'] > $limit )
-			return max( 0, $limit - $total_for_event );
+		else if ( $args['quantity'] > $limit )
+			return $limit;
 		
 		// if we get this far, then they are allowed
 		return true;

@@ -523,7 +523,9 @@ class qsot_event_area {
 						else $resp['e'][] = __('Could not update your reservations.','opentickets-community-edition');
 					}
 				} else {
-					if (!$res || !$owns) {
+					if ( is_wp_error( $res ) ) {
+						$resp['e'][] = $res->get_error_message();
+					} else if (!$res || !$owns) {
 						if ($owns) $resp['e'][] = __('A problem occurred when trying to update your reservations.','opentickets-community-edition');
 						else $resp['e'][] = __('Could not update your reservations.','opentickets-community-edition');
 					} else {
