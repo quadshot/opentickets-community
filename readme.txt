@@ -169,6 +169,12 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.12.0 =
+* [new] feature to limit the number of tickets that can be purchased per event
+* [new] feature to allow locking the quantity after the user selected it the first time. users can still un-reserve
+* [tweak] removed some legacy code that was cluttering up JS
+* [tweak] updating old syntax jQuery to modern syntax
+
 = 1.11.7 =
 * [change] all 'reserved' tickets count against the availability
 * [tweak] more ability to debug checkin process
