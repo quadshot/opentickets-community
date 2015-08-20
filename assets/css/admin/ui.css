@@ -10,6 +10,7 @@ table.settings-table .setting { margin-bottom:5px; }
 
 .setting .setting-edit-form { max-height:0; overflow-y:hidden; }
 .setting .setting-edit-form select { min-width:200px; }
+.setting .helper { font-size:0.8em; font-style:italic; color:#aaa; max-width:300px }
 .setting .edit-setting-actions { padding-top:0.5em; }
 .setting .date-edit select { font-size:12px; line-height:14px; height:21px; width:auto; padding:0; min-width:0; position:relative; top:-1px; }
 .setting .date-edit input[type="text"] { font-size:12px; padding:1px; width:2em; }

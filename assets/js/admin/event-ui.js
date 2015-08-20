@@ -308,7 +308,7 @@ QS.EventUI = (function($, undefined) {
 				}
 			}
 
-			self.siblings('.event-date').andSelf().removeClass('selected');
+			self.siblings('.event-date').addBack().removeClass('selected');
 			t.selection.addClass('selected');
 
 			t.event_list.updateSettingsForm();
@@ -662,6 +662,7 @@ QS.EventUI = (function($, undefined) {
 					visibility: events[i].visibility,
 					password: events[i].password,
 					pub_date: events[i].pub_date,
+					purchase_limit: events[i].purchase_limit,
 					capacity: events[i].capacity
 				};
 				ev = $.extend({}, defaults, ev);

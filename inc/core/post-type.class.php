@@ -16,7 +16,7 @@ class qsot_post_type {
 				'start' => '_start',
 				'end' => '_end',
 				'capacity' => '_capacity',
-				'capacity' => '_capacity',
+				'purchase_limit' => '_purchase_limit',
 			));
 
 			// load all the options, and share them with all other parts of the plugin
@@ -88,6 +88,12 @@ class qsot_post_type {
 			// get the event availability
 			add_filter( 'qsot-get-availability', array( __CLASS__, 'get_availability' ), 10, 2 );
 			add_filter( 'qsot-get-availability-text', array( __CLASS__, 'get_availability_text' ), 10, 4 );
+
+			// events may have a purchase limit set. this filter finds that limit
+			add_filter( 'qsot-event-ticket-purchase-limit', array( __CLASS__, 'event_ticket_purchasing_limit' ), 10, 2 );
+
+			// if we are restricting editing of the quantity for tickets, then do so
+			add_filter( 'woocommerce_cart_item_quantity', array( __CLASS__, 'maybe_prevent_ticket_quantity_edit' ), 1000, 3 );
 
 			add_action('add_meta_boxes', array(__CLASS__, 'core_setup_meta_boxes'), 10, 1);
 
@@ -226,10 +232,10 @@ class qsot_post_type {
 		if (!is_object($event)) return;
 
 		echo sprintf(
-			'<br/><small> - <a class="event-link" href="%s" target="_blank" title="%s">%s</a></small>',
-			get_permalink($event->ID),
+			'<br/><small><strong>' . __( 'Event', 'opentickets-community-edition' ) . '</strong>: <a class="event-link" href="%s" target="_blank" title="%s">%s</a></small>',
+			get_permalink( $event->ID ),
 			__('View this event','opentickets-community-edition'),
-			apply_filters('the_title', $event->post_title)
+			apply_filters( 'the_title', $event->post_title, $event->ID )
 		);
 	}
 
@@ -328,25 +334,42 @@ class qsot_post_type {
 		return is_array($results) && count($results) == 2 ? $results : array($today, $today);
 	}
 
-	public static function check_event_sale_time($current, $event_id) {
-		$formula = get_post_meta($event_id, '_stop_sales_before_show', true);
-		if (empty($formula)) {
-			$post = get_post($event_id);
+	// figure out the timestamp of when to stop selling tickets for a given event, based on the event settings and the global settings. then determine if we are past that cut off or not
+	public static function check_event_sale_time( $current, $event_id ) {
+		// grab the value stored on the event
+		$formula = get_post_meta( $event_id, '_stop_sales_before_show', true );
+
+		// if there is no value stored on the event, or it is zero, then try to load the setting on the parent event, or the global setting
+		if ( empty( $formula ) ) {
+			// get the event post
+			$post = get_post( $event_id );
 			$parent_id = $post->post_parent;
-			if ($parent_id) $formula = get_post_meta($parent_id, '_stop_sales_before_show', true);
-			if (empty($formula)) $formula = get_option('qsot-stop-sales-before-show', '');
+
+			// try to load it from the parent event
+			if ( $parent_id )
+				$formula = get_post_meta( $parent_id, '_stop_sales_before_show', true );
+
+			// if we still have no formula, then load the global setting
+			if ( empty( $formula ) )
+				$formula = apply_filters( 'qsot-get-option-value', '', 'qsot-stop-sales-before-show' );
 		}
-		$start = get_post_meta($event_id, '_start', true);
 
-		$formula = str_replace('+', '-', $formula);
-		$formula = preg_replace('#(-)\s*(\d)#', '\1\2', $formula);
-		$formula = preg_replace('#(^|\s+)(?<!-)(\d+)#', '\1-\2', $formula);
+		// grab the start time of the event, so that we can use it in the timestamp calc
+		$start = get_post_meta( $event_id, '_start', true );
 
-		$stime = strtotime($start);
-		$stop_time = strtotime($formula, $stime);
-		if ($stop_time === false) $stop_time = $stime;
+		// do a little sanitization. this is not perfect by any means, but it gets the job done mostly. plus it is getting thrown into strtotime, so it is relatively safe, no matter what anyways
+		$formula = str_replace( '+', '-', $formula );
+		$formula = preg_replace( '#(-)\s*(\d)#', '\1\2', $formula );
+		$formula = preg_replace( '#(^|\s+)(?<!-)(\d+)#', '\1-\2', $formula );
+
+		// calculate the time to stop selling
+		$stime = strtotime( $start );
+		$stop_time = strtotime( $formula, $stime );
+		if ( $stop_time === false )
+			$stop_time = $stime;
 		$time = current_time('timestamp');
 
+		// are we past it or not?
 		return $time < $stop_time;
 	}
 
@@ -608,6 +631,50 @@ class qsot_post_type {
 			$current = __( 'high', 'opentickets-community-edition' );
 
 		return $current;
+	}
+
+	// figure out the current ticket purchasing limit for this event
+	public static function event_ticket_purchasing_limit( $current, $event_id ) {
+		// first, check the specific event, and see if there are settings specificly limiting it's purchase limit. if there is one, then use it
+		$elimit = intval( get_post_meta( $event_id, self::$o->{'meta_key.purchase_limit'}, true ) );
+		if ( $elimit > 0 )
+			return $elimit;
+		// if the value is negative, then this event specifically has no limit
+		else if ( $elimit < 0 )
+			return 0;
+
+		// next check the parent event. if there is a limit there, then use it
+		$event = get_post( $event_id );
+		if ( is_object( $event ) && isset( $event->post_parent ) && $event->post_parent > 0 ) {
+			$elimit = intval( get_post_meta( $event->post_parent, self::$o->{'meta_key.purchase_limit'}, true ) );
+			if ( $elimit > 0 )
+				return $elimit;
+			// if the value is negative, then this event specifically, and all child events, are supposed to have no limit
+			else if ( $elimit < 0 )
+				return $elimit;
+		}
+
+		// as a last ditch effort, try to find the global setting and use it
+		$elimit = apply_filters( 'qsot-get-option-value', 0, 'qsot-event-purchase-limit' );
+		if ( $elimit > 0 )
+			return $elimit;
+
+		return $current;
+	}
+
+	// maybe prevent editing the quantity of tickets in the cart, based on settings
+	public static function maybe_prevent_ticket_quantity_edit( $current, $cart_item_key, $cart_item ) {
+		// if we are not preventing editing of quantity, then just bail
+		if ( 'no' == apply_filters( 'qsot-get-option-value', 'no', 'qsot-locked-reservations' ) )
+			return $current;
+
+		// check if this is a ticket. if not bail
+		$product = wc_get_product( $cart_item['product_id'] );
+		if ( ! is_object( $product ) || 'yes' != $product->ticket )
+			return $current;
+
+		// at this point, we need to restrict editing. so just return what to show in the column
+		return '<div style="text-align:center;">' . $cart_item['quantity'] . '</div>';
 	}
 
 	public static function add_meta($event) {
@@ -889,6 +956,7 @@ class qsot_post_type {
 			'post_id' => -1, // sub event post_id used for lookup during save process
 			'edit_link' => '', // edit individual event link
 			'view_link' => '', // view individual event link
+			'purchase_limit' => '', // limit the number of tickets that can be purchased on a single order for this event
 		), $post_id);
 
 		// args to load a list of child events using WP_Query
@@ -930,6 +998,7 @@ class qsot_post_type {
 				'post_id' => $event->ID,
 				'edit_link' => get_edit_post_link($event->ID),
 				'view_link' => get_permalink($event->ID),
+				'purchase_limit' => get_post_meta( $event->ID, self::$o->{'meta_key.purchase_limit'}, true ),
 			), $defs), $defs, $event);
 		}
 
@@ -1142,6 +1211,7 @@ class qsot_post_type {
 							self::$o->{'meta_key.capacity'} => $tmp->capacity, // max occupants
 							self::$o->{'meta_key.end'} => $tmp->end, // end time, for lookup and display purposes later
 							self::$o->{'meta_key.start'} => $tmp->start, // start time for lookup and display purposes later
+							self::$o->{'meta_key.purchase_limit'} => $tmp->purchase_limit, // the specific child event purchase limit
 						),
 						'submitted' => $tmp,
 					);
@@ -1206,6 +1276,7 @@ class qsot_post_type {
 								self::$o->{'meta_key.capacity'} => $tmp->capacity, // occupant capacity
 								self::$o->{'meta_key.end'} => $tmp->end, // event end date/time for later lookup and display
 								self::$o->{'meta_key.start'} => $tmp->start, // event start data/time for later lookup and display
+								self::$o->{'meta_key.purchase_limit'} => $tmp->purchase_limit, // the specific child event purchase limit
 							),
 							'submitted' => $tmp,
 						);
@@ -1241,6 +1312,7 @@ class qsot_post_type {
 							self::$o->{'meta_key.capacity'} => $item->capacity, // occupant copacity
 							self::$o->{'meta_key.end'} => $item->end, // end data for lookup and display
 							self::$o->{'meta_key.start'} => $item->start, // start date for lookup and display
+							self::$o->{'meta_key.purchase_limit'} => $tmp->purchase_limit, // the specific child event purchase limit
 						),
 						'submitted' => $item,
 					);
@@ -1340,8 +1412,26 @@ class qsot_post_type {
 			update_post_meta( $post_id, self::$o->{'meta_key.end'}, $actual_end );
 
 		// save the stop selling formula
-		$formula = isset( $data['_qsot_stop_sales_before_show'] ) ? $data['_qsot_stop_sales_before_show'] : get_option( 'qsot-stop-sales-before-show', '2 hours' );
+		$formula = isset( $data['_stop_sales_before_show'] ) ? $data['_stop_sales_before_show'] : get_option( 'qsot-stop-sales-before-show', '2 hours' );
 		update_post_meta( $post_id, '_stop_sales_before_show', $formula );
+
+		if ( isset( $_POST['_qsot_ticket_sales_settings'] ) && wp_verify_nonce( $_POST['_qsot_ticket_sales_settings'], 'save-ticket-sales-settings' ) ) {
+			// mapped list of settings to their post meta and site options
+			$map = array(
+				'formula' => array( '_stop_sales_before_show', 'qsot-stop-sales-before-show' ),
+				'purchase_limit' => array( self::$o->{'meta_key.purchase_limit'}, 'qsot-event-purchase-limit' ),
+			);
+
+			// cycle through the map. deterine the appropriate value to save. then update the setting as such
+			foreach ( $map as $k => $pair ) {
+				@list( $meta_key, $option_name ) = $pair;
+				// figure out the appropriate value
+				$value = isset( $_POST[ $meta_key ] ) ? $_POST[ $meta_key ] : ''; //( ! empty( $option_name ) ?  apply_filters( 'qsot-get-option-value', '', $option_name ) : '' );
+
+				// update the post meta to reflect the correct value
+				update_post_meta( $post_id, $meta_key, $value );
+			}
+		}
 	}
 
 	// add meta boxes on the edit event pages
@@ -1372,9 +1462,9 @@ class qsot_post_type {
 			
 			// allows controlling of when to stop sales to an event online. applies to all child events
 			add_meta_box(
-				'stop-sales-before-show',
-				_x( 'Stop Sales Before Show', 'metabox title', 'opentickets-community-edition' ),
-				array( __CLASS__, 'mb_stop_sales_before_show' ),
+				'qsot-ticket-sales-settings',
+				_x( 'Ticket Sales Settings', 'metabox title', 'opentickets-community-edition' ),
+				array( __CLASS__, 'mb_ticket_sales_settings' ),
 				self::$o->core_post_type,
 				'side',
 				'core'
@@ -1469,21 +1559,51 @@ class qsot_post_type {
 		<?php
 	}
 
-	// metabox to allow control of when to stop sales for these events, before they are set to launch
-	public static function mb_stop_sales_before_show( $post, $mb ) {
-		// get the current setting
-		$formula = get_post_meta( $post->ID, '_stop_sales_before_show', true );
+	// metabox to allow control of various settings directly dealing with the selling of tickets
+	public static function mb_ticket_sales_settings( $post, $mb ) {
+		// mapped list of settings to their post meta and site options
+		$map = array(
+			'formula' => array( '_stop_sales_before_show', 'qsot-stop-sales-before-show' ),
+			'purchase_limit' => array( self::$o->{'meta_key.purchase_limit'}, 'qsot-event-purchase-limit' ),
+		);
+
+		$options = array();
+		// cycle through the map and derive the appropriate current value for the option
+		foreach ( $map as $k => $pair ) {
+			list( $meta_key, $option_name ) = $pair;
+			// check the parent event for a defined setting
+			$value = get_post_meta( $post->ID, $meta_key, true );
+
+			// if there is not one set, then check for a global setting if there is one
+			//if ( empty( $value ) && ! empty( $option_name ) )
+				//$value = apply_filters( 'qsot-get-option-value', $value, $option_name );
+
+			// register whatever value we found
+			$options[ $k ] = $value;
+		}
 
 		?>
 			<div class="qsot-mb">
+				<input type="hidden" name="_qsot_ticket_sales_settings" value="<?php echo wp_create_nonce( 'save-ticket-sales-settings' ) ?>" />
+
 				<div class="field">
-					<div class="label"><label><?php echo __( 'Formula', 'opentickets-community-edition' ); ?>:</label></div>
-					<input type="text" class="widefat" name="_qsot_stop_sales_before_show" value="<?php echo esc_attr( $formula ) ?>" />
+					<div class="label"><label><?php _e( 'Purchase Limit', 'opentickets-community-edition' ) ?></label></div>
+					<input type="number" step="1" class="widefat" name="<?php echo esc_attr( self::$o->{'meta_key.purchase_limit'} ) ?>" value="<?php echo esc_attr( $options['purchase_limit'] ) ?>" />
+
+					<div class="helper">
+						<?php _e( 'The maximum number of tickets, for each child event, that a given cart can have in it. To use the site-wide global setting, use "0". To force no-limit, use "-1".', 'opentickets-community-edition' ) ?>
+					</div>
 				</div>
 
-				<div class="helper">
-					<?php _e( 'This is the formula to calculate when tickets should stop being sold on the frontend for this show. For example, if you wish to stop selling tickets 2 hours and 30 minutes before the show, use: <code>2 hours 30 minutes</code>. Valid units include: hour, hours, minute, minutes, second, seconds, day, days, week, weeks, month, months, year, years. Leave the formula empty to just use the Global Setting for this formula.', 'opentickets-community-edition' ); ?>
+				<div class="field">
+					<div class="label"><label><?php echo __( 'Stop Sales Before - Formula', 'opentickets-community-edition' ); ?>:</label></div>
+					<input type="text" class="widefat" name="_stop_sales_before_show" value="<?php echo esc_attr( $options['formula'] ) ?>" />
+
+					<div class="helper">
+						<?php _e( 'This is the formula to calculate when tickets should stop being sold on the frontend for this show. For example, if you wish to stop selling tickets 2 hours and 30 minutes before the show, use: <code>2 hours 30 minutes</code>. Valid units include: hour, hours, minute, minutes, second, seconds, day, days, week, weeks, month, months, year, years. Leave the formula empty to just use the Global Setting for this formula.', 'opentickets-community-edition' ); ?>
+					</div>
 				</div>
+
 			</div>
 		<?php
 	}
@@ -1807,6 +1927,24 @@ class qsot_post_type {
 														</div>
 													</div>
 												</div>
+
+												<div class="setting" rel="setting-main" tag="purchase_limit">
+													<div class="setting-current">
+														<span class="setting-name"><?php _e( 'Purchase Limit', 'opentickets-community-edition' ) ?>:</span>
+														<span class="setting-current-value" rel="setting-display"></span>
+														<a href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]"><?php _e('Edit','opentickets-community-edition') ?></a>
+														<input type="hidden" name="settings[purchase_limit]" value="" scope="[rel='setting-main']" rel="purchase_limit" />
+													</div>
+													<div class="setting-edit-form" rel="setting-form">
+														<input type="number" name="purchase_limit" step="1" value="" />
+														<div class="helper"><?php _e( 'Use "" or "0" to indicate usage of the site-wide global purchase limit. Use "-1" to force an unlimited purchase limit.', 'opentickets-community-edition' ) ?></div>
+														<div class="edit-setting-actions">
+															<input type="button" class="button" rel="setting-save" value="<?php _e('OK','opentickets-community-edition') ?>" />
+															<a href="#" rel="setting-cancel"><?php _e('Cancel','opentickets-community-edition') ?></a>
+														</div>
+													</div>
+												</div>
+
 											</div>
 
 											<?php do_action('qsot-events-bulk-edit-settings', $post, $mb); ?>
@@ -1907,6 +2045,10 @@ class qsot_post_type {
 		// default for whether to show availability counts to the end user
 		self::$options->def( 'qsot-show-available-quantity', 'yes' );
 
+		// control how many tickets a user can buy, and if they can edit that number once they decide on it
+		self::$options->def( 'qsot-per-event-per-order-ticket-limit', 0 );
+		self::$options->def( 'qsot-locked-reservations', 'no' );
+
 		self::$options->add(array(
 			'order' => 100,
 			'type' => 'title',
@@ -1997,6 +2139,27 @@ class qsot_post_type {
 			'title' => __( 'Availability Quantity', 'opentickets-community-edition' ),
 			'desc' => __( 'Yes, show the quantity that is available, on the frontend, when showing the availability.', 'opentickets-community-edition' ),
 			'default' => 'yes',
+		));
+
+		// enforce a limit on the number of tickets per event, per order, that a user can purchase
+		self::$options->add(array(
+			'order' => 125,
+			'id' => 'qsot-event-purchase-limit',
+			'type' => 'number',
+			'custom_attributes' => array( 'step' => 1, 'min' => 0 ),
+			'title' => __( 'Per Event, Per Order Ticket Purchase Limit', 'opentickets-community-edition' ),
+			'desc' => __( 'A positive number here tells the software to enforce a purchase limit. Users will be restricted to only buying upto X tickets per event, per order. Setting to 0 means no limit.', 'opentickets-community-edition' ),
+			'default' => 0,
+		));
+
+		// prevent end users from modifying the quantity of their reservations after they chose the number initially. they are still allowed to delete the reservations
+		self::$options->add(array(
+			'order' => 127,
+			'id' => 'qsot-locked-reservations',
+			'type' => 'checkbox',
+			'title' => __( 'Locked-in Reservations', 'opentickets-community-edition' ),
+			'desc' => __( 'Checking this box means that once the end user chooses a quantity of tickets to purchase, they cannot modify that quantity. They can still delete their reservations and start over though.', 'opentickets-community-edition' ),
+			'default' => 'no',
 		));
 	}
 }

@@ -696,7 +696,7 @@ QS.EditSetting = (function($, undefined) {
 						var val = tar.val(), d = val ? new XDate( val ) : new XDate();
 						d = d.valid() ? d : new XDate();
 						y.val( d.getFullYear() );
-						m.find( 'option' ).removeAttr( 'selected' ).filter( '[value=' + ( d.getMonth() + 1 ) + ']' ).attr( 'selected', 'selected' );
+						m.find( 'option' ).removeProp( 'selected' ).filter( '[value=' + ( d.getMonth() + 1 ) + ']' ).prop( 'selected', 'selected' );
 						a.val( d.getDate() );
 						h.val( d.getHours() );
 						n.val( d.getMinutes() );
@@ -810,6 +810,7 @@ QS.EditSetting = (function($, undefined) {
 			else label = EditSetting.labels._default.apply(this, [data]);
 
 			if (label == '') label = EditSetting.labels._default.apply(this, [data]);
+			console.log( 'sigh', label, data );
 
 			this.elements.display.html(label);
 
@@ -828,7 +829,7 @@ QS.EditSetting = (function($, undefined) {
 						switch (field.attr('type').toLowerCase()) {
 							case 'checkbox':
 							case 'radio':
-								var ele = this.elements.form.find('[name="'+i+'"]').removeAttr('checked').filter('[value="'+escape(val)+'"]').attr('checked', 'checked');
+								var ele = this.elements.form.find('[name="'+i+'"]').removeProp('checked').filter('[value="'+escape(val)+'"]').prop('checked', 'checked');
 								if ( !multi ) ele.trigger('change');
 							break;
 
@@ -843,7 +844,7 @@ QS.EditSetting = (function($, undefined) {
 							break;
 						}
 					} else if (tag == 'select') {
-						$('option', field).removeAttr('selected').filter('[value="'+escape(val)+'"]').filter(function() { return $(this).css('display').toLowerCase() != 'none'; }).attr('selected', 'selected');
+						$('option', field).removeProp('selected').filter('[value="'+escape(val)+'"]').filter(function() { return $(this).css('display').toLowerCase() != 'none'; }).prop('selected', 'selected');
 						if ( !multi )
 							field.trigger('change')
 					} else if (tag == 'textarea') {

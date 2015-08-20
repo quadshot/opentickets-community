@@ -73,10 +73,19 @@ QS.EATicketSelection = (function($, q, qt) {
 			return true;
 		}
 
+		function _on_enter( e, func ) {
+			if ( 13 == e.which ) {
+				func.call( this, e );
+			}
+		}
+
 		function _setup_events() {
 			t.e.m.on('click', '[rel="reserve-btn"]', _ticket_reservations);
 			t.e.m.on('click', '[rel="update-btn"]', _update_reservations);
 			t.e.m.on('click', '[rel="remove-btn"]', _remove_reservations);
+
+			t.e.m.on( 'keyup', '.form-inner.reserve [rel="qty"]:input', function( e ) { _on_enter.call( this, e, _ticket_reservations ); } );
+			t.e.m.on( 'keyup', '.form-inner.update [rel="qty"]:input', function( e ) { _on_enter.call( this, e, _update_reservations ); } );
 		}
 
 		function _replacements(msg) {
@@ -104,7 +113,13 @@ QS.EATicketSelection = (function($, q, qt) {
 
 		function _load_ui() {
 			if (S.owns > 0) {
-				t.e.m.find('[rel="qty"]').val(S.owns);
+				t.e.m.find( '[rel="qty"]' ).each( function() {
+					var f = $( this );
+					if ( f.filter( ':input' ).length )
+						f.val( S.owns );
+					else
+						f.text( S.owns );
+				} );
 				_display_form('o');
 			} else {
 				_display_form('ts');
@@ -114,6 +129,9 @@ QS.EATicketSelection = (function($, q, qt) {
 		function _display_form(which) {
 			t.eall.hide();
 			t.e[which].fadeIn(300);
+			if ( 'o' == which && t.e.m.find( '[rel="cart-btn"]' ).is( ':visible' ) ) {
+				t.e.m.find( '[rel="cart-btn"]' ).focus();
+			}
 		}
 
 		function _update_availables(data) {
@@ -145,6 +163,18 @@ QS.EATicketSelection = (function($, q, qt) {
 			return true;
 		}
 
+		function _update_owns_display( r ) {
+			if ( ! qt.is( r ) || ! qt.is( r.data ) )
+				return;
+			t.e.o.find( '[rel="qty"]' ).each( function() {
+				var f = $( this );
+				if ( f.filter( ':input' ).length )
+					f.val( r.data.owns );
+				else
+					f.text( r.data.owns );
+			} );
+		}
+
 		function _ticket_reservations(e) {
 			e.preventDefault();
 			_clear_msgs();
@@ -156,9 +186,13 @@ QS.EATicketSelection = (function($, q, qt) {
 
 			aj('r', data, function(r) {
 				if (!_is_valid_response(r, t.e.ts)) return;
-				t.e.o.find('[rel="qty"]').val(r.data.owns);
+				_update_owns_display( r );
 				_update_availables(r.data);
-				_display_form('o')
+				if ( qt.is( r.data ) && r.data.owns ) {
+					_display_form('o')
+				} else {
+					_display_form('ts')
+				}
 				if (qt.isA(r.m) && r.m.length) _show_msg('_custom', r.m, 'msg');
 				t.e.ts.qsUnblock();
 			}, function( r ) { _show_msg('unexpected'); t.e.ts.qsUnblock(); if ( qt.is( r.data ) ) _update_availables( r.data ); });
@@ -175,9 +209,13 @@ QS.EATicketSelection = (function($, q, qt) {
 
 			aj('d', data, function(r) {
 				if (!_is_valid_response(r, t.e.o)) return;
-				t.e.o.find('[rel="qty"]').val(r.data.owns);
+				_update_owns_display( r );
 				_update_availables(r.data);
-				_display_form('o')
+				if ( qt.is( r.data ) && r.data.owns ) {
+					_display_form('o')
+				} else {
+					_display_form('ts')
+				}
 				if (qt.isA(r.m) && r.m.length) _show_msg('_custom', r.m, 'msg');
 				t.e.ts.qsUnblock();
 			}, function( r ) { _show_msg('unexpected'); t.e.ts.qsUnblock(); if ( qt.is( r.data ) ) _update_availables( r.data ); });
@@ -194,7 +232,7 @@ QS.EATicketSelection = (function($, q, qt) {
 
 			aj('d', data, function(r) {
 				if (!_is_valid_response(r, t.e.o)) return;
-				t.e.o.find('[rel="qty"]').val(r.data.owns);
+				_update_owns_display( r );
 				_update_availables(r.data);
 				_display_form('ts')
 				if (qt.isA(r.m) && r.m.length) _show_msg('_custom', r.m, 'msg');

@@ -236,7 +236,7 @@ class qsot_event_area {
 		if (is_object($event->meta) && is_object($event->meta->available)) $max = $event->meta->available;
 
 		$list['ticket-selection'] = '<div class="ticket-form ticket-selection-section">'
-				.'<div class="form-inner">'
+				.'<div class="form-inner reserve">'
 					.'<div class="title-wrap">'
 						.'<h3>'.__('Step 1: How Many?','opentickets-community-edition').'</h3>'
 					.'</div>'
@@ -250,24 +250,44 @@ class qsot_event_area {
 				.'</div>'
 			.'</div>';
 
-		$list['owns'] = '<div class="ticket-form ticket-selection-section">'
-				.'<div class="form-inner">'
-					.'<div class="title-wrap">'
-						.'<h3>'.__('Step 2: Review','opentickets-community-edition').'</h3>'
+		if ( 'yes' == apply_filters( 'qsot-get-option-value', 'no', 'qsot-locked-reservations' ) ) {
+			$list['owns'] = '<div class="ticket-form ticket-selection-section">'
+					.'<div class="form-inner update">'
+						.'<div class="title-wrap">'
+							.'<h3>'.__('Step 2: Review','opentickets-community-edition').'</h3>'
+						.'</div>'
+						.'<div class="field">'
+							.'<label class="section-heading">'.__('You currently have:','opentickets-community-edition').'</label>'
+							.'<div class="availability-message helper"></div>'
+							.'<a href="#" class="remove-link" rel="remove-btn">X</a>'
+							.'<span rel="tt"></span>'
+							.' ' . __( 'x', 'opentickets-community-edition' ) . ' <span rel="qty"></span>'
+						.'</div>'
 					.'</div>'
-					.'<div class="field">'
-						.'<label class="section-heading">'.__('You currently have:','opentickets-community-edition').'</label>'
-						.'<div class="availability-message helper"></div>'
-						.'<a href="#" class="remove-link" rel="remove-btn">X</a>'
-						.'<span rel="tt"></span>'
-						.'<input type="number" step="1" min="0" max="'.$max.'" rel="qty" name="quantity" value="1" class="very-short" />'
-						.'<input type="button" value="'.__('Update','opentickets-community-edition').'" rel="update-btn" class="button" />'
+					.'<div class="actions" rel="actions">'
+						.'<a href="'.esc_attr($cart_url).'" class="button" rel="cart-btn">'.__('Proceed to Cart','opentickets-community-edition').'</a>'
 					.'</div>'
-				.'</div>'
-				.'<div class="actions" rel="actions">'
-					.'<a href="'.esc_attr($cart_url).'" class="button" rel="cart-btn">'.__('Proceed to Cart','opentickets-community-edition').'</a>'
-				.'</div>'
-			.'</div>';
+				.'</div>';
+		} else {
+			$list['owns'] = '<div class="ticket-form ticket-selection-section">'
+					.'<div class="form-inner update">'
+						.'<div class="title-wrap">'
+							.'<h3>'.__('Step 2: Review','opentickets-community-edition').'</h3>'
+						.'</div>'
+						.'<div class="field">'
+							.'<label class="section-heading">'.__('You currently have:','opentickets-community-edition').'</label>'
+							.'<div class="availability-message helper"></div>'
+							.'<a href="#" class="remove-link" rel="remove-btn">X</a>'
+							.'<span rel="tt"></span>'
+							.'<input type="number" step="1" min="0" max="'.$max.'" rel="qty" name="quantity" value="1" class="very-short" />'
+							.'<input type="button" value="'.__('Update','opentickets-community-edition').'" rel="update-btn" class="button" />'
+						.'</div>'
+					.'</div>'
+					.'<div class="actions" rel="actions">'
+						.'<a href="'.esc_attr($cart_url).'" class="button" rel="cart-btn">'.__('Proceed to Cart','opentickets-community-edition').'</a>'
+					.'</div>'
+				.'</div>';
+		}
 
 		$list['msgs'] = '<div class="messages"></div>';
 		$list['msg'] = '<div class="message"></div>';

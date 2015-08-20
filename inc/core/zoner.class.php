@@ -41,6 +41,7 @@ class qsot_zoner {
 
 		// reservation functions
 		add_filter( 'qsot-event-reserved-or-confirmed-since', array( __CLASS__, 'get_event_reserved_or_confirmed_since' ), 1000, 5 );
+		add_filter( 'qsot-event-reserved-since-current-user', array( __CLASS__, 'get_event_reserved_since_current_user' ), 1000, 5 );
 		add_filter('qsot-zoner-item-data-keys', array(__CLASS__, 'item_data_keys_to_maintain'), 10, 2);
 		add_action('qsot-zoner-clear-locks', array(__CLASS__, 'clear_locks'), 10, 2);
 		add_filter('qsot-zoner-reserve-current-user', array(__CLASS__, 'reserve_current_user'), 10, 4);
@@ -52,6 +53,7 @@ class qsot_zoner {
 		add_filter('qsot-zoner-update-reservation', array(__CLASS__, 'update_reservation'), 10, 3);
 		add_filter('qsot-zoner-current-user', array(__CLASS__, 'current_user'), 10, 3);
 		add_filter('qsot-zoner-order-event-qty-state', array(__CLASS__, 'get_state_from_order_event_quantity'), 10, 4);
+		add_filter( 'qsot-can-add-tickets-to-cart', array( __CLASS__, 'maybe_enforce_event_ticket_purchase_limit' ), 10, 3 );
 
 		// determine if the item could be a ticket
 		add_filter('qsot-item-is-ticket', array(__CLASS__, 'item_is_ticket'), 100, 2);
@@ -348,13 +350,40 @@ class qsot_zoner {
 		return max( 0, $wpdb->get_var( $q ) );
 	}
 
-	// add a reservation for the current user
-	public static function reserve_current_user($success, $event, $ticket_type_id, $count) {
-		// idetify the current user
-		$customer_id = apply_filters('qsot-zoner-current-user', md5(isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : time()));
-		$success = false;
-		// add the reservation
-		return apply_filters('qsot-zoner-reserve', $success, $event, $ticket_type_id, $count, $customer_id);
+	// determine the number of reserved or confirmed tickets for a given even, as of a specific time, but only for the specified user 'qsot-event-reserved-or-confirmed-since-current-user'
+	public static function get_event_reserved_since_current_user( $current, $event_id, $since=false, $customer_id=false, $ticket_type_id=false ) {
+		global $wpdb;
+		// normalize the input
+		$event_id = absint( $event_id );
+		$now = false;
+		if ( empty( $since ) ) {
+			$parts = array( current_time( 'mysql' ) );
+			$now = true;
+		} else {
+			$parts = explode( '.', $since );
+		}
+		$since = array_shift( $parts );
+		$mille = intval( current( $parts ) );
+
+		// figure out the total number of tickets reserved or confirmed before the given time
+		$q = $wpdb->prepare(
+			'select sum( quantity ) cnt from ' . $wpdb->qsot_event_zone_to_order . ' where event_id = %s and '
+				. $wpdb->prepare( $now ? 'since <= %s ' : '( since < %s or ( since = %s and mille < %s ) ) ', $since, $since, $mille )
+				. 'and state = %s ',
+			$event_id,
+			self::$o->{'z.states.r'}
+		);
+
+		// if the customer_id was supplied, then use that information to limit the result
+		if ( $customer_id ) {
+			$q .= $wpdb->prepare( ' and session_customer_id = %s', $customer_id );
+
+			if ( $ticket_type_id )
+				$q .= $wpdb->prepare( ' and ticket_type_id = %d', $ticket_type_id );
+		}
+
+		// return the total number of sold tickets to that point, making sure to not allow negative numbers
+		return max( 0, $wpdb->get_var( $q ) );
 	}
 
 	// obtain lock on a certain number of seats
@@ -388,6 +417,14 @@ class qsot_zoner {
 		return $wpdb->get_row( $wpdb->prepare( 'select * from ' . $wpdb->qsot_event_zone_to_order . ' where session_customer_id = %s', $uniq_lock_id ) );
 	}
 
+	// add a reservation for the current user
+	public static function reserve_current_user($success, $event, $ticket_type_id, $count) {
+		// idetify the current user
+		$customer_id = apply_filters('qsot-zoner-current-user', md5(isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : time()));
+		$success = false;
+		// add the reservation
+		return apply_filters('qsot-zoner-reserve', $success, $event, $ticket_type_id, $count, $customer_id);
+	}
 	
 	// add the reservation, but only if there are enough seats available to do so
 	public static function reserve($success, $event, $ticket_type_id, $count, $customer_id, $order_id=0) {
@@ -416,8 +453,28 @@ class qsot_zoner {
 			$success = true;
 		// if count is > 0 then
 		} else {
+			// the next two lines prevent someone from entering 1000000000 over and over again to lock up the event reservation queue. limit the lock to a maximum of the event limit, if there is one
+			// first, get the ticket purchase limit if there is one for this event
+			$limit = apply_filters( 'qsot-event-ticket-purchase-limit', 0, $event->ID );
+
+			// figure out how many to make the lock for
+			$lock_for = $limit <= 0 ? $count : max( 0, min( $limit, $count ) );
+
 			// obtain a lock for the seats they requested
-			$lock_record = self::_obtain_lock( $event, array( 'ticket_type_id' => 0, 'quantity' => $count, 'customer_id' => $customer_id, 'order_id' => $order_id ) );
+			$lock_record = self::_obtain_lock( $event, array( 'ticket_type_id' => 0, 'quantity' => $lock_for, 'customer_id' => $customer_id, 'order_id' => $order_id ) );
+
+			// if our settings prevent the user from modifying existing reservations, then prevent it here by not allowing a new number to be set
+			if ( 'yes' == apply_filters( 'qsot-get-option-value', 'no', 'qsot-locked-reservations' ) ) {
+				// count tickets for this event that the user currently has
+				$owned_prior_to_lock = apply_filters( 'qsot-event-reserved-since-current-user', 0, $event->ID, $lock_record->since, $customer_id );
+
+				// if there were reservations prior, then dont allow them to change
+				if ( $owned_prior_to_lock > 0 ) {
+					// clean up first
+					$wpdb->delete( $wpdb->qsot_event_zone_to_order, array( 'session_customer_id' => $lock_record->session_customer_id ) );
+					return new WP_Error( 9, __( 'You are not allowed to modify your reservations, except to delete them, after you have chosen them initially.', 'opentickets-community-edition' ) );
+				}
+			}
 
 			// now count how many total tickets have been reserved for this event, prior to the lock being acquired, which do not belong to the current user
 			$total_prior_to_lock = apply_filters( 'qsot-event-reserved-or-confirmed-since', 0, $event->ID, $lock_record->since, $customer_id, $ticket_type_id );
@@ -436,6 +493,33 @@ class qsot_zoner {
 				$wpdb->delete( $wpdb->qsot_event_zone_to_order, array( 'session_customer_id' => $lock_record->session_customer_id ) );
 				// error out
 				return new WP_Error( 5, __( 'There are no tickets available to reserve.', 'opentickets-community-edition' ) );
+			}
+
+			// figure out the maximum number of seats this person is allows to purchase
+			$quantity = max( 0, min( $remainder, $count ) );
+
+			// check to see if this user has the ability to actually add this number of tickets to their cart currently. could have a per event ticket limit
+			$can_add_to_cart = apply_filters( 'qsot-can-add-tickets-to-cart', true, $event, array(
+				'ticket_type_id' => $ticket_type_id,
+				'customer_id' => $customer_id,
+				'order_id' => $order_id,
+				'quantity' => $quantity,
+			) );
+			// if you just flat out cannot add tickets, or you can only add 0 tickets, then generic error out
+			if ( ! $can_add_to_cart ) {
+				// clean up first
+				$wpdb->delete( $wpdb->qsot_event_zone_to_order, array( 'session_customer_id' => $lock_record->session_customer_id ) );
+				// return a generic error
+				return new WP_Error( 6, __( 'Could not reserve those tickets.', 'opentickets-community-edition' ) );
+			// if there is a actual error reason given for why you cannot add the tickets, then pass that along
+			} else if ( is_wp_error( $can_add_to_cart ) ) {
+				// clean up first
+				$wpdb->delete( $wpdb->qsot_event_zone_to_order, array( 'session_customer_id' => $lock_record->session_customer_id ) );
+				// pass the error along
+				return $can_add_to_cart;
+			// if the number that the user is allowed, is less than the max we calculated above, simply update the amount
+			} else if ( is_numeric( $can_add_to_cart ) && $can_add_to_cart < $quantity ) {
+				$quantity = $can_add_to_cart;
 			}
 
 			// at this point the user has obtained a valid lock, and can now actaully have the tickets. proceed with the reservation process
@@ -460,7 +544,7 @@ class qsot_zoner {
 					'ticket_type_id' => $ticket_type_id,
 					'state' => self::$o->{'z.states.r'},
 					'order_id' => $order_id,
-					'quantity' => min( $remainder, $count ),
+					'quantity' => $quantity,
 				),
 				array(
 					'session_customer_id' => $lock_record->session_customer_id
@@ -471,6 +555,42 @@ class qsot_zoner {
 		}
 
 		return $success;
+	}
+
+	// we may need to enforce a per-event ticket limit. check that here
+	public static function maybe_enforce_event_ticket_purchase_limit( $current, $event, $args ) {
+		// normalize the args
+		$event = get_post( $event );
+		$args = wp_parse_args( $args, array(
+			'ticket_type_id' => 0,
+			'order_id' => 0,
+			'customer_id' => '',
+			'quantity' => 1,
+			'state' => self::$o->{'z.states.r'},
+		) );
+
+		// validate the event
+		if ( $event->post_type !== self::$o->core_post_type )
+			return $curretn;
+
+		// figure out the event ticket limit, if any
+		$limit = apply_filters( 'qsot-event-ticket-purchase-limit', 0, $event->ID );
+
+		// if there is no limit, then bail
+		if ( $limit <= 0 )
+			return $current;
+
+		// determine how many tickets they currently have for this event
+		$total_for_event = apply_filters( 'qsot-zoner-owns', 0, $event, $args['ticket_type_id'], self::$o->{'z.states.r'}, $args['customer_id'], $args['order_id'] );
+
+		// if the current total they have is great than or equal to the event limit, then bail with an error stating that they are already at the limit
+		if ( $total_for_event >= $limit )
+			return new WP_Error( 10, __( 'You have reached the ticket limit for this event.', 'opentickets-community-edition' ) );
+		else if ( $total_for_event + $args['quantity'] > $limit )
+			return max( 0, $limit - $total_for_event );
+		
+		// if we get this far, then they are allowed
+		return true;
 	}
 
 	// get the total reservations for each zone that the current user owns (based on event, ticket type, and state)
@@ -742,9 +862,6 @@ class qsot_zoner {
 			$wpdb->query( $wpdb->prepare( 'update ' . $wpdb->qsot_event_zone_to_order . ' set quantity = %d where 1=1' . implode( '', array_values( $wheres ) ) . ' order by since asc limit 1', $total ) );
 			// then delete the dupes
 			$wpdb->query( $wpdb->prepare( 'delete from ' . $wpdb->qsot_event_zone_to_order . ' where 1=1' . implode( '', array_values( $wheres ) ) . ' order by since desc limit %d', count( $current ) - 1 ) );
-		// if there are NO current matching rows, just bail, because updaets will fail and deletes will be irrelevant
-		} else if ( ! count( $current ) ) {
-			return false;
 		}
 
 		$limit = '';
@@ -758,6 +875,10 @@ class qsot_zoner {
 			$is_delete = true;
 		// otherwise this is an actual, genuine update to the reservations, so make the query an update query
 		} else {
+			// if our settings say that the user cannot edit their reservations, then prevent it here
+			if ( isset( $set['state'] ) && self::$o->{'z.states.r'} == $set['state'] && 'yes' == apply_filters( 'qsot-get-option-value', 'no', 'qsot-locked-reservations' ) )
+				return false;
+
 			$q = 'update ' . $wpdb->qsot_event_zone_to_order . ' set ';
 
 			// create the update sql
@@ -814,8 +935,35 @@ class qsot_zoner {
 					if ( $remainder <= 0 )
 						return false;
 
+					// figure out the maximum number of seats this person is allows to purchase
+					$max_quantity = max( 0, min( $remainder, $set['qty'] ) );
+
+					// check to see if this user has the ability to actually add this number of tickets to their cart currently. could have a per event ticket limit
+					$can_add_to_cart = apply_filters( 'qsot-can-add-tickets-to-cart', true, $event, array(
+						'ticket_type_id' => isset( $set['ticket_type_id'] ) ? $set['ticket_type_id'] : 0,
+						'customer_id' => $customer_id,
+						'order_id' => $order_id,
+						'quantity' => $max_quantity,
+					) );
+					// if you just flat out cannot add tickets, or you can only add 0 tickets, then generic error out
+					if ( ! $can_add_to_cart ) {
+						// clean up first
+						$wpdb->delete( $wpdb->qsot_event_zone_to_order, array( 'session_customer_id' => $lock_record->session_customer_id ) );
+						// return a generic error
+						return false; //new WP_Error( 6, __( 'Could not reserve those tickets.', 'opentickets-community-edition' ) );
+					// if there is a actual error reason given for why you cannot add the tickets, then pass that along
+					} else if ( is_wp_error( $can_add_to_cart ) ) {
+						// clean up first
+						$wpdb->delete( $wpdb->qsot_event_zone_to_order, array( 'session_customer_id' => $lock_record->session_customer_id ) );
+						// pass the error along
+						return $can_add_to_cart;
+					// if the number that the user is allowed, is less than the max we calculated above, simply update the amount
+					} else if ( is_numeric( $can_add_to_cart ) && $can_add_to_cart < $max_quantity ) {
+						$max_quantity = $can_add_to_cart;
+					}
+
 					// update the requested quantity to the max they are allowed to purchase, upto the amount they requested
-					$set['qty'] = max( 0, min( $set['qty'], $remainder ) );
+					$set['qty'] = $max_quantity;
 				}
 
 				// update the UPDATE pair with the max we can acquire, upto what they requested
@@ -833,7 +981,7 @@ class qsot_zoner {
 		// if we actually have updates to make, because we actually have data to filter our updated set by (in other words, do not delete all records accidentally)
 		if ( is_array( $wheres ) && count( $wheres ) ) { // safegaurd against deleting all records
 			// figure out the difference in tickets
-			$difference = -$total - $set['qty'];
+			$difference = isset( $set['qty'] ) ? -$total - $set['qty'] : 0;
 
 			// at this point, they have permission to grade their number of seats, so update the record
 			$rm_wheres = $wheres;
@@ -853,7 +1001,7 @@ class qsot_zoner {
 	
 			// notify other plugins of our success
 			if ( $success )
-				do_action( 'qsot-zoner-after-update-reservation', $difference, $set['qty'], $where, $set );
+				do_action( 'qsot-zoner-after-update-reservation', $difference, isset( $set['qty'] ) ? $set['qty'] : '', $where, $set );
 		}
 
 		return $success;

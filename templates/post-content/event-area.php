@@ -106,7 +106,12 @@ $show_available_qty = apply_filters( 'qsot-get-option-value', true, 'qsot-show-a
 										wc_price( $area->ticket->get_price() )
 									) ?>
 								</span>
-								<input type="number" min="0" max="<?php echo $area->meta['available'] ?>" step="1" class="very-short" name="ticket-count" value="<?php echo $reserved ?>" />
+
+								<?php if ( 'yes' == apply_filters( 'qsot-get-option-value', 'no', 'qsot-locked-reservations' ) ): ?>
+									<span rel="qty"><?php echo htmlspecialchars( $reserved ) ?></span>
+								<?php else: ?>
+									<input type="number" min="0" max="<?php echo $area->meta['available'] ?>" step="1" class="very-short" name="ticket-count" value="<?php echo esc_attr( $reserved ) ?>" />
+								<?php endif; ?>
 
 								<?php do_action('qsot-event-area-ticket-selection-no-js-step-two', $event, $area, $reserved); ?>
 
