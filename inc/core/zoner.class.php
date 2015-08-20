@@ -466,7 +466,7 @@ class qsot_zoner {
 			// if our settings prevent the user from modifying existing reservations, then prevent it here by not allowing a new number to be set
 			if ( 'yes' == apply_filters( 'qsot-get-option-value', 'no', 'qsot-locked-reservations' ) ) {
 				// count tickets for this event that the user currently has
-				$owned_prior_to_lock = apply_filters( 'qsot-event-reserved-since-current-user', 0, $event->ID, $lock_record->since, $customer_id );
+				$owned_prior_to_lock = apply_filters( 'qsot-event-reserved-since-current-user', 0, $event->ID, $lock_record->since, $customer_id, $ticket_type_id );
 
 				// if there were reservations prior, then dont allow them to change
 				if ( $owned_prior_to_lock > 0 ) {
@@ -581,7 +581,7 @@ class qsot_zoner {
 			return $current;
 
 		// determine how many tickets they currently have for this event
-		$total_for_event = apply_filters( 'qsot-zoner-owns', 0, $event, $args['ticket_type_id'], self::$o->{'z.states.r'}, $args['customer_id'], $args['order_id'] );
+		$total_for_event = apply_filters( 'qsot-zoner-owns', 0, $event, '', self::$o->{'z.states.r'}, $args['customer_id'], $args['order_id'] );
 		if ( is_array( $total_for_event ) )
 			$total_for_event = array_sum( $total_for_event );
 
