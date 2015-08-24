@@ -647,6 +647,7 @@ QS.EventUI = (function($, undefined) {
 				visibility:'public',
 				password:'',
 				pub_date:'',
+				purchase_limit: 0,
 				capacity:0
 			};
 			this.callback( 'before-submit-defaults', [ defaults ] );
@@ -662,7 +663,7 @@ QS.EventUI = (function($, undefined) {
 					visibility: events[i].visibility,
 					password: events[i].password,
 					pub_date: events[i].pub_date,
-					purchase_limit: events[i].purchase_limit,
+					purchase_limit: events[i].purchase_limit || 0,
 					capacity: events[i].capacity
 				};
 				ev = $.extend({}, defaults, ev);
