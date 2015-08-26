@@ -324,8 +324,11 @@ class QSOT_tickets {
 		$one = $stylesheet = apply_filters( 'qsot-locate-template', '', array( 'tickets/basic-style.css' ), false, false );
 		$two = $stylesheet = str_replace( DIRECTORY_SEPARATOR, '/', str_replace( ABSPATH, '/', $stylesheet ) );
 		$three = $stylesheet = site_url( $stylesheet );
-if ( current_user_can( 'edit_posts' ) && isset( $_GET['as'] ) && 'html' == $_GET['as'] )
-var_dump('one = ' . $one, 'two = ' . $two, 'three = ' . $three);
+if ( current_user_can( 'edit_posts' ) && isset( $_GET['as'] ) && 'html' == $_GET['as'] ) {
+echo '<pre>';
+var_dump('abspath = ' . ABSPATH, 'one = ' . $one, str_replace( ABSPATH, '/', $one ), 'two = ' . $two, 'three = ' . $three);
+echo '</pre>';
+}
 
 		// load the branding image ids from our settings page
 		$branding_image_ids = self::$options->{'qsot-ticket-branding-img-ids'};
