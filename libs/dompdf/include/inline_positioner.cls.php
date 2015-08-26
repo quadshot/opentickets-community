@@ -34,7 +34,7 @@ class Inline_Positioner extends Positioner {
     // End debugging
 
     if ( !$p ) {
-			if ( function_exists( 'current_user_can' ) && current_user_can( 'edit_posts' ) ) {
+			//if ( function_exists( 'current_user_can' ) && current_user_can( 'edit_posts' ) ) {
 				echo '<pre>';
 				var_dump( get_class( $this->_frame ), debug_backtrace( DEBUG_BACKTRACE_PROVIDE_OBJECT & DEBUG_BACKTRACE_IGNORE_ARGS ) );
 				if ( isset( $_GET['more'] ) && 'yes' == $_GET['more'] ) {
@@ -42,7 +42,7 @@ class Inline_Positioner extends Positioner {
 					var_dump($this->_frame);
 				}
 				echo '</pre>';
-			}
+			//}
       throw new DOMPDF_Exception("No block-level parent found.  Not good.");
 		}
 
