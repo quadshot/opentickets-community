@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenTickets Community Edition\n"
 "POT-Creation-Date: 2015-08-26 07:25-0800\n"
-"PO-Revision-Date: 2015-08-26 07:25-0800\n"
+"PO-Revision-Date: 2015-08-26 08:39-0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es_ES\n"
@@ -112,28 +112,28 @@ msgstr ""
 "este mensaje."
 
 #: ../opentickets.php:542
-#, fuzzy, php-format
+#, php-format
 msgid "Could not compile stylesheet %s. [%s]"
-msgstr "No se pudo compilar event.less:"
+msgstr "No se pudo compilar event.less: [%s : %s]"
 
 #: ../opentickets.php:545
-#, fuzzy, php-format
+#, php-format
 msgid "Could not write to stylesheet file %s."
 msgstr "No se pudo encontrar este lugar [%s]."
 
 #: ../opentickets.php:549
-#, fuzzy, php-format
+#, php-format
 msgid "Could not write colors to file %s. [%s]"
-msgstr "No se pudo encontrar este lugar [%s]."
+msgstr "No se pudo encontrar este lugar [%s : %s]."
 
 #: ../opentickets.php:557
 msgid "the installation process"
 msgstr ""
 
 #: ../opentickets.php:562 ../opentickets.php:566
-#, fuzzy, php-format
+#, php-format
 msgid "Could not find the needed library %s, for use in %s."
-msgstr "No se pudo encontrar este lugar [%s]."
+msgstr "No se pudo encontrar este lugar [%s : %s]."
 
 #: ../inc/core/calendar.class.php:127
 msgid "OpenTickets Calendar"
@@ -381,12 +381,10 @@ msgid "high"
 msgstr ""
 
 #: ../inc/core/post-type.class.php:691
-#, fuzzy
 msgid "available"
 msgstr "Disponible:"
 
 #: ../inc/core/post-type.class.php:797
-#, fuzzy
 msgctxt "post"
 msgid "Hidden"
 msgstr "Oculto"
@@ -441,37 +439,31 @@ msgid "@ %3$s"
 msgstr ""
 
 #: ../inc/core/post-type.class.php:1186
-#, fuzzy
 msgctxt "Permalink date"
 msgid "Y-m-d_gia"
 msgstr "Y-m-d"
 
 #: ../inc/core/post-type.class.php:1446
-#, fuzzy
 msgctxt "metabox title"
 msgid "Event Date Time Settings"
 msgstr "Ajuste de fecha y hora del evento"
 
 #: ../inc/core/post-type.class.php:1456
-#, fuzzy
 msgctxt "metabox title"
 msgid "Event Titles"
 msgstr "Evento (Fecha/hora)"
 
 #: ../inc/core/post-type.class.php:1466
-#, fuzzy
 msgctxt "metabox title"
 msgid "Ticket Sales Settings"
 msgstr "Configuración del calendario"
 
 #: ../inc/core/post-type.class.php:1477
-#, fuzzy
 msgctxt "metabox title"
 msgid "Event Run Date Range"
 msgstr "Rango de fechas del evento"
 
 #: ../inc/core/post-type.class.php:1502
-#, fuzzy
 msgctxt "metabox field heading"
 msgid "Show Date"
 msgstr "Ver reporte"
@@ -500,13 +492,11 @@ msgid ""
 msgstr ""
 
 #: ../inc/core/post-type.class.php:1527
-#, fuzzy
 msgctxt "option name"
 msgid "Show Date"
 msgstr "Ver reporte"
 
 #: ../inc/core/post-type.class.php:1531
-#, fuzzy
 msgctxt "metabox field heading"
 msgid "Show Time"
 msgstr "Hora de inicio"
@@ -522,13 +512,11 @@ msgid "No, hide the time"
 msgstr ""
 
 #: ../inc/core/post-type.class.php:1556
-#, fuzzy
 msgctxt "option name"
 msgid "Show Time"
 msgstr "Hora de inicio"
 
 #: ../inc/core/post-type.class.php:1590 ../inc/core/post-type.class.php:1933
-#, fuzzy
 msgid "Purchase Limit"
 msgstr "Comprador"
 
@@ -540,7 +528,6 @@ msgid ""
 msgstr ""
 
 #: ../inc/core/post-type.class.php:1599
-#, fuzzy
 msgid "Stop Sales Before - Formula"
 msgstr "Parar la venta de entradas antes del evento"
 
@@ -797,7 +784,6 @@ msgid "Publish Date:"
 msgstr "Fecha de publicación:"
 
 #: ../inc/core/post-type.class.php:1906
-#, fuzzy
 msgid "January"
 msgstr "Enero"
 
@@ -912,12 +898,10 @@ msgstr ""
 "mostrará también la descripción del evento."
 
 #: ../inc/core/post-type.class.php:2085
-#, fuzzy
 msgid "Single Event Synopsis Position"
 msgstr "Resumen del evento singular"
 
 #: ../inc/core/post-type.class.php:2086
-#, fuzzy
 msgid "The display position of the Event Synopsis on the single event page."
 msgstr "Mostrar el resumen en las páginas de los eventos singulares"
 
@@ -930,12 +914,10 @@ msgid "Below the Ticket Selection UI"
 msgstr ""
 
 #: ../inc/core/post-type.class.php:2100
-#, fuzzy
 msgid "Show Date"
 msgstr "Ver reporte"
 
 #: ../inc/core/post-type.class.php:2101
-#, fuzzy
 msgid "Show the date in the title of events, on the event details pages."
 msgstr "Mostrar en el tiquete el número de la orden."
 
@@ -946,7 +928,6 @@ msgid ""
 msgstr ""
 
 #: ../inc/core/post-type.class.php:2112
-#, fuzzy
 msgid "Show Time"
 msgstr "Hora de inicio"
 
@@ -999,12 +980,10 @@ msgid ""
 msgstr ""
 
 #: ../inc/core/zoner.class.php:495
-#, fuzzy
 msgid "There are no tickets available to reserve."
 msgstr "No hay reportes disponibles para"
 
 #: ../inc/core/zoner.class.php:513
-#, fuzzy
 msgid "Could not reserve those tickets."
 msgstr "¿Cuántas entradas quieres reservar?"
 
@@ -1042,22 +1021,18 @@ msgstr ""
 "utilizar  \"Invitado (Guest)\" como cliente para la orden."
 
 #: ../inc/order/admin.class.php:337
-#, fuzzy
 msgid "is a required field."
 msgstr "Nombre de usuario es un campo obligatorio"
 
 #: ../inc/order/admin.class.php:349
-#, fuzzy
 msgid "Please enter a valid postcode/ZIP."
 msgstr "Orden inválida"
 
 #: ../inc/order/admin.class.php:356
-#, fuzzy
 msgid "is not a valid phone number."
 msgstr "número telefónico inválido"
 
 #: ../inc/order/admin.class.php:363
-#, fuzzy
 msgid "is not a valid email address."
 msgstr "Dirección de correo electrónico inválida"
 
@@ -1072,7 +1047,6 @@ msgid ""
 msgstr "Debe proveer más detalles de pago para cada orden"
 
 #: ../inc/order/admin.class.php:463
-#, fuzzy
 msgid "You do not have permission to create users. Sorry."
 msgstr "Hey, no tiene permiso suficiente para realizar esta operación."
 
@@ -1116,6 +1090,7 @@ msgid "The information you supplied passed validation."
 msgstr "Validación superada."
 
 #: ../inc/order/admin.class.php:529
+#, fuzzy
 msgid "User creation failed:"
 msgstr "Error al crear la cuenta de usuario:"
 
@@ -1151,17 +1126,14 @@ msgid "Last Name"
 msgstr "Apellido"
 
 #: ../inc/order/admin.class.php:704
-#, fuzzy
 msgid "Additional Email Settings"
 msgstr "Configuración general"
 
 #: ../inc/order/admin.class.php:713
-#, fuzzy
 msgid "Custom Completed Order Message (Above Order Items)"
 msgstr "Mensaje personalizado al terminar la orden"
 
 #: ../inc/order/admin.class.php:714 ../inc/order/admin.class.php:724
-#, fuzzy
 msgid ""
 "This html appears near the top of the default Completed Order email, sent to "
 "the customer upon completion of their order, above the order items."
@@ -1171,12 +1143,10 @@ msgstr ""
 "dirección."
 
 #: ../inc/order/admin.class.php:723
-#, fuzzy
 msgid "Custom Completed Order Message - Text only version (Above Order Items)"
 msgstr "Mensaje personalizado de \"Orden completada\" - Versión solo texto"
 
 #: ../inc/order/admin.class.php:733
-#, fuzzy
 msgid "Custom Completed Order Message (Below Address)"
 msgstr "Mensaje personalizado al terminar la orden"
 
@@ -1191,7 +1161,6 @@ msgstr ""
 "dirección."
 
 #: ../inc/order/admin.class.php:743
-#, fuzzy
 msgid "Custom Completed Order Message - Text only version (Below Address)"
 msgstr "Mensaje personalizado de \"Orden completada\" - Versión solo texto"
 
@@ -1749,7 +1718,7 @@ msgid ""
 msgstr ""
 
 #: ../inc/sys/pdf.class.php:485
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Could not create the %s path directory. Please update the permissions to "
 "allow write access."
@@ -1774,7 +1743,6 @@ msgstr "No se pudo extender: tipos inválidos."
 
 #: ../inc/sys/pages/base-page.class.php:73
 #: ../inc/sys/pages/base-page.class.php:74
-#, fuzzy
 msgid "Base Page"
 msgstr "Páginas de eventos"
 
@@ -1785,7 +1753,6 @@ msgstr ""
 #: ../inc/sys/pages/system-status.page.php:44
 #: ../inc/sys/pages/system-status.page.php:45
 #: ../inc/sys/pages/system-status.page.php:49
-#, fuzzy
 msgid "System Status"
 msgstr "Estado"
 
@@ -1963,9 +1930,9 @@ msgid "Data"
 msgstr ""
 
 #: ../inc/sys/pages/system-status.page.php:821
-#, fuzzy, php-format
+#, php-format
 msgid "%s%s by %s"
-msgstr "por %s"
+msgstr "%s%s por %s"
 
 #: ../inc/sys/pages/system-status.page.php:822
 #: ../inc/sys/pages/system-status.page.php:828
@@ -2007,18 +1974,15 @@ msgid "Image #%s"
 msgstr ""
 
 #: ../inc/sys/settings/frontend.php:80 ../inc/sys/settings/frontend.php:106
-#, fuzzy
 msgid "static image"
 msgstr "Usar esta imagen"
 
 #: ../inc/sys/settings/frontend.php:95
-#, fuzzy
 msgid "remove image"
 msgstr "Remover texto"
 
 #: ../inc/sys/settings/frontend.php:96 ../inc/ticket/ticket.class.php:608
 #: ../inc/ticket/ticket.class.php:625
-#, fuzzy
 msgid "no image"
 msgstr "Imagen del logo"
 
@@ -2167,32 +2131,26 @@ msgstr ""
 "entradas\"."
 
 #: ../inc/sys/settings/frontend.php:230
-#, fuzzy
 msgid "Calendar"
 msgstr "Calendario de eventos"
 
 #: ../inc/sys/settings/frontend.php:232
-#, fuzzy
 msgid "Calendar Item BG"
 msgstr "Configuración del calendario"
 
 #: ../inc/sys/settings/frontend.php:235
-#, fuzzy
 msgid "The background color of the active items shown on the calendar."
 msgstr "Color de fondo de la página \"reservar entradas\" "
 
 #: ../inc/sys/settings/frontend.php:238
-#, fuzzy
 msgid "Calendar Item Border"
 msgstr "Borde del error"
 
 #: ../inc/sys/settings/frontend.php:241
-#, fuzzy
 msgid "The border color of the active items shown on the calendar."
 msgstr "Mostrar en el tiquete el número de la orden."
 
 #: ../inc/sys/settings/frontend.php:244
-#, fuzzy
 msgid "Calendar Item Text"
 msgstr "Configuración del calendario"
 
@@ -2219,7 +2177,6 @@ msgid ""
 msgstr ""
 
 #: ../inc/sys/settings/frontend.php:263
-#, fuzzy
 msgid "Past Item Border"
 msgstr "Remover borde"
 
@@ -2276,12 +2233,10 @@ msgid "Save changes"
 msgstr "Guardar"
 
 #: ../inc/ticket/checkin.class.php:127 ../inc/ticket/ticket.class.php:406
-#, fuzzy
 msgid "Could not laod the order that this ticket belongs to."
 msgstr "No se pudo encontrar ese artículo en la orden."
 
 #: ../inc/ticket/checkin.class.php:132 ../inc/ticket/ticket.class.php:413
-#, fuzzy
 msgid "Could not load the order item associated with this ticket."
 msgstr "No se pudo encontrar ese artículo en la orden."
 
@@ -2313,37 +2268,30 @@ msgid "View these tickets"
 msgstr "Ver estas entradas"
 
 #: ../inc/ticket/ticket.class.php:284 ../inc/ticket/ticket.class.php:290
-#, fuzzy
 msgid "There was a problem loading your ticket."
 msgstr "Error al guardar el área [%s]."
 
 #: ../inc/ticket/ticket.class.php:298
-#, fuzzy
 msgid "the order"
 msgstr "Editar orden"
 
 #: ../inc/ticket/ticket.class.php:300
-#, fuzzy
 msgid "the ticket product information"
 msgstr "La imagen de producto del tiquete"
 
 #: ../inc/ticket/ticket.class.php:302
-#, fuzzy
 msgid "the event information"
 msgstr "Información de la factura"
 
 #: ../inc/ticket/ticket.class.php:304
-#, fuzzy
 msgid "the venue information"
 msgstr "Información sobre el lugar del evento"
 
 #: ../inc/ticket/ticket.class.php:306
-#, fuzzy
 msgid "the order item information"
 msgstr "Información de la factura"
 
 #: ../inc/ticket/ticket.class.php:308
-#, fuzzy
 msgid "the event area information"
 msgstr "Información de la factura"
 
@@ -2384,7 +2332,6 @@ msgid "the Event Featured Image"
 msgstr "La imagen destacada del evento"
 
 #: ../inc/ticket/ticket.class.php:610 ../inc/ticket/ticket.class.php:627
-#, fuzzy
 msgid "the Venue Image"
 msgstr "La imagen destacada del evento"
 
@@ -2393,22 +2340,18 @@ msgid "the Ticket Product Image"
 msgstr "La imagen de producto del tiquete"
 
 #: ../inc/ticket/ticket.class.php:622
-#, fuzzy
 msgid "Right Ticket Image"
 msgstr "Imagen a la izquierda del tiquete"
 
 #: ../inc/ticket/ticket.class.php:623
-#, fuzzy
 msgid "The image to show in the bottom right corner of the ticket."
 msgstr "La imagen para mostrar en la esquina inferior izquierda del tiquete"
 
 #: ../inc/ticket/ticket.class.php:639
-#, fuzzy
 msgid "Ticket Branding Images"
 msgstr "La imagen de producto del tiquete"
 
 #: ../inc/ticket/ticket.class.php:640
-#, fuzzy
 msgid "Images shown in the small line of branding images below each ticket."
 msgstr "La imagen para mostrar en la esquina inferior izquierda del tiquete"
 
@@ -2505,7 +2448,6 @@ msgid "City:"
 msgstr "Ciudad:"
 
 #: ../inc/venues/post-type.class.php:509
-#, fuzzy
 msgid "State or County:"
 msgstr "Provincia"
 
@@ -2588,7 +2530,6 @@ msgid "Venue"
 msgstr "Lugar"
 
 #: ../inc/venues/post-type.class.php:741
-#, fuzzy
 msgid "Show Address"
 msgstr "Dirección"
 
@@ -2597,7 +2538,6 @@ msgid "Display the venue address below the venue description?"
 msgstr ""
 
 #: ../inc/venues/post-type.class.php:752
-#, fuzzy
 msgid "Show Map"
 msgstr "Ver reporte"
 
@@ -2616,7 +2556,6 @@ msgid ""
 msgstr ""
 
 #: ../inc/venues/post-type.class.php:774
-#, fuzzy
 msgid "Show Notes"
 msgstr "Ver reporte"
 
@@ -2807,12 +2746,12 @@ msgstr ""
 "reserva de %s a %d. Solo quedan %d disponibles."
 
 #: ../inc/venues/event-area/post-type.class.php:547
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "There are not enough available tickets to increase the quantity of %s to %d."
 msgstr ""
 "No hay suficientes entradas disponibles para aumentar la cantidad de tu "
-"reserva de %s a %d. Solo quedan %d disponibles."
+"reserva de %s a %d."
 
 #: ../inc/venues/event-area/post-type.class.php:555
 msgid "That event does not have currently have any tickets."
@@ -2872,13 +2811,11 @@ msgstr ""
 "reservar temporalmente %d %s."
 
 #: ../inc/venues/event-area/post-type.class.php:1347
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "There are not enough %s tickets available currently. Could not temporarily "
 "reserve %d %s."
-msgstr ""
-"Solo hay <span class=\"available\">%s</span> %s disponibles. No se pueden "
-"reservar temporalmente %d %s."
+msgstr "Solo hay %s disponibles. No se pueden reservar temporalmente %d %s."
 
 #: ../inc/venues/event-area/post-type.class.php:1357
 #: ../inc/venues/event-area/post-type.class.php:1400
@@ -2895,13 +2832,13 @@ msgstr ""
 "pueden reservar %d más que %s. Todavía tiene %d %s."
 
 #: ../inc/venues/event-area/post-type.class.php:1388
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "There are not enough %s tickets available currently. Could not temporarily "
 "reserve %d more %s. You still have %d %s."
 msgstr ""
-"Solo hay <span class=\"available\">%s</span> más %s disponibles; no se "
-"pueden reservar %d más que %s. Todavía tiene %d %s."
+"Solo hay %s disponibles; no se pueden reservar %d más que %s. Todavía tiene "
+"%d %s."
 
 #: ../inc/venues/event-area/post-type.class.php:1412
 msgid "Area"
@@ -3033,7 +2970,6 @@ msgid "Item"
 msgstr "Art."
 
 #: ../templates/admin/meta-boxes/views/html-order-items.php:57
-#, fuzzy
 msgid "Cost"
 msgstr "Costo:"
 
@@ -3055,12 +2991,10 @@ msgid "Coupon(s) Used"
 msgstr ""
 
 #: ../templates/admin/meta-boxes/views/html-order-items.php:152
-#, fuzzy
 msgid "Discount"
 msgstr "Descuentos"
 
 #: ../templates/admin/meta-boxes/views/html-order-items.php:152
-#, fuzzy
 msgid "This is the total discount. Discounts are defined per line item."
 msgstr "Descuento total aplicado después de impuestos"
 
@@ -3161,21 +3095,20 @@ msgid "Reason for refund (optional)"
 msgstr "Motivo para el reintegro (opcional)"
 
 #: ../templates/admin/meta-boxes/views/html-order-items.php:297
-#, fuzzy
 msgid "Payment Gateway"
 msgstr "Pago mediante %s"
 
 #: ../templates/admin/meta-boxes/views/html-order-items.php:299
-#, fuzzy, php-format
+#, php-format
 msgctxt "Refund $amount"
 msgid "Refund %s via %s"
 msgstr "Reintegrar %s a través de %s"
 
 #: ../templates/admin/meta-boxes/views/html-order-items.php:300
-#, fuzzy, php-format
+#, php-format
 msgctxt "Refund $amount manually"
 msgid "Refund %s manually"
-msgstr "Reintegrar manualmente"
+msgstr "Reintegrar manualmente [%s]"
 
 #: ../templates/admin/meta-boxes/views/html-order-items.php:313
 msgid "Add products"
@@ -3396,21 +3329,19 @@ msgstr ""
 "el próximo?"
 
 #: ../templates/post-content/venue/contact-info.php:28
-#, fuzzy
 msgid "Physical Address:"
 msgstr "Dirección:"
 
 #: ../templates/post-content/venue/social.php:2
-#, fuzzy
 msgid "Contact Information:"
 msgstr "Email:"
 
 #: ../templates/post-content/venue/social.php:19
 #: ../templates/post-content/venue/social.php:24
 #: ../templates/post-content/venue/social.php:29
-#, fuzzy, php-format
+#, php-format
 msgid "Visit the %s"
-msgstr "Visitar la página del evento"
+msgstr "Visitar la página del evento [%s]"
 
 #: ../templates/post-content/venue/social.php:34
 msgid "Send an email"
@@ -3422,9 +3353,9 @@ msgid "Who is OpenTickets?"
 msgstr "¿Quién es OpenTickets?"
 
 #: ../templates/tickets/basic-ticket.php:39
-#, fuzzy, php-format
+#, php-format
 msgid "%s - %s - %s - %s"
-msgstr "%s en %s @ %s"
+msgstr "%s en %s @ %s [%s]"
 
 #: ../templates/tickets/basic-ticket.php:52
 msgid "Download PDF"
@@ -3600,9 +3531,9 @@ msgid "Customer's notes about the order"
 msgstr "Notas del cliente a la orden"
 
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:52
-#, fuzzy, php-format
+#, php-format
 msgid "added on %1$s at %2$s"
-msgstr "agregado hace %s"
+msgstr "agregado hace %1$s %2$s"
 
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:53
 msgid "WooCommerce"
@@ -3614,7 +3545,6 @@ msgid "by %s"
 msgstr "por %s"
 
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:61
-#, fuzzy
 msgid "There are no notes yet."
 msgstr "No hay notas para esta orden todavía."
 
