@@ -664,8 +664,13 @@ class qsot_post_type {
 
 	// maybe prevent editing the quantity of tickets in the cart, based on settings
 	public static function maybe_prevent_ticket_quantity_edit( $current, $cart_item_key, $cart_item=array() ) {
-		// if we are not preventing editing of quantity, then just bail
-		if ( 'no' == apply_filters( 'qsot-get-option-value', 'no', 'qsot-locked-reservations' ) )
+		// figure out the limit for this event
+		$limit = isset( $cart_item['event_id'] ) ? apply_filters( 'qsot-event-ticket-purchase-limit', 0, $cart_item['event_id'] ) : 0;
+
+		// there are two conditions when the quantity should not be editable:
+		// 1) if the settings lock the user into keeping the quantity they initially selected
+		// 2) if the purchase limit of the tickets is set to 1, meaning if it is in the cart, they are at the limit
+		if ( 1 !== intval( $limit ) && 'no' == apply_filters( 'qsot-get-option-value', 'no', 'qsot-locked-reservations' ) )
 			return $current;
 
 		// check if this is a ticket. if not bail
@@ -2046,7 +2051,7 @@ class qsot_post_type {
 		self::$options->def( 'qsot-show-available-quantity', 'yes' );
 
 		// control how many tickets a user can buy, and if they can edit that number once they decide on it
-		self::$options->def( 'qsot-per-event-per-order-ticket-limit', 0 );
+		self::$options->def( 'qsot-event-purchase-limit', 0 );
 		self::$options->def( 'qsot-locked-reservations', 'no' );
 
 		self::$options->add(array(

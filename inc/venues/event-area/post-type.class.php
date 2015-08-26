@@ -235,6 +235,9 @@ class qsot_event_area {
 		$max = 1000000;
 		if (is_object($event->meta) && is_object($event->meta->available)) $max = $event->meta->available;
 
+		// figure out the purchase limit for the event
+		$limit = apply_filters( 'qsot-event-ticket-purchase-limit', 0, $event->ID );
+
 		$list['ticket-selection'] = '<div class="ticket-form ticket-selection-section">'
 				.'<div class="form-inner reserve">'
 					.'<div class="title-wrap">'
@@ -244,7 +247,10 @@ class qsot_event_area {
 						.'<label class="section-heading">'.__('Reserve some tickets:','opentickets-community-edition').'</label>'
 						.'<div class="availability-message helper"></div>'
 						.'<span rel="tt"></span>'
-						.'<input type="number" step="1" min="0" max="'.$max.'" rel="qty" name="quantity" value="1" class="very-short" />'
+						. ( 1 !== intval( $limit )
+								? '<input type="number" step="1" min="0" max="' . $max . '" rel="qty" name="quantity" value="1" class="very-short" />'
+								: '<input type="hidden" rel="qty" name="quantity" value="1" /> ' . __( 'x', 'opentickets-community-edition' ) . ' 1'
+						)
 						.'<input type="button" value="'.__('Reserve','opentickets-community-edition').'" rel="reserve-btn" class="button" />'
 					.'</div>'
 				.'</div>'
@@ -279,8 +285,11 @@ class qsot_event_area {
 							.'<div class="availability-message helper"></div>'
 							.'<a href="#" class="remove-link" rel="remove-btn">X</a>'
 							.'<span rel="tt"></span>'
-							.'<input type="number" step="1" min="0" max="'.$max.'" rel="qty" name="quantity" value="1" class="very-short" />'
-							.'<input type="button" value="'.__('Update','opentickets-community-edition').'" rel="update-btn" class="button" />'
+							. ( 1 !== intval( $limit )
+									? '<input type="number" step="1" min="0" max="' . $max . '" rel="qty" name="quantity" value="1" class="very-short" />'
+										. '<input type="button" value="' . __( 'Update', 'opentickets-community-edition' ) . '" rel="update-btn" class="button" />'
+									: '<input type="hidden" rel="qty" name="quantity" value="1" /> ' . __( 'x', 'opentickets-community-edition' ) . ' 1'
+							)
 						.'</div>'
 					.'</div>'
 					.'<div class="actions" rel="actions">'

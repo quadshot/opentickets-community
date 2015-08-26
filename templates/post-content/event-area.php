@@ -1,5 +1,8 @@
 <?php ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) ? die( header( 'Location: /' ) ) : null;
 $show_available_qty = apply_filters( 'qsot-get-option-value', true, 'qsot-show-available-quantity' );
+
+// figure out the purchase limit for the event
+$limit = apply_filters( 'qsot-event-ticket-purchase-limit', 0, $event->ID );
 ?>
 <div class="qsfix"></div>
 <div class="qsot-event-area-ticket-selection">
@@ -66,7 +69,12 @@ $show_available_qty = apply_filters( 'qsot-get-option-value', true, 'qsot-show-a
 										wc_price( $area->ticket->get_price() )
 									) ?>
 								</span>
-								<input type="number" min="0" max="<?php echo $area->meta['available'] ?>" step="1" class="very-short" name="ticket-count" value="1" />
+
+								<?php if ( 1 !== intval( $limit ) ): ?>
+									<input type="number" min="0" max="<?php echo $area->meta['available'] ?>" step="1" class="very-short" name="ticket-count" value="1" />
+								<?php else: ?>
+									<input type="hidden" rel="qty" name="quantity" value="1" /> <?php __( 'x', 'opentickets-community-edition' ) ?> 1
+								<?php endif; ?>
 
 								<?php do_action('qsot-event-area-ticket-selection-no-js-step-one', $event, $area, $reserved); ?>
 
@@ -110,14 +118,17 @@ $show_available_qty = apply_filters( 'qsot-get-option-value', true, 'qsot-show-a
 								<?php if ( 'yes' == apply_filters( 'qsot-get-option-value', 'no', 'qsot-locked-reservations' ) ): ?>
 									<span rel="qty"><?php echo htmlspecialchars( $reserved ) ?></span>
 								<?php else: ?>
-									<input type="number" min="0" max="<?php echo $area->meta['available'] ?>" step="1" class="very-short" name="ticket-count" value="<?php echo esc_attr( $reserved ) ?>" />
+									<?php if ( 1 !== intval( $limit ) ): ?>
+										<input type="number" min="0" max="<?php echo $area->meta['available'] ?>" step="1" class="very-short" name="ticket-count" value="<?php echo esc_attr( $reserved ) ?>" />
+										<input type="submit" value="<?php _e( 'Update', 'opentickets-community-edition' ) ?>" rel="reserve-btn" class="button" />
+										<?php wp_nonce_field('ticket-selection-step-two', 'submission') ?>
+										<input type="hidden" name="qsot-step" value="2" />
+									<?php else: ?>
+										<input type="hidden" rel="qty" name="ticket-count" value="1" /> <?php __( 'x', 'opentickets-community-edition' ) ?> 1
+									<?php endif; ?>
 								<?php endif; ?>
 
 								<?php do_action('qsot-event-area-ticket-selection-no-js-step-two', $event, $area, $reserved); ?>
-
-								<input type="submit" value="<?php _e( 'Update', 'opentickets-community-edition' ) ?>" rel="reserve-btn" class="button" />
-								<?php wp_nonce_field('ticket-selection-step-two', 'submission') ?>
-								<input type="hidden" name="qsot-step" value="2" />
 							</div>
 						</form>
 					</div>
