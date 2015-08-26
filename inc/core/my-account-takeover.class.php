@@ -161,21 +161,43 @@ class qsot_my_account_takeover {
 		do_action( 'woocommerce_view_order', $order_id );
 	}
 
-	public static function add_my_account_to_user_profile($userprofile) {
+	// add the upcoming events section to the user profile, both on the frontend and backend
+	public static function add_my_account_to_user_profile( $userprofile ) {
+		// grab a WC instance
 		$woocommerce = WC();
 
+		// first make sure to load all the required files are included
 		$woocommerce->frontend_includes();
+		$pp = $woocommerce->plugin_path();
+		include_once( $pp . '/includes/abstracts/abstract-wc-session.php' );
+		include_once( $pp . '/includes/class-wc-session-handler.php' );
 
+		// next, setup the session, if it is not arlready setup (mainly for the backend profile pages)
 		$session_class = apply_filters( 'woocommerce_session_handler', 'WC_Session_Handler' );
 		$woocommerce->session = isset( $woocommerce->session ) && $woocommerce->session instanceof $session_class ? $woocommerce->session : new $session_class();
 
-		if (!is_object($woocommerce->customer)) $woocommerce->customer = new WC_Customer();
-		query_posts(array('post_type' => 'shop_order', 'posts_per_page' => 1, 'post_status' => 'any'));
-		if ( have_posts() ) the_post();
+		// setup the customer information for the profile page
+		if ( ! is_object( $woocommerce->customer ) )
+			$woocommerce->customer = new WC_Customer();
 
+		// if the user is not logged in, then force them to before we continue
 		if ( ! is_user_logged_in() ) {
 			wc_get_template( 'myaccount/form-login.php' );
 		} else {
+			// find all the completed orders for that user
+			query_posts( array(
+				'numberposts' => -1,
+				'meta_key' => '_customer_user',
+				'meta_value' => $userprofile->ID,
+				'post_type' => wc_get_order_types( 'view-orders' ),
+				'post_status' => array_keys( wc_get_order_statuses() )
+			) );
+			// and if there are no posts, then bail, because there will definitely be nothing to display
+			if ( have_posts() )
+				the_post();
+
+			// hack it up here.
+			// basically, because this part of the template is not designed to show in the admin, we have to fool core WC into thinking that the displayed user is possibly someone other than the current user
 			$cu = wp_get_current_user();
 			$GLOBALS['qsot_my_acct'] = array(
 				'current_user' => $cu,
