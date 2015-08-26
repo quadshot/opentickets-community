@@ -508,7 +508,8 @@ class qsot_venue_post_type {
 					<tr>
 						<th><?php _e('State or County:','opentickets-community-edition') ?></th>
 						<td>
-							<select name="venue[info][state]" class="widefat js_field-state">
+							<select name="venue[info][state]" class="widefat js_field-state" id="venue_state">
+								<option value="" <?php selected( true, empty( $info['state'] ) || 'null' == $info['state'] ) ?>><?php _e( '-- Select a State/County --', 'opentickets-community-edition' ) ?></option>
 								<?php $states = WC()->countries->get_states( $country ); if ( is_array( $states ) ) foreach ( $states as $abbr => $name ): ?>
 									<option value="<?php echo esc_attr( $abbr ) ?>" <?php selected( $abbr, $info['state'] ) ?>><?php echo force_balance_tags( $name ) ?></option>
 								<?php endforeach; ?>
