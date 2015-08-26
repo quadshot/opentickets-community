@@ -321,16 +321,12 @@ class QSOT_tickets {
 
 		// determine the file location for the template and it's stylesheet
 		$template = apply_filters( 'qsot-locate-template', '', array( 'tickets/basic-ticket.php' ), false, false );
-		$one = $stylesheet = apply_filters( 'qsot-locate-template', '', array( 'tickets/basic-style.css' ), false, false );
-		$one_a = $stylesheet = str_replace( DIRECTORY_SEPARATOR, '/', $stylesheet );
+		$stylesheet = apply_filters( 'qsot-locate-template', '', array( 'tickets/basic-style.css' ), false, false );
+		// account for messed up Windows paths
+		$stylesheet = str_replace( DIRECTORY_SEPARATOR, '/', $stylesheet );
 		$abspath = str_replace( DIRECTORY_SEPARATOR, '/', ABSPATH );
-		$two = $stylesheet = str_replace( $abspath, '/', $stylesheet );
-		$three = $stylesheet = site_url( $stylesheet );
-if ( current_user_can( 'edit_posts' ) && isset( $_GET['as'] ) && 'html' == $_GET['as'] ) {
-echo '<pre>';
-var_dump('abspath = ' . $abspath, 'one = ' . $one, 'one_a = ' . $one_a, str_replace( $abspath, '/', $one ), 'two = ' . $two, 'three = ' . $three);
-echo '</pre>';
-}
+		$stylesheet = str_replace( $abspath, '/', $stylesheet );
+		$stylesheet = site_url( $stylesheet );
 
 		// load the branding image ids from our settings page
 		$branding_image_ids = self::$options->{'qsot-ticket-branding-img-ids'};
