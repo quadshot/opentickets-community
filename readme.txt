@@ -169,6 +169,16 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.12.1 =
+* [translation] updated all PO and MO files, and unfuzzied all entries, so they actually translate
+* [translation] updated all date formats for nl_NL translation
+* [change] when purchase limit is 1, after adding reservations, the quantity can no longer be edited
+* [tweak] minor param tweak for purchase limit to allow WC 2.3.x to work
+* [fix] correctd newly introduced php error on edit user pages
+* [fix] corrected 'state/county' issue where value keeps setting to 'null'
+* [fix] minor php notices during event save process
+
+
 = 1.12.0 =
 * [new] feature to limit the number of tickets that can be purchased per event
 * [new] feature to allow locking the quantity after the user selected it the first time. users can still un-reserve
