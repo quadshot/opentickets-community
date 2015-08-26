@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OpenTickets Community Edition\n"
-"POT-Creation-Date: 2015-08-04 05:55-0800\n"
-"PO-Revision-Date: 2015-08-04 05:55-0800\n"
+"POT-Creation-Date: 2015-08-26 07:26-0800\n"
+"PO-Revision-Date: 2015-08-26 07:26-0800\n"
 "Last-Translator: \n"
 "Language-Team: Quadshot <info@quadshot.com>\n"
 "Language: nl\n"
@@ -114,26 +114,26 @@ msgstr ""
 "naar de aanbevolen hoeveelheid, of dit niet wil doen, dan kunt u dit bericht "
 "negeren."
 
-#: ../opentickets.php:535
+#: ../opentickets.php:542
 #, php-format
 msgid "Could not compile stylesheet %s. [%s]"
 msgstr "Kan stylesheet niet compileren %s. [%s]"
 
-#: ../opentickets.php:538
+#: ../opentickets.php:545
 #, php-format
 msgid "Could not write to stylesheet file %s."
 msgstr "Kan niet naar stylesheet bestand schrijven %s."
 
-#: ../opentickets.php:542
+#: ../opentickets.php:549
 #, php-format
 msgid "Could not write colors to file %s. [%s]"
 msgstr "Kan kleuren niet wegschrijven naar bestand %s. [%s]"
 
-#: ../opentickets.php:550
+#: ../opentickets.php:557
 msgid "the installation process"
 msgstr ""
 
-#: ../opentickets.php:555 ../opentickets.php:559
+#: ../opentickets.php:562 ../opentickets.php:566
 #, fuzzy, php-format
 msgid "Could not find the needed library %s, for use in %s."
 msgstr "Kan de opgegeven locatie niet vinden [%s]."
@@ -179,17 +179,17 @@ msgstr "Handmatig ingevoerde datum"
 msgid "Starting Date Method"
 msgstr "Begin Datum Methode"
 
-#: ../inc/core/calendar.class.php:393 ../inc/core/post-type.class.php:1557
-#: ../inc/core/post-type.class.php:1563 ../inc/core/post-type.class.php:1646
-#: ../inc/core/post-type.class.php:1662
+#: ../inc/core/calendar.class.php:393 ../inc/core/post-type.class.php:1677
+#: ../inc/core/post-type.class.php:1683 ../inc/core/post-type.class.php:1766
+#: ../inc/core/post-type.class.php:1782
 #: ../inc/sys/pages/system-status.page.php:368
 msgid "m-d-Y"
 msgstr "m-d-J"
 
-#: ../inc/core/calendar.class.php:394 ../inc/core/post-type.class.php:1512
-#: ../inc/core/post-type.class.php:1529 ../inc/core/post-type.class.php:1556
-#: ../inc/core/post-type.class.php:1562 ../inc/core/post-type.class.php:1645
-#: ../inc/core/post-type.class.php:1661
+#: ../inc/core/calendar.class.php:394 ../inc/core/post-type.class.php:1632
+#: ../inc/core/post-type.class.php:1649 ../inc/core/post-type.class.php:1676
+#: ../inc/core/post-type.class.php:1682 ../inc/core/post-type.class.php:1765
+#: ../inc/core/post-type.class.php:1781
 msgid "mm-dd-yy"
 msgstr "mm-dd-jj"
 
@@ -343,156 +343,157 @@ msgstr "Oneindige Login"
 msgid "Once a user logs in, they stay logged in, forever."
 msgstr "Als een gebruiker inlogd, blijft deze ingelogd, voor altijd."
 
-#: ../inc/core/post-type.class.php:214 ../inc/core/post-type.class.php:803
+#: ../inc/core/post-type.class.php:220 ../inc/core/post-type.class.php:235
+#: ../inc/core/post-type.class.php:870
 #: ../inc/reporting/seating.report.class.php:515
 msgid "Event"
 msgstr "Event"
 
-#: ../inc/core/post-type.class.php:231
+#: ../inc/core/post-type.class.php:237
 msgid "View this event"
 msgstr "Bekijk dit event"
 
-#: ../inc/core/post-type.class.php:371 ../inc/core/post-type.class.php:802
+#: ../inc/core/post-type.class.php:394 ../inc/core/post-type.class.php:869
 msgid "Events"
 msgstr "Events"
 
-#: ../inc/core/post-type.class.php:399
+#: ../inc/core/post-type.class.php:422
 msgid "Top Level Events"
 msgstr "Top Level Events"
 
-#: ../inc/core/post-type.class.php:599
-#: ../inc/venues/event-area/post-type.class.php:948
-#: ../inc/venues/event-area/post-type.class.php:956
+#: ../inc/core/post-type.class.php:622
+#: ../inc/venues/event-area/post-type.class.php:1027
+#: ../inc/venues/event-area/post-type.class.php:1035
 msgid "sold-out"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:602
-#: ../inc/venues/event-area/post-type.class.php:957
+#: ../inc/core/post-type.class.php:625
+#: ../inc/venues/event-area/post-type.class.php:1036
 msgid "low"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:605
-#: ../inc/venues/event-area/post-type.class.php:955
+#: ../inc/core/post-type.class.php:628
+#: ../inc/venues/event-area/post-type.class.php:1034
 msgid "medium"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:608
-#: ../inc/venues/event-area/post-type.class.php:954
+#: ../inc/core/post-type.class.php:631
+#: ../inc/venues/event-area/post-type.class.php:1033
 msgid "high"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:624
+#: ../inc/core/post-type.class.php:691
 #, fuzzy
 msgid "available"
 msgstr "Beschikbaar:"
 
-#: ../inc/core/post-type.class.php:730
+#: ../inc/core/post-type.class.php:797
 #, fuzzy
 msgctxt "post"
 msgid "Hidden"
 msgstr "Verborgen"
 
-#: ../inc/core/post-type.class.php:747
+#: ../inc/core/post-type.class.php:814
 #, php-format
 msgid "Hidden <span class=\"count\">(%s)</span>"
 msgid_plural "Hidden <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../inc/core/post-type.class.php:851
+#: ../inc/core/post-type.class.php:918
 msgid "MM-dd-yyyy"
-msgstr "MM-dd-jjjj"
+msgstr "MM-dd-yyyy"
 
-#: ../inc/core/post-type.class.php:852
+#: ../inc/core/post-type.class.php:919
 msgid "ddd MM-dd-yyyy"
-msgstr "ddd MM-dd-jjjj"
+msgstr "ddd MM-dd-yyyy"
 
-#: ../inc/core/post-type.class.php:853
+#: ../inc/core/post-type.class.php:920
 msgid "hh:mmtt"
 msgstr "uu:mmtt"
 
-#: ../inc/core/post-type.class.php:972
+#: ../inc/core/post-type.class.php:1041
 msgid "Max"
 msgstr "Max"
 
-#: ../inc/core/post-type.class.php:975
+#: ../inc/core/post-type.class.php:1044
 #: ../inc/reporting/seating.report.class.php:512
-#: ../inc/sys/admin-menu.class.php:311
+#: ../inc/sys/admin-menu.class.php:314
 msgid "Status"
 msgstr "Status"
 
-#: ../inc/core/post-type.class.php:1013
+#: ../inc/core/post-type.class.php:1082
 msgid "m/d/Y"
-msgstr "m/d/J"
+msgstr "m/d/Y"
 
-#: ../inc/core/post-type.class.php:1014
+#: ../inc/core/post-type.class.php:1083
 #: ../templates/tickets/basic-ticket.php:73
 #: ../templates/tickets/basic-ticket.php:80
 msgid "g:ia"
 msgstr "g:ia"
 
-#: ../inc/core/post-type.class.php:1017
+#: ../inc/core/post-type.class.php:1086
 #, fuzzy, php-format
 msgid "on %2$s"
 msgstr "toegevoeg op %1$s at %2$s"
 
-#: ../inc/core/post-type.class.php:1019
+#: ../inc/core/post-type.class.php:1088
 #, php-format
 msgid "@ %3$s"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1117
+#: ../inc/core/post-type.class.php:1186
 #, fuzzy
 msgctxt "Permalink date"
 msgid "Y-m-d_gia"
 msgstr "J-m-d"
 
-#: ../inc/core/post-type.class.php:1356
+#: ../inc/core/post-type.class.php:1446
 #, fuzzy
 msgctxt "metabox title"
 msgid "Event Date Time Settings"
 msgstr "Event Datum Tijd instellingen"
 
-#: ../inc/core/post-type.class.php:1366
+#: ../inc/core/post-type.class.php:1456
 #, fuzzy
 msgctxt "metabox title"
 msgid "Event Titles"
 msgstr "Event Datum/Tijd"
 
-#: ../inc/core/post-type.class.php:1376
+#: ../inc/core/post-type.class.php:1466
 #, fuzzy
 msgctxt "metabox title"
-msgid "Stop Sales Before Show"
-msgstr "Verkoop Stoppen Voor Show"
+msgid "Ticket Sales Settings"
+msgstr "Ticket Selectie UI"
 
-#: ../inc/core/post-type.class.php:1387
+#: ../inc/core/post-type.class.php:1477
 #, fuzzy
 msgctxt "metabox title"
 msgid "Event Run Date Range"
 msgstr "Event Looptijd Datum Beriek"
 
-#: ../inc/core/post-type.class.php:1412
+#: ../inc/core/post-type.class.php:1502
 #, fuzzy
 msgctxt "metabox field heading"
 msgid "Show Date"
 msgstr "Geef Rapport Weer"
 
-#: ../inc/core/post-type.class.php:1418 ../inc/core/post-type.class.php:1447
+#: ../inc/core/post-type.class.php:1508 ../inc/core/post-type.class.php:1537
 msgctxt "checkbox description"
 msgid "Use the site wide default setting"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1425
+#: ../inc/core/post-type.class.php:1515
 msgctxt "radio button description"
 msgid "Yes, show the date"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1429
+#: ../inc/core/post-type.class.php:1519
 msgctxt "radio button description"
 msgid "No, hide the date"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1434 ../inc/core/post-type.class.php:1463
+#: ../inc/core/post-type.class.php:1524 ../inc/core/post-type.class.php:1553
 #, php-format
 msgctxt "field helper text"
 msgid ""
@@ -500,39 +501,52 @@ msgid ""
 "a specific value for these events."
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1437
+#: ../inc/core/post-type.class.php:1527
 #, fuzzy
 msgctxt "option name"
 msgid "Show Date"
 msgstr "Geef Rapport Weer"
 
-#: ../inc/core/post-type.class.php:1441
+#: ../inc/core/post-type.class.php:1531
 #, fuzzy
 msgctxt "metabox field heading"
 msgid "Show Time"
 msgstr "Start Tijd"
 
-#: ../inc/core/post-type.class.php:1454
+#: ../inc/core/post-type.class.php:1544
 msgctxt "radio button description"
 msgid "Yes, show the time"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1458
+#: ../inc/core/post-type.class.php:1548
 msgctxt "radio button description"
 msgid "No, hide the time"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1466
+#: ../inc/core/post-type.class.php:1556
 #, fuzzy
 msgctxt "option name"
 msgid "Show Time"
 msgstr "Start Tijd"
 
-#: ../inc/core/post-type.class.php:1480
-msgid "Formula"
-msgstr "Formule"
+#: ../inc/core/post-type.class.php:1590 ../inc/core/post-type.class.php:1933
+#, fuzzy
+msgid "Purchase Limit"
+msgstr "Koper"
 
-#: ../inc/core/post-type.class.php:1485
+#: ../inc/core/post-type.class.php:1594
+msgid ""
+"The maximum number of tickets, for each child event, that a given cart can "
+"have in it. To use the site-wide global setting, use \"0\". To force no-"
+"limit, use \"-1\"."
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1599
+#, fuzzy
+msgid "Stop Sales Before - Formula"
+msgstr "Verkoop Stoppen Voor Show"
+
+#: ../inc/core/post-type.class.php:1603
 msgid ""
 "This is the formula to calculate when tickets should stop being sold on the "
 "frontend for this show. For example, if you wish to stop selling tickets 2 "
@@ -549,202 +563,204 @@ msgstr ""
 "jaren. Laat het veld leeg om de globale instellingen voor deze formule te "
 "gebruiken."
 
-#: ../inc/core/post-type.class.php:1506
+#: ../inc/core/post-type.class.php:1626
 msgid "Start Date/Time"
 msgstr "Start Datum/Tijd"
 
-#: ../inc/core/post-type.class.php:1514 ../inc/core/post-type.class.php:1531
-#: ../inc/core/post-type.class.php:1800
+#: ../inc/core/post-type.class.php:1634 ../inc/core/post-type.class.php:1651
+#: ../inc/core/post-type.class.php:1920
 msgid "@"
 msgstr "@"
 
-#: ../inc/core/post-type.class.php:1523
+#: ../inc/core/post-type.class.php:1643
 msgid "End Date/Time:"
 msgstr "Eind Datum/Tijd"
 
-#: ../inc/core/post-type.class.php:1553
+#: ../inc/core/post-type.class.php:1673
 msgid "Basic Settings"
 msgstr "Algemene Instellingen"
 
-#: ../inc/core/post-type.class.php:1557
+#: ../inc/core/post-type.class.php:1677
 msgid "Start Date"
 msgstr "Start Datum"
 
-#: ../inc/core/post-type.class.php:1558 ../inc/core/post-type.class.php:1564
-#: ../inc/core/post-type.class.php:1647 ../inc/core/post-type.class.php:1663
+#: ../inc/core/post-type.class.php:1678 ../inc/core/post-type.class.php:1684
+#: ../inc/core/post-type.class.php:1767 ../inc/core/post-type.class.php:1783
 msgid "Y-m-d"
 msgstr "J-m-d"
 
-#: ../inc/core/post-type.class.php:1559 ../inc/core/post-type.class.php:1565
+#: ../inc/core/post-type.class.php:1679 ../inc/core/post-type.class.php:1685
 msgid "h:ia"
 msgstr "h:ia"
 
-#: ../inc/core/post-type.class.php:1559
+#: ../inc/core/post-type.class.php:1679
 msgid "Start Time"
 msgstr "Start Tijd"
 
-#: ../inc/core/post-type.class.php:1560
+#: ../inc/core/post-type.class.php:1680
 msgid "to"
 msgstr "naar"
 
-#: ../inc/core/post-type.class.php:1563
+#: ../inc/core/post-type.class.php:1683
 msgid "End Date"
 msgstr "Eind Datum"
 
-#: ../inc/core/post-type.class.php:1565
+#: ../inc/core/post-type.class.php:1685
 msgid "End Time"
 msgstr "Eind Tijd"
 
-#: ../inc/core/post-type.class.php:1571 ../inc/core/post-type.class.php:1580
+#: ../inc/core/post-type.class.php:1691 ../inc/core/post-type.class.php:1700
 msgid "Repeat"
 msgstr "Herhalen"
 
-#: ../inc/core/post-type.class.php:1585
+#: ../inc/core/post-type.class.php:1705
 msgid "Repeats"
 msgstr "Herhaald"
 
-#: ../inc/core/post-type.class.php:1589
+#: ../inc/core/post-type.class.php:1709
 msgid "Weekly"
 msgstr "Weekelijks"
 
-#: ../inc/core/post-type.class.php:1595
+#: ../inc/core/post-type.class.php:1715
 msgid "Repeats Every"
 msgstr "Herhaal Elke"
 
-#: ../inc/core/post-type.class.php:1602
+#: ../inc/core/post-type.class.php:1722
 msgid "days"
 msgstr "dagen"
 
-#: ../inc/core/post-type.class.php:1603
+#: ../inc/core/post-type.class.php:1723
 msgid "weeks"
 msgstr "weken"
 
-#: ../inc/core/post-type.class.php:1608
+#: ../inc/core/post-type.class.php:1728
 msgid "Repeat on"
 msgstr "Herhaal op"
 
-#: ../inc/core/post-type.class.php:1612
+#: ../inc/core/post-type.class.php:1732
 msgid "Su"
 msgstr "Zp"
 
-#: ../inc/core/post-type.class.php:1616
+#: ../inc/core/post-type.class.php:1736
 msgid "Mo"
 msgstr "Ma"
 
-#: ../inc/core/post-type.class.php:1620
+#: ../inc/core/post-type.class.php:1740
 msgid "Tu"
 msgstr "Di"
 
-#: ../inc/core/post-type.class.php:1624
+#: ../inc/core/post-type.class.php:1744
 msgid "We"
 msgstr "Wo"
 
-#: ../inc/core/post-type.class.php:1628
+#: ../inc/core/post-type.class.php:1748
 msgid "Th"
 msgstr "Do"
 
-#: ../inc/core/post-type.class.php:1632
+#: ../inc/core/post-type.class.php:1752
 msgid "Fr"
 msgstr "Fr"
 
-#: ../inc/core/post-type.class.php:1636
+#: ../inc/core/post-type.class.php:1756
 msgid "Sa"
 msgstr "Za"
 
-#: ../inc/core/post-type.class.php:1642
+#: ../inc/core/post-type.class.php:1762
 msgid "Starts on"
 msgstr "Start op"
 
-#: ../inc/core/post-type.class.php:1652
+#: ../inc/core/post-type.class.php:1772
 msgid "Ends"
 msgstr "Eindigt"
 
-#: ../inc/core/post-type.class.php:1658
+#: ../inc/core/post-type.class.php:1778
 msgid "On"
 msgstr "Op"
 
-#: ../inc/core/post-type.class.php:1668
+#: ../inc/core/post-type.class.php:1788
 msgid "After"
 msgstr "Na"
 
-#: ../inc/core/post-type.class.php:1671
+#: ../inc/core/post-type.class.php:1791
 msgid "occurences"
 msgstr "voorkomens"
 
-#: ../inc/core/post-type.class.php:1692
+#: ../inc/core/post-type.class.php:1812
 msgid "Add to Calendar"
 msgstr "Toevoegen aan Kalender"
 
-#: ../inc/core/post-type.class.php:1708
+#: ../inc/core/post-type.class.php:1828
 msgid "Event Date/Times"
 msgstr "Event Datum/Tijd"
 
-#: ../inc/core/post-type.class.php:1714 ../inc/sys/admin-menu.class.php:170
-#: ../inc/sys/admin-menu.class.php:171
+#: ../inc/core/post-type.class.php:1834 ../inc/sys/admin-menu.class.php:181
+#: ../inc/sys/admin-menu.class.php:182
 msgid "Settings"
 msgstr "Instellingen"
 
-#: ../inc/core/post-type.class.php:1719
+#: ../inc/core/post-type.class.php:1839
 msgid "Status:"
 msgstr "Status:"
 
-#: ../inc/core/post-type.class.php:1721 ../inc/core/post-type.class.php:1744
-#: ../inc/core/post-type.class.php:1779 ../inc/venues/post-type.class.php:364
-#: ../inc/venues/event-area/post-type.class.php:546
+#: ../inc/core/post-type.class.php:1841 ../inc/core/post-type.class.php:1864
+#: ../inc/core/post-type.class.php:1899 ../inc/core/post-type.class.php:1935
+#: ../inc/venues/post-type.class.php:364
+#: ../inc/venues/event-area/post-type.class.php:625
 #: ../templates/admin/meta-boxes/views/html-order-items.php:217
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:221
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:313
 msgid "Edit"
 msgstr "Aanpassen"
 
-#: ../inc/core/post-type.class.php:1726
+#: ../inc/core/post-type.class.php:1846
 msgid "Published"
 msgstr "Gepubliceerd"
 
-#: ../inc/core/post-type.class.php:1727
+#: ../inc/core/post-type.class.php:1847
 msgid "Privately Published"
 msgstr "Prive Gepubliceerd"
 
-#: ../inc/core/post-type.class.php:1728
+#: ../inc/core/post-type.class.php:1848
 msgid "Scheduled"
 msgstr "Gepland"
 
-#: ../inc/core/post-type.class.php:1730
+#: ../inc/core/post-type.class.php:1850
 msgid "Pending Review"
 msgstr "Afwachtende Review"
 
-#: ../inc/core/post-type.class.php:1731
+#: ../inc/core/post-type.class.php:1851
 msgid "Draft"
 msgstr "Concept"
 
-#: ../inc/core/post-type.class.php:1734 ../inc/core/post-type.class.php:1769
-#: ../inc/core/post-type.class.php:1805 ../inc/venues/post-type.class.php:375
-#: ../inc/venues/event-area/post-type.class.php:569
+#: ../inc/core/post-type.class.php:1854 ../inc/core/post-type.class.php:1889
+#: ../inc/core/post-type.class.php:1925 ../inc/core/post-type.class.php:1942
+#: ../inc/venues/post-type.class.php:375
+#: ../inc/venues/event-area/post-type.class.php:648
 msgid "OK"
 msgstr "OK"
 
-#: ../inc/core/post-type.class.php:1735 ../inc/core/post-type.class.php:1770
-#: ../inc/core/post-type.class.php:1806 ../inc/sys/mba.class.php:462
-#: ../inc/venues/post-type.class.php:376
-#: ../inc/venues/event-area/post-type.class.php:570
+#: ../inc/core/post-type.class.php:1855 ../inc/core/post-type.class.php:1890
+#: ../inc/core/post-type.class.php:1926 ../inc/core/post-type.class.php:1943
+#: ../inc/sys/mba.class.php:462 ../inc/venues/post-type.class.php:376
+#: ../inc/venues/event-area/post-type.class.php:649
 #: ../templates/admin/meta-boxes/views/html-order-items.php:255
 #: ../templates/admin/meta-boxes/views/html-order-items.php:301
 msgid "Cancel"
 msgstr "Annuleren"
 
-#: ../inc/core/post-type.class.php:1742
+#: ../inc/core/post-type.class.php:1862
 msgid "Visibility"
 msgstr "Zichtbaarheid"
 
-#: ../inc/core/post-type.class.php:1748
+#: ../inc/core/post-type.class.php:1868
 msgid "Viewable to the public"
 msgstr "Zichtbaar in het openbaar"
 
-#: ../inc/core/post-type.class.php:1750
+#: ../inc/core/post-type.class.php:1870
 msgid "Public"
 msgstr "Openbaar"
 
-#: ../inc/core/post-type.class.php:1752
+#: ../inc/core/post-type.class.php:1872
 msgid ""
 "Visible on the calendar, but only those with the password can view to make "
 "reservations"
@@ -752,88 +768,94 @@ msgstr ""
 "Zichtbaar op de kalender maar allen diegene met het wachtwoord kunnen inzien "
 "om te reserveren."
 
-#: ../inc/core/post-type.class.php:1754
+#: ../inc/core/post-type.class.php:1874
 msgid "Password Protected"
 msgstr "Beveiligd met wachtwoord"
 
-#: ../inc/core/post-type.class.php:1756
+#: ../inc/core/post-type.class.php:1876
 msgid "Password:"
 msgstr "Wachtwoord:"
 
-#: ../inc/core/post-type.class.php:1760
+#: ../inc/core/post-type.class.php:1880
 msgid "Hidden from the calendar, but open to anyone with the url"
 msgstr "Verborgen op de kalender maar openbaar voor iedereen met de url"
 
-#: ../inc/core/post-type.class.php:1762
+#: ../inc/core/post-type.class.php:1882
 msgid "Hidden"
 msgstr "Verborgen"
 
-#: ../inc/core/post-type.class.php:1764
+#: ../inc/core/post-type.class.php:1884
 msgid "Only logged in admin users or the event author can view it"
 msgstr "Alleen ingelogde admin users of de event auteur kan inzien."
 
-#: ../inc/core/post-type.class.php:1766
+#: ../inc/core/post-type.class.php:1886
 msgid "Private"
 msgstr "Privé"
 
-#: ../inc/core/post-type.class.php:1777
+#: ../inc/core/post-type.class.php:1897
 msgid "Publish Date:"
 msgstr "Publiceer Datum:"
 
-#: ../inc/core/post-type.class.php:1786
+#: ../inc/core/post-type.class.php:1906
 #, fuzzy
 msgid "January"
 msgstr "Januari"
 
-#: ../inc/core/post-type.class.php:1787
+#: ../inc/core/post-type.class.php:1907
 msgid "February"
 msgstr "Februari"
 
-#: ../inc/core/post-type.class.php:1788
+#: ../inc/core/post-type.class.php:1908
 msgid "March"
 msgstr "Maart"
 
-#: ../inc/core/post-type.class.php:1789
+#: ../inc/core/post-type.class.php:1909
 msgid "April"
 msgstr "April"
 
-#: ../inc/core/post-type.class.php:1790
+#: ../inc/core/post-type.class.php:1910
 msgid "May"
 msgstr "Mei"
 
-#: ../inc/core/post-type.class.php:1791
+#: ../inc/core/post-type.class.php:1911
 msgid "June"
 msgstr "Juni"
 
-#: ../inc/core/post-type.class.php:1792
+#: ../inc/core/post-type.class.php:1912
 msgid "July"
 msgstr "Juli"
 
-#: ../inc/core/post-type.class.php:1793
+#: ../inc/core/post-type.class.php:1913
 msgid "August"
 msgstr "Augustus"
 
-#: ../inc/core/post-type.class.php:1794
+#: ../inc/core/post-type.class.php:1914
 msgid "September"
 msgstr "September"
 
-#: ../inc/core/post-type.class.php:1795
+#: ../inc/core/post-type.class.php:1915
 msgid "October"
 msgstr "October"
 
-#: ../inc/core/post-type.class.php:1796
+#: ../inc/core/post-type.class.php:1916
 msgid "November"
 msgstr "November"
 
-#: ../inc/core/post-type.class.php:1797
+#: ../inc/core/post-type.class.php:1917
 msgid "December"
 msgstr "December"
 
-#: ../inc/core/post-type.class.php:1834
+#: ../inc/core/post-type.class.php:1940
+msgid ""
+"Use \"\" or \"0\" to indicate usage of the site-wide global purchase limit. "
+"Use \"-1\" to force an unlimited purchase limit."
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1972
 msgid "Event base"
 msgstr "Event base"
 
-#: ../inc/core/post-type.class.php:1838
+#: ../inc/core/post-type.class.php:1976
 #, php-format
 msgid ""
 "Enter a custom base to use. This url segment will prefix the event name in "
@@ -842,19 +864,19 @@ msgstr ""
 "Voor een custom base in. Dit url segment staat voor de event naam in de url."
 "<br/><code>voorbeeld: %s</code>"
 
-#: ../inc/core/post-type.class.php:1854
+#: ../inc/core/post-type.class.php:1992
 msgid "Event permalink base"
 msgstr "Event permalink base"
 
-#: ../inc/core/post-type.class.php:1913
+#: ../inc/core/post-type.class.php:2055
 msgid "Event Display"
 msgstr "Event Weergave"
 
-#: ../inc/core/post-type.class.php:1922
+#: ../inc/core/post-type.class.php:2064
 msgid "Stop Sales Before Show"
 msgstr "Verkoop Stoppen Voor Show"
 
-#: ../inc/core/post-type.class.php:1923
+#: ../inc/core/post-type.class.php:2065
 msgid ""
 "Amount of time to stop sales for a show, before show time. (ie: stop sales "
 "two hour before show time <code>2 hours</code>)"
@@ -862,7 +884,7 @@ msgstr ""
 "Tijd voor de show waneer de verkoop stopt. (bv. twee uur van te voren "
 "stoppen met verkoop <code>2 uur</code>)"
 
-#: ../inc/core/post-type.class.php:1924
+#: ../inc/core/post-type.class.php:2066
 msgid ""
 "valid units: hour, hours, minute, minutes, second, seconds, day, days, week, "
 "weeks, month, months, year, years"
@@ -870,15 +892,15 @@ msgstr ""
 "gebruikte eenheden: uur, uren, minuut, minuten, seconde, secondes, dag, "
 "dagen, week, weken, maand, maanden, jaar, jaren."
 
-#: ../inc/core/post-type.class.php:1932
+#: ../inc/core/post-type.class.php:2074
 msgid "Single Event Synopsis"
 msgstr "Enkele Event Samenvatting"
 
-#: ../inc/core/post-type.class.php:1933
+#: ../inc/core/post-type.class.php:2075
 msgid "Show event synopsis on single event pages"
 msgstr "Geeft event samenvattingen op enekele event pagina's weer"
 
-#: ../inc/core/post-type.class.php:1934
+#: ../inc/core/post-type.class.php:2076
 msgid ""
 "By default, just the event logo, and the event pricing options are shown. "
 "This feature will additionally show the description of the event to the user."
@@ -887,68 +909,105 @@ msgstr ""
 "weergegeven. Deze feature laat ook de omschrijving van het event aan de "
 "gebruiker zien."
 
-#: ../inc/core/post-type.class.php:1943
+#: ../inc/core/post-type.class.php:2085
 msgid "Single Event Synopsis Position"
 msgstr "Enekele Event Samenvatting Positie"
 
-#: ../inc/core/post-type.class.php:1944
+#: ../inc/core/post-type.class.php:2086
 msgid "The display position of the Event Synopsis on the single event page."
 msgstr ""
 "De weergave positie van de Event Samenvatting op de enkele event pagina"
 
-#: ../inc/core/post-type.class.php:1946
+#: ../inc/core/post-type.class.php:2088
 msgid "Above the Ticket Selection UI"
 msgstr "Boven de Ticket Selectie UI"
 
-#: ../inc/core/post-type.class.php:1947
+#: ../inc/core/post-type.class.php:2089
 msgid "Below the Ticket Selection UI"
 msgstr "Onde de Ticket Selectie UI"
 
-#: ../inc/core/post-type.class.php:1958
+#: ../inc/core/post-type.class.php:2100
 #, fuzzy
 msgid "Show Date"
 msgstr "Geef Rapport Weer"
 
-#: ../inc/core/post-type.class.php:1959
+#: ../inc/core/post-type.class.php:2101
 #, fuzzy
 msgid "Show the date in the title of events, on the event details pages."
 msgstr "Geef het order nummer van het ticket weer op het ticket."
 
-#: ../inc/core/post-type.class.php:1960
+#: ../inc/core/post-type.class.php:2102
 msgid ""
 "This is the difference between a title reading \"My Event\" and \"My Event "
 "on 09/12/2015\"."
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1970
+#: ../inc/core/post-type.class.php:2112
 #, fuzzy
 msgid "Show Time"
 msgstr "Start Tijd"
 
-#: ../inc/core/post-type.class.php:1971
+#: ../inc/core/post-type.class.php:2113
 msgid "Show the time in the title of events, on the event details pages."
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1972
+#: ../inc/core/post-type.class.php:2114
 msgid ""
 "This is the difference between a title reading \"My Event\" and \"My Event @ "
 "6:00pm\"."
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1997
+#: ../inc/core/post-type.class.php:2139
 msgid "Availability Quantity"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1998
+#: ../inc/core/post-type.class.php:2140
 msgid ""
 "Yes, show the quantity that is available, on the frontend, when showing the "
 "availability."
 msgstr ""
 
-#: ../inc/core/zoner.class.php:345 ../inc/core/zoner.class.php:356
-#, php-format
-msgid "There are not %s tickets available to reserve."
+#: ../inc/core/post-type.class.php:2150
+msgid "Per Event, Per Order Ticket Purchase Limit"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:2151
+msgid ""
+"A positive number here tells the software to enforce a purchase limit. Users "
+"will be restricted to only buying upto X tickets per event, per order. "
+"Setting to 0 means no limit."
+msgstr ""
+
+#: ../inc/core/post-type.class.php:2160
+msgid "Locked-in Reservations"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:2161
+msgid ""
+"Checking this box means that once the end user chooses a quantity of tickets "
+"to purchase, they cannot modify that quantity. They can still delete their "
+"reservations and start over though."
+msgstr ""
+
+#: ../inc/core/zoner.class.php:475
+msgid ""
+"You are not allowed to modify your reservations, except to delete them, "
+"after you have chosen them initially."
+msgstr ""
+
+#: ../inc/core/zoner.class.php:495
+#, fuzzy
+msgid "There are no tickets available to reserve."
 msgstr "Er zijn geen %s tickets beschikbaar op te reserveren"
+
+#: ../inc/core/zoner.class.php:513
+#, fuzzy
+msgid "Could not reserve those tickets."
+msgstr "Reserveer tickets:"
+
+#: ../inc/core/zoner.class.php:590
+msgid "You have reached the ticket limit for this event."
+msgstr ""
 
 #: ../inc/order/admin.class.php:147
 msgid ""
@@ -978,31 +1037,31 @@ msgstr ""
 "Door de Woocommerce settings kunt u niet \"Gast\" gebruiken als eigenaar van "
 "de order."
 
-#: ../inc/order/admin.class.php:336
+#: ../inc/order/admin.class.php:337
 #, fuzzy
 msgid "is a required field."
 msgstr "Gebruikersnaam is een verplicht veld."
 
-#: ../inc/order/admin.class.php:348
+#: ../inc/order/admin.class.php:349
 #, fuzzy
 msgid "Please enter a valid postcode/ZIP."
 msgstr "Dat is geen geldige order."
 
-#: ../inc/order/admin.class.php:355
+#: ../inc/order/admin.class.php:356
 #, fuzzy
 msgid "is not a valid phone number."
 msgstr "moet een geldig telefoon nummer zijn"
 
-#: ../inc/order/admin.class.php:362
+#: ../inc/order/admin.class.php:363
 #, fuzzy
 msgid "is not a valid email address."
 msgstr "Dat is geen geldig email adres."
 
-#: ../inc/order/admin.class.php:378
+#: ../inc/order/admin.class.php:379
 msgid "is not valid. Please enter one of the following:"
 msgstr ""
 
-#: ../inc/order/admin.class.php:397 ../inc/order/admin.class.php:400
+#: ../inc/order/admin.class.php:398 ../inc/order/admin.class.php:401
 msgid ""
 "Your current settings require you to provide most billing information for "
 "each order."
@@ -1010,83 +1069,83 @@ msgstr ""
 "De huidige instellingen vereisen u om de meeste betaalinformatie te geven "
 "voor elke order."
 
-#: ../inc/order/admin.class.php:462
+#: ../inc/order/admin.class.php:463
 #, fuzzy
 msgid "You do not have permission to create users. Sorry."
 msgstr "U heeft niet genoeg rechten om deze actie uit te voeren!"
 
-#: ../inc/order/admin.class.php:476
+#: ../inc/order/admin.class.php:477
 msgid "The username is a required field."
 msgstr "Gebruikersnaam is een verplicht veld."
 
-#: ../inc/order/admin.class.php:479
+#: ../inc/order/admin.class.php:480
 msgid "That user name contains illegal characters."
 msgstr "Uw gebeuikers naam bevat niet toegestane tekens."
 
-#: ../inc/order/admin.class.php:482
+#: ../inc/order/admin.class.php:483
 msgid ""
 "is already being used by another user. Please enter a different username."
 msgstr ""
 "word al gebruikt door een andere gebruiker. Kies A.U.B. een andere "
 "gebruikersnaam."
 
-#: ../inc/order/admin.class.php:488
+#: ../inc/order/admin.class.php:489
 msgid "The email address is required."
 msgstr "Het email adres is vereist."
 
-#: ../inc/order/admin.class.php:491
+#: ../inc/order/admin.class.php:492
 msgid "That is not a valid email address."
 msgstr "Dat is geen geldig email adres."
 
-#: ../inc/order/admin.class.php:494
+#: ../inc/order/admin.class.php:495
 msgid ""
 "is already in use by another user. Please use a different email address."
 msgstr ""
 "word al gebruikt door een andere gebuieker. Kies A.U.B. een ander email "
 "adres."
 
-#: ../inc/order/admin.class.php:499
+#: ../inc/order/admin.class.php:500
 msgid "The first name is a required field."
 msgstr "Voornaam is een verplicht veld."
 
-#: ../inc/order/admin.class.php:504
+#: ../inc/order/admin.class.php:505
 msgid "The last name is a required field."
 msgstr "Achetrnaam is een verplicht veld."
 
-#: ../inc/order/admin.class.php:510
+#: ../inc/order/admin.class.php:511
 msgid "The information you supplied passed validation."
 msgstr "De verschafte informatie is goed gekeurd."
 
-#: ../inc/order/admin.class.php:528
+#: ../inc/order/admin.class.php:529
 msgid "User creation failed:"
 msgstr "Gerbruiker aamaken mislukt:"
 
-#: ../inc/order/admin.class.php:532
+#: ../inc/order/admin.class.php:533
 msgid "The user was created successfully."
 msgstr "De gebruiers is succesvol aangemaakt."
 
-#: ../inc/order/admin.class.php:570
+#: ../inc/order/admin.class.php:571
 msgid "New User Form"
 msgstr "Nieuwe Gebuiker Formulier"
 
-#: ../inc/order/admin.class.php:581
+#: ../inc/order/admin.class.php:582
 msgid "Username"
 msgstr "Gebruikersnaam"
 
-#: ../inc/order/admin.class.php:585
+#: ../inc/order/admin.class.php:586
 #: ../inc/reporting/seating.report.class.php:508
 #: ../templates/tickets/verification-form.php:11
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:77
 msgid "Email"
 msgstr "Email"
 
-#: ../inc/order/admin.class.php:589
+#: ../inc/order/admin.class.php:590
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:39
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:86
 msgid "First Name"
 msgstr "Voornaam"
 
-#: ../inc/order/admin.class.php:593
+#: ../inc/order/admin.class.php:594
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:43
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:90
 msgid "Last Name"
@@ -1203,6 +1262,7 @@ msgid "%s [%s]"
 msgstr ""
 
 #: ../inc/reporting/seating.report.class.php:240
+#: ../inc/sys/pages/system-status.page.php:83
 msgid "Show Report"
 msgstr "Geef Rapport Weer"
 
@@ -1248,15 +1308,15 @@ msgstr "Notitie"
 msgid "Ticket Url"
 msgstr "Tickt url"
 
-#: ../inc/sys/admin-menu.class.php:158
+#: ../inc/sys/admin-menu.class.php:169 ../inc/sys/admin-menu.class.php:170
 msgid "Reports"
 msgstr "Rapporten"
 
-#: ../inc/sys/admin-menu.class.php:237
+#: ../inc/sys/admin-menu.class.php:240
 msgid "Allow OpenTickets Stats?"
 msgstr "OpenTicket Stats Toestaan?"
 
-#: ../inc/sys/admin-menu.class.php:238
+#: ../inc/sys/admin-menu.class.php:241
 msgid ""
 "OpenTickets is always being improved, thanks to users like you. To help us "
 "improve this product, would you allow us collect some basic information "
@@ -1275,141 +1335,141 @@ msgstr ""
 "installatie, en wordt gebruikt door ons om te kijken met welke plugins en "
 "thema's wij compatible mee moeten zijn."
 
-#: ../inc/sys/admin-menu.class.php:242
+#: ../inc/sys/admin-menu.class.php:245
 msgid "Yes"
 msgstr "Ja"
 
-#: ../inc/sys/admin-menu.class.php:249
+#: ../inc/sys/admin-menu.class.php:252
 msgid "Dismiss"
 msgstr "Verbergen"
 
-#: ../inc/sys/admin-menu.class.php:280
+#: ../inc/sys/admin-menu.class.php:283
 msgid "Fair enough. Thanks anyways."
 msgstr "Begrijpelijk. Alsnog bedankt."
 
-#: ../inc/sys/admin-menu.class.php:286
+#: ../inc/sys/admin-menu.class.php:289
 msgid "Thanks a bunch."
 msgstr "Dank u wel."
 
-#: ../inc/sys/admin-menu.class.php:305
+#: ../inc/sys/admin-menu.class.php:308
 msgid "Title"
 msgstr "Titel"
 
-#: ../inc/sys/admin-menu.class.php:306
+#: ../inc/sys/admin-menu.class.php:309
 msgid "Author"
 msgstr "Auteur"
 
-#: ../inc/sys/admin-menu.class.php:307
+#: ../inc/sys/admin-menu.class.php:310
 msgid "Author Name"
 msgstr "Auteur Naam"
 
-#: ../inc/sys/admin-menu.class.php:308
+#: ../inc/sys/admin-menu.class.php:311
 msgid "Author URI"
 msgstr "Auteur URI"
 
-#: ../inc/sys/admin-menu.class.php:309
+#: ../inc/sys/admin-menu.class.php:312
 msgid "Description"
 msgstr "Omschrijving"
 
-#: ../inc/sys/admin-menu.class.php:310
+#: ../inc/sys/admin-menu.class.php:313
 msgid "Version"
 msgstr "Versie"
 
-#: ../inc/sys/admin-menu.class.php:312
+#: ../inc/sys/admin-menu.class.php:315
 msgid "Template"
 msgstr "Template"
 
-#: ../inc/sys/admin-menu.class.php:313
+#: ../inc/sys/admin-menu.class.php:316
 msgid "Stylesheet"
 msgstr "Stylesheet"
 
-#: ../inc/sys/admin-menu.class.php:314 ../inc/sys/admin-menu.class.php:324
+#: ../inc/sys/admin-menu.class.php:317 ../inc/sys/admin-menu.class.php:327
 msgid "Template Files"
 msgstr "Template Bestanden"
 
-#: ../inc/sys/admin-menu.class.php:315 ../inc/sys/admin-menu.class.php:324
+#: ../inc/sys/admin-menu.class.php:318 ../inc/sys/admin-menu.class.php:327
 msgid "Stylesheet Files"
 msgstr "Stylesheet Bestanden"
 
-#: ../inc/sys/admin-menu.class.php:316
+#: ../inc/sys/admin-menu.class.php:319
 msgid "Template Dir"
 msgstr "Template Dir"
 
-#: ../inc/sys/admin-menu.class.php:317
+#: ../inc/sys/admin-menu.class.php:320
 msgid "Stylesheet Dir"
 msgstr "Stylesheer Dir"
 
-#: ../inc/sys/admin-menu.class.php:318
+#: ../inc/sys/admin-menu.class.php:321
 msgid "Screenshot"
 msgstr "Screenshot"
 
-#: ../inc/sys/admin-menu.class.php:319
+#: ../inc/sys/admin-menu.class.php:322
 msgid "Tags"
 msgstr "Tags"
 
-#: ../inc/sys/admin-menu.class.php:320
+#: ../inc/sys/admin-menu.class.php:323
 msgid "Theme Root"
 msgstr "Thema Root"
 
-#: ../inc/sys/admin-menu.class.php:321
+#: ../inc/sys/admin-menu.class.php:324
 msgid "Theme Root URI"
 msgstr "Thema Root URI"
 
-#: ../inc/sys/admin-menu.class.php:322
+#: ../inc/sys/admin-menu.class.php:325
 msgid "Parent Theme"
 msgstr "Hoofd Thema"
 
-#: ../inc/sys/admin-menu.class.php:375
+#: ../inc/sys/admin-menu.class.php:378
 msgid "Add %singular%"
 msgstr "Voeg %singular% toe"
 
-#: ../inc/sys/admin-menu.class.php:376
+#: ../inc/sys/admin-menu.class.php:379
 msgid "Add New %singular%"
 msgstr "Voeg Nieuwe %singular% toe"
 
-#: ../inc/sys/admin-menu.class.php:377
+#: ../inc/sys/admin-menu.class.php:380
 msgid "Edit %singular%"
 msgstr "Pas %singular% Aan"
 
-#: ../inc/sys/admin-menu.class.php:378
+#: ../inc/sys/admin-menu.class.php:381
 msgid "New %singular%"
 msgstr "Nieuwe %singualar%"
 
-#: ../inc/sys/admin-menu.class.php:379
+#: ../inc/sys/admin-menu.class.php:382
 msgid "All %plural%"
 msgstr "Alle %singular%"
 
-#: ../inc/sys/admin-menu.class.php:380
+#: ../inc/sys/admin-menu.class.php:383
 msgid "View %singular%"
 msgstr "Geef %singular% Weer"
 
-#: ../inc/sys/admin-menu.class.php:381
+#: ../inc/sys/admin-menu.class.php:384
 msgid "Search %plural%"
 msgstr "Zoek %plural%"
 
-#: ../inc/sys/admin-menu.class.php:382
+#: ../inc/sys/admin-menu.class.php:385
 msgid "No %lplural% found"
 msgstr "Geen %lplurar% gevonden"
 
-#: ../inc/sys/admin-menu.class.php:383
+#: ../inc/sys/admin-menu.class.php:386
 msgid "No %lplural% found in Trash"
 msgstr "Geen %lplural% gevonden in prullenbak"
 
-#: ../inc/sys/admin-menu.class.php:452
+#: ../inc/sys/admin-menu.class.php:455
 msgid "Global Settings"
 msgstr "Golbale Instellingen"
 
-#: ../inc/sys/admin-menu.class.php:460
+#: ../inc/sys/admin-menu.class.php:463
 msgid "Allow Statistics"
 msgstr "Statestieken Toestaan"
 
-#: ../inc/sys/admin-menu.class.php:461
+#: ../inc/sys/admin-menu.class.php:464
 msgid ""
 "Allow OpenTickets to gather information about your WordPress installation."
 msgstr ""
 "Sta OpenTickets toe informatie te vezamelen van uw WordPress installatie,"
 
-#: ../inc/sys/admin-menu.class.php:462
+#: ../inc/sys/admin-menu.class.php:465
 msgid ""
 "This information is strictly used to make this product better and more "
 "compatible with other plugins."
@@ -1417,11 +1477,11 @@ msgstr ""
 "Deze informatie wordt allen gebruikt voor het verbeteren van OpenTickets en "
 "deze comaptible te maken met andere plugins."
 
-#: ../inc/sys/admin-menu.class.php:470
+#: ../inc/sys/admin-menu.class.php:473
 msgid "Event Link Slug"
 msgstr "Event Link Slug"
 
-#: ../inc/sys/admin-menu.class.php:471
+#: ../inc/sys/admin-menu.class.php:474
 msgid ""
 "The url slug that is prepended to the event name in the url. (ex: "
 "<code>http://example.com/<strong>event</strong>/my-event/</code>)"
@@ -1429,7 +1489,7 @@ msgstr ""
 "De url slug die voor de event naam in de url gezet wordt. (bv: <code>http://"
 "voorbeeld.com/<strong>event</strong>/mijn-event/</code>)"
 
-#: ../inc/sys/admin-menu.class.php:472
+#: ../inc/sys/admin-menu.class.php:475
 msgid "This is the segment of the url that preceeds the event name."
 msgstr "Dit is het segment van de url die voor de event naam staat."
 
@@ -1666,28 +1726,28 @@ msgstr "Ongedaan Maken"
 msgid "Select Files"
 msgstr "Selecteer Bestanden"
 
-#: ../inc/sys/pdf.class.php:191 ../inc/sys/pdf.class.php:493
+#: ../inc/sys/pdf.class.php:191 ../inc/sys/pdf.class.php:495
 #, php-format
 msgid ""
 "The %s path is not writable. Please update the permissions to allow write "
 "access."
 msgstr ""
 
-#: ../inc/sys/pdf.class.php:470
+#: ../inc/sys/pdf.class.php:472
 #, php-format
 msgid ""
 "The %s path exists, but it cannot be read. Please update the permissions to "
 "allow read access."
 msgstr ""
 
-#: ../inc/sys/pdf.class.php:475
+#: ../inc/sys/pdf.class.php:477
 #, php-format
 msgid ""
 "The %s path exists, but is not a dir. Please remove or rename the existing "
 "file, and create a directory with the cache path name."
 msgstr ""
 
-#: ../inc/sys/pdf.class.php:483
+#: ../inc/sys/pdf.class.php:485
 #, fuzzy, php-format
 msgid ""
 "Could not create the %s path directory. Please update the permissions to "
@@ -1696,7 +1756,7 @@ msgstr ""
 "Kan geen rapport cache map maken. Verzeker dat de permissies voor %s' "
 "toestaan dat de webserver een map mag maken, en probeer opnieuw."
 
-#: ../inc/sys/pdf.class.php:488
+#: ../inc/sys/pdf.class.php:490
 #, php-format
 msgid "Unable to create the %s path directory."
 msgstr ""
@@ -1715,10 +1775,24 @@ msgstr "Kan niet uitbreiden. Ongeldig type."
 msgid "Base Page"
 msgstr "Basis Pagina"
 
+#: ../inc/sys/pages/system-status.page.php:40
+msgid "There can only be one instance of the System Status page."
+msgstr ""
+
 #: ../inc/sys/pages/system-status.page.php:44
 #: ../inc/sys/pages/system-status.page.php:45
+#: ../inc/sys/pages/system-status.page.php:49
 msgid "System Status"
 msgstr "Systeem Status"
+
+#: ../inc/sys/pages/system-status.page.php:53
+msgid "Tools"
+msgstr ""
+
+#: ../inc/sys/pages/system-status.page.php:82
+msgid ""
+"Copy and paste this information into your ticket when contacting support:"
+msgstr ""
 
 #: ../inc/sys/pages/system-status.page.php:116
 msgid ""
@@ -2236,12 +2310,12 @@ msgstr "Algemeen"
 msgid "Save changes"
 msgstr "Wijzigingen Opslaan"
 
-#: ../inc/ticket/checkin.class.php:123 ../inc/ticket/ticket.class.php:406
+#: ../inc/ticket/checkin.class.php:127 ../inc/ticket/ticket.class.php:406
 #, fuzzy
 msgid "Could not laod the order that this ticket belongs to."
 msgstr "Kan dat order item niet vinden in de order."
 
-#: ../inc/ticket/checkin.class.php:128 ../inc/ticket/ticket.class.php:413
+#: ../inc/ticket/checkin.class.php:132 ../inc/ticket/ticket.class.php:413
 #, fuzzy
 msgid "Could not load the order item associated with this ticket."
 msgstr "Kan dat order item niet vinden in de order."
@@ -2447,7 +2521,7 @@ msgid "Venue:"
 msgstr "Locatie:"
 
 #: ../inc/venues/post-type.class.php:369
-#: ../inc/venues/event-area/post-type.class.php:349
+#: ../inc/venues/event-area/post-type.class.php:380
 msgid "None"
 msgstr "Geen"
 
@@ -2615,7 +2689,7 @@ msgid "We're sorry. There are currently no tickets available."
 msgstr "Helaas, er zijn op dit moment geen ticets beschikbaar."
 
 #: ../inc/venues/event-area/post-type.class.php:170
-#: ../templates/post-content/event-area.php:128
+#: ../templates/post-content/event-area.php:133
 msgid "We are sorry. This event is sold out!"
 msgstr "Helaas, het event is uitverkocht!"
 
@@ -2623,139 +2697,146 @@ msgstr "Helaas, het event is uitverkocht!"
 msgid "<h1>One Moment Please...</h1>"
 msgstr "<h1>Even geduld a.u.b...</h1>"
 
-#: ../inc/venues/event-area/post-type.class.php:230
+#: ../inc/venues/event-area/post-type.class.php:241
 msgid "Step 1: How Many?"
 msgstr "Stap 1: Hoe Veel?"
 
-#: ../inc/venues/event-area/post-type.class.php:233
+#: ../inc/venues/event-area/post-type.class.php:244
 #: ../templates/post-content/event-area.php:52
 msgid "Reserve some tickets:"
 msgstr "Reserveer tickets:"
 
-#: ../inc/venues/event-area/post-type.class.php:237
+#: ../inc/venues/event-area/post-type.class.php:248
 #: ../templates/post-content/event-area.php:73
 msgid "Reserve"
 msgstr "Reserveer"
 
-#: ../inc/venues/event-area/post-type.class.php:245
+#: ../inc/venues/event-area/post-type.class.php:257
+#: ../inc/venues/event-area/post-type.class.php:275
 msgid "Step 2: Review"
 msgstr "Stap 2: Overzicht"
 
-#: ../inc/venues/event-area/post-type.class.php:248
+#: ../inc/venues/event-area/post-type.class.php:260
+#: ../inc/venues/event-area/post-type.class.php:278
 #: ../templates/post-content/event-area.php:91
 msgid "You currently have:"
 msgstr "U heeft:"
 
-#: ../inc/venues/event-area/post-type.class.php:253
-#: ../templates/post-content/event-area.php:113
-msgid "Update"
-msgstr "Update"
+#: ../inc/venues/event-area/post-type.class.php:264
+msgid "x"
+msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:257
+#: ../inc/venues/event-area/post-type.class.php:268
+#: ../inc/venues/event-area/post-type.class.php:287
 msgid "Proceed to Cart"
 msgstr "Door naar Winkelwagen"
 
-#: ../inc/venues/event-area/post-type.class.php:276
-#: ../inc/venues/event-area/post-type.class.php:280
+#: ../inc/venues/event-area/post-type.class.php:283
+#: ../templates/post-content/event-area.php:118
+msgid "Update"
+msgstr "Update"
+
+#: ../inc/venues/event-area/post-type.class.php:307
+#: ../inc/venues/event-area/post-type.class.php:311
 msgid "add"
 msgstr "toevoegen"
 
-#: ../inc/venues/event-area/post-type.class.php:285
+#: ../inc/venues/event-area/post-type.class.php:316
 msgid "There are currently no areas configured. Please add one to continue."
 msgstr "Er zijn op dit moment geen locaties ingesteld. Stel er a.u.b. een in."
 
-#: ../inc/venues/event-area/post-type.class.php:301
+#: ../inc/venues/event-area/post-type.class.php:332
 msgid "edit"
 msgstr "wijzigen"
 
-#: ../inc/venues/event-area/post-type.class.php:302
+#: ../inc/venues/event-area/post-type.class.php:333
 msgid "delete"
 msgstr "verwijderen"
 
-#: ../inc/venues/event-area/post-type.class.php:315
+#: ../inc/venues/event-area/post-type.class.php:346
 msgid "Event Area Image"
 msgstr "Event Locatie Afbeelding:"
 
-#: ../inc/venues/event-area/post-type.class.php:321
+#: ../inc/venues/event-area/post-type.class.php:352
 msgid "Select Image"
 msgstr "Selecteer Afbeelding"
 
-#: ../inc/venues/event-area/post-type.class.php:325
+#: ../inc/venues/event-area/post-type.class.php:356
 msgid "Area Name"
 msgstr "Locatie Naam"
 
-#: ../inc/venues/event-area/post-type.class.php:329
+#: ../inc/venues/event-area/post-type.class.php:360
 msgid "Capacity"
 msgstr "Capaciteit"
 
-#: ../inc/venues/event-area/post-type.class.php:333
+#: ../inc/venues/event-area/post-type.class.php:364
 msgid "Available Pricing"
 msgstr "Beschikbare Prijzen"
 
-#: ../inc/venues/event-area/post-type.class.php:338
+#: ../inc/venues/event-area/post-type.class.php:369
 msgid "save"
 msgstr "opslaan"
 
-#: ../inc/venues/event-area/post-type.class.php:339
+#: ../inc/venues/event-area/post-type.class.php:370
 msgid "cancel"
 msgstr "annuleren"
 
-#: ../inc/venues/event-area/post-type.class.php:366
+#: ../inc/venues/event-area/post-type.class.php:397
 msgid "This event is password protected."
 msgstr "Dit event is beveiligd met een wachtwoord."
 
-#: ../inc/venues/event-area/post-type.class.php:372
-#: ../inc/venues/event-area/post-type.class.php:621
+#: ../inc/venues/event-area/post-type.class.php:403
+#: ../inc/venues/event-area/post-type.class.php:700
 #: ../inc/venues/event-area/pricing.class.php:680
 msgid "Invalid request. Please refresh the page and try again."
 msgstr "Ongeldige aanvraag. Refresh de pagina en probeer het opnieuw."
 
-#: ../inc/venues/event-area/post-type.class.php:390
-#: ../inc/venues/event-area/post-type.class.php:453
-#: ../inc/venues/event-area/post-type.class.php:469
+#: ../inc/venues/event-area/post-type.class.php:432
+#: ../inc/venues/event-area/post-type.class.php:520
+#: ../inc/venues/event-area/post-type.class.php:533
 msgid "Updated your reservations successfully."
 msgstr "Uw reservering is succesvol geupdate."
 
-#: ../inc/venues/event-area/post-type.class.php:400
-#: ../inc/venues/event-area/post-type.class.php:461
-#: ../inc/venues/event-area/post-type.class.php:466
+#: ../inc/venues/event-area/post-type.class.php:441
+#: ../inc/venues/event-area/post-type.class.php:523
+#: ../inc/venues/event-area/post-type.class.php:530
 msgid "Could not update your reservations."
 msgstr "Kan uw reservering niet updaten."
 
-#: ../inc/venues/event-area/post-type.class.php:403
-#: ../inc/venues/event-area/post-type.class.php:821
+#: ../inc/venues/event-area/post-type.class.php:446
+#: ../inc/venues/event-area/post-type.class.php:900
 msgid "The quantity must be greater than zero."
 msgstr "De hoeveelheid moet hoger zijn dan nul."
 
-#: ../inc/venues/event-area/post-type.class.php:404
-#: ../inc/venues/event-area/post-type.class.php:494
+#: ../inc/venues/event-area/post-type.class.php:448
+#: ../inc/venues/event-area/post-type.class.php:553
 msgid "Could not load that event."
 msgstr "Kan dat event niet laden."
 
-#: ../inc/venues/event-area/post-type.class.php:405
-#: ../inc/venues/event-area/post-type.class.php:495
+#: ../inc/venues/event-area/post-type.class.php:450
+#: ../inc/venues/event-area/post-type.class.php:554
 msgid "A problem occurred when loading that event."
 msgstr "Er is een probleem onstaan tijdens het laden van dat event."
 
-#: ../inc/venues/event-area/post-type.class.php:406
+#: ../inc/venues/event-area/post-type.class.php:452
 msgid "That event does not currently have any tickets."
 msgstr "Dat event heeft op dit moment geen tickets."
 
-#: ../inc/venues/event-area/post-type.class.php:407
-#: ../inc/venues/event-area/post-type.class.php:497
+#: ../inc/venues/event-area/post-type.class.php:454
+#: ../inc/venues/event-area/post-type.class.php:556
 msgid "The event does not have any tickets."
 msgstr "Dat even heeft geen tickets."
 
-#: ../inc/venues/event-area/post-type.class.php:460
+#: ../inc/venues/event-area/post-type.class.php:522
 msgid "A problem occurred when trying to remove your reservations."
 msgstr ""
 "Er is een probleem ontstaan tijdens het verwijderen van uw reservering."
 
-#: ../inc/venues/event-area/post-type.class.php:465
+#: ../inc/venues/event-area/post-type.class.php:529
 msgid "A problem occurred when trying to update your reservations."
 msgstr "Er is een probleem onststaan tijdens het updaten van uw reservering."
 
-#: ../inc/venues/event-area/post-type.class.php:482
+#: ../inc/venues/event-area/post-type.class.php:541
 #, php-format
 msgid ""
 "There are not enough available tickets to increase the quantity of %s to %d. "
@@ -2764,7 +2845,7 @@ msgstr ""
 "Er zijn het genoeg tickets beschikbaar op de hoeveilheid te verhogen van %s "
 "naar %d. Er zijn er maar %d beschikbaar."
 
-#: ../inc/venues/event-area/post-type.class.php:488
+#: ../inc/venues/event-area/post-type.class.php:547
 #, fuzzy, php-format
 msgid ""
 "There are not enough available tickets to increase the quantity of %s to %d."
@@ -2772,55 +2853,55 @@ msgstr ""
 "Er zijn het genoeg tickets beschikbaar op de hoeveilheid te verhogen van %s "
 "naar %d. Er zijn er maar %d beschikbaar."
 
-#: ../inc/venues/event-area/post-type.class.php:496
+#: ../inc/venues/event-area/post-type.class.php:555
 msgid "That event does not have currently have any tickets."
 msgstr "Dat event heeft op dit moment geen tickets."
 
-#: ../inc/venues/event-area/post-type.class.php:544
+#: ../inc/venues/event-area/post-type.class.php:623
 msgid "Event Area:"
 msgstr "Event Locatie:"
 
-#: ../inc/venues/event-area/post-type.class.php:551
+#: ../inc/venues/event-area/post-type.class.php:630
 msgid "-None-"
 msgstr "-Geen-"
 
-#: ../inc/venues/event-area/post-type.class.php:634
+#: ../inc/venues/event-area/post-type.class.php:713
 #, php-format
 msgid "Could not find the venue you specified [%s]."
 msgstr "Kan de opgegeven locatie niet vinden [%s]."
 
-#: ../inc/venues/event-area/post-type.class.php:664
+#: ../inc/venues/event-area/post-type.class.php:743
 msgid "Could not find that venue."
 msgstr "Kan die locatie niet vinden."
 
-#: ../inc/venues/event-area/post-type.class.php:685
+#: ../inc/venues/event-area/post-type.class.php:764
 msgid "Could not save the item(s) because not enough information was provided."
 msgstr ""
 "Kon het item(s) niet opslaan omdat er niet genoeg informaite is geleverd."
 
-#: ../inc/venues/event-area/post-type.class.php:711
+#: ../inc/venues/event-area/post-type.class.php:790
 #, php-format
 msgid "There was a problem saving the area [%s]."
 msgstr "Er was een probleem met het opslaan van die locatie [%s]."
 
-#: ../inc/venues/event-area/post-type.class.php:822
+#: ../inc/venues/event-area/post-type.class.php:901
 msgid "Could not find that event."
 msgstr "Kan dat event niet vinden."
 
-#: ../inc/venues/event-area/post-type.class.php:823
+#: ../inc/venues/event-area/post-type.class.php:902
 msgid "That is not a valid order."
 msgstr "Dat is geen geldige order."
 
-#: ../inc/venues/event-area/post-type.class.php:936
-#: ../inc/venues/event-area/post-type.class.php:1328
+#: ../inc/venues/event-area/post-type.class.php:1015
+#: ../inc/venues/event-area/post-type.class.php:1411
 msgid "Event Areas"
 msgstr "Event Locaties"
 
-#: ../inc/venues/event-area/post-type.class.php:1252
+#: ../inc/venues/event-area/post-type.class.php:1335
 msgid "(Unknown Ticket Type)"
 msgstr "(Onbekend Ticket Type)"
 
-#: ../inc/venues/event-area/post-type.class.php:1257
+#: ../inc/venues/event-area/post-type.class.php:1340
 #, php-format
 msgid ""
 "There are only <span class=\"available\">%s</span> %s available currently. "
@@ -2829,7 +2910,7 @@ msgstr ""
 "Er zijn maar <span class=\"available\">%s</span> %s beschikbaar op dit "
 "moment. Kan tijdelijk niet %d %s reserveren."
 
-#: ../inc/venues/event-area/post-type.class.php:1264
+#: ../inc/venues/event-area/post-type.class.php:1347
 #, fuzzy, php-format
 msgid ""
 "There are not enough %s tickets available currently. Could not temporarily "
@@ -2838,12 +2919,12 @@ msgstr ""
 "Er zijn maar <span class=\"available\">%s</span> %s beschikbaar op dit "
 "moment. Kan tijdelijk niet %d %s reserveren."
 
-#: ../inc/venues/event-area/post-type.class.php:1274
-#: ../inc/venues/event-area/post-type.class.php:1317
+#: ../inc/venues/event-area/post-type.class.php:1357
+#: ../inc/venues/event-area/post-type.class.php:1400
 msgid "The number of tickets must be greater than 0."
 msgstr "Het aantal tickets moet hoger zijn dan 0."
 
-#: ../inc/venues/event-area/post-type.class.php:1296
+#: ../inc/venues/event-area/post-type.class.php:1379
 #, php-format
 msgid ""
 "There are only <span class=\"available\">%s</span> more %s available "
@@ -2853,7 +2934,7 @@ msgstr ""
 "moment. Kan tijdelijk niet %d meer %s reserveren. Uw heeft er nog steeds %d "
 "%s."
 
-#: ../inc/venues/event-area/post-type.class.php:1305
+#: ../inc/venues/event-area/post-type.class.php:1388
 #, fuzzy, php-format
 msgid ""
 "There are not enough %s tickets available currently. Could not temporarily "
@@ -2863,7 +2944,7 @@ msgstr ""
 "moment. Kan tijdelijk niet %d meer %s reserveren. Uw heeft er nog steeds %d "
 "%s."
 
-#: ../inc/venues/event-area/post-type.class.php:1329
+#: ../inc/venues/event-area/post-type.class.php:1412
 msgid "Area"
 msgstr "Locatie"
 
@@ -3344,7 +3425,7 @@ msgstr ""
 "\"ticket-name\">%s</span>\" (<span class=\"ticket-price\">%s</span>) "
 "beschikbaar."
 
-#: ../templates/post-content/event-area.php:131
+#: ../templates/post-content/event-area.php:136
 msgid ""
 "We are sorry. There are currently no tickets available for this event. Check "
 "back soon!"
@@ -3588,6 +3669,14 @@ msgstr "Klant aantekening"
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:81
 msgid "Private note"
 msgstr "Privé aantekening"
+
+#, fuzzy
+#~ msgctxt "metabox title"
+#~ msgid "Stop Sales Before Show"
+#~ msgstr "Verkoop Stoppen Voor Show"
+
+#~ msgid "Formula"
+#~ msgstr "Formule"
 
 #~ msgid "New User"
 #~ msgstr "Nieuwe Gebruiker"

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenTickets Community Edition\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-04 05:53-0800\n"
-"PO-Revision-Date: 2015-08-04 05:53-0800\n"
+"POT-Creation-Date: 2015-08-26 07:25-0800\n"
+"PO-Revision-Date: 2015-08-26 07:25-0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fi_FI\n"
@@ -115,26 +115,26 @@ msgstr ""
 "Jos et voi tai halua kasvattaa rajoitusta suositellulle tasolle, voit jättää "
 "tämän viestin huomiotta."
 
-#: ../opentickets.php:535
+#: ../opentickets.php:542
 #, php-format
 msgid "Could not compile stylesheet %s. [%s]"
 msgstr "Tyylitiedostoa %s ei voitu käsitellä. [%s]"
 
-#: ../opentickets.php:538
+#: ../opentickets.php:545
 #, php-format
 msgid "Could not write to stylesheet file %s."
 msgstr "Tyylitiedostoon %s kirjoittaminen epäonnistui."
 
-#: ../opentickets.php:542
+#: ../opentickets.php:549
 #, php-format
 msgid "Could not write colors to file %s. [%s]"
 msgstr "Tiedostoon %s ei voitu kirjoittaa väritietoja. [%s]"
 
-#: ../opentickets.php:550
+#: ../opentickets.php:557
 msgid "the installation process"
 msgstr "asennusprosessi"
 
-#: ../opentickets.php:555 ../opentickets.php:559
+#: ../opentickets.php:562 ../opentickets.php:566
 #, php-format
 msgid "Could not find the needed library %s, for use in %s."
 msgstr "Tarvittavaa kirjastoa %s ei löytynyt (%s)."
@@ -180,17 +180,17 @@ msgstr "Itse valittava päivämäärä"
 msgid "Starting Date Method"
 msgstr "Aloituspäivämäärän valinta"
 
-#: ../inc/core/calendar.class.php:393 ../inc/core/post-type.class.php:1557
-#: ../inc/core/post-type.class.php:1563 ../inc/core/post-type.class.php:1646
-#: ../inc/core/post-type.class.php:1662
+#: ../inc/core/calendar.class.php:393 ../inc/core/post-type.class.php:1677
+#: ../inc/core/post-type.class.php:1683 ../inc/core/post-type.class.php:1766
+#: ../inc/core/post-type.class.php:1782
 #: ../inc/sys/pages/system-status.page.php:368
 msgid "m-d-Y"
 msgstr "d-m-Y"
 
-#: ../inc/core/calendar.class.php:394 ../inc/core/post-type.class.php:1512
-#: ../inc/core/post-type.class.php:1529 ../inc/core/post-type.class.php:1556
-#: ../inc/core/post-type.class.php:1562 ../inc/core/post-type.class.php:1645
-#: ../inc/core/post-type.class.php:1661
+#: ../inc/core/calendar.class.php:394 ../inc/core/post-type.class.php:1632
+#: ../inc/core/post-type.class.php:1649 ../inc/core/post-type.class.php:1676
+#: ../inc/core/post-type.class.php:1682 ../inc/core/post-type.class.php:1765
+#: ../inc/core/post-type.class.php:1781
 msgid "mm-dd-yy"
 msgstr "dd-mm-yy"
 
@@ -343,148 +343,150 @@ msgstr "Jatkuva sisäänkirjaus"
 msgid "Once a user logs in, they stay logged in, forever."
 msgstr "Kun käyttäjä kirjautuu sisään, istunto jatkuu äärettömän pitkään."
 
-#: ../inc/core/post-type.class.php:214 ../inc/core/post-type.class.php:803
+#: ../inc/core/post-type.class.php:220 ../inc/core/post-type.class.php:235
+#: ../inc/core/post-type.class.php:870
 #: ../inc/reporting/seating.report.class.php:515
 msgid "Event"
 msgstr "Tapahtuma"
 
-#: ../inc/core/post-type.class.php:231
+#: ../inc/core/post-type.class.php:237
 msgid "View this event"
 msgstr "Tarkastele tapahtumaa"
 
-#: ../inc/core/post-type.class.php:371 ../inc/core/post-type.class.php:802
+#: ../inc/core/post-type.class.php:394 ../inc/core/post-type.class.php:869
 msgid "Events"
 msgstr "Tapahtumat"
 
-#: ../inc/core/post-type.class.php:399
+#: ../inc/core/post-type.class.php:422
 msgid "Top Level Events"
 msgstr "Produktiot"
 
-#: ../inc/core/post-type.class.php:599
-#: ../inc/venues/event-area/post-type.class.php:948
-#: ../inc/venues/event-area/post-type.class.php:956
+#: ../inc/core/post-type.class.php:622
+#: ../inc/venues/event-area/post-type.class.php:1027
+#: ../inc/venues/event-area/post-type.class.php:1035
 msgid "sold-out"
 msgstr "loppuunmyyty"
 
-#: ../inc/core/post-type.class.php:602
-#: ../inc/venues/event-area/post-type.class.php:957
+#: ../inc/core/post-type.class.php:625
+#: ../inc/venues/event-area/post-type.class.php:1036
 msgid "low"
 msgstr "vähän"
 
-#: ../inc/core/post-type.class.php:605
-#: ../inc/venues/event-area/post-type.class.php:955
+#: ../inc/core/post-type.class.php:628
+#: ../inc/venues/event-area/post-type.class.php:1034
 msgid "medium"
 msgstr "kohtalaisesti"
 
-#: ../inc/core/post-type.class.php:608
-#: ../inc/venues/event-area/post-type.class.php:954
+#: ../inc/core/post-type.class.php:631
+#: ../inc/venues/event-area/post-type.class.php:1033
 msgid "high"
 msgstr "runsaasti"
 
-#: ../inc/core/post-type.class.php:624
+#: ../inc/core/post-type.class.php:691
 msgid "available"
 msgstr "saatavilla"
 
-#: ../inc/core/post-type.class.php:730
+#: ../inc/core/post-type.class.php:797
 msgctxt "post"
 msgid "Hidden"
 msgstr "Piilotettu"
 
-#: ../inc/core/post-type.class.php:747
+#: ../inc/core/post-type.class.php:814
 #, php-format
 msgid "Hidden <span class=\"count\">(%s)</span>"
 msgid_plural "Hidden <span class=\"count\">(%s)</span>"
 msgstr[0] "Piilotettu <span class=\"count\">(%s)</span>"
 msgstr[1] "Piilotettu <span class=\"count\">(%s)</span>"
 
-#: ../inc/core/post-type.class.php:851
+#: ../inc/core/post-type.class.php:918
 msgid "MM-dd-yyyy"
 msgstr "dd-MM-yyyy"
 
-#: ../inc/core/post-type.class.php:852
+#: ../inc/core/post-type.class.php:919
 msgid "ddd MM-dd-yyyy"
 msgstr "ddd dd-MM-yyyy"
 
-#: ../inc/core/post-type.class.php:853
+#: ../inc/core/post-type.class.php:920
 msgid "hh:mmtt"
 msgstr "hh:mm:tt"
 
-#: ../inc/core/post-type.class.php:972
+#: ../inc/core/post-type.class.php:1041
 msgid "Max"
 msgstr "Max"
 
-#: ../inc/core/post-type.class.php:975
+#: ../inc/core/post-type.class.php:1044
 #: ../inc/reporting/seating.report.class.php:512
-#: ../inc/sys/admin-menu.class.php:311
+#: ../inc/sys/admin-menu.class.php:314
 msgid "Status"
 msgstr "Status"
 
-#: ../inc/core/post-type.class.php:1013
+#: ../inc/core/post-type.class.php:1082
 msgid "m/d/Y"
 msgstr "j.n.Y"
 
-#: ../inc/core/post-type.class.php:1014
+#: ../inc/core/post-type.class.php:1083
 #: ../templates/tickets/basic-ticket.php:73
 #: ../templates/tickets/basic-ticket.php:80
 msgid "g:ia"
 msgstr "H:i"
 
-#: ../inc/core/post-type.class.php:1017
+#: ../inc/core/post-type.class.php:1086
 #, php-format
 msgid "on %2$s"
 msgstr "%2$s"
 
-#: ../inc/core/post-type.class.php:1019
+#: ../inc/core/post-type.class.php:1088
 #, php-format
 msgid "@ %3$s"
 msgstr "kello %3$s"
 
-#: ../inc/core/post-type.class.php:1117
+#: ../inc/core/post-type.class.php:1186
 msgctxt "Permalink date"
 msgid "Y-m-d_gia"
 msgstr "Y-m-d_H:i"
 
-#: ../inc/core/post-type.class.php:1356
+#: ../inc/core/post-type.class.php:1446
 msgctxt "metabox title"
 msgid "Event Date Time Settings"
 msgstr "Tapahtuman ajankohdan asetukset"
 
-#: ../inc/core/post-type.class.php:1366
+#: ../inc/core/post-type.class.php:1456
 msgctxt "metabox title"
 msgid "Event Titles"
 msgstr "Tapahtuman otsikot"
 
-#: ../inc/core/post-type.class.php:1376
+#: ../inc/core/post-type.class.php:1466
+#, fuzzy
 msgctxt "metabox title"
-msgid "Stop Sales Before Show"
-msgstr "Lopeta myynti ennen esitystä"
+msgid "Ticket Sales Settings"
+msgstr "Lipun valinnan käyttöliittymä"
 
-#: ../inc/core/post-type.class.php:1387
+#: ../inc/core/post-type.class.php:1477
 msgctxt "metabox title"
 msgid "Event Run Date Range"
 msgstr "Tapahtuman aikaväli"
 
-#: ../inc/core/post-type.class.php:1412
+#: ../inc/core/post-type.class.php:1502
 msgctxt "metabox field heading"
 msgid "Show Date"
 msgstr "Näytä päivämäärä"
 
-#: ../inc/core/post-type.class.php:1418 ../inc/core/post-type.class.php:1447
+#: ../inc/core/post-type.class.php:1508 ../inc/core/post-type.class.php:1537
 msgctxt "checkbox description"
 msgid "Use the site wide default setting"
 msgstr "Käytä sivuston oletusasetuksia"
 
-#: ../inc/core/post-type.class.php:1425
+#: ../inc/core/post-type.class.php:1515
 msgctxt "radio button description"
 msgid "Yes, show the date"
 msgstr "Kyllä, näytä päivämäärä"
 
-#: ../inc/core/post-type.class.php:1429
+#: ../inc/core/post-type.class.php:1519
 msgctxt "radio button description"
 msgid "No, hide the date"
 msgstr "Ei, piilota päivämäärä"
 
-#: ../inc/core/post-type.class.php:1434 ../inc/core/post-type.class.php:1463
+#: ../inc/core/post-type.class.php:1524 ../inc/core/post-type.class.php:1553
 #, php-format
 msgctxt "field helper text"
 msgid ""
@@ -494,36 +496,49 @@ msgstr ""
 "Päätä, käytätkö näille tapahtumille yleisiä vai itse säädettyjä \"%s\"-"
 "asetuksia."
 
-#: ../inc/core/post-type.class.php:1437
+#: ../inc/core/post-type.class.php:1527
 msgctxt "option name"
 msgid "Show Date"
 msgstr "Näytä päivämäärä"
 
-#: ../inc/core/post-type.class.php:1441
+#: ../inc/core/post-type.class.php:1531
 msgctxt "metabox field heading"
 msgid "Show Time"
 msgstr "Näytä kellonaika"
 
-#: ../inc/core/post-type.class.php:1454
+#: ../inc/core/post-type.class.php:1544
 msgctxt "radio button description"
 msgid "Yes, show the time"
 msgstr "Kyllä, näytä kellonaika"
 
-#: ../inc/core/post-type.class.php:1458
+#: ../inc/core/post-type.class.php:1548
 msgctxt "radio button description"
 msgid "No, hide the time"
 msgstr "Ei, piilota kellonaika"
 
-#: ../inc/core/post-type.class.php:1466
+#: ../inc/core/post-type.class.php:1556
 msgctxt "option name"
 msgid "Show Time"
 msgstr "Näytä kellonaika"
 
-#: ../inc/core/post-type.class.php:1480
-msgid "Formula"
-msgstr "Lauseke"
+#: ../inc/core/post-type.class.php:1590 ../inc/core/post-type.class.php:1933
+#, fuzzy
+msgid "Purchase Limit"
+msgstr "Ostaja"
 
-#: ../inc/core/post-type.class.php:1485
+#: ../inc/core/post-type.class.php:1594
+msgid ""
+"The maximum number of tickets, for each child event, that a given cart can "
+"have in it. To use the site-wide global setting, use \"0\". To force no-"
+"limit, use \"-1\"."
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1599
+#, fuzzy
+msgid "Stop Sales Before - Formula"
+msgstr "Lopeta myynti ennen esitystä"
+
+#: ../inc/core/post-type.class.php:1603
 msgid ""
 "This is the formula to calculate when tickets should stop being sold on the "
 "frontend for this show. For example, if you wish to stop selling tickets 2 "
@@ -539,289 +554,297 @@ msgstr ""
 "week, weeks, month, months, year, years</em>. Tyhjäksi jätettynä kentässä "
 "sovelletaan yleisiä asetuksia."
 
-#: ../inc/core/post-type.class.php:1506
+#: ../inc/core/post-type.class.php:1626
 msgid "Start Date/Time"
 msgstr "Alkamisajankohta"
 
-#: ../inc/core/post-type.class.php:1514 ../inc/core/post-type.class.php:1531
-#: ../inc/core/post-type.class.php:1800
+#: ../inc/core/post-type.class.php:1634 ../inc/core/post-type.class.php:1651
+#: ../inc/core/post-type.class.php:1920
 msgid "@"
 msgstr "klo"
 
-#: ../inc/core/post-type.class.php:1523
+#: ../inc/core/post-type.class.php:1643
 msgid "End Date/Time:"
 msgstr "Päättymisajankohta"
 
-#: ../inc/core/post-type.class.php:1553
+#: ../inc/core/post-type.class.php:1673
 msgid "Basic Settings"
 msgstr "Perusasetukset"
 
-#: ../inc/core/post-type.class.php:1557
+#: ../inc/core/post-type.class.php:1677
 msgid "Start Date"
 msgstr "Alkamispäivämäärä"
 
-#: ../inc/core/post-type.class.php:1558 ../inc/core/post-type.class.php:1564
-#: ../inc/core/post-type.class.php:1647 ../inc/core/post-type.class.php:1663
+#: ../inc/core/post-type.class.php:1678 ../inc/core/post-type.class.php:1684
+#: ../inc/core/post-type.class.php:1767 ../inc/core/post-type.class.php:1783
 msgid "Y-m-d"
 msgstr "Y-m-d"
 
-#: ../inc/core/post-type.class.php:1559 ../inc/core/post-type.class.php:1565
+#: ../inc/core/post-type.class.php:1679 ../inc/core/post-type.class.php:1685
 msgid "h:ia"
 msgstr "h:ia"
 
-#: ../inc/core/post-type.class.php:1559
+#: ../inc/core/post-type.class.php:1679
 msgid "Start Time"
 msgstr "Alkamisaika"
 
-#: ../inc/core/post-type.class.php:1560
+#: ../inc/core/post-type.class.php:1680
 msgid "to"
 msgstr "–"
 
-#: ../inc/core/post-type.class.php:1563
+#: ../inc/core/post-type.class.php:1683
 msgid "End Date"
 msgstr "Päättymispäivämäärä"
 
-#: ../inc/core/post-type.class.php:1565
+#: ../inc/core/post-type.class.php:1685
 msgid "End Time"
 msgstr "Päättymisaika"
 
-#: ../inc/core/post-type.class.php:1571 ../inc/core/post-type.class.php:1580
+#: ../inc/core/post-type.class.php:1691 ../inc/core/post-type.class.php:1700
 msgid "Repeat"
 msgstr "Toista"
 
-#: ../inc/core/post-type.class.php:1585
+#: ../inc/core/post-type.class.php:1705
 msgid "Repeats"
 msgstr "Toistoa"
 
-#: ../inc/core/post-type.class.php:1589
+#: ../inc/core/post-type.class.php:1709
 msgid "Weekly"
 msgstr "Viikottain"
 
-#: ../inc/core/post-type.class.php:1595
+#: ../inc/core/post-type.class.php:1715
 msgid "Repeats Every"
 msgstr "Toista joka"
 
-#: ../inc/core/post-type.class.php:1602
+#: ../inc/core/post-type.class.php:1722
 msgid "days"
 msgstr "päivä"
 
-#: ../inc/core/post-type.class.php:1603
+#: ../inc/core/post-type.class.php:1723
 msgid "weeks"
 msgstr "viikko"
 
-#: ../inc/core/post-type.class.php:1608
+#: ../inc/core/post-type.class.php:1728
 msgid "Repeat on"
 msgstr "Toista"
 
-#: ../inc/core/post-type.class.php:1612
+#: ../inc/core/post-type.class.php:1732
 msgid "Su"
 msgstr "Su"
 
-#: ../inc/core/post-type.class.php:1616
+#: ../inc/core/post-type.class.php:1736
 msgid "Mo"
 msgstr "Ma"
 
-#: ../inc/core/post-type.class.php:1620
+#: ../inc/core/post-type.class.php:1740
 msgid "Tu"
 msgstr "Ti"
 
-#: ../inc/core/post-type.class.php:1624
+#: ../inc/core/post-type.class.php:1744
 msgid "We"
 msgstr "Ke"
 
-#: ../inc/core/post-type.class.php:1628
+#: ../inc/core/post-type.class.php:1748
 msgid "Th"
 msgstr "To"
 
-#: ../inc/core/post-type.class.php:1632
+#: ../inc/core/post-type.class.php:1752
 msgid "Fr"
 msgstr "Pe"
 
-#: ../inc/core/post-type.class.php:1636
+#: ../inc/core/post-type.class.php:1756
 msgid "Sa"
 msgstr "La"
 
-#: ../inc/core/post-type.class.php:1642
+#: ../inc/core/post-type.class.php:1762
 msgid "Starts on"
 msgstr "Alkaa"
 
-#: ../inc/core/post-type.class.php:1652
+#: ../inc/core/post-type.class.php:1772
 msgid "Ends"
 msgstr "Päättyy"
 
-#: ../inc/core/post-type.class.php:1658
+#: ../inc/core/post-type.class.php:1778
 msgid "On"
 msgstr " "
 
-#: ../inc/core/post-type.class.php:1668
+#: ../inc/core/post-type.class.php:1788
 msgid "After"
 msgstr "Jälkeen"
 
-#: ../inc/core/post-type.class.php:1671
+#: ../inc/core/post-type.class.php:1791
 msgid "occurences"
 msgstr "esiintymiset"
 
-#: ../inc/core/post-type.class.php:1692
+#: ../inc/core/post-type.class.php:1812
 msgid "Add to Calendar"
 msgstr "Lisää Kalenteriin"
 
-#: ../inc/core/post-type.class.php:1708
+#: ../inc/core/post-type.class.php:1828
 msgid "Event Date/Times"
 msgstr "Tapahtumien ajankohdat"
 
-#: ../inc/core/post-type.class.php:1714 ../inc/sys/admin-menu.class.php:170
-#: ../inc/sys/admin-menu.class.php:171
+#: ../inc/core/post-type.class.php:1834 ../inc/sys/admin-menu.class.php:181
+#: ../inc/sys/admin-menu.class.php:182
 msgid "Settings"
 msgstr "Asetukset"
 
-#: ../inc/core/post-type.class.php:1719
+#: ../inc/core/post-type.class.php:1839
 msgid "Status:"
 msgstr "Status:"
 
-#: ../inc/core/post-type.class.php:1721 ../inc/core/post-type.class.php:1744
-#: ../inc/core/post-type.class.php:1779 ../inc/venues/post-type.class.php:364
-#: ../inc/venues/event-area/post-type.class.php:546
+#: ../inc/core/post-type.class.php:1841 ../inc/core/post-type.class.php:1864
+#: ../inc/core/post-type.class.php:1899 ../inc/core/post-type.class.php:1935
+#: ../inc/venues/post-type.class.php:364
+#: ../inc/venues/event-area/post-type.class.php:625
 #: ../templates/admin/meta-boxes/views/html-order-items.php:217
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:221
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:313
 msgid "Edit"
 msgstr "Muokkaa"
 
-#: ../inc/core/post-type.class.php:1726
+#: ../inc/core/post-type.class.php:1846
 msgid "Published"
 msgstr "Julkaistu"
 
-#: ../inc/core/post-type.class.php:1727
+#: ../inc/core/post-type.class.php:1847
 msgid "Privately Published"
 msgstr "Julkaistu yksityisesti"
 
-#: ../inc/core/post-type.class.php:1728
+#: ../inc/core/post-type.class.php:1848
 msgid "Scheduled"
 msgstr "Aikataulutettu"
 
-#: ../inc/core/post-type.class.php:1730
+#: ../inc/core/post-type.class.php:1850
 msgid "Pending Review"
 msgstr "Odottaa tarkastusta"
 
-#: ../inc/core/post-type.class.php:1731
+#: ../inc/core/post-type.class.php:1851
 msgid "Draft"
 msgstr "Luonnos"
 
-#: ../inc/core/post-type.class.php:1734 ../inc/core/post-type.class.php:1769
-#: ../inc/core/post-type.class.php:1805 ../inc/venues/post-type.class.php:375
-#: ../inc/venues/event-area/post-type.class.php:569
+#: ../inc/core/post-type.class.php:1854 ../inc/core/post-type.class.php:1889
+#: ../inc/core/post-type.class.php:1925 ../inc/core/post-type.class.php:1942
+#: ../inc/venues/post-type.class.php:375
+#: ../inc/venues/event-area/post-type.class.php:648
 msgid "OK"
 msgstr "OK"
 
-#: ../inc/core/post-type.class.php:1735 ../inc/core/post-type.class.php:1770
-#: ../inc/core/post-type.class.php:1806 ../inc/sys/mba.class.php:462
-#: ../inc/venues/post-type.class.php:376
-#: ../inc/venues/event-area/post-type.class.php:570
+#: ../inc/core/post-type.class.php:1855 ../inc/core/post-type.class.php:1890
+#: ../inc/core/post-type.class.php:1926 ../inc/core/post-type.class.php:1943
+#: ../inc/sys/mba.class.php:462 ../inc/venues/post-type.class.php:376
+#: ../inc/venues/event-area/post-type.class.php:649
 #: ../templates/admin/meta-boxes/views/html-order-items.php:255
 #: ../templates/admin/meta-boxes/views/html-order-items.php:301
 msgid "Cancel"
 msgstr "Peruuta"
 
-#: ../inc/core/post-type.class.php:1742
+#: ../inc/core/post-type.class.php:1862
 msgid "Visibility"
 msgstr "Näkyvyys"
 
-#: ../inc/core/post-type.class.php:1748
+#: ../inc/core/post-type.class.php:1868
 msgid "Viewable to the public"
 msgstr "Julkisesti näkyvä"
 
-#: ../inc/core/post-type.class.php:1750
+#: ../inc/core/post-type.class.php:1870
 msgid "Public"
 msgstr "Julkinen"
 
-#: ../inc/core/post-type.class.php:1752
+#: ../inc/core/post-type.class.php:1872
 msgid ""
 "Visible on the calendar, but only those with the password can view to make "
 "reservations"
 msgstr "Näkyy kalenterissa, mutta vain salasanan avulla voi tehdä varauksia"
 
-#: ../inc/core/post-type.class.php:1754
+#: ../inc/core/post-type.class.php:1874
 msgid "Password Protected"
 msgstr "Salasanasuojattu"
 
-#: ../inc/core/post-type.class.php:1756
+#: ../inc/core/post-type.class.php:1876
 msgid "Password:"
 msgstr "Salasana:"
 
-#: ../inc/core/post-type.class.php:1760
+#: ../inc/core/post-type.class.php:1880
 msgid "Hidden from the calendar, but open to anyone with the url"
 msgstr "Piilotettu kalenterista, mutta saatavilla url:n avulla"
 
-#: ../inc/core/post-type.class.php:1762
+#: ../inc/core/post-type.class.php:1882
 msgid "Hidden"
 msgstr "Piilotettu"
 
-#: ../inc/core/post-type.class.php:1764
+#: ../inc/core/post-type.class.php:1884
 msgid "Only logged in admin users or the event author can view it"
 msgstr ""
 "Näkyvillä vain sisäänkirjautuneille pääkäyttäjille ja tapahtuman tekijälle"
 
-#: ../inc/core/post-type.class.php:1766
+#: ../inc/core/post-type.class.php:1886
 msgid "Private"
 msgstr "Yksityinen"
 
-#: ../inc/core/post-type.class.php:1777
+#: ../inc/core/post-type.class.php:1897
 msgid "Publish Date:"
 msgstr "Julkaisupäivämäärä:"
 
-#: ../inc/core/post-type.class.php:1786
+#: ../inc/core/post-type.class.php:1906
 msgid "January"
 msgstr "Tammikuu"
 
-#: ../inc/core/post-type.class.php:1787
+#: ../inc/core/post-type.class.php:1907
 msgid "February"
 msgstr "Helmikuu"
 
-#: ../inc/core/post-type.class.php:1788
+#: ../inc/core/post-type.class.php:1908
 msgid "March"
 msgstr "Maaliskuu"
 
-#: ../inc/core/post-type.class.php:1789
+#: ../inc/core/post-type.class.php:1909
 msgid "April"
 msgstr "Huhtikuu"
 
-#: ../inc/core/post-type.class.php:1790
+#: ../inc/core/post-type.class.php:1910
 msgid "May"
 msgstr "Toukokuu"
 
-#: ../inc/core/post-type.class.php:1791
+#: ../inc/core/post-type.class.php:1911
 msgid "June"
 msgstr "Kesäkuu"
 
-#: ../inc/core/post-type.class.php:1792
+#: ../inc/core/post-type.class.php:1912
 msgid "July"
 msgstr "Heinäkuu"
 
-#: ../inc/core/post-type.class.php:1793
+#: ../inc/core/post-type.class.php:1913
 msgid "August"
 msgstr "Elokuu"
 
-#: ../inc/core/post-type.class.php:1794
+#: ../inc/core/post-type.class.php:1914
 msgid "September"
 msgstr "Syyskuu"
 
-#: ../inc/core/post-type.class.php:1795
+#: ../inc/core/post-type.class.php:1915
 msgid "October"
 msgstr "Lokakuu"
 
-#: ../inc/core/post-type.class.php:1796
+#: ../inc/core/post-type.class.php:1916
 msgid "November"
 msgstr "Marraskuu"
 
-#: ../inc/core/post-type.class.php:1797
+#: ../inc/core/post-type.class.php:1917
 msgid "December"
 msgstr "Joulukuu"
 
-#: ../inc/core/post-type.class.php:1834
+#: ../inc/core/post-type.class.php:1940
+msgid ""
+"Use \"\" or \"0\" to indicate usage of the site-wide global purchase limit. "
+"Use \"-1\" to force an unlimited purchase limit."
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1972
 msgid "Event base"
 msgstr "Tapahtumien etuliite"
 
-#: ../inc/core/post-type.class.php:1838
+#: ../inc/core/post-type.class.php:1976
 #, php-format
 msgid ""
 "Enter a custom base to use. This url segment will prefix the event name in "
@@ -830,19 +853,19 @@ msgstr ""
 "Syötä haluamasi etuliite tapahtumille. Se edeltää tapahtuman nimeä URL:ssa. "
 "<br/><code>esimerkki: %s</code>"
 
-#: ../inc/core/post-type.class.php:1854
+#: ../inc/core/post-type.class.php:1992
 msgid "Event permalink base"
 msgstr "Tapahtumien kestolinkkien etuliite"
 
-#: ../inc/core/post-type.class.php:1913
+#: ../inc/core/post-type.class.php:2055
 msgid "Event Display"
 msgstr "Tapahtumien esitys"
 
-#: ../inc/core/post-type.class.php:1922
+#: ../inc/core/post-type.class.php:2064
 msgid "Stop Sales Before Show"
 msgstr "Lopeta myynti ennen esitystä"
 
-#: ../inc/core/post-type.class.php:1923
+#: ../inc/core/post-type.class.php:2065
 msgid ""
 "Amount of time to stop sales for a show, before show time. (ie: stop sales "
 "two hour before show time <code>2 hours</code>)"
@@ -850,7 +873,7 @@ msgstr ""
 "Aikamääre lipunmyynnin lopettamiseen ennen esityksen alkua. (eli: <code>2 "
 "hours</code> lopettaa myynnin kaksi tuntia ennen esitystä)"
 
-#: ../inc/core/post-type.class.php:1924
+#: ../inc/core/post-type.class.php:2066
 msgid ""
 "valid units: hour, hours, minute, minutes, second, seconds, day, days, week, "
 "weeks, month, months, year, years"
@@ -858,15 +881,15 @@ msgstr ""
 "kelvolliset aikamääreet (englanniksi): hour, hours, minute, minutes, second, "
 "seconds, day, days, week, weeks, month, months, year, years"
 
-#: ../inc/core/post-type.class.php:1932
+#: ../inc/core/post-type.class.php:2074
 msgid "Single Event Synopsis"
 msgstr "Yksittäisen tapahtuman esittelyteksti"
 
-#: ../inc/core/post-type.class.php:1933
+#: ../inc/core/post-type.class.php:2075
 msgid "Show event synopsis on single event pages"
 msgstr "Näytä tapahtuman esittelyteksti yksittäisten tapahtumien sivuilla"
 
-#: ../inc/core/post-type.class.php:1934
+#: ../inc/core/post-type.class.php:2076
 msgid ""
 "By default, just the event logo, and the event pricing options are shown. "
 "This feature will additionally show the description of the event to the user."
@@ -874,33 +897,33 @@ msgstr ""
 "Oletuksena esillä ovat vain vain tapahtuman logo ja hinnoitteluvaihtoehdot. "
 "Tämän asetuksen myötä käyttäjälle näytetään lisäksi tapahtuman kuvaus."
 
-#: ../inc/core/post-type.class.php:1943
+#: ../inc/core/post-type.class.php:2085
 msgid "Single Event Synopsis Position"
 msgstr "Yksittäisen tapahtuman esittelytekstin sijainti"
 
-#: ../inc/core/post-type.class.php:1944
+#: ../inc/core/post-type.class.php:2086
 msgid "The display position of the Event Synopsis on the single event page."
 msgstr ""
 "Sijainti, jossa esittelyteksti näytetään yksittäisen tapahtuman sivulla."
 
-#: ../inc/core/post-type.class.php:1946
+#: ../inc/core/post-type.class.php:2088
 msgid "Above the Ticket Selection UI"
 msgstr "Lippukäyttöliittymän yläpuolella"
 
-#: ../inc/core/post-type.class.php:1947
+#: ../inc/core/post-type.class.php:2089
 msgid "Below the Ticket Selection UI"
 msgstr "Lippukäyttöliittymän alapuolella"
 
-#: ../inc/core/post-type.class.php:1958
+#: ../inc/core/post-type.class.php:2100
 msgid "Show Date"
 msgstr "Näytä päivämäärä"
 
-#: ../inc/core/post-type.class.php:1959
+#: ../inc/core/post-type.class.php:2101
 msgid "Show the date in the title of events, on the event details pages."
 msgstr ""
 "Näytä päivämäärä yksittäisiä esityksiä koskevien tapahtumasivujen otsikoissa."
 
-#: ../inc/core/post-type.class.php:1960
+#: ../inc/core/post-type.class.php:2102
 msgid ""
 "This is the difference between a title reading \"My Event\" and \"My Event "
 "on 09/12/2015\"."
@@ -908,16 +931,16 @@ msgstr ""
 "Otsikko on muodoltaan joko \"Minun tapahtumani\" tai \"Minun tapahtumani "
 "9.12.2015\"."
 
-#: ../inc/core/post-type.class.php:1970
+#: ../inc/core/post-type.class.php:2112
 msgid "Show Time"
 msgstr "Näytä kellonaika"
 
-#: ../inc/core/post-type.class.php:1971
+#: ../inc/core/post-type.class.php:2113
 msgid "Show the time in the title of events, on the event details pages."
 msgstr ""
 "Näytä kellonaika yksittäisiä esityksiä koskevien tapahtumasivujen otsikoissa."
 
-#: ../inc/core/post-type.class.php:1972
+#: ../inc/core/post-type.class.php:2114
 msgid ""
 "This is the difference between a title reading \"My Event\" and \"My Event @ "
 "6:00pm\"."
@@ -925,20 +948,57 @@ msgstr ""
 "Otsikko voi olla muodoltaan joko \"Minun tapahtumani\" tai \"Minun "
 "tapahtumani kello 18:00\"."
 
-#: ../inc/core/post-type.class.php:1997
+#: ../inc/core/post-type.class.php:2139
 msgid "Availability Quantity"
 msgstr "Jäljellä oleva lukumäärä"
 
-#: ../inc/core/post-type.class.php:1998
+#: ../inc/core/post-type.class.php:2140
 msgid ""
 "Yes, show the quantity that is available, on the frontend, when showing the "
 "availability."
 msgstr "Kyllä, näytä asiakkaalle jäljellä olevian lippujen lukumäärä."
 
-#: ../inc/core/zoner.class.php:345 ../inc/core/zoner.class.php:356
-#, php-format
-msgid "There are not %s tickets available to reserve."
+#: ../inc/core/post-type.class.php:2150
+msgid "Per Event, Per Order Ticket Purchase Limit"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:2151
+msgid ""
+"A positive number here tells the software to enforce a purchase limit. Users "
+"will be restricted to only buying upto X tickets per event, per order. "
+"Setting to 0 means no limit."
+msgstr ""
+
+#: ../inc/core/post-type.class.php:2160
+msgid "Locked-in Reservations"
+msgstr ""
+
+#: ../inc/core/post-type.class.php:2161
+msgid ""
+"Checking this box means that once the end user chooses a quantity of tickets "
+"to purchase, they cannot modify that quantity. They can still delete their "
+"reservations and start over though."
+msgstr ""
+
+#: ../inc/core/zoner.class.php:475
+msgid ""
+"You are not allowed to modify your reservations, except to delete them, "
+"after you have chosen them initially."
+msgstr ""
+
+#: ../inc/core/zoner.class.php:495
+#, fuzzy
+msgid "There are no tickets available to reserve."
 msgstr "Lippuja (%s) ei ole varattavissa"
+
+#: ../inc/core/zoner.class.php:513
+#, fuzzy
+msgid "Could not reserve those tickets."
+msgstr "Varaa lippuja:"
+
+#: ../inc/core/zoner.class.php:590
+msgid "You have reached the ticket limit for this event."
+msgstr ""
 
 #: ../inc/order/admin.class.php:147
 msgid ""
@@ -969,105 +1029,105 @@ msgstr ""
 "WooCommercen asetusten vuoksi et voi käyttää \"Vieraskäyttäjää\" tilauksen "
 "tekemiseen."
 
-#: ../inc/order/admin.class.php:336
+#: ../inc/order/admin.class.php:337
 msgid "is a required field."
 msgstr "on vaadittu kenttä."
 
-#: ../inc/order/admin.class.php:348
+#: ../inc/order/admin.class.php:349
 msgid "Please enter a valid postcode/ZIP."
 msgstr "Syötä kelvollinen postinumero."
 
-#: ../inc/order/admin.class.php:355
+#: ../inc/order/admin.class.php:356
 msgid "is not a valid phone number."
 msgstr "puhelinnumero ei kelpaa"
 
-#: ../inc/order/admin.class.php:362
+#: ../inc/order/admin.class.php:363
 msgid "is not a valid email address."
 msgstr "Sähköpostiosoite ei ole kelvollinen"
 
-#: ../inc/order/admin.class.php:378
+#: ../inc/order/admin.class.php:379
 msgid "is not valid. Please enter one of the following:"
 msgstr "ei ole kelvollinen. Käytä jotain seuraavista:"
 
-#: ../inc/order/admin.class.php:397 ../inc/order/admin.class.php:400
+#: ../inc/order/admin.class.php:398 ../inc/order/admin.class.php:401
 msgid ""
 "Your current settings require you to provide most billing information for "
 "each order."
 msgstr ""
 "Nykyiset asetuksen vaativat antamaan laskutustiedot jokaiselle tilaukselle."
 
-#: ../inc/order/admin.class.php:462
+#: ../inc/order/admin.class.php:463
 msgid "You do not have permission to create users. Sorry."
 msgstr "Valitettavasti sinulla ei ole oikeuksia uusien käyttäjien luomiseen."
 
-#: ../inc/order/admin.class.php:476
+#: ../inc/order/admin.class.php:477
 msgid "The username is a required field."
 msgstr "Käyttäjätunnus on vaadittu kenttä."
 
-#: ../inc/order/admin.class.php:479
+#: ../inc/order/admin.class.php:480
 msgid "That user name contains illegal characters."
 msgstr "Käyttäjänimessä on kiellettyjä merkkejä."
 
-#: ../inc/order/admin.class.php:482
+#: ../inc/order/admin.class.php:483
 msgid ""
 "is already being used by another user. Please enter a different username."
 msgstr "on jo toisen käyttäjän käytössä. Valitse uusi käyttäjätunnus"
 
-#: ../inc/order/admin.class.php:488
+#: ../inc/order/admin.class.php:489
 msgid "The email address is required."
 msgstr "Sähköpostiosoite tarvitaan."
 
-#: ../inc/order/admin.class.php:491
+#: ../inc/order/admin.class.php:492
 msgid "That is not a valid email address."
 msgstr "Sähköpostiosoite ei ole kelvollinen"
 
-#: ../inc/order/admin.class.php:494
+#: ../inc/order/admin.class.php:495
 msgid ""
 "is already in use by another user. Please use a different email address."
 msgstr "on jo toisen käyttäjän käytössä. Valitse uusi sähköpostiosoite."
 
-#: ../inc/order/admin.class.php:499
+#: ../inc/order/admin.class.php:500
 msgid "The first name is a required field."
 msgstr "Anna etunimi."
 
-#: ../inc/order/admin.class.php:504
+#: ../inc/order/admin.class.php:505
 msgid "The last name is a required field."
 msgstr "Anna sukunimi."
 
-#: ../inc/order/admin.class.php:510
+#: ../inc/order/admin.class.php:511
 msgid "The information you supplied passed validation."
 msgstr "Antamasi tiedot läpäisivät tarkistuksen."
 
-#: ../inc/order/admin.class.php:528
+#: ../inc/order/admin.class.php:529
 msgid "User creation failed:"
 msgstr "Käyttäjän luonti epäonnistui:"
 
-#: ../inc/order/admin.class.php:532
+#: ../inc/order/admin.class.php:533
 msgid "The user was created successfully."
 msgstr "Käyttäjän luominen onnistui."
 
-#: ../inc/order/admin.class.php:570
+#: ../inc/order/admin.class.php:571
 msgid "New User Form"
 msgstr "Uusi käyttäjä -lomake"
 
-#: ../inc/order/admin.class.php:581
+#: ../inc/order/admin.class.php:582
 msgid "Username"
 msgstr "Käyttäjätunnus"
 
-#: ../inc/order/admin.class.php:585
+#: ../inc/order/admin.class.php:586
 #: ../inc/reporting/seating.report.class.php:508
 #: ../templates/tickets/verification-form.php:11
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:77
 msgid "Email"
 msgstr "Sähköposti"
 
-#: ../inc/order/admin.class.php:589
+#: ../inc/order/admin.class.php:590
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:39
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:86
 msgid "First Name"
 msgstr "Etunimi"
 
-#: ../inc/order/admin.class.php:593
+#: ../inc/order/admin.class.php:594
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:43
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:90
 msgid "Last Name"
@@ -1183,6 +1243,7 @@ msgid "%s [%s]"
 msgstr "%s [%s]"
 
 #: ../inc/reporting/seating.report.class.php:240
+#: ../inc/sys/pages/system-status.page.php:83
 msgid "Show Report"
 msgstr "Näytä raportti"
 
@@ -1228,15 +1289,15 @@ msgstr "Huomio"
 msgid "Ticket Url"
 msgstr "Lipun Url"
 
-#: ../inc/sys/admin-menu.class.php:158
+#: ../inc/sys/admin-menu.class.php:169 ../inc/sys/admin-menu.class.php:170
 msgid "Reports"
 msgstr "Raportit"
 
-#: ../inc/sys/admin-menu.class.php:237
+#: ../inc/sys/admin-menu.class.php:240
 msgid "Allow OpenTickets Stats?"
 msgstr "Hyväksy statistiikan kerääminen OpenTicketsille?"
 
-#: ../inc/sys/admin-menu.class.php:238
+#: ../inc/sys/admin-menu.class.php:241
 msgid ""
 "OpenTickets is always being improved, thanks to users like you. To help us "
 "improve this product, would you allow us collect some basic information "
@@ -1254,140 +1315,140 @@ msgstr ""
 "käytetään määrittämään, minkä lisäosien ja teemojen kanssa OpenTicketsin "
 "tulisi olla yhteensopiva."
 
-#: ../inc/sys/admin-menu.class.php:242
+#: ../inc/sys/admin-menu.class.php:245
 msgid "Yes"
 msgstr "Kyllä"
 
-#: ../inc/sys/admin-menu.class.php:249
+#: ../inc/sys/admin-menu.class.php:252
 msgid "Dismiss"
 msgstr "Hylkää"
 
-#: ../inc/sys/admin-menu.class.php:280
+#: ../inc/sys/admin-menu.class.php:283
 msgid "Fair enough. Thanks anyways."
 msgstr "Hyvä on. Kiitos kuitenkin."
 
-#: ../inc/sys/admin-menu.class.php:286
+#: ../inc/sys/admin-menu.class.php:289
 msgid "Thanks a bunch."
 msgstr "Kiitos paljon."
 
-#: ../inc/sys/admin-menu.class.php:305
+#: ../inc/sys/admin-menu.class.php:308
 msgid "Title"
 msgstr "Otsikko"
 
-#: ../inc/sys/admin-menu.class.php:306
+#: ../inc/sys/admin-menu.class.php:309
 msgid "Author"
 msgstr "Kirjoittaja"
 
-#: ../inc/sys/admin-menu.class.php:307
+#: ../inc/sys/admin-menu.class.php:310
 msgid "Author Name"
 msgstr "Kirjoittajan nimi"
 
-#: ../inc/sys/admin-menu.class.php:308
+#: ../inc/sys/admin-menu.class.php:311
 msgid "Author URI"
 msgstr "Kirjoittajan URI"
 
-#: ../inc/sys/admin-menu.class.php:309
+#: ../inc/sys/admin-menu.class.php:312
 msgid "Description"
 msgstr "Kuvaus"
 
-#: ../inc/sys/admin-menu.class.php:310
+#: ../inc/sys/admin-menu.class.php:313
 msgid "Version"
 msgstr "Versio"
 
-#: ../inc/sys/admin-menu.class.php:312
+#: ../inc/sys/admin-menu.class.php:315
 msgid "Template"
 msgstr "Malline"
 
-#: ../inc/sys/admin-menu.class.php:313
+#: ../inc/sys/admin-menu.class.php:316
 msgid "Stylesheet"
 msgstr "Tyylitiedosto"
 
-#: ../inc/sys/admin-menu.class.php:314 ../inc/sys/admin-menu.class.php:324
+#: ../inc/sys/admin-menu.class.php:317 ../inc/sys/admin-menu.class.php:327
 msgid "Template Files"
 msgstr "Mallineet"
 
-#: ../inc/sys/admin-menu.class.php:315 ../inc/sys/admin-menu.class.php:324
+#: ../inc/sys/admin-menu.class.php:318 ../inc/sys/admin-menu.class.php:327
 msgid "Stylesheet Files"
 msgstr "Tyylitiedostot"
 
-#: ../inc/sys/admin-menu.class.php:316
+#: ../inc/sys/admin-menu.class.php:319
 msgid "Template Dir"
 msgstr "Mallineiden hakemisto"
 
-#: ../inc/sys/admin-menu.class.php:317
+#: ../inc/sys/admin-menu.class.php:320
 msgid "Stylesheet Dir"
 msgstr "Tyylitiedostojen hakemisto"
 
-#: ../inc/sys/admin-menu.class.php:318
+#: ../inc/sys/admin-menu.class.php:321
 msgid "Screenshot"
 msgstr "Kuvakaappaus"
 
-#: ../inc/sys/admin-menu.class.php:319
+#: ../inc/sys/admin-menu.class.php:322
 msgid "Tags"
 msgstr "Tagit"
 
-#: ../inc/sys/admin-menu.class.php:320
+#: ../inc/sys/admin-menu.class.php:323
 msgid "Theme Root"
 msgstr "Teeman juuri"
 
-#: ../inc/sys/admin-menu.class.php:321
+#: ../inc/sys/admin-menu.class.php:324
 msgid "Theme Root URI"
 msgstr "Teeman juuren URI"
 
-#: ../inc/sys/admin-menu.class.php:322
+#: ../inc/sys/admin-menu.class.php:325
 msgid "Parent Theme"
 msgstr "Alkuperäinen teema"
 
-#: ../inc/sys/admin-menu.class.php:375
+#: ../inc/sys/admin-menu.class.php:378
 msgid "Add %singular%"
 msgstr "Lisää %singular%"
 
-#: ../inc/sys/admin-menu.class.php:376
+#: ../inc/sys/admin-menu.class.php:379
 msgid "Add New %singular%"
 msgstr "Lisää uusi %singular%"
 
-#: ../inc/sys/admin-menu.class.php:377
+#: ../inc/sys/admin-menu.class.php:380
 msgid "Edit %singular%"
 msgstr "Muokkaa %singular%"
 
-#: ../inc/sys/admin-menu.class.php:378
+#: ../inc/sys/admin-menu.class.php:381
 msgid "New %singular%"
 msgstr "Uusi %singular%"
 
-#: ../inc/sys/admin-menu.class.php:379
+#: ../inc/sys/admin-menu.class.php:382
 msgid "All %plural%"
 msgstr "Kaikki %plural%"
 
-#: ../inc/sys/admin-menu.class.php:380
+#: ../inc/sys/admin-menu.class.php:383
 msgid "View %singular%"
 msgstr "Tarkastele %singular%"
 
-#: ../inc/sys/admin-menu.class.php:381
+#: ../inc/sys/admin-menu.class.php:384
 msgid "Search %plural%"
 msgstr "Etsi %plural%"
 
-#: ../inc/sys/admin-menu.class.php:382
+#: ../inc/sys/admin-menu.class.php:385
 msgid "No %lplural% found"
 msgstr "%lplural% ei löytynyt"
 
-#: ../inc/sys/admin-menu.class.php:383
+#: ../inc/sys/admin-menu.class.php:386
 msgid "No %lplural% found in Trash"
 msgstr "Ei %lplular% Roskakorissa"
 
-#: ../inc/sys/admin-menu.class.php:452
+#: ../inc/sys/admin-menu.class.php:455
 msgid "Global Settings"
 msgstr "Globaalit asetukset"
 
-#: ../inc/sys/admin-menu.class.php:460
+#: ../inc/sys/admin-menu.class.php:463
 msgid "Allow Statistics"
 msgstr "Salli statistiikka"
 
-#: ../inc/sys/admin-menu.class.php:461
+#: ../inc/sys/admin-menu.class.php:464
 msgid ""
 "Allow OpenTickets to gather information about your WordPress installation."
 msgstr "Salli OpenTicketsin kerätä tietoa WordPress-asennuksestasi."
 
-#: ../inc/sys/admin-menu.class.php:462
+#: ../inc/sys/admin-menu.class.php:465
 msgid ""
 "This information is strictly used to make this product better and more "
 "compatible with other plugins."
@@ -1395,11 +1456,11 @@ msgstr ""
 "Tätä tietoa käytetään vain ja ainoastaan tuotteen toimintojen ja "
 "yhteensopivuuden parantamiseen."
 
-#: ../inc/sys/admin-menu.class.php:470
+#: ../inc/sys/admin-menu.class.php:473
 msgid "Event Link Slug"
 msgstr "Tapahtumalinkkien etuliite"
 
-#: ../inc/sys/admin-menu.class.php:471
+#: ../inc/sys/admin-menu.class.php:474
 msgid ""
 "The url slug that is prepended to the event name in the url. (ex: "
 "<code>http://example.com/<strong>event</strong>/my-event/</code>)"
@@ -1407,7 +1468,7 @@ msgstr ""
 "URL-etuliite, joka esiintyy tapahtumien nimissä (esim: <code>http://example."
 "com/<strong>event</strong>/my-event/</code> )"
 
-#: ../inc/sys/admin-menu.class.php:472
+#: ../inc/sys/admin-menu.class.php:475
 msgid "This is the segment of the url that preceeds the event name."
 msgstr "Tämä on tapahtuman nimeä edeltävä osa URL:ia."
 
@@ -1643,21 +1704,21 @@ msgstr "Peruuta"
 msgid "Select Files"
 msgstr "Valitse tiedostot"
 
-#: ../inc/sys/pdf.class.php:191 ../inc/sys/pdf.class.php:493
+#: ../inc/sys/pdf.class.php:191 ../inc/sys/pdf.class.php:495
 #, php-format
 msgid ""
 "The %s path is not writable. Please update the permissions to allow write "
 "access."
 msgstr "Kohteeseen %s ei voida kirjoittaa. Lisää kirjoitusoikeudet."
 
-#: ../inc/sys/pdf.class.php:470
+#: ../inc/sys/pdf.class.php:472
 #, php-format
 msgid ""
 "The %s path exists, but it cannot be read. Please update the permissions to "
 "allow read access."
 msgstr "Kohde %s on olemassa, mutta sitä ei voida lukea. Lisää lukuoikeudet."
 
-#: ../inc/sys/pdf.class.php:475
+#: ../inc/sys/pdf.class.php:477
 #, php-format
 msgid ""
 "The %s path exists, but is not a dir. Please remove or rename the existing "
@@ -1666,14 +1727,14 @@ msgstr ""
 "Kohde %s on olemassa, mutta ei ole hakemisto. Poista tai nimeä tiedosto "
 "uudelleen, ja luo sen tilalle hakemisto välimuistille (cache)."
 
-#: ../inc/sys/pdf.class.php:483
+#: ../inc/sys/pdf.class.php:485
 #, php-format
 msgid ""
 "Could not create the %s path directory. Please update the permissions to "
 "allow write access."
 msgstr "Kohteeseen %s ei voitu luoda hakemistoa. Lisää kirjoitusoikeudet."
 
-#: ../inc/sys/pdf.class.php:488
+#: ../inc/sys/pdf.class.php:490
 #, php-format
 msgid "Unable to create the %s path directory."
 msgstr "Kohteeseen %s ei voitu luoda hakemistoa."
@@ -1692,10 +1753,24 @@ msgstr "Ei voitu laajentaa, virheellinen tyyppi."
 msgid "Base Page"
 msgstr "Kotisivu"
 
+#: ../inc/sys/pages/system-status.page.php:40
+msgid "There can only be one instance of the System Status page."
+msgstr ""
+
 #: ../inc/sys/pages/system-status.page.php:44
 #: ../inc/sys/pages/system-status.page.php:45
+#: ../inc/sys/pages/system-status.page.php:49
 msgid "System Status"
 msgstr "Järjestelmän tila"
+
+#: ../inc/sys/pages/system-status.page.php:53
+msgid "Tools"
+msgstr ""
+
+#: ../inc/sys/pages/system-status.page.php:82
+msgid ""
+"Copy and paste this information into your ticket when contacting support:"
+msgstr ""
 
 #: ../inc/sys/pages/system-status.page.php:116
 msgid ""
@@ -2198,11 +2273,11 @@ msgstr "Yleiset"
 msgid "Save changes"
 msgstr "Tallenna muutokset"
 
-#: ../inc/ticket/checkin.class.php:123 ../inc/ticket/ticket.class.php:406
+#: ../inc/ticket/checkin.class.php:127 ../inc/ticket/ticket.class.php:406
 msgid "Could not laod the order that this ticket belongs to."
 msgstr "Tähän lippuun liittyvän tilauksen lataaminen ei onnistunut."
 
-#: ../inc/ticket/checkin.class.php:128 ../inc/ticket/ticket.class.php:413
+#: ../inc/ticket/checkin.class.php:132 ../inc/ticket/ticket.class.php:413
 msgid "Could not load the order item associated with this ticket."
 msgstr "Tähän lippuun liittyvän tilauksen lataaminen ei onnistunut."
 
@@ -2395,7 +2470,7 @@ msgid "Venue:"
 msgstr "Näyttämö:"
 
 #: ../inc/venues/post-type.class.php:369
-#: ../inc/venues/event-area/post-type.class.php:349
+#: ../inc/venues/event-area/post-type.class.php:380
 msgid "None"
 msgstr "Ei yhtään"
 
@@ -2558,7 +2633,7 @@ msgid "We're sorry. There are currently no tickets available."
 msgstr "Valitettavasti lippuja ei ole enää saatavilla."
 
 #: ../inc/venues/event-area/post-type.class.php:170
-#: ../templates/post-content/event-area.php:128
+#: ../templates/post-content/event-area.php:133
 msgid "We are sorry. This event is sold out!"
 msgstr "Valitettavasti tapahtuma on loppuunmyyty!"
 
@@ -2566,139 +2641,146 @@ msgstr "Valitettavasti tapahtuma on loppuunmyyty!"
 msgid "<h1>One Moment Please...</h1>"
 msgstr "<h1>Pieni hetki...</h1>"
 
-#: ../inc/venues/event-area/post-type.class.php:230
+#: ../inc/venues/event-area/post-type.class.php:241
 msgid "Step 1: How Many?"
 msgstr "Vaihe 1: Määrän valinta"
 
-#: ../inc/venues/event-area/post-type.class.php:233
+#: ../inc/venues/event-area/post-type.class.php:244
 #: ../templates/post-content/event-area.php:52
 msgid "Reserve some tickets:"
 msgstr "Varaa lippuja:"
 
-#: ../inc/venues/event-area/post-type.class.php:237
+#: ../inc/venues/event-area/post-type.class.php:248
 #: ../templates/post-content/event-area.php:73
 msgid "Reserve"
 msgstr "Varaa"
 
-#: ../inc/venues/event-area/post-type.class.php:245
+#: ../inc/venues/event-area/post-type.class.php:257
+#: ../inc/venues/event-area/post-type.class.php:275
 msgid "Step 2: Review"
 msgstr "Vaihe 2: yhteenveto"
 
-#: ../inc/venues/event-area/post-type.class.php:248
+#: ../inc/venues/event-area/post-type.class.php:260
+#: ../inc/venues/event-area/post-type.class.php:278
 #: ../templates/post-content/event-area.php:91
 msgid "You currently have:"
 msgstr "Sinulla on:"
 
-#: ../inc/venues/event-area/post-type.class.php:253
-#: ../templates/post-content/event-area.php:113
-msgid "Update"
-msgstr "Päivitä"
+#: ../inc/venues/event-area/post-type.class.php:264
+msgid "x"
+msgstr ""
 
-#: ../inc/venues/event-area/post-type.class.php:257
+#: ../inc/venues/event-area/post-type.class.php:268
+#: ../inc/venues/event-area/post-type.class.php:287
 msgid "Proceed to Cart"
 msgstr "Jatka Ostoskoriin"
 
-#: ../inc/venues/event-area/post-type.class.php:276
-#: ../inc/venues/event-area/post-type.class.php:280
+#: ../inc/venues/event-area/post-type.class.php:283
+#: ../templates/post-content/event-area.php:118
+msgid "Update"
+msgstr "Päivitä"
+
+#: ../inc/venues/event-area/post-type.class.php:307
+#: ../inc/venues/event-area/post-type.class.php:311
 msgid "add"
 msgstr "lisää"
 
-#: ../inc/venues/event-area/post-type.class.php:285
+#: ../inc/venues/event-area/post-type.class.php:316
 msgid "There are currently no areas configured. Please add one to continue."
 msgstr ""
 "Yhtään katsomoa ei ole määritelty. Lisää ainakin yksi katsomo jatkaaksesi."
 
-#: ../inc/venues/event-area/post-type.class.php:301
+#: ../inc/venues/event-area/post-type.class.php:332
 msgid "edit"
 msgstr "muokkaa"
 
-#: ../inc/venues/event-area/post-type.class.php:302
+#: ../inc/venues/event-area/post-type.class.php:333
 msgid "delete"
 msgstr "poista"
 
-#: ../inc/venues/event-area/post-type.class.php:315
+#: ../inc/venues/event-area/post-type.class.php:346
 msgid "Event Area Image"
 msgstr "Katsomon kuva"
 
-#: ../inc/venues/event-area/post-type.class.php:321
+#: ../inc/venues/event-area/post-type.class.php:352
 msgid "Select Image"
 msgstr "Valitse kuva"
 
-#: ../inc/venues/event-area/post-type.class.php:325
+#: ../inc/venues/event-area/post-type.class.php:356
 msgid "Area Name"
 msgstr "Katsomon nimi"
 
-#: ../inc/venues/event-area/post-type.class.php:329
+#: ../inc/venues/event-area/post-type.class.php:360
 msgid "Capacity"
 msgstr "Kapasiteetti"
 
-#: ../inc/venues/event-area/post-type.class.php:333
+#: ../inc/venues/event-area/post-type.class.php:364
 msgid "Available Pricing"
 msgstr "Hinnasto"
 
-#: ../inc/venues/event-area/post-type.class.php:338
+#: ../inc/venues/event-area/post-type.class.php:369
 msgid "save"
 msgstr "tallenna"
 
-#: ../inc/venues/event-area/post-type.class.php:339
+#: ../inc/venues/event-area/post-type.class.php:370
 msgid "cancel"
 msgstr "peru"
 
-#: ../inc/venues/event-area/post-type.class.php:366
+#: ../inc/venues/event-area/post-type.class.php:397
 msgid "This event is password protected."
 msgstr "Tämä tapahtuma on salasanasuojattu."
 
-#: ../inc/venues/event-area/post-type.class.php:372
-#: ../inc/venues/event-area/post-type.class.php:621
+#: ../inc/venues/event-area/post-type.class.php:403
+#: ../inc/venues/event-area/post-type.class.php:700
 #: ../inc/venues/event-area/pricing.class.php:680
 msgid "Invalid request. Please refresh the page and try again."
 msgstr "Virheellinen pyyntö. Yritä ladata sivu uudelleen."
 
-#: ../inc/venues/event-area/post-type.class.php:390
-#: ../inc/venues/event-area/post-type.class.php:453
-#: ../inc/venues/event-area/post-type.class.php:469
+#: ../inc/venues/event-area/post-type.class.php:432
+#: ../inc/venues/event-area/post-type.class.php:520
+#: ../inc/venues/event-area/post-type.class.php:533
 msgid "Updated your reservations successfully."
 msgstr "Varauksen päivittäminen onnistui."
 
-#: ../inc/venues/event-area/post-type.class.php:400
-#: ../inc/venues/event-area/post-type.class.php:461
-#: ../inc/venues/event-area/post-type.class.php:466
+#: ../inc/venues/event-area/post-type.class.php:441
+#: ../inc/venues/event-area/post-type.class.php:523
+#: ../inc/venues/event-area/post-type.class.php:530
 msgid "Could not update your reservations."
 msgstr "Varauksen päivittäminen epäonnistui."
 
-#: ../inc/venues/event-area/post-type.class.php:403
-#: ../inc/venues/event-area/post-type.class.php:821
+#: ../inc/venues/event-area/post-type.class.php:446
+#: ../inc/venues/event-area/post-type.class.php:900
 msgid "The quantity must be greater than zero."
 msgstr "Määrän täytyy olla suurempi kuin nolla."
 
-#: ../inc/venues/event-area/post-type.class.php:404
-#: ../inc/venues/event-area/post-type.class.php:494
+#: ../inc/venues/event-area/post-type.class.php:448
+#: ../inc/venues/event-area/post-type.class.php:553
 msgid "Could not load that event."
 msgstr "Tapahtumaa ei voitu ladata."
 
-#: ../inc/venues/event-area/post-type.class.php:405
-#: ../inc/venues/event-area/post-type.class.php:495
+#: ../inc/venues/event-area/post-type.class.php:450
+#: ../inc/venues/event-area/post-type.class.php:554
 msgid "A problem occurred when loading that event."
 msgstr "Tapahtuman lataamisessa tapahtui virhe"
 
-#: ../inc/venues/event-area/post-type.class.php:406
+#: ../inc/venues/event-area/post-type.class.php:452
 msgid "That event does not currently have any tickets."
 msgstr "Tapahtumaan ei ole tällä hetkellä pääsylippuja."
 
-#: ../inc/venues/event-area/post-type.class.php:407
-#: ../inc/venues/event-area/post-type.class.php:497
+#: ../inc/venues/event-area/post-type.class.php:454
+#: ../inc/venues/event-area/post-type.class.php:556
 msgid "The event does not have any tickets."
 msgstr "Tapahtumaan ei ole pääsylippuja."
 
-#: ../inc/venues/event-area/post-type.class.php:460
+#: ../inc/venues/event-area/post-type.class.php:522
 msgid "A problem occurred when trying to remove your reservations."
 msgstr "Varauksen poistamisen yhteydessä tapahtui virhe."
 
-#: ../inc/venues/event-area/post-type.class.php:465
+#: ../inc/venues/event-area/post-type.class.php:529
 msgid "A problem occurred when trying to update your reservations."
 msgstr "Varauksen päivittämisen yhteydessä tapahtui virhe."
 
-#: ../inc/venues/event-area/post-type.class.php:482
+#: ../inc/venues/event-area/post-type.class.php:541
 #, php-format
 msgid ""
 "There are not enough available tickets to increase the quantity of %s to %d. "
@@ -2707,7 +2789,7 @@ msgstr ""
 "Pääsylippuja ei ole tarpeeksi saatavilla, jotta tuotteita %s voitaisiin "
 "varata %d. Jäljellä on vain %d."
 
-#: ../inc/venues/event-area/post-type.class.php:488
+#: ../inc/venues/event-area/post-type.class.php:547
 #, php-format
 msgid ""
 "There are not enough available tickets to increase the quantity of %s to %d."
@@ -2715,54 +2797,54 @@ msgstr ""
 "Lippuja ei ole jäljellä riittävästi, jotta tilauksen määrä voidaan %s:sta %d:"
 "en."
 
-#: ../inc/venues/event-area/post-type.class.php:496
+#: ../inc/venues/event-area/post-type.class.php:555
 msgid "That event does not have currently have any tickets."
 msgstr "Tapahtumaan ei tällä hetkellä ole pääsylippuja"
 
-#: ../inc/venues/event-area/post-type.class.php:544
+#: ../inc/venues/event-area/post-type.class.php:623
 msgid "Event Area:"
 msgstr "Tapahtuma-alue:"
 
-#: ../inc/venues/event-area/post-type.class.php:551
+#: ../inc/venues/event-area/post-type.class.php:630
 msgid "-None-"
 msgstr "-Ei yhtään-"
 
-#: ../inc/venues/event-area/post-type.class.php:634
+#: ../inc/venues/event-area/post-type.class.php:713
 #, php-format
 msgid "Could not find the venue you specified [%s]."
 msgstr "Määrittelemääsi tapahtumapaikkaa ei löytynyt [%s]."
 
-#: ../inc/venues/event-area/post-type.class.php:664
+#: ../inc/venues/event-area/post-type.class.php:743
 msgid "Could not find that venue."
 msgstr "Kyseistä tapahtumapaikkaa ei löytynyt."
 
-#: ../inc/venues/event-area/post-type.class.php:685
+#: ../inc/venues/event-area/post-type.class.php:764
 msgid "Could not save the item(s) because not enough information was provided."
 msgstr "Kohteita ei voitu tallentaa, koska tietoja ei annettu riittävästi."
 
-#: ../inc/venues/event-area/post-type.class.php:711
+#: ../inc/venues/event-area/post-type.class.php:790
 #, php-format
 msgid "There was a problem saving the area [%s]."
 msgstr "Katsomon tallentamisessa oli ongelma [%s]."
 
-#: ../inc/venues/event-area/post-type.class.php:822
+#: ../inc/venues/event-area/post-type.class.php:901
 msgid "Could not find that event."
 msgstr "Tapahtumaa ei löytynyt."
 
-#: ../inc/venues/event-area/post-type.class.php:823
+#: ../inc/venues/event-area/post-type.class.php:902
 msgid "That is not a valid order."
 msgstr "Tilaus ei ole kelvollinen"
 
-#: ../inc/venues/event-area/post-type.class.php:936
-#: ../inc/venues/event-area/post-type.class.php:1328
+#: ../inc/venues/event-area/post-type.class.php:1015
+#: ../inc/venues/event-area/post-type.class.php:1411
 msgid "Event Areas"
 msgstr "Tapahtuma-alueet"
 
-#: ../inc/venues/event-area/post-type.class.php:1252
+#: ../inc/venues/event-area/post-type.class.php:1335
 msgid "(Unknown Ticket Type)"
 msgstr "(Tuntematon lipputyyppi)"
 
-#: ../inc/venues/event-area/post-type.class.php:1257
+#: ../inc/venues/event-area/post-type.class.php:1340
 #, php-format
 msgid ""
 "There are only <span class=\"available\">%s</span> %s available currently. "
@@ -2771,7 +2853,7 @@ msgstr ""
 "Tapahtumaan on tällä hetkellä vain <span class=\"available\">%s</span> %s "
 "lippuja jäljellä. %d %s ei voitu väliaikaisesti varata."
 
-#: ../inc/venues/event-area/post-type.class.php:1264
+#: ../inc/venues/event-area/post-type.class.php:1347
 #, php-format
 msgid ""
 "There are not enough %s tickets available currently. Could not temporarily "
@@ -2780,12 +2862,12 @@ msgstr ""
 "%s-lippuja ei ole riittävästi saatavilla. %d %s ei voitu väliaikaisesti "
 "varata."
 
-#: ../inc/venues/event-area/post-type.class.php:1274
-#: ../inc/venues/event-area/post-type.class.php:1317
+#: ../inc/venues/event-area/post-type.class.php:1357
+#: ../inc/venues/event-area/post-type.class.php:1400
 msgid "The number of tickets must be greater than 0."
 msgstr "Lippujen määrän täytyy olla suurempi kuin 0."
 
-#: ../inc/venues/event-area/post-type.class.php:1296
+#: ../inc/venues/event-area/post-type.class.php:1379
 #, php-format
 msgid ""
 "There are only <span class=\"available\">%s</span> more %s available "
@@ -2795,7 +2877,7 @@ msgstr ""
 "lippuja jäljellä. %d %s ei voitu väliaikaisesti varata. Sinulla on edelleen "
 "%d %s varattuna."
 
-#: ../inc/venues/event-area/post-type.class.php:1305
+#: ../inc/venues/event-area/post-type.class.php:1388
 #, php-format
 msgid ""
 "There are not enough %s tickets available currently. Could not temporarily "
@@ -2804,7 +2886,7 @@ msgstr ""
 "%s-lippuja ei ole riittävästi saatavilla. %d %s ei voitu väliaikaisesti "
 "varata. Sinulla on edelleen %d %s varattuna."
 
-#: ../inc/venues/event-area/post-type.class.php:1329
+#: ../inc/venues/event-area/post-type.class.php:1412
 msgid "Area"
 msgstr "Alue"
 
@@ -3285,7 +3367,7 @@ msgstr ""
 "class=\"ticket-price\">%s</span>) on jäljellä vielä <span class=\"available"
 "\">%s</span> lisää."
 
-#: ../templates/post-content/event-area.php:131
+#: ../templates/post-content/event-area.php:136
 msgid ""
 "We are sorry. There are currently no tickets available for this event. Check "
 "back soon!"
@@ -3526,6 +3608,13 @@ msgstr "Asiakashuomautus"
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:81
 msgid "Private note"
 msgstr "Yksityinen huomautus"
+
+#~ msgctxt "metabox title"
+#~ msgid "Stop Sales Before Show"
+#~ msgstr "Lopeta myynti ennen esitystä"
+
+#~ msgid "Formula"
+#~ msgstr "Lauseke"
 
 #~ msgid "%s on %s @ %s"
 #~ msgstr "%s (%s klo %s)"
