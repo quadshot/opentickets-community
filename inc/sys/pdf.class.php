@@ -16,6 +16,7 @@ class QSOT_pdf {
 	public static function from_html( $html, $title ) {
 		// give us soem breathing room
 		ini_set( 'max_execution_time', 180 );
+$ohtml = $html;
 
 		// pre-parse remote or url based assets
 		try {
@@ -30,7 +31,7 @@ class QSOT_pdf {
 		// if we are debugging the pdf, then depending on the mode, dump the html contents onw
 		if ( ( QSOT_DEBUG_PDF & 2 ) || ( current_user_can( 'edit_posts' ) && isset( $_GET['as'] ) && 'html' == $_GET['as'] ) ) {
 			echo '<pre>';
-			echo htmlspecialchars( $html );
+			echo htmlspecialchars( $ohtml, '------------------------', $html );
 			echo '</pre>';
 			die();
 		}
