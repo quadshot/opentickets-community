@@ -42,6 +42,7 @@ class Inline_Positioner extends Positioner {
 					var_dump($this->_frame);
 				}
 				echo '</pre>';
+				die();
 			//}
       throw new DOMPDF_Exception("No block-level parent found.  Not good.");
 		}
