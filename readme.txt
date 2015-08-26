@@ -169,6 +169,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.12.2 =
+* [tweak] changed base venue info template to include a clear, in case of floaty images and short descriptions
+
 = 1.12.1 =
 * [translation] updated all PO and MO files, and unfuzzied all entries, so they actually translate
 * [translation] updated all date formats for nl_NL translation
