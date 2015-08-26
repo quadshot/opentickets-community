@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OpenTickets Community Edition\n"
-"POT-Creation-Date: 2015-08-26 07:26-0800\n"
-"PO-Revision-Date: 2015-08-26 07:26-0800\n"
+"POT-Creation-Date: 2015-08-26 07:34-0800\n"
+"PO-Revision-Date: 2015-08-26 07:41-0800\n"
 "Last-Translator: \n"
 "Language-Team: Quadshot <info@quadshot.com>\n"
 "Language: nl\n"
@@ -184,14 +184,14 @@ msgstr "Begin Datum Methode"
 #: ../inc/core/post-type.class.php:1782
 #: ../inc/sys/pages/system-status.page.php:368
 msgid "m-d-Y"
-msgstr "m-d-J"
+msgstr "d-m-Y"
 
 #: ../inc/core/calendar.class.php:394 ../inc/core/post-type.class.php:1632
 #: ../inc/core/post-type.class.php:1649 ../inc/core/post-type.class.php:1676
 #: ../inc/core/post-type.class.php:1682 ../inc/core/post-type.class.php:1765
 #: ../inc/core/post-type.class.php:1781
 msgid "mm-dd-yy"
-msgstr "mm-dd-jj"
+msgstr "dd-mm-yy"
 
 #: ../inc/core/calendar.class.php:477 ../inc/core/calendar.class.php:501
 msgid "Event Calendar"
@@ -402,11 +402,11 @@ msgstr[1] ""
 
 #: ../inc/core/post-type.class.php:918
 msgid "MM-dd-yyyy"
-msgstr "MM-dd-yyyy"
+msgstr "dd-MM-yyyy"
 
 #: ../inc/core/post-type.class.php:919
 msgid "ddd MM-dd-yyyy"
-msgstr "ddd MM-dd-yyyy"
+msgstr "ddd dd-MM-yyyy"
 
 #: ../inc/core/post-type.class.php:920
 msgid "hh:mmtt"
@@ -424,7 +424,7 @@ msgstr "Status"
 
 #: ../inc/core/post-type.class.php:1082
 msgid "m/d/Y"
-msgstr "m/d/Y"
+msgstr "d/m/Y"
 
 #: ../inc/core/post-type.class.php:1083
 #: ../templates/tickets/basic-ticket.php:73
@@ -443,10 +443,9 @@ msgid "@ %3$s"
 msgstr ""
 
 #: ../inc/core/post-type.class.php:1186
-#, fuzzy
 msgctxt "Permalink date"
 msgid "Y-m-d_gia"
-msgstr "J-m-d"
+msgstr "Y-m-d"
 
 #: ../inc/core/post-type.class.php:1446
 #, fuzzy
@@ -587,7 +586,7 @@ msgstr "Start Datum"
 #: ../inc/core/post-type.class.php:1678 ../inc/core/post-type.class.php:1684
 #: ../inc/core/post-type.class.php:1767 ../inc/core/post-type.class.php:1783
 msgid "Y-m-d"
-msgstr "J-m-d"
+msgstr "Y-m-d"
 
 #: ../inc/core/post-type.class.php:1679 ../inc/core/post-type.class.php:1685
 msgid "h:ia"
@@ -1252,9 +1251,8 @@ msgid "Showing:"
 msgstr "Shows:"
 
 #: ../inc/reporting/seating.report.class.php:230
-#, fuzzy
 msgid "m-d-Y g:ia"
-msgstr "m-d-J"
+msgstr "d-m-Y"
 
 #: ../inc/reporting/seating.report.class.php:232
 #, php-format
@@ -3475,7 +3473,7 @@ msgstr "Begint:"
 #: ../templates/tickets/basic-ticket.php:72
 #: ../templates/tickets/basic-ticket.php:79
 msgid "D, F jS, Y"
-msgstr "D, F jS, Y"
+msgstr "D, jS \\of F, Y"
 
 #: ../templates/tickets/basic-ticket.php:72
 #: ../templates/tickets/basic-ticket.php:79
