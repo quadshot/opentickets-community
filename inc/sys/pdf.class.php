@@ -388,6 +388,12 @@ class QSOT_cache_helper {
 		if ( isset( $parsed_url['scheme'] ) && 'file' === strtolower( $parsed_url['scheme'] ) )
 			return true;
 
+		// on windows servers d:/path/to/file gets registerd as a url with scheme d and path /path/to/file. we need to compensate for this
+		// do this by a regex test to see if the path starts with the path to the installation
+		$test_path = preg_replace( '#^' . preg_quote( ABSPATH, '#' ) . '#', '', $url );
+		if ( $test_path != $url )
+			return true;
+
 		// figure out the host and path of both urls. this will help determine if this asset lives at a local path. the site_url() could be a host with a path, if the installation is in a subdir
 		$url = explode( '/', $url, 3 );
 		$local_url = explode( '/', $local_url, 3 );

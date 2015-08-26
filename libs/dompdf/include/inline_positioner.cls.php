@@ -35,7 +35,7 @@ class Inline_Positioner extends Positioner {
 
     if ( !$p ) {
 			if ( function_exists( 'current_user_can' ) && current_user_can( 'edit_posts' ) ) {
-				var_dump( $this, $p );
+				var_dump( $this->_frame );
 			}
       throw new DOMPDF_Exception("No block-level parent found.  Not good.");
 		}
