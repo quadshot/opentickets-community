@@ -36,7 +36,7 @@ class Inline_Positioner extends Positioner {
     if ( !$p ) {
 			//if ( function_exists( 'current_user_can' ) && current_user_can( 'edit_posts' ) ) {
 				echo '<pre>';
-				var_dump( get_class( $this->_frame ), debug_backtrace( DEBUG_BACKTRACE_PROVIDE_OBJECT & DEBUG_BACKTRACE_IGNORE_ARGS ) );
+				var_dump( get_class( $this->_frame ), debug_backtrace( true ) );
 				if ( isset( $_GET['more'] ) && 'yes' == $_GET['more'] ) {
 					ini_set( 'memory_limit', '256M' );
 					var_dump($this->_frame);
