@@ -663,7 +663,7 @@ class qsot_post_type {
 	}
 
 	// maybe prevent editing the quantity of tickets in the cart, based on settings
-	public static function maybe_prevent_ticket_quantity_edit( $current, $cart_item_key, $cart_item ) {
+	public static function maybe_prevent_ticket_quantity_edit( $current, $cart_item_key, $cart_item=array() ) {
 		// if we are not preventing editing of quantity, then just bail
 		if ( 'no' == apply_filters( 'qsot-get-option-value', 'no', 'qsot-locked-reservations' ) )
 			return $current;
