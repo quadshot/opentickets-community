@@ -16,7 +16,7 @@ class QSOT_pdf {
 	public static function from_html( $html, $title ) {
 		// give us soem breathing room
 		ini_set( 'max_execution_time', 180 );
-$ohtml = $html;
+		$ohtml = $html;
 
 		// pre-parse remote or url based assets
 		try {
