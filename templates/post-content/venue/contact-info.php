@@ -25,6 +25,8 @@
 ?>
 
 <?php if ( ( $show_map || $show_address ) && ! empty( $address ) ): ?>
+	<div class="clear"></div>
+
 	<h3><?php echo __( 'Physical Address:', 'opentickets-community-edition' ) ?></h3>
 
 	<?php if ( $show_address ): ?>
@@ -34,6 +36,8 @@
 	<?php if ( $show_map ): ?>
 		<div class="venue-map"><?php echo $map ?></div>
 	<?php endif; ?>
+
+	<br/>
 <?php endif; ?>
 
 <?php if ( $show_notes && ! empty( $meta_value['notes'] ) ): ?>

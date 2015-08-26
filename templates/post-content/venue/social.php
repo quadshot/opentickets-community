@@ -1,4 +1,5 @@
 <?php (__FILE__ == $_SERVER['SCRIPT_FILENAME']) ? die(header('Location: /')) : null; ?>
+<div class="clear"></div>
 <h3><?php echo __( 'Contact Information:', 'opentickets-community-edition' ) ?></h3>
 <dl class="no-formatting">
 	<?php foreach ( $meta_value as $key => $value ): $value = trim( $value ); ?>
