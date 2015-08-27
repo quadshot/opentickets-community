@@ -29,7 +29,7 @@ class QSOT_pdf {
 		}
 
 		// if we are debugging the pdf, then depending on the mode, dump the html contents onw
-		if ( ( QSOT_DEBUG_PDF & 2 ) || ( current_user_can( 'edit_posts' ) && isset( $_GET['as'] ) && 'html' == $_GET['as'] ) ) {
+		if ( ( QSOT_DEBUG_PDF & 2 ) ) { // || ( current_user_can( 'edit_posts' ) && isset( $_GET['as'] ) && 'html' == $_GET['as'] ) ) {
 			echo '<pre>';
 			echo htmlspecialchars( $html );
 			echo '</pre>';
