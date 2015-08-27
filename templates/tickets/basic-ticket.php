@@ -33,7 +33,7 @@ for ( $i = 0; $i < 5; $i++ ) {
 <html id="ie8" <?php language_attributes(); ?>>
 <![endif]-->
 <!--[if !(IE 6) | !(IE 7) | !(IE 8)  ]><!-->
-<html>
+<html <?php echo ( $pdf ) ? 'class="pdf"' : '' ?>>
 	<head>
 		<title><?php sprintf(
 			__( '%s - %s - %s - %s', 'opentickets-community-edition' ),
@@ -45,7 +45,7 @@ for ( $i = 0; $i < 5; $i++ ) {
 		<?php wp_print_styles() ?>
 	</head>
 
-	<body <?php echo ( $pdf ) ? 'class="pdf"' : '' ?> >
+	<body <?php echo ( $pdf ) ? 'class="pdf"' : '' ?>>
 		<div class="page-wrap">
 			<?php if ( ! $pdf ): ?>
 				<div class="actions-list">
@@ -125,6 +125,8 @@ for ( $i = 0; $i < 5; $i++ ) {
 									</a></td>
 								</tr>
 							</tbody>
+
+							<div class="clear"></div>
 						</table>
 					</div>
 				</div>

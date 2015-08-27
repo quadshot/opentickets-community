@@ -12,7 +12,7 @@
  * The location of the default built-in CSS file.
  * {@link Stylesheet::DEFAULT_STYLESHEET}
  */
-define('__DEFAULT_STYLESHEET', DOMPDF_LIB_DIR . DIRECTORY_SEPARATOR . "res" . DIRECTORY_SEPARATOR . "html.css");
+define('__DEFAULT_STYLESHEET', 'file://' . DOMPDF_LIB_DIR . DIRECTORY_SEPARATOR . "res" . DIRECTORY_SEPARATOR . "html.css");
 
 /**
  * The master stylesheet class

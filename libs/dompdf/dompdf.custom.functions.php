@@ -31,11 +31,47 @@ class qsot_remote_file {
 		return self::$contents;
 	}
 
+	/*
 	// test if the supplied url is actually a local file
 	protected static function _smells_local( $url ) {
 		$purl = @parse_url( $url );
 		if ( ( ! isset( $purl['scheme'] ) || 'file' == $purl['scheme'] ) && file_exists( $url ) )
 			return true;
+		return false;
+	}
+	*/
+
+	// determine if a url is of a local resource
+	protected static function _smells_local( $url ) {
+		// run the url through the url parser
+		$parsed_url = @parse_url( $url );
+
+		// if there is no url host, then it is assumed that the host is the local host, meaning it is a local file
+		if ( ! isset( $parsed_url['host'] ) )
+			return true;
+
+		// if the scheme is present, and set to 'file' then it is definitely supposed to be a local asset
+		if ( isset( $parsed_url['scheme'] ) && 'file' === strtolower( $parsed_url['scheme'] ) )
+			return true;
+
+		// on windows servers d:/path/to/file gets registerd as a url with scheme d and path /path/to/file. we need to compensate for this
+		// do this by a regex test to see if the path starts with the path to the installation
+		$test_path = preg_replace( '#^' . preg_quote( ABSPATH, '#' ) . '#', '', $url );
+		if ( $test_path != $url )
+			return true;
+
+		// figure out the host and path of both urls. this will help determine if this asset lives at a local path. the site_url() could be a host with a path, if the installation is in a subdir
+		$local_url = function_exists( 'site_url' ) ? site_url() : '';
+		$url = explode( '/', $url, 3 );
+		$local_url = explode( '/', $local_url, 3 );
+		$remote_path = strtolower( end( $url ) );
+		$local_path = strtolower( end( $local_url ) );
+
+		// if the local path is present at the beginning of the remote path string, then it is a local path
+		if ( 0 === strpos( $remote_path, $local_path ) )
+			return true;
+
+		// otherwise it is most logically a remote file
 		return false;
 	}
 

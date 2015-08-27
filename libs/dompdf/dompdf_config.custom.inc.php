@@ -26,7 +26,7 @@ if ( ! defined( 'DOMPDF_LOG_OUTPUT_FILE' ) )
 //define("DOMPDF_DEFAULT_FONT", "serif");
 //define("DOMPDF_DPI", 72);
 //define("DOMPDF_ENABLE_PHP", true);
-//define("DOMPDF_ENABLE_CSS_FLOAT", true);
+define("DOMPDF_ENABLE_CSS_FLOAT", true);
 //define("DOMPDF_ENABLE_JAVASCRIPT", false);
 //define("DEBUGPNG", true);
 //define("DEBUGKEEPTEMP", true);
@@ -38,7 +38,7 @@ if ( ! defined( 'DOMPDF_LOG_OUTPUT_FILE' ) )
 //define("DOMPDF_FONT_HEIGHT_RATIO", 1.0);
 //define("DEBUG_LAYOUT_PADDINGBOX", false);
 //define("DOMPDF_LOG_OUTPUT_FILE", dirname(__FILE__)."/log.htm");
-//define("DOMPDF_ENABLE_HTML5PARSER", true);
+define("DOMPDF_ENABLE_HTML5PARSER", true);
 //define("DOMPDF_ENABLE_FONTSUBSETTING", true);
 
 // DOMPDF authentication
