@@ -169,6 +169,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.12.3 =
+* [fix] resolved Windows Server PDF generation issues
+
 = 1.12.2 =
 * [tweak] changed base venue info template to include a clear, in case of floaty images and short descriptions
 
