@@ -332,7 +332,36 @@ class qsot_Settings_Frontend extends WC_Settings_Page {
 	public function save() {
 		$settings = $this->get_settings();
 
-		WC_Admin_Settings::save_fields( $settings );
+		$filtered_settings = $image_id_fields = array();
+		// filter out the image ids types, because WC barfs on itself over them
+		foreach ( $settings as $field ) {
+			if ( 'qsot-image-ids' == $field['type'] ) {
+				$image_id_fields[] = $field;
+			} else {
+				$filtered_settings[] = $field;
+			}
+		}
+
+		// only allow wc to save the 'safe' ones
+		WC_Admin_Settings::save_fields( $filtered_settings );
+
+		// handle any image id fields
+		foreach ( $image_id_fields as $field ) {
+			// if the field did not have any values passed, then skip it
+			if ( ! isset( $_POST[ $field['id'] ] ) )
+				continue;
+
+			$raw_values = $_POST[ $field['id'] ];
+			// next sanitize the individual values for the field
+			$values = array_filter( array_map( 'absint', $raw_values ) );
+
+			// allow modification of the data
+			$values = apply_filters( 'woocommerce_admin_settings_sanitize_option', $values, $field, $raw_values );
+			$values = apply_filters( 'woocommerce_admin_settings_sanitize_option_' . $field['id'], $values, $field, $raw_values );
+
+			// update the value
+			update_option( $field['id'], $values );
+		}
 
 		if ( isset( $_POST['qsot_frontend_css_form_bg'] ) ) {
 
