@@ -238,10 +238,10 @@ class qsot_event_area {
 		// figure out the proper max value for the number box
 		if ( is_object( $event->meta ) ) {
 			// if there is only a certain number available, then use that
-			if ( isset( $event->meta->available ) && is_numeric( $event->meta->available ) )
+			if ( isset( $event->meta->available ) && is_numeric( $event->meta->available ) && $event->meta->available > 0 )
 				$max = min( $max, $event->meta->available );
 			// if we have a purchase limit, figure that into our max
-			if ( isset( $event->meta->purchase_limit ) && is_numeric( $event->meta->purchase_limit ) )
+			if ( isset( $event->meta->purchase_limit ) && is_numeric( $event->meta->purchase_limit ) && $event->meta->purchase_limit > 0 )
 				$max = min( $max, $event->meta->purchase_limit );
 		}
 

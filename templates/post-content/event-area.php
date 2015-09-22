@@ -73,8 +73,8 @@ $limit = apply_filters( 'qsot-event-ticket-purchase-limit', 0, $event->ID );
 								<?php if ( 1 !== intval( $limit ) ): ?>
 									<?php
 										$max = 1000000;
-										$max = isset( $area->meta['available'] ) && is_numeric( $area->meta['available'] ) ? min( $max, $area->meta['available'] ) : $max;
-										$max = isset( $event->meta->purchase_limit ) && is_numeric( $event->meta->purchase_limit ) ? min( $max, $event->meta->purchase_limit ) : $max;
+										$max = isset( $event->meta->available ) && is_numeric( $event->meta->available ) && $event->meta->available > 0 ? min( $max, $event->meta->available ) : $max;
+										$max = isset( $event->meta->purchase_limit ) && is_numeric( $event->meta->purchase_limit ) && $event->meta->purchase_limit > 0 ? min( $max, $event->meta->purchase_limit ) : $max;
 									?>
 									<input type="number" min="0" max="<?php echo $max ?>" step="1" class="very-short" name="ticket-count" value="1" />
 								<?php else: ?>
