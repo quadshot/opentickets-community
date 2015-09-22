@@ -640,7 +640,7 @@ QS.EventUI = (function($, undefined) {
 				var attr = attr || {};
 				var classes = classes || '';
 				classes = typeof classes == 'object' ? classes.join(' ') : '';
-				this.elements.buttons[name] = $('<span class="'+tm+'-button '+tm+'-button-'+name+' '+tm+'-state-default '+tm+'-corner-left '+tm+'-corner-right '+classes+'">'
+				this.elements.buttons[name] = $('<span class="button-primary '+tm+'-button '+tm+'-button-'+name+' '+tm+'-state-default '+tm+'-corner-left '+tm+'-corner-right '+classes+'">'
 						+'<span class="'+tm+'-button-inner">'
 							+'<span class="'+tm+'-button-content">'+label+'</span>'
 							+'<span class="'+tm+'-button-effect"><span></span></span>'
