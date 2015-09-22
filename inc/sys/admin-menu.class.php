@@ -6,6 +6,8 @@ class qsot_admin_menu {
 	protected static $menu_slugs = array(
 		'main' => 'opentickets',
 		'settings' => 'opentickets-settings',
+		'documentation' => 'opentickets-documentation',
+		'videos' => 'opentickets-documentation',
 	);
 	protected static $menu_page_hooks = array(
 		'main' => 'toplevel_page_opentickets',
@@ -40,6 +42,7 @@ class qsot_admin_menu {
 
 			add_action('admin_menu', array(__CLASS__, 'create_menu_items'), 11);
 			add_action('admin_menu', array(__CLASS__, 'repair_menu_order'), PHP_INT_MAX);
+			add_action( 'admin_menu', array( __CLASS__, 'external_links' ), PHP_INT_MAX );
 			add_action('qsot_daily_stats', array(__CLASS__, 'daily_stats'), 1000);
 			add_action('activate_plugin', array(__CLASS__, 'incremental_stats'), 1000, 2);
 			add_action('deactivate_plugin', array(__CLASS__, 'incremental_stats'), 1000, 2);
@@ -147,6 +150,33 @@ class qsot_admin_menu {
 					}
 				}
 			}
+		}
+	}
+
+	// create the external links on our menu, which currently can open in a new window
+	// done this way, because currently there is no mechanism to make admin menu items open a new tab!!! wth
+	public static function external_links() {
+		global $menu, $submenu;
+
+		// if out opentickets menu exists
+		if ( isset( $submenu['opentickets'] ) ) {
+			// add a documentation link
+			$submenu['opentickets'][] = array(
+				__( 'Documentation', 'opentickets-community-edition' ),
+				'manage_options',
+				"http://opentickets.com/documentation/' target='_blank",
+				__( 'Documentation', 'opentickets-community-edition' ),
+				'otce-external-link otce-documentation'
+			);
+
+			// add a videos link
+			$submenu['opentickets'][] = array(
+				__( 'Videos', 'opentickets-community-edition' ),
+				'manage_options',
+				"http://opentickets.com/vidoes/' target='_blank",
+				__( 'Videos', 'opentickets-community-edition' ),
+				'otce-external-link otce-videos'
+			);
 		}
 	}
 

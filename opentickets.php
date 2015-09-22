@@ -71,6 +71,9 @@ class QSOT {
 
 		// polyfill the hide/show js functions in the head tag, since some themes apparently don't have this
 		add_action( 'wp_head', array( __CLASS__, 'polyfill_hideshow_js' ), 0 );
+
+		// add an admin footer promo text bit. sorry guys we need this
+		add_action( 'admin_footer_text', array( __CLASS__, 'admin_footer_text' ), PHP_INT_MAX, 1 );
 	}
 
 	public static function me() { return self::$me; }
@@ -307,6 +310,71 @@ class QSOT {
 			}
 		}
 		return $query;
+	}
+
+	// get a list of OTCE core pages
+	public static function core_screen_ids() {
+		return array(
+			'edit-qsot-event', // admin event list page
+			'qsot-event', // individual admin edit event page
+			'edit-qsot-venue', // admin venue list page
+			'qsot-venue', // individual admin edit venue page
+			'edit-qsot-event-area', // admin even area list page 'seating extension'
+			'qsot-event-area', // individual admin edit event-area page
+			'toplevel_page_opentickets', // opentickets toplevel page (reports currently)
+			'opentickets_page_opentickets-settings', // opentickets settings page
+			'opentickets_page_qsot-system-status', // opentickets system status page
+			'updates-core', // the WP updater page. yeah shameless i know
+			'plugins', // the WP plugins page. yeah shameless i know
+		);
+	}
+
+	// add a promo to the admin footer, which asks for a rating on wp.org
+	public static function admin_footer_text( $text ) {
+		// figure out the current page we are on
+		$current_screen = get_current_screen();
+
+		$action = 'do-nothing';
+		// determine if we should be: doing nothing to, adding to, or replacing the footer text based on the page
+		if ( isset( $current_screen->id ) ) {
+			// copmletely replace the footer on OpenTickets pages
+			if ( in_array( $current_screen->id, self::core_screen_ids() ) )
+				$action = 'replace';
+			// add to the footer if on a WooCommerce page
+			else if ( in_array( $current_screen->id, wc_get_screen_ids() ) )
+				$action = 'add-to';
+		}
+
+		// now, based on the action we calculated, do something with the footer text
+		switch ( $action ) {
+			default:
+			case 'do-nothing': break;
+
+			case 'replace':
+				$text = sprintf(
+					__( 'If you like %1$sOpenTickets Community Edition%2$s please leave us a %3$s&#9733;&#9733;&#9733;&#9733;&#9733;%2$s rating. A huge thank you from %4$sQuadshot%2$s in advance!', 'opentickets-community-edition' ),
+					'<a href="http://opentickets.com/community-edition/" target="_blank" class="otce-brand-link">',
+					'</a>',
+					'<a href="https://wordpress.org/support/view/plugin-reviews/opentickets-community-edition?filter=5#postform" target="_blank" class="otce-rating-link" data-rated="'
+							. esc_attr__( 'Thanks :)', 'opentickets-community-edition' ) . '">',
+					'<a href="http://quadshot.com" target="_blank" class="otce-author-link">'
+				);
+			break;
+
+			case 'add-to':
+				$text .= '<br/> ' . sprintf(
+					__( 'Also, if you like %1$sOpenTickets Community Edition%2$s, please leave them a %3$s&#9733;&#9733;&#9733;&#9733;&#9733;%2$s rating. %4$sQuadshot%2$s sends you a huge thank you as well!', 'opentickets-community-edition' ),
+					'<a href="http://opentickets.com/community-edition/" target="_blank" class="otce-brand-link">',
+					'</a>',
+					'<a href="https://wordpress.org/support/view/plugin-reviews/opentickets-community-edition?filter=5#postform" target="_blank" class="otce-rating-link" data-rated="'
+							. esc_attr__( 'Thanks :)', 'opentickets-community-edition' ) . '">',
+					'<a href="http://quadshot.com" target="_blank" class="otce-author-link">'
+				);
+			break;
+		}
+
+		// return the final value
+		return $text;
 	}
 
 	public static function locale() {
