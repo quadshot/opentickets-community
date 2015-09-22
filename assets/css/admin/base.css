@@ -11,6 +11,7 @@ body div.opentickets-error a:hover { color:#DD9990; }
 .otce-brand-link,
 .otce-author-link { font-style:italic; font-weight:700; }
 #adminmenu .wp-submenu a.otce-external-link { color:#d96b00; }
+#adminmenu .wp-submenu li.otce-external-link .dashicons-external { font-size:16px; vertical-align:text-top; }
 #adminmenu .wp-submenu li:hover a.otce-external-link,
 #adminmenu .wp-submenu a.otce-external-link:hover { color:#00b9eb; }
 

@@ -162,19 +162,19 @@ class qsot_admin_menu {
 		if ( isset( $submenu['opentickets'] ) ) {
 			// add a documentation link
 			$submenu['opentickets'][] = array(
-				__( 'Documentation', 'opentickets-community-edition' ),
+				sprintf( __( 'Documentation %s', 'opentickets-community-edition' ), '<span class="dashicons dashicons-external"></span>' ),
 				'manage_options',
 				"http://opentickets.com/documentation/' target='_blank",
-				__( 'Documentation', 'opentickets-community-edition' ),
+				sprintf( __( 'Documentation %s', 'opentickets-community-edition' ), '' ),
 				'otce-external-link otce-documentation'
 			);
 
 			// add a videos link
 			$submenu['opentickets'][] = array(
-				__( 'Videos', 'opentickets-community-edition' ),
+				sprintf( __( 'Videos %s', 'opentickets-community-edition' ), '<span class="dashicons dashicons-external"></span>' ),
 				'manage_options',
 				"http://opentickets.com/vidoes/' target='_blank",
-				__( 'Videos', 'opentickets-community-edition' ),
+				sprintf( __( 'Videos %s', 'opentickets-community-edition' ), '' ),
 				'otce-external-link otce-videos'
 			);
 		}
