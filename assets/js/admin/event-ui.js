@@ -133,16 +133,29 @@ QS.EventUI = (function($, undefined) {
 			return f.diffDays(o);
 		};
 
+		// calculate all the repeats, for a weekly repeat
 		t.form.repeatWeekly = function(events, base, data) {
-			var d = XDate(data['repeat-starts']);
-			var st = new XDate(base['start']);
-			var en = new XDate(base['end']);
-			var cnt = 0;
-			var inRange = function() { return false; };
+			var d = XDate( data['repeat-starts'] ),
+					st = new XDate( base['start'] ),
+					en = new XDate( base['end'] ),
+					st_en_diff = st.diffSeconds( en ),
+					cnt = 0,
+					inRange = function() { return false; };
 
-			switch (data['repeat-ends-type']) {
-				case 'on': inRange = (function() { var e = XDate(data['repeat-ends-on']); return function() { return d.getTime() <= e.getTime(); }; })(); break;
-				case 'after': inRange = (function() { var e = data['repeat-ends-after']; return function() { return cnt < e; }; })(); break;
+			console.log( 'start', base, st, evenDays( d, st ), en, evenDays( d, en ) );
+
+			// figure out the function that determins if a given day should have an even on it
+			switch ( data['repeat-ends-type'] ) {
+				case 'on':
+					inRange = ( function() {
+						var e = XDate( data['repeat-ends-on'] );
+						return function() { return d.getTime() <= e.getTime(); };
+					} )(); break;
+				case 'after':
+					inRange = ( function() {
+						var e = data['repeat-ends-after'];
+						return function() { return cnt < e; };
+					} )(); break;
 				default:
 					// pass params as an object, so that the function inRange can be modified by callbacks, and then returned by reference. that way we can actually accept the changed function
 					var pkg = {
@@ -154,26 +167,31 @@ QS.EventUI = (function($, undefined) {
 				break;
 			}
 
-			function incWeeks() { d.addDays(-d.getDay()).addWeeks(data['repeat-every']); }
-			function nextDay(day) {
+			function incWeeks() { d.addDays( -d.getDay() ).addWeeks( data['repeat-every'] ); }
+			function nextDay( day ) {
 				var c = d.getDay();
-				if (day < c) return -1;
-				d.addDays(day-c);
+				if ( day < c ) return -1;
+				d.addDays( day - c );
 				return 1;
 			}
 
 			if ( qt.isO( data['repeat-on'] ) && Object.keys( data['repeat-on'] ).length ) while (inRange()) {
-				for (i in data['repeat-on']) {
-					if (nextDay(data['repeat-on'][i]) < 0) continue; // initial run, in case first day is in middle of list. list m,tu,th,sa and first day is th
-					if (!inRange()) break;
-					var args = $.extend(true, {}, base);
-					args['start'] = st.addDays(evenDays(st,d)).toDate();
-					args['end'] = en.addDays(evenDays(en,d)).toDate();
-					events.push(args);
+				for ( i in data['repeat-on'] ) {
+					// initial run, in case first day is in middle of list. list m,tu,th,sa and first day is th
+					if ( nextDay( data['repeat-on'][ i ] ) < 0 )
+						continue;
+					// if we aer outside the desired range, then end our loop
+					if ( ! inRange() )
+						break;
+					var args = $.extend( true, {}, base );
+					args['start'] = st.addDays( evenDays( st, d ) ).toDate();
+					args['end'] = st.clone().addSeconds( st_en_diff ).toDate();
+					events.push( args );
 					cnt++;
 				}
 				incWeeks();
 			}
+			console.log( events );
 
 			return events;
 		};
