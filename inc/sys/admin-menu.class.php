@@ -173,7 +173,7 @@ class qsot_admin_menu {
 			$submenu['opentickets'][] = array(
 				sprintf( __( 'Videos %s', 'opentickets-community-edition' ), '<span class="dashicons dashicons-external"></span>' ),
 				'manage_options',
-				"http://opentickets.com/vidoes/' target='_blank",
+				"http://opentickets.com/videos/' target='_blank",
 				sprintf( __( 'Videos %s', 'opentickets-community-edition' ), '' ),
 				'otce-external-link otce-videos'
 			);
