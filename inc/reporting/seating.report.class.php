@@ -433,8 +433,16 @@ class qsot_seating_report extends qsot_admin_report {
 				$row['state'] = self::_state_text('-');
 			}
 
-			$final[] = apply_filters('qsotc-seating-report-compile-rows-occupied', $row, $ticket, $event, $orders, $ticket_types, $fields);
-			$cnt += $ticket['_qty'];
+			// legacy filter. will be deprecated in 1.15.x
+			$row = apply_filters('qsotc-seating-report-compile-rows-occupied', $row, $ticket, $event, $orders, $ticket_types, $fields);
+			// new filter. allows for multi-row creation. specifically useful for seating extension
+			$rows = apply_filters( 'qsot-seating-report-compile-rows-lines', array( $row ), $ticket, $event, $orders, $ticket_types, $fields );
+
+			// for each returned row, add it to our list of rows, while tallying the count
+			foreach ( $rows as $row ) {
+				$final[] = $row;
+				$cnt += is_numeric( $row['quantity'] ) ? $row['quantity'] : ( is_array( $row['quantity'] ) ? array_sum( $row['quantity'] ) : 0 );
+			}
 		}
 
 		$capacity = isset($event->meta, $event->meta->capacity) ? $event->meta->capacity : 0;
@@ -455,7 +463,14 @@ class qsot_seating_report extends qsot_admin_report {
 			$row['_ticket_link'] = '';
 			$row['_product_link'] = '';
 
-			$final[] = apply_filters('qsotc-seating-report-compile-rows-available', $row, $cnt, $event, $orders, $ticket_types, $fields);
+			// legacy filter. will be deprecated in 1.15.x
+			$row = apply_filters('qsotc-seating-report-compile-rows-available', $row, $cnt, $event, $orders, $ticket_types, $fields);
+			// new filter. allows for multi-row creation. specifically useful for seating extension
+			$rows = apply_filters( 'qsot-seating-report-compile-rows-available', array( $row ), $cnt, $event, $orders, $ticket_types, $fields );
+
+			// add each returned row to our report
+			foreach ( $rows as $row )
+				$final[] = $row;
 		}
 
 		$final = self::_process_sort($final);
