@@ -2,8 +2,8 @@
 Contributors: quadshot, loushou, coolmann
 Donate link: http://opentickets.com/
 Tags: events, event management, tickets, ticket sales, ecommerce
-Requires at least: 3.6.1
-Tested up to: 4.2
+Requires at least: 4.0
+Tested up to: 4.3
 Stable tag: trunk
 Copyright: Copyright (C) 2009-2014 Quadshot Software LLC
 License: GNU General Public License, version 3 (GPL-3.0)
@@ -168,6 +168,17 @@ Setup an 'Event':
 The FAQ's for OpenTickets Community Edition is currently located on [our website's FAQs Page](http://opentickets.com/faq).
 
 == Changelog ==
+
+= 1.12.4 =
+* [new] links to external doc and videos
+* [improvement] max quantity on ticket selection set to purchase limit
+* [improvement] made 'new event date' button more eyecatching in admin
+* [improvement] settings page experience improved
+* [tweak] added like us, rate us
+* [fix] branding image save issue resolved
+* [fix] mutli-day event creation and display issue resolved
+* [fix] seating report when working with Seating Extension
+* [fix] color picker problems on settings page are resolved
 
 = 1.12.3 =
 * [fix] resolved Windows Server PDF generation issues
