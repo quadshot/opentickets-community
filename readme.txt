@@ -169,6 +169,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.12.5 =
+* [fix] videos outlink on menu repaired
+
 = 1.12.4 =
 * [new] links to external doc and videos
 * [improvement] max quantity on ticket selection set to purchase limit
