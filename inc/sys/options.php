@@ -16,7 +16,7 @@ class qsot_options {
 		//add_action('qsot_settings_start', array(__CLASS__, 'woo_settings_tab'), 10);
 		add_filter('qsot_settings_tabs_array', array(__CLASS__, 'add_woo_tab'), 10, 1);
 		//add_action('qsot_settings_tabs_'.self::$tab_slug, array(__CLASS__, 'draw_woo_tab_panel'), 10);
-		add_filter( 'qsot-get-page-settings', array( __CLASS__, 'get_group_settings' ), 100, 2 );
+		add_filter( 'qsot-get-page-settings', array( __CLASS__, 'get_group_settings' ), 100, 3 );
 
 		add_filter('qsot-get-option-value', array(__CLASS__, 'get_option_value'), 10, 2);
 
@@ -98,29 +98,53 @@ class qsot_options {
 			'desc' => '',
 			'desc_tip' => false,
 			'page' => 'general',
+			'section' => '',
 		));
 		if ( ! isset( $this->options[ $args['page'] ] ) || ! is_array( $this->options[ $args['page'] ] ) ) $this->options[ $args['page'] ] = array();
 		$this->options[ $args['page'] ][] = $args;
 	}
 
-	public function get_ordered( $group=false ) {
+	public function get_ordered( $group=false, $section=false ) {
 		$pri = $sec = $os = array();
 
-		if ( $group === false ) {
-			foreach ( $this->options as $k => $v )
+		// if no group was specified, then get all options ordered by 'order'
+		if ( false === $group ) {
+			// cycle through all option groups
+			foreach ( $this->options as $k => $v ) {
+				// cycle through each option in this group
 				foreach ( $v as $o ) {
+					// create some indexes to sort by
 					$pri[] = $o['order'];
 					$sec[] = $v;
 					$os[] = $o;
 				}
+			}
+			// sort
 			array_multisort($pri, SORT_ASC, SORT_NUMERIC, $sec, SORT_ASC, $os);
+		// if there WAS a group specified, then
 		} else {
-			if ( isset( $this->options[$group] ) )
+			// if the group has settings, then
+			if ( isset( $this->options[$group] ) ) {
+				// cycle through all the settings in the group and create some indexes so we can sort
 				foreach ( $this->options[$group] as $o ) {
 					$pri[] = $o['order'];
 					$os[] = $o;
 				}
+			}
+			// sort
 			array_multisort($pri, SORT_ASC, SORT_NUMERIC, $os);
+
+			// if the group AND the SECTION are specified, then break the list into only ones for the given section
+			if ( false !== $section ) {
+				$list = $os;
+				$os = array();
+				// cycle through all the items we have currently, and filter so that we only have ones in the mentioned section. no need to sort again because we already have them sorted
+				foreach ( $list as $item ) {
+					if ( $item['section'] == $section ) {
+						$os[] = $item;
+					}
+				}
+			}
 		}
 
 		return $os;
@@ -206,10 +230,11 @@ class qsot_options {
 		return self::get_group_settings( $settings, 'general' );
 	}
 
-	public static function get_group_settings( $settings, $group ) {
+	public static function get_group_settings( $settings, $group=false, $section=false ) {
 		$options = qsot_options::instance();
-		$o = apply_filters( 'qsot-woocommerce-settings', $options->get_ordered( $group ) );
+		$o = apply_filters( 'qsot-woocommerce-settings', $options->get_ordered( $group, $section ) );
 		$o = apply_filters( 'qsot-woocommerce-settings-' . $group, $o );
+		$o = apply_filters( 'qsot-woocommerce-settings-' . $group . '-' . $section, $o );
 
 		return array_merge( $settings, $o );
 	}

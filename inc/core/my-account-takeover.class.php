@@ -334,6 +334,7 @@ class qsot_my_account_takeover {
 			'title' => __('My Account Page','opentickets-community-edition'),
 			'id' => 'heading-frontend-my-account-1',
 			'page' => 'frontend',
+			'section' => 'my-account',
 		));
 
 		self::$options->add(array(
@@ -348,6 +349,7 @@ class qsot_my_account_takeover {
 			),
 			'default' => 'by_event',
 			'page' => 'frontend',
+			'section' => 'my-account',
 		));
 
 		self::$options->add(array(
@@ -355,6 +357,7 @@ class qsot_my_account_takeover {
 			'type' => 'sectionend',
 			'id' => 'heading-frontend-my-account-1',
 			'page' => 'frontend',
+			'section' => 'my-account',
 		));
 
 		self::$options->add(array(

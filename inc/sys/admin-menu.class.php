@@ -66,7 +66,7 @@ class qsot_admin_menu {
 		wp_register_script( 'qsot-nag', self::$o->core_url . 'assets/js/admin/nag.js', array( 'qsot-tools' ), self::$o->version );
 
 		// used on the various settings pages
-		wp_register_script( 'qsot-admin-settings', self::$o->core_url . 'assets/js/admin/settings-page.js', array( 'qsot-tools' ), self::$o->version );
+		wp_register_script( 'qsot-admin-settings', self::$o->core_url . 'assets/js/admin/settings-page.js', array( 'qsot-tools', 'iris' ), self::$o->version );
 		wp_register_style( 'qsot-admin-settings', self::$o->core_url . 'assets/css/admin/settings-page.css', array(), self::$o->version );
 	}
 

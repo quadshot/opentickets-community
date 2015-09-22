@@ -703,6 +703,7 @@ class qsot_order_admin {
 			'type' => 'title',
 			'title' => __( 'Additional Email Settings', 'opentickets-community-edition' ),
 			'id' => 'heading-admin-orders-1',
+			'section' => 'wc-emails',
 		) );
 
 		self::$options->add( array(
@@ -713,6 +714,7 @@ class qsot_order_admin {
 			'title' => __( 'Custom Completed Order Message (Above Order Items)', 'opentickets-community-edition' ),
 			'desc' => __( 'This html appears near the top of the default Completed Order email, sent to the customer upon completion of their order, above the order items.', 'opentickets-community-edition' ),
 			'default' => '',
+			'section' => 'wc-emails',
 		) );
 
 		self::$options->add( array(
@@ -723,6 +725,7 @@ class qsot_order_admin {
 			'title' => __( 'Custom Completed Order Message - Text only version (Above Order Items)', 'opentickets-community-edition' ),
 			'desc' => __( 'This html appears near the top of the default Completed Order email, sent to the customer upon completion of their order, above the order items.', 'opentickets-community-edition' ),
 			'default' => '',
+			'section' => 'wc-emails',
 		) );
 
 		self::$options->add( array(
@@ -733,6 +736,7 @@ class qsot_order_admin {
 			'title' => __( 'Custom Completed Order Message (Below Address)', 'opentickets-community-edition' ),
 			'desc' => __( 'This html appears at the bottom of the default Completed Order email, sent to the customer upon completion of their order, below their address information.', 'opentickets-community-edition' ),
 			'default' => '',
+			'section' => 'wc-emails',
 		) );
 
 		self::$options->add( array(
@@ -743,12 +747,14 @@ class qsot_order_admin {
 			'title' => __( 'Custom Completed Order Message - Text only version (Below Address)', 'opentickets-community-edition' ),
 			'desc' => __( 'This text appears at the bottom of the default Completed Order email, sent to the customer upon completion of their order, below their address information.', 'opentickets-community-edition' ),
 			'default' => '',
+			'section' => 'wc-emails',
 		) );
 
 		self::$options->add( array(
 			'order' => 2199,
 			'type' => 'sectionend',
 			'id' => 'heading-add-email-sets-1',
+			'section' => 'wc-emails',
 		) );
 	}
 }

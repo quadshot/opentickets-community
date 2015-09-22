@@ -127,6 +127,9 @@ class qsot_post_type {
 			add_filter( 'qsot-show-date-time', array( __CLASS__, 'get_show_date_time' ), 10, 2 );
 			// add the date/time to the end of a title if the seetings permit
 			add_filter( 'the_title', array( __CLASS__, 'the_title_date_time' ), 10, 2 );
+
+			// add parent events to the category and tag pages
+			add_filter( 'pre_get_posts', array( __CLASS__, 'events_in_categories_and_tags' ), 10, 1 );
 		}
 	}
 
@@ -371,6 +374,44 @@ class qsot_post_type {
 
 		// are we past it or not?
 		return $time < $stop_time;
+	}
+
+	// on the frontend, lets show the parent events in category and tag pages
+	public static function events_in_categories_and_tags( $q ) {
+		// alias the query vars to a shorter variable name (not required)
+		$v = $q->query_vars;
+
+		// do not make any changes to the query, if a specific POST
+		// has been requested
+		if ( ( isset( $v['name'] ) && ! empty( $v['name'] ) ) || ( isset( $v['p'] ) && ! empty( $v['p'] ) ) )
+			return $q;
+
+		// do not make any changes to the query, if a specific PAGE
+		// has been requested
+		if ( ( isset( $v['pagename'] ) && ! empty( $v['pagename'] ) ) || ( isset( $v['page_id'] ) && ! empty( $v['page_id'] ) ) )
+			return $q;
+
+		// when not in the admin, and processing the main page query
+		if ( ! is_admin() && $q->is_main_query() ) {
+			if ( ! isset( $v['post_type'] ) || empty( $v['post_type'] ) ) {
+				// if the list of post types was not supplied, then create one
+				// that uses 'post' and 'qsot-event' (event post type)
+				$v['post_type'] = array( 'post', 'qsot-event' );
+			} else {
+				// add the event post type to the list of possible post types
+				// to query for
+				$v['post_type'] = array_filter( (array)$v['post_type'] );
+				$v['post_type'][] = 'qsot-event';
+			}
+
+			// only show parent events. this has the unfortunate side effect of limiting other post types to parents only too... but this should only conflict with very very few plugins, and nothing core WP
+			$v['post_parent'] = isset( $v['post_parent'] ) && ! empty( $v['post_parent'] ) ? $v['post_parent'] : 0;
+		}
+
+		// reassign the query vars back to the long name
+		$q->query_vars = $q->query = $v;
+
+		return $q;
 	}
 
 	public static function intercept_event_list_page() {
@@ -2122,17 +2163,35 @@ class qsot_post_type {
 		) );
 
 		self::$options->add(array(
+			'order' => 199,
+			'type' => 'sectionend',
+			'id' => 'heading-frontend-general-1',
+			'page' => 'frontend',
+		));
+
+		self::$options->add(array(
+			'order' => 100,
+			'type' => 'title',
+			'title' => __('Colors', 'opentickets-community-edition'),
+			'id' => 'heading-frontend-colors-1',
+			'page' => 'frontend',
+			'section' => 'styles',
+		));
+
+		self::$options->add(array(
 			'order' => 190,
 			'id' => 'qsot-event-frontend-colors',
 			'type' => 'qsot_frontend_styles',
 			'page' => 'frontend',
+			'section' => 'styles',
 		));
 
 		self::$options->add(array(
 			'order' => 199,
 			'type' => 'sectionend',
-			'id' => 'heading-frontend-general-1',
+			'id' => 'heading-frontend-colors-1',
 			'page' => 'frontend',
+			'section' => 'styles',
 		));
 
 

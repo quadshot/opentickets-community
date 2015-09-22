@@ -598,6 +598,7 @@ class QSOT_tickets {
 			'title' => __( 'Tickets', 'opentickets-community-edition' ),
 			'id' => 'heading-frontend-tickets-1',
 			'page' => 'frontend',
+			'section' => 'tickets',
 		) );
 
 		// which image is shown on the left side of the ticket. either no image, the Event image, the Venue image, the Ticket Product image
@@ -615,6 +616,7 @@ class QSOT_tickets {
 			),
 			'default' => 'event',
 			'page' => 'frontend',
+			'section' => 'tickets',
 		));
 
 		// which image is shown on the right side of the ticket. either no image, the Event image, the Venue image, the Ticket Product image
@@ -632,6 +634,7 @@ class QSOT_tickets {
 			),
 			'default' => 'venue',
 			'page' => 'frontend',
+			'section' => 'tickets',
 		) );
 
 		// ticket branding line images.
@@ -645,6 +648,7 @@ class QSOT_tickets {
 			'count' => 5,
 			'preview-size' => array( 90, 15 ),
 			'page' => 'frontend',
+			'section' => 'tickets',
 		) );
 
 		// the information about the purchaser to display. either the billing information, or the shipping information
@@ -660,6 +664,7 @@ class QSOT_tickets {
 			),
 			'default' => 'billing',
 			'page' => 'frontend',
+			'section' => 'tickets',
 		) );
 
 		// whether or not to show the order # on the ticket.
@@ -671,6 +676,7 @@ class QSOT_tickets {
 			'desc' => __( 'Show the order number of the ticket, on the ticket.', 'opentickets-community-edition' ),
 			'default' => 'no',
 			'page' => 'frontend',
+			'section' => 'tickets',
 		) );
 
 		// end the 'Tickets' section on the page
@@ -679,6 +685,7 @@ class QSOT_tickets {
 			'type' => 'sectionend',
 			'id' => 'heading-frontend-tickets-1',
 			'page' => 'frontend',
+			'section' => 'tickets',
 		));
 	}
 }

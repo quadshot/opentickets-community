@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 if ( ! class_exists( 'qsot_Settings_General' ) ) :
 
-class qsot_Settings_General extends WC_Settings_Page {
+class qsot_Settings_General extends QSOT_Settings_Page {
 
 	/**
 	 * Constructor.
@@ -21,6 +21,7 @@ class qsot_Settings_General extends WC_Settings_Page {
 		$this->id    = 'general';
 		$this->label = __( 'General', 'opentickets-community-edition' );
 
+		add_action( 'qsot_sections_' . $this->id, array( $this, 'output_sections' ) );
 		add_filter( 'qsot_settings_tabs_array', array( $this, 'add_settings_page' ), 20 );
 		add_action( 'qsot_settings_' . $this->id, array( $this, 'output' ) );
 		add_action( 'qsot_settings_save_' . $this->id, array( $this, 'save' ) );
@@ -29,13 +30,24 @@ class qsot_Settings_General extends WC_Settings_Page {
 			add_action( 'woocommerce_admin_field_frontend_styles', array( $this, 'frontend_styles_setting' ) );
 	}
 
+	// list of subnav sections on the general tab
+	public function get_sections() {
+		$sections = apply_filters( 'qsot-settings-general-sections', array(
+			'' => __( 'Site Wide', 'opentickets-community-edition' ),
+			'wc-emails' => __( 'WooCommerce Emails', 'opentickets-community-edition' ),
+		) );
+
+		return $sections;
+	}
+
 	/**
 	 * Get settings array
 	 *
 	 * @return array
 	 */
 	public function get_settings() {
-		return apply_filters( 'qsot-get-page-settings', array(), $this->id );
+		global $current_section;
+		return apply_filters( 'qsot-get-page-settings', array(), $this->id, $current_section );
 	}
 
 	/**

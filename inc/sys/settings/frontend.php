@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 if ( ! class_exists( 'qsot_Settings_Frontend' ) ) :
 
-class qsot_Settings_Frontend extends WC_Settings_Page {
+class qsot_Settings_Frontend extends QSOT_Settings_Page {
 
 	/**
 	 * Constructor.
@@ -21,6 +21,7 @@ class qsot_Settings_Frontend extends WC_Settings_Page {
 		$this->id    = 'frontend';
 		$this->label = __( 'Frontend', 'opentickets-community-edition' );
 
+		add_action( 'qsot_sections_' . $this->id, array( $this, 'output_sections' ) );
 		add_filter( 'qsot_settings_tabs_array', array( $this, 'add_settings_page' ), 20 );
 		add_action( 'qsot_settings_' . $this->id, array( $this, 'output' ) );
 		add_action( 'qsot_settings_save_' . $this->id, array( $this, 'save' ) );
@@ -31,13 +32,27 @@ class qsot_Settings_Frontend extends WC_Settings_Page {
 		add_action( 'woocommerce_admin_field_qsot-image-ids', array( $this, 'image_ids_setting' ), 1000, 1 );
 	}
 
+	// list of subnav sections on the general tab
+	public function get_sections() {
+		$sections = apply_filters( 'qsot-settings-general-sections', array(
+			'' => __( 'Events', 'opentickets-community-edition' ),
+			'styles' => __( 'Styles & Colors', 'opentickets-community-edition' ),
+			'tickets' => __( 'Tickets', 'opentickets-community-edition' ),
+			'venues' => __( 'Venues', 'opentickets-community-edition' ),
+			'my-account' => __( 'My Account', 'opentickets-community-edition' ),
+		) );
+
+		return $sections;
+	}
+
 	/**
 	 * Get settings array
 	 *
 	 * @return array
 	 */
 	public function get_settings() {
-		return apply_filters( 'qsot-get-page-settings', array(), $this->id );
+		global $current_section;
+		return apply_filters( 'qsot-get-page-settings', array(), $this->id, $current_section );
 	}
 
 	// draw the 'qsot-image-ids' setting fields
@@ -286,7 +301,7 @@ class qsot_Settings_Frontend extends WC_Settings_Page {
 							( function( $ ) {
 								$( '[rel="<?php echo $u ?>"]' ).on( 'click', function( e ) {
 									e.preventDefault();
-									var td = $( this ).closest( 'td' );
+									var td = $( this ).closest( '.color_box' );
 									$( '.colorpick', td ).each( function() {
 										var def = $( this ).data( 'default' );
 										if ( def ) $( this ).val( def ).trigger( 'change' );
@@ -321,7 +336,8 @@ class qsot_Settings_Frontend extends WC_Settings_Page {
 	function color_picker( $name, $id, $value, $default = '', $desc = '' ) {
 		$default = ! empty( $default ) ? $default : $value;
 		echo '<div class="color_box"><strong><img class="help_tip" data-tip="' . esc_attr( $desc ) . '" src="' . WC()->plugin_url() . '/assets/images/help.png" height="16" width="16" /> ' . esc_html( $name ) . '</strong>'
-	   		. '<input data-default="' . esc_attr( $default ) . '" name="' . esc_attr( $id ). '" id="' . esc_attr( $id ) . '" type="text" value="' . esc_attr( $value ) . '" class="colorpick" />'
+	   		. '<input data-default="' . esc_attr( $default ) . '" name="' . esc_attr( $id ). '" id="' . esc_attr( $id ) . '" type="text" value="' . esc_attr( $value ) . '"
+						class="clrpick" style="background-color:' . esc_attr( $value ) . '" />'
 				. '<div id="colorPickerDiv_' . esc_attr( $id ) . '" class="colorpickdiv"></div>'
 	    . '</div>';
 	}

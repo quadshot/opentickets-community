@@ -732,6 +732,7 @@ class qsot_venue_post_type {
 			'title' => __( 'Venues', 'opentickets-community-edition' ),
 			'id' => 'heading-frontend-venues-1',
 			'page' => 'frontend',
+			'section' => 'venues',
 		) );
 
 		// whether or not to show the venue address below the venue description
@@ -743,6 +744,7 @@ class qsot_venue_post_type {
 			'desc' => __( 'Display the venue address below the venue description?', 'opentickets-community-edition' ),
 			'default' => 'yes',
 			'page' => 'frontend',
+			'section' => 'venues',
 		) );
 
 		// whether or not to show the venue map below the venue description
@@ -754,6 +756,7 @@ class qsot_venue_post_type {
 			'desc' => __( 'Display the venue MAP below the venue description?', 'opentickets-community-edition' ),
 			'default' => 'yes',
 			'page' => 'frontend',
+			'section' => 'venues',
 		) );
 
 		// whether or not to show the venue social contact info below the venue description
@@ -765,6 +768,7 @@ class qsot_venue_post_type {
 			'desc' => __( 'Display the venue contact information and social links below the venue description?', 'opentickets-community-edition' ),
 			'default' => 'yes',
 			'page' => 'frontend',
+			'section' => 'venues',
 		) );
 
 		// whether or not to show the venue address below the venue description
@@ -776,6 +780,7 @@ class qsot_venue_post_type {
 			'desc' => __( 'Display the additional venue notes (a meta field on the edit venue page) below the venue description?', 'opentickets-community-edition' ),
 			'default' => 'no',
 			'page' => 'frontend',
+			'section' => 'venues',
 		) );
 
 		// end the 'Tickets' section on the page
@@ -784,6 +789,7 @@ class qsot_venue_post_type {
 			'type' => 'sectionend',
 			'id' => 'heading-frontend-venues-1',
 			'page' => 'frontend',
+			'section' => 'venues',
 		));
 	}
 }
