@@ -230,10 +230,20 @@ class qsot_event_area {
 	public static function frontend_templates($list, $event) {
 		$woocommerce = WC();
 		$cart_url = '#';
-		if (is_object($woocommerce) && is_object($woocommerce->cart)) $cart_url = $woocommerce->cart->get_cart_url();
+		// get the cart url
+		if ( is_object( $woocommerce ) && is_object( $woocommerce->cart ) )
+			$cart_url = $woocommerce->cart->get_cart_url();
 
 		$max = 1000000;
-		if (is_object($event->meta) && is_object($event->meta->available)) $max = $event->meta->available;
+		// figure out the proper max value for the number box
+		if ( is_object( $event->meta ) ) {
+			// if there is only a certain number available, then use that
+			if ( isset( $event->meta->available ) && is_numeric( $event->meta->available ) )
+				$max = min( $max, $event->meta->available );
+			// if we have a purchase limit, figure that into our max
+			if ( isset( $event->meta->purchase_limit ) && is_numeric( $event->meta->purchase_limit ) )
+				$max = min( $max, $event->meta->purchase_limit );
+		}
 
 		// figure out the purchase limit for the event
 		$limit = apply_filters( 'qsot-event-ticket-purchase-limit', 0, $event->ID );
