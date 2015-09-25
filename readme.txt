@@ -169,6 +169,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.12.6 =
+* [tweak] js tools updated for new Seating features
+
 = 1.12.5 =
 * [fix] videos outlink on menu repaired
 
