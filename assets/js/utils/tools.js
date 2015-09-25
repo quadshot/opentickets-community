@@ -110,7 +110,7 @@ QS.Tools = (function($, q, qt, w, d, undefined) {
 })(jQuery, QS, QS.Tools, window, document);
 
 QS.popMediaBox = (function($, qt) {
-	var custom;
+	var custom = {};
 
   function show_mediabox(e, args) {
     e.preventDefault();
@@ -118,7 +118,7 @@ QS.popMediaBox = (function($, qt) {
 		if ( ! qt.isO( wp ) || ! qt.is( wp.media ) || ! qt.is( wp.media.controller ) )
 			return;
 		var self = $(this),
-				args = $.extend( {}, args ),
+				args = $.extend( { type:'image' }, args ),
 				// find the parent container of the button that triggered this lightbox. this is used to find the other elements of this tool, like the id and preview fields
 				par = qt.is( args.par )
 						? ( qt.isO( args.par ) ? args.par : self.closest( args.par ) )
@@ -136,7 +136,7 @@ QS.popMediaBox = (function($, qt) {
 				// allow to completely over take the function that uses the selection. the default funciton fills the preview container and id fields
 				on_select = qt.isF( args.on_select ) ? args.on_select : function() {
 					// get the information about the selected image
-					var attachment = custom.state().get( 'selection' ).first().attributes;
+					var attachment = custom[ args.type ].state().get( 'selection' ).first().attributes;
 					// update the id field
 					if ( id_field.length )
 						id_field.val( attachment.id ).change();
@@ -163,30 +163,31 @@ QS.popMediaBox = (function($, qt) {
 				};
 
 		// if the lightbox already exists, then use it
-    if ( custom ) {
-      custom.state( 'select-image' ).off( 'select' ).on( 'select', on_select );
-      custom.open();
+    if ( custom[ args.type ] ) {
+      custom[ args.type ].state( 'select-image' ).off( 'select' ).on( 'select', on_select );
+      custom[ args.type ].open();
       return;
 		// otherwise create a new instance of the lightbox
     } else {
+			console.log( 'new', args );
 			// initialize the base lightbox
-      custom = wp.media( {
+      custom[ args.type ] = wp.media( {
         frame: 'select',
         state: 'select-image',
-        library: { type:'image' },
+        library: { type:args.types || 'image' },
         multiple: false
       } );
 
 			// register teh lightbox with the lightbox controller library
-      custom.states.add( [
+      custom[ args.type ].states.add( [
         new wp.media.controller.Library( {
           id: 'select-image',
           title: 'Select an Image',
           priority: 20,
           toolbar: 'select',
           filterable: 'uploaded',
-          library: wp.media.query( custom.options.library ),
-          multiple: custom.options.multiple ? 'reset' : false,
+          library: wp.media.query( custom[ args.type ].options.library ),
+          multiple: custom[ args.type ].options.multiple ? 'reset' : false,
           editable: true,
           displayUserSettings: false,
           displaySettings: true,
@@ -195,8 +196,8 @@ QS.popMediaBox = (function($, qt) {
       ] );
 
 			// finalize the envents of the lightbox, and pop it
-      custom.state( 'select-image' ).off( 'select' ).on( 'select', on_select );
-      custom.open();
+      custom[ args.type ].state( 'select-image' ).off( 'select' ).on( 'select', on_select );
+      custom[ args.type ].open();
     }
   }
 
