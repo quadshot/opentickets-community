@@ -233,3 +233,29 @@ ul#adminmenu a.qsot-special-arrow:after {
 .qsot-mb .helper { padding-top:0.4em; font-size:0.8em; color:#777; font-style:italic; }
 .qsot-mb code { font-size:inherit; font-style:normal; font-weight:400; color:inherit; }
 .qsot-mb .option-row { padding-top:0.3em; }
+
+.missing-license-notice { font-style:italic; font-weight:700; color:#800; }
+
+.qsot-errors { border:2px solid #800; padding:1em; color:#800; background-color:#fee; }
+.qsot-errors .qsot-error { padding-top:0.5em; }
+.qsot-errors .qsot-error:first-child { padding-top:0; }
+
+/* license settings page */
+.qsot-panel .installed-extensions { border:1px solid #ddd; }
+.qsot-panel .installed-extensions .list-item.odd { background-color:#fff; }
+.qsot-panel .installed-extensions .list-item.even { background-color:#f8f8f8; }
+.qsot-panel .installed-extensions .list-item.heading { background-color:#f8f8f8; font-weight:700; color:#333; }
+.qsot-panel .installed-extensions .heading-item { padding:0.7em 5px; box-sizing:border-box; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; -ms-box-sizing:border-box; }
+.qsot-panel .installed-extensions .status-icon-heading { width:65px; overflow:hidden; float:left; }
+.qsot-panel .installed-extension { padding:0 1em 0 60px; border-top:1px solid #ddd; position:relative; }
+.qsot-panel .installed-extension:first-child { border-top:none; }
+.qsot-panel .installed-extension > .fields { padding:0.7em 1em 0.7em 5px; border-left:1px dashed #ddd; }
+.qsot-panel .installed-extension .status-icon { position:absolute; top:5px; left:5px; }
+.qsot-panel .installed-extension .status-icon .dashicons,
+.qsot-panel .installed-extension .status-icon .dashicons-before::before { font-size:50px; height:50px; width:50px; }
+.qsot-panel .installed-extension .status-icon .dashicons-yes { color:#00a0d2; }
+.qsot-panel .installed-extension .status-icon .dashicons-warning { color:#a00; }
+.qsot-panel .installed-extension .field { padding-top:0.2em; }
+.qsot-panel .installed-extension .field:first-child { padding-top:0; }
+.qsot-panel .installed-extension .field .two-cols .field { width:50%; padding:0 1em 0 0; box-sizing:border-box; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; -ms-box-sizing:border-box; float:left; }
+.qsot-panel .installed-extension .field .label { font-style:italic; font-weight:700; }
