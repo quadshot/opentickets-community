@@ -17,6 +17,19 @@ class QSOT_Extensions_Updater {
 		add_filter( 'plugins_api', array( __CLASS__, 'known_plugin_information' ), 1000, 3 );
 
 		//add_filter( 'plugins_api_result', function() { die(var_dump( func_get_args() )); } );
+		
+		// add filter to help when testing with a local server
+		add_filter( 'http_request_host_is_external', array( __CLASS__, 'local_server' ), 10, 3 );
+	}
+
+	// overcome core core wp rule that domains that resolve to 127.0.0.1 are not allowed
+	public static function local_server( $allowed, $host, $url ) {
+		// figure out the server url domain
+		$server = QSOT_Extensions::get_server_url();
+		$server = @parse_url( $server );
+
+		// if the host is teh same as the server host, then allow it
+		return $allowed || ( isset( $server['host'] ) && $server['host'] == $host );
 	}
 
 	// function to check to see if the current http response is from the core wp updater api
@@ -30,7 +43,7 @@ class QSOT_Extensions_Updater {
 		$extra = self::_maybe_extension_updates();
 
 		// if there are no extra updates to add to the list, or if there are any errors, then bail right here
-		if ( empty( $extra ) || ( isset( $extra['errors'] ) && ! empty( $extra['errors'] ) ) )
+		if ( empty( $extra ) || ! is_array( $extra ) || ( isset( $extra['errors'] ) && ! empty( $extra['errors'] ) ) )
 			return $response;
 
 		// otherwise, try to merge our extra data with the original response
@@ -44,11 +57,17 @@ class QSOT_Extensions_Updater {
 		// update the response body with the new list
 		$response['body'] = @json_encode( $parsed );
 
+		echo '<script>console.log( '. $response['body'] . ' );</script>';
+
 		return $response;
 	}
 
 	// load the 'plugin information' about our known plugins from the database instead of an api
 	public static function known_plugin_information( $result, $action, $args ) {
+		// if the slug is not supplied, then skip this, since we have no idea what plugin the request is for without a slug
+		if ( ! is_object( $args ) || ! isset( $args->slug ) )
+			return $result;
+
 		// get a list of our installed plugins that we need to handle here
 		$installed = QSOT_Extensions::instance()->get_installed();
 
@@ -147,11 +166,16 @@ class QSOT_Extensions_Updater {
 		// first, aggregate a list of plugin data we need to check for updates on
 		$plugins = array();
 		$raw_plugins = QSOT_Extensions::instance()->get_installed();
+		$licenses = QSOT_Extensions::instance()->get_licenses();
 		if ( is_array( $raw_plugins ) && count( $raw_plugins ) ) foreach( $raw_plugins as $file => $plugin ) {
 			$plugins[ $file ] = array(
 				'file' => $file,
 				'version' => $plugin['Version'],
 			);
+			if ( isset( $licenses[ $file ], $licenses[ $file ]['license'], $licenses[ $file ]['verification_code'] ) && ! empty( $licenses[ $file ]['license'] ) && ! empty( $licenses[ $file ]['verification_code'] ) ) {
+				$plugins[ $file ]['license'] = $licenses[ $file ]['license'];
+				$plugins[ $file ]['verification_code'] = $licenses[ $file ]['verification_code'];
+			}
 		}
 
 		// if there are no plugins to get updates on, bail
@@ -163,6 +187,42 @@ class QSOT_Extensions_Updater {
 
 		// then fetch the updates
 		$extra = $api->get_updates( array( 'plugins' => $plugins ) );
+
+		// infuse our known data into any response package urls, so that when the updater runs, it hits the proper url that contains all the info the server needs for verification
+		if ( is_array( $extra ) ) {
+			// figure out the current site url
+			$su = @parse_url( site_url() );
+
+			// structure the request data
+			$domain = isset( $su['host'] ) ? $su['host'] : '';
+
+			// run through each returned group: plugins, themes, translation, and no_update (currently)
+			foreach ( $extra as $type => $list ) {
+				// run through each item in the group
+				foreach ( $list as $file => $data ) {
+					// if there is a package url, then update the url by replacing our clientside known data, which is needed by the server when the url is actually hit for an update request
+					if ( ! empty( $data['package'] ) ) {
+						// get the plugin data we have from our request
+						$plugin = isset( $plugins[ $file ] ) ? $plugins[ $file ] : array();
+
+						// if we have plugin data, then use it
+						if ( ! empty( $plugin ) ) {
+							$replacements = array(
+								'{KEY}' => rawurlencode( $plugin['license'] ),
+								'{HASH}' => $plugin['verification_code'],
+								'{DOMAIN}' => $domain,
+							);
+							$data['package'] = str_replace( array_keys( $replacements ), array_values( $replacements ), $data['package'] );
+
+							$list[ $file ] = $data;
+						}
+					}
+				}
+
+				// update the group with any changes
+				$extra[ $type ] = $list;
+			}
+		}
 
 		return $extra;
 	}

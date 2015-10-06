@@ -259,3 +259,19 @@ ul#adminmenu a.qsot-special-arrow:after {
 .qsot-panel .installed-extension .field:first-child { padding-top:0; }
 .qsot-panel .installed-extension .field .two-cols .field { width:50%; padding:0 1em 0 0; box-sizing:border-box; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; -ms-box-sizing:border-box; float:left; }
 .qsot-panel .installed-extension .field .label { font-style:italic; font-weight:700; }
+
+/* extensions page */
+.qsot-list div { box-sizing:border-box; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; -ms-box-sizing:border-box; -o-box-sizing:border-box; }
+.qsot-list .extension { max-width:320px; max-height:450px; padding:10px; float:left; clear:none; }
+.qsot-list .extension .inner { position:relative; height:430px; width:100%; max-width:300px; border:1px solid #ccc; background-color:#fff; overflow:hidden; box-shadow:0 0px 5px rgba(0, 0, 0, 0.3); }
+.qsot-list .extension .header { width:100%; max-height:150px; overflow:hidden; position:relative; }
+.qsot-list .extension .header img { width:100%; height:auto; display:block; }
+.qsot-list .extension .meta { padding:10px 10px 0; }
+.qsot-list .extension .meta .status { float:right; }
+.qsot-list .extension .entry { padding:1em 10px 10px; }
+.qsot-list .extension .entry h3 { margin:0 0 0.5em 0; }
+.qsot-list .extension .entry p { margin:0; padding:0.6em 0 0; }
+.qsot-list .extension .entry p:first-child { padding-top:0; }
+.qsot-list .extension .actions { position:absolute; bottom:0; left:0; right:0; padding:10px 0 0; background:transparent url( '../../imgs/fade.png' ) repeat-x scroll left top; }
+.qsot-list .extension .actions .inside { padding:10px; background-color:#fff; border-top:1px solid #ccc; }
+.qsot-list .extension .actions .button.right { float:right; }

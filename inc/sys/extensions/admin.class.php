@@ -9,9 +9,10 @@ class QSOT_Extensions_Admin {
 			// base includes dir
 			$dir = QSOT::plugin_dir() . 'inc/sys/extensions/';
 			// load additionally needed files
-			require_once $dir . 'api.php';
 			require_once $dir . 'extensions.php';
+			require_once $dir . 'api.php';
 			require_once $dir . 'updater.php';
+			require_once $dir . 'pages/extensions.page.php';
 
 			// load the object that handles the list of plugins that we need to check for updates on, or display on licenses pages and such
 			QSOT_Extensions::instance();

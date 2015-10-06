@@ -16,7 +16,7 @@ class QSOT_Extensions_API {
 	// setup the basic actions, filters, and settings used by the class
 	public static function pre_init() {
 		QSOT_Extensions_API::instance( array(
-			'apiurl' => 'http://serverot.dev.dev/',
+			'apiurl' => QSOT_Extensions::get_server_url(),
 		) );
 	}
 
@@ -182,6 +182,7 @@ class QSOT_Extensions_API {
 			'qd' => $su['host'],
 			'qem' => isset( $data['email'] ) ? $data['email'] : get_option( 'admin_email' ),
 			'qc' => isset( $data['categories'] ) ? implode( ',', array_filter( array_map( 'trim', is_array( $data['categories'] ) ? $data['categories'] : explode( ',', $data['categories'] ) ) ) ) : array(),
+			'qi' => isset( $data['image_hashes'] ) ? $data['image_hashes'] : array(),
 		);
 
 		// if we are missing the domain or email, then bail now and do nothing
@@ -234,6 +235,12 @@ class QSOT_Extensions_API {
 				'qem' => isset( $plugin['email'] ) ? $plugin['email'] : $admin_email,
 				'qv' => $plugin['version'],
 			);
+
+			// if we have the hash and license info, then add that to the item's request
+			if ( isset( $plugin['verification_code'] ) )
+				$check[ $file ]['qh'] = $plugin['verification_code'];
+			if ( isset( $plugin['license'] ) )
+				$check[ $file ]['qkey'] = $plugin['license'];
 		}
 
 		// if there is nothing to check, then bail

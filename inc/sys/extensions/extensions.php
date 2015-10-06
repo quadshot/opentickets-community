@@ -6,6 +6,8 @@ class QSOT_Extensions {
 	protected static $_instance = null;
 	protected static $ns = 'qsot-';
 
+	protected static $server_url = 'http://serverot.dev.dev/';
+
 	protected $all = array();
 	protected $known = array();
 	protected $installed = array();
@@ -15,6 +17,9 @@ class QSOT_Extensions {
 	// setup the actions, filters, and basic data for the class
 	public static function pre_init() {
 	}
+
+	// fetch the server url, so that it is can be used throughout the code
+	public static function get_server_url() { return self::$server_url; }
 
 	// setup the singleton for this lass
 	public static function instance() {
@@ -61,6 +66,9 @@ class QSOT_Extensions {
 	protected function _setup_actions_and_filters() {
 		// add a filter that loads the licenses settings page, if we have any extensions installed that we need to worry about
 		add_filter( 'qsot_get_settings_pages', array( &$this, 'maybe_load_licenses_page' ), 10000, 1 );
+
+		// after plugins have been installed, update our plugins list
+		add_action( 'upgrader_post_install', array( &$this, 'purge_plugins_list' ), 1000 );
 	}
 
 	// get the list of licenses. this contains the base_file, license, email, verification_hash, version, and expiration of each registered license
@@ -89,11 +97,34 @@ class QSOT_Extensions {
 			update_option( self::$ns . 'licenses-' . md5( $file ), $license, 'no' );
 	}
 
+	// get a list of all the plugins we know exist, from our special repo
+	public function get_known() {
+		return $this->known;
+	}
+
+	// get a list of all the extensions that were installed and have activated licenses on this site
+	public function get_activated() {
+		$list = array();
+		// cycle through the licenses, and aggregate a list of the ones that are installed and active
+		foreach ( $this->get_licenses() as $file => $data )
+			if ( isset( $data['verification_code'] ) && ! empty( $data['verification_code'] ) )
+				$list[] = $file;
+
+		return $list;
+	}
+
 	// public method to fetch a list of all the plugins that are installed that we need to handle updates for
-	public function get_installed() {
+	public function get_installed( $only_files=false ) {
+		// if we only want the list of installed plugin files, then just return that now instead of running through this whole thing
+		if ( $only_files )
+			return $this->installed;
+
 		$data = array();
 		// construct a list of all intalled plugins and all relevant data
 		foreach ( $this->installed as $file ) {
+			// skip any situations where there is a plugin in the installed list that is not on the all plugins list
+			if ( ! isset( $this->all[ $file ] ) )
+				continue;
 			$data[ $file ] = $this->all[ $file ];
 			$data[ $file ]['_known'] = $this->known[ $file ];
 		}
@@ -125,6 +156,20 @@ class QSOT_Extensions {
 		}
 
 		return $this->slug_map;
+	}
+
+	// get a file based slug map
+	public function get_file_slug_map( $force_refresh=false ) {
+		$result = array();
+		// get the normal slug map
+		$map = $this->get_slug_map( $force_refresh );
+
+		// construct the file based slug map
+		foreach ( $map as $slug => $data )
+			if ( isset( $data['file'] ) )
+				$result[ $data['file'] ] = $slug;
+
+		return $result;
 	}
 
 	// if we have any known plugins installed (even if not active), we should have the license page visible, so that licenses can be added
@@ -202,27 +247,57 @@ class QSOT_Extensions {
 	// trigger a new fetch of the knowns plugins list
 	protected function _refresh_known_plugins() {
 		// if we are expired, then update the list's expiration now (so that we dont have 10000 page requests generating a new fetch; dog pile)
-		update_option( self::$ns . 'known-plugins-expires', time() + WEEK_IN_SECONDS + ( rand( 0, 2 * DAY_IN_SECONDS ) - DAY_IN_SECONDS ) );
+		update_option( self::$ns . 'known-plugins-expires', time() + DAY_IN_SECONDS + ( rand( 0, 2 * HOUR_IN_SECONDS ) - HOUR_IN_SECONDS ) );
 
 		// get the api instance
 		$api = QSOT_Extensions_API::instance();
 
+		$existing_known = get_option( self::$ns . 'known-plugins', array() );
+		// if we already have a list of known plugins, but it is just expired, then we have a special case that can save everyone some bandwidth
+		// we can send a list of our exisitng known plugins, and their associated image hashes. if the hashes have not changed on the sending end, then they will not resend the image again, saving bandwidth
+		$image_hashes = $this->_maybe_known_image_hashes( $existing_known );
+
 		// fetch the list of plugins that we know we need to handle stuff for
-		$results = $api->get_available( array( 'categories' => array( 'opentickets' ) ) );
+		$results = $api->get_available( array( 'categories' => array( 'opentickets' ), 'image_hashes' => $image_hashes ) );
 
 		// if the response was an error, then just do nothing further
 		if ( is_wp_error( $results ) )
 			return;
 
 		// otherwise, update the known plugins list, and it's cache (make sure not to autoload)
-		$this->known = $this->_handle_icons( $results );
+		$this->known = $this->_handle_icons( $results, $existing_known );
 		update_option( self::$ns . 'known-plugins', $this->known, 'no' );
+	}
+
+	// attempt to load a list of image hashes, indexed by their owner plugins
+	protected function _maybe_known_image_hashes( $known ) {
+		// if there are no knowns in the list, then bail
+		if ( empty( $known ) )
+			return array();
+
+		// load the uploads dir info, for use when loading the images to take their hashes
+		$u = wp_upload_dir();
+		$path = trailingslashit( $u['basedir'] );
+
+		$final = array();
+		// create a list of image hashes
+		foreach ( $known as $file => $data )
+			if ( ! empty( $data['icon_rel_path'] ) && @file_exists( $path . $data['icon_rel_path'] ) )
+				$final[ $file ] = md5( file_get_contents( $path . $data['icon_rel_path'] ) );
+
+		return $final;
+	}
+
+	// after a plugin is installed or updated, we need to refresh our list of all installed plugins
+	public function purge_plugins_list() {
+		wp_cache_delete( 'plugins', 'plugins' );
+		$this->_load_all_plugins();
 	}
 
 	// load a list of all installed plugins on the system, and all their relevant information
 	protected function _load_all_plugins() {
 		// attempt to load this list from our internal cache, stored in a non-autoloaded wp_options key
-		$cache = get_option( self::$ns . 'installed-plugins', '' );
+		$cache = wp_cache_get( 'plugins', 'plugins' );
 
 		// if this cache is not empty, then use it, because it should, in theory, be up to date
 		if ( ! empty( $cache ) && is_array( $cache ) )
@@ -234,17 +309,23 @@ class QSOT_Extensions {
 
 		// get the list
 		$this->all = get_plugins();
-
-		// save it to cache, and make sure to NOT auto load this, because it could be large, and force even more of a bottleneck on the wp_options table, than other plugins already do
-		update_option( self::$ns . 'installed-plugins', $this->all, 'no' );
 	}
 
 	// handle the icons passed by the api response. we should save copied of them in our uploads dir
-	protected function _handle_icons( $data ) {
+	protected function _handle_icons( $data, $existing_known ) {
 		// for each response item, handle the icon updating
 		foreach ( $data as $ind => $item ) {
+			// if the icon didnt change, according to our checks, then just use the old value if there is one
+			$changed = ! isset( $item['icon_no_change'] ) || ! $item['icon_no_change'];
+			if ( ! $changed && isset( $existing_known[ $ind ], $existing_known[ $ind ]['icon_rel_path'] ) ) {
+				unset( $item['icon'], $item['icon_no_change'] );
+				$item['icon_rel_path'] = $existing_known[ $ind ]['icon_rel_path'];
+				$data[ $ind ] = $item;
+				continue;
+			}
+
 			// remove the icon data from the item
-			$icon = $item['icon'];
+			$icon = isset( $item['icon'] ) ? $item['icon'] : '';
 			unset( $item['icon'] );
 			$item['icon_rel_path'] = '';
 

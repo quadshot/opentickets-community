@@ -61,7 +61,7 @@ class QSOT_Settings_Licenses extends QSOT_Settings_Page {
 						</div>
 
 						<?php foreach ( $installed as $file => $plugin ): ?>
-							<div class="list-item installed-extension <?php echo 0 == $cnt++ % 2 ? 'odd' : 'even' ?>">
+							<div class="list-item installed-extension <?php echo 0 == $cnt++ % 2 ? 'odd' : 'even' ?>" data-extension="<?php echo esc_attr( $file ) ?>" role="extension">
 								<div class="status-icon">
 									<?php if ( ! isset( $licenses[ $file ] ) ): // not registered ?>
 									<?php else: ?>
@@ -156,6 +156,28 @@ class QSOT_Settings_Licenses extends QSOT_Settings_Page {
 
 					</div>
 				</div>
+
+				<script language="javascript">
+					if ( 'undfined' != typeof jQuery && null !== jQuery ) 
+						jQuery( function( $ ) {
+							var hash = window.location.hash, params = hash.split( /,/ ), action = params.shift();
+							switch ( action ) {
+								case '#focus':
+									var target = params.shift();
+									if ( target ) {
+										var item = $( '[role="extension"]' ).filter( function() {
+											var data = $( this ).data( 'extension' );
+											return data == target;
+										} ).filter( ':eq(0)' );
+
+										item.css( { backgroundColor:'rgb( 255, 248, 159 )' } ).find( ':input:visible:eq(0)' ).focus();
+
+										item.closest( 'form' ).attr( 'action', window.location.href.split('#')[0] );
+									}
+								break;
+							}
+						} );
+				</script>
 			<?php endif; ?>
 		<?php
 	}
@@ -201,6 +223,10 @@ class QSOT_Settings_Licenses extends QSOT_Settings_Page {
 				'version' => $data['version'],
 			);
 		}
+
+		// if there are no licenses that are trying to be activated, then just bail
+		if ( empty( $request ) )
+			return;
 
 		// get the api response for activation
 		$api = QSOT_Extensions_API::instance();
