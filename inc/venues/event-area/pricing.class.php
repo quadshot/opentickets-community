@@ -57,6 +57,10 @@ class qsot_seat_pricing {
 
 			add_filter('qsot-item-is-ticket', array(__CLASS__, 'item_is_ticket'), 10, 2);
 
+			// solve order again conundrum
+			add_filter( 'woocommerce_order_again_cart_item_data', array( __CLASS__, 'adjust_order_again_items' ), 10, 3 );
+			add_filter( 'woocommerce_add_to_cart_validation', array( __CLASS__, 'sniff_order_again_and_readd_to_cart' ), 10, 6 );
+
 			if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
 				add_action('woocommerce_after_cart_item_quantity_update', array(__CLASS__, 'not_more_than_available'), 10, 2);
 			}
@@ -74,6 +78,50 @@ class qsot_seat_pricing {
 				add_action('woocommerce_order_item_add_line_buttons', array(__CLASS__, 'add_tickets_button'), 10, 3);
 			}
 		}
+	}
+
+	// fix the problem where ppl click order again
+	public static function adjust_order_again_items( $meta, $item, $order ) {
+		// if the original item is not for an event, then bail now
+		if ( ! isset( $item['event_id'] ) )
+			return $meta;
+
+		// mark the meta as being an order_again item
+		$meta['_order_again'] = true;
+
+		// cycle through the old meta of the original item, and copy any relevant meta to the new item's meta
+		if ( isset( $item['item_meta'] ) ) foreach ( $item['item_meta'] as $key => $values ) {
+			if ( in_array( $key, apply_filters( 'qsot-order-ticket-again-meta-keys', array( '_event_id' ) ) ) ) {
+				$meta[ $key ] = current( $values );
+			}
+		}
+
+		return $meta;
+	}
+
+	// when order_again is hit, items are discretely added to the new cart. during that process, sniff out any tickets, and add them to the cart a different way
+	public static function sniff_order_again_and_readd_to_cart( $passes_validation, $product_id, $quantity, $variation_id, $variations, $cart_item_data ) {
+		// if the marker is not present, then pass through
+		if ( ! isset( $cart_item_data['_order_again'] ) )
+			return $passes_validation;
+
+		unset( $cart_item_data['_order_again'] );
+		// otherwise, attempt to add the ticket to the cart via our ticket selection logic, instead of the standard reorder way
+		$res = apply_filters( 'qsot-order-again-add-to-cart-pre', null, $product_id, $quantity, $variation_id, $variations, $cart_item_data );
+
+		// if another plugin has not done it's own logic here, then perform the default logic
+		if ( null === $res ) {
+			$res = apply_filters( 'qsot-zoner-reserve-current-user', false, $cart_item_data['_event_id'], $product_id, $quantity );
+		}
+
+		// if the results are a wp_error, then add that as a notice
+		if ( is_wp_error( $res ) ) {
+			foreach ( $res->get_error_codes() as $code )
+				foreach ( $res->get_error_messages( $code ) as $msg )
+					wc_add_notice( $msg, 'error' );
+		}
+
+		return false;
 	}
 
 	public static function register_assets() {
@@ -131,7 +179,13 @@ class qsot_seat_pricing {
 				if ($cart_item_key) {
 					$woocommerce->cart->set_quantity( $cart_item_key, $count );
 				} else {
-					$woocommerce->cart->add_to_cart( $ticket_type_id, $count, '', '', $data );
+					$added = $woocommerce->cart->add_to_cart( $ticket_type_id, $count, '', '', $data );
+					// if the item failed to get added to the cart, then remove the reservations too
+					if ( ! $added ) {
+						$args['count'] = 0;
+						apply_filters( 'qsot-zoner-reserved', false, $args );
+						$success = new WP_Error( 'no_cart_item', __( 'The ticket could not be added to the cart, so we could not reserve that ticket for you.', 'openticket-community-edition' ) );
+					}
 				}
 			}
 		}
@@ -416,7 +470,7 @@ class qsot_seat_pricing {
 	public static function not_more_than_available($item_key, $quantity) {
 		$woocommerce = WC();
 
-		$starting_quantity = $woocommerce->cart->cart_contents[$item_key]['_starting_quantity'];
+		$starting_quantity = isset( $woocommerce->cart->cart_contents[$item_key]['_starting_quantity'] ) ? $woocommerce->cart->cart_contents[$item_key]['_starting_quantity'] : 0;
 		$add_qty = $quantity - $starting_quantity;
 		$needs_change = false;
 
