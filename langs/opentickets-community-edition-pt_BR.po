@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OpenTickets Community Edition 1.10.12\n"
-"POT-Creation-Date: 2015-09-22 15:15-0800\n"
-"PO-Revision-Date: 2015-09-22 15:15-0800\n"
+"POT-Creation-Date: 2015-10-08 08:01-0800\n"
+"PO-Revision-Date: 2015-10-08 08:01-0800\n"
 "Last-Translator: \n"
 "Language-Team: Quadshot <info@opentickets.com>\n"
 "Language: en_US\n"
@@ -71,7 +71,7 @@ msgstr ""
 "<a href=\"%s\" title=\"Visite a página de configurações da Chave de Licensa"
 "\">Configurações</a>"
 
-#: ../opentickets.php:355
+#: ../opentickets.php:359
 #, php-format
 msgid ""
 "If you like %1$sOpenTickets Community Edition%2$s please leave us a "
@@ -79,7 +79,7 @@ msgid ""
 "%4$sQuadshot%2$s in advance!"
 msgstr ""
 
-#: ../opentickets.php:366
+#: ../opentickets.php:370
 #, php-format
 msgid ""
 "Also, if you like %1$sOpenTickets Community Edition%2$s, please leave them a "
@@ -87,11 +87,11 @@ msgid ""
 "you a huge thank you as well!"
 msgstr ""
 
-#: ../opentickets.php:435
+#: ../opentickets.php:439
 msgid "Memory Requirement Problem"
 msgstr "Problema de Necessidade de Memória"
 
-#: ../opentickets.php:463
+#: ../opentickets.php:467
 #, php-format
 msgid ""
 "The %%%%PRODUCT%%%% plugin <strong>requires</strong> that your server allow "
@@ -113,7 +113,7 @@ msgstr ""
 "aumentado as configurações mínimas de memória necessárias no seu servidor, o "
 "OpenTickets voltará a funcionar automaticamente."
 
-#: ../opentickets.php:473
+#: ../opentickets.php:477
 #, php-format
 msgid ""
 "The %%%%PRODUCT%%%% plugin <strong>requires</strong> that your server allow "
@@ -129,26 +129,26 @@ msgstr ""
 "aumentar o limite para a quantidade recomendada, ou não deseja, então "
 "simplesmente ignore esta mensagem."
 
-#: ../opentickets.php:610
+#: ../opentickets.php:614
 #, php-format
 msgid "Could not compile stylesheet %s. [%s]"
 msgstr "Não foi possível compilar a folha de estilo %s. [%s]"
 
-#: ../opentickets.php:613
+#: ../opentickets.php:617
 #, php-format
 msgid "Could not write to stylesheet file %s."
 msgstr "Não foi possível escrever o arquivo de folha de estilo %s."
 
-#: ../opentickets.php:617
+#: ../opentickets.php:621
 #, php-format
 msgid "Could not write colors to file %s. [%s]"
 msgstr "Não foi possível escrever as cores no arquivo %s. [%s]"
 
-#: ../opentickets.php:625
+#: ../opentickets.php:629
 msgid "the installation process"
 msgstr ""
 
-#: ../opentickets.php:630 ../opentickets.php:634
+#: ../opentickets.php:634 ../opentickets.php:638
 #, php-format
 msgid "Could not find the needed library %s, for use in %s."
 msgstr "Não foi possível encontrar o local que você especificou [%s : %s]."
@@ -197,7 +197,7 @@ msgstr "Método de Data de Início"
 #: ../inc/core/calendar.class.php:393 ../inc/core/post-type.class.php:1723
 #: ../inc/core/post-type.class.php:1729 ../inc/core/post-type.class.php:1812
 #: ../inc/core/post-type.class.php:1828
-#: ../inc/sys/pages/system-status.page.php:368
+#: ../inc/sys/pages/system-status.page.php:958
 msgid "m-d-Y"
 msgstr "d-m-Y"
 
@@ -293,6 +293,9 @@ msgid "Shows"
 msgstr ""
 
 #: ../inc/core/my-account-takeover.class.php:69
+#: ../inc/sys/pages/system-status.page.php:376
+#: ../inc/sys/pages/system-status.page.php:432
+#: ../inc/sys/pages/system-status.page.php:738
 msgid "(none)"
 msgstr ""
 
@@ -421,6 +424,7 @@ msgstr "Máximo"
 #: ../inc/core/post-type.class.php:1090
 #: ../inc/reporting/seating.report.class.php:527
 #: ../inc/sys/admin-menu.class.php:344
+#: ../inc/sys/pages/system-status.page.php:685
 msgid "Status"
 msgstr ""
 
@@ -1144,8 +1148,8 @@ msgid "[All Years]"
 msgstr "[Todos os anos]"
 
 #: ../inc/reporting/seating.report.class.php:182
-#: ../inc/venues/event-area/pricing.class.php:573
-#: ../inc/venues/event-area/pricing.class.php:640
+#: ../inc/venues/event-area/pricing.class.php:650
+#: ../inc/venues/event-area/pricing.class.php:717
 #: ../templates/checkin/already-occupied.php:25
 #: ../templates/checkin/occupy-failure.php:25
 #: ../templates/checkin/occupy-success.php:25
@@ -1170,7 +1174,7 @@ msgid "%s [%s]"
 msgstr ""
 
 #: ../inc/reporting/seating.report.class.php:240
-#: ../inc/sys/pages/system-status.page.php:83
+#: ../inc/sys/pages/system-status.page.php:166
 msgid "Show Report"
 msgstr "Relatório do Show"
 
@@ -1183,14 +1187,19 @@ msgid "Purchaser"
 msgstr "Comprador"
 
 #: ../inc/reporting/seating.report.class.php:520
+#: ../inc/sys/pages/system-status.page.php:742
 msgid "Order #"
 msgstr "Pedido #"
 
 #: ../inc/reporting/seating.report.class.php:521
+#: ../inc/sys/pages/system-status.page.php:683
+#: ../inc/sys/pages/system-status.page.php:766
 msgid "Ticket Type"
 msgstr "Tipo do Ingresso"
 
 #: ../inc/reporting/seating.report.class.php:522
+#: ../inc/sys/pages/system-status.page.php:684
+#: ../inc/sys/pages/system-status.page.php:755
 msgid "Quantity"
 msgstr "Quantidade"
 
@@ -1693,77 +1702,29 @@ msgstr "Não foi possível estender. Tipo inválido."
 msgid "Base Page"
 msgstr "Página Base"
 
-#: ../inc/sys/pages/system-status.page.php:40
+#: ../inc/sys/pages/system-status.page.php:43
 msgid "There can only be one instance of the System Status page."
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:44
-#: ../inc/sys/pages/system-status.page.php:45
-#: ../inc/sys/pages/system-status.page.php:49
+#: ../inc/sys/pages/system-status.page.php:47
+#: ../inc/sys/pages/system-status.page.php:48
+#: ../inc/sys/pages/system-status.page.php:52
 msgid "System Status"
 msgstr "Status do Sistema"
 
-#: ../inc/sys/pages/system-status.page.php:53
+#: ../inc/sys/pages/system-status.page.php:56
 msgid "Tools"
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:82
-msgid ""
-"Copy and paste this information into your ticket when contacting support:"
+#: ../inc/sys/pages/system-status.page.php:60
+msgid "Advanced Tools"
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:116
-msgid ""
-"Removed all the locally cached Ticket assets. Every external asset will now "
-"be recached."
-msgstr ""
-
-#: ../inc/sys/pages/system-status.page.php:124
-msgid "Purged the OTCE table versions, forcing a reinitialize of the tables."
-msgstr ""
-"Versões das tabelas OTCE depuradas, forçando a reinicialização das tabelas."
-
-#: ../inc/sys/pages/system-status.page.php:132
-msgid "The order-item to ticket-table resync has been completed."
-msgstr "A ressincronização  do item-pedido para tabela-ingresso foi concluída."
-
-#: ../inc/sys/pages/system-status.page.php:140
-msgid ""
-"We started the order-item to ticket-table resync. This will take a few "
-"minute to complete. You will receive an email upon completion."
-msgstr ""
-"Começamos a ressincronização do item-pedido para a tabela-ingresso. Isso vai "
-"demorar alguns minutos para ser concluído. Você receberá um e-mail após a "
-"conclusão."
-
-#: ../inc/sys/pages/system-status.page.php:148
-msgid ""
-"Failed to remove the cached ticket assets. Usually this is a permission "
-"issue."
-msgstr ""
-
-#: ../inc/sys/pages/system-status.page.php:156
-msgid ""
-"A problem occurred during the order-item to ticket-table resync. It did not "
-"complete."
-msgstr ""
-"Ocorreu um problema durante a ressincronização do item-pedido para tabela-"
-"ingresso. Ela não foi concluída."
-
-#: ../inc/sys/pages/system-status.page.php:164
-msgid ""
-"We could not start the background process that resyncs your order-items to "
-"the ticket-table. Try using the non-background method."
-msgstr ""
-"Não conseguimos iniciar em segundo plano o processo que ressincroniza seus "
-"itens-pedido para tabela-ingresso. Tente usar o método que não seja em "
-"segundo plano."
-
-#: ../inc/sys/pages/system-status.page.php:190
+#: ../inc/sys/pages/system-status.page.php:77
 msgid "Resync order items to tickets table"
 msgstr "Ressincroniza itens do pedido para tabela de ingresso."
 
-#: ../inc/sys/pages/system-status.page.php:194
+#: ../inc/sys/pages/system-status.page.php:78
 msgid ""
 "Looks up all order items that are ticket which have been paid for, and makes "
 "sure that they are marked in the tickets table as paid for. <strong>If you "
@@ -1775,12 +1736,24 @@ msgstr ""
 "<strong>Se você tem muitos pedidos, isso pode levar algum tempo, durante o "
 "qual você não deve fechar esta janela.</ strong>"
 
-#: ../inc/sys/pages/system-status.page.php:201
+#: ../inc/sys/pages/system-status.page.php:81
+msgid "The order-item to ticket-table resync has been completed."
+msgstr "A ressincronização  do item-pedido para tabela-ingresso foi concluída."
+
+#: ../inc/sys/pages/system-status.page.php:82
+msgid ""
+"A problem occurred during the order-item to ticket-table resync. It did not "
+"complete."
+msgstr ""
+"Ocorreu um problema durante a ressincronização do item-pedido para tabela-"
+"ingresso. Ela não foi concluída."
+
+#: ../inc/sys/pages/system-status.page.php:89
 msgid "Background: resync order items to tickets table"
 msgstr ""
 "Plano de fundo: ressincroniza itens do pedido para tabela de ingressos."
 
-#: ../inc/sys/pages/system-status.page.php:205
+#: ../inc/sys/pages/system-status.page.php:90
 msgid ""
 "Same as above, only all processing is done behind the scenes. This takes "
 "longer, but does not require that you keep this window open."
@@ -1788,11 +1761,29 @@ msgstr ""
 "O mesmo que acima, apenas todo o processamento é feito nos bastidores. Isso "
 "leva mais tempo, mas não exige que você mantenha esta janela aberta."
 
-#: ../inc/sys/pages/system-status.page.php:212
+#: ../inc/sys/pages/system-status.page.php:93
+msgid ""
+"We started the order-item to ticket-table resync. This will take a few "
+"minute to complete. You will receive an email upon completion."
+msgstr ""
+"Começamos a ressincronização do item-pedido para a tabela-ingresso. Isso vai "
+"demorar alguns minutos para ser concluído. Você receberá um e-mail após a "
+"conclusão."
+
+#: ../inc/sys/pages/system-status.page.php:94
+msgid ""
+"We could not start the background process that resyncs your order-items to "
+"the ticket-table. Try using the non-background method."
+msgstr ""
+"Não conseguimos iniciar em segundo plano o processo que ressincroniza seus "
+"itens-pedido para tabela-ingresso. Tente usar o método que não seja em "
+"segundo plano."
+
+#: ../inc/sys/pages/system-status.page.php:101
 msgid "Force the DB tables to re-initialize"
 msgstr "Força a reinicialização das tabelas do BD."
 
-#: ../inc/sys/pages/system-status.page.php:216
+#: ../inc/sys/pages/system-status.page.php:102
 msgid ""
 "In some very rare cases, you may need to force the db tables to be "
 "recreated. This button, does that."
@@ -1800,31 +1791,245 @@ msgstr ""
 "Em alguns casos muito raros, você pode precisar forçar que as tabelas do "
 "bando de dados sejam recriadas. Este botão faz isso."
 
-#: ../inc/sys/pages/system-status.page.php:223
+#: ../inc/sys/pages/system-status.page.php:105
+msgid "Purged the OTCE table versions, forcing a reinitialize of the tables."
+msgstr ""
+"Versões das tabelas OTCE depuradas, forçando a reinicialização das tabelas."
+
+#: ../inc/sys/pages/system-status.page.php:112
 msgid "Remove Ticket File Cache"
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:227
+#: ../inc/sys/pages/system-status.page.php:113
 msgid ""
 "All non-local assets used to create tickets (like external images [google "
 "map] and css [custom tickets]) are cached locally. This will remove that "
 "cache, forcing all assets to be recached."
 msgstr ""
 
+#: ../inc/sys/pages/system-status.page.php:116
+#: ../inc/sys/pages/system-status.page.php:117
+msgid ""
+"Removed all the locally cached Ticket assets. Every external asset will now "
+"be recached."
+msgstr ""
+
+#: ../inc/sys/pages/system-status.page.php:165
+msgid ""
+"Copy and paste this information into your ticket when contacting support:"
+msgstr ""
+
+#: ../inc/sys/pages/system-status.page.php:300
+msgid ""
+"The tools provided on this page are moderately dangerous, and can cause "
+"problems on your site, if you are not absolutely certain you know what you "
+"are doing. Marking tickets as taken, without them being associated to an "
+"order, technically corrupts your date in a fashion that could be un-"
+"repairable. It can also cause certain automated processes in the system, to "
+"not function as expected. Furthermore, removing \"reserved\" tickets will "
+"remove the tickets from any active carts that contain them. This, at the "
+"very least, could cause un-expected customer service issues. In short, use "
+"these tools at your own risk."
+msgstr ""
+
+#: ../inc/sys/pages/system-status.page.php:304
+msgid "I understand."
+msgstr ""
+
+#: ../inc/sys/pages/system-status.page.php:316
+#, fuzzy
+msgid "Select an Event"
+msgstr "Selecionar Imagem"
+
+#: ../inc/sys/pages/system-status.page.php:321
+msgid "Load Event Info"
+msgstr ""
+
 #: ../inc/sys/pages/system-status.page.php:334
+msgid "access denied."
+msgstr ""
+
+#: ../inc/sys/pages/system-status.page.php:337
+msgid "request security failsed."
+msgstr ""
+
+#: ../inc/sys/pages/system-status.page.php:421
+#, php-format
+msgid "Order #%d (%s %s, %s)"
+msgstr ""
+
+#: ../inc/sys/pages/system-status.page.php:504
+#, php-format
+msgid "%s x %d %s [Order #%d]"
+msgstr ""
+
+#: ../inc/sys/pages/system-status.page.php:522
+#: ../inc/sys/pages/system-status.page.php:534
+#: ../inc/sys/pages/system-status.page.php:554
+#: ../inc/sys/pages/system-status.page.php:582
+#, fuzzy
+msgid "invalid request."
+msgstr "Pedido inválido."
+
+#: ../inc/sys/pages/system-status.page.php:538
+msgid "No such ticket."
+msgstr ""
+
+#: ../inc/sys/pages/system-status.page.php:548
+msgid "That ticket has been released."
+msgstr ""
+
+#: ../inc/sys/pages/system-status.page.php:577
+#, fuzzy
+msgid "Inserted new ticket"
+msgstr "Reservar alguns ingressos:"
+
+#: ../inc/sys/pages/system-status.page.php:577
+#, fuzzy
+msgid "New ticket failed."
+msgstr "Criação do usuário falhou:"
+
+#: ../inc/sys/pages/system-status.page.php:606
+msgid "The event id was invalid."
+msgstr ""
+
+#: ../inc/sys/pages/system-status.page.php:608
+msgid "The quantity was invalid."
+msgstr ""
+
+#: ../inc/sys/pages/system-status.page.php:610
+msgid "The product id was invalid."
+msgstr ""
+
+#: ../inc/sys/pages/system-status.page.php:612
+msgid "The session id was invalid."
+msgstr ""
+
+#: ../inc/sys/pages/system-status.page.php:627
+#, fuzzy
+msgid "Could not find that DB record."
+msgstr "Não foi possível encontrar este local."
+
+#: ../inc/sys/pages/system-status.page.php:656
+msgid "No such event."
+msgstr ""
+
+#: ../inc/sys/pages/system-status.page.php:665
+#, fuzzy
+msgid "A problem occurred, and your request cannot be processed."
+msgstr "Ocorreu um problema ao tentar remover suas reservas."
+
+#: ../inc/sys/pages/system-status.page.php:681
+msgid "Order"
+msgstr "Pedido"
+
+#: ../inc/sys/pages/system-status.page.php:686
+#: ../templates/admin/meta-boxes/views/html-order-items.php:215
+msgid "Actions"
+msgstr "Ações"
+
+#: ../inc/sys/pages/system-status.page.php:703
+#, fuzzy
+msgid "Edit this Order"
+msgstr "Editar Pedido"
+
+#: ../inc/sys/pages/system-status.page.php:707
+msgid "No Order (unassociated)"
+msgstr ""
+
+#: ../inc/sys/pages/system-status.page.php:707
+msgid "No Order (in a cart)"
+msgstr ""
+
+#: ../inc/sys/pages/system-status.page.php:715
+#, fuzzy
+msgid "Edit this Ticket"
+msgstr "Ver este ingresso"
+
+#: ../inc/sys/pages/system-status.page.php:717
+#, fuzzy
+msgid "(unknown ticket type)"
+msgstr "(Tipo de Ingresso Desconhecido)"
+
+#: ../inc/sys/pages/system-status.page.php:723
+msgid "Release"
+msgstr ""
+
+#: ../inc/sys/pages/system-status.page.php:729
+msgid "No DB records for this event."
+msgstr ""
+
+#: ../inc/sys/pages/system-status.page.php:736
+#, fuzzy
+msgid "Add a Ticket"
+msgstr "Adicionar Ingressos"
+
+#: ../inc/sys/pages/system-status.page.php:744
+msgid ""
+"Leave this blank, or set it to 0, if you want the ticket to be completely "
+"unassociated."
+msgstr ""
+
+#: ../inc/sys/pages/system-status.page.php:748
+#, fuzzy
+msgid "Order Item ID"
+msgstr "Data do Pedido:"
+
+#: ../inc/sys/pages/system-status.page.php:751
+msgid ""
+"This can be hard to find, but is required if you want this new ticket to "
+"have an association."
+msgstr ""
+
+#: ../inc/sys/pages/system-status.page.php:757
+#, fuzzy
+msgid ""
+"The number of these tickets you want to reserve. Must be greater than 0."
+msgstr "O número de ingressos deve ser maior que 0."
+
+#: ../inc/sys/pages/system-status.page.php:772
+msgid ""
+"Select the ticket type for this new reservation. Keep in mind, all available "
+"type are listed here."
+msgstr ""
+
+#: ../inc/sys/pages/system-status.page.php:777
+#, fuzzy
+msgid "Ticket Status"
+msgstr "Ingressos"
+
+#: ../inc/sys/pages/system-status.page.php:783
+msgid "The status you want the ticket to have."
+msgstr ""
+
+#: ../inc/sys/pages/system-status.page.php:790
+#, fuzzy
+msgid "Add Ticket"
+msgstr "Adicionar Ingressos"
+
+#: ../inc/sys/pages/system-status.page.php:814
+#, fuzzy
+msgid "No results found."
+msgstr "Nenhum %lplural% encontrado"
+
+#: ../inc/sys/pages/system-status.page.php:815
+msgid "Loading..."
+msgstr ""
+
+#: ../inc/sys/pages/system-status.page.php:924
 msgid "Missed one or more file during cache purge."
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:358
+#: ../inc/sys/pages/system-status.page.php:948
 msgid "FAILED:"
 msgstr "FALHOU:"
 
-#: ../inc/sys/pages/system-status.page.php:358
-#: ../inc/sys/pages/system-status.page.php:364
+#: ../inc/sys/pages/system-status.page.php:948
+#: ../inc/sys/pages/system-status.page.php:954
 msgid "Background Order-Item -> Tickets Table"
 msgstr "Plano de Fundo Item-Pedido -> Tabela de Ingressos"
 
-#: ../inc/sys/pages/system-status.page.php:360
+#: ../inc/sys/pages/system-status.page.php:950
 msgid ""
 "There was a problem trying to resync your order-items to the ticket-table. "
 "Try using the non-background version. If that also fails, report a bug on <a "
@@ -1834,21 +2039,21 @@ msgstr ""
 "tabela-ingressos. Tente usar a versão que não seja em plano de fundo. Se "
 "isso também falhar, relatar o bug nos<a href=\"%\"> fóruns </a>."
 
-#: ../inc/sys/pages/system-status.page.php:364
+#: ../inc/sys/pages/system-status.page.php:954
 msgid "SUCCESS:"
 msgstr "SUCCESSo:"
 
-#: ../inc/sys/pages/system-status.page.php:365
+#: ../inc/sys/pages/system-status.page.php:955
 msgid "Your order-items have been succesfully resynced with the ticket-table."
 msgstr ""
 "Seus itens-pedido foram sincronizados novamente com sucesso com a tabela-"
 "ingressos."
 
-#: ../inc/sys/pages/system-status.page.php:648
+#: ../inc/sys/pages/system-status.page.php:1238
 msgid "Environment"
 msgstr "Ambiente"
 
-#: ../inc/sys/pages/system-status.page.php:670
+#: ../inc/sys/pages/system-status.page.php:1260
 #, php-format
 msgid ""
 "You have less than the required amount of memory allocated. The minimum "
@@ -1857,14 +2062,14 @@ msgstr ""
 "Você tem menos do que a quantidade necessária de memória alocada. A "
 "quantidade mínima exigida é de 48MB. Você está atualmente com% s."
 
-#: ../inc/sys/pages/system-status.page.php:675
+#: ../inc/sys/pages/system-status.page.php:1265
 #, php-format
 msgid ""
 "Please <a href=\"%s\">increase your memory allocation</a> to at least 48MB."
 msgstr ""
 "<a href=\"%s\"> aumentar sua alocação de memória</a> para pelo menos 48MB."
 
-#: ../inc/sys/pages/system-status.page.php:680
+#: ../inc/sys/pages/system-status.page.php:1270
 #, php-format
 msgid ""
 "You have more than the minimum required memory, but we still recommend you "
@@ -1873,7 +2078,7 @@ msgstr ""
 "Você tem mais memória que o mínimo necessário, mas ainda lhe recomendamos "
 "usar no mínimo 64MB alocados. Você tem atualmente %s."
 
-#: ../inc/sys/pages/system-status.page.php:685
+#: ../inc/sys/pages/system-status.page.php:1275
 #, php-format
 msgid ""
 "We strongly recommend that you <a href=\"%s\">increase your memory "
@@ -1882,7 +2087,7 @@ msgstr ""
 "Nós recomendamos fortemente que você <a href=\"%s\"> aumente sua alocação de "
 "memória</a> para pelo menos 48MB."
 
-#: ../inc/sys/pages/system-status.page.php:689
+#: ../inc/sys/pages/system-status.page.php:1279
 #, php-format
 msgid ""
 "You have more than the required minimum memory of 64MB. Your current total "
@@ -1891,7 +2096,7 @@ msgstr ""
 "Você tem mais memória do que o requisito mínimo de  64MB. Seu total atual é "
 "de %s."
 
-#: ../inc/sys/pages/system-status.page.php:709
+#: ../inc/sys/pages/system-status.page.php:1299
 #, php-format
 msgid ""
 "Having your uploads directory writable not only allows you to upload your "
@@ -1904,37 +2109,37 @@ msgstr ""
 "armazenar seus arquivos de cache. Por favor, <a href=\"%s\"> faça seu "
 "diretório uploads gravável </a>por estas razões."
 
-#: ../inc/sys/pages/system-status.page.php:721
+#: ../inc/sys/pages/system-status.page.php:1311
 msgid "Software"
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:733
+#: ../inc/sys/pages/system-status.page.php:1323
 msgid "Data"
 msgstr "Dados"
 
-#: ../inc/sys/pages/system-status.page.php:821
+#: ../inc/sys/pages/system-status.page.php:1411
 #, php-format
 msgid "%s%s by %s"
 msgstr "%s%s por %s"
 
-#: ../inc/sys/pages/system-status.page.php:822
-#: ../inc/sys/pages/system-status.page.php:828
+#: ../inc/sys/pages/system-status.page.php:1412
+#: ../inc/sys/pages/system-status.page.php:1418
 msgid "PARENT"
 msgstr "PAI"
 
-#: ../inc/sys/pages/system-status.page.php:827
-#: ../inc/sys/pages/system-status.page.php:873
+#: ../inc/sys/pages/system-status.page.php:1417
+#: ../inc/sys/pages/system-status.page.php:1463
 #, php-format
 msgid "%s%s (%s) by %s (%s)"
 msgstr "%s%s (%s) por %s (%s)"
 
-#: ../inc/sys/pages/system-status.page.php:867
+#: ../inc/sys/pages/system-status.page.php:1457
 #, php-format
 msgid "<b>%s</b>%s by %s"
 msgstr "<b>%s</b>%s por %s"
 
-#: ../inc/sys/pages/system-status.page.php:868
-#: ../inc/sys/pages/system-status.page.php:874
+#: ../inc/sys/pages/system-status.page.php:1458
+#: ../inc/sys/pages/system-status.page.php:1464
 msgid "ON"
 msgstr ""
 
@@ -1947,7 +2152,7 @@ msgid "Styles & Colors"
 msgstr ""
 
 #: ../inc/sys/settings/frontend.php:40 ../inc/ticket/ticket.class.php:112
-#: ../inc/ticket/ticket.class.php:598
+#: ../inc/ticket/ticket.class.php:620
 msgid "Tickets"
 msgstr "Ingressos"
 
@@ -1982,8 +2187,8 @@ msgstr "Usar esta imagem"
 msgid "remove image"
 msgstr "Texto do Botão Remover"
 
-#: ../inc/sys/settings/frontend.php:111 ../inc/ticket/ticket.class.php:612
-#: ../inc/ticket/ticket.class.php:630
+#: ../inc/sys/settings/frontend.php:111 ../inc/ticket/ticket.class.php:634
+#: ../inc/ticket/ticket.class.php:652
 msgid "no image"
 msgstr "Imagem de Logotipo:"
 
@@ -2252,16 +2457,16 @@ msgstr ""
 msgid "Save changes"
 msgstr "Salvar alterações"
 
-#: ../inc/ticket/checkin.class.php:127 ../inc/ticket/ticket.class.php:409
+#: ../inc/ticket/checkin.class.php:127 ../inc/ticket/ticket.class.php:431
 msgid "Could not laod the order that this ticket belongs to."
 msgstr "Não foi possível o item no pedido."
 
-#: ../inc/ticket/checkin.class.php:132 ../inc/ticket/ticket.class.php:416
+#: ../inc/ticket/checkin.class.php:132 ../inc/ticket/ticket.class.php:438
 msgid "Could not load the order item associated with this ticket."
 msgstr "Não foi possível o item no pedido."
 
 #: ../inc/ticket/ticket.class.php:108
-#: ../inc/venues/event-area/pricing.class.php:839
+#: ../inc/venues/event-area/pricing.class.php:916
 #: ../templates/tickets/basic-ticket.php:40
 msgid "Ticket"
 msgstr "Ingresso"
@@ -2283,106 +2488,106 @@ msgstr "Ver seus ingressos"
 msgid "View these tickets"
 msgstr "Ver estes ingressos"
 
-#: ../inc/ticket/ticket.class.php:284 ../inc/ticket/ticket.class.php:290
+#: ../inc/ticket/ticket.class.php:306 ../inc/ticket/ticket.class.php:312
 msgid "There was a problem loading your ticket."
 msgstr "Houve um problema ao salvar a área [%s]."
 
-#: ../inc/ticket/ticket.class.php:298
+#: ../inc/ticket/ticket.class.php:320
 msgid "the order"
 msgstr "Editar pedido"
 
-#: ../inc/ticket/ticket.class.php:300
+#: ../inc/ticket/ticket.class.php:322
 msgid "the ticket product information"
 msgstr "a Imagem do Produto do Ingresso"
 
-#: ../inc/ticket/ticket.class.php:302
+#: ../inc/ticket/ticket.class.php:324
 msgid "the event information"
 msgstr "a Informação de Cobrança"
 
-#: ../inc/ticket/ticket.class.php:304
+#: ../inc/ticket/ticket.class.php:326
 msgid "the venue information"
 msgstr "Informação do Local"
 
-#: ../inc/ticket/ticket.class.php:306
+#: ../inc/ticket/ticket.class.php:328
 msgid "the order item information"
 msgstr "a Informação de Cobrança"
 
-#: ../inc/ticket/ticket.class.php:308
+#: ../inc/ticket/ticket.class.php:330
 msgid "the event area information"
 msgstr "a Informação de Cobrança"
 
-#: ../inc/ticket/ticket.class.php:312
+#: ../inc/ticket/ticket.class.php:334
 #, php-format
 msgid "The following ticket data could not be loaded: %s"
 msgstr ""
 
-#: ../inc/ticket/ticket.class.php:318
+#: ../inc/ticket/ticket.class.php:340
 msgid "The ticket cannot be displayed, because the order is not complete."
 msgstr ""
 
-#: ../inc/ticket/ticket.class.php:424
+#: ../inc/ticket/ticket.class.php:446
 msgid ""
 "The ticket product associated with the ticket order item, could not be found."
 msgstr ""
 
-#: ../inc/ticket/ticket.class.php:434
+#: ../inc/ticket/ticket.class.php:456
 msgid ""
 "The event information for the ticket could not be found. Perhaps the event "
 "has been removed."
 msgstr ""
 
-#: ../inc/ticket/ticket.class.php:511
+#: ../inc/ticket/ticket.class.php:533
 msgid "The information you supplied does not match our record."
 msgstr "A informação que você forneceu não corresponde aos nossos registros."
 
-#: ../inc/ticket/ticket.class.php:609
+#: ../inc/ticket/ticket.class.php:631
 msgid "Left Ticket Image"
 msgstr "Imagem Esquerda do Ingresso"
 
-#: ../inc/ticket/ticket.class.php:610
+#: ../inc/ticket/ticket.class.php:632
 msgid "The image to show in the bottom left corner of the ticket."
 msgstr "A imagem mostrada no canto inferior esquerdo do ingresso."
 
-#: ../inc/ticket/ticket.class.php:613 ../inc/ticket/ticket.class.php:631
+#: ../inc/ticket/ticket.class.php:635 ../inc/ticket/ticket.class.php:653
 msgid "the Event Featured Image"
 msgstr "a Imagem Destacada do Evento."
 
-#: ../inc/ticket/ticket.class.php:614 ../inc/ticket/ticket.class.php:632
+#: ../inc/ticket/ticket.class.php:636 ../inc/ticket/ticket.class.php:654
 msgid "the Venue Image"
 msgstr "a Imagem Destacada do Evento."
 
-#: ../inc/ticket/ticket.class.php:615 ../inc/ticket/ticket.class.php:633
+#: ../inc/ticket/ticket.class.php:637 ../inc/ticket/ticket.class.php:655
 msgid "the Ticket Product Image"
 msgstr "a Imagem do Produto do Ingresso"
 
-#: ../inc/ticket/ticket.class.php:627
+#: ../inc/ticket/ticket.class.php:649
 msgid "Right Ticket Image"
 msgstr "Imagem Esquerda do Ingresso"
 
-#: ../inc/ticket/ticket.class.php:628
+#: ../inc/ticket/ticket.class.php:650
 msgid "The image to show in the bottom right corner of the ticket."
 msgstr "A imagem mostrada no canto inferior esquerdo do ingresso."
 
-#: ../inc/ticket/ticket.class.php:645
+#: ../inc/ticket/ticket.class.php:667
 msgid "Ticket Branding Images"
 msgstr "a Imagem do Produto do Ingresso"
 
-#: ../inc/ticket/ticket.class.php:646
+#: ../inc/ticket/ticket.class.php:668
 msgid "Images shown in the small line of branding images below each ticket."
 msgstr "A imagem mostrada no canto inferior esquerdo do ingresso."
 
-#: ../inc/ticket/ticket.class.php:647
+#: ../inc/ticket/ticket.class.php:669
 msgid ""
 "The recommended size of these images is 90px wide by 15px tall. Images will "
 "be constrained to 90px wide, no matter the size. Choosing \"no image\" will "
 "make a blank spot on the ticket branding row."
 msgstr ""
 
-#: ../inc/ticket/ticket.class.php:659
+#: ../inc/ticket/ticket.class.php:681
 msgid "Purchaser Info"
 msgstr "Informação do Comprador"
 
-#: ../inc/ticket/ticket.class.php:660
+#: ../inc/ticket/ticket.class.php:682
 msgid ""
 "Which information to user for the purchaser display information. Either "
 "Billing or Shipping."
@@ -2390,19 +2595,19 @@ msgstr ""
 "Quais informações usar para mostrar as informações do comprador. De Cobrança "
 "ou Envio."
 
-#: ../inc/ticket/ticket.class.php:662
+#: ../inc/ticket/ticket.class.php:684
 msgid "the Billing Information"
 msgstr "a Informação de Cobrança"
 
-#: ../inc/ticket/ticket.class.php:663
+#: ../inc/ticket/ticket.class.php:685
 msgid "the Shipping Information"
 msgstr "a Informação de Envio"
 
-#: ../inc/ticket/ticket.class.php:675
+#: ../inc/ticket/ticket.class.php:697
 msgid "Show Order #"
 msgstr "Mostrar número do Pedido"
 
-#: ../inc/ticket/ticket.class.php:676
+#: ../inc/ticket/ticket.class.php:698
 msgid "Show the order number of the ticket, on the ticket."
 msgstr "Mostra o número do pedido do ingresso, no ingresso."
 
@@ -2709,7 +2914,7 @@ msgstr "Este evento é protegido por senha."
 
 #: ../inc/venues/event-area/post-type.class.php:422
 #: ../inc/venues/event-area/post-type.class.php:719
-#: ../inc/venues/event-area/pricing.class.php:680
+#: ../inc/venues/event-area/pricing.class.php:757
 msgid "Invalid request. Please refresh the page and try again."
 msgstr "Requisição inválida. Por favor atualize a página e tente novamente."
 
@@ -2869,7 +3074,17 @@ msgstr ""
 msgid "Area"
 msgstr "Área"
 
-#: ../inc/venues/event-area/pricing.class.php:438
+#: ../inc/venues/event-area/pricing.class.php:187
+msgid ""
+"The ticket could not be added to the cart, so we could not reserve that "
+"ticket for you."
+msgstr ""
+
+#: ../inc/venues/event-area/pricing.class.php:449
+msgid "Removed a ticket from your cart, because it's timer expired."
+msgstr ""
+
+#: ../inc/venues/event-area/pricing.class.php:515
 #, php-format
 msgid ""
 "There were only %d of the %s for %s available. We reserved all of them for "
@@ -2878,67 +3093,67 @@ msgstr ""
 "Há somente %d dos %s para %s disponíveis. Reservamos todos ele para você ao "
 "invés dos %d que você requisitou."
 
-#: ../inc/venues/event-area/pricing.class.php:446
+#: ../inc/venues/event-area/pricing.class.php:523
 #, php-format
 msgid ""
 "There were no %s for %s available to give you. We have removed it from your "
 "cart."
 msgstr "Não há %s para %s disponíveis pra você. Removemos do seu carrinho."
 
-#: ../inc/venues/event-area/pricing.class.php:547
+#: ../inc/venues/event-area/pricing.class.php:624
 msgid "(no event selected)"
 msgstr "(nenhum evento selecionado)"
 
-#: ../inc/venues/event-area/pricing.class.php:641
+#: ../inc/venues/event-area/pricing.class.php:718
 msgid "Date:"
 msgstr "Data:"
 
-#: ../inc/venues/event-area/pricing.class.php:643
+#: ../inc/venues/event-area/pricing.class.php:720
 msgid "Capacity:"
 msgstr "Capacidade:"
 
-#: ../inc/venues/event-area/pricing.class.php:644
+#: ../inc/venues/event-area/pricing.class.php:721
 msgid "Available:"
 msgstr "Disponível:"
 
-#: ../inc/venues/event-area/pricing.class.php:649
-#: ../inc/venues/event-area/pricing.class.php:654
+#: ../inc/venues/event-area/pricing.class.php:726
+#: ../inc/venues/event-area/pricing.class.php:731
 msgid "Different Event"
 msgstr "Evento Diferente"
 
-#: ../inc/venues/event-area/pricing.class.php:650
+#: ../inc/venues/event-area/pricing.class.php:727
 msgid "Use This Event"
 msgstr "Usar este Evento"
 
-#: ../inc/venues/event-area/pricing.class.php:663
+#: ../inc/venues/event-area/pricing.class.php:740
 msgid "Add Tickets"
 msgstr "Adicionar Ingressos"
 
-#: ../inc/venues/event-area/pricing.class.php:668
+#: ../inc/venues/event-area/pricing.class.php:745
 msgid "Loading. One moment please..."
 msgstr "Carregando. Um momento por favor..."
 
-#: ../inc/venues/event-area/pricing.class.php:730
+#: ../inc/venues/event-area/pricing.class.php:807
 msgid "Invalid order number."
 msgstr "Número de pedido inválido."
 
-#: ../inc/venues/event-area/pricing.class.php:779
+#: ../inc/venues/event-area/pricing.class.php:856
 msgid "Could not find the new event."
 msgstr "Não foi possível encontrar o novo evento."
 
-#: ../inc/venues/event-area/pricing.class.php:782
+#: ../inc/venues/event-area/pricing.class.php:859
 msgid "Could not find that order item on the order."
 msgstr "Não foi possível o item no pedido."
 
-#: ../inc/venues/event-area/pricing.class.php:785
+#: ../inc/venues/event-area/pricing.class.php:862
 msgid "The order item does not appear to be valid."
 msgstr "O item do pedido parece não ser válido."
 
-#: ../inc/venues/event-area/pricing.class.php:792
+#: ../inc/venues/event-area/pricing.class.php:869
 msgid "Add tickets"
 msgstr "Adicionar ingressos"
 
-#: ../inc/venues/event-area/pricing.class.php:840
+#: ../inc/venues/event-area/pricing.class.php:917
 #, php-format
 msgid ""
 "Allows this product to be assigned as a ticket, when configuring pricing on "
@@ -3034,10 +3249,6 @@ msgstr "Total do Pedido"
 #: ../templates/admin/meta-boxes/views/html-order-items.php:202
 msgid "Refunded"
 msgstr "Reembolsado"
-
-#: ../templates/admin/meta-boxes/views/html-order-items.php:215
-msgid "Actions"
-msgstr "Ações"
 
 #: ../templates/admin/meta-boxes/views/html-order-items.php:218
 msgid "Delete selected line item(s)"
@@ -3627,9 +3838,6 @@ msgstr "Anotação privada"
 
 #~ msgid "Default Template"
 #~ msgstr "Template Padrão"
-
-#~ msgid "Order"
-#~ msgstr "Pedido"
 
 #~ msgid "Need help? Use the Help tab in the upper right of your screen."
 #~ msgstr ""
