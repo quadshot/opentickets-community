@@ -100,7 +100,7 @@ class qsot_seat_pricing {
 	}
 
 	// when order_again is hit, items are discretely added to the new cart. during that process, sniff out any tickets, and add them to the cart a different way
-	public static function sniff_order_again_and_readd_to_cart( $passes_validation, $product_id, $quantity, $variation_id, $variations, $cart_item_data ) {
+	public static function sniff_order_again_and_readd_to_cart( $passes_validation, $product_id, $quantity, $variation_id=0, $variations='', $cart_item_data=array() ) {
 		// if the marker is not present, then pass through
 		if ( ! isset( $cart_item_data['_order_again'] ) )
 			return $passes_validation;
