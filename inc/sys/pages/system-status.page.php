@@ -814,8 +814,8 @@ class QSOT_system_status_page extends QSOT_base_page {
 		$version = QSOT::version();
 
 		// enqueuing
-		wp_enqueue_style( 'qsot-select2' );
-		wp_enqueue_script( 'qsot-system-status', $url . 'js/admin/system-status.js', array( 'qsot-tools', 'qsot-select2' ), $version );
+		wp_enqueue_style( 'select2' );
+		wp_enqueue_script( 'qsot-system-status', $url . 'js/admin/system-status.js', array( 'qsot-tools', 'select2' ), $version );
 		wp_localize_script( 'qsot-system-status', '_qsot_system_status', array(
 			'nonce' => wp_create_nonce( 'yes-do-system-status-ajax' ),
 			'str' => array(

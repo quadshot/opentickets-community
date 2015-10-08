@@ -93,7 +93,9 @@ class QSOT_tickets {
 	}
 
 	public static function debug_rewrite_rules() {
-		?><pre style="font-size:11px; padding-left:160px; color:#000000; background-color:#ffffff;"><?php print_r($GLOBALS['wp_rewrite']->rules) ?></pre><?php
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			?><pre style="font-size:11px; padding-left:160px; color:#000000; background-color:#ffffff;"><?php print_r($GLOBALS['wp_rewrite']->rules) ?></pre><?php
+		}
 	}
 
 	public static function add_view_ticket_link_to_emails($item_id, $item, $order) {
