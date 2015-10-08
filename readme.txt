@@ -169,6 +169,11 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.12.7 =
+* [new] added advanced tools, which come with a warning
+* [improvement] more efficient and extendable regular tools
+* [fix] edge case bug where cart sync process was not working
+
 = 1.12.6 =
 * [tweak] js tools updated for new Seating features
 
