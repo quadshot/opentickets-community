@@ -169,6 +169,10 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.12.9 =
+* [tweak] changed load order of all js and css to overcome version clashes with WC
+* [tweak] hide permalink debug on non wp_debug sites
+
 = 1.12.8 =
 * [improvement] allows order id lookup in advanced tools
 
