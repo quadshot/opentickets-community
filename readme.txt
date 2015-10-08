@@ -171,7 +171,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 = 1.12.7 =
 * [new] added advanced tools, which come with a warning
+* [new] added code to handle the 'order again' action
 * [improvement] more efficient and extendable regular tools
+* [improvement] simplified ticket security
 * [fix] edge case bug where cart sync process was not working
 
 = 1.12.6 =
