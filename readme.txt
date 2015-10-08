@@ -169,6 +169,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.12.8 =
+* [improvement] allows order id lookup in advanced tools
+
 = 1.12.7 =
 * [new] added advanced tools, which come with a warning
 * [new] added code to handle the 'order again' action
