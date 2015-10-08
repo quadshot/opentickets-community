@@ -379,8 +379,16 @@ class QSOT_system_status_page extends QSOT_base_page {
 					wp_send_json( array( 'success' => true, 'r' => array() ) );
 
 				$qs = preg_split( '#\s+#', $_POST['q'] );
-				$by_name = $by_meta = array();
+				$by_id = $by_name = $by_meta = array();
+				$ids = array_filter( array_map( 'absint', $qs ) );
 				// find posts that match
+				$by_id = count( $ids ) ? get_posts( array(
+					'post_type' => 'shop_order',
+					'post_status' => 'wc-completed',
+					'posts_per_page' => -1,
+					'fields' => 'ids',
+					'post__in' => $ids,
+				) ) : array();
 				$by_name = get_posts( array(
 					'post_type' => 'shop_order',
 					'post_status' => 'wc-completed',
@@ -412,7 +420,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 						),
 					),
 				) );
-				$order_ids = array_merge( $by_name, $by_meta );
+				$order_ids = array_unique( array_merge( $by_id, $by_name, $by_meta ) );
 
 				$results = array( $none );
 				// construct the results array
@@ -739,13 +747,13 @@ class QSOT_system_status_page extends QSOT_base_page {
 
 				<div class="constrict-fields">
 					<div class="field">
-						<label><?php _e( 'Order #', 'opentickets-community-edition' ) ?></label>
+						<label><?php _e( 'Order', 'opentickets-community-edition' ) ?></label>
 						<input type="hidden" class="use-select2" data-init-value="<?php echo esc_attr( @json_encode( $none ) ) ?>" data-action="qsot-adv-tools" data-sa="find-orders" name="order_id" />
 						<div class="helper"><?php _e( 'Leave this blank, or set it to 0, if you want the ticket to be completely unassociated.', 'opentickets-community-edition' ) ?></div>
 					</div>
 
 					<div class="field">
-						<label><?php _e( 'Order Item ID', 'opentickets-community-edition' ) ?></label>
+						<label><?php _e( 'Order Item', 'opentickets-community-edition' ) ?></label>
 						<input type="hidden" class="use-select2" name="order_item_id"
 								data-init-value="<?php echo esc_attr( @json_encode( $none ) ) ?>" data-action="qsot-adv-tools" data-sa="find-order-items" data-add="[name='order_id']" data-minchar="0" />
 						<div class="helper"><?php _e( 'This can be hard to find, but is required if you want this new ticket to have an association.', 'opentickets-community-edition' ) ?></div>
