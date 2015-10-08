@@ -43,13 +43,6 @@ QS.Tools = (function($, q, qt, w, d, undefined) {
 			delete div;
 			return res;
 		};
-	qt.lineDist = function( pt, lp1, lp2 ) {
-			//var hyp = qt.dist( pt.x, pt.y, lp1.x, lp1.y ), ang = S.angle( pt.x, pt.y, lp1.x, lp1.y ) - S.angle( lp1.x, lp1.y, lp2.x, lp2.y ), d =
-			return Math.sin( S.rad( ( 360 + S.angle( pt.x, pt.y, lp1.x, lp1.y ) - S.angle( lp1.x, lp1.y, lp2.x, lp2.y ) ) % 360 ) ) * qt.dist( pt.x, pt.y, lp1.x, lp1.y );
-			//return d;
-		};
-
-	qt.isNode = function(o) { return typeof Node == 'object' ? o instanceof Node : o && typeof o == 'object' && typeof o.nodeType == 'number' && typeof o.nodeName == 'string'; };
 	qt.isElement = function(o) { return typeof HTMLElement == 'object' ? o instanceof HTMLElement : o && typeof o == 'object' && o.nodeType === 1 && typeof o.nodeName == 'string'; };
 	qt.toInt = function(val) { var n = parseInt(val); return isNaN(n) ? 0 : n; };
 	qt.toFloat = function(val) { var n = parseFloat(val); return isNaN(n) ? 0 : n; };

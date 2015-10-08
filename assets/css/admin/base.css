@@ -233,3 +233,22 @@ ul#adminmenu a.qsot-special-arrow:after {
 .qsot-mb .helper { padding-top:0.4em; font-size:0.8em; color:#777; font-style:italic; }
 .qsot-mb code { font-size:inherit; font-style:normal; font-weight:400; color:inherit; }
 .qsot-mb .option-row { padding-top:0.3em; }
+
+/* advanced tools */
+.lou-disclaimer { border:2px solid #800; color:#800; font-weight:700; font-style:italic; background-color:#fee; padding:1em; }
+.lou-text { margin-bottom:1em; }
+#lou-disclaimer { text-align:right; }
+
+.qsot-ajax-form { border:1px solid #ddd; background-color:#fff; padding:1em; margin-bottom:1em; }
+.qsot-ajax-form .field { padding-top:1em; }
+.qsot-ajax-form .field.right { text-align:right; }
+.qsot-ajax-form .field:first-child { padding-top:0; }
+.qsot-ajax-form .field label { display:block; font-weight:700; font-style:italic; margin-bottom:0.3em; }
+.qsot-ajax-form .field .use-select2 { width:100%; }
+.qsot-ajax-form table.widefat thead th { font-weight:700; color:#555; }
+.qsot-ajax-form table.widefat td { vertical-align:middle; }
+.qsot-ajax-form table.widefat tbody tr:hover td { background-color:#eee; }
+
+#qsot-save-results .msg { border:1px solid #000; color:#000; background-color:#eee; padding:0.7em; margin-bottom:1em; }
+#qsot-save-results .msg-good { border-color:#008; color:#008; background-color:#eef; }
+#qsot-save-results .msg-bad { border-color:#800; color:#800; background-color:#fee; }

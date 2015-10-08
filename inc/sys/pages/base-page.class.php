@@ -104,6 +104,7 @@ abstract class QSOT_base_page {
 		);
 
 		// use the hook we fetched above to setup functions that run on page load, which will save the page (if needed) and which will allow enqueuing any needed assets
+		add_action( 'admin_print_scripts-' . $hook, array( &$this, 'enqueue_assets' ), 10 );
 		add_action( 'load-' . $hook, array( &$this, 'page_save' ), 9 );
 		add_action( 'load-' . $hook, array( &$this, 'page_head' ), 20 );
 	}
@@ -201,6 +202,9 @@ abstract class QSOT_base_page {
 			</h2>
 		<?php
 	}
+
+	// base enqueue assets logic
+	public function enqueue_assets() {}
 
 	// base function that draws the contents of the page
 	public function page() {}

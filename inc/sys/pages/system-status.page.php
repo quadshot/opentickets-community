@@ -33,6 +33,9 @@ class QSOT_system_status_page extends QSOT_base_page {
 	// this is a tabbed page
 	protected $tabbed = true;
 
+	// list of known tools
+	protected $tools = array();
+
 	// setup the page titles and defaults
 	public function __construct() {
 		// protect the singleton
@@ -53,13 +56,73 @@ class QSOT_system_status_page extends QSOT_base_page {
 			'label' => __( 'Tools', 'opentickets-community-edition' ),
 			'function' => array( &$this, 'page_tools' ),
 		) );
+		$this->_register_tab( 'adv-tools', array(
+			'label' => __( 'Advanced Tools', 'opentickets-community-edition' ),
+			'function' => array( &$this, 'page_adv_tools' ),
+		) );
 
 		// add page specific actions
 		add_action( 'admin_notices', array( &$this, 'admin_notices' ), 1000 );
 
+		// ajax handler
+		add_action( 'wp_ajax_qsot-adv-tools', array( &$this, 'ajax_adv_tools' ), 100 );
+
 		// allow base class to perform normal setup
 		parent::__construct();
+
+		// add the default tools
+		$this->register_tool(
+			'RsOi2Tt',
+			array(
+				'name' => __( 'Resync order items to tickets table', 'opentickets-community-edition' ),
+				'description' => __( 'Looks up all order items that are ticket which have been paid for, and makes sure that they are marked in the tickets table as paid for. <strong>If you have many orders, this could take a while, during which time you should not close this window.</strong>', 'opentickets-community-edition' ),
+				'function' => array( &$this, 'tool_RsOi2Tt' ),
+				'messages' => array(
+					'resync' => $this->_updatedw( __( 'The order-item to ticket-table resync has been completed.', 'opentickets-community-edition' ) ),
+					'failed-resync' => $this->_errorw( __( 'A problem occurred during the order-item to ticket-table resync. It did not complete.', 'opentickets-community-edition' ) ),
+				),
+			)
+		);
+		$this->register_tool(
+			'RsOi2Tt-bg',
+			array(
+				'name' => __( 'Background: resync order items to tickets table', 'opentickets-community-edition' ),
+				'description' => __( 'Same as above, only all processing is done behind the scenes. This takes longer, but does not require that you keep this window open.', 'opentickets-community-edition' ),
+				'function' => array( &$this, 'tool_RsOi2Tt_bg' ),
+				'messages' => array(
+					'resync-bg' => $this->_updatedw( __( 'We started the order-item to ticket-table resync. This will take a few minute to complete. You will receive an email upon completion.', 'opentickets-community-edition' ) ),
+					'failed-resync-bg' => $this->_errorw( __( 'We could not start the background process that resyncs your order-items to the ticket-table. Try using the non-background method.', 'opentickets-community-edition' ) ),
+				),
+			)
+		);
+		$this->register_tool(
+			'FdbUg',
+			array(
+				'name' => __( 'Force the DB tables to re-initialize', 'opentickets-community-edition' ),
+				'description' => __( 'In some very rare cases, you may need to force the db tables to be recreated. This button, does that.', 'opentickets-community-edition' ),
+				'function' => array( &$this, 'tool_FdbUg' ),
+				'messages' => array(
+					'removed-db-table-versions' => $this->_updatedw( __( 'Purged the OTCE table versions, forcing a reinitialize of the tables.', 'opentickets-community-edition' ) ),
+				),
+			)
+		);
+		$this->register_tool(
+			'RmTFC',
+			array(
+				'name' => __( 'Remove Ticket File Cache', 'opentickets-community-edition' ),
+				'description' => __( 'All non-local assets used to create tickets (like external images [google map] and css [custom tickets]) are cached locally. This will remove that cache, forcing all assets to be recached.', 'opentickets-community-edition' ),
+				'function' => array( &$this, 'tool_RmTFC' ),
+				'messages' => array(
+					'removed-ticket-asset-cache' => $this->_updatedw( __( 'Removed all the locally cached Ticket assets. Every external asset will now be recached.', 'opentickets-community-edition' ) ),
+					'failed-ticket-asset-cache' => $this->_errorw( __( 'Removed all the locally cached Ticket assets. Every external asset will now be recached.', 'opentickets-community-edition' ) ),
+				),
+			)
+		);
 	}
+
+	// generic wrappers for admin messages
+	protected function _updatedw( $str ) { return sprintf( '<div class="updated"><p>%s</p></div>', $str ); }
+	protected function _errorw( $str ) { return sprintf( '<div class="error"><p>%s</p></div>', $str ); }
 
 	// handle taredown of object
 	public function __destruct() {
@@ -69,6 +132,26 @@ class QSOT_system_status_page extends QSOT_base_page {
 		// parent destructs
 		parent::__destruct();
 	}
+
+	// allow registering of a tool
+	public function register_tool( $slug, $args ) {
+		// normalize the args
+		$args = wp_parse_args( $args, array(
+			'slug' => $slug,
+			'name' => $slug,
+			'description' => '',
+			'messages' => array(),
+			'function' => array( &$this, 'noop' ),
+		) );
+		$this->tools[ $slug ] = $args;
+	}
+
+	// remove a tool from registration
+	public function unregister_tool( $slug ) {
+		unset( $this->tools[ $slug ] );
+	}
+
+	public function noop( $args ) { return $args; }
 
 	// add noticies to the page, depending on the current tab
 	public function admin_notices() {
@@ -101,70 +184,14 @@ class QSOT_system_status_page extends QSOT_base_page {
 
 		// display error and success messages
 		if ( 'tools' == $current && isset( $_GET['performed'] ) ) {
-			// different message depending on the task we completed or failed
-			switch ( $_GET['performed'] ) {
-				// when not in this list, call any specialized functions
-				default:
-					if ( has_action( 'qsot-ss-performed-' . $_GET['performed'] ) )
-						do_action( 'qsot-ss-performed-' . $_GET['performed'], $_GET['performed'] );
-				break;
+			// print any known messages that were registered in the tools list first
+			foreach ( $this->tools as $slug => $tool )
+				if ( isset( $tool['messages'], $tool['messages'][ $_GET['performed'] ] ) )
+					echo $tool['messages'][ $_GET['performed'] ];
 
-				// blew out the ticket asset cache
-				case 'removed-ticket-asset-cache':
-					echo sprintf(
-						'<div class="updated"><p>%s</p></div>',
-						__( 'Removed all the locally cached Ticket assets. Every external asset will now be recached.', 'opentickets-community-edition' )
-					);
-				break;
-
-				// forced a table update
-				case 'removed-db-table-versions':
-					echo sprintf(
-						'<div class="updated"><p>%s</p></div>',
-						__( 'Purged the OTCE table versions, forcing a reinitialize of the tables.', 'opentickets-community-edition' )
-					);
-				break;
-
-				// forced a ticket resync
-				case 'resync':
-					echo sprintf(
-						'<div class="updated"><p>%s</p></div>',
-						__( 'The order-item to ticket-table resync has been completed.', 'opentickets-community-edition' )
-					);
-				break;
-
-				// forced a ticket resync in the background
-				case 'resync-bg':
-					echo sprintf(
-						'<div class="updated"><p>%s</p></div>',
-						__( 'We started the order-item to ticket-table resync. This will take a few minute to complete. You will receive an email upon completion.', 'opentickets-community-edition' )
-					);
-				break;
-
-				// failed to remove the cached ticket assets
-				case 'failed-ticket-asset-cache':
-					echo sprintf(
-						'<div class="error"><p>%s</p></div>',
-						__( 'Failed to remove the cached ticket assets. Usually this is a permission issue.', 'opentickets-community-edition' )
-					);
-				break;
-
-				// failed the ticket resync
-				case 'failed-resync':
-					echo sprintf(
-						'<div class="error"><p>%s</p></div>',
-						__( 'A problem occurred during the order-item to ticket-table resync. It did not complete.', 'opentickets-community-edition' )
-					);
-				break;
-
-				// failed the ticket resync in the background
-				case 'failed-resync-bg':
-					echo sprintf(
-						'<div class="error"><p>%s</p></div>',
-						__( 'We could not start the background process that resyncs your order-items to the ticket-table. Try using the non-background method.', 'opentickets-community-edition' )
-					);
-				break;
-			}
+			// then, if there are any registered hooks for this message, run those now
+			if ( has_action( 'qsot-ss-performed-' . $_GET['performed'] ) )
+				do_action( 'qsot-ss-performed-' . $_GET['performed'], $_GET['performed'] );
 		}
 	}
 
@@ -184,49 +211,16 @@ class QSOT_system_status_page extends QSOT_base_page {
 			<div class="inner">
 				<table>
 					<tbody>
-						<tr class="tool-item">
-							<td>
-								<a class="button" href="<?php echo esc_attr( $this->_action_nonce( 'RsOi2Tt', add_query_arg( array( 'qsot-tool' => 'RsOi2Tt' ), $url ) ) ) ?>"><?php
-									_e( 'Resync order items to tickets table', 'opentickets-community-edition' )
-								?></a>
-							</td>
-							<td>
-								<span class="helper"><?php _e( 'Looks up all order items that are ticket which have been paid for, and makes sure that they are marked in the tickets table as paid for. <strong>If you have many orders, this could take a while, during which time you should not close this window.</strong>', 'opentickets-community-edition' ) ?></span>
-							</td>
-						</tr>
-
-						<tr class="tool-item">
-							<td>
-								<a class="button" href="<?php echo esc_attr( $this->_action_nonce( 'RsOi2Tt', add_query_arg( array( 'qsot-tool' => 'RsOi2Tt', 'state' => 'bg' ), $url ) ) ) ?>"><?php
-									_e( 'Background: resync order items to tickets table', 'opentickets-community-edition' )
-								?></a>
-							</td>
-							<td>
-								<span class="helper"><?php _e( 'Same as above, only all processing is done behind the scenes. This takes longer, but does not require that you keep this window open.', 'opentickets-community-edition' ) ?></span>
-							</td>
-						</tr>
-
-						<tr class="tool-item">
-							<td>
-								<a class="button" href="<?php echo esc_attr( $this->_action_nonce( 'FdbUg', add_query_arg( array( 'qsot-tool' => 'FdbUg' ), $url ) ) ) ?>"><?php
-									_e( 'Force the DB tables to re-initialize', 'opentickets-community-edition' )
-								?></a>
-							</td>
-							<td>
-								<span class="helper"><?php _e( 'In some very rare cases, you may need to force the db tables to be recreated. This button, does that.', 'opentickets-community-edition' ) ?></span>
-							</td>
-						</tr>
-
-						<tr class="tool-item">
-							<td>
-								<a class="button" href="<?php echo esc_attr( $this->_action_nonce( 'RmTFC', add_query_arg( array( 'qsot-tool' => 'RmTFC' ), $url ) ) ) ?>"><?php
-									_e( 'Remove Ticket File Cache', 'opentickets-community-edition' )
-								?></a>
-							</td>
-							<td>
-								<span class="helper"><?php _e( 'All non-local assets used to create tickets (like external images [google map] and css [custom tickets]) are cached locally. This will remove that cache, forcing all assets to be recached.', 'opentickets-community-edition' ) ?></span>
-							</td>
-						</tr>
+						<?php foreach ( $this->tools as $slug => $tool ): ?>
+							<tr class="tool-item">
+								<td><a class="button" href="<?php echo esc_attr( $this->_action_nonce( $slug, add_query_arg( array( 'qsot-tool' => $slug ), $url ) ) ) ?>"><?php echo apply_filters( 'the_title', $tool['name'] ) ?></a></td>
+								<td>
+									<?php if ( ! empty( $tool['description'] ) ): ?>
+										<span class="helper"><?php echo force_balance_tags( $tool['description'] ) ?></span>
+									<?php endif ?>
+								</td>
+							</tr>
+						<?php endforeach; ?>
 
 						<?php do_action( 'qsot-system-status-tools' ) ?>
 					</tbody>
@@ -235,8 +229,599 @@ class QSOT_system_status_page extends QSOT_base_page {
 		<?php
 	}
 
+	// page to display the DANGEROUS, and ADVANCED tools that COULD FUCK UP and entire site or CAUSE CUSTOMER SERVICE ISSUES
+	public function page_adv_tools() {
+		// if the user does not have permissions, then bail
+		if ( ! current_user_can( 'manage_options' ) )
+			return;
+
+		// if the disclaimer has not been passed, then pop it now
+		if ( ! $this->_verify_disclaimer() ) {
+			$this->_pop_disclaimer();
+			return;
+		}
+
+		// otherwise, display the dangerous tools
+		$this->_display_adv_tools();
+	}
+
+	// on the advanced tools page, the user may have accepted the disclaimer on the last page load. if so, handle that acceptance now
+	protected function _maybe_accepted() {
+		// if the current user does not have permissions to do this, then skip this entirely
+		if ( ! current_user_can( 'manage_options' ) )
+			return;
+
+		// if the button was not clicked, then bail
+		if ( ! isset( $_POST['i-understand'] ) )
+			return;
+
+		// if the hash does not match what we expected, then bail
+		if ( ! wp_verify_nonce( $_POST['i-understand'], 'yes-i-understand' ) )
+			return;
+
+		// construct the data for the cookie and store the cookie
+		$data = array( 'a' . get_current_user_id(), 'b' . ( time() + HOUR_IN_SECONDS ), 'c' . rand( 0, PHP_INT_MAX ) );
+		$nonce = wp_create_nonce( 'yes-i-agree' );
+		$hash = md5( AUTH_SALT . @json_encode( $data ) . $nonce );
+		$cookie = implode( ':', $data ) . '|' . $hash;
+		setcookie( 'qsot-advtools', $cookie, time() + HOUR_IN_SECONDS, '/' );
+
+		// redirect to force recheck of cookie
+		wp_safe_redirect( remove_query_arg( array( 'updated' ) ) );
+		exit;
+	}
+
+	// verify that the user has a recent acceptance of the disclaimer that these tools could mess up the site
+	protected function _verify_disclaimer() {
+		// does the cookie exist?
+		if ( ! isset( $_COOKIE['qsot-advtools'] ) )
+			return false;
+
+		// break the cookie up to it's parts which we can use for verification
+		@list( $pieces, $hash ) = explode( '|', $_COOKIE['qsot-advtools'] );
+		$parts = explode( ':', $pieces );
+
+		// if the hash does not match, then bail
+		if ( empty( $parts ) || md5( AUTH_SALT . @json_encode( $parts ) . wp_create_nonce( 'yes-i-agree' ) ) !== $hash )
+			return false;
+
+		$expires = intval( substr( $parts[1], 1 ) );
+		// if the acceptance is expired, then bail
+		if ( time() > $expires )
+			return false;
+
+		return true;
+	}
+
+	// show the disclaimer that your site could get fucked up
+	protected function _pop_disclaimer() {
+		?>
+			<div class="lou-disclaimer">
+				<div class="lou-text"><?php _e( 'The tools provided on this page are moderately dangerous, and can cause problems on your site, if you are not absolutely certain you know what you are doing. Marking tickets as taken, without them being associated to an order, technically corrupts your date in a fashion that could be un-repairable. It can also cause certain automated processes in the system, to not function as expected. Furthermore, removing "reserved" tickets will remove the tickets from any active carts that contain them. This, at the very least, could cause un-expected customer service issues. In short, use these tools at your own risk.', 'opentickets-community-edition' ); ?></div>
+
+				<form method="post" id="lou-disclaimer">
+					<input type="hidden" name="i-understand" value="<?php echo esc_attr( wp_create_nonce( 'yes-i-understand' ) ) ?>" />
+					<input type="submit" class="button-primary" value="<?php echo esc_attr( __( 'I understand.', 'opentickets-community-edition' ) ) ?>" />
+				</div>
+			</div>
+		<?php
+	}
+
+	// display the advanced tools
+	protected function _display_adv_tools() {
+		?>
+			<div class="qsot-ajax-form-wrapper">
+				<form class="qsot-ajax-form" id="load-event-ticket-info" data-action="qsot-adv-tools" data-sa="load-event" data-target="#results">
+					<div class="field">
+						<label><?php _e( 'Select an Event', 'opentickets-community-edition' ) ?></label>
+						<input type="hidden" name="event_id" value="" class="use-select2" data-action="qsot-adv-tools" data-sa="find-events" />
+					</div>
+
+					<div class="field actions right">
+						<input type="submit" class="button-primary" value="<?php echo esc_attr( __( 'Load Event Info', 'opentickets-community-edition' ) ) ?>" />
+					</div>
+				</form>
+			</div>
+
+			<div id="results"></div>
+		<?php
+	}
+
+	// handle the ajax request for the advanced tools page
+	public function ajax_adv_tools() {
+		// if the current user cannot access this stuff, then bail
+		if ( ! current_user_can( 'manage_options' ) )
+			wp_send_json( array( 'success' => false, 'reason' => __( 'access denied.', 'opentickets-community-edition' ) ) );
+		// if the nonce is not set, or does not match, then bail
+		if ( ! isset( $_POST['_n'], $_POST['sa'] ) || ! wp_verify_nonce( $_POST['_n'], 'yes-do-system-status-ajax' ) )
+			wp_send_json( array( 'success' => false, 'reason' => __( 'request security failsed.', 'opentickets-community-edition' ) ) );
+
+		$sa = $_POST['sa'];
+		// do something different depending on the Sub Action
+		switch ( $sa ) {
+			case 'find-events':
+				// if there is no query, return no results
+				if ( ! isset( $_POST['q'] ) || empty( $_POST['q'] ) )
+					wp_send_json( array( 'success' => true, 'r' => array() ) );
+
+				// find all child ids that match
+				$event_ids = get_posts( array(
+					'post_status' => 'publish',
+					'post_type' => 'qsot-event',
+					'post_parent__not_in' => array( 0 ),
+					'posts_per_page' => 40,
+					'paged' => $_POST['page'],
+					'fields' => 'ids',
+					's' => $_POST['q'],
+				) );
+
+				$results = array();
+				// construct the results
+				foreach ( $event_ids as $id ) {
+					$post = get_post( $id );
+					$results[] = array(
+						'id' => $id,
+						'text' => apply_filters( 'the_title', $post->post_title, $id ) . ' (' . sprintf( '#%d', $id ) . ')',
+					);
+				}
+
+				// send the response
+				wp_send_json( array(
+					'success' => true,
+					'r' => $results,
+				) );
+			break;
+
+			case 'find-orders':
+				$none = array( 'id' => 0, 'text' => __( '(none)', 'opentickets-community-edition' ) );
+				// if there is no query, return no results
+				if ( ! isset( $_POST['q'] ) || empty( $_POST['q'] ) )
+					wp_send_json( array( 'success' => true, 'r' => array() ) );
+
+				$qs = preg_split( '#\s+#', $_POST['q'] );
+				$by_name = $by_meta = array();
+				// find posts that match
+				$by_name = get_posts( array(
+					'post_type' => 'shop_order',
+					'post_status' => 'wc-completed',
+					'posts_per_page' => -1,
+					'fields' => 'ids',
+					's' => implode( ' ', $qs ),
+				) );
+				$by_meta = get_posts( array(
+					'post_type' => 'shop_order',
+					'post_status' => 'wc-completed',
+					'posts_per_page' => -1,
+					'fields' => 'ids',
+					'meta_query' => array(
+						'relation' => 'OR',
+						array(
+							'key' => '_billing_email',
+							'value' => implode( '%', $qs ),
+							'compare' => 'LIKE',
+						),
+						array(
+							'key' => '_billing_first_name',
+							'value' => implode( '%', $qs ),
+							'compare' => 'LIKE',
+						),
+						array(
+							'key' => '_billing_last_name',
+							'value' => implode( '%', $qs ),
+							'compare' => 'LIKE',
+						),
+					),
+				) );
+				$order_ids = array_merge( $by_name, $by_meta );
+
+				$results = array( $none );
+				// construct the results array
+				foreach ( $order_ids as $order_id ) {
+					$order = wc_get_order( $order_id );
+					$results[] = array( 'id' => $order_id, 'text' => sprintf( __( 'Order #%d (%s %s, %s)', 'opentickets-community-edition' ), $order_id, $order->billing_first_name, $order->billing_last_name, $order->billing_email ) );
+				}
+
+				// render response
+				wp_send_json( array(
+					'success' => true,
+					'r' => $results,
+				) );
+			break;
+
+			case 'find-order-items':
+				$none = array( 'id' => 0, 'text' => __( '(none)', 'opentickets-community-edition' ) );
+				// if there is no query, return no results
+				if ( ! isset( $_POST['q'] ) || empty( $_POST['q'] ) )
+					wp_send_json( array( 'success' => true, 'r' => array() ) );
+
+				$qs = preg_split( '#\s+#', $_POST['q'] );
+				// setup the base query parts
+				global $wpdb;
+				$fields = array( 'oi.*' );
+				$tables = array( $wpdb->prefix . 'woocommerce_order_items oi' );
+				$join = array();
+				$where = array( $wpdb->prepare( 'and oi.order_item_type = %s and oi.order_item_name like %s', 'line_item', '%' . implode( '%', $qs ) . '%' ) );
+				$groupby = array();
+				$orderby = array();
+				$limit = sprintf( 'limit %d offset %d', 40, 40 * ( absint( $_POST['page'] ) - 1 ) );
+
+				// add the order_id to the query if it was passed
+				if ( isset( $_POST['order_id'] ) )
+					$where[] = $wpdb->prepare( 'and oi.order_id = %d', $_POST['order_id'] );
+
+				// construct the list of fields that plugins can modify
+				$list = array( 'fields', 'tables', 'join', 'where', 'groupby', 'orderby', 'limit' );
+				$parts = compact( $list );
+				$parts = apply_filters( 'qsot-system-status-adv-tools-find-order-items-query', $parts, $_POST );
+				foreach ( $list as $key )
+					$$key = $parts[ $key ];
+
+				// finalize the fields into strings
+				$fields = implode( ', ', $fields );
+				$tables = implode( ', ', $tables );
+				$join = ( $join = implode( ' ', $join ) ) ? ' join ' . $join : '';
+				$where = implode( ' ', $where );
+				$orderby = ( $orderby = implode( ', ', $orderby ) ) ? ' order by ' . $orderby : '';
+				$groupby = ( $groupby = implode( ', ', $groupby ) ) ? ' group by ' . $groupby : '';
+
+				// run the query to find the order_item_ids
+				$ois = $wpdb->get_results( 'select ' . $fields . ' from ' . $tables . $join . ' where 1=1 ' . $where . $groupby . $orderby . ' ' . $limit );
+				$oi_ids = array();
+				if ( count( $ois ) ) foreach ( $ois as $oi ) $oi_ids[] = $oi->order_item_id;
+
+				$oi_meta = array();
+				// if there are order item ids, then fetch all their metas
+				if ( count( $oi_ids ) ) {
+					$all_meta = $wpdb->get_results( 'select * from ' . $wpdb->prefix . 'woocommerce_order_itemmeta where order_item_id in (' . implode( ',', $oi_ids ) . ')' );
+					// if there is meta, then organize it
+					if ( count( $all_meta ) ) {
+						foreach ( $all_meta as $meta ) {
+							if ( ! isset( $oi_meta[ $meta->order_item_id ] ) )
+								$oi_meta[ $meta->order_item_id ] = array();
+							$oi_meta[ $meta->order_item_id ][ $meta->meta_key ] = $meta->meta_value;
+						}
+					}
+				}
+
+				$results = array( $none );
+				// construct the results
+				if ( count( $ois ) ) foreach ( $ois as $oi ) {
+					// if there is no product id or quantity, then skip this item
+					if ( ! isset( $oi_meta[ $oi->order_item_id ], $oi_meta[ $oi->order_item_id ]['_product_id'], $oi_meta[ $oi->order_item_id ]['_qty'] ) )
+						continue;
+
+					// load the product
+					$product = wc_get_product( $oi_meta[ $oi->order_item_id ]['_product_id'] );
+					$qty = intval( $oi_meta[ $oi->order_item_id ]['_qty'] );
+
+					$event = '';
+					// if there is an event id, then load the event_title
+					if ( isset( $oi_meta[ $oi->order_item_id ]['_event_id'] ) )
+						$event = get_the_title( $oi_meta[ $oi->order_item_id ]['_event_id'] );
+
+					$text = apply_filters(
+						'qsot-system-status-adv-tools-order-item-result', 
+						sprintf( __( '%s x %d %s [Order #%d]', 'opentickets-community-edition' ), $product->get_title(), $qty, $event ? '(' . $event . ')' : '', $oi->order_id ),
+						$product,
+						$oi,
+						$oi_meta[ $oi->order_item_id ]
+					);
+					$results[] = array( 'id' => $oi->order_item_id, 'text' => $text );
+				}
+
+				// render response
+				wp_send_json( array(
+					'success' => true,
+					'r' => $results,
+				) );
+			break;
+
+			case 'load-event':
+				// if there is no event passed, then bail
+				if ( ! isset( $_POST['event_id'] ) || intval( $_POST['event_id'] ) < 0 )
+					wp_send_json( array( 'success' => false, 'reason' => __( 'invalid request.', 'opentickets-community-edition' ) ) );
+
+				// send the response
+				wp_send_json( array(
+					'success' => true,
+					'r' => $this->_render_event_breakdown_form( $_POST['event_id'] ),
+				) );
+			break;
+
+			case 'release':
+				// if there was no event id supplied, then hard fail
+				if ( ! isset( $_POST['id'] ) || intval( $_POST['event_id'] ) < 0 )
+					wp_send_json( array( 'success' => false, 'reason' => __( 'invalid request.', 'opentickets-community-edition' ) ) );
+
+				// if there is no id supplied, then bail
+				if ( ! isset( $_POST['id'] ) || empty( $_POST['id'] ) )
+					wp_send_json( array( 'success' => true, 'r' => $this->_render_event_breakdown_form( $_POST['event_id'], __( 'No such ticket.', 'opentickets-community-edition' ) ) ) );
+
+				// otherwise, release the ticket, no matter the costs
+				$result = $this->_release_seat( $_POST['id'] );
+
+				// if the result was not successful, tnen send a message saying why
+				if ( is_wp_error( $result ) )
+					wp_send_json( array( 'success' => true, 'r' => $this->_render_event_breakdown_form( $_POST['event_id'], $result->get_error_message(), false ) ) );
+
+				// otherwise, send a result with a positive message
+				wp_send_json( array( 'success' => true, 'r' => $this->_render_event_breakdown_form( $_POST['event_id'], __( 'That ticket has been released.', 'opentickets-community-edition' ) ) ) );
+			break;
+
+			case 'add-ticket':
+				// if the minimum data is not present, then bail
+				if ( ! isset( $_POST['event_id'], $_POST['quantity'], $_POST['ticket_type_id'], $_POST['state'] ) || $_POST['event_id'] <= 0 || $_POST['quantity'] <= 0 || $_POST['ticket_type_id'] <= 0 || empty( $_POST['state'] ) )
+					wp_send_json( array( 'success' => false, 'reason' => __( 'invalid request.', 'opentickets-community-edition' ) ) );
+
+				@list( $time, $mille ) = explode( '.', microtime( true ) );
+				$mille = substr( $mille, 0, 4 );
+				// gather all the data we need for an entry
+				$data = apply_filters( 'qsot-system-status-adv-tools-add-ticket-data', array(
+					'event_id' => absint( $_POST['event_id'] ),
+					'order_id' => isset( $_POST['order_id'] ) && intval( $_POST['order_id'] ) > 0 ? intval( $_POST['order_id'] ) : 0,
+					'order_item_id' => isset( $_POST['order_item_id'] ) && intval( $_POST['order_item_id'] ) > 0 ? intval( $_POST['order_item_id'] ) : 0,
+					'quantity' => absint( $_POST['quantity'] ),
+					'ticket_type_id' => absint( $_POST['ticket_type_id'] ),
+					'state' => $_POST['state'],
+					'mille' => $mille,
+					'session_customer_id' => uniqid( 'adv-tools-' ),
+				), $_POST );
+
+				global $wpdb;
+				// insert the row
+				$res = $wpdb->insert( $wpdb->qsot_event_zone_to_order, $data );
+
+				// render response
+				wp_send_json( array(
+					'success' => true,
+					'r' => $this->_render_event_breakdown_form( $_POST['event_id'], $res ? __( 'Inserted new ticket', 'opentickets-community-edition' ) : __( 'New ticket failed.', 'opentickets-community-edition' ), !!$res ),
+				) );
+			break;
+		}
+
+		wp_send_json( array( 'success' => false, 'reason' => __( 'invalid request.', 'opentickets-community-edition' ) ) );
+	}
+
+	// process a request to release a seat
+	protected function _release_seat( $id ) {
+		// breakdown the id
+		$parsed = explode( ':', $id );
+		$parsed = apply_filters( 'qsot-system-status-adv-tools-release-seat-id', array(
+			'event_id' => absint( $parsed[0] ),
+			'order_id' => absint( $parsed[1] ),
+			'quantity' => intval( $parsed[2] ),
+			'product_id' => absint( $parsed[3] ),
+			'session_id' => trim( $parsed[4] ),
+		), $id );
+
+		// allow plugins to override this
+		$result = apply_filters( 'qsot-system-status-adv-tools-release-seat', null, $parsed, $id );
+
+		// if there was a change from plugins, then use it
+		if ( null !== $result )
+			return $result;
+
+		// validate the request
+		if ( empty( $parsed['event_id'] ) )
+			return new WP_Error( 'unknown_event', __( 'The event id was invalid.', 'opentickets-community-edition' ) );
+		if ( $parsed['quantity'] <= 0 )
+			return new WP_Error( 'unknown_quantity', __( 'The quantity was invalid.', 'opentickets-community-edition' ) );
+		if ( empty( $parsed['product_id'] ) )
+			return new WP_Error( 'unknown_product', __( 'The product id was invalid.', 'opentickets-community-edition' ) );
+		if ( empty( $parsed['session_id'] ) )
+			return new WP_Error( 'unknown_session', __( 'The session id was invalid.', 'opentickets-community-edition' ) );
+
+		global $wpdb;
+		// lookup the row we are requesting, to verify it exists
+		$row = $wpdb->get_row( $wpdb->prepare(
+			'select * from ' . $wpdb->qsot_event_zone_to_order . ' where event_id = %d and order_id = %d and quantity = %d and ticket_type_id = %d and session_customer_id = %d',
+			$parsed['event_id'],
+			$parsed['order_id'],
+			$parsed['quantity'],
+			$parsed['product_id'],
+			$parsed['session_id']
+		) );
+
+		// if there is no matching row, then bail
+		if ( ! is_object( $row ) || is_wp_error( $row ) )
+			return new WP_Error( 'no_match', __( 'Could not find that DB record.', 'opentickets-community-edition' ) );
+
+		// otherwise, kill that row completely
+		$wpdb->query( $wpdb->prepare(
+			'delete from ' . $wpdb->qsot_event_zone_to_order . ' where event_id = %d and order_id = %d and quantity = %d and ticket_type_id = %d and session_customer_id = %d limit 1',
+			$parsed['event_id'],
+			$parsed['order_id'],
+			$parsed['quantity'],
+			$parsed['product_id'],
+			$parsed['session_id']
+		) );
+
+		return true;
+	}
+
+	// render the form where the user can change the states of all tickets
+	protected function _render_event_breakdown_form( $event_id, $msg='', $msg_good=true ) {
+		// let plugins override this
+		$response = apply_filters( 'qsot-adv-tools-event-breakdown-render', null, $event_id );
+
+		// if there was a response created outside of this file, then use it instead
+		if ( null !== $response )
+			return $response;
+
+		// load the event
+		$event = apply_filters( 'qsot-get-event', false, $event_id );
+
+		// if there is no event, then bail
+		if ( ! is_object( $event ) )
+			return '<h3>' . __( 'No such event.', 'opentickets-community-edition' ) . '</h3>';
+
+		global $wpdb;
+		// load all the ticket to event to order associations
+		$assoc = $wpdb->get_results( $wpdb->prepare( 'select * from ' . $wpdb->qsot_event_zone_to_order . ' where event_id = %d', $event_id ) );
+
+		// get all opentickets options
+		$settings_class_name = apply_filters( 'qsot-settings-class-name', '' );
+		if ( empty( $settings_class_name ) || ! class_exists( $settings_class_name ) )
+			return '<h3>' . __( 'A problem occurred, and your request cannot be processed.', 'opentickets-community-edition' ) . '</h3>';
+		$opts = call_user_func_array( array( $settings_class_name, 'instance' ), array() );
+
+		ob_start();
+		// render the results
+		?>
+			<div id="qsot-save-results">
+				<?php if ( ! empty( $msg ) ): ?>
+					<div class="msg msg-<?php echo $msg_good ? 'good' : 'bad' ?>"><?php echo force_balance_tags( $msg ); ?></div>
+				<?php endif; ?>
+			</div>
+
+			<div class="qsot-ajax-form">
+				<table cellspacing="0" class="widefat" role="event" data-id="<?php echo esc_attr( $event_id ) ?>">
+					<thead>
+						<tr>
+							<th><?php _e( 'Order', 'opentickets-community-edition' ) ?></th>
+							<?php do_action( 'qsot-system-status-adv-tools-table-headers' ); ?>
+							<th><?php _e( 'Ticket Type', 'opentickets-community-edition' ) ?></th>
+							<th><?php _e( 'Quantity', 'opentickets-community-edition' ) ?></th>
+							<th><?php _e( 'Status', 'opentickets-community-edition' ) ?></th>
+							<th><?php _e( 'Actions', 'opentickets-community-edition' ) ?></th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<?php if ( count( $assoc ) ): ?>
+							<?php foreach ( $assoc as $row ): ?>
+								<tr role="entry" data-row="<?php echo esc_attr( apply_filters(
+									'qsot-system-status-adv-tools-table-row-id',
+									sprintf( '%s:%s:%s:%s:%s', $row->event_id, $row->order_id, $row->quantity, $row->ticket_type_id, $row->session_customer_id ),
+									$row
+								) ) ?>">
+									<td title="<?php echo esc_attr( $row->session_customer_id ) ?>"><?php
+										echo $row->order_id > 0
+												? sprintf(
+													'<a href="%s" title="%s" target="_blank">%s</a> (item:%s)',
+													get_edit_post_link( $row->order_id ),
+													__( 'Edit this Order', 'opentickets-community-edition' ),
+													$row->order_id,
+													$row->order_item_id
+												)
+												: ( 'confirmed' == $row->state ? __( 'No Order (unassociated)', 'opentickets-community-edition' ) : __( 'No Order (in a cart)', 'opentickets-community-edition' ) );
+									?></td>
+
+									<?php do_action( 'qsot-system-status-adv-tools-table-row-columns', $row ); ?>
+
+									<td><?php
+										$product = wc_get_product( $row->ticket_type_id );
+										if ( is_object( $product ) && ! is_wp_error( $product ) )
+											echo sprintf( '<a href="%s" title="%s" target="_blank">%s</a>', get_edit_post_link( $product->id ), __( 'Edit this Ticket', 'opentickets-community-edition' ), $product->get_title() );
+										else
+											echo __( '(unknown ticket type)', 'opentickets-community-edition' );
+									?></td>
+									<td><?php echo $row->quantity ?></td>
+									<td><?php echo $row->state ?></td>
+									<td>
+										<?php /* <a href="javascript:void();" role="edit-btn" class="button"><?php _e( 'Edit', 'opentickets-community-edition' ) ?></a> */ ?>
+										<a href="javascript:void();" data-action="qsot-adv-tools" data-sa="release" data-target="#results" role="release-btn" class="button"><?php _e( 'Release', 'opentickets-community-edition' ) ?></a>
+										<?php do_action( 'qsot-system-status-adv-tools-table-row-actions', $row ); ?>
+									</td>
+								</tr>
+							<?php endforeach; ?>
+						<?php else: ?>
+							<td colspan="5"><?php _e( 'No DB records for this event.', 'opentickets-community-edition' ) ?></td>
+						<?php endif; ?>
+					</tbody>
+				</table>
+			</div>
+
+			<form class="qsot-ajax-form" data-target="#results" data-action="qsot-adv-tools" data-sa="add-ticket">
+				<h3><?php _e( 'Add a Ticket', 'qsot-adv-tools' ) ?></h3>
+
+				<?php $none = array( 'id' => 0, 'text' => __( '(none)', 'opentickets-community-edition' ) ); ?>
+
+				<div class="constrict-fields">
+					<div class="field">
+						<label><?php _e( 'Order #', 'opentickets-community-edition' ) ?></label>
+						<input type="hidden" class="use-select2" data-init-value="<?php echo esc_attr( @json_encode( $none ) ) ?>" data-action="qsot-adv-tools" data-sa="find-orders" name="order_id" />
+						<div class="helper"><?php _e( 'Leave this blank, or set it to 0, if you want the ticket to be completely unassociated.', 'opentickets-community-edition' ) ?></div>
+					</div>
+
+					<div class="field">
+						<label><?php _e( 'Order Item ID', 'opentickets-community-edition' ) ?></label>
+						<input type="hidden" class="use-select2" name="order_item_id"
+								data-init-value="<?php echo esc_attr( @json_encode( $none ) ) ?>" data-action="qsot-adv-tools" data-sa="find-order-items" data-add="[name='order_id']" data-minchar="0" />
+						<div class="helper"><?php _e( 'This can be hard to find, but is required if you want this new ticket to have an association.', 'opentickets-community-edition' ) ?></div>
+					</div>
+
+					<div class="field">
+						<label><?php _e( 'Quantity', 'opentickets-community-edition' ) ?></label>
+						<input type="number" class="widefat" value="0" name="quantity" />
+						<div class="helper"><?php _e( 'The number of these tickets you want to reserve. Must be greater than 0.', 'opentickets-community-edition' ) ?></div>
+					</div>
+
+					<?php
+						$ticket = isset( $event->meta, $event->meta->_event_area_obj, $event->meta->_event_area_obj->ticket ) ? $event->meta->_event_area_obj->ticket : false;
+						$ticket_types = apply_filters( 'qsot-system-status-adv-tools-add-ticket-ticket-types', $ticket ? array( "{$ticket->id}" => $ticket ) : array(), $event );
+					?>
+
+					<div class="field">
+						<label><?php _e( 'Ticket Type', 'opentickets-community-edition' ) ?></label>
+						<select class="widefat" name="ticket_type_id">
+							<?php foreach ( $ticket_types as $ticket ): if ( ! is_object( $ticket ) || ! isset( $ticket->id ) ) continue; ?>
+								<option value="<?php echo esc_attr( $ticket->id ); ?>"><?php echo $ticket->get_title() ?></option>
+							<?php endforeach; ?>
+						</select>
+						<div class="helper"><?php _e( 'Select the ticket type for this new reservation. Keep in mind, all available type are listed here.', 'opentickets-community-edition' ) ?></div>
+					</div>
+
+					<?php $stati = array_reverse( (array) $opts->{'z.states'}, true ); ?>
+					<div class="field">
+						<label><?php _e( 'Ticket Status', 'opentickets-community-edition' ) ?></label>
+						<select class="widefat" name="state">
+							<?php foreach ( $stati as $abbr => $name ): ?>
+								<option value="<?php echo esc_attr( $name ); ?>" <?php selected( 'confirmed', $name ) ?>><?php echo $name ?></option>
+							<?php endforeach; ?>
+						</select>
+						<div class="helper"><?php _e( 'The status you want the ticket to have.', 'opentickets-community-edition' ) ?></div>
+					</div>
+
+					<?php do_action( 'qsot-system-status-adv-tools-add-ticket-fields', $event ) ?>
+
+					<div class="field actions right">
+						<input type="hidden" value="<?php echo esc_attr( $event->ID ) ?>" name="event_id" />
+						<input type="submit" class="button-primary" value="<?php echo esc_attr( __( 'Add Ticket', 'opentickets-community-edition' ) ) ?>" />
+					</div>
+				</div>
+			</form>
+		<?php
+
+		$out = ob_get_contents();
+		ob_end_clean();
+
+		return trim( $out );
+	}
+
+	// enqueue assets we need for this page
+	public function enqueue_assets() {
+		// reusable data
+		$url = QSOT::plugin_url() . 'assets/';
+		$version = QSOT::version();
+
+		// enqueuing
+		wp_enqueue_style( 'qsot-select2' );
+		wp_enqueue_script( 'qsot-system-status', $url . 'js/admin/system-status.js', array( 'qsot-tools', 'qsot-select2' ), $version );
+		wp_localize_script( 'qsot-system-status', '_qsot_system_status', array(
+			'nonce' => wp_create_nonce( 'yes-do-system-status-ajax' ),
+			'str' => array(
+				'No results found.' => __( 'No results found.', 'opentickets-community-edition' ),
+				'Loading...' => __( 'Loading...', 'opentickets-community-edition' ),
+			),
+		) );
+	}
+
 	// handle actions before the page starts drawing
 	public function page_head() {
+		// maybe create the disclaimer imprint
+		$this->_maybe_accepted();
+
 		$current = $this->_current_tab();
 		$args = array();
 
@@ -245,47 +830,14 @@ class QSOT_system_status_page extends QSOT_base_page {
 			$processed = false;
 
 			// if the tool requested is on our list, then handle it appropriately
-			if ( isset( $_GET['qsot-tool'] ) ) switch ( $_GET['qsot-tool'] ) {
-				// when not in this list, call an specialized functions for this
-				default:
-					if ( has_action( 'qsot-ss-tool-' . $_GET['qsot-tool'] ) ) {
-						list( $processed, $args ) = apply_filters( 'qsot-ss-tool-' . $_GET['qsot-tool'], false, $args );
-					}
-				break;
+			if ( isset( $_GET['qsot-tool'] ) ) {
+				// run known functions first
+				if ( isset( $this->tools[ $_GET['qsot-tool'] ] ) )
+					@list( $processed, $args ) = call_user_func( $this->tools[ $_GET['qsot-tool'] ]['function'], array( $processed, $args ), $args );
 
-				// force a resync of all the purchased tickets
-				case 'RsOi2Tt':
-					if ( $this->_verify_action_nonce( 'RsOi2Tt' ) ) {
-						$state = $_GET['state'] == 'bg' ? '-bg' : '';
-						if ( $this->_perform_resync_order_items_to_ticket_table() ) $args['performed'] = 'resync' . $state;
-						else $args['performed'] = 'failed-resync' . $state;
-						$processed = true;
-					}
-				break;
-
-				// force a repair of the db tables
-				case 'FdbUg':
-					if ( $this->_verify_action_nonce( 'FdbUg' ) ) {
-						delete_option( '_qsot_upgrader_db_table_versions' );
-						$args['performed'] = 'removed-db-table-versions';
-						$processed = true;
-					}
-				break;
-
-				// remove all the assets that have been cached for ticket pdf creation
-				case 'RmTFC':
-					if ( $this->_verify_action_nonce( 'RmTFC' ) ) {
-						$path = QSOT_cache_helper::create_find_cache_dir();
-						try {
-							self::_empty_dir( $path );
-							$args['performed'] = 'removed-ticket-asset-cache';
-							$processed = true;
-						} catch ( Exception $e ) {
-							$args['performed'] = 'failed-ticket-asset-cache';
-							$processed = true;
-						}
-					}
-				break;
+				// run additionall functions if they exist
+				if ( has_action( 'qsot-ss-tool-' . $_GET['qsot-tool'] ) )
+					list( $processed, $args ) = apply_filters( 'qsot-ss-tool-' . $_GET['qsot-tool'], array( $processed, $args ), $args );
 			}
 
 			// if one of the actions was actually processed, then redirect, which protects the 'refresh-resubmit' situtation
@@ -294,6 +846,44 @@ class QSOT_system_status_page extends QSOT_base_page {
 				exit;
 			}
 		}
+	}
+
+	// handle the resync requests
+	public function tool_RsOi2Tt( $result, $args ) {
+		if ( $this->_verify_action_nonce( 'RsOi2Tt' ) ) {
+			$state = $_GET['state'] == 'bg' ? '-bg' : '';
+			if ( $this->_perform_resync_order_items_to_ticket_table() ) $result[1]['performed'] = 'resync' . $state;
+			else $result[1]['performed'] = 'failed-resync' . $state;
+			$result[0] = true;
+		}
+		return $result;
+	}
+
+	// handle the force repair db tables request
+	public function tool_FdbUg( $result, $args ) {
+		if ( $this->_verify_action_nonce( 'FdbUg' ) ) {
+			delete_option( '_qsot_upgrader_db_table_versions' );
+			$result[1]['performed'] = 'removed-db-table-versions';
+			$result[0] = true;
+		}
+		return $result;
+	}
+
+	// handle the 'remove all cached pdf assets' request
+	public function tool_RmTFC( $result, $args ) {
+		if ( $this->_verify_action_nonce( 'RmTFC' ) ) {
+			$path = QSOT_cache_helper::create_find_cache_dir();
+			try {
+				self::_empty_dir( $path );
+				$result[1]['performed'] = 'removed-ticket-asset-cache';
+				$result[0] = true;
+			} catch ( Exception $e ) {
+				$result[1]['performed'] = 'failed-ticket-asset-cache';
+				$result[0] = true;
+			}
+		}
+
+		return $result;
 	}
 
 	// empty all files from a directory (skips subdirs)
@@ -474,7 +1064,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 					unset( $items[ $item_id ] ); // free memory
 
 					// generate a list of all the data we can insert into the ticket table
-					$update = array(
+					$update = apply_filters( 'qsot-system-status-tools-RsOi2Tt-update-data', array(
 						'event_id' => isset( $item['_event_id'] ) ? $item['_event_id'] : 0,
 						'ticket_type_id' => isset( $item['_product_id'] ) ? $item['_product_id'] : 0,
 						'quantity' => isset( $item['_qty'] ) ? $item['_qty'] : 0,
@@ -483,7 +1073,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 						'session_customer_id' => $user_id,
 						'since' => $since,
 						'state' => $o->{'z.states.c'},
-					);
+					), $item, $item_id, $item_to_order_map[ $item_id ] );
 
 					// add this event to the list of events that need processing later
 					if ( $update['event_id'] ) {
@@ -491,12 +1081,12 @@ class QSOT_system_status_page extends QSOT_base_page {
 					}
 
 					// make a list of data to validate if an entry already exists or not
-					$where = array(
+					$where = apply_filters( 'qsot-system-status-tools-RsOi2Tt-exists-where', array(
 						'event_id' => $update['event_id'],
 						'ticket_type_id' => $update['ticket_type_id'],
 						'quantity' => $update['quantity'],
 						'order_id' => $update['order_id'],
-					);
+					), $update, $item, $item_id, $order_id );
 
 					// add the update and test to the list of updates
 					$updates[] = array( $where, $update );
