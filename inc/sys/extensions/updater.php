@@ -59,8 +59,6 @@ class QSOT_Extensions_Updater {
 		// update the response body with the new list
 		$response['body'] = @json_encode( $parsed );
 
-		echo '<script>console.log( '. $response['body'] . ' );</script>';
-
 		return $response;
 	}
 
@@ -211,8 +209,8 @@ class QSOT_Extensions_Updater {
 						// if we have plugin data, then use it
 						if ( ! empty( $plugin ) ) {
 							$replacements = array(
-								'{KEY}' => rawurlencode( $plugin['license'] ),
-								'{HASH}' => $plugin['verification_code'],
+								'{KEY}' => isset( $plugin['license'] ) ? rawurlencode( $plugin['license'] ) : '',
+								'{HASH}' => isset( $plugin['verification_code'] ) ? $plugin['verification_code'] : '',
 								'{DOMAIN}' => $domain,
 								'{FILE}' => $file,
 							);
