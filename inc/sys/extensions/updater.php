@@ -10,6 +10,8 @@ class QSOT_Extensions_Updater {
 
 	// setup the actions, filters, and basic data needed for this class
 	public static function pre_init() {
+		if ( isset( $_GET['fucktest'] ) )
+			die(var_dump(self::_maybe_extension_updates()));
 		// add a filter to sniff out the core wp update url requests
 		add_filter( 'http_response', array( __CLASS__, 'check_for_update_request' ), 10000, 3 );
 
@@ -130,6 +132,7 @@ class QSOT_Extensions_Updater {
 
 		// maybe update some of the fields if the information has become available from the server
 		$maybe_update_fields = array(
+			'rating', // the average rating
 			'ratings', // the rating system
 			'num_ratings', // the total number of ratings we have
 			'active_installs', // the tally of number of active installs we have
@@ -211,6 +214,7 @@ class QSOT_Extensions_Updater {
 								'{KEY}' => rawurlencode( $plugin['license'] ),
 								'{HASH}' => $plugin['verification_code'],
 								'{DOMAIN}' => $domain,
+								'{FILE}' => $file,
 							);
 							$data['package'] = str_replace( array_keys( $replacements ), array_values( $replacements ), $data['package'] );
 

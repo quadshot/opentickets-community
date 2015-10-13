@@ -100,12 +100,22 @@ class QSOT_Extensions_Page {
 			<div class="wrap">
 				<h2><?php _e( 'OpenTickets Extensions', 'opentickets-community-edition' ) ?></h2>
 				<div class="qsot-list" role="list">
-					<?php foreach ( $known as $file => $data ): ?>
+					<?php foreach ( $known as $file => $data ): $images = isset( $data['images'] ) ? $data['images'] : array(); ?>
 						<div class="extension" role="extension" data-extension="<?php echo esc_attr( $file ) ?>">
 							<div class="inner">
-								<div class="header"><?php echo empty( $data['icon_rel_path'] ) ? '' : sprintf(
-									'<img src="%s" width="%s" title="%s%s" />',
-									esc_attr( $url . $data['icon_rel_path'] ),
+								<?php
+									// find the cheapest, for now
+									$cheapest = null;
+									foreach ( $data['products'] as $product )
+										$cheapest = ! isset( $cheapest ) || $cheapest['price'] > $product['price'] ? $product : $cheapest;
+
+									$cheapest_url = ! isset( $cheapest ) ? $data['permalink'] : $cheapest['to_cart_url'];
+								?>
+
+								<div class="header"><?php echo ! isset( $images['store_image'] ) || empty( $images['store_image']['icon_rel_path'] ) ? '' : sprintf(
+									'<a href="%s" target="_blank"><img src="%s" width="%s" title="%s %s" /></a>',
+									esc_attr( $data['permalink'] ),
+									esc_attr( $url . $images['store_image']['icon_rel_path'] ),
 									'300',
 									esc_attr( __( 'View', 'opentickets-community-edition' ) ),
 									esc_attr( $data['label'] )
@@ -122,7 +132,10 @@ class QSOT_Extensions_Page {
 										<?php endif; ?>
 									</div>
 
-									<div class="price"><?php echo $data['display_price'] ?></div>
+									<div class="price">
+										<?php _e( 'From:', 'opentickets-community-edition' ) ?>
+										<?php echo ! isset( $cheapest ) || $cheapest['price'] <= 0 ? __( 'Free', 'opentickets-community-edition' ) : $cheapest['display_price'] ?>
+									</div>
 
 									<div class="clear"></div>
 								</div>
@@ -133,12 +146,14 @@ class QSOT_Extensions_Page {
 								</div>
 
 								<div class="actions"><div class="inside">
-									<?php if ( isset( $activated[ $file ] ) ): ?>
+									<?php if ( isset( $data['needs_license'] ) && ! $data['needs_license'] ): ?>
+										<input type="button" class="button right disabled" value="<?php echo esc_attr( __( 'No License Required', 'opentickets-community-edition' ) ) ?>" />
+									<?php elseif ( isset( $activated[ $file ] ) ): ?>
 										<input type="button" class="button right disabled" value="<?php echo esc_attr( __( 'Already Activated', 'opentickets-community-edition' ) ) ?>" />
 									<?php elseif ( isset( $installed[ $file ] ) ): ?>
 										<a href="<?php echo esc_attr( $licenses_url . '#focus,' . $file ) ?>" class="button right"><?php _e( 'Activate License', 'opentickets-community-edition' ) ?></a>
 									<?php else: ?>
-										<a href="<?php echo esc_attr( $data['to_cart_url'] ) ?>" target="_blank" class="button-primary right"><?php _e( 'Purchase', 'opentickets-community-edition' ) ?></a>
+										<a href="<?php echo esc_attr( $cheapest_url ) ?>" target="_blank" class="button-primary right"><?php _e( 'Purchase', 'opentickets-community-edition' ) ?></a>
 									<?php endif; ?>
 
 									<?php

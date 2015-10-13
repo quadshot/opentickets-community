@@ -65,7 +65,9 @@ class QSOT_Settings_Licenses extends QSOT_Settings_Page {
 								<div class="status-icon">
 									<?php if ( ! isset( $licenses[ $file ] ) ): // not registered ?>
 									<?php else: ?>
-										<?php if ( $now > $licenses[ $file ]['expires'] ): // expired ?>
+										<?php if ( isset( $plugin['_known'], $plugin['_known']['needs_license'] ) && ! $plugin['_known']['needs_license'] ): // expired ?>
+											<span class="dashicons dashicons-yes"></span>
+										<?php elseif ( $now > $licenses[ $file ]['expires'] ): // expired ?>
 											<span class="dashicons dashicons-warning"></span>
 										<?php else: // valid and registered ?>
 											<span class="dashicons dashicons-yes"></span>
@@ -79,7 +81,12 @@ class QSOT_Settings_Licenses extends QSOT_Settings_Page {
 										<span class="value"><?php echo apply_filters( 'the_title', $plugin['Name'] . ' ' . sprintf( __( '(version %s)', 'opentickets-community-edition' ), $plugin['Version'] ) ) ?></span>
 									</div>
 
-									<?php if ( ! isset( $licenses[ $file ] ) || ! isset( $licenses[ $file ]['verification_code'] ) || empty( $licenses[ $file ]['verification_code'] ) ): ?>
+									<?php if ( isset( $plugin['_known'], $plugin['_known']['needs_license'] ) && ! $plugin['_known']['needs_license'] ): ?>
+										<div class="field">
+											<span class="label"><?php _e( 'Status', 'opentickets-community-edition' ) ?></span>:
+											<span class="value"><?php _e( 'No License Required', 'opentickets-community-edition' ) ?></span>
+										</div>
+									<?php elseif ( ! isset( $licenses[ $file ] ) || ! isset( $licenses[ $file ]['verification_code'] ) || empty( $licenses[ $file ]['verification_code'] ) ): ?>
 										<?php $item = isset( $licenses[ $file ] ) ? $licenses[ $file ] : array() ?>
 										<div class="field">
 											<span class="label"><?php _e( 'Status', 'opentickets-community-edition' ) ?></span>:
@@ -312,12 +319,11 @@ class QSOT_Settings_Licenses extends QSOT_Settings_Page {
 			$api = QSOT_Extensions_API::instance();
 			$response = $api->deactivate( $data );
 
-			// if the request hard failed, then add that error to the global error messages
+			// if the request hard failed, then add that error to the global error messages, so that it is displayed on next license page load
 			if ( is_wp_error( $response ) ) {
 				// convert the error to an array, and store it
 				$errors = $this->_array_from_error( $response );
 				update_option( 'qsot-licenses-error', $errors );
-				return;
 			}
 
 			// update the license in the db

@@ -265,7 +265,7 @@ class QSOT_Extensions {
 			return;
 
 		// otherwise, update the known plugins list, and it's cache (make sure not to autoload)
-		$this->known = $this->_handle_icons( $results, $existing_known );
+		$this->known = $this->_handle_images( $results, $existing_known );
 		update_option( self::$ns . 'known-plugins', $this->known, 'no' );
 	}
 
@@ -281,9 +281,35 @@ class QSOT_Extensions {
 
 		$final = array();
 		// create a list of image hashes
-		foreach ( $known as $file => $data )
-			if ( ! empty( $data['icon_rel_path'] ) && @file_exists( $path . $data['icon_rel_path'] ) )
-				$final[ $file ] = md5( file_get_contents( $path . $data['icon_rel_path'] ) );
+		foreach ( $known as $file => $data ) {
+			// if there are no images on file, then skip this item
+			if ( ! isset( $data['images'] ) || empty( $data['images'] ) )
+				continue;
+
+			$list = array();
+			// cycle through the images and aggregate any local image md5 hashes
+			foreach ( $data['images'] as $key => $images ) {
+				switch ( $key ) {
+					default:
+					case 'icon_image':
+					case 'store_image':
+						if ( isset( $images['icon_rel_path'] ) && ! empty( $images['icon_rel_path'] ) && @file_exists( $path . $images['icon_rel_path'] ) )
+							$list[ md5_file( $path . $images['icon_rel_path'] ) ] = 1;
+					break;
+
+					case 'banner_images':
+					case 'screenshot_images':
+						foreach ( $images as $image_ind => $img )
+							if ( isset( $img['icon_rel_path'] ) && ! empty( $img['icon_rel_path'] ) && @file_exists( $path . $img['icon_rel_path'] ) )
+								$list[ md5_file( $path . $img['icon_rel_path'] ) ] = 1;
+					break;
+				}
+			}
+
+			// if there were image hashes, then add them for this plugin
+			if ( $list )
+				$final[ $file ] = $list;
+		}
 
 		return $final;
 	}
@@ -312,30 +338,88 @@ class QSOT_Extensions {
 	}
 
 	// handle the icons passed by the api response. we should save copied of them in our uploads dir
-	protected function _handle_icons( $data, $existing_known ) {
+	protected function _handle_images( $data, $existing_known ) {
 		// for each response item, handle the icon updating
 		foreach ( $data as $ind => $item ) {
-			// if the icon didnt change, according to our checks, then just use the old value if there is one
-			$changed = ! isset( $item['icon_no_change'] ) || ! $item['icon_no_change'];
-			if ( ! $changed && isset( $existing_known[ $ind ], $existing_known[ $ind ]['icon_rel_path'] ) ) {
-				unset( $item['icon'], $item['icon_no_change'] );
-				$item['icon_rel_path'] = $existing_known[ $ind ]['icon_rel_path'];
-				$data[ $ind ] = $item;
+			// if the iamges block is not set, then skip this item
+			if ( ! isset( $item['images'] ) )
 				continue;
+
+			// check each image key for changes
+			foreach ( $item['images'] as $key => $value ) {
+				// do something different depending on the key
+				switch ( $key ) {
+					default:
+					case 'icon_image':
+					case 'store_image':
+						// determine if the server says that the image changed
+						$changed = ! isset( $value['icon_no_change'] ) || ! $value['icon_no_change'];
+
+						// if it did not change, then just use the old value we have on file
+						if ( ! $changed && isset( $existing_known[ $ind ], $existing_known[ $ind ]['images'], $existing_known[ $ind ]['images'][ $key ], $existing_known[ $ind ]['images'][ $key ]['icon_rel_path'] ) ) {
+							$item['images'][ $key ] = array( 'icon_rel_path' => $existing_known[ $ind ]['images'][ $key ]['icon_rel_path'] );
+							continue;
+						}
+
+						// remove the icon data from the item
+						$icon = isset( $value['icon'] ) ? $value['icon'] : '';
+						unset( $value['icon'] );
+						$value['icon_rel_path'] = '';
+
+						// maybe update the icon
+						$path = $this->_maybe_update_icon( $ind, $icon, $key );
+						if ( is_wp_error( $path ) )
+							$value['image_path_error'] = $this->_error_to_array( $path );
+						else
+							$value['icon_rel_path'] = $path;
+
+						// update the item iamge
+						$item['images'][ $key ] = $value;
+					break;
+
+					case 'banner_images':
+					case 'screenshot_images':
+						foreach ( $value as $image_ind => $img ) {
+							// determine if the server says that the image changed
+							$changed = ! isset( $img['icon_no_change'] ) || ! $img['icon_no_change'];
+
+							// if it did not change, then just use the old value we have on file
+							if ( ! $changed &&
+									isset(
+										$existing_known[ $ind ],
+										$existing_known[ $ind ]['images'],
+										$existing_known[ $ind ]['images'][ $key ],
+										$existing_known[ $ind ]['images'][ $key ][ $image_ind ],
+										$existing_known[ $ind ]['images'][ $key ][ $image_ind ]['icon_rel_path']
+									)
+							) {
+								$value[ $image_ind ] = array( 'icon_rel_path' => $existing_known[ $ind ]['images'][ $key ][ $image_ind ]['icon_rel_path'] );
+								continue;
+							}
+
+							// remove the icon data from the item
+							$icon = isset( $img['icon'] ) ? $img['icon'] : '';
+							unset( $img['icon'] );
+							$img['icon_rel_path'] = '';
+
+							// maybe update the icon
+							$path = $this->_maybe_update_icon( $ind, $icon, $key . ':' . $image_ind );
+							if ( is_wp_error( $path ) )
+								$img['image_path_error'] = $this->_error_to_array( $path );
+							else
+								$img['icon_rel_path'] = $path;
+
+							// update the specific image
+							$value[ $image_ind ] = $img;
+						}
+
+						// update the item iamge
+						$item['images'][ $key ] = $value;
+					break;
+				}
 			}
 
-			// remove the icon data from the item
-			$icon = isset( $item['icon'] ) ? $item['icon'] : '';
-			unset( $item['icon'] );
-			$item['icon_rel_path'] = '';
-
-			// maybe update the icon
-			$path = $this->_maybe_update_icon( $ind, $icon );
-			if ( is_wp_error( $path ) )
-				$item['image_path_error'] = $this->_error_to_array( $path );
-			else
-				$item['icon_rel_path'] = $path;
-
+			// update the item with the aggregated image info
 			$data[ $ind ] = $item;
 		}
 
@@ -343,7 +427,7 @@ class QSOT_Extensions {
 	}
 
 	// we may need to update or create the icon for this item. do so here
-	protected function _maybe_update_icon( $plugin_file, $icon ) {
+	protected function _maybe_update_icon( $plugin_file, $icon, $icon_key ) {
 		// first, find the appropriate dir to store the icon in
 		$icon_dir = $this->_icon_dir();
 
@@ -356,7 +440,7 @@ class QSOT_Extensions {
 			return '';
 
 		// figure out the base, non-extensioned name of the target file for the icon image
-		$base = md5( AUTH_SALT . $plugin_file );
+		$base = md5( AUTH_SALT . $plugin_file. $icon_key );
 
 		// next, write the file to a temp location, pending an appropriate extension
 		file_put_contents( $icon_dir['absolute'] . $base, @base64_decode( $icon ) );
