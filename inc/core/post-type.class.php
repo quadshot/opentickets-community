@@ -405,7 +405,7 @@ class qsot_post_type {
 			}
 
 			// only show parent events. this has the unfortunate side effect of limiting other post types to parents only too... but this should only conflict with very very few plugins, and nothing core WP
-			$v['post_parent'] = isset( $v['post_parent'] ) && ! empty( $v['post_parent'] ) ? $v['post_parent'] : 0;
+			$v['post_parent'] = isset( $v['post_parent'] ) && ! empty( $v['post_parent'] ) ? $v['post_parent'] : '';
 		}
 
 		// reassign the query vars back to the long name
