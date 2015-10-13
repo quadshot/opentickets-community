@@ -32,7 +32,7 @@ class qsot_seat_pricing {
 
 			// cart/order control
 			add_filter('qsot-zoner-reserve-current-user', array(__CLASS__, 'reserve_current_user'), 100, 4);
-			add_action('init', array(__CLASS__, 'sync_cart_tickets'), 6);
+			add_action( 'init', array( __CLASS__, 'sync_cart_tickets' ), 6 );
 			add_action( 'woocommerce_cart_loaded_from_session', array( __CLASS__, 'sync_cart_tickets' ), 6 );
 			add_action( 'qsot-sync-cart', array( __CLASS__, 'sync_cart_tickets' ), 10 );
 			add_action('woocommerce_order_status_changed', array(__CLASS__, 'order_status_changed'), 100, 3);
@@ -57,6 +57,10 @@ class qsot_seat_pricing {
 
 			add_filter('qsot-item-is-ticket', array(__CLASS__, 'item_is_ticket'), 10, 2);
 
+			// solve order again conundrum
+			add_filter( 'woocommerce_order_again_cart_item_data', array( __CLASS__, 'adjust_order_again_items' ), 10, 3 );
+			add_filter( 'woocommerce_add_to_cart_validation', array( __CLASS__, 'sniff_order_again_and_readd_to_cart' ), 10, 6 );
+
 			if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
 				add_action('woocommerce_after_cart_item_quantity_update', array(__CLASS__, 'not_more_than_available'), 10, 2);
 			}
@@ -74,6 +78,50 @@ class qsot_seat_pricing {
 				add_action('woocommerce_order_item_add_line_buttons', array(__CLASS__, 'add_tickets_button'), 10, 3);
 			}
 		}
+	}
+
+	// fix the problem where ppl click order again
+	public static function adjust_order_again_items( $meta, $item, $order ) {
+		// if the original item is not for an event, then bail now
+		if ( ! isset( $item['event_id'] ) )
+			return $meta;
+
+		// mark the meta as being an order_again item
+		$meta['_order_again'] = true;
+
+		// cycle through the old meta of the original item, and copy any relevant meta to the new item's meta
+		if ( isset( $item['item_meta'] ) ) foreach ( $item['item_meta'] as $key => $values ) {
+			if ( in_array( $key, apply_filters( 'qsot-order-ticket-again-meta-keys', array( '_event_id' ) ) ) ) {
+				$meta[ $key ] = current( $values );
+			}
+		}
+
+		return $meta;
+	}
+
+	// when order_again is hit, items are discretely added to the new cart. during that process, sniff out any tickets, and add them to the cart a different way
+	public static function sniff_order_again_and_readd_to_cart( $passes_validation, $product_id, $quantity, $variation_id=0, $variations='', $cart_item_data=array() ) {
+		// if the marker is not present, then pass through
+		if ( ! isset( $cart_item_data['_order_again'] ) )
+			return $passes_validation;
+
+		unset( $cart_item_data['_order_again'] );
+		// otherwise, attempt to add the ticket to the cart via our ticket selection logic, instead of the standard reorder way
+		$res = apply_filters( 'qsot-order-again-add-to-cart-pre', null, $product_id, $quantity, $variation_id, $variations, $cart_item_data );
+
+		// if another plugin has not done it's own logic here, then perform the default logic
+		if ( null === $res ) {
+			$res = apply_filters( 'qsot-zoner-reserve-current-user', false, $cart_item_data['_event_id'], $product_id, $quantity );
+		}
+
+		// if the results are a wp_error, then add that as a notice
+		if ( is_wp_error( $res ) ) {
+			foreach ( $res->get_error_codes() as $code )
+				foreach ( $res->get_error_messages( $code ) as $msg )
+					wc_add_notice( $msg, 'error' );
+		}
+
+		return false;
 	}
 
 	public static function register_assets() {
@@ -131,7 +179,13 @@ class qsot_seat_pricing {
 				if ($cart_item_key) {
 					$woocommerce->cart->set_quantity( $cart_item_key, $count );
 				} else {
-					$woocommerce->cart->add_to_cart( $ticket_type_id, $count, '', '', $data );
+					$added = $woocommerce->cart->add_to_cart( $ticket_type_id, $count, '', '', $data );
+					// if the item failed to get added to the cart, then remove the reservations too
+					if ( ! $added ) {
+						$args['count'] = 0;
+						apply_filters( 'qsot-zoner-reserved', false, $args );
+						$success = new WP_Error( 'no_cart_item', __( 'The ticket could not be added to the cart, so we could not reserve that ticket for you.', 'openticket-community-edition' ) );
+					}
 				}
 			}
 		}
@@ -341,39 +395,62 @@ class qsot_seat_pricing {
 		return $ticket == 'yes';
 	}
 
+	// sync the cart with the tickets we have in the ticket association table. if the ticket is gone from the table, then remove it from the cart (expired timer or manual delete)
 	public static function sync_cart_tickets() {
+		// get wc object
 		$woocommerce = WC();
 
-		if (is_object($woocommerce) && is_object($woocommerce->session)) {
+		// if the current user has any expired ticket reservations, remove them now
+		if ( is_object( $woocommerce ) && is_object( $woocommerce->session ) ) {
 			$customer_id = $woocommerce->session->get_customer_id();
-			do_action('qsot-zoner-clear-locks', 0, $customer_id);
+			do_action( 'qsot-zoner-clear-locks', 0, $customer_id );
 		}
 
-		if ( ( ( defined( 'DOING_AJAX' ) && DOING_AJAX ) || !is_admin() ) && is_object($woocommerce) && is_object($woocommerce->cart)) {
+		// start syncing the cart items to the ticket items in our ticket table
+		if ( ( ( defined( 'DOING_AJAX' ) && DOING_AJAX ) || !is_admin() ) && is_object( $woocommerce ) && is_object( $woocommerce->cart ) ) {
 			$indexed = array();
-			$ownerships = apply_filters('qsot-zoner-ownerships-current-user', array(), 0, 0, apply_filters('qsot-temporary-zone-states', array(self::$o->{'z.states.r'})), 0);
+			$reserved = self::$o->{'z.states.r'};
+			// get all the reservations this person currently has
+			$ownerships = apply_filters( 'qsot-zoner-ownerships-current-user', array(), 0, 0, apply_filters( 'qsot-temporary-zone-states', array( $reserved ) ), 0 );
 
-			foreach ($ownerships as $state => $state_ownerships) {
+			// organize the ownerships by event, then by state...
+			foreach ( $ownerships as $state => $state_ownerships ) {
+				// then by ticket_type...
 				foreach ($state_ownerships as $ownership) {
-					$indexed[$ownership->event_id] = isset($indexed[$ownership->event_id]) && is_array($indexed[$ownership->event_id]) ? $indexed[$ownership->event_id] : array();
-					$indexed[$ownership->event_id][$ownership->ticket_type_id] = 
-						isset($indexed[$ownership->event_id], $indexed[$ownership->event_id][$state], $indexed[$ownership->event_id][$state][$ownership->ticket_type_id])
-								&& is_array($indexed[$ownership->event_id][$state][$ownership->ticket_type_id])
-							? $indexed[$ownership->event_id][$state][$ownership->ticket_type_id]
+					// create the lookup entry for this event, if it does not exist
+					$indexed[ $ownership->event_id ] = isset( $indexed[ $ownership->event_id ] ) && is_array( $indexed[ $ownership->event_id ] ) ? $indexed[ $ownership->event_id ] : array();
+
+					// if the state does not have a key yet, make one
+					$indexed[ $ownership->event_id ][ $state ] = isset( $indexed[ $ownership->event_id ][ $state ] ) ? $indexed[ $ownership->event_id ][ $state ] : array();
+
+					// if the ticket type does not have a key yet, make one
+					$indexed[ $ownership->event_id ][ $state ][ $ownership->ticket_type_id ] = isset( $indexed[ $ownership->event_id ][ $state ][ $ownership->ticket_type_id ] )
+							? $indexed[ $ownership->event_id ][ $state ][ $ownership->ticket_type_id ]
 							: array();
-					$indexed[$ownership->event_id][$ownership->ticket_type_id][] = $ownership;
+
+					// now add the entry to our list
+					$indexed[ $ownership->event_id ][ $state ][ $ownership->ticket_type_id ][] = $ownership;
 				}
 			}
 
-			foreach ($woocommerce->cart->cart_contents as $key => $item) {
-				if ( ! isset( $item['event_id'] ) ) continue;
+			// now use the lookup to determine if each item in the cart belongs there
+			foreach ( $woocommerce->cart->cart_contents as $key => $item ) {
+				// if this is not a ticket, then skip this item
+				if ( ! isset( $item['event_id'] ) )
+					continue;
+
+				// get the relevant ids
 				$eid = $item['event_id'];
 				$pid = $item['product_id'];
 
-				if ( ! isset( $indexed[$eid], $indexed[$eid][$pid] ) )
+				// if the reservation does not exist, then remove the cart item
+				if ( ! isset( $indexed[ $eid ], $indexed[ $eid ][ $reserved ], $indexed[ $eid ][ $reserved ][ $pid ] ) ) {
 					$woocommerce->cart->set_quantity( $key, 0 );
-				else
-					$woocommerce->cart->set_quantity( $key, array_sum( wp_list_pluck( $indexed[$eid][$pid], 'quantity' ) ) );
+					wc_add_notice( __( 'Removed a ticket from your cart, because it\'s timer expired.', 'opentickets-community-edition' ), 'error' );
+				// if it does exist, then update the cart item to be fore the proper number of tickets
+				} else {
+					$woocommerce->cart->set_quantity( $key, array_sum( wp_list_pluck( $indexed[ $eid ][ $reserved ][ $pid ], 'quantity' ) ) );
+				}
 			}
 		}
 	}
@@ -416,7 +493,7 @@ class qsot_seat_pricing {
 	public static function not_more_than_available($item_key, $quantity) {
 		$woocommerce = WC();
 
-		$starting_quantity = $woocommerce->cart->cart_contents[$item_key]['_starting_quantity'];
+		$starting_quantity = isset( $woocommerce->cart->cart_contents[$item_key]['_starting_quantity'] ) ? $woocommerce->cart->cart_contents[$item_key]['_starting_quantity'] : 0;
 		$add_qty = $quantity - $starting_quantity;
 		$needs_change = false;
 

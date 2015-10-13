@@ -169,6 +169,23 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.12.10 =
+* [tweak] removed warnings on orderagain logic
+
+= 1.12.9 =
+* [tweak] changed load order of all js and css to overcome version clashes with WC
+* [tweak] hide permalink debug on non wp_debug sites
+
+= 1.12.8 =
+* [improvement] allows order id lookup in advanced tools
+
+= 1.12.7 =
+* [new] added advanced tools, which come with a warning
+* [new] added code to handle the 'order again' action
+* [improvement] more efficient and extendable regular tools
+* [improvement] simplified ticket security
+* [fix] edge case bug where cart sync process was not working
+
 = 1.12.6 =
 * [tweak] js tools updated for new Seating features
 

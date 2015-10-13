@@ -30,7 +30,19 @@ QS.Tools = (function($, q, qt, w, d, undefined) {
 	qt.isF = function(v) { return typeof v == 'function'; };
 	qt.isO = function(v) { return qt.is(v) && typeof v == 'object'; };
 	qt.isA = function(v) { return qt.isO(v) && v instanceof Array; };
-	qt.isNode = function(o) { return typeof Node == 'object' ? o instanceof Node : o && typeof o == 'object' && typeof o.nodeType == 'number' && typeof o.nodeName == 'string'; };
+	qt.isB = function(v) { return typeof v == 'boolean'; };
+	qt.isS = function(v) { return typeof v == 'string'; };
+	qt.isN = function(v) { return typeof v == 'number'; };
+	qt.isC = function(v, c) { return qt.isO( v ) && v.constructor == c ; };
+	qt.dist = function(x1, y1, x2, y2) { var dx = x1 - x2, dy = y1 - y2; return Math.sqrt( ( dx * dx ) + ( dy * dy ) ); };
+	qt.ucw = function(v) { return v.toLowerCase().replace( /^[\u00C0-\u1FFF\u2C00-\uD7FF\w]|\b[\u00C0-\u1FFF\u2C00-\uD7FF\w]/g, function( l ) { return l.toUpperCase(); } ); };
+	qt.esc = function(v) {
+			var div, res;
+			( div = document.createElement( 'div' ) ).appendChild( document.createTextNode( v ) );
+			res = div.innerHTML;
+			delete div;
+			return res;
+		};
 	qt.isElement = function(o) { return typeof HTMLElement == 'object' ? o instanceof HTMLElement : o && typeof o == 'object' && o.nodeType === 1 && typeof o.nodeName == 'string'; };
 	qt.toInt = function(val) { var n = parseInt(val); return isNaN(n) ? 0 : n; };
 	qt.toFloat = function(val) { var n = parseFloat(val); return isNaN(n) ? 0 : n; };

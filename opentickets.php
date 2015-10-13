@@ -65,7 +65,7 @@ class QSOT {
 		add_action('load-post-new.php', array(__CLASS__, 'load_assets'), 999);
 
 		// register js and css assets at the appropriate time
-		add_action('init', array(__CLASS__, 'register_assets'), 2);
+		add_action('init', array(__CLASS__, 'register_assets'), -1000);
 
 		add_filter('plugin_action_links', array(__CLASS__, 'plugins_page_actions'), 10, 4);
 
@@ -201,6 +201,10 @@ class QSOT {
 		wp_register_script( 'qsot-core-tools', self::$o->core_url . 'assets/js/utils/tools.js', array( 'jquery', 'json2', 'xdate', 'jquery-ui-datepicker' ), '0.2.0-beta' );
 		// backbone modal, ripped from core WC, and modified to work for our causes
 		wp_register_script( 'qsot-backbone-modal', self::$o->core_url . 'assets/js/utils/backbone-modal.js', array( 'underscore', 'backbone', 'qsot-core-tools' ), '0.1.0-beta', 1 );
+
+		// select2 lib, since WC cannot seem to decide on a select overtake lib
+		wp_register_script( 'select2', self::$o->core_url . 'assets/js/libs/select2/select2.js', array( 'jquery' ), '3.5.4' );
+		wp_register_style( 'select2', self::$o->core_url . 'assets/js/libs/select2/select2.css', array(), '3.5.4' );
 
 		// create the generic qsot-tools bucket
 		$requirements = array( 'qsot-core-tools' );

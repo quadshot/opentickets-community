@@ -93,7 +93,9 @@ class QSOT_tickets {
 	}
 
 	public static function debug_rewrite_rules() {
-		?><pre style="font-size:11px; padding-left:160px; color:#000000; background-color:#ffffff;"><?php print_r($GLOBALS['wp_rewrite']->rules) ?></pre><?php
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			?><pre style="font-size:11px; padding-left:160px; color:#000000; background-color:#ffffff;"><?php print_r($GLOBALS['wp_rewrite']->rules) ?></pre><?php
+		}
 	}
 
 	public static function add_view_ticket_link_to_emails($item_id, $item, $order) {
@@ -239,15 +241,37 @@ class QSOT_tickets {
 	}
 
 	public static function decode_ticket_code($current, $code) {
-		$code = trim(base64_decode(str_replace(array('-', '_'), array('/', '+'), $code)), '|');
-		@list($raw, $hash) = explode('~', $code);
-		if (!$raw || !$hash || $hash != sha1($raw.AUTH_KEY)) return $current;
+    global $wpdb;
 
-		$args = array();
-		list($args['event_id'], $args['order_id'], $args['order_item_id']) = explode('.', $raw);
-		$args = apply_filters('qsot-decode-ticket-code-args', $args, $raw);
+    $code = trim( $code );
+    // if the ticket code is empty, bail
+    if ( empty( $code ) ) 
+      return array();
 
-		return $args;
+    // lookup the ticket code
+    $q = $wpdb->prepare( 'select order_item_id from ' . $wpdb->qsot_ticket_codes . ' where ticket_code = %s', $code );
+    $order_item_id = $wpdb->get_var( $q );
+
+    // if there is no order item id, then bail
+    if ( empty( $order_item_id ) ) 
+      return array();
+
+    // lookup the order_id fro the order_item_id
+    $order_id = $wpdb->get_var( $wpdb->prepare( 'select order_id from ' . $wpdb->prefix . 'woocommerce_order_items where order_item_id = %s', $order_item_id ) );
+
+    // if there is no order_id, bail
+    if ( empty( $order_id ) ) 
+      return array();
+
+    // look up the event id for the order_item
+    $event_id = $wpdb->get_var( $wpdb->prepare( 'select meta_value from ' . $wpdb->prefix . 'woocommerce_order_itemmeta where order_item_id = %s and meta_key = %s', $order_item_id, '_event_id' ) );
+
+    // if there is no event_id then bail
+    if ( empty( $event_id ) ) 
+      return array();
+
+    // otherwise, return the data we collected
+    return array( 'event_id' => $event_id, 'order_id' => $order_id, 'order_item_id' => $order_item_id );
 	}
 
 	public static function email_link_auth($current, $order_id) {
