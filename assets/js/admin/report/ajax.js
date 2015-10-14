@@ -1,4 +1,65 @@
-(function($) {
+var QS = QS || { Tools:{} };
+( function( $, qt ) {
+	var S = $.extend( {}, _qsot_report_ajax );
+
+	// add the select2 thing to use-select2 within context
+	function _add_select2( context ) {
+		// store the default matcher function for later use
+		var default_matcher = $.fn.select2.defaults.matcher, context = context || 'body';
+
+		// add the select2 to elements that need it
+		QS.add_select2( $( context ).find( '.use-select2' ), {
+			// change the matcher function so that it only matches events from the selected year
+			matcher_func: function( ele ) {
+				// is this select2 supposed to be filtered by another select box?
+				var filter_by = $( ele.data( 'filter-by' ) );
+
+				// if it is not supposed to be filtered, then just return a regular data function
+				if ( ! filter_by.length )
+					return default_matcher;
+				// but if it is supposed to be filtered, return a data function that will do the filtering
+				else
+					return function( term, text, option ) {
+						var key = filter_by.attr( 'id' ), val = filter_by.val();
+						return ( ! qt.is( option[ key ] ) || parseInt( val ) == parseInt( option[ key ] ) ) && default_matcher.apply( this, [].slice.call( arguments ) );
+					};
+			}
+		} );
+	}
+
+	// handle the form actions
+	$( document ).on( 'submit', '.qsot-ajax-form', function( e, extra_data, target ) {
+		e.preventDefault();
+		var extra_data = extra_data || {}, target = target || $( '#report-results' ), data = $.extend( true, { action:'report_ajax' }, $( this ).louSerialize(), extra_data );
+				msg = $( '<h4></h4>' ).appendTo( target.empty() ), span = $( '<span>' + QS._str( 'Loading...', S ) + '</span>' ).appendTo( msg );
+		_loading( msg, { width:span.outerWidth() } );
+
+		$.ajax( {
+			url: ajaxurl,
+			method: 'post',
+			data: data,
+			cache: false,
+			dataType: 'html',
+			xhrFields: { withCredentials: true },
+			error: function() { console.log( 'Error:', [].slice.call( arguments ) ); },
+			success: function( r ) {
+				var result = $( $.trim( r ) ).appendTo( target.empty() );
+				_add_select2( result );
+			}
+		} );
+	} );
+
+	// when clicking a button that is marked as a button to refresh the form, then submit the form with an extra param saying that it should refresh the form, and make the target the form container
+	$( document ).on( 'click', '.refresh-form', function( e ) {
+		e.preventDefault();
+		$( this ).closest( 'form' ).trigger( 'submit', [ { 'reload-form':1 }, $( '#report-form' ) ] );
+	} );
+
+  // on page load, add the select2 ui to any element that requires
+  $( function() {
+		_add_select2( 'body' );
+	} );
+
 	function add_date_pickers(sel) {
 		var dates = jQuery(sel).each( function() {
 			var me = $( this ), real = me.attr( 'real' ), scope = me.attr( 'scope' ), frmt = me.attr( 'frmt' ), args = {
@@ -145,4 +206,4 @@
 	$(function() { $('form .filter-list').change(); });
 
 	$(function() { add_date_pickers(".qsot-range-datepicker"); });
-})(jQuery);
+} )( jQuery, QS.Tools );

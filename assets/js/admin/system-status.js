@@ -4,49 +4,6 @@
 	// get a translated string if it exists
 	function _str( str ) { return qt.is( S.str[ str ] ) ? S.str[ str ] : str; }
 
-  // add select2 to a given element
-  QS.add_select2 = function( eles, settings ) { 
-		var S = $.extend( { nonce:'' }, settings );
-    $( eles ).each( function() {
-      var me = $( this ), sa = me.data( 'sa' ) || 'find-posts', action = me.data( 'action' ) || 'qsot-system-status', array_data = me.data( 'array' ) || false, minlen = parseInt( me.data( 'minchar' ) || 2 );
-
-			if ( array_data ) {
-				me.select2( {
-					data: array_data,
-					initSelection: function( ele, callback ) { 
-						callback( $( ele ).data( 'init-value' ) );
-					},  
-					minimumInputLength: 0
-				} );
-			} else {
-				me.select2( {
-					ajax: {
-						url: ajaxurl,
-						data: function( term, page ) { 
-							var data = { q:term, page:page, sa:sa, action:action, _n:me.data( 'nonce' ) || S.nonce };
-							if ( me.data( 'add' ) ) {
-								var ele = $( me.data( 'add' ) ).eq( 0 );
-								if ( ele.length )
-									data[ ele.attr( 'name' ) ] = ele.val();
-							}
-							return data;
-						},  
-						method: 'post',
-						type: 'post',
-						dataType: 'json',
-						delay:300,
-						processResults: function( data, page ) { return { results:data.r }; },
-						cache: true
-					},  
-					initSelection: function( ele, callback ) { 
-						callback( $( ele ).data( 'init-value' ) );
-					},  
-					minimumInputLength: minlen
-				} );
-			}
-		} );
-  }
-
   // on page load, add the select2 ui to any element that requires
   $( function() { QS.add_select2( $( '.use-select2' ), S || {} ); } );
 
@@ -89,7 +46,6 @@
 		var me = $( this ), entry = me.closest( '[role="entry"]' ), id = entry.data( 'row' ), action = me.data( 'action' ) || 'qsot-system-status', sa = me.data( 'sa' ) || 'release',
 				evnt = me.closest( '[role="event"]' ), event_id = evnt.data( 'id' ), target = $( me.data( 'target' ) || me.next( '.results' ) ), data = { id:id, event_id:event_id, action:action, sa:sa, _n:me.data( 'nonce' ) || S.nonce };
 
-console.log( 'release', data, target, me.data( 'target' ) || me.next( '.results' ), me.data( 'target' ), me );
 		// pop loading message
 		$( '<h3>' + _str( 'Loading...' ) + '</h3>' ).appendTo( target.empty() );
 

@@ -17,12 +17,13 @@ class qsot_reporting {
 				//self::_setup_admin_options();
 			}
 
-			add_action('qsot_reports_charts', array(__CLASS__, 'extra_reports'), 10);
+			add_action( 'qsot_admin_reports', array( __CLASS__, 'extra_reports' ), 10 );
 			//add_action('load-woocommerce_page_woocommerce_reports', array(__CLASS__, 'load_assets'), 10);
-			add_action('load-toplevel_page_opentickets', array(__CLASS__, 'load_assets'), 10);
+			add_action( 'load-toplevel_page_opentickets', array( __CLASS__, 'load_assets' ), 10 );
 			add_action('init', array(__CLASS__, 'register_assets'), 10);
 
-			add_action('wp_ajax_report_ajax', array(__CLASS__, 'process_ajax'), 10);
+			// handle the reporting ajaz request
+			add_action( 'wp_ajax_report_ajax', array( __CLASS__, 'process_ajax' ), 10 );
 
 			add_action('qsot-above-report-html', array(__CLASS__, 'add_view_links'), 10, 3);
 			add_action('qsot-below-report-html', array(__CLASS__, 'add_view_links'), 10, 3);
@@ -51,19 +52,34 @@ class qsot_reporting {
 		<?php endif;
 	}
 
+	// handle the basic report ajax request delegation
 	public static function process_ajax() {
+		// figure out the type of report, based on the request data
 		$report = $_POST['report'];
-		$action = 'qsot-ajax-report-ajax'.(empty($report) ? '' : '-'.$report);
-		if (has_action($action)) ini_set('max_execution_time', 1500);
-		do_action($action);
+
+		// construct an appropriate action name to hit to respond to the ajax request
+		$action = 'qsot-ajax-report-ajax' . ( empty( $report ) ? '' : '-' . $report );
+
+		// if there is a function attached to that action, then run it
+		if ( has_action( $action ) ) {
+			ini_set( 'max_execution_time', 1500 );
+			do_action( $action );
+		}
 	}
 
+	// register all the scripts and css that may be used on the basic reporting pages
 	public static function register_assets() {
-		wp_register_script('qsot-report-ajax', self::$o->core_url.'assets/js/admin/report/ajax.js', array('qsot-tools', 'jquery-ui-datepicker'));
+		wp_register_script( 'qsot-report-ajax', self::$o->core_url . 'assets/js/admin/report/ajax.js', array( 'qsot-tools', 'jquery-ui-datepicker' ) );
 	}
 
+	// tell wordpress to load the assets we previously registered
 	public static function load_assets() {
-		wp_enqueue_script('qsot-report-ajax');
+		wp_enqueue_script( 'qsot-report-ajax' );
+		wp_localize_script( 'qsot-report-ajax', '_qsot_report_ajax', array(
+			'str' => array(
+				'Loading...' => __( 'Loading...', 'opentickets-community-edition' ),
+			),
+		) );
 	}
 
 	public static function extra_reports($reports) {
@@ -82,6 +98,461 @@ class qsot_reporting {
 	}
 }
 
+// the base report class. creates a shell of all the functionality every report needs, and allows the reports themselves to do the heavy lifting
+abstract class QSOT_Admin_Report {
+	protected static $report_index = 0;
+
+	protected $order = 10; // report order
+	protected $group_name = ''; // display name of the group this report belongs to
+	protected $group_slug = ''; // unique slug of the group this report belongs to
+	protected $name = ''; // display name of the report
+	protected $slug = ''; // unique slug of the report
+	protected $description = ''; // short description of this report
+
+	// setup the core object
+	public function __construct() {
+		// setup the default basic report info
+		self::$report_index++;
+		$this->group_name = sprintf( __( 'Report %s', 'opentickets-community-edition' ), self::$report_index );
+		$this->group_slug = 'report-' . self::$report_index;
+		$this->name = sprintf( __( 'Report %s', 'opentickets-community-edition' ), self::$report_index );
+		$this->slug = 'report-' . self::$report_index;
+
+		// add this object as a report
+		add_filter( 'qsot-reports', array( &$this, 'register_report' ), $this->order );
+
+		// allow reports to do some independent initialization
+		$this->init();
+
+		// add the ajax handle for this report
+		add_filter( 'qsot-ajax-report-ajax-' . $this->slug, array( &$this, 'handle_ajax' ), 10 );
+	}
+
+	// overrideable function to allow additional initializations
+	public function init() {}
+
+	// generic ajax processing function, which should be overridden by reports that use ajax
+	protected function _process_ajax() {}
+
+	// validate and pass on the ajax requests for this report
+	public function handle_ajax() {
+		// if the current user does not have permissions to run the report, then bail
+		if ( ! current_user_can( 'view_woocommerce_reports' ) )
+			return $this->_error( new WP_Error( 'no_permission', __( 'You do not have permission to use this report.', 'opentickets-community-edition' ) ) );
+
+		// if the ajax request does not validate, then bail
+		if ( ! $this->_verify_run_report( true ) )
+			return $this->_error( new WP_Error( 'no_permission', __( 'You do not have permission to use this report.', 'opentickets-community-edition' ) ) );
+
+		// pass the request on to the processing function 
+		$this->_process_ajax();
+	}
+
+	// register this report, with our report list
+	public function register_report( $list ) {
+		// add the main key for this report, which we will then add the actual report to.
+		// this structure is snatched from WC, which will allow for report grouping in later versions
+		$list[ $this->group_slug ] = isset( $list[ $this->group_slug ] ) ? $list[ $this->group_slug ] : array( 'title' => $this->group_name, 'charts' => array() );
+
+		// now add this specific report chart to the group
+		$list[ $this->group_slug ]['charts'][ $this->slug ] = array(
+			'title' => $this->name,
+			'description' => $this->description,
+			'function' => array( &$this, 'show_shell' ),
+		);
+
+		return $list;
+	}
+
+	// show the report page shell
+	public function show_shell() {
+		// draw the shell of the form, and allow the individual report to specify some fields
+		?>
+			<div class="report-form" id="report-form"><?php $this->_form() ?></div>
+			<div class="report-results" id="report-results"><?php $this->_results() ?></div>
+		<?php
+	}
+
+	// draw the actual form shell, and allow the individual report to control the fields
+	protected function _form() {
+		?>
+			<form method="post" action="<?php echo esc_attr( remove_query_arg( array( 'updated' ) ) ) ?>" class="qsot-ajax-form">
+				<input type="hidden" name="_n" value="<?php echo esc_attr( wp_create_nonce( 'qsot-run-report-' . $this->slug ) ) ?>" />
+				<input type="hidden" name="report" value="<?php echo esc_attr( $this->slug ) ?>" />
+
+				<?php $this->form() ?>
+			</form>
+		<?php
+	}
+
+	// verify that we should be running the report right now, based on the submitted data
+	protected function _verify_run_report( $only_orig=false ) {
+		// if the nonce or report name is not set, bail
+		if ( ! isset( $_POST['_n'], $_POST['report'] ) )
+			return false;
+
+		// if the report name does not match this report, bail
+		if ( $_POST['report'] !== $this->slug )
+			return false;
+
+		// if the nonce does not match, then bail
+		if ( ! wp_verify_nonce( $_POST['_n'], 'qsot-run-report-' . $this->slug ) )
+			return false;
+
+		return true;
+	}
+
+	// draw any errors that are passed
+	protected function _error( WP_Error $error ) {
+		?>
+			<div class="report-errors">
+				<?php foreach ( $error->get_error_codes() as $code ): ?>
+					<?php foreach ( $error->get_error_messages( $code ) as $message ): ?>
+						<div class="error"><?php echo force_balance_tags( $message ) ?></div>
+					<?php endforeach; ?>
+				<?php endforeach; ?>
+			</div>
+		<?php
+	}
+
+	// start the process of generating the results
+	protected function _results() {
+		// if the report is not supposed to run yet, then bail
+		if ( ! $this->_verify_run_report() )
+			return;
+
+		// start the csv output file. if that fails, there is no point in continuing
+		if ( ! ( $csv_file = $this->_open_csv_file() ) )
+			return $this->_error( new WP_Error( 'no_csv_file', __( 'Could not open the CSV file path. Aborting report generation.', 'opentickets-community-edition' ) ) );
+		elseif ( is_wp_error( $csv_file ) )
+			return $this->_error( $csv_file );
+
+		// tell the report is about to start running
+		$this->_starting();
+
+		// draw the csv link
+		$this->_csv_link( $csv_file );
+
+		// draw the html version header
+		$this->_html_report_header();
+
+		$all_html_rows = 0;
+		// run the report, while there are still rows to process
+		while ( $group = $this->more_rows() ) {
+			// gather all the information that is used to create both csv and html versions of the report, for the found rows
+			$data = $this->aggregate_row_data( $group );
+
+			// add this group of results to the csv report
+			$this->_csv_render_rows( $data, $csv_file );
+
+			// render the html table rows for this group
+			$all_html_rows += $this->_html_report_rows( $data );
+
+			// clean up the memory
+			$this->_clean_memory();
+		}
+
+		// before we close the footer, allow reportss to add some logic
+		$this->_before_html_footer( $all_html_rows );
+
+		// draw the html version footer
+		$this->_html_report_footer();
+
+		// draw the csv link
+		$this->_csv_link( $csv_file );
+
+		// close the csv file
+		$this->_close_csv_file( $csv_file );
+
+		// tell the report that it is done running
+		$this->_finished();
+	}
+
+	// start and finish functions, overrideable by the individual report
+	protected function _starting() {}
+	protected function _finished() {}
+
+	// allow reports to add stuff to the bottom of the table if needed
+	protected function _before_html_footer( $all_html_rows ) {
+		// if no html rows were printed, then print a row indicating that
+		if ( empty( $all_html_rows ) ) {
+			$columns = count( $this->html_report_columns() );
+			echo '<tr><td colspan="' . $columns . '">' . __( 'There are no tickts sold for this event yet.', 'opentickets-community-edition' ) . '</td></tr>';
+		}
+	}
+
+	// because this can accumulate a lot of memory usage over time, we need to occassionally clear out our internal caches to compensate
+	protected function _clean_memory() {
+		global $wpdb, $wp_object_cache;
+		// clear our the query cache, cause it can be huge
+		$wpdb->flush();
+
+		// clear out the wp_cache cache, if we are using the core wp method, which is an internal associative array
+		if ( isset( $wp_object_cache->cache ) && is_array( $wp_object_cache->cache ) ) {
+			unset( $wp_object_cache->cache );
+			$wp_object_cache->cache = array();
+		}
+	}
+
+	// render the group of resulting data as rows for our output table
+	protected function _html_report_rows( $group ) {
+		$total = 0;
+		// get our list of html columns
+		$columns = $this->html_report_columns();
+		$cnt = count( $columns );
+
+		// cycle through the group of resulting rows, and draw the table row for each
+		if ( is_array( $group ) ) foreach ( $group as $row ) {
+			$total =+ $this->_html_report_row( $row, $columns, $cnt );
+		}
+
+		return $total;
+	}
+
+	// render a single report row, based on some supplied row data
+	protected function _html_report_row( $row, $columns=false, $cnt=false ) {
+		// normalize the input
+		if ( empty( $columns ) ) {
+			$columns = $this->html_report_columns();
+			$cnt = count( $columns );
+		}
+
+		$data = array();
+		// cycle through thre required columns, and aggregate only the data we need for the data, in the order in which it should appear
+		foreach ( $columns as $col => $__ )
+			$data[ $col ] = isset( $row[ $col ] ) ? $row[ $col ] : '';
+
+		// allow manipulation of this data
+		$data = apply_filters( 'qsot-' . $this->slug . '-report-html-row', $data, $row, $columns );
+
+		// if there is a row to display, the do os now
+		if ( is_array( $data ) && count( $data ) == $cnt ) {
+			echo '<tr>';
+
+			foreach ( $data as $col => $value ) {
+				echo '<td>';
+
+				switch ( $col ) {
+					// link the order id if present
+					case 'order_id':
+						echo $row[ $col ] > 0 ? sprintf( '<a href="%s" target="_blank" title="%s">%s</a>', edit_post_link( $value ), esc_attr( __( 'Edit order', 'opentickets-community-edition' ) ), $value ) : $value;
+					break;
+
+					// default the purchaser name to the cart id
+					case 'purchaser':
+						echo ! empty( $value )
+								? $value
+								: sprintf(
+									'<span title="%s">%s</span>',
+									esc_attr( sprintf( __( 'Cart Session ID: %s', 'opentickets-community-edition' ), $row['_raw']->session_customer_id ) ),
+									__( 'Temporary Cart', 'opentickets-community-edition' )
+								);
+					break;
+
+					// allow a filter on all other columns
+					default:
+						echo apply_filters( 'qsot-' . $this->slug . '-report-column-' . $col . '-value', '' == $value ? '&nbsp;' : force_balance_tags( $value ), $data, $row );
+					break;
+				}
+
+				echo '</td>';
+			}
+
+			echo '</tr>';
+
+			return 1;
+		}
+
+		return 0;
+	}
+
+	// take the resulting group of row datas, and create entries in the csv for them
+	protected function _csv_render_rows( $group, $csv_file ) {
+		// if the csv file descriptor has gone away, then bail (could happen because of filters)
+		if ( ! is_array( $csv_file ) || ! isset( $csv_file['fd'] ) || ! is_resource( $csv_file['fd'] ) )
+			return;
+
+		// get a list of the csv fields to add, and their order
+		$columns = $this->csv_report_columns();
+		$cnt = count( $columns );
+
+		// cycle through the roup of rows, and create the csv entries
+		if ( is_array( $group ) ) foreach ( $group as $row ) {
+			$data = array();
+			// create a list of data to add to the csv, based on the order of the columns we need, and the data for this row
+			foreach ( $columns as $col => $__ ) {
+				// update some rows with special values
+				switch ( $col ) {
+					// default the purchaser to a cart id
+					case 'purchaser':
+						$data[] = isset( $row[ $col ] ) && $row[ $col ]
+								? ( '-' == $row[ $col ] ? ' ' . $row[ $col ] : $row[ $col ] ) // fix '-' being translated as a number in OOO
+								: sprintf( __( 'Unpaid Cart: %s', 'opentickets-community-edition' ), $row['_raw']->session_customer_id );
+					break;
+
+					// pass all other data thorugh
+					default:
+						$data[] = isset( $row[ $col ] ) && $row[ $col ] ? ( '-' == $row[ $col ] ? ' ' . $row[ $col ] : $row[ $col ] ) : '';
+					break;
+				}
+			}
+
+			// allow manipulation of this data
+			$data = apply_filters( 'qsot-' . $this->slug . '-report-csv-row', $data, $row, $columns );
+
+			// add this row to the csv, if there is a row to add
+			if ( is_array( $data ) && count( $data ) == $cnt )
+				fputcsv( $csv_file['fd'], $data );
+		}
+	}
+
+	// draw the link to the csv, based off of the passed csv file data
+	protected function _csv_link( $file ) {
+		// only print the link if the url is part of the data we got
+		if ( ! is_array( $file ) || ! isset( $file['url'] ) || empty( $file['url'] ) )
+			return;
+
+		// render the link
+		?>
+			<div class="report-links">
+				<a href="<?php echo esc_attr( $file['url'] ) ?>" title="<?php _e( 'Download this CSV', 'opentickets-community-edition' ) ?>"><?php _e( 'Download this CSV', 'opentickets-community-edition' ) ?></a>
+				<?php do_action( 'qsot-' . $this->slug . '-report-links', $file ) ?>
+			</div>
+		<?php
+	}
+
+	// start the csv file
+	protected function _open_csv_file() {
+		// get the csv file path. make it if it does not exist yet
+		$csv_path = $this->_csv_path();
+
+		// if we could not find or create the csv file path, then bail now
+		if ( is_wp_error( $csv_path ) )
+			return $csv_path;
+
+		// determine the file path and url
+		$basename = 'report-' . $this->slug . '-' . wp_create_nonce( 'run-report-' . @json_encode( $_POST ) ) . '.csv';
+		$file = array(
+			'path' => $csv_path['path'] . $basename,
+			'url' => $csv_path['url'] . $basename,
+			'fd' => null,
+		);
+
+		// attempt to create a new csv file for this report. if that is successful, then add the column headers and return all the file info now
+		if ( $file['fd'] = fopen( $file['path'], 'w+' ) ) {
+			$columns = $this->csv_report_columns();
+			fputcsv( $file['fd'], array_values( $columns ) );
+			return $file;
+		}
+
+		// otherwise, bail with an error
+		return new \WP_Error( 'file_permissions', sprintf( __( 'Could not open the file [%s] for writing. Please verify the file permissions allow writing.', 'opentickets-community-edition' ), $file['path'] ) );
+	}
+
+	// close the csv file
+	protected function _close_csv_file( $file ) {
+		// only try to close open files
+		if ( is_array( $file ) && isset( $file['fd'] ) && is_resource( $file['fd'] ) )
+			fclose( $file['fd'] );
+	}
+
+	// find or create teh csv report file path, and return the path and url of it
+	protected function _csv_path() {
+		// get all the informaiton about the uploads dir
+		$u = wp_upload_dir();
+		$u['baseurl'] = trailingslashit( $u['baseurl'] );
+		$u['basedir'] = trailingslashit( $u['basedir'] );
+
+		// see if the report cache path already exists. if so, use it in a response now
+		if ( @file_exists( $u['basedir'] . 'report-cache/' ) && is_dir( $u['basedir'] . 'report-cache/' ) && is_writable( $u['basedir'] . 'report-cache/' ) )
+			return array(
+				'path' => $u['basedir'] . 'report-cache/',
+				'url' => $u['baseurl'] . 'report-cache/',
+			);
+		// if the dir exists, but is not writable, then bail with an appropriate error
+		elseif ( @file_exists( $u['basedir'] . 'report-cache/' ) && is_dir( $u['basedir'] . 'report-cache/' ) && ! is_writable( $u['basedir'] . 'report-cache/' ) )
+			return new WP_Error(
+				'file_permissions',
+				sprintf( __( 'The report cache directory [%s] is not writable. Please update the file permissions to allow writing.', 'opentickets-community-edition' ), $u['basedir'] . 'report-cache/' )
+			);
+		// if the file exists, but is not a directory, then bail with an appropriate error
+		elseif ( @file_exists( $u['basedir'] . 'report-cache' ) && ! is_dir( $u['basedir'] . 'report-cache' ) )
+			return new WP_Error( 'wrong_file_type', sprintf( __( 'Please remove (or move) the file [%s] and run the report again.', 'opentickets-community-edition' ), $u['basedir'] . 'report-cache' ) );
+		// the file does not exist, and we cannot create it
+		elseif ( ! @file_exists( $u['basedir'] . 'report-cache/' ) && ! is_writable( $u['basedir'] ) )
+			return new WP_Error( 'file_permissions', __( 'Could not create a new directory inside your uploads folder. Update the file permissions to allow writing.', 'opentickets-community-edition' ) );
+
+		// at the point the file does not exist, and we have write permissions to create it. do so now. if that fails, error out
+		if ( ! mkdir( $u['basedir'] . 'report-cache/', 0777, true ) )
+			return new WP_Error( 'file_permissions', __( 'Could not create a new directory inside your uploads folder. Update the file permissions to allow writing.', 'opentickets-community-edition' ) );
+
+		return array(
+			'path' => $u['basedir'] . 'report-cache/',
+			'url' => $u['baseurl'] . 'report-cache/',
+		);
+	}
+
+	// draw the report result header, in html form
+	protected function _html_report_header() {
+		// construct the header of the resulting table
+		?>
+			<table class="widefat" cellspacing="0">
+				<thead><?php $this->_html_report_columns() ?></thead>
+				<tbody>
+		<?php
+	}
+
+	// draw the report result footer, in html form
+	protected function _html_report_footer() {
+		// construct the footer of the resulting table
+		?>
+				</tbody>
+				<tfoot><?php $this->_html_report_columns() ?></tfoot>
+			</table>
+		<?php
+	}
+
+	// draw the html columns
+	protected function _html_report_columns() {
+		// get a list of the report columns
+		$columns = $this->html_report_columns();
+
+		// render the columns row
+		?>
+			<tr>
+				<?php foreach ( $columns as $column => $args ): ?>
+					<?php
+						// normalize the column args
+						$args = wp_parse_args( $args, array(
+							'title' => $column,
+							'classes' => '',
+							'attr' => '',
+						) );
+					?>
+					<th class="col-<?php echo $column . ( $args['classes'] ? ' ' . esc_attr( $args['classes'] ) : '' ) ?>" <?php echo ( $args['attr'] ? ' ' . $args['attr'] : '' ); ?>><?php echo force_balance_tags( $args['title'] ) ?></th>
+				<?php endforeach; ?>
+			</tr>
+		<?php
+	}
+
+	// each report should control it's own form
+	abstract public function form();
+
+	// individual reports should define their own set of columns to display in html
+	abstract public function html_report_columns();
+
+	// individual reports should define their own set of columns to add to the csv
+	abstract public function csv_report_columns();
+
+	// the report should define a function to get a partial list of rows to process for this report. for instance, we don't want to have one group of 1,000,000 rows, run all at once, because
+	// the memory implications on that are huge. instead we would need to run it in discreet groups of 1,000 or 10,000 rows at a time, depending on the processing involved
+	abstract public function more_rows();
+
+	// the report should define a function to process a group of results, which it contructed in the more_rows() method
+	abstract public function aggregate_row_data( array $group );
+}
+
+/*
 abstract class qsot_admin_report {
 	protected static $report_name = 'Report';
 	protected static $report_slug = 'report';
@@ -166,7 +637,7 @@ abstract class qsot_admin_report {
 			$admin_body_class .= ' rtl';
 
 		$admin_body_class .= ' branch-' . str_replace( array( '.', ',' ), '-', floatval( $wp_version ) );
-		$admin_body_class .= ' version-' . str_replace( '.', '-', preg_replace( '/^([.0-9]+).*/', '$1', $wp_version ) );
+		$admin_body_class .= ' version-' . str_replace( '.', '-', preg_replace( '#^([.0-9]+).*#', '$1', $wp_version ) );
 		$admin_body_class .= ' admin-color-' . sanitize_html_class( get_user_option( 'admin_color' ), 'fresh' );
 		$admin_body_class .= ' locale-' . sanitize_html_class( strtolower( str_replace( '_', '-', get_locale() ) ) );
 
@@ -423,6 +894,7 @@ abstract class qsot_admin_report {
     return $addr;
   }
 }
+*/
 
 if (defined('ABSPATH') && function_exists('add_action')) {
 	qsot_reporting::pre_init();
