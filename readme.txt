@@ -169,6 +169,10 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.13.0 =
+* [improvement] completely reworked th seating report for speed and efficiency
+* [improvement] added printer friendly version of seating report
+
 = 1.12.11 =
 * [tweak] slight logic change to fix display options extension issue
 
