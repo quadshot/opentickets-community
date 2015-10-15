@@ -31,7 +31,7 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 
 	// individual reports should define their own set of columns to display in html
 	public function html_report_columns() {
-		return array(
+		return apply_filters( 'qsot-' . $this->slug . '-report-html-columns', array(
 			'purchaser' => array( 'title' => __( 'Purchaser', 'opentickets-community-edition' ) ),
 			'order_id' => array( 'title' => __( 'Order #', 'opentickets-community-edition' ) ),
 			'ticket_type' => array( 'title' => __( 'Ticket Type', 'opentickets-community-edition' ) ),
@@ -41,12 +41,12 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 			'address' => array( 'title' => __( 'Address', 'opentickets-community-edition' ) ),
 			'note' => array( 'title' => __( 'Note', 'opentickets-community-edition' ) ),
 			'state' => array( 'title' => __( 'Status', 'opentickets-community-edition' ) ),
-		);
+		) );
 	}
 
 	// individual reports should define their own set of columns to add to the csv
 	public function csv_report_columns() {
-		return array(
+		return apply_filters( 'qsot-' . $this->slug . '-report-csv-columns', array(
 			'purchaser' => __( 'Purchaser', 'opentickets-community-edition' ),
 			'order_id' => __( 'Order #', 'opentickets-community-edition' ),
 			'ticket_type' => __( 'Ticket Type', 'opentickets-community-edition' ),
@@ -58,20 +58,25 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 			'state' => __( 'Status', 'opentickets-community-edition' ),
 			'event' => __( 'Event', 'opentickets-community-edition' ),
 			'ticket_link' => __( 'Ticket Url', 'opentickets-community-edition' ),
-		);
+		) );
 	}
 
 	// when starting to run the report, make sure our position counters are reset and that we know what event we are running this thing for
 	protected function _starting() {
 		$this->offset = 0;
-		$this->event_id = max( 0, intval( $_POST['event_id'] ) );
+		$this->event_id = max( 0, intval( $_REQUEST['event_id'] ) );
 		$this->event = $this->event_id ? get_post( $this->event_id ) : (object)array( 'post_title' => __( '(unknown event)', 'opentickets-community-edition' ) );;
+
+		// if this is the printer friendly version, display the report title
+		if ( $this->is_printer_friendly() ) {
+			?><h2><?php echo sprintf( __( 'Seating Report: %s', 'opentickets-community-edition' ), apply_filters( 'the_title', $this->event->post_title, $this->event->ID ) ) ?></h2><?php
+		}
 	}
 
 	// handle the ajax requests for this report
 	protected function _process_ajax() {
 		// if the parent_id changed, then just pop a new form
-		if ( isset( $_POST['reload-form'] ) || ! isset( $_POST['parent_event_id'], $_POST['last_parent_id'] ) || empty( $_POST['parent_event_id'] ) || $_POST['parent_event_id'] != $_POST['last_parent_id'] ) {
+		if ( isset( $_REQUEST['reload-form'] ) || ! isset( $_REQUEST['parent_event_id'], $_REQUEST['last_parent_id'] ) || empty( $_REQUEST['parent_event_id'] ) || $_REQUEST['parent_event_id'] != $_REQUEST['last_parent_id'] ) {
 			$this->_form();
 			exit;
 		}
@@ -81,13 +86,28 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 		exit;
 	}
 
+	// augment the printerfriendly url
+	public function printer_friendly_url() {
+		// get the base printer friendly url from the parent class
+		$url = QSOT_Admin_Report::printer_friendly_url();
+
+		// add our special params
+		$url = add_query_arg( array(
+			'parent_event_id' => $_REQUEST['parent_event_id'],
+			'last_parent_id' => $_REQUEST['last_parent_id'],
+			'event_id' => $_REQUEST['event_id']
+		), $url );
+
+		return $url;
+	}
+
 	// control the form for this report
 	public function form() {
 		// determine whether we need the second part of the form or not
 		$extended_form = QSOT_Admin_Report::_verify_run_report();
 
 		// check if the parent event_id was was submitted, becuase it is requried to get a list of child events
-		$parent_event_id = max( 0, intval( isset( $_POST['parent_event_id'] ) ? $_POST['parent_event_id'] : 0 ) );
+		$parent_event_id = max( 0, intval( isset( $_REQUEST['parent_event_id'] ) ? $_REQUEST['parent_event_id'] : 0 ) );
 
 		$parents = $children = $parent_data = $selected_parent = $child_data = array();
 		// get a list of the parent events
@@ -142,7 +162,7 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 		}
 
 		$this_year = intval( date( 'Y' ) );
-		$submitted_year = isset( $_POST['year'] ) ? intval( $_POST['year'] ) : $this_year;
+		$submitted_year = isset( $_REQUEST['year'] ) ? intval( $_REQUEST['year'] ) : $this_year;
 		// draw the form
 		?>
 			<div class="main-form">
@@ -187,11 +207,11 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 			return true;
 
 		// check that our event_id is present
-		if ( ! isset( $_POST['event_id'] ) || intval( $_POST['event_id'] ) <= 0 )
+		if ( ! isset( $_REQUEST['event_id'] ) || intval( $_REQUEST['event_id'] ) <= 0 )
 			return false;
 
 		// finally verify that the parent event was not changed
-		if ( ! isset( $_POST['parent_event_id'], $_POST['last_parent_id'] ) || empty( $_POST['parent_event_id'] ) || $_POST['parent_event_id'] != $_POST['last_parent_id'] )
+		if ( ! isset( $_REQUEST['parent_event_id'], $_REQUEST['last_parent_id'] ) || empty( $_REQUEST['parent_event_id'] ) || $_REQUEST['parent_event_id'] != $_REQUEST['last_parent_id'] )
 			return false;
 
 		return true;
@@ -247,7 +267,7 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 		$final = array();
 		// finally, put it all together
 		foreach ( $group as $row ) {
-			$final[] = array(
+			$final[] = apply_filters( 'qsot-' . $this->slug . '-report-data-row', array(
 				'purchaser' => $this->_order_meta( $order_meta, 'name', $row ),
 				'order_id' => $row->order_id ? $row->order_id : '-',
 				'ticket_type' => $this->_ticket_type( $row->ticket_type_id ),
@@ -260,7 +280,7 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 				'event' => apply_filters( 'the_title', $this->event->post_title, $this->event->ID ),
 				'ticket_link' => isset( $ticket_codes[ $row->order_item_id ] ) ? apply_filters( 'qsot-get-ticket-link-from-code', $ticket_codes[ $row->order_item_id ], $ticket_codes[ $row->order_item_id ] ) : '',
 				'_raw' => $row,
-			);
+			), $row, $this->event, isset( $order_meta[ $row->order_id ] ) ? $order_meta[ $row->order_id ] : array() );
 		}
 
 		return $final;

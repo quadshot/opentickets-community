@@ -25,31 +25,27 @@ class qsot_reporting {
 			// handle the reporting ajaz request
 			add_action( 'wp_ajax_report_ajax', array( __CLASS__, 'process_ajax' ), 10 );
 
-			add_action('qsot-above-report-html', array(__CLASS__, 'add_view_links'), 10, 3);
-			add_action('qsot-below-report-html', array(__CLASS__, 'add_view_links'), 10, 3);
+			// add the printerfriendly links to the report link output
+			add_action( 'qsot-report-links', array( __CLASS__, 'add_view_links' ), 10, 2 );
 		}
 	}
 
-	public static function add_view_links($report_type, $req, $csv) {
-		if (isset($req, $req['pf'])) return;
-		$links = array();
+	// add the extra view links to the top and bottom of the report results tables. for now this is just printerfriendly links
+	public static function add_view_links( $csv_file, $report ) {
+		// if this is the printerfriendly version, then dont add the links
+		if ( $report->is_printer_friendly() )
+			return;
 
-		if (is_array($csv) && isset($csv['url']) && !empty($csv['url']))
-			$links['csv'] = sprintf('<a href="%s" title="%s">%s</a>', esc_attr($csv['url']), __('Download CSV','opentickets-community-edition'), __('Download CSV','opentickets-community-edition'));
+		// construct the printer friendly url
+		$url = $report->printer_friendly_url();
 
-		if (isset($req)) {
-			$link_data = array('pf' => 1);
-			$link_data['showing'] = $req['showing'];
-			if (isset($req['sort']) && !empty($req['sort'])) $link_data['sort'] = $req['sort'];
-			$link = add_query_arg($link_data, $_SERVER['HTTP_REFERER']);
-			$links['pf'] = sprintf('<a href="%s" title="%s" target="_blank">%s</a>', esc_attr($link), __('Printer Friendly Version','opentickets-community-edition'), __('Printer Friendly Version','opentickets-community-edition'));
-		}
-		?>
-		<?php if (count($links)): ?>
-			<div class="extra-actions">
-				<?php echo implode(' | ', array_values($links)) ?>
-			</div>
-		<?php endif;
+		// add the printer-friendly link
+		echo sprintf(
+			'<a href="%s" title="%s" target="_blank">%s</a>',
+			$url,
+			__( 'View a printer-friendly version of this report.', 'opentickets-community-edition' ),
+			__( 'Printer-Friendly Report', 'opentickets-community-edition' )
+		);
 	}
 
 	// handle the basic report ajax request delegation
@@ -69,7 +65,7 @@ class qsot_reporting {
 
 	// register all the scripts and css that may be used on the basic reporting pages
 	public static function register_assets() {
-		wp_register_script( 'qsot-report-ajax', self::$o->core_url . 'assets/js/admin/report/ajax.js', array( 'qsot-tools', 'jquery-ui-datepicker' ) );
+		wp_register_script( 'qsot-report-ajax', self::$o->core_url . 'assets/js/admin/report/ajax.js', array( 'qsot-tools', 'jquery-ui-datepicker', 'tablesorter' ) );
 	}
 
 	// tell wordpress to load the assets we previously registered
@@ -128,6 +124,11 @@ abstract class QSOT_Admin_Report {
 		add_filter( 'qsot-ajax-report-ajax-' . $this->slug, array( &$this, 'handle_ajax' ), 10 );
 	}
 
+	// getter for slug, name and description
+	public function slug() { return $this->slug; }
+	public function name() { return $this->name; }
+	public function description() { return $this->description; }
+
 	// overrideable function to allow additional initializations
 	public function init() {}
 
@@ -159,6 +160,7 @@ abstract class QSOT_Admin_Report {
 			'title' => $this->name,
 			'description' => $this->description,
 			'function' => array( &$this, 'show_shell' ),
+			'pf_function' => array( &$this, 'printer_friendly' ),
 		);
 
 		return $list;
@@ -166,11 +168,28 @@ abstract class QSOT_Admin_Report {
 
 	// show the report page shell
 	public function show_shell() {
+		// if the current user does not have permissions to run the report, then bail
+		if ( ! current_user_can( 'view_woocommerce_reports' ) )
+			return $this->_error( new WP_Error( 'no_permission', __( 'You do not have permission to use this report.', 'opentickets-community-edition' ) ) );
+
 		// draw the shell of the form, and allow the individual report to specify some fields
 		?>
 			<div class="report-form" id="report-form"><?php $this->_form() ?></div>
 			<div class="report-results" id="report-results"><?php $this->_results() ?></div>
 		<?php
+	}
+
+	// determine if this request is a printerfriendly request
+	public function is_printer_friendly() {
+		return isset( $_GET['pf'] ) && 1 == $_GET['pf'];
+	}
+
+	// construct a printer friendly url for this report
+	public function printer_friendly_url() {
+		return add_query_arg(
+			array( 'pf' => 1, 'report' => $this->slug, '_n' => wp_create_nonce( 'qsot-run-report-' . $this->slug ) ),
+			admin_url( apply_filters( 'qsot-get-menu-page-uri', '', 'main', true ) )
+		);
 	}
 
 	// draw the actual form shell, and allow the individual report to control the fields
@@ -188,15 +207,15 @@ abstract class QSOT_Admin_Report {
 	// verify that we should be running the report right now, based on the submitted data
 	protected function _verify_run_report( $only_orig=false ) {
 		// if the nonce or report name is not set, bail
-		if ( ! isset( $_POST['_n'], $_POST['report'] ) )
+		if ( ! isset( $_REQUEST['_n'], $_REQUEST['report'] ) )
 			return false;
 
 		// if the report name does not match this report, bail
-		if ( $_POST['report'] !== $this->slug )
+		if ( $_REQUEST['report'] !== $this->slug )
 			return false;
 
 		// if the nonce does not match, then bail
-		if ( ! wp_verify_nonce( $_POST['_n'], 'qsot-run-report-' . $this->slug ) )
+		if ( ! wp_verify_nonce( $_REQUEST['_n'], 'qsot-run-report-' . $this->slug ) )
 			return false;
 
 		return true;
@@ -408,6 +427,10 @@ abstract class QSOT_Admin_Report {
 
 	// draw the link to the csv, based off of the passed csv file data
 	protected function _csv_link( $file ) {
+		// if this is the printerfriendly version, then do not add the links
+		if ( $this->is_printer_friendly() )
+			return;
+
 		// only print the link if the url is part of the data we got
 		if ( ! is_array( $file ) || ! isset( $file['url'] ) || empty( $file['url'] ) )
 			return;
@@ -416,7 +439,8 @@ abstract class QSOT_Admin_Report {
 		?>
 			<div class="report-links">
 				<a href="<?php echo esc_attr( $file['url'] ) ?>" title="<?php _e( 'Download this CSV', 'opentickets-community-edition' ) ?>"><?php _e( 'Download this CSV', 'opentickets-community-edition' ) ?></a>
-				<?php do_action( 'qsot-' . $this->slug . '-report-links', $file ) ?>
+				<?php do_action( 'qsot-report-links', $file, $this ) ?>
+				<?php do_action( 'qsot-' . $this->slug . '-report-links', $file, $this ) ?>
 			</div>
 		<?php
 	}
@@ -431,7 +455,7 @@ abstract class QSOT_Admin_Report {
 			return $csv_path;
 
 		// determine the file path and url
-		$basename = 'report-' . $this->slug . '-' . wp_create_nonce( 'run-report-' . @json_encode( $_POST ) ) . '.csv';
+		$basename = 'report-' . $this->slug . '-' . wp_create_nonce( 'run-report-' . @json_encode( $_REQUEST ) ) . '.csv';
 		$file = array(
 			'path' => $csv_path['path'] . $basename,
 			'url' => $csv_path['url'] . $basename,
@@ -496,8 +520,8 @@ abstract class QSOT_Admin_Report {
 	protected function _html_report_header() {
 		// construct the header of the resulting table
 		?>
-			<table class="widefat" cellspacing="0">
-				<thead><?php $this->_html_report_columns() ?></thead>
+			<table class="widefat use-tablesorter" cellspacing="0">
+				<thead><?php $this->_html_report_columns( true ) ?></thead>
 				<tbody>
 		<?php
 	}
@@ -513,7 +537,7 @@ abstract class QSOT_Admin_Report {
 	}
 
 	// draw the html columns
-	protected function _html_report_columns() {
+	protected function _html_report_columns( $header=false ) {
 		// get a list of the report columns
 		$columns = $this->html_report_columns();
 
@@ -529,10 +553,215 @@ abstract class QSOT_Admin_Report {
 							'attr' => '',
 						) );
 					?>
-					<th class="col-<?php echo $column . ( $args['classes'] ? ' ' . esc_attr( $args['classes'] ) : '' ) ?>" <?php echo ( $args['attr'] ? ' ' . $args['attr'] : '' ); ?>><?php echo force_balance_tags( $args['title'] ) ?></th>
+					<th class="col-<?php echo $column . ( $args['classes'] ? ' ' . esc_attr( $args['classes'] ) : '' ) ?>" <?php echo ( $args['attr'] ? ' ' . $args['attr'] : '' ); ?>>
+						<?php echo force_balance_tags( $args['title'] ) ?>
+						<?php if ( $header ): ?>
+							<span class="dashicons dashicons-sort"></span>
+							<span class="dashicons dashicons-arrow-up"></span>
+							<span class="dashicons dashicons-arrow-down"></span>
+						<?php endif; ?>
+					</th>
 				<?php endforeach; ?>
 			</tr>
 		<?php
+	}
+
+	// generic printer friendly header
+	protected function _printer_friendly_header() {
+		define( 'IFRAME_REQUEST', true );
+		// direct copy from /wp-admin/admin-header.php
+		global $title, $hook_suffix, $current_screen, $wp_locale, $pagenow, $wp_version,
+			$update_title, $total_update_count, $parent_file;
+
+		// Catch plugins that include admin-header.php before admin.php completes.
+		if ( empty( $current_screen ) )
+			set_current_screen();
+
+		get_admin_page_title();
+		$title = esc_html( strip_tags( $title ) );
+
+		if ( is_network_admin() )
+			$admin_title = sprintf( __( 'Network Admin: %s' ), esc_html( get_current_site()->site_name ) );
+		elseif ( is_user_admin() )
+			$admin_title = sprintf( __( 'User Dashboard: %s' ), esc_html( get_current_site()->site_name ) );
+		else
+			$admin_title = get_bloginfo( 'name' );
+
+		if ( $admin_title == $title )
+			$admin_title = sprintf( __( '%1$s &#8212; WordPress' ), $title );
+		else
+			$admin_title = sprintf( __( '%1$s &lsaquo; %2$s &#8212; WordPress' ), $title, $admin_title );
+
+		/**
+		 * Filter the title tag content for an admin page.
+		 *
+		 * @since 3.1.0
+		 *
+		 * @param string $admin_title The page title, with extra context added.
+		 * @param string $title       The original page title.
+		 */
+		$admin_title = apply_filters( 'admin_title', $admin_title, $title );
+
+		wp_user_settings();
+
+		_wp_admin_html_begin();
+		?>
+		<title><?php echo $admin_title; ?></title>
+		<?php
+
+		wp_enqueue_style( 'colors' );
+		wp_enqueue_style( 'ie' );
+		wp_enqueue_script('utils');
+		wp_enqueue_script( 'svg-painter' );
+
+		$admin_body_class = preg_replace('/[^a-z0-9_-]+/i', '-', $hook_suffix);
+		?>
+		<script type="text/javascript">
+		addLoadEvent = function(func){if(typeof jQuery!="undefined")jQuery(document).ready(func);else if(typeof wpOnload!='function'){wpOnload=func;}else{var oldonload=wpOnload;wpOnload=function(){oldonload();func();}}};
+		var ajaxurl = '<?php echo admin_url( 'admin-ajax.php', 'relative' ); ?>',
+			pagenow = '<?php echo $current_screen->id; ?>',
+			typenow = '<?php echo $current_screen->post_type; ?>',
+			adminpage = '<?php echo $admin_body_class; ?>',
+			thousandsSeparator = '<?php echo addslashes( $wp_locale->number_format['thousands_sep'] ); ?>',
+			decimalPoint = '<?php echo addslashes( $wp_locale->number_format['decimal_point'] ); ?>',
+			isRtl = <?php echo (int) is_rtl(); ?>;
+		</script>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0">
+		<?php
+
+		/**
+		 * Enqueue scripts for all admin pages.
+		 *
+		 * @since 2.8.0
+		 *
+		 * @param string $hook_suffix The current admin page.
+		 */
+		do_action( 'admin_enqueue_scripts', $hook_suffix );
+
+		/**
+		 * Fires when styles are printed for a specific admin page based on $hook_suffix.
+		 *
+		 * @since 2.6.0
+		 */
+		do_action( "admin_print_styles-$hook_suffix" );
+
+		/**
+		 * Fires when styles are printed for all admin pages.
+		 *
+		 * @since 2.6.0
+		 */
+		do_action( 'admin_print_styles' );
+
+		/**
+		 * Fires when scripts are printed for a specific admin page based on $hook_suffix.
+		 *
+		 * @since 2.1.0
+		 */
+		do_action( "admin_print_scripts-$hook_suffix" );
+
+		/**
+		 * Fires when scripts are printed for all admin pages.
+		 *
+		 * @since 2.1.0
+		 */
+		do_action( 'admin_print_scripts' );
+
+		/**
+		 * Fires in head section for a specific admin page.
+		 *
+		 * The dynamic portion of the hook, `$hook_suffix`, refers to the hook suffix
+		 * for the admin page.
+		 *
+		 * @since 2.1.0
+		 */
+		do_action( "admin_head-$hook_suffix" );
+
+		/**
+		 * Fires in head section for all admin pages.
+		 *
+		 * @since 2.1.0
+		 */
+		do_action( 'admin_head' );
+
+		if ( get_user_setting('mfold') == 'f' )
+			$admin_body_class .= ' folded';
+
+		if ( !get_user_setting('unfold') )
+			$admin_body_class .= ' auto-fold';
+
+		if ( is_admin_bar_showing() )
+			$admin_body_class .= ' admin-bar';
+
+		if ( is_rtl() )
+			$admin_body_class .= ' rtl';
+
+		if ( $current_screen->post_type )
+			$admin_body_class .= ' post-type-' . $current_screen->post_type;
+
+		if ( $current_screen->taxonomy )
+			$admin_body_class .= ' taxonomy-' . $current_screen->taxonomy;
+
+		$admin_body_class .= ' branch-' . str_replace( array( '.', ',' ), '-', floatval( $wp_version ) );
+		$admin_body_class .= ' version-' . str_replace( '.', '-', preg_replace( '/^([.0-9]+).*/', '$1', $wp_version ) );
+		$admin_body_class .= ' admin-color-' . sanitize_html_class( get_user_option( 'admin_color' ), 'fresh' );
+		$admin_body_class .= ' locale-' . sanitize_html_class( strtolower( str_replace( '_', '-', get_locale() ) ) );
+
+		if ( wp_is_mobile() )
+			$admin_body_class .= ' mobile';
+
+		if ( is_multisite() )
+			$admin_body_class .= ' multisite';
+
+		if ( is_network_admin() )
+			$admin_body_class .= ' network-admin';
+
+		$admin_body_class .= ' no-customize-support no-svg';
+
+		?>
+		</head>
+		<?php
+		/**
+		 * Filter the CSS classes for the body tag in the admin.
+		 *
+		 * This filter differs from the {@see 'post_class'} and {@see 'body_class'} filters
+		 * in two important ways:
+		 *
+		 * 1. `$classes` is a space-separated string of class names instead of an array.
+		 * 2. Not all core admin classes are filterable, notably: wp-admin, wp-core-ui,
+		 *    and no-js cannot be removed.
+		 *
+		 * @since 2.3.0
+		 *
+		 * @param string $classes Space-separated list of CSS classes.
+		 */
+		$admin_body_classes = apply_filters( 'admin_body_class', '' );
+		?>
+		<body class="wp-admin wp-core-ui no-js printer-friendly-report <?php echo $admin_body_classes . ' ' . $admin_body_class; ?>">
+		<div id="wpwrap">
+		<div class="inner-wrap">
+		<?php
+	}
+
+	// draw the printer friendly footer
+	protected function _printer_friendly_footer() {
+		?>
+			</div>
+			</div>
+			</body>
+			</html>
+		<?php
+	}
+
+	// draw the complete printer friendly version
+	public function printer_friendly() {
+		// if the current user does not have permissions to run the report, then bail
+		if ( ! current_user_can( 'view_woocommerce_reports' ) )
+			return $this->_error( new WP_Error( 'no_permission', __( 'You do not have permission to use this report.', 'opentickets-community-edition' ) ) );
+
+		// draw the results
+		$this->_printer_friendly_header();
+		$this->_results();
+		$this->_printer_friendly_footer();
 	}
 
 	// each report should control it's own form

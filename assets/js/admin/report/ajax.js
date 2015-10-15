@@ -27,6 +27,13 @@ var QS = QS || { Tools:{} };
 		} );
 	}
 
+	// add table sorter
+	function _add_tablesorter( context ) {
+		var context = context || 'body';
+		console.log( 'sorter list', $( context ),  $( context ).find( '.use-tablesorter' ) );
+		$( context ).find( '.use-tablesorter' ).tablesorter();
+	}
+
 	// handle the form actions
 	$( document ).on( 'submit', '.qsot-ajax-form', function( e, extra_data, target ) {
 		e.preventDefault();
@@ -44,7 +51,14 @@ var QS = QS || { Tools:{} };
 			error: function() { console.log( 'Error:', [].slice.call( arguments ) ); },
 			success: function( r ) {
 				var result = $( $.trim( r ) ).appendTo( target.empty() );
-				_add_select2( result );
+				_add_select2( target );
+				_add_tablesorter( target );
+				target.find( '.use-tablesorter' ).each( function() {
+					var col = $( this ).find( '.col-order_id' ), pos = col.prevAll( 'th' ).length - 1;
+					if ( ! col.length )
+						return;
+					$( this ).trigger( 'sorton', [ [[pos,0]] ] );
+				} );
 			}
 		} );
 	} );
@@ -58,6 +72,14 @@ var QS = QS || { Tools:{} };
   // on page load, add the select2 ui to any element that requires
   $( function() {
 		_add_select2( 'body' );
+		_add_tablesorter( 'body' );
+
+		$( 'body' ).find( '.use-tablesorter' ).each( function() {
+			var col = $( this ).find( '.col-order_id' ), pos = col.prevAll( 'th' ).length - 1;
+			if ( ! col.length )
+				return;
+			$( this ).trigger( 'sorton', [ [[pos,0]] ] );
+		} );
 	} );
 
 	function add_date_pickers(sel) {
