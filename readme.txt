@@ -169,7 +169,12 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
-= 1.13.0 =
+= 1.13.2 =
+* [tweak] improved seating extension compatibility
+* [fix] corrected changelog entries
+* [fix] solved edgecase of admin reserved tickets expiring
+
+= 1.13.1 =
 * [fix] ticket selection UI removed from ticket display
 
 = 1.13.0 =
