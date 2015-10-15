@@ -15,6 +15,9 @@ class qsot_admin_menu {
 	);
 	protected static $menu_page_uri = '';
 
+	// container for the reports page object
+	protected static $reports = null;
+
 	public static function pre_init() {
 		$settings_class_name = apply_filters('qsot-settings-class-name', '');
 		if (!empty($settings_class_name)) {
@@ -216,13 +219,30 @@ class qsot_admin_menu {
 		);
 
 		// generic function to call some page load logic
+		add_action( 'load-' . self::$menu_page_hooks['main'], array( __CLASS__, 'ap_reports_page_head' ) );
 		add_action( 'load-' . self::$menu_page_hooks['settings'], array( __CLASS__, 'ap_settings_page_head' ) );
 	}
 
+	// get the reports page object
+	protected static function _reports_page() {
+		// if the page was already loaded, the return it
+		if ( is_object( self::$reports ) )
+			return self::$reports;
+
+		// otherwise load it
+		return self::$reports = require_once( 'admin-reports.php' );
+	}
+
+	// page load logic for the reports page
+	public static function ap_reports_page_head() {
+		$reports = self::_reports_page();
+		$reports->on_load();
+	}
+
+	// draw the reports page
 	public static function ap_reports_page() {
-		$reports = require_once( 'admin-reports.php' );
+		$reports = self::_reports_page();
 		$reports->output();
-		return;
 	}
 
 	public static function vit($v) {

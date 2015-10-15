@@ -58,6 +58,7 @@ class QSOT_tickets {
 		// order item display
 		add_action('qsot-ticket-item-meta', array(__CLASS__, 'order_item_ticket_link'), 1000, 3);
 		add_filter('qsot-get-ticket-link', array(__CLASS__, 'get_ticket_link'), 1000, 2);
+		add_filter('qsot-get-ticket-link-from-code', array(__CLASS__, 'get_ticket_link_from_code'), 1000, 2);
 
 		// display ticket
 		//add_action('qsot-ticket-intercepted', array(__CLASS__, 'display_ticket'), 1000, 1);
@@ -158,29 +159,47 @@ class QSOT_tickets {
 		return $status;
 	}
 
-	public static function get_ticket_link($current, $item_id) {
-		global $wpdb, $wp_rewrite;
+	// get the appropriate ticket link, based on the order_item_id
+	public static function get_ticket_link( $current, $item_id ) {
+		global $wpdb;
 
+		// figure out the order status for this item, and only allow completed orders to pass this check
 		$order_status = self::_order_item_order_status( $item_id );
 		if ( ! in_array( $order_status, array( 'completed' ) ) ) return '';
 
-		$q = $wpdb->prepare('select ticket_code from '.$wpdb->qsot_ticket_codes.' where order_item_id = %d', $item_id);
-		$code = $wpdb->get_var($q);
+		// get the ticket code from this order item
+		$q = $wpdb->prepare( 'select ticket_code from ' . $wpdb->qsot_ticket_codes . ' where order_item_id = %d', $item_id );
+		$code = $wpdb->get_var( $q );
 
-		if ( empty($code) ) return $current;
+		// if there is no code, then bail
+		if ( empty( $code ) )
+			return $current;
 
-		$post_link = $wp_rewrite->get_extra_permastruct('post');
+		// otherwise, return the appropriate ticket link
+		return apply_filters( 'qsot-get-ticket-link-from-code', $current, $code );
+	}
 
-		if ( !empty($post_link) ) {
-			$post_link = site_url('/ticket/'.$code.'/');
+	// get the ticket link, based on the ticket code
+	public static function get_ticket_link_from_code( $current, $code ) {
+		global $wp_rewrite;
+		// only figure out the permalink struct once
+		static $post_link = null;
+		if ( null === $post_link )
+			$post_link = $wp_rewrite->get_extra_permastruct( 'post' );
+
+		$final = '';
+		// if we ARE using a permalink struct, then return a pretty permalink
+		if ( ! empty( $post_link ) ) {
+			$final = site_url( '/ticket/' . $code . '/' );
+		// otherwise, return an ugly permalink
 		} else {
-			$post_link = add_query_arg(array(
+			$final = add_query_arg( array(
 				'qsot-ticket' => 1,
 				'qsot-ticket-id' => $code,
-			), site_url());
+			), site_url() );
 		}
 
-		return $post_link;
+		return $final;
 	}
 
 	public static function sniff_order_id($order_id) {

@@ -206,9 +206,15 @@ class QSOT {
 		wp_register_script( 'select2', self::$o->core_url . 'assets/js/libs/select2/select2.js', array( 'jquery' ), '3.5.4' );
 		wp_register_style( 'select2', self::$o->core_url . 'assets/js/libs/select2/select2.css', array(), '3.5.4' );
 
+		// tablesorter plugin
+		wp_register_script( 'tablesorter', self::$o->core_url . 'assets/js/libs/jquery-tablesorter/jquery.tablesorter' . $suffix . '.js', array( 'jquery' ), '2.0.3' );
+
+		// admin specific tools
+		wp_register_script( 'qsot-admin-tools', self::$o->core_url . 'assets/js/utils/admin-tools.js', array( 'qsot-backbone-modal', 'select2' ), self::$o->version );
+
 		// create the generic qsot-tools bucket
 		$requirements = array( 'qsot-core-tools' );
-		if ( is_admin() ) $requirements[] = 'qsot-backbone-modal';
+		if ( is_admin() ) $requirements[] = 'qsot-admin-tools';
 		wp_register_script( 'qsot-tools', false, $requirements, self::$o->version );
 	}
 

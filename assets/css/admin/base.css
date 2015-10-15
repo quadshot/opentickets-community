@@ -200,6 +200,24 @@ ul#adminmenu a.qsot-special-arrow:after {
 .ot-reports-page .range_datepicker { cursor:pointer; border-color:#aaaaaa; }
 .ot-reports-page .time-display { font-style:italic; text-decoration:underline; color:#888888; }
 
+table thead th .dashicons { display:none; }
+.use-tablesorter thead th.header { cursor:pointer; }
+.use-tablesorter thead th.header .dashicons-sort { display:inline-block; }
+.use-tablesorter thead th.header .dashicons-sort { display:inline-block; }
+.use-tablesorter thead th.headerSortUp,
+.use-tablesorter thead th.headerSortDown { background-color:#eee; }
+
+body.printer-friendly-report .use-tablesorter thead th.header .dashicons-sort { display:none; }
+body.printer-friendly-report .widefat th,
+body.printer-friendly-report .widefat thead td,
+body.printer-friendly-report .widefat tfoot td,
+body.printer-friendly-report { font-size:12px; }
+body.printer-friendly-report .widefat td,
+body.printer-friendly-report .widefat td p,
+body.printer-friendly-report .widefat td ol,
+body.printer-friendly-report .widefat td ul { font-size:11px; }
+body.printer-friendly-report .inner-wrap { padding:8px !important; width:9.5in !important; }
+
 #system-report-text { display:none; }
 .system-status-report-msg input[type="button"],
 .system-status-report-msg textarea { margin-bottom:1em; }
