@@ -71,6 +71,36 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 		if ( $this->is_printer_friendly() ) {
 			?><h2><?php echo sprintf( __( 'Seating Report: %s', 'opentickets-community-edition' ), apply_filters( 'the_title', $this->event->post_title, $this->event->ID ) ) ?></h2><?php
 		}
+
+		// add messages for deprecated filters
+		add_action( 'qsot-load-seating-report-assets', array( __CLASS__, 'deprectated_filter' ), -1 );
+		add_action( 'qsot-seating-report-get-ticket-data', array( __CLASS__, 'deprectated_filter' ), -1 );
+		add_action( 'qsotc-seating-report-compile-rows-occupied', array( __CLASS__, 'deprectated_filter' ), -1 );
+		add_action( 'qsot-seating-report-compile-rows-lines', array( __CLASS__, 'deprectated_filter' ), -1 );
+		add_action( 'qsotc-seating-report-compile-rows-available', array( __CLASS__, 'deprectated_filter' ), -1 );
+		add_action( 'qsot-seating-report-compile-rows-available', array( __CLASS__, 'deprectated_filter' ), -1 );
+		add_action( 'qsot-seating-report-fields', array( __CLASS__, 'deprectated_filter' ), -1 );
+		add_action( 'qsotc-seating-report-csv-row', array( __CLASS__, 'deprectated_filter' ), -1 );
+	}
+
+	// send warnings about deprecated filters
+	public function deprectated_filter( $val ) {
+		$replacement = null;
+		// determine if there is a one to one replacement
+		switch ( current_filter() ) {
+			case 'qsotc-seating-report-csv-row': $replacement = 'filter:' . 'qsot-' . $this->slug . '-report-csv-row'; break;
+			case 'qsot-seating-report-fields': $replacement = 'filter:' . 'qsot-' . $this->slug . '-report-csv-columns OR qsot-' . $this->slug . '-report-html-columns'; break;
+			case 'qsot-seating-report-compile-rows-lines':
+			case 'qsotc-seating-report-compile-rows-occupied': $replacement = 'filter:' . 'qsot-' . $this->slug . '-report-data-row'; break;
+			case 'qsot-seating-report-compile-rows-available':
+			case 'qsotc-seating-report-compile-rows-available': $replacement = 'filter:' . 'qsot-' . $this->slug . '-report-before-html-footer'; break;
+		}
+
+		// pop the error
+		_deprecated_function( 'filter:' . current_filter(), '1.13.0', null );
+
+		// pass through
+		return $val;
 	}
 
 	// handle the ajax requests for this report
@@ -326,6 +356,8 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 		}
 
 		echo '</tr>';
+
+		do_action( 'qsot-' . $this->slug . '-report-before-html-footer', $all_html_rows, $this );
 	}
 
 	// get a very specific piece of order meta from the list of order meta, based on the list, a specific grouping name, and the order id

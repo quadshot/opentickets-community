@@ -41,7 +41,7 @@ class qsot_reporting {
 
 		// add the printer-friendly link
 		echo sprintf(
-			'<a href="%s" title="%s" target="_blank">%s</a>',
+			' | <a href="%s" title="%s" target="_blank">%s</a>',
 			$url,
 			__( 'View a printer-friendly version of this report.', 'opentickets-community-edition' ),
 			__( 'Printer-Friendly Report', 'opentickets-community-edition' )
