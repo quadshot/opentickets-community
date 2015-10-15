@@ -18,6 +18,7 @@ class opentickets_community_launcher {
 	protected static $o = null; // holder for all options of the events plugin
 	protected static $active = false;
 
+	// test comment
 	// initialize/load everything related to the core plugin
 	public static function pre_init() {
 		// load the db upgrader, so that all plugins can interface with it before it does it's magic
