@@ -489,9 +489,16 @@ class qsot_post_type {
 
 	// insert the event synopsis into the post content of the child events, so it is displayed on the individual event pages, when the synopsis options are turned on
 	public static function the_content( $content ) {
+		// if this is not a single event page, then bail now
+		if ( ! is_singular( self::$o->core_post_type ) )
+			return $content;
+
+		// get the event post
 		$post = get_post();
+
 		// if the post has a password, then require it
-		if ( post_password_required( $post ) ) return $content;
+		if ( post_password_required( $post ) )
+			return $content;
 
 		// if this is a child event post, then ...
 		if ( ( $event = get_post() ) && is_object( $event ) && $event->post_type == self::$o->core_post_type && $event->post_parent != 0 ) {
