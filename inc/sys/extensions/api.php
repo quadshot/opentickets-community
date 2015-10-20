@@ -281,8 +281,9 @@ class QSOT_Extensions_API {
 			'user-agent' => 'QSSM API (' . site_url() . ')',
 			'body' => $data,
 		) );
+		//die(var_dump($endpoint, $data, $url, $response));
 
-		add_action( 'admin_notices', function() use( $endpoint, $url, $response ) { ?><script>console.log( <?php echo @json_encode( array( 'ep' => $endpoint, 'u' => $url, 'r' => $response ) ) ?> )</script><?php });
+		/* add_action( 'admin_notices', function() use( $endpoint, $url, $response ) { ?><script>console.log( <?php echo @json_encode( array( 'ep' => $endpoint, 'u' => $url, 'r' => $response ) ) ?> )</script><?php }); */
 
 		// if the response failed, then error out
 		if ( ! is_array( $response ) || ! isset( $response['body'] ) )

@@ -116,8 +116,8 @@ class QSOT_Settings_Licenses extends QSOT_Settings_Page {
 
 												<?php if ( isset( $licenses[ $file ], $licenses[ $file ]['errors'] ) ): ?>
 													<div class="qsot-errors">
-														<?php foreach ( $licenses[ $file ]['errors'] as $code => $msgs ): ?>
-															<?php foreach ( $msgs as $msg ): ?>
+														<?php foreach ( $licenses[ $file ]['errors'] as $msgs_pkg ): ?>
+															<?php if ( isset( $msgs_pkg['msgs'] ) ) foreach ( $msgs_pkg['msgs'] as $msg ): ?>
 																<div class="qsot-error"><?php echo force_balance_tags( $msg ) ?></div>
 															<?php endforeach; ?>
 														<?php endforeach; ?>
@@ -133,7 +133,7 @@ class QSOT_Settings_Licenses extends QSOT_Settings_Page {
 
 										<div class="field">
 											<span class="label"><?php _e( 'Expired On', 'opentickets-community-edition' ) ?></span>:
-											<span class="value"><?php date_i18n( get_option( 'date_format', 'F jS, Y' ), $license[ $file ]['expires'] ) ?></span>
+											<span class="value"><?php date_i18n( get_option( 'date_format', 'F jS, Y' ), $licenses[ $file ]['expires'] ) ?></span>
 										</div>
 									<?php else: ?>
 										<div class="field">
@@ -193,6 +193,9 @@ class QSOT_Settings_Licenses extends QSOT_Settings_Page {
 	 * Save settings
 	 */
 	public function save() {
+		// clear out any convereted key messages we were previously showing
+		delete_option( 'qsot-converted-msg' );
+
 		// get a list of the installed plugins we need to worry about
 		$installed = QSOT_Extensions::instance()->get_installed();
 

@@ -51,6 +51,9 @@ class QSOT_Extensions {
 		// load the list of all installed plugins on this isntallation
 		$this->_load_all_plugins();
 
+		// convert old keys from keychain plugin, to new keys built in to core
+		$this->_convert_old_keys();
+
 		// load the list of all installed plugins that we need to do something for.
 		// this list is obtained once a week +/- 1 day, or if 1) we have never obtained it before and we are checking for updates, or 2) we are being asked to force re-check
 		$this->_load_known_plugins();
@@ -69,6 +72,9 @@ class QSOT_Extensions {
 
 		// after plugins have been installed, update our plugins list
 		add_action( 'upgrader_post_install', array( &$this, 'purge_plugins_list' ), 1000 );
+
+		// ad a hook to display the message about conveerted license keys
+		add_action( 'admin_notices', array( &$this, 'maybe_converted_key_message' ), 1000 );
 	}
 
 	// get the list of licenses. this contains the base_file, license, email, verification_hash, version, and expiration of each registered license
@@ -510,6 +516,83 @@ class QSOT_Extensions {
 		}
 
 		return $arr;
+	}
+
+	// maybe convert the old license keys to the new license keys
+	protected function _convert_old_keys() {
+		// check if they have already been converted
+		$already_converted = get_option( self::$ns . 'converted-old-keys', 0 );
+		if ( $already_converted )
+			return;
+
+		// mark the keys as converted now, so that the duplication risk of this task is as little as possible
+		update_option( self::$ns . 'converted-old-keys', 1 );
+
+		// load the old keys
+		$keys = get_option( '_qsot_keys_' . md5( site_url() ), array() );
+
+		// if there are no keys to convert, then do nothing
+		if ( empty( $keys ) )
+			return;
+
+		$at_least_one = false;
+		// otherwise cycle through the keys, and store the ones that dont have new keys yet
+		foreach ( $keys as $file => $data ) {
+			// if the plugin name is invalid, then skip it
+			if ( '*' == $file || count( explode( '/', $file ) ) != 2 )
+				continue;
+
+			// see if this plugin already has a key stored that is valid
+			$current = get_option( self::$ns . 'licenses-' . md5( $file ), array() );
+
+			// if it is stored, and valid, then skip this old key
+			if ( ! empty( $current ) && is_array( $current ) && isset( $current['verification_code'] ) && ! empty( $current['verification_code'] ) )
+				continue;
+
+			// otherwise, construct the new data array, with the information we know
+			$arr = array(
+				'license' => $data['key'],
+				'email' => $data['key-email'],
+				'base_file' => $file,
+				'version' => isset( $this->all[ $file ] ) ? $this->all[ $file ]['Version'] : '',
+				'verification_code' => '',
+				'expires' => '',
+			);
+
+			// update the stored license information for this file with the newly aggregated data
+			update_option( self::$ns . 'licenses-' . md5( $file ), $arr );
+			$at_least_one = true;
+		}
+
+		// if there was at least one restored license key, then add a message to pop
+		if ( $at_least_one )
+			update_option( self::$ns . 'converted-msg', 1 );
+	}
+
+	// if there is a converted key message, display it now
+	public function maybe_converted_key_message() {
+		// if the message should not be displayed, then bail
+		if ( ! get_option( self::$ns . 'converted-msg', 0 ) )
+			return;
+
+		// url of the licenses page
+		$url = add_query_arg(
+			array( 'tab' => 'licenses' ),
+			apply_filters( 'qsot-get-menu-page-uri', admin_url( '/' ), 'settings', true )
+		);
+		?>
+			<div class="error">
+				<p><?php echo sprintf(
+					__( 'The way that %sOpenTickets Community Edition%s handles license keys has changed. Previously a tool called %sOpenTickets - Keychain%s was required. This tool has become obsolete. We have automatically copied over the licenses you previously added to that tool; however, they do require your validation. Please visit the %sLicenses Settings Page%s, verify that your license keys are correct, and "Save Changes" to validate them.', 'opentickets-community-edition' ),
+					'<strong><em>',
+					'</em></strong>',
+					'<em>',
+					'</em>',
+					sprintf( '<a href="%s" title="%s">', $url, __( 'Visit the Licenses Page', 'opentickets-community-edition' ) ),
+					'</a>'
+				) ?></p>
+			</div>
+		<?php
 	}
 }
 
