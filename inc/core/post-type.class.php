@@ -378,6 +378,10 @@ class qsot_post_type {
 
 	// on the frontend, lets show the parent events in category and tag pages
 	public static function events_in_categories_and_tags( $q ) {
+		// if the option to show the parent envets on the homepage is not checked, then do not modify the query with this function
+		if ( 'yes' !== self::$options->{'qsot-events-on-homepage'} )
+			return $q;
+
 		// alias the query vars to a shorter variable name (not required)
 		$v = $q->query_vars;
 
@@ -393,19 +397,18 @@ class qsot_post_type {
 
 		// when not in the admin, and processing the main page query
 		if ( ! is_admin() && $q->is_main_query() ) {
-			if ( ! isset( $v['post_type'] ) || empty( $v['post_type'] ) ) {
-				// if the list of post types was not supplied, then create one
-				// that uses 'post' and 'qsot-event' (event post type)
+			// if the list of post types was not supplied, and this is the homepage, then create one that uses 'post' and 'qsot-event' (event post type)
+			if ( ( is_home() || is_front_page() ) && ( ! isset( $v['post_type'] ) || empty( $v['post_type'] ) ) ) {
+				// make sure that the home page generic queries add events the list of post types to display
 				$v['post_type'] = array( 'post', 'qsot-event' );
-			} else {
-				// add the event post type to the list of possible post types
-				// to query for
-				$v['post_type'] = array_filter( (array)$v['post_type'] );
+
+				// only show parent events. this has the unfortunate side effect of limiting other post types to parents only too... but this should only conflict with very very few plugins, and nothing core WP
+				$v['post_parent'] = isset( $v['post_parent'] ) && ! empty( $v['post_parent'] ) ? $v['post_parent'] : '';
+			// if the post type list is set and 'post' is the only type specified, then add the event post type to the list of possible post types to query for
+			} else if ( isset( $v['post_type'] ) && ( $types = array_filter( (array)$v['post_type'] ) ) && 1 == count( $types ) && in_array( 'post', $types ) ) {
+				$v['post_type'] = $types;
 				$v['post_type'][] = 'qsot-event';
 			}
-
-			// only show parent events. this has the unfortunate side effect of limiting other post types to parents only too... but this should only conflict with very very few plugins, and nothing core WP
-			$v['post_parent'] = isset( $v['post_parent'] ) && ! empty( $v['post_parent'] ) ? $v['post_parent'] : '';
 		}
 
 		// reassign the query vars back to the long name
@@ -2176,6 +2179,34 @@ class qsot_post_type {
 			'page' => 'frontend',
 		));
 
+		// homepage sub section
+		self::$options->add( array(
+			'order' => 200,
+			'type' => 'title',
+			'title' => __( 'Event Display', 'opentickets-community-edition' ),
+			'id' => 'heading-frontend-general-2',
+			'page' => 'frontend',
+		) );
+
+		self::$options->add( array(
+			'order' => 230,
+			'id' => 'qsot-events-on-homepage',
+			'type' => 'checkbox',
+			'title' => __( 'Show Events on Home', 'opentickets-community-edition' ),
+			'desc' => __( 'Show the parent events on the homepage, mixed in with the posts.', 'opentickets-community-edition' ),
+			'desc_tip' => __( 'Checking this will cause the parent events to be displayed on the homepage, mixed in with the posts.', 'opentickets-community-edition' ),
+			'default' => 'no',
+			'page' => 'frontend',
+		) );
+
+		self::$options->add( array(
+			'order' => 299,
+			'type' => 'sectionend',
+			'id' => 'heading-frontend-general-2',
+			'page' => 'frontend',
+		) );
+
+		// colors tab
 		self::$options->add(array(
 			'order' => 100,
 			'type' => 'title',
