@@ -912,7 +912,7 @@ class qsot_event_area {
 			if (empty($customer_id)) $customer_id = md5($order->id);
 			$res = apply_filters('qsot-zoner-reserve', false, $event, $event->meta->_event_area_obj->ticket->id, $qty, $customer_id, $oid);
 			if ( $res && ! is_wp_error( $res ) ) {
-				do_action('qsot-order-admin-added-tickets', $order, $event, $event->meta->_event_area_obj->ticket->id, $qty);
+				do_action('qsot-order-admin-added-tickets', $order, $event, $event->meta->_event_area_obj->ticket->id, $qty, $customer_id);
 				$resp['s'] = true;
 			}
 		} else {
