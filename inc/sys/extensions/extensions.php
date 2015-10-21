@@ -300,14 +300,14 @@ class QSOT_Extensions {
 					case 'icon_image':
 					case 'store_image':
 						if ( isset( $images['icon_rel_path'] ) && ! empty( $images['icon_rel_path'] ) && @file_exists( $path . $images['icon_rel_path'] ) )
-							$list[ md5_file( $path . $images['icon_rel_path'] ) ] = 1;
+							$list[ md5_file( $path . $images['icon_rel_path'] ) ] = $images['icon_rel_path'];
 					break;
 
 					case 'banner_images':
 					case 'screenshot_images':
 						foreach ( $images as $image_ind => $img )
 							if ( isset( $img['icon_rel_path'] ) && ! empty( $img['icon_rel_path'] ) && @file_exists( $path . $img['icon_rel_path'] ) )
-								$list[ md5_file( $path . $img['icon_rel_path'] ) ] = 1;
+								$list[ md5_file( $path . $img['icon_rel_path'] ) ] = $img['icon_rel_path'];
 					break;
 				}
 			}
