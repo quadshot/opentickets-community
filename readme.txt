@@ -169,6 +169,11 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.13.3 =
+* [new] added option to control if parent events are displayed on homepage
+* [tweak] by default events are not shown on homepage anymore
+* [fix] repaired the product category pages
+
 = 1.13.2 =
 * [tweak] improved seating extension compatibility
 * [fix] corrected changelog entries
