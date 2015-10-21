@@ -6,7 +6,7 @@ class QSOT_Extensions {
 	protected static $_instance = null;
 	protected static $ns = 'qsot-';
 
-	protected static $server_url = 'http://stage.opentickets.com/';
+	protected static $server_url = 'http://opentickets.com/';
 
 	protected $all = array();
 	protected $known = array();

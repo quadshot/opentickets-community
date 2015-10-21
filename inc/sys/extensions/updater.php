@@ -107,7 +107,7 @@ class QSOT_Extensions_Updater {
 			'tested' => '',
 			'compatibility' => array(),
 			'rating' => 100,
-			'num_ratings'=> 0,
+			'num_ratings'=> 100,
 			/*
 			'ratings' => array(
 				5 => 0,
@@ -134,21 +134,63 @@ class QSOT_Extensions_Updater {
 			'ratings', // the rating system
 			'num_ratings', // the total number of ratings we have
 			'active_installs', // the tally of number of active installs we have
-			'requires', // minimum WP version required
-			'tested', // max version the plugin has been tested to
 			'compatibility', // list of compatibility voting results
 			'last_updated', // the last date the plugin was updated
 			'added', // when the plugin was added to the list of available plugins
-			'tags', // list of tags describing the plugin
 			'banners', // list of banner images used in the plugin description
+		);
+
+		// list of readme headers to update if they exist
+		$maybe_update_readme_fields = array(
+			'requires', // minimum WP version required
+			'tested', // max version the plugin has been tested to
 			'donate_link', // donation link
-			'section', // the long list of various sections in 'section_slug' => 'section_html_content' form
 		);
 
 		// update any fields that are present from the information from the server
 		foreach ( $maybe_update_fields as $field )
 			if ( isset( $plugin['_known'][ $field ] ) )
 				$result[ $field ] = $plugin['_known'][ $field ];
+
+		// if there are any banner images defined, use them
+		if ( isset( $plugin['_known']['images'], $plugin['_known']['images']['banner_images'] ) && ! empty( $plugin['_known']['images']['banner_images'] ) ) {
+			// get the first banner image defined
+			$img = current( $plugin['_known']['images']['banner_images'] );
+
+			// if there actually is a relative path to use here, then continue
+			if ( isset( $img['icon_rel_path'] ) && ! empty( $img['icon_rel_path'] ) ) {
+				// figure out the uploads dir
+				$u = wp_upload_dir();
+
+				// use that banner image for both low and high res, at least until we have a better way of doing this
+				$result['banners']['high'] = $result['banners']['low'] = trailingslashit( $u['baseurl'] ) . $img['icon_rel_path'];
+			}
+		}
+
+		// add the various parts of the readme file, if they are present
+		if ( isset( $plugin['_known']['readme'] ) && ! empty( $plugin['_known']['readme'] ) ) {
+			$readme = $plugin['_known']['readme'];
+
+			// if the 'sections' are set, then update them
+			if ( isset( $readme['sections'] ) && ! empty( $readme['sections'] ) )
+				$result['sections'] = $readme['sections'];
+			unset( $result['sections']['upgrade-notice'] );
+
+			// if the 'headers' are set, then cycle through them and pick out the ones we can use
+			if ( isset( $readme['headers'] ) && ! empty( $readme['headers'] ) )
+				foreach ( $maybe_update_readme_fields as $field )
+					if ( isset( $readme['headers'][ $field ] ) && ! empty( $readme['headers'][ $field ] ) )
+						$result[ $field ] = $readme['headers'][ $field ];
+
+			// update the tags if they are present
+			if ( isset( $readme['headers']['tags'] ) && ( $tags = array_filter( array_map( 'trim', $readme['headers']['tags'] ) ) ) )
+				$result['tags'] = $tags;
+
+			// update the contributors if present
+			if ( isset( $readme['headers']['contributors'] ) && is_array( $readme['headers']['contributors'] ) && ! empty( $readme['headers']['contributors'] ) )
+				foreach ( $readme['headers']['contributors'] as $contributor )
+					$result['contributors'][ $contributor ] = sprintf( 'https://profiles.wordpress.org/%s', $contributor );
+		}
 
 		return (object)$result;
 	}
