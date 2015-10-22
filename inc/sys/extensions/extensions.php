@@ -14,6 +14,8 @@ class QSOT_Extensions {
 	protected $active = array();
 	protected $slug_map = null;
 
+	public $known_request_time = null;
+
 	// setup the actions, filters, and basic data for the class
 	public static function pre_init() {
 	}
@@ -243,8 +245,10 @@ class QSOT_Extensions {
 		$expires = get_option( self::$ns . 'known-plugins-expires', 0 );
 
 		// if we are not expired yet, then return the list we have stored in cache
-		if ( time() < $expires )
+		if ( time() < $expires ) {
+			$this->known_request_time = get_option( self::$ns . 'known-plugins-timer', null );
 			return $this->known = $cache;
+		}
 
 		// now, do a new fetch
 		$this->_refresh_known_plugins();
@@ -272,7 +276,9 @@ class QSOT_Extensions {
 
 		// otherwise, update the known plugins list, and it's cache (make sure not to autoload)
 		$this->known = $this->_handle_images( $results, $existing_known );
+		$this->known_request_time = $api->last_timer;
 		update_option( self::$ns . 'known-plugins', $this->known, 'no' );
+		update_option( self::$ns . 'known-plugins-timer', $api->last_timer, 'no' );
 	}
 
 	// attempt to load a list of image hashes, indexed by their owner plugins

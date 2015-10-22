@@ -74,6 +74,11 @@ class QSOT_Extensions_Page {
 		// extension object that holds all the data about out extensions
 		$ext = QSOT_Extensions::instance();
 
+		$rqtime = '';
+		// figure out the request time if available
+		if ( null !== $ext->known_request_time )
+			$rqtime = sprintf( 'title="Took %ss"', round( $ext->known_request_time, 4 ) );
+
 		// list of all the extensions this handler knows about from our remote repo
 		$known = $ext->get_known();
 
@@ -98,7 +103,7 @@ class QSOT_Extensions_Page {
 
 		?>
 			<div class="wrap">
-				<h2><?php _e( 'OpenTickets Extensions', 'opentickets-community-edition' ) ?></h2>
+				<h2 <?php echo $rqtime ?>><?php _e( 'OpenTickets Extensions', 'opentickets-community-edition' ) ?></h2>
 				<div class="qsot-list" role="list">
 					<?php foreach ( $known as $file => $data ): $images = isset( $data['images'] ) ? $data['images'] : array(); ?>
 						<div class="extension" role="extension" data-extension="<?php echo esc_attr( $file ) ?>">
@@ -171,7 +176,9 @@ class QSOT_Extensions_Page {
 				</div>
 
 				<div class="clear"></div>
+				<?php /*
 				<a href="<?php echo esc_attr( add_query_arg( array( 'force-check' => 1 ) ) ) ?>">Check Again</a>
+				*/ ?>
 			</div>
 		<?php
 	}

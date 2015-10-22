@@ -13,6 +13,9 @@ class QSOT_Extensions_API {
 	// constianer for the class args
 	protected $args = array();
 
+	// last timer for the last request
+	public $last_timer = null;
+
 	// setup the basic actions, filters, and settings used by the class
 	public static function pre_init() {
 		QSOT_Extensions_API::instance( array(
@@ -96,6 +99,9 @@ class QSOT_Extensions_API {
 		if ( is_wp_error( $response ) )
 			return $response;
 
+		// record the time of the last api request
+		$this->last_timer = isset( $response['t'] ) ? $response['t'] : null;
+
 		$result = array();
 		// parse the request, and construct an appropriate response
 		// cycle through all the software activation requests, and get all the response data for that one item individually
@@ -156,6 +162,9 @@ class QSOT_Extensions_API {
 		if ( is_wp_error( $response ) )
 			return $response;
 
+		// record the time of the last api request
+		$this->last_timer = isset( $response['t'] ) ? $response['t'] : null;
+
 		// if the response was NOT successful, then bail
 		if ( ! $response['success'] )
 			return $this->_failed_response( $response );
@@ -197,6 +206,9 @@ class QSOT_Extensions_API {
 		// if the response hard failed, then pass through
 		if ( is_wp_error( $response ) )
 			return $response;
+
+		// record the time of the last api request
+		$this->last_timer = isset( $response['t'] ) ? $response['t'] : null;
 
 		// if the response was NOT successful, then bail
 		if ( ! $response['success'] )
@@ -254,6 +266,9 @@ class QSOT_Extensions_API {
 		if ( is_wp_error( $response ) )
 			return $response;
 
+		// record the time of the last api request
+		$this->last_timer = isset( $response['t'] ) ? $response['t'] : null;
+
 		// if the response was NOT successful, then bail
 		if ( ! $response['success'] )
 			return $this->_failed_response( $response );
@@ -276,9 +291,9 @@ class QSOT_Extensions_API {
 
 		// send the request and fetch the response
 		$response = wp_remote_post( $url, array(
-			'timeout' => 4,
+			'timeout' => 8,
 			'redirection' => 3,
-			'user-agent' => 'QSSM API (' . site_url() . ')',
+			'user-agent' => $this->_user_agent(),
 			'body' => $data,
 		) );
 		//die(var_dump($endpoint, $data, $url, $response));
@@ -297,6 +312,33 @@ class QSOT_Extensions_API {
 			return new WP_Error( 'invalid_response', __( 'The response we received from the server was invalid.', 'opentickets-community-edition' ), $response );
 
 		return $parsed;
+	}
+
+	// figure out the user-agent to send in the api
+	protected function _user_agent() {
+		static $agent = false;
+		// if the agent was already calculated, don't do it again
+		if ( false !== $agent )
+			return $agent;
+
+		// base user agent should be the api identifier and the site url
+		$agent = sprintf( 'QSSM API (%s)', site_url() );
+
+		// if this is the cli, mark it as such
+		if ( defined( 'PHP_SAPI' ) && 'cli' == PHP_SAPI ) {
+			if ( function_exists( 'gethostname' ) )
+				$agent .= sprintf( ' / CLI (%s[%s])', gethostname(), gethostbyname( gethostname() ) );
+			else
+				$agent .= sprintf( ' / CLI (%s[%s])', php_uname( 'n' ), gethostbyname( php_uname( 'n' ) ) );
+		} else if ( isset( $_SERVER['SERVER_ADDR'] ) ) {
+			$agent .= sprintf( ' / WEB (%s)', $_SERVER['SERVER_ADDR'] );
+		}
+
+		// add the system information
+		$system = function_exists( 'posix_uname' ) ? posix_uname() : array();
+		$agent .= ' / ' . implode( ', ', array_values( $system ) );
+
+		return $agent;
 	}
 
 	// failed response. input the failed response, and create a wp_error to describe it
