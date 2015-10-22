@@ -171,6 +171,10 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.14.1 =
+* [tweak] now forces an extension update check upon update
+* [tweak] updating language files
+
 = 1.14.0 =
 * [new] added 'extensions' page, with easy access to extension information
 * [new] added 'updater', which updates all extensions as if wp.org plugins
