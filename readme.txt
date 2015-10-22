@@ -15,9 +15,9 @@ An event management and online ticket sales platform, built on top of WooCommerc
 
 = OpenTickets Community Edition =
 
-[OpenTickets Community Edition](http://opentickets.com/community-edition "Event management and online ticket sales platform") ("OT-CE") is a free open source WordPress plugin that allows you to publish events and sell tickets online. OTCE was created to allow people with WordPress websites to easily setup and sell tickets to their events. 
+[OpenTickets Community Edition](http://opentickets.com/community-edition "Event management and online ticket sales platform") ("OTCE") is a free open source WordPress plugin that allows you to publish events and sell tickets online. OTCE was created to allow people with WordPress websites to easily setup and sell tickets to their events. 
 
-OTCE was created for venues, artists, bands, nonprofits, festivals and event organizers who sell General Admission tickets. There are also various [Enterprise Extensions](http://opentickets.com/extensions/ "See a list of the availabled Extensions"). OTCE is an alternative to other ticketing systems, that will reduce your overhead and eliminate service fees, because it is software you run on your own existing website.
+OTCE is an alternative to other ticketing systems, that will reduce your overhead and eliminate service fees, because it is software you run on your own existing website. It was created for venues, artists, bands, nonprofits, festivals and event organizers who sell General Admission tickets.
 
 OTCE runs on [WordPress](http://wordpress.org/ "Your favorite software") and requires [WooCommerce](http://woocommerce.com/ "Free WordPress based eCommerce Software") to operate. WooCommerce is a free open source ecommerce platform for WordPress. You can download your own copy of that from the [WooCommerce Wordpress.org Plugin Page](https://wordpress.org/plugins/woocommerce/)
 
@@ -32,6 +32,8 @@ The OTCE plugin empowers you with tools to:
 * Allow Customers to keep Digital and/or Print Tickets
 * Checkin People to Events with a QR Reader 
 * Ticket Sales Reporting
+
+There are also various [Enterprise Extensions](http://opentickets.com/extensions/ "See a list of the available Extensions") which add even more functionality to this robust core plugin. 
 
 OTCE is licensed under GPLv3.
 
