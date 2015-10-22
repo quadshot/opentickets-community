@@ -50,6 +50,9 @@ class QSOT_Extensions {
 
 		$this->reset();
 
+		// maybe force a plugin update check
+		$this->_maybe_force_plugin_update_check();
+
 		// load the list of all installed plugins on this isntallation
 		$this->_load_all_plugins();
 
@@ -347,6 +350,18 @@ class QSOT_Extensions {
 
 		// get the list
 		$this->all = get_plugins();
+	}
+
+	// during update to this latest version of the plugin, check to see if we need to force a plugin update check
+	protected function _maybe_force_plugin_update_check() {
+		// check if the last check was done while this version was installed
+		$last_check = get_option( '_qsot_last_forced_plugin_update_check', '' );
+		if ( QSOT::version() === $last_check )
+			return;
+
+		// otherwise force a check now
+		delete_site_transient( 'update_plugins' );
+		update_option( '_qsot_last_forced_plugin_update_check', QSOT::version(), 'yes' );
 	}
 
 	// handle the icons passed by the api response. we should save copied of them in our uploads dir
