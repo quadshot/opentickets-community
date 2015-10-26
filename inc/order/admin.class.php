@@ -35,6 +35,7 @@ class qsot_order_admin {
 			add_filter('qsot-order-has-tickets', array(__CLASS__, 'has_tickets'), 10, 2);
 
 			// add the new user button to the interface
+			add_action( 'wp_ajax_qsot-new-user', array( __CLASS__, 'admin_new_user_handle_ajax' ), 10 );
 			add_action( 'woocommerce_admin_order_data_after_order_details', array( __CLASS__, 'new_user_btn' ), 10, 1 );
 		}
 	}
@@ -438,6 +439,10 @@ class qsot_order_admin {
 
 	// handle the ajax request that creates new users
 	public static function admin_new_user_handle_ajax() {
+		// if the current user cannot create users, then bail
+		if ( ! current_user_can( 'create_users' ) )
+			exit();
+
 		// handle the ajax request depending on the defined SubAction
 		switch ( $_POST['sa'] ) {
 			// handle the create user action
@@ -514,7 +519,7 @@ class qsot_order_admin {
 			$user_info = array(
 				'user_login' => ( get_option( 'woocommerce_registration_email_for_username', 'no' ) == 'yes' ) ? $email : $username,
 				'user_email' => $email,
-				'user_pass' => self::_random_pass( 8 ),
+				'user_pass' => version_compare( $GLOBALS['wp_version'], '4.3.1' ) >= 0 ? null : self::_random_pass( 8 ),
 				'first_name' => $first_name,
 				'last_name' => $last_name,
 				'display_name' => $first_name . ' ' . $last_name,
@@ -533,10 +538,10 @@ class qsot_order_admin {
 				$res['m'][] = __( 'The user was created successfully.', 'opentickets-community-edition' );
 				$user = new WP_User( $user_id );
 				$res['c']['id'] = $user_id;
-				$res['c']['displayed_value'] = sprintf( '%s %s (#%d - %s)', $first_name, $last_name, $user_id, $email );
+				$res['c']['text'] = sprintf( '%s %s (#%d - %s)', $first_name, $last_name, $user_id, $email );
 
 				// notify the user of the password
-				wp_new_user_notification( $user_id, $user_info['user_pass'] );
+				wp_new_user_notification( $user_id, $user_info['user_pass'], true );
 
 				// add the user name and email for woo, so we dont have to fill it out
 				update_user_meta( $user_id, 'billing_first_name', $first_name );
@@ -580,7 +585,7 @@ class qsot_order_admin {
 					? ''
 					: '<div class="field">'
 							.'<label for="new_user_login">'.__('Username','opentickets-community-edition').'</label>'
-							.'<input class="widefat" type="test" name="new_user_login" id="new_user_login" rel="new-user-login" value="" />'
+							.'<input class="widefat" type="text" name="new_user_login" id="new_user_login" rel="new-user-login" value="" />'
 						.'</div>')
 				.'<div class="field">'
 					.'<label for="new_user_email">'.__('Email','opentickets-community-edition').'</label>'

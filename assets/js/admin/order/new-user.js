@@ -21,7 +21,7 @@ if (typeof jQuery != 'undefined') (function($, undefined) {
 			security: 			woocommerce_admin_meta_boxes.get_customer_details_nonce
 		};
 
-		$('.edit_address').block({ message: null, overlayCSS: { background: '#fff url(' + woocommerce_admin_meta_boxes.plugin_url + '/assets/images/ajax-loader.gif) no-repeat center', opacity: 0.6 } });
+		$('.edit_address').block({ message: null, overlayCSS: { background: '#fff url(' + woocommerce_admin_meta_boxes.plugin_url + '/assets/images/select2-spinner.gif) no-repeat center', opacity: 0.6 } });
 
 		$.ajax({
 			url: woocommerce_admin_meta_boxes.ajax_url,
@@ -79,7 +79,7 @@ if (typeof jQuery != 'undefined') (function($, undefined) {
 	});
 
 	$(function() {
-		d.on('liszt:updated, chosen:updated, change', '#customer_user', function() { 
+		d.on('select2-selecting data-updated', '#customer_user', function() { 
 			if ($(this).val() != '') {
 				$('._billing_first_name_field').closest('.order_data_column').find('a.edit_address').click();//.closest('.order_data_column').find('button.load_customer_billing').click();
 				load_customer_billing_information();
@@ -110,10 +110,10 @@ if (typeof jQuery != 'undefined') (function($, undefined) {
 					function ajsuccess(r) {
 						dia.unblock();
 						if (r.s) {
-							$('<option selected="selected" value="'+r.c.id+'">'+r.c.displayed_value+'</option>').appendTo('#customer_user').siblings().removeAttr('selected').closest('select')
-								.trigger("liszt:updated").trigger('chosen:updated').change();
+							$( '#customer_user' ).select2( 'data', $.extend( {}, r.c ) ).trigger( 'data-updated' );
 							form.dialog('close');
 							form.find('input').val('');
+							form.find('[rel=messages]').empty();
 						} else {
 							var msg = form.find('[rel=messages]').empty();
 							if (r.e) for (var i=0; i<r.e.length; i++) $('<div class="err">ERROR: '+r.e[i]+'</div>').appendTo(msg);
