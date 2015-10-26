@@ -172,9 +172,7 @@ class QSOT_Extensions_Page {
 				</div>
 
 				<div class="clear"></div>
-				<?php /*
 				<a href="<?php echo esc_attr( add_query_arg( array( 'force-check' => 1 ) ) ) ?>">Check Again</a>
-				*/ ?>
 			</div>
 		<?php
 	}
