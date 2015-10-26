@@ -93,10 +93,6 @@ class QSOT_Extensions_Page {
 		$activated = $ext->get_activated();
 		$activated = array_flip( $activated );
 
-		// find the uploads dir information, so we can construct the image urls
-		$u = wp_upload_dir();
-		$url = trailingslashit( $u['baseurl'] );
-
 		// licenses page url
 		@list( $settings_uri, $settings_hook ) = apply_filters( 'qsot-get-menu-page-uri', '', 'settings' );
 		$licenses_url = add_query_arg( array( 'tab' => 'licenses' ), $settings_uri );
@@ -117,10 +113,10 @@ class QSOT_Extensions_Page {
 									$cheapest_url = ! isset( $cheapest ) ? $data['permalink'] : $cheapest['to_cart_url'];
 								?>
 
-								<div class="header"><?php echo ! isset( $images['store_image'] ) || empty( $images['store_image']['icon_rel_path'] ) ? '' : sprintf(
+								<div class="header"><?php echo ! isset( $images['store_image'] ) ? '' : sprintf(
 									'<a href="%s" target="_blank"><img src="%s" width="%s" title="%s %s" /></a>',
 									esc_attr( $data['permalink'] ),
-									esc_attr( $url . $images['store_image']['icon_rel_path'] ),
+									esc_attr( $this->_get_image_url( $file, $images, 'store_image' ) ),
 									'300',
 									esc_attr( __( 'View', 'opentickets-community-edition' ) ),
 									esc_attr( $data['label'] )
@@ -181,6 +177,38 @@ class QSOT_Extensions_Page {
 				*/ ?>
 			</div>
 		<?php
+	}
+
+	// get the image url. we may also need to trigger a fetch of a remote image url, if the image is not a local image, and if we have not already done so on this request.
+	// the idea here is that we only grab one remote image per page load. that way we reduce the required backport bandwidth for this page
+	protected function _get_image_url( $file, $images, $key ) {
+		static $remote = 0;
+
+		// if the requested image is not set, then bail
+		if ( ! isset( $images[ $key ] ) )
+			return '';
+
+		// if this item has a remote url, then...
+		if ( isset( $images[ $key ]['icon_abs_path'] ) && ! empty( $images[ $key ]['icon_abs_path'] ) ) {
+			// if we have not yet done a remote fetch on this request, then do so now
+			if ( 0 == $remote ) {
+				$remote = 1;
+				$res = QSOT_Extensions::instance()->update_image_from_remote( $file, $key );
+				if ( empty( $res ) || is_wp_error( $res ) )
+					return $images[ $key ]['icon_abs_path'];
+				else
+					return $res;
+			} else {
+				return $images[ $key ]['icon_abs_path'];
+			}
+		}
+		// otherwise, the image is local, so work with that fact
+
+		// find the uploads dir information, so we can construct the image urls
+		$u = wp_upload_dir();
+		$url = trailingslashit( $u['baseurl'] );
+		
+		return $url . $images[ $key ]['icon_rel_path'];
 	}
 }
 

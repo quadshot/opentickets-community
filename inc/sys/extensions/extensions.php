@@ -244,6 +244,10 @@ class QSOT_Extensions {
 		// get the current cached list of known plugins
 		$cache = get_option( self::$ns . 'known-plugins', array() );
 
+		// if the cache is empty, and we are not on the extensions page, then do not try to load them
+		if ( empty( $cache ) && ( ! isset( $_GET['page'] ) || 'qsot-extensions' != $_GET['page'] ) )
+			return $this->known = array();
+
 		// get the timestamp that the current list expires on
 		$expires = get_option( self::$ns . 'known-plugins-expires', 0 );
 
@@ -383,22 +387,26 @@ class QSOT_Extensions {
 						$changed = ! isset( $value['icon_no_change'] ) || ! $value['icon_no_change'];
 
 						// if it did not change, then just use the old value we have on file
-						if ( ! $changed && isset( $existing_known[ $ind ], $existing_known[ $ind ]['images'], $existing_known[ $ind ]['images'][ $key ], $existing_known[ $ind ]['images'][ $key ]['icon_rel_path'] ) ) {
-							$item['images'][ $key ] = array( 'icon_rel_path' => $existing_known[ $ind ]['images'][ $key ]['icon_rel_path'] );
+						if ( ! $changed && isset( $existing_known[ $ind ], $existing_known[ $ind ]['images'], $existing_known[ $ind ]['images'][ $key ] ) ) {
+							$item['images'][ $key ] = array();
+							foreach ( array( 'icon_rel_path', 'icon_abs_path' ) as $sub_key )
+								if ( isset( $existing_known[ $ind ]['images'][ $key ][ $sub_key ] ) )
+									$item['images'][ $key ][ $sub_key ] = $existing_known[ $ind ]['images'][ $key ][ $sub_key ];
 							continue;
 						}
 
 						// remove the icon data from the item
 						$icon = isset( $value['icon'] ) ? $value['icon'] : '';
+						$icon_url = isset( $value['icon_url'] ) ? $value['icon_url'] : '';
 						unset( $value['icon'] );
-						$value['icon_rel_path'] = '';
+						$value['icon_abs_path'] = $value['icon_rel_path'] = '';
 
 						// maybe update the icon
-						$path = $this->_maybe_update_icon( $ind, $icon, $key );
+						$path = $this->_maybe_update_icon( $ind, $icon, $icon_url, $key );
 						if ( is_wp_error( $path ) )
 							$value['image_path_error'] = $this->_error_to_array( $path );
 						else
-							$value['icon_rel_path'] = $path;
+							$value = array_merge( $value, $path );
 
 						// update the item iamge
 						$item['images'][ $key ] = $value;
@@ -411,30 +419,25 @@ class QSOT_Extensions {
 							$changed = ! isset( $img['icon_no_change'] ) || ! $img['icon_no_change'];
 
 							// if it did not change, then just use the old value we have on file
-							if ( ! $changed &&
-									isset(
-										$existing_known[ $ind ],
-										$existing_known[ $ind ]['images'],
-										$existing_known[ $ind ]['images'][ $key ],
-										$existing_known[ $ind ]['images'][ $key ][ $image_ind ],
-										$existing_known[ $ind ]['images'][ $key ][ $image_ind ]['icon_rel_path']
-									)
-							) {
-								$value[ $image_ind ] = array( 'icon_rel_path' => $existing_known[ $ind ]['images'][ $key ][ $image_ind ]['icon_rel_path'] );
+							if ( ! $changed && isset( $existing_known[ $ind ], $existing_known[ $ind ]['images'], $existing_known[ $ind ]['images'][ $key ], $existing_known[ $ind ]['images'][ $key ][ $image_ind ] ) ) {
+								foreach ( array( 'icon_rel_path', 'icon_abs_path' ) as $sub_key )
+									if ( isset( $existing_known[ $ind ]['images'][ $key ][ $image_ind ][ $sub_key ] ) )
+										$value[ $image_ind ] = $existing_known[ $ind ]['images'][ $key ][ $image_ind ][ $sub_key ];
 								continue;
 							}
 
 							// remove the icon data from the item
 							$icon = isset( $img['icon'] ) ? $img['icon'] : '';
+							$icon_url = isset( $img['icon_url'] ) ? $img['icon_url'] : '';
 							unset( $img['icon'] );
-							$img['icon_rel_path'] = '';
+							$img['icon_abs_path'] = $img['icon_rel_path'] = '';
 
 							// maybe update the icon
-							$path = $this->_maybe_update_icon( $ind, $icon, $key . ':' . $image_ind );
+							$path = $this->_maybe_update_icon( $ind, $icon, $icon_url, $key . ':' . $image_ind );
 							if ( is_wp_error( $path ) )
 								$img['image_path_error'] = $this->_error_to_array( $path );
 							else
-								$img['icon_rel_path'] = $path;
+								$img = array_merge( $img, $path );
 
 							// update the specific image
 							$value[ $image_ind ] = $img;
@@ -453,8 +456,65 @@ class QSOT_Extensions {
 		return $data;
 	}
 
+	// during various page loads, we may need to fetch a remote image, and store it locally. this function will handle that
+	public function update_image_from_remote( $plugin_file, $image_key, $image_ind=0 ) {
+		// if the plugin file supplied is not known, then bail
+		if ( ! isset( $this->known[ $plugin_file ] ) )
+			return '';
+
+		// if the image key is not known for that file, or has no remote url, then bail
+		if ( ! isset( $this->known[ $plugin_file ]['images'][ $image_key ], $this->known[ $plugin_file ]['images'][ $image_key ]['icon_abs_path'] ) )
+			return '';
+
+		// if there is no target path, then bail
+		if ( ! isset( $this->known[ $plugin_file ]['images'][ $image_key ]['target'] ) )
+			return '';
+		$target = $this->known[ $plugin_file ]['images'][ $image_key ]['target'];
+
+		// get the remote image
+		$response = QSOT_Extensions_API::instance()->get_remote_image( $this->known[ $plugin_file ]['images'][ $image_key ]['icon_abs_path'] );
+
+		// if the response is a wp_error or empty, then pass it through
+		if ( is_wp_error( $response ) || empty( $response ) )
+			return $response;
+
+		// otherwise, try to update the file appropriately. start by writing a temp file with the returned contents
+		file_put_contents( $target['path'], $response );
+
+		// get the image information from the new new file we created
+		$image_data = @getimagesize( $target['path'] );
+
+		// if the file was not an image, or we could not get a full reading on it's properties, then bail
+		if ( ! is_array( $image_data ) || ! isset( $image_data[2] ) || ! is_numeric( $image_data[2] ) ) {
+			@unlink( $target['path'] );
+			return new WP_Error( 'invalid_file_data', __( 'The received icon file was not an image we could parse.', 'opentickets-community-edition' ) );
+		}
+
+		// attempt to figure out the extension
+		$extension = @image_type_to_extension( $image_data[2], false );
+
+		// if that failed, clean up and bail
+		if ( ! $extension ) {
+			@unlink( $target['path'] );
+			return new WP_Error( 'invalid_file_extension', __( 'Could not determine the file extension of the supplied icon image.', 'opentickets-community-edition' ) );;
+		}
+
+		// if all is well, rename the file to use the appropriate extension
+		rename( $target['path'], $target['path'] . '.' . $extension );
+
+		// update the known plugins list
+		$this->known[ $plugin_file ]['images'][ $image_key ] = array( 'icon_rel_path' => $target['url'] . '.' . $extension );
+		update_option( self::$ns . 'known-plugins', $this->known );
+
+		// get the base plugins dir, so that we can return a full local url for the new file
+		$u = wp_upload_dir();
+		$url = trailingslashit( $u['baseurl'] );
+
+		return $url . $this->known[ $plugin_file ]['images'][ $image_key ]['icon_rel_path'];
+	}
+
 	// we may need to update or create the icon for this item. do so here
-	protected function _maybe_update_icon( $plugin_file, $icon, $icon_key ) {
+	protected function _maybe_update_icon( $plugin_file, $icon, $icon_url, $icon_key ) {
 		// first, find the appropriate dir to store the icon in
 		$icon_dir = $this->_icon_dir();
 
@@ -468,6 +528,17 @@ class QSOT_Extensions {
 
 		// figure out the base, non-extensioned name of the target file for the icon image
 		$base = md5( AUTH_SALT . $plugin_file. $icon_key );
+
+		// if only the icon url was supplied, then we should be creating a cached version of this image later, not now. gather some basic information, and store it for later use
+		if ( empty( $icon ) && ! empty( $icon_url ) ) {
+			return array(
+				'icon_abs_path' => $icon_url,
+				'target' => array(
+					'path' => $icon_dir['absolute'] . $base,
+					'url' => $icon_dir['relative'] . $base,
+				),
+			);
+		}
 
 		// next, write the file to a temp location, pending an appropriate extension
 		file_put_contents( $icon_dir['absolute'] . $base, @base64_decode( $icon ) );
@@ -494,7 +565,7 @@ class QSOT_Extensions {
 		// if all is well, rename the file to use the appropriate extension
 		rename( $icon_dir['absolute'] . $base, $icon_dir['absolute'] . $base . '.' . $extension );
 
-		return $icon_dir['relative'] . $base . '.' . $extension;
+		return array( 'icon_rel_path' => $icon_dir['relative'] . $base . '.' . $extension );
 	}
 
 	// figure out the appropriate icon dir on this syste

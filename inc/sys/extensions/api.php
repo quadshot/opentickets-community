@@ -191,7 +191,8 @@ class QSOT_Extensions_API {
 			'qd' => $su['host'],
 			'qem' => isset( $data['email'] ) ? $data['email'] : get_option( 'admin_email' ),
 			'qc' => isset( $data['categories'] ) ? implode( ',', array_filter( array_map( 'trim', is_array( $data['categories'] ) ? $data['categories'] : explode( ',', $data['categories'] ) ) ) ) : array(),
-			'qi' => isset( $data['image_hashes'] ) ? $data['image_hashes'] : array(),
+			'qi' => array(), //isset( $data['image_hashes'] ) ? $data['image_hashes'] : array(),
+			'qi_urls' => true,
 		);
 
 		// if we are missing the domain or email, then bail now and do nothing
@@ -202,6 +203,10 @@ class QSOT_Extensions_API {
 
 		// otherwise, fetch the response
 		$response = $this->_fetch( 'ASC', $req );
+
+		// if we are debugging, then
+		if ( isset( $_COOKIE, $_COOKIE['ot-debug'] ) && 'now' == $_COOKIE['ot-debug'] )
+			die(var_dump($req, $response));
 
 		// if the response hard failed, then pass through
 		if ( is_wp_error( $response ) )
@@ -262,6 +267,10 @@ class QSOT_Extensions_API {
 		// otherwise, fetch the response
 		$response = $this->_fetch( 'CHK', array( 'qcheck' => $check ) );
 
+		// if we are debugging, then
+		if ( isset( $_COOKIE, $_COOKIE['ot-debug'] ) && 'now' == $_COOKIE['ot-debug'] )
+			die(var_dump(array( 'qcheck' => $check ), $response));
+
 		// if the response hard failed, then pass through
 		if ( is_wp_error( $response ) )
 			return $response;
@@ -291,18 +300,19 @@ class QSOT_Extensions_API {
 
 		// send the request and fetch the response
 		$response = wp_remote_post( $url, array(
-			'timeout' => 8,
+			'timeout' => 28,
 			'redirection' => 3,
 			'user-agent' => $this->_user_agent(),
 			'body' => $data,
 		) );
-		//die(var_dump($endpoint, $data, $url, $response));
-
-		/* add_action( 'admin_notices', function() use( $endpoint, $url, $response ) { ?><script>console.log( <?php echo @json_encode( array( 'ep' => $endpoint, 'u' => $url, 'r' => $response ) ) ?> )</script><?php }); */
 
 		// if the response failed, then error out
 		if ( ! is_array( $response ) || ! isset( $response['body'] ) )
-			return new WP_Error( 'no_response', __( 'No response from the server.', 'opentickets-community-edition' ) );
+			return new WP_Error( 'no_response', __( 'No response from the server.', 'opentickets-community-edition' ), $response );
+
+		// if the response code is not set, or it is not 200, then bail 
+		if ( ! isset( $response['response'], $response['response']['code'] ) || 200 != $response['response']['code'] )
+			return new WP_Error( 'invalid_response', __( 'The response we received from the server was invalid.', 'opentickets-community-edition' ), $response );
 
 		// get the response body, and parse it, which should be json
 		$parsed = @json_decode( wp_remote_retrieve_body( $response ), true );
@@ -312,6 +322,31 @@ class QSOT_Extensions_API {
 			return new WP_Error( 'invalid_response', __( 'The response we received from the server was invalid.', 'opentickets-community-edition' ), $response );
 
 		return $parsed;
+	}
+
+	// get a remote image and return the image content we fetched
+	public function get_remote_image( $img_url ) {
+		$img_url = trim( $img_url );
+		// if the url is empty, bail
+		if ( empty( $img_url ) )
+			return new WP_Error( 'no_url', __( 'No url was supplied.', 'opentickets-community-edition' ) );;
+
+		// get the remote image data
+		$response = wp_remote_get( $img_url, array(
+			'timeout' => 10,
+			'redirection' => 3,
+			'user-agent' => $this->_user_agent(),
+		) );
+
+		// if the response is not in the format we expect, the bail
+		if ( ! is_array( $response ) || ! isset( $response['body'] ) )
+			return new WP_Error( 'no_response', __( 'No response from the server.', 'opentickets-community-edition' ), $response );
+
+		// if the response code is not set, or it is not 200, then bail 
+		if ( ! isset( $response['response'], $response['response']['code'] ) || 200 != $response['response']['code'] )
+			return new WP_Error( 'invalid_response', __( 'The response we received from the server was invalid.', 'opentickets-community-edition' ), $response );
+
+		return wp_remote_retrieve_body( $response );
 	}
 
 	// figure out the user-agent to send in the api
