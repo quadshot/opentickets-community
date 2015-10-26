@@ -171,6 +171,10 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.14.2 =
+* [tweak] modified how extensions page grabs list for lower bandwidth installs
+* [tweak] modified how extension image caching works to be less of a load on server
+
 = 1.14.1 =
 * [tweak] now forces an extension update check upon update
 * [tweak] updating language files
