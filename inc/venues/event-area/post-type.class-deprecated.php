@@ -912,7 +912,7 @@ class qsot_event_area {
 			if (empty($customer_id)) $customer_id = md5($order->id);
 			$res = apply_filters('qsot-zoner-reserve', false, $event, $event->meta->_event_area_obj->ticket->id, $qty, $customer_id, $oid);
 			if ( $res && ! is_wp_error( $res ) ) {
-				do_action('qsot-order-admin-added-tickets', $order, $event, $event->meta->_event_area_obj->ticket->id, $qty);
+				do_action('qsot-order-admin-added-tickets', $order, $event, $event->meta->_event_area_obj->ticket->id, $qty, $customer_id);
 				$resp['s'] = true;
 			}
 		} else {
@@ -1177,6 +1177,7 @@ class qsot_event_area {
 		// if we can then change the template to the ticket selection UI enabled template, and load the list of reservations
 		if ( apply_filters( 'qsot-can-sell-tickets-to-event', false, $event->ID ) || $has_reserved > 0 ) {
 			$template_file = 'post-content/event-area.php';
+			$reserved = $has_reserved;
 		}
 
 		// if we have the event area, then go ahead and render the appropriate interface

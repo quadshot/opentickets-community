@@ -3,7 +3,7 @@
  * Plugin Name: OpenTickets Community Edition
  * Plugin URI:  http://opentickets.com/
  * Description: Event Management and Online Ticket Sales Platform
- * Version:     1.13.0
+ * Version:     1.14.2
  * Author:      Quadshot Software LLC
  * Author URI:  http://quadshot.com/
  * Copyright:   Copyright (C) 2009-2014 Quadshot Software LLC
@@ -16,7 +16,9 @@
 /* Primary class for controlling the events post type. Loads all pieces of the Events puzzle. */
 class opentickets_community_launcher {
 	protected static $o = null; // holder for all options of the events plugin
+	protected static $active = false;
 
+	// test comment
 	// initialize/load everything related to the core plugin
 	public static function pre_init() {
 		// load the db upgrader, so that all plugins can interface with it before it does it's magic
@@ -27,7 +29,6 @@ class opentickets_community_launcher {
 		require_once 'inc/sys/options.php';
 		require_once 'inc/sys/templates.php';
 		require_once 'inc/sys/rewrite.php';
-		require_once 'inc/sys/registry.php';
 		require_once 'inc/sys/deprecated.php';
 
 		// load the settings object
@@ -42,7 +43,7 @@ class opentickets_community_launcher {
 			'pre' => 'qsot-',
 			'fctm' => 'fc',
 			'always_reserve' => 0,
-			'version' => '1.13.0',
+			'version' => '1.14.2',
 			'min_wc_version' => '2.2.0',
 			'core_post_type' => 'qsot-event',
 			'core_post_rewrite_slug' => 'event',
@@ -76,6 +77,9 @@ class opentickets_community_launcher {
 			$wc = substr($me, 0, strpos($me, 'opentickets-community')).implode(DIRECTORY_SEPARATOR, array('woocommerce', 'woocommerce.php'));
 			add_action('activate_'.$wc, array(__CLASS__, 'wc_activation'), 0);
 		}
+
+		// remove the keychain functionality
+		add_action( 'plugins_loaded', array( __CLASS__, 'remove_keychain' ), -1 );
 	}
 
 	// when a site uses the 'FORCE_SSL_ADMIN' constant, or hasany of the random plugins that force ssl in the admin, a bad situation occurs, in terms of ajax.
@@ -108,6 +112,62 @@ class opentickets_community_launcher {
 				header( 'Access-Control-Allow-Origin: ' . $headers['origin'] );
 			}
 		}
+	}
+
+	// remove the keychaning plugin functionality
+	public static function remove_keychain() {
+		// only do this if the keychain plugin is active
+		if ( ! self::_is_plugin_active( 'qsot-keychain', 'qsot-keychain.php' ) || ! class_exists( 'QSOT_addon_registry' ) )
+			return;
+
+		// get the keychain object
+		$instance = QSOT_addon_registry::instance();
+
+		// remove license checker class actions and filters that are always loaded
+		remove_action( 'qsot-register-addon', array( &$instance, 'register_addon' ), 10 );
+		remove_action( 'qsot_settings_save_lics', array( &$instance, 'save_keys' ), 10 );
+		remove_action( 'admin_notices', array( &$instance, 'enter_key_nag' ), 20 );
+		remove_action( 'qsot-after-loading-modules-and-plugins', array( &$instance, 'bundle' ), 10 );
+		remove_action( 'activated_plugin', array( &$instance, 'after_initial_pluging_activation' ), 100 );
+
+		// remove keychain launcher class actions and filters that are always loaded
+		remove_action( 'admin_notices', array( 'QSOT_keychain', 'admin_notices' ), 10 );
+
+		if ( is_admin() ) {
+			// remove license checker class actions and filters that are only loaded in the admin
+			remove_action( 'admin_init', array( &$instance, 'maybe_force_check' ), 0 );
+
+			// remove keychain launcher class actions and filters that are only loaded in the admin
+			remove_filter( 'qsot_get_settings_pages', array( 'QSOT_keychain', 'add_settings_page' ), 10, 1 );
+			remove_filter( 'pre_update_option_active_plugins', array( 'QSOT_keychain', 'load_me_first' ), 10, 2 );
+			remove_filter( 'plugin_action_links', array( 'QSOT_keychain', 'plugins_page_actions' ), 10, 4 );
+		}
+
+		// add a message showing that keychain is active, and that it is now obsolete
+		add_action( 'admin_notices', array( __CLASS__, 'notice_keychain_is_obsolete' ), -1 );
+	}
+
+	// pop a message showing that keychain is now obsolete, and should be removed
+	public static function notice_keychain_is_obsolete() {
+		$plugin_file = 'qsot-keychain/qsot-keychain.php';
+		$context = 'all';
+		$page = 1;
+		$s = '';
+		?>
+			<div class="error">
+				<p><?php echo sprintf(
+					__( 'We noticed that you still have the %sOpenTickets - Keychain%s plugin active. This plugin is now obsolete. All of it\'s functionality has been disabled. The plugin should be %sdeactivated%s and removed.', 'opentickets-community-edition' ),
+					'<strong><em>',
+					'</em></strong>',
+					sprintf(
+						'<a href="%s" title="%s">',
+						wp_nonce_url( admin_url( 'plugins.php?action=deactivate&amp;plugin=' . $plugin_file . '&amp;plugin_status=' . $context . '&amp;paged=' . $page . '&amp;s=' . $s ), 'deactivate-plugin_' . $plugin_file ),
+						__( 'Deactivate the OpenTickets - Keychain plugin', 'opentickets-community-edition' )
+					),
+					'</a>'
+				) ?></p>
+			</div>
+		<?php
 	}
 
 	// gather all the headers that have been sent already
@@ -165,24 +225,41 @@ class opentickets_community_launcher {
 		QSOT::activation();
 	}
 
-	protected static function _is_woocommerce_active() {
-		$active = get_option('active_plugins');
-		$network = defined( 'MULTISITE' ) && MULTISITE ? get_site_option( 'active_sitewide_plugins' ) : array();
-		$active = is_array( $active ) ? $active : array();
-		$network = is_array( $network ) ? $network : array();
-		$active = array_merge( array_keys( $network ), $active );
+	// fill a static var with the list of all active plugins
+	protected static function _find_active_plugins() {
+		if ( false === self::$active ) {
+			// aggregate a complete list of active plugins, including those that could be active on the network level
+			$active = get_option( 'active_plugins', array() );
+			$network = defined( 'MULTISITE' ) && MULTISITE ? get_site_option( 'active_sitewide_plugins' ) : array();
+			$active = is_array( $active ) ? $active : array();
+			$network = is_array( $network ) ? $network : array();
+			self::$active = array_merge( array_keys( $network ), $active );
+		}
+	}
 
-		$is_active = in_array('woocommerce/woocommerce.php', $active);
-		// search for github-zip versions
+	// determine if a given plugin is active
+	public static function _is_plugin_active( $plugin_dir, $plugin_file ) {
+		self::_find_active_plugins();
+
+		// check if the regular plugin is active. now DIRECTORY_SEPARATOR here, because wp translates it to '/' for the active plugin arrays
+		$is_active = in_array( $plugin_dir . '/' . $plugin_file, self::$active );
+
+		// if the regular plugin is not acitve, check for known direcotry formats for github zip downloads
 		if ( ! $is_active ) {
-			foreach ( $active as $plugin_path ) {
-				if ( preg_match( '#^woocommerce-(master|[\d\.]+(-(alpha|beta|RC\d+)(-\d+)?)?)/woocommerce\.php$#', $plugin_path ) ) {
+			foreach ( self::$active as $active_plugin ) {
+				if ( preg_match( '#^' . preg_quote( $plugin_dir, '#' ) . '-(master|[\d\.]+(-(alpha|beta|RC\d+)(-\d+)?)?)[\/\\\\]' . preg_quote( $plugin_file, '#' ). '$#', $active_plugin ) ) {
 					$is_active = true;
 					break;
 				}
 			}
 		}
+
 		return $is_active;
+	}
+
+	// determine if woocommerce is active
+	protected static function _is_woocommerce_active() {
+		return self::_is_plugin_active( 'woocommerce', 'woocommerce.php' );
 	}
 
 	protected static function _has_woocommerce_min_version() {

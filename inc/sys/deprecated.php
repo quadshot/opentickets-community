@@ -52,5 +52,46 @@ class QSOT_deprecated {
 	}
 }
 
+// legacy extension license manager stub. needed for older extensions, like GAMP, until users upgrade
+if ( ! class_exists( 'QSOT_addon_registry' ) ):
+
+class QSOT_addon_registry {
+	private static $instance = null;
+
+	// create the initial instance of the registry
+	public static function pre_init() { self::instance(); }
+
+	// create a registry instance.
+	public static function instance() {
+		$me = __CLASS__;
+		if ( self::$instance !== null && self::$instance instanceof $me )
+			return self::$instance;
+		self::$instance = new $me();
+		return self::$instance;
+	}
+
+	// singleton constructor
+	public function __construct() {
+		if ( self::$instance != null && self::$instance instanceof $me )
+			throw new Exception( sprintf( __( 'Only one instance of %s can be created.', 'opentickets-community-edition' ), __CLASS__ ), 501 );
+	}
+
+	// stub functions
+	public function is_activated( $addon ) {
+		_deprecated_function( __CLASS__ . '::is_activated', '1.14.0' );
+		return true; // always true, since this is deprecated
+	}
+	public function force_check() {
+		_deprecated_function( __CLASS__ . '::is_activated', '1.14.0' );
+		return false;
+	}
+}
+
+// start the initial registry instance
+if ( defined( 'ABSPATH' ) && function_exists( 'add_action' ) )
+	QSOT_addon_registry::pre_init();
+
+endif;
+
 if ( defined( 'ABSPATH' ) && function_exists( 'add_action' ) )
 	QSOT_deprecated::pre_init();

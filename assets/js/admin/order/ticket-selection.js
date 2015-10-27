@@ -237,7 +237,6 @@ QS.adminTicketSelection = (function($, qs, qt) {
 
 			// update the ticket based on the current event selected
 			aj('update-ticket', data, function(r) {
-				console.log('update-ticket', r, !qt.isO(r), !qt.isO(r.data), !qt.isO(r.event));
 				if (!qt.isO(r) || !qt.isO(r.data) || !qt.isO(r.event)) {
 					console.log('ajax error: ', 'Invalid response.', r);
 					_dia_error(['There was a problem changing the reservation.']);

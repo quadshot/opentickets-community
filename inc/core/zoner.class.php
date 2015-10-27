@@ -796,6 +796,7 @@ class qsot_zoner {
 			else
 				$wheres['qty'] = $wpdb->prepare( ' and quantity = %d', $where['qty'] );
 		}
+		$wheres['extras'] = implode( '', isset( $where['_wheres'] ) ? $where['_wheres'] : array() );
 		// allow external plugins to modify this with their logic
 		$wheres = apply_filters( 'qsot-zoner-update-reservation-wheres', $wheres, $set, $where );
 

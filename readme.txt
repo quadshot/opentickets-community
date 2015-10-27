@@ -15,15 +15,15 @@ An event management and online ticket sales platform, built on top of WooCommerc
 
 = OpenTickets Community Edition =
 
-[OpenTickets Community Edition](http://opentickets.com/community-edition "Event management and online ticket sales platform") ("OT-CE") is a free open source WordPress plugin that allows you to publish events and sell tickets online. OT-CE was created to allow people with WordPress websites to easily setup and sell tickets to their events. 
+[OpenTickets Community Edition](http://opentickets.com/community-edition "Event management and online ticket sales platform") ("OTCE") is a free open source WordPress plugin that allows you to publish events and sell tickets online. OTCE was created to allow people with WordPress websites to easily setup and sell tickets to their events. 
 
-OT-CE was created for venues, artists, bands, nonprofits, festivals and event organizers who sell General Admission tickets. OT-CE is an alternative to reduce the overhead and eliminate service fees from software you run on your own website.
+OTCE is an alternative to other ticketing systems, that will reduce your overhead and eliminate service fees, because it is software you run on your own existing website. It was created for venues, artists, bands, nonprofits, festivals and event organizers who sell General Admission tickets.
 
-OT-CE runs on [WordPress](http://wordpress.org/ "Your favorite software") and requires [WooCommerce](http://woocommerce.com "Free WordPress based eCommerce Software") to operate. WooCommerce is a free open source ecommerce platform for WordPress. You can download that at http://woocommerce.com 
+OTCE runs on [WordPress](http://wordpress.org/ "Your favorite software") and requires [WooCommerce](http://woocommerce.com/ "Free WordPress based eCommerce Software") to operate. WooCommerce is a free open source ecommerce platform for WordPress. You can download your own copy of that from the [WooCommerce Wordpress.org Plugin Page](https://wordpress.org/plugins/woocommerce/)
 
-With WordPress and WooCommerce installed, you then install the OT-CE plugin. OT-CE information and instructions are available at http://opentickets.com/community-edition 
+With WordPress and WooCommerce installed, you can install the OTCE plugin and start selling tickets to your event wihtin a few minutes. OTCE information and instructions are available on our website's [Community Edition page](http://opentickets.com/community-edition/ "Visit the Community Edition information page"), or you can watch some of our videos on how to get started on our [Videos page](http://opentickets.com/videos/ "Visit our videos page").
 
-The OT-CE plugin empowers functionality to:
+The OTCE plugin empowers you with tools to:
 
 * Publish Venues
 * Publish Events
@@ -33,7 +33,9 @@ The OT-CE plugin empowers functionality to:
 * Checkin People to Events with a QR Reader 
 * Ticket Sales Reporting
 
-OT-CE is licensed under GPLv3.
+There are also various [Enterprise Extensions](http://opentickets.com/extensions/ "See a list of the available Extensions") which add even more functionality to this robust core plugin. 
+
+OTCE is licensed under GPLv3.
 
 = Your first Event =
 
@@ -168,6 +170,33 @@ Setup an 'Event':
 The FAQ's for OpenTickets Community Edition is currently located on [our website's FAQs Page](http://opentickets.com/faq).
 
 == Changelog ==
+
+= 1.14.2 =
+* [tweak] modified how extensions page grabs list for lower bandwidth installs
+* [tweak] modified how extension image caching works to be less of a load on server
+
+= 1.14.1 =
+* [tweak] now forces an extension update check upon update
+* [tweak] updating language files
+
+= 1.14.0 =
+* [new] added 'extensions' page, with easy access to extension information
+* [new] added 'updater', which updates all extensions as if wp.org plugins
+* [fix] corrected non-js templates
+* [deprecate] made the keychain plugin obsolete
+
+= 1.13.3 =
+* [new] added option to control if parent events are displayed on homepage
+* [tweak] by default events are not shown on homepage anymore
+* [fix] repaired the product category pages
+
+= 1.13.2 =
+* [tweak] improved seating extension compatibility
+* [fix] corrected changelog entries
+* [fix] solved edgecase of admin reserved tickets expiring
+
+= 1.13.1 =
+* [fix] ticket selection UI removed from ticket display
 
 = 1.13.0 =
 * [improvement] completely reworked th seating report for speed and efficiency
@@ -701,6 +730,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Upgrade Notice ==
 
+= 1.14.0 =
+This update makes the Keychain extension obsolete. It will also enable you to update your OpenTickets Extensions using the WordPress updater. In addition, you will be able to browse our available OpenTickets extensions right inside your own admin.
+
 = 1.11.1 =
 I want to personally apologize for first allowing an event save bug to get pushed to the live plugin and second for the delay in a fix. There are plenty of excuses to go around, but the responsibility falls square on my shoulders, and for that I apologize. This patch repairs that functionality. -- Loushu
 
@@ -716,7 +748,7 @@ Thanks to H.T. (@ht-2) we now have a German Translation. 1.10.16 includes this t
 = 1.9.0 =
 WooCommerce 2.3.x was recently released. OpenTickets Community Edition v1.9.x enables WC2.3 compatibility. Upgrade to version 1.9.x around the time you upgrade WooCommerce to 2.3.x.
 
-== Arbitrary section ==
+== Developer Thoughts ==
 
 This software is designed with the idea that there are several components that make up an event, all of which have a specific association to the next, and all of which work together to define the finished product. 
 

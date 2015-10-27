@@ -616,7 +616,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 			return new WP_Error( 'unknown_quantity', __( 'The quantity was invalid.', 'opentickets-community-edition' ) );
 		if ( empty( $parsed['product_id'] ) )
 			return new WP_Error( 'unknown_product', __( 'The product id was invalid.', 'opentickets-community-edition' ) );
-		if ( empty( $parsed['session_id'] ) )
+		if ( '' == $parsed['session_id'] )
 			return new WP_Error( 'unknown_session', __( 'The session id was invalid.', 'opentickets-community-edition' ) );
 
 		global $wpdb;

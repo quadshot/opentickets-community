@@ -36,13 +36,6 @@ class QSOT_tickets {
 		add_action( 'switch_blog', array( __CLASS__, 'setup_table_names' ), PHP_INT_MAX, 2 );
 		add_filter('qsot-upgrader-table-descriptions', array(__CLASS__, 'setup_tables'), 10);
 
-		// handle incoming urls that are for ticket functions
-		/*
-		add_filter('query_vars', array(__CLASS__, 'query_vars'), 10);
-		add_action('wp', array(__CLASS__, 'intercept_ticket_request'), 11);
-		add_filter('rewrite_rules_array', array(__CLASS__, 'rewrite_rules_array'), PHP_INT_MAX);
-		*/
-
 		// ticket codes
 		add_filter('qsot-generate-ticket-code', array(__CLASS__, 'generate_ticket_code'), 10, 2);
 		add_filter('qsot-decode-ticket-code', array(__CLASS__, 'decode_ticket_code'), 10, 2);

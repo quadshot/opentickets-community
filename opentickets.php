@@ -337,6 +337,7 @@ class QSOT {
 			'toplevel_page_opentickets', // opentickets toplevel page (reports currently)
 			'opentickets_page_opentickets-settings', // opentickets settings page
 			'opentickets_page_qsot-system-status', // opentickets system status page
+			'opentickets_page_qsot-extensions', // opentickets extensions page
 			'updates-core', // the WP updater page. yeah shameless i know
 			'plugins', // the WP plugins page. yeah shameless i know
 		);

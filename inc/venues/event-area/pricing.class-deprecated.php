@@ -299,18 +299,33 @@ class qsot_seat_pricing {
 		}
 	}
 
-	public static function order_status_changed($order_id, $old_status, $new_status) {
-		if (in_array($new_status, apply_filters('qsot-zoner-confirmed-statuses', array('on-hold', 'processing', 'completed')))) {
+	// when the order status changes, change the status of the order tickets
+	public static function order_status_changed( $order_id, $old_status, $new_status ) {
+		// if the status is a status that should have confirmed tickets, then .... make them confirmed
+		if ( in_array( $new_status, apply_filters( 'qsot-zoner-confirmed-statuses', array( 'on-hold', 'processing', 'completed' ) ) ) ) {
 			$woocommerce = WC();
 			$cuids = array();
-			if (($customer_id = is_object($woocommerce->session) ? $woocommerce->session->get_customer_id() : '')) $cuids[] = $customer_id;
-			if (($ocuid = get_post_meta($order_id, '_customer_user', true))) $cuids[] = $ocuid;
-			if (empty($cuids)) return; // required. otherwise ALL reserved tickets for this event will be updated to confirmed... which is wrong
 
-			$order = wc_get_order($order_id);
+			// figure out the list of session ids to use for the lookup
+			if ( ( $customer_id = is_object( $woocommerce->session ) ? $woocommerce->session->get_customer_id() : '' ) )
+				$cuids[] = $customer_id;
+			if ( ( $ocuid = get_post_meta( $order_id, '_customer_user', true ) ) )
+				$cuids[] = $ocuid;
+			$cuids[] = md5( $order_id . ':' . site_url() );
+			$cuids = array_filter( $cuids );
+
+			// load the order
+			$order = wc_get_order( $order_id );
 			
-			foreach ($order->get_items() as $item_id => $item) {
-				if (!apply_filters('qsot-item-is-ticket', false, $item)) continue;
+			// cycle through the order items, and update all the ticket items to confirmed
+			foreach ( $order->get_items() as $item_id => $item ) {
+				// only do this for order items that are tickets
+				if ( ! apply_filters( 'qsot-item-is-ticket', false, $item ) )
+					continue;
+
+				global $wpdb;
+
+				// flip the reservations to confirmed for this item
 				$res = apply_filters(
 					'qsot-zoner-update-reservation',
 					false,
@@ -321,19 +336,22 @@ class qsot_seat_pricing {
 						'qty' => $item['qty'],
 						'state' => array( self::$o->{'z.states.r'}, self::$o->{'z.states.c'} ),
 						'order_id' => array( 0, $order_id ),
-						'order_item_id' => $item_id,
+						'order_item_id' => array( 0, $item_id ),
 						'ticket_type_id' => $item['product_id'],
-						//'customer_id' => $cuids,
+						'_wheres' => array(
+							$wpdb->prepare( ' and ( order_item_id = %d or ( order_item_id = 0 and session_customer_id in(\'' . implode( "','", array_map( 'esc_sql', $cuids ) ) . '\') ) )', $item_id )
+						),
 					),
 					array(
 						'state' => self::$o->{'z.states.c'},
 						'order_id' => $order_id,
-						//'customer_id' => empty( $ocuid ) ? $customer_id : $ocuid,
+						'customer_id' => current( $cuids ),
 						'order_item_id' => $item_id
 					)
 				);
 
-				do_action('qsot-confirmed-ticket', $order, $item, $item_id);
+				// notify externals of the change
+				do_action( 'qsot-confirmed-ticket', $order, $item, $item_id );
 			}
 		}
 	}
