@@ -41,21 +41,30 @@ class QSOT_Post_Type_Event_Area {
 	// initialize the object. maybe add actions and filters
 	public function initialize() {
 		// action to register the post type
-		add_action( 'init', array( &$this, 'register_post_type' ), 10000 );
+		add_action( 'init', array( &$this, 'register_post_type' ), 2 );
+		
+		// register the assets we need for this post type
+		add_action( 'init', array( &$this, 'register_assets' ), 1000 );
 
 		// area type registration and deregistration
 		add_action( 'qsot-register-event-area-type', array( &$this, 'register_event_area_type' ), 1000, 1 );
 		add_action( 'qsot-deregister-event-area-type', array( &$this, 'deregister_event_area_type' ), 1000, 1 );
 
 		// add the generic event area type metabox
-		add_action( 'add_meta_box_qsot-event-area', array( &$this, 'add_meta_boxes' ), 1000 );
+		add_action( 'add_meta_boxes_qsot-event-area', array( &$this, 'add_meta_boxes' ), 1000 );
 	}
 
 	// deinitialize the object. remove actions and filter
 	public function deinitialize() {
-		remove_action( 'init', array( &$this, 'register_post_type' ), 10000 );
+		remove_action( 'init', array( &$this, 'register_post_type' ), 2 );
+		remove_action( 'init', array( &$this, 'register_assets' ), 1000 );
 		remove_action( 'qsot-register-event-area-type', array( &$this, 'register_event_area_type' ), 1000 );
 		remove_action( 'qsot-deregister-event-area-type', array( &$this, 'deregister_event_area_type' ), 1000 );
+	}
+
+	// register the assets we might need for this post type
+	public function register_assets() {
+		wp_register_script( 'qsot-event-area-admin', QSOT::plugin_url() . 'assets/js/admin/event-area-admin.js', array( 'qsot-admin-tools' ), QSOT::version() );
 	}
 
 	// register the post type with wordpress
@@ -89,14 +98,14 @@ class QSOT_Post_Type_Event_Area {
 			'description' => __( 'Represents a specific physical location that an event can take place. For instance, a specific conference room at a hotel.', 'opentickets-community-edition' ),
 			'public' => false,
 			'publicly_queryable' => false,
-			'show_ui' => false,
-			'show_in_menu' => false,
+			'show_ui' => true,
+			'show_in_menu' => true,
 			'query_var' => false,
-			'rewrite' => array( 'slug' => 'event-area' ),
+			'rewrite' => false,
 			'capability_type' => 'post',
 			'has_archive' => true,
 			'hierarchical' => false,
-			'menu_position' => null,
+			'menu_position' => 22,
 			'supports' => array( 'title' )
 		) );
 
