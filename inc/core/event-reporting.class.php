@@ -470,7 +470,7 @@ abstract class QSOT_Admin_Report {
 		}
 
 		// otherwise, bail with an error
-		return new \WP_Error( 'file_permissions', sprintf( __( 'Could not open the file [%s] for writing. Please verify the file permissions allow writing.', 'opentickets-community-edition' ), $file['path'] ) );
+		return new WP_Error( 'file_permissions', sprintf( __( 'Could not open the file [%s] for writing. Please verify the file permissions allow writing.', 'opentickets-community-edition' ), $file['path'] ) );
 	}
 
 	// close the csv file
