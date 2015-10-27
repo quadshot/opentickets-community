@@ -49,6 +49,9 @@ class QSOT {
 		// load all other system features and classes used everywhere
 		do_action('qsot-load-includes', 'sys');
 
+		// load all the abstract classes
+		do_action( 'qsot-load-includes', '', '#^.+\.abstract\.php$#i' );
+
 		// load all plugins and modules later on
 		add_action('plugins_loaded', array(__CLASS__, 'load_plugins_and_modules'), 5);
 
