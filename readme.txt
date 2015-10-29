@@ -171,6 +171,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.14.4 =
+* [improvement] performance boost for users with seating extension
+
 = 1.14.3 =
 * [update] new user link on edit order screen has been updated for new WC
 * [tweak] modified new reporting class to remove php 5.3 syntax
