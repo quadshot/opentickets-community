@@ -515,27 +515,43 @@ class qsot_seat_pricing {
 		$add_qty = $quantity - $starting_quantity;
 		$needs_change = false;
 
-		$event_id = isset($woocommerce->cart->cart_contents[$item_key]['event_id']) ? $woocommerce->cart->cart_contents[$item_key]['event_id'] : false;
-		if (!$event_id) return;
-		$event = apply_filters('qsot-get-event', false, $event_id);
-		if (!is_object($event) || !isset($event->meta, $event->meta->available, $event->meta->reserved)) return;
+		// get the event_id
+		$event_id = isset( $woocommerce->cart->cart_contents[ $item_key ]['event_id'] ) ? $woocommerce->cart->cart_contents[ $item_key ]['event_id'] : 0;
 
-		if ($add_qty > 0 && $event->meta->available - $event->meta->reserved - $add_qty < 0) {
+		// if there is no event id, then bail
+		if ( $event_id <= 0 )
+			return;
+
+		// fetch the entire event record
+		$event = apply_filters( 'qsot-get-event', false, $event_id );
+
+		// if there is no event, or the availibility is not present, or there is no ticket for the event area, then bail
+		if ( ! is_object( $event ) || ! isset( $event->meta, $event->meta->available, $event->meta->_event_area_obj, $event->meta->_event_area_obj->ticket ) )
+			return
+
+		// figure out how many tickets this user has reserved already
+		$reserved = apply_filters( 'qsot-zoner-owns', 0, $event, $event->meta->_event_area_obj->ticket->id, self::$o->{'z.states.r'} );
+
+		// if the total additional tickets requested, less the number we have currently, puts us over the total availble, then reserve all available and pop an error
+		if ( $add_qty > 0 && $event->meta->available - $reserved - $add_qty < 0 ) {
 			$needs_change = true;
 
-			$woocommerce->cart->cart_contents[$item_key]['quantity'] = $event->meta->available - $event->meta->reserved + $starting_quantity > 0
-				? $event->meta->available - $event->meta->reserved + $starting_quantity
-				: 0;
-			$product = wc_get_product( $woocommerce->cart->cart_contents[$item_key]['product_id'] );
+			// update the cart quantity
+			$woocommerce->cart->cart_contents[ $item_key ]['quantity'] = $event->meta->available - $reserved + $starting_quantity > 0 ? $event->meta->available - $reserved + $starting_quantity : 0;
 
-			if ( $woocommerce->cart->cart_contents[$item_key]['quantity'] > 0 ) {
+			// load the product so we can get the product name for our message
+			$product = wc_get_product( $woocommerce->cart->cart_contents[ $item_key ]['product_id'] );
+
+			// if the amount the user has is still a positive number, pop a message saying we gave them all we could
+			if ( $woocommerce->cart->cart_contents[ $item_key ]['quantity'] > 0 ) {
 				wc_add_notice( sprintf(
-					__('There were only %d of the %s for %s available. We reserved all of them for you instead of the %d you requested.','opentickets-community-edition'),
-					$woocommerce->cart->cart_contents[$item_key]['quantity'],
+					__( 'There were only %d of the %s for %s available. We reserved all of them for you instead of the %d you requested.', 'opentickets-community-edition' ),
+					$woocommerce->cart->cart_contents[ $item_key ]['quantity'],
 					$product->get_title(),
 					$event->post_title,
 					$quantity
 				), 'error' );
+			// otherwise, if they have no tickets, then pop a message about removing it
 			} else {
 				wc_add_notice( sprintf(
 					__('There were no %s for %s available to give you. We have removed it from your cart.','opentickets-community-edition'),

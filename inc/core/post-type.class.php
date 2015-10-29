@@ -746,10 +746,6 @@ class qsot_post_type {
 			$m['available'] = apply_filters( 'qsot-get-availability', 0, $event->ID );
 			$m['availability'] = apply_filters( 'qsot-get-availability-text', __( 'available', 'opentickets-community-edition' ), $m['available'], $event->ID );
 			$m = apply_filters('qsot-event-meta', $m, $event, $meta);
-			if (isset($m['_event_area_obj'], $m['_event_area_obj']->ticket, $m['_event_area_obj']->ticket->id))
-				$m['reserved'] = apply_filters('qsot-zoner-owns', 0, $event, $m['_event_area_obj']->ticket->id, self::$o->{'z.states.r'});
-			else
-				$m['reserved'] = 0;
 			$event->meta = (object)$m;
 
 			$image_id = get_post_thumbnail_id($event->ID);
