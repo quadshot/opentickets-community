@@ -84,6 +84,7 @@ class qsot_post_type {
 			add_filter('the_content', array(__CLASS__, 'the_content'), 10, 1);
 
 			add_filter('qsot-can-sell-tickets-to-event', array(__CLASS__, 'check_event_sale_time'), 10, 2);
+			add_filter('qsot-can-sell-tickets-to-event', array(__CLASS__, 'check_event_sale_time_hard_stop'), 20, 2);
 
 			// get the event availability
 			add_filter( 'qsot-get-availability', array( __CLASS__, 'get_availability' ), 10, 2 );
@@ -360,20 +361,70 @@ class qsot_post_type {
 		// grab the start time of the event, so that we can use it in the timestamp calc
 		$start = get_post_meta( $event_id, '_start', true );
 
-		// do a little sanitization. this is not perfect by any means, but it gets the job done mostly. plus it is getting thrown into strtotime, so it is relatively safe, no matter what anyways
-		$formula = str_replace( '+', '-', $formula );
-		$formula = preg_replace( '#(-)\s*(\d)#', '\1\2', $formula );
-		$formula = preg_replace( '#(^|\s+)(?<!-)(\d+)#', '\1-\2', $formula );
-
-		// calculate the time to stop selling
+		// determine if now() + time offset, is still less than the beginning of the show
 		$stime = strtotime( $start );
-		$stop_time = strtotime( $formula, $stime );
-		if ( $stop_time === false )
-			$stop_time = $stime;
 		$time = current_time('timestamp');
+		$adjust_time = strtotime( $formula, $time );
+		if ( false == $adjust_time )
+			$adjust_time = $time;
 
 		// are we past it or not?
+		return $adjust_time < $stime;
+	}
+
+	// check to see if we are past the hardstop date for sales on this event
+	public static function check_event_sale_time_hard_stop( $current, $event_id ) {
+		// only do this check if the value is true currently
+		if ( ! $current )
+			return $current;
+
+		// get the hardstop time
+		$hard_stop = get_post_meta( $event_id, '_stop_sales_hard_stop', true );
+
+		// if the individual event does not have a hardstop set, check the parent
+		if ( empty( $hard_stop ) ) {
+			// get the event post
+			$post = get_post( $event_id );
+			$parent_id = $post->post_parent;
+
+			// try to load it from the parent event
+			if ( $parent_id )
+				$hard_stop = get_post_meta( $parent_id, '_stop_sales_hard_stop', true );
+		}
+
+		// if there is still no hardstop, then bail
+		if ( empty( $hard_stop ) )
+			return $current;
+
+		// get the stop time
+		$stop_time = strtotime( $hard_stop );
+		if ( false == $stop_time )
+			return $current;
+
+		// get the current time
+		$time = current_time('timestamp');
+
+		// determine if the current time is still before the hardstop
 		return $time < $stop_time;
+	}
+
+	// adjust timestamp for time offset
+	protected static function _offset( $ts, $dir=1 ) { return $ts + ( $dir * get_option( 'gmt_offset', 0 ) * HOUR_IN_SECONDS ); }
+
+	// determine the offset description string
+	protected static function _offset_str() {
+		// get the offset
+		$offset = get_option( 'gmt_offset', 0 );
+
+		// get the sign of the offset
+		$sign = $offset < 0 ? '-' : '+';
+
+		// get the suffix, either :00 or :30
+		$offset = abs( $offset );
+		$floored = floor( $offset );
+		$suffix = $offset == $floored ? ':00' : ':30';
+
+		return sprintf( '%s%02s%s', $sign, $offset, $suffix );
 	}
 
 	// on the frontend, lets show the parent events in category and tag pages
@@ -1467,6 +1518,13 @@ class qsot_post_type {
 		$formula = isset( $data['_stop_sales_before_show'] ) ? $data['_stop_sales_before_show'] : get_option( 'qsot-stop-sales-before-show', '2 hours' );
 		update_post_meta( $post_id, '_stop_sales_before_show', $formula );
 
+		// save the hard_stop time
+		$hard_stop = trim( implode( ' ', array(
+			( isset( $data['_stop_sales_hard_stop_date'] ) ? $data['_stop_sales_hard_stop_date'] : '' ),
+			( isset( $data['_stop_sales_hard_stop_time'] ) ? $data['_stop_sales_hard_stop_time'] : '' ),
+		) ) );
+		update_post_meta( $post_id, '_stop_sales_hard_stop', $hard_stop );
+
 		if ( isset( $_POST['_qsot_ticket_sales_settings'] ) && wp_verify_nonce( $_POST['_qsot_ticket_sales_settings'], 'save-ticket-sales-settings' ) ) {
 			// mapped list of settings to their post meta and site options
 			$map = array(
@@ -1616,6 +1674,7 @@ class qsot_post_type {
 		// mapped list of settings to their post meta and site options
 		$map = array(
 			'formula' => array( '_stop_sales_before_show', 'qsot-stop-sales-before-show' ),
+			'hard_stop' => array( '_stop_sales_hard_stop', '' ),
 			'purchase_limit' => array( self::$o->{'meta_key.purchase_limit'}, 'qsot-event-purchase-limit' ),
 		);
 
@@ -1633,6 +1692,8 @@ class qsot_post_type {
 			// register whatever value we found
 			$options[ $k ] = $value;
 		}
+
+		@list( $options['hard_stop_date'], $options['hard_stop_time'] ) = empty( $options['hard_stop'] ) ? array( '', '' ) : explode( ' ', $options['hard_stop'], 2 );
 
 		?>
 			<div class="qsot-mb">
@@ -1653,6 +1714,28 @@ class qsot_post_type {
 
 					<div class="helper">
 						<?php _e( 'This is the formula to calculate when tickets should stop being sold on the frontend for this show. For example, if you wish to stop selling tickets 2 hours and 30 minutes before the show, use: <code>2 hours 30 minutes</code>. Valid units include: hour, hours, minute, minutes, second, seconds, day, days, week, weeks, month, months, year, years. Leave the formula empty to just use the Global Setting for this formula.', 'opentickets-community-edition' ); ?>
+					</div>
+				</div>
+
+				<div class="field">
+					<div class="label"><label><?php echo __( 'Stop Sales - Hard Stop', 'opentickets-community-edition' ); ?>:</label></div>
+					<table cellspacing="0">
+						<tbody>
+							<tr>
+								<td width="60%">
+									<input type="text" class="use-i18n-datepicker widefat" name="_stop_sales_hard_stop_date" value=""
+											data-init-date="<?php echo esc_attr( date( 'Y-m-d\TH:i:s', self::_offset( strtotime( $options['hard_stop'] ), -1 ) ) . '+0000' ) ?>" scope="td"
+											data-display-format="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>" data-allow-blank="1" />
+								</td>
+								<td width="1%"><?php _e( '@', 'opentickets-community-edition' ) ?></td>
+								<td width="39%">
+									<input type="text" class="widefat use-timepicker" name="_stop_sales_hard_stop_time" value="<?php echo esc_attr( $options['hard_stop_time'] ) ?>" />
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="helper">
+						<?php _e( 'This is the date and time, after which no tickets to this event should be sold.', 'opentickets-community-edition' ); ?>
 					</div>
 				</div>
 
