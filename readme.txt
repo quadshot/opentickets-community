@@ -171,6 +171,11 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.14.5 =
+* [new] ability to have a negative time formula for event sales
+* [new] ability to specify a hard stop date time for event sales
+* [improvement] changed synopsis generation for perofmance
+
 = 1.14.4 =
 * [improvement] performance boost for users with seating extension
 
