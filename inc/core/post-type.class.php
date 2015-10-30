@@ -1722,7 +1722,7 @@ class qsot_post_type {
 							<tr>
 								<td width="60%">
 									<input type="text" class="use-i18n-datepicker widefat" name="_stop_sales_hard_stop_date" value=""
-											data-init-date="<?php echo esc_attr( date( 'Y-m-d\TH:i:s', self::_offset( strtotime( $options['hard_stop'] ), -1 ) ) . '+0000' ) ?>" scope="td"
+											data-init-date="<?php echo $options['hard_stop'] ? esc_attr( date( 'Y-m-d\TH:i:s', self::_offset( strtotime( $options['hard_stop'] ), -1 ) ) . '+0000' ) : '' ?>" scope="td"
 											data-display-format="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>" data-allow-blank="1" />
 								</td>
 								<td width="1%"><?php _e( '@', 'opentickets-community-edition' ) ?></td>
