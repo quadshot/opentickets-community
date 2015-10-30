@@ -558,19 +558,17 @@ class qsot_post_type {
 		if ( ( $event = get_post() ) && is_object( $event ) && $event->post_type == self::$o->core_post_type && $event->post_parent != 0 ) {
 			// if we are supposed to show the synopsis, then add it
 			if ( self::$options->{'qsot-single-synopsis'} && 'no' != self::$options->{'qsot-single-synopsis'} ) {
-				// emulate that the 'current post' is actually the parent post, so that we can run the the_content filters, without an infinite recursion loop
-				$q = clone $GLOBALS['wp_query'];
-				$p = clone $GLOBALS['post'];
-				$GLOBALS['post'] = get_post( $event->post_parent );
-				setup_postdata( $GLOBALS['post'] );
+				// determine the content that should be shown, either the individual event content or the parent event content
+				$content = trim( $event->post_content );
+				if ( empty( $content ) ) {
+					$parent = get_post( $event->post_parent );
+					$content = trim( $parent->post_content );
+				}
 
-				// get the parent post content, and pass it through the appropriate filters for texturization
-				$content = apply_filters( 'the_content', get_the_content() );
-
-				// restore the original post
-				$GLOBALS['wp_query'] = $q;
-				$GLOBALS['post'] = $p;
-				setup_postdata( $p );
+				// apply the normal filters to that content
+				remove_filter( 'the_content', array( __CLASS__, 'the_content' ), 10 );
+				$content = apply_filters( 'the_content', $content );
+				add_filter( 'the_content', array( __CLASS__, 'the_content' ), 10, 1 );
 			}
 
 			// inform other classes and plugins of our new content

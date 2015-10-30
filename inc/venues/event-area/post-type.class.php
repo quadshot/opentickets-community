@@ -1197,6 +1197,9 @@ class qsot_event_area {
 		// allow modification if needed
 		$out = apply_filters( 'qsot-no-js-seat-selection-form', $out, $area, $event, $interests, $reserved );
 
+		// add the marker for what the current setting is
+		$out = sprintf( '<div class="synopsis-%s">%s</div>', self::$options->{'qsot-synopsis-position'}, $out );
+
 		// put the UI in the appropriate location, depending on our settings
 		if ( self::$options->{'qsot-synopsis-position'} == 'above' )
 			return $content . $out;
