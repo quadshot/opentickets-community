@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OpenTickets Community Edition\n"
-"POT-Creation-Date: 2015-10-22 09:47-0800\n"
-"PO-Revision-Date: 2015-10-22 09:47-0800\n"
+"POT-Creation-Date: 2015-10-30 07:51-0800\n"
+"PO-Revision-Date: 2015-10-30 07:51-0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es_ES\n"
@@ -83,7 +83,7 @@ msgstr ""
 "<a href=\"%s\" title=\"Visit the License Key settings page\">Configuración</"
 "a>"
 
-#: ../opentickets.php:365
+#: ../opentickets.php:366
 #, php-format
 msgid ""
 "If you like %1$sOpenTickets Community Edition%2$s please leave us a "
@@ -91,7 +91,7 @@ msgid ""
 "%4$sQuadshot%2$s in advance!"
 msgstr ""
 
-#: ../opentickets.php:376
+#: ../opentickets.php:377
 #, php-format
 msgid ""
 "Also, if you like %1$sOpenTickets Community Edition%2$s, please leave them a "
@@ -99,11 +99,11 @@ msgid ""
 "you a huge thank you as well!"
 msgstr ""
 
-#: ../opentickets.php:445
+#: ../opentickets.php:446
 msgid "Memory Requirement Problem"
 msgstr "Problema de memoria insuficiente"
 
-#: ../opentickets.php:473
+#: ../opentickets.php:474
 #, php-format
 msgid ""
 "The %%%%PRODUCT%%%% plugin <strong>requires</strong> that your server allow "
@@ -123,7 +123,7 @@ msgstr ""
 "mínimo. No ejecutaremos OpenTickets para no perjudicar el acceso a su sitio. "
 "Apenas aumente la memoria volverá a funcionar OpenTickets automáticamente."
 
-#: ../opentickets.php:483
+#: ../opentickets.php:484
 #, php-format
 msgid ""
 "The %%%%PRODUCT%%%% plugin <strong>requires</strong> that your server allow "
@@ -139,26 +139,26 @@ msgstr ""
 "límite a la cantidad recomendada, o prefiere no hacerlo, simplemente ignore "
 "este mensaje."
 
-#: ../opentickets.php:620
+#: ../opentickets.php:621
 #, php-format
 msgid "Could not compile stylesheet %s. [%s]"
 msgstr "No se pudo compilar event.less: [%s : %s]"
 
-#: ../opentickets.php:623
+#: ../opentickets.php:624
 #, php-format
 msgid "Could not write to stylesheet file %s."
 msgstr "No se pudo encontrar este lugar [%s]."
 
-#: ../opentickets.php:627
+#: ../opentickets.php:628
 #, php-format
 msgid "Could not write colors to file %s. [%s]"
 msgstr "No se pudo encontrar este lugar [%s : %s]."
 
-#: ../opentickets.php:635
+#: ../opentickets.php:636
 msgid "the installation process"
 msgstr ""
 
-#: ../opentickets.php:640 ../opentickets.php:644
+#: ../opentickets.php:641 ../opentickets.php:645
 #, php-format
 msgid "Could not find the needed library %s, for use in %s."
 msgstr "No se pudo encontrar este lugar [%s : %s]."
@@ -204,17 +204,17 @@ msgstr "Fecha ingresada manualmente"
 msgid "Starting Date Method"
 msgstr "Método para la fecha de inicio"
 
-#: ../inc/core/calendar.class.php:393 ../inc/core/post-type.class.php:1733
-#: ../inc/core/post-type.class.php:1739 ../inc/core/post-type.class.php:1822
-#: ../inc/core/post-type.class.php:1838
+#: ../inc/core/calendar.class.php:393 ../inc/core/post-type.class.php:1810
+#: ../inc/core/post-type.class.php:1816 ../inc/core/post-type.class.php:1899
+#: ../inc/core/post-type.class.php:1915
 #: ../inc/sys/pages/system-status.page.php:966
 msgid "m-d-Y"
 msgstr ""
 
-#: ../inc/core/calendar.class.php:394 ../inc/core/post-type.class.php:1688
-#: ../inc/core/post-type.class.php:1705 ../inc/core/post-type.class.php:1732
-#: ../inc/core/post-type.class.php:1738 ../inc/core/post-type.class.php:1821
-#: ../inc/core/post-type.class.php:1837
+#: ../inc/core/calendar.class.php:394 ../inc/core/post-type.class.php:1726
+#: ../inc/core/post-type.class.php:1765 ../inc/core/post-type.class.php:1782
+#: ../inc/core/post-type.class.php:1809 ../inc/core/post-type.class.php:1815
+#: ../inc/core/post-type.class.php:1898 ../inc/core/post-type.class.php:1914
 msgid "mm-dd-yy"
 msgstr ""
 
@@ -426,79 +426,79 @@ msgid "Once a user logs in, they stay logged in, forever."
 msgstr ""
 "Una vez que se registre el usuario, su sesión permanecerá activa por siempre."
 
-#: ../inc/core/post-type.class.php:223 ../inc/core/post-type.class.php:238
-#: ../inc/core/post-type.class.php:926
+#: ../inc/core/post-type.class.php:224 ../inc/core/post-type.class.php:239
+#: ../inc/core/post-type.class.php:971
 #: ../inc/reporting/seating.report.class.php:59
 msgid "Event"
 msgstr "Evento"
 
-#: ../inc/core/post-type.class.php:240
+#: ../inc/core/post-type.class.php:241
 msgid "View this event"
 msgstr "Ver"
 
-#: ../inc/core/post-type.class.php:438 ../inc/core/post-type.class.php:925
+#: ../inc/core/post-type.class.php:489 ../inc/core/post-type.class.php:970
 #: ../inc/sys/settings/frontend.php:38
 msgid "Events"
 msgstr "Eventos"
 
-#: ../inc/core/post-type.class.php:466
+#: ../inc/core/post-type.class.php:517
 msgid "Top Level Events"
 msgstr "Eventos principales"
 
-#: ../inc/core/post-type.class.php:673
+#: ../inc/core/post-type.class.php:722
 #: ../inc/venues/event-area/post-type.class.php:1046
 #: ../inc/venues/event-area/post-type.class.php:1054
 msgid "sold-out"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:676
+#: ../inc/core/post-type.class.php:725
 #: ../inc/venues/event-area/post-type.class.php:1055
 msgid "low"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:679
+#: ../inc/core/post-type.class.php:728
 #: ../inc/venues/event-area/post-type.class.php:1053
 msgid "medium"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:682
+#: ../inc/core/post-type.class.php:731
 #: ../inc/venues/event-area/post-type.class.php:1052
 msgid "high"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:747
+#: ../inc/core/post-type.class.php:796
 msgid "available"
 msgstr "Disponible:"
 
-#: ../inc/core/post-type.class.php:853
+#: ../inc/core/post-type.class.php:898
 msgctxt "post"
 msgid "Hidden"
 msgstr "Oculto"
 
-#: ../inc/core/post-type.class.php:870
+#: ../inc/core/post-type.class.php:915
 #, php-format
 msgid "Hidden <span class=\"count\">(%s)</span>"
 msgid_plural "Hidden <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../inc/core/post-type.class.php:974
+#: ../inc/core/post-type.class.php:1019
 msgid "MM-dd-yyyy"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:975
+#: ../inc/core/post-type.class.php:1020
 msgid "ddd MM-dd-yyyy"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:976
+#: ../inc/core/post-type.class.php:1021
 msgid "hh:mmtt"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1097
+#: ../inc/core/post-type.class.php:1142
 msgid "Max"
 msgstr "Máximo"
 
-#: ../inc/core/post-type.class.php:1100
+#: ../inc/core/post-type.class.php:1145
 #: ../inc/reporting/seating.report.class.php:43
 #: ../inc/reporting/seating.report.class.php:58
 #: ../inc/sys/admin-menu.class.php:364
@@ -511,72 +511,72 @@ msgstr "Máximo"
 msgid "Status"
 msgstr "Estado"
 
-#: ../inc/core/post-type.class.php:1138
+#: ../inc/core/post-type.class.php:1183
 msgid "m/d/Y"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1139
+#: ../inc/core/post-type.class.php:1184
 #: ../templates/tickets/basic-ticket.php:73
 #: ../templates/tickets/basic-ticket.php:80
 msgid "g:ia"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1142
+#: ../inc/core/post-type.class.php:1187
 #, php-format
 msgid "on %2$s"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1144
+#: ../inc/core/post-type.class.php:1189
 #, php-format
 msgid "@ %3$s"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1242
+#: ../inc/core/post-type.class.php:1287
 msgctxt "Permalink date"
 msgid "Y-m-d_gia"
 msgstr "Y-m-d"
 
-#: ../inc/core/post-type.class.php:1502
+#: ../inc/core/post-type.class.php:1554
 msgctxt "metabox title"
 msgid "Event Date Time Settings"
 msgstr "Ajuste de fecha y hora del evento"
 
-#: ../inc/core/post-type.class.php:1512
+#: ../inc/core/post-type.class.php:1564
 msgctxt "metabox title"
 msgid "Event Titles"
 msgstr "Evento (Fecha/hora)"
 
-#: ../inc/core/post-type.class.php:1522
+#: ../inc/core/post-type.class.php:1574
 msgctxt "metabox title"
 msgid "Ticket Sales Settings"
 msgstr "Configuración del calendario"
 
-#: ../inc/core/post-type.class.php:1533
+#: ../inc/core/post-type.class.php:1585
 msgctxt "metabox title"
 msgid "Event Run Date Range"
 msgstr "Rango de fechas del evento"
 
-#: ../inc/core/post-type.class.php:1558
+#: ../inc/core/post-type.class.php:1610
 msgctxt "metabox field heading"
 msgid "Show Date"
 msgstr "Ver reporte"
 
-#: ../inc/core/post-type.class.php:1564 ../inc/core/post-type.class.php:1593
+#: ../inc/core/post-type.class.php:1616 ../inc/core/post-type.class.php:1645
 msgctxt "checkbox description"
 msgid "Use the site wide default setting"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1571
+#: ../inc/core/post-type.class.php:1623
 msgctxt "radio button description"
 msgid "Yes, show the date"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1575
+#: ../inc/core/post-type.class.php:1627
 msgctxt "radio button description"
 msgid "No, hide the date"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1580 ../inc/core/post-type.class.php:1609
+#: ../inc/core/post-type.class.php:1632 ../inc/core/post-type.class.php:1661
 #, php-format
 msgctxt "field helper text"
 msgid ""
@@ -584,47 +584,47 @@ msgid ""
 "a specific value for these events."
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1583
+#: ../inc/core/post-type.class.php:1635
 msgctxt "option name"
 msgid "Show Date"
 msgstr "Ver reporte"
 
-#: ../inc/core/post-type.class.php:1587
+#: ../inc/core/post-type.class.php:1639
 msgctxt "metabox field heading"
 msgid "Show Time"
 msgstr "Hora de inicio"
 
-#: ../inc/core/post-type.class.php:1600
+#: ../inc/core/post-type.class.php:1652
 msgctxt "radio button description"
 msgid "Yes, show the time"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1604
+#: ../inc/core/post-type.class.php:1656
 msgctxt "radio button description"
 msgid "No, hide the time"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1612
+#: ../inc/core/post-type.class.php:1664
 msgctxt "option name"
 msgid "Show Time"
 msgstr "Hora de inicio"
 
-#: ../inc/core/post-type.class.php:1646 ../inc/core/post-type.class.php:1989
+#: ../inc/core/post-type.class.php:1701 ../inc/core/post-type.class.php:2066
 msgid "Purchase Limit"
 msgstr "Comprador"
 
-#: ../inc/core/post-type.class.php:1650
+#: ../inc/core/post-type.class.php:1705
 msgid ""
 "The maximum number of tickets, for each child event, that a given cart can "
 "have in it. To use the site-wide global setting, use \"0\". To force no-"
 "limit, use \"-1\"."
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1655
+#: ../inc/core/post-type.class.php:1710
 msgid "Stop Sales Before - Formula"
 msgstr "Parar la venta de entradas antes del evento"
 
-#: ../inc/core/post-type.class.php:1659
+#: ../inc/core/post-type.class.php:1714
 msgid ""
 "This is the formula to calculate when tickets should stop being sold on the "
 "frontend for this show. For example, if you wish to stop selling tickets 2 "
@@ -640,147 +640,158 @@ msgstr ""
 "second, seconds, day, days, week, weeks, month, months, year, years. Deje el "
 "campo vacío para utilizar la configuración global para esta fórmula."
 
-#: ../inc/core/post-type.class.php:1682
-msgid "Start Date/Time"
-msgstr "Inicio del evento (Fecha/hora)"
+#: ../inc/core/post-type.class.php:1719
+#, fuzzy
+msgid "Stop Sales - Hard Stop"
+msgstr "Parar la venta de entradas antes del evento"
 
-#: ../inc/core/post-type.class.php:1690 ../inc/core/post-type.class.php:1707
-#: ../inc/core/post-type.class.php:1976
+#: ../inc/core/post-type.class.php:1728 ../inc/core/post-type.class.php:1767
+#: ../inc/core/post-type.class.php:1784 ../inc/core/post-type.class.php:2053
 msgid "@"
 msgstr "@"
 
-#: ../inc/core/post-type.class.php:1699
+#: ../inc/core/post-type.class.php:1736
+msgid ""
+"This is the date and time, after which no tickets to this event should be "
+"sold."
+msgstr ""
+
+#: ../inc/core/post-type.class.php:1759
+msgid "Start Date/Time"
+msgstr "Inicio del evento (Fecha/hora)"
+
+#: ../inc/core/post-type.class.php:1776
 msgid "End Date/Time:"
 msgstr "Terminación del evento (Fecha/hora):"
 
-#: ../inc/core/post-type.class.php:1729
+#: ../inc/core/post-type.class.php:1806
 msgid "Basic Settings"
 msgstr "Configuración básica"
 
-#: ../inc/core/post-type.class.php:1733
+#: ../inc/core/post-type.class.php:1810
 msgid "Start Date"
 msgstr "Fecha de inicio"
 
-#: ../inc/core/post-type.class.php:1734 ../inc/core/post-type.class.php:1740
-#: ../inc/core/post-type.class.php:1823 ../inc/core/post-type.class.php:1839
+#: ../inc/core/post-type.class.php:1811 ../inc/core/post-type.class.php:1817
+#: ../inc/core/post-type.class.php:1900 ../inc/core/post-type.class.php:1916
 msgid "Y-m-d"
 msgstr "Y-m-d"
 
-#: ../inc/core/post-type.class.php:1735 ../inc/core/post-type.class.php:1741
+#: ../inc/core/post-type.class.php:1812 ../inc/core/post-type.class.php:1818
 msgid "h:ia"
 msgstr "h:i:a"
 
-#: ../inc/core/post-type.class.php:1735
+#: ../inc/core/post-type.class.php:1812
 msgid "Start Time"
 msgstr "Hora de inicio"
 
-#: ../inc/core/post-type.class.php:1736
+#: ../inc/core/post-type.class.php:1813
 msgid "to"
 msgstr "a"
 
-#: ../inc/core/post-type.class.php:1739
+#: ../inc/core/post-type.class.php:1816
 msgid "End Date"
 msgstr "Fecha de terminación"
 
-#: ../inc/core/post-type.class.php:1741
+#: ../inc/core/post-type.class.php:1818
 msgid "End Time"
 msgstr "Hora de terminación"
 
-#: ../inc/core/post-type.class.php:1747 ../inc/core/post-type.class.php:1756
+#: ../inc/core/post-type.class.php:1824 ../inc/core/post-type.class.php:1833
 msgid "Repeat"
 msgstr "Repetir"
 
-#: ../inc/core/post-type.class.php:1761
+#: ../inc/core/post-type.class.php:1838
 msgid "Repeats"
 msgstr "Se repite"
 
-#: ../inc/core/post-type.class.php:1765
+#: ../inc/core/post-type.class.php:1842
 msgid "Weekly"
 msgstr "Semanalmente"
 
-#: ../inc/core/post-type.class.php:1771
+#: ../inc/core/post-type.class.php:1848
 msgid "Repeats Every"
 msgstr "Se repite cada"
 
-#: ../inc/core/post-type.class.php:1778
+#: ../inc/core/post-type.class.php:1855
 msgid "days"
 msgstr "días"
 
-#: ../inc/core/post-type.class.php:1779
+#: ../inc/core/post-type.class.php:1856
 msgid "weeks"
 msgstr "semanas"
 
-#: ../inc/core/post-type.class.php:1784
+#: ../inc/core/post-type.class.php:1861
 msgid "Repeat on"
 msgstr "Repetir el"
 
-#: ../inc/core/post-type.class.php:1788
+#: ../inc/core/post-type.class.php:1865
 msgid "Su"
 msgstr "Dom"
 
-#: ../inc/core/post-type.class.php:1792
+#: ../inc/core/post-type.class.php:1869
 msgid "Mo"
 msgstr "Lun"
 
-#: ../inc/core/post-type.class.php:1796
+#: ../inc/core/post-type.class.php:1873
 msgid "Tu"
 msgstr "Mar"
 
-#: ../inc/core/post-type.class.php:1800
+#: ../inc/core/post-type.class.php:1877
 msgid "We"
 msgstr "Mie"
 
-#: ../inc/core/post-type.class.php:1804
+#: ../inc/core/post-type.class.php:1881
 msgid "Th"
 msgstr "Jue"
 
-#: ../inc/core/post-type.class.php:1808
+#: ../inc/core/post-type.class.php:1885
 msgid "Fr"
 msgstr "Vie"
 
-#: ../inc/core/post-type.class.php:1812
+#: ../inc/core/post-type.class.php:1889
 msgid "Sa"
 msgstr "Sab"
 
-#: ../inc/core/post-type.class.php:1818
+#: ../inc/core/post-type.class.php:1895
 msgid "Starts on"
 msgstr "Empieza el"
 
-#: ../inc/core/post-type.class.php:1828
+#: ../inc/core/post-type.class.php:1905
 msgid "Ends"
 msgstr "Termina"
 
-#: ../inc/core/post-type.class.php:1834
+#: ../inc/core/post-type.class.php:1911
 msgid "On"
 msgstr "en"
 
-#: ../inc/core/post-type.class.php:1844
+#: ../inc/core/post-type.class.php:1921
 msgid "After"
 msgstr "Después"
 
-#: ../inc/core/post-type.class.php:1847
+#: ../inc/core/post-type.class.php:1924
 msgid "occurences"
 msgstr "repeticiones"
 
-#: ../inc/core/post-type.class.php:1868
+#: ../inc/core/post-type.class.php:1945
 msgid "Add to Calendar"
 msgstr "Agregar al calendario"
 
-#: ../inc/core/post-type.class.php:1884
+#: ../inc/core/post-type.class.php:1961
 msgid "Event Date/Times"
 msgstr "Evento (Fecha/hora)"
 
-#: ../inc/core/post-type.class.php:1890 ../inc/sys/admin-menu.class.php:214
+#: ../inc/core/post-type.class.php:1967 ../inc/sys/admin-menu.class.php:214
 #: ../inc/sys/admin-menu.class.php:215
 msgid "Settings"
 msgstr "Configuración"
 
-#: ../inc/core/post-type.class.php:1895
+#: ../inc/core/post-type.class.php:1972
 msgid "Status:"
 msgstr "Estado:"
 
-#: ../inc/core/post-type.class.php:1897 ../inc/core/post-type.class.php:1920
-#: ../inc/core/post-type.class.php:1955 ../inc/core/post-type.class.php:1991
+#: ../inc/core/post-type.class.php:1974 ../inc/core/post-type.class.php:1997
+#: ../inc/core/post-type.class.php:2032 ../inc/core/post-type.class.php:2068
 #: ../inc/venues/post-type.class.php:364
 #: ../inc/venues/event-area/post-type.class.php:644
 #: ../templates/admin/meta-boxes/views/html-order-items.php:217
@@ -789,35 +800,35 @@ msgstr "Estado:"
 msgid "Edit"
 msgstr "Editar"
 
-#: ../inc/core/post-type.class.php:1902
+#: ../inc/core/post-type.class.php:1979
 msgid "Published"
 msgstr "Publicado"
 
-#: ../inc/core/post-type.class.php:1903
+#: ../inc/core/post-type.class.php:1980
 msgid "Privately Published"
 msgstr "Privado"
 
-#: ../inc/core/post-type.class.php:1904
+#: ../inc/core/post-type.class.php:1981
 msgid "Scheduled"
 msgstr "Programado"
 
-#: ../inc/core/post-type.class.php:1906
+#: ../inc/core/post-type.class.php:1983
 msgid "Pending Review"
 msgstr "Pendiente de aprobación"
 
-#: ../inc/core/post-type.class.php:1907
+#: ../inc/core/post-type.class.php:1984
 msgid "Draft"
 msgstr "Borrador"
 
-#: ../inc/core/post-type.class.php:1910 ../inc/core/post-type.class.php:1945
-#: ../inc/core/post-type.class.php:1981 ../inc/core/post-type.class.php:1998
+#: ../inc/core/post-type.class.php:1987 ../inc/core/post-type.class.php:2022
+#: ../inc/core/post-type.class.php:2058 ../inc/core/post-type.class.php:2075
 #: ../inc/venues/post-type.class.php:375
 #: ../inc/venues/event-area/post-type.class.php:667
 msgid "OK"
 msgstr "OK"
 
-#: ../inc/core/post-type.class.php:1911 ../inc/core/post-type.class.php:1946
-#: ../inc/core/post-type.class.php:1982 ../inc/core/post-type.class.php:1999
+#: ../inc/core/post-type.class.php:1988 ../inc/core/post-type.class.php:2023
+#: ../inc/core/post-type.class.php:2059 ../inc/core/post-type.class.php:2076
 #: ../inc/sys/mba.class.php:462 ../inc/venues/post-type.class.php:376
 #: ../inc/venues/event-area/post-type.class.php:668
 #: ../templates/admin/meta-boxes/views/html-order-items.php:255
@@ -825,19 +836,19 @@ msgstr "OK"
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../inc/core/post-type.class.php:1918
+#: ../inc/core/post-type.class.php:1995
 msgid "Visibility"
 msgstr "Visibilidad"
 
-#: ../inc/core/post-type.class.php:1924
+#: ../inc/core/post-type.class.php:2001
 msgid "Viewable to the public"
 msgstr "Visible al público"
 
-#: ../inc/core/post-type.class.php:1926
+#: ../inc/core/post-type.class.php:2003
 msgid "Public"
 msgstr "Público"
 
-#: ../inc/core/post-type.class.php:1928
+#: ../inc/core/post-type.class.php:2005
 msgid ""
 "Visible on the calendar, but only those with the password can view to make "
 "reservations"
@@ -845,96 +856,96 @@ msgstr ""
 "Se muestra en el calendario pero solamente las personas que saben la "
 "contraseña pueden hacer reservaciones"
 
-#: ../inc/core/post-type.class.php:1930
+#: ../inc/core/post-type.class.php:2007
 msgid "Password Protected"
 msgstr "Protegido con contraseña"
 
-#: ../inc/core/post-type.class.php:1932
+#: ../inc/core/post-type.class.php:2009
 msgid "Password:"
 msgstr "Contraseña"
 
-#: ../inc/core/post-type.class.php:1936
+#: ../inc/core/post-type.class.php:2013
 msgid "Hidden from the calendar, but open to anyone with the url"
 msgstr ""
 "Invisible en el calendario pero abierto a cualquiera que conozca la "
 "dirección URL"
 
-#: ../inc/core/post-type.class.php:1938
+#: ../inc/core/post-type.class.php:2015
 msgid "Hidden"
 msgstr "Oculto"
 
-#: ../inc/core/post-type.class.php:1940
+#: ../inc/core/post-type.class.php:2017
 msgid "Only logged in admin users or the event author can view it"
 msgstr ""
 "Solamente los administradores registrados o el autor del evento pueden verlo"
 
-#: ../inc/core/post-type.class.php:1942
+#: ../inc/core/post-type.class.php:2019
 msgid "Private"
 msgstr "Privado"
 
-#: ../inc/core/post-type.class.php:1953
+#: ../inc/core/post-type.class.php:2030
 msgid "Publish Date:"
 msgstr "Fecha de publicación:"
 
-#: ../inc/core/post-type.class.php:1962
+#: ../inc/core/post-type.class.php:2039
 msgid "January"
 msgstr "Enero"
 
-#: ../inc/core/post-type.class.php:1963
+#: ../inc/core/post-type.class.php:2040
 msgid "February"
 msgstr "Febrero"
 
-#: ../inc/core/post-type.class.php:1964
+#: ../inc/core/post-type.class.php:2041
 msgid "March"
 msgstr "Marzo"
 
-#: ../inc/core/post-type.class.php:1965
+#: ../inc/core/post-type.class.php:2042
 msgid "April"
 msgstr "Abril"
 
-#: ../inc/core/post-type.class.php:1966
+#: ../inc/core/post-type.class.php:2043
 msgid "May"
 msgstr "Mayo"
 
-#: ../inc/core/post-type.class.php:1967
+#: ../inc/core/post-type.class.php:2044
 msgid "June"
 msgstr "Junio"
 
-#: ../inc/core/post-type.class.php:1968
+#: ../inc/core/post-type.class.php:2045
 msgid "July"
 msgstr "Julio"
 
-#: ../inc/core/post-type.class.php:1969
+#: ../inc/core/post-type.class.php:2046
 msgid "August"
 msgstr "Agosto"
 
-#: ../inc/core/post-type.class.php:1970
+#: ../inc/core/post-type.class.php:2047
 msgid "September"
 msgstr "Septiembre"
 
-#: ../inc/core/post-type.class.php:1971
+#: ../inc/core/post-type.class.php:2048
 msgid "October"
 msgstr "Octubre"
 
-#: ../inc/core/post-type.class.php:1972
+#: ../inc/core/post-type.class.php:2049
 msgid "November"
 msgstr "Noviembre"
 
-#: ../inc/core/post-type.class.php:1973
+#: ../inc/core/post-type.class.php:2050
 msgid "December"
 msgstr "Diciembre"
 
-#: ../inc/core/post-type.class.php:1996
+#: ../inc/core/post-type.class.php:2073
 msgid ""
 "Use \"\" or \"0\" to indicate usage of the site-wide global purchase limit. "
 "Use \"-1\" to force an unlimited purchase limit."
 msgstr ""
 
-#: ../inc/core/post-type.class.php:2028
+#: ../inc/core/post-type.class.php:2105
 msgid "Event base"
 msgstr "Base del evento"
 
-#: ../inc/core/post-type.class.php:2032
+#: ../inc/core/post-type.class.php:2109
 #, php-format
 msgid ""
 "Enter a custom base to use. This url segment will prefix the event name in "
@@ -943,19 +954,19 @@ msgstr ""
 "Escriba una base para el evento. Será utilizada como prefijo del evento en "
 "su URL.<br/><code>Por ejemplo: %s</code>"
 
-#: ../inc/core/post-type.class.php:2048
+#: ../inc/core/post-type.class.php:2125
 msgid "Event permalink base"
 msgstr "Base del enlace permanente del evento"
 
-#: ../inc/core/post-type.class.php:2111 ../inc/core/post-type.class.php:2186
+#: ../inc/core/post-type.class.php:2188 ../inc/core/post-type.class.php:2263
 msgid "Event Display"
 msgstr "Mostrar el evento"
 
-#: ../inc/core/post-type.class.php:2120
+#: ../inc/core/post-type.class.php:2197
 msgid "Stop Sales Before Show"
 msgstr "Parar la venta de entradas antes del evento"
 
-#: ../inc/core/post-type.class.php:2121
+#: ../inc/core/post-type.class.php:2198
 msgid ""
 "Amount of time to stop sales for a show, before show time. (ie: stop sales "
 "two hour before show time <code>2 hours</code>)"
@@ -964,7 +975,7 @@ msgstr ""
 "(p.e. parar las ventas dos horas antes del comienzo (en inglés): <code>2 "
 "hours</code>"
 
-#: ../inc/core/post-type.class.php:2122
+#: ../inc/core/post-type.class.php:2199
 msgid ""
 "valid units: hour, hours, minute, minutes, second, seconds, day, days, week, "
 "weeks, month, months, year, years"
@@ -974,15 +985,15 @@ msgstr ""
 "segundos (seconds), día (day), días (days), semana (week), semanas (weeks), "
 "mes (month), meses (months), año (year), años (years)"
 
-#: ../inc/core/post-type.class.php:2130
+#: ../inc/core/post-type.class.php:2207
 msgid "Single Event Synopsis"
 msgstr "Resumen del evento singular"
 
-#: ../inc/core/post-type.class.php:2131
+#: ../inc/core/post-type.class.php:2208
 msgid "Show event synopsis on single event pages"
 msgstr "Mostrar el resumen en las páginas de los eventos singulares"
 
-#: ../inc/core/post-type.class.php:2132
+#: ../inc/core/post-type.class.php:2209
 msgid ""
 "By default, just the event logo, and the event pricing options are shown. "
 "This feature will additionally show the description of the event to the user."
@@ -990,94 +1001,94 @@ msgstr ""
 "Por defecto solo se muestran el logo del evento y el costo. Esta opción "
 "mostrará también la descripción del evento."
 
-#: ../inc/core/post-type.class.php:2141
+#: ../inc/core/post-type.class.php:2218
 msgid "Single Event Synopsis Position"
 msgstr "Resumen del evento singular"
 
-#: ../inc/core/post-type.class.php:2142
+#: ../inc/core/post-type.class.php:2219
 msgid "The display position of the Event Synopsis on the single event page."
 msgstr "Mostrar el resumen en las páginas de los eventos singulares"
 
-#: ../inc/core/post-type.class.php:2144
+#: ../inc/core/post-type.class.php:2221
 msgid "Above the Ticket Selection UI"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:2145
+#: ../inc/core/post-type.class.php:2222
 msgid "Below the Ticket Selection UI"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:2156
+#: ../inc/core/post-type.class.php:2233
 msgid "Show Date"
 msgstr "Ver reporte"
 
-#: ../inc/core/post-type.class.php:2157
+#: ../inc/core/post-type.class.php:2234
 msgid "Show the date in the title of events, on the event details pages."
 msgstr "Mostrar en el tiquete el número de la orden."
 
-#: ../inc/core/post-type.class.php:2158
+#: ../inc/core/post-type.class.php:2235
 msgid ""
 "This is the difference between a title reading \"My Event\" and \"My Event "
 "on 09/12/2015\"."
 msgstr ""
 
-#: ../inc/core/post-type.class.php:2168
+#: ../inc/core/post-type.class.php:2245
 msgid "Show Time"
 msgstr "Hora de inicio"
 
-#: ../inc/core/post-type.class.php:2169
+#: ../inc/core/post-type.class.php:2246
 msgid "Show the time in the title of events, on the event details pages."
 msgstr ""
 
-#: ../inc/core/post-type.class.php:2170
+#: ../inc/core/post-type.class.php:2247
 msgid ""
 "This is the difference between a title reading \"My Event\" and \"My Event @ "
 "6:00pm\"."
 msgstr ""
 
-#: ../inc/core/post-type.class.php:2195
+#: ../inc/core/post-type.class.php:2272
 msgid "Show Events on Home"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:2196
+#: ../inc/core/post-type.class.php:2273
 msgid "Show the parent events on the homepage, mixed in with the posts."
 msgstr ""
 
-#: ../inc/core/post-type.class.php:2197
+#: ../inc/core/post-type.class.php:2274
 msgid ""
 "Checking this will cause the parent events to be displayed on the homepage, "
 "mixed in with the posts."
 msgstr ""
 
-#: ../inc/core/post-type.class.php:2213
+#: ../inc/core/post-type.class.php:2290
 msgid "Colors"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:2241
+#: ../inc/core/post-type.class.php:2318
 msgid "Availability Quantity"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:2242
+#: ../inc/core/post-type.class.php:2319
 msgid ""
 "Yes, show the quantity that is available, on the frontend, when showing the "
 "availability."
 msgstr ""
 
-#: ../inc/core/post-type.class.php:2252
+#: ../inc/core/post-type.class.php:2329
 msgid "Per Event, Per Order Ticket Purchase Limit"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:2253
+#: ../inc/core/post-type.class.php:2330
 msgid ""
 "A positive number here tells the software to enforce a purchase limit. Users "
 "will be restricted to only buying upto X tickets per event, per order. "
 "Setting to 0 means no limit."
 msgstr ""
 
-#: ../inc/core/post-type.class.php:2262
+#: ../inc/core/post-type.class.php:2339
 msgid "Locked-in Reservations"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:2263
+#: ../inc/core/post-type.class.php:2340
 msgid ""
 "Checking this box means that once the end user chooses a quantity of tickets "
 "to purchase, they cannot modify that quantity. They can still delete their "
@@ -1102,7 +1113,7 @@ msgstr "¿Cuántas entradas quieres reservar?"
 msgid "You have reached the ticket limit for this event."
 msgstr ""
 
-#: ../inc/order/admin.class.php:147
+#: ../inc/order/admin.class.php:148
 msgid ""
 "The current settings disallow using \"<strong>Guest</strong>\" as the "
 "customer for the order. You have attempted to use \"<strong>Guest</strong>\" "
@@ -1114,7 +1125,7 @@ msgstr ""
 "\" como cliente. No podrá pagar ni completar la orden hasta que haya "
 "seleccionado su nombre de usuario como cliente."
 
-#: ../inc/order/admin.class.php:182
+#: ../inc/order/admin.class.php:183
 msgid ""
 "Additionally, because of the current Woocommerce settings, \"<strong>Guest</"
 "strong>\" is not allowed as the customer user. Please select a user first."
@@ -1123,7 +1134,7 @@ msgstr ""
 "\"<strong>Invitado (Guest)</strong>\" no puede ser utilizado como cliente. "
 "Por favor seleccione su nombre de usuario."
 
-#: ../inc/order/admin.class.php:214 ../inc/order/admin.class.php:216
+#: ../inc/order/admin.class.php:215 ../inc/order/admin.class.php:217
 msgid ""
 "You cannot use \"Guest\" as the owner of the order, due to current "
 "Woocommerce settings."
@@ -1131,92 +1142,92 @@ msgstr ""
 "Debido a la configuración de Woocommerce (la plataforma de pago) no puede "
 "utilizar  \"Invitado (Guest)\" como cliente para la orden."
 
-#: ../inc/order/admin.class.php:337
+#: ../inc/order/admin.class.php:338
 msgid "is a required field."
 msgstr "Nombre de usuario es un campo obligatorio"
 
-#: ../inc/order/admin.class.php:349
+#: ../inc/order/admin.class.php:350
 msgid "Please enter a valid postcode/ZIP."
 msgstr "Orden inválida"
 
-#: ../inc/order/admin.class.php:356
+#: ../inc/order/admin.class.php:357
 msgid "is not a valid phone number."
 msgstr "número telefónico inválido"
 
-#: ../inc/order/admin.class.php:363
+#: ../inc/order/admin.class.php:364
 msgid "is not a valid email address."
 msgstr "Dirección de correo electrónico inválida"
 
-#: ../inc/order/admin.class.php:379
+#: ../inc/order/admin.class.php:380
 msgid "is not valid. Please enter one of the following:"
 msgstr ""
 
-#: ../inc/order/admin.class.php:398 ../inc/order/admin.class.php:401
+#: ../inc/order/admin.class.php:399 ../inc/order/admin.class.php:402
 msgid ""
 "Your current settings require you to provide most billing information for "
 "each order."
 msgstr "Debe proveer más detalles de pago para cada orden"
 
-#: ../inc/order/admin.class.php:463
+#: ../inc/order/admin.class.php:468
 msgid "You do not have permission to create users. Sorry."
 msgstr "Hey, no tiene permiso suficiente para realizar esta operación."
 
-#: ../inc/order/admin.class.php:477
+#: ../inc/order/admin.class.php:482
 msgid "The username is a required field."
 msgstr "Nombre de usuario es un campo obligatorio"
 
-#: ../inc/order/admin.class.php:480
+#: ../inc/order/admin.class.php:485
 msgid "That user name contains illegal characters."
 msgstr "El nombre de usuario contiene caracteres inválidos"
 
-#: ../inc/order/admin.class.php:483
+#: ../inc/order/admin.class.php:488
 msgid ""
 "is already being used by another user. Please enter a different username."
 msgstr "ya está siendo utilizado. Por favor escoja otro."
 
-#: ../inc/order/admin.class.php:489
+#: ../inc/order/admin.class.php:494
 msgid "The email address is required."
 msgstr "La dirección de correo electrónico es necesaria."
 
-#: ../inc/order/admin.class.php:492
+#: ../inc/order/admin.class.php:497
 msgid "That is not a valid email address."
 msgstr "Dirección de correo electrónico inválida"
 
-#: ../inc/order/admin.class.php:495
+#: ../inc/order/admin.class.php:500
 msgid ""
 "is already in use by another user. Please use a different email address."
 msgstr ""
 "ya está registrada. Por favor digite otra dirección de correo electrónico."
 
-#: ../inc/order/admin.class.php:500
+#: ../inc/order/admin.class.php:505
 msgid "The first name is a required field."
 msgstr "Nombre es un campo obligatorio"
 
-#: ../inc/order/admin.class.php:505
+#: ../inc/order/admin.class.php:510
 msgid "The last name is a required field."
 msgstr "Apellido es un campo obligatorio"
 
-#: ../inc/order/admin.class.php:511
+#: ../inc/order/admin.class.php:516
 msgid "The information you supplied passed validation."
 msgstr "Validación superada."
 
-#: ../inc/order/admin.class.php:529
+#: ../inc/order/admin.class.php:534
 msgid "User creation failed:"
 msgstr "Error al crear la cuenta de usuario:"
 
-#: ../inc/order/admin.class.php:533
+#: ../inc/order/admin.class.php:538
 msgid "The user was created successfully."
 msgstr "Cuenta de usuario creada."
 
-#: ../inc/order/admin.class.php:571
+#: ../inc/order/admin.class.php:576
 msgid "New User Form"
 msgstr "Registro de nuevo usuario"
 
-#: ../inc/order/admin.class.php:582
+#: ../inc/order/admin.class.php:587
 msgid "Username"
 msgstr "Nombre de usuario"
 
-#: ../inc/order/admin.class.php:586
+#: ../inc/order/admin.class.php:591
 #: ../inc/reporting/seating.report.class.php:39
 #: ../inc/reporting/seating.report.class.php:54
 #: ../templates/tickets/verification-form.php:11
@@ -1224,27 +1235,27 @@ msgstr "Nombre de usuario"
 msgid "Email"
 msgstr "Correo electrónico"
 
-#: ../inc/order/admin.class.php:590
+#: ../inc/order/admin.class.php:595
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:39
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:86
 msgid "First Name"
 msgstr "Nombre"
 
-#: ../inc/order/admin.class.php:594
+#: ../inc/order/admin.class.php:599
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:43
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:90
 msgid "Last Name"
 msgstr "Apellido"
 
-#: ../inc/order/admin.class.php:704
+#: ../inc/order/admin.class.php:709
 msgid "Additional Email Settings"
 msgstr "Configuración general"
 
-#: ../inc/order/admin.class.php:714
+#: ../inc/order/admin.class.php:719
 msgid "Custom Completed Order Message (Above Order Items)"
 msgstr "Mensaje personalizado al terminar la orden"
 
-#: ../inc/order/admin.class.php:715 ../inc/order/admin.class.php:726
+#: ../inc/order/admin.class.php:720 ../inc/order/admin.class.php:731
 msgid ""
 "This html appears near the top of the default Completed Order email, sent to "
 "the customer upon completion of their order, above the order items."
@@ -1253,15 +1264,15 @@ msgstr ""
 "será enviado al cliente una vez haya completado la orden, debajo de su "
 "dirección."
 
-#: ../inc/order/admin.class.php:725
+#: ../inc/order/admin.class.php:730
 msgid "Custom Completed Order Message - Text only version (Above Order Items)"
 msgstr "Mensaje personalizado de \"Orden completada\" - Versión solo texto"
 
-#: ../inc/order/admin.class.php:736
+#: ../inc/order/admin.class.php:741
 msgid "Custom Completed Order Message (Below Address)"
 msgstr "Mensaje personalizado al terminar la orden"
 
-#: ../inc/order/admin.class.php:737
+#: ../inc/order/admin.class.php:742
 msgid ""
 "This html appears at the bottom of the default Completed Order email, sent "
 "to the customer upon completion of their order, below their address "
@@ -1271,11 +1282,11 @@ msgstr ""
 "será enviado al cliente una vez haya completado la orden, debajo de su "
 "dirección."
 
-#: ../inc/order/admin.class.php:747
+#: ../inc/order/admin.class.php:752
 msgid "Custom Completed Order Message - Text only version (Below Address)"
 msgstr "Mensaje personalizado de \"Orden completada\" - Versión solo texto"
 
-#: ../inc/order/admin.class.php:748
+#: ../inc/order/admin.class.php:753
 msgid ""
 "This text appears at the bottom of the default Completed Order email, sent "
 "to the customer upon completion of their order, below their address "
@@ -1368,8 +1379,8 @@ msgid "[All Years]"
 msgstr "[Todos los años]"
 
 #: ../inc/reporting/seating.report.class.php:207
-#: ../inc/venues/event-area/pricing.class.php:668
-#: ../inc/venues/event-area/pricing.class.php:735
+#: ../inc/venues/event-area/pricing.class.php:684
+#: ../inc/venues/event-area/pricing.class.php:751
 #: ../templates/checkin/already-occupied.php:25
 #: ../templates/checkin/occupy-failure.php:25
 #: ../templates/checkin/occupy-success.php:25
@@ -1912,45 +1923,52 @@ msgstr ""
 msgid "The version of the software is missing."
 msgstr ""
 
-#: ../inc/sys/extensions/api.php:199 ../inc/sys/extensions/api.php:239
+#: ../inc/sys/extensions/api.php:200 ../inc/sys/extensions/api.php:244
 #, fuzzy
 msgid "Could not determine the site domain."
 msgstr "¿Cuántas entradas quieres reservar?"
 
-#: ../inc/sys/extensions/api.php:201
+#: ../inc/sys/extensions/api.php:202
 msgid "An email address is required, to fetch a list of available extensions."
 msgstr ""
 
-#: ../inc/sys/extensions/api.php:305
+#: ../inc/sys/extensions/api.php:311 ../inc/sys/extensions/api.php:343
 msgid "No response from the server."
 msgstr ""
 
-#: ../inc/sys/extensions/api.php:312
+#: ../inc/sys/extensions/api.php:315 ../inc/sys/extensions/api.php:322
+#: ../inc/sys/extensions/api.php:347
 msgid "The response we received from the server was invalid."
 msgstr ""
 
-#: ../inc/sys/extensions/api.php:347
+#: ../inc/sys/extensions/api.php:332
+msgid "No url was supplied."
+msgstr ""
+
+#: ../inc/sys/extensions/api.php:382
 msgid "The response we received from the server was unsuccessful."
 msgstr ""
 
-#: ../inc/sys/extensions/extensions.php:482
+#: ../inc/sys/extensions/extensions.php:490
+#: ../inc/sys/extensions/extensions.php:553
 msgid "The received icon file was not an image we could parse."
 msgstr ""
 
-#: ../inc/sys/extensions/extensions.php:491
+#: ../inc/sys/extensions/extensions.php:499
+#: ../inc/sys/extensions/extensions.php:562
 msgid "Could not determine the file extension of the supplied icon image."
 msgstr ""
 
-#: ../inc/sys/extensions/extensions.php:516
+#: ../inc/sys/extensions/extensions.php:587
 #, fuzzy
 msgid "Could not create the icon cache dir."
 msgstr "No se pudo encontrar ese artículo en la orden."
 
-#: ../inc/sys/extensions/extensions.php:520
+#: ../inc/sys/extensions/extensions.php:591
 msgid "THe icon cache dir is missing or could not be written to."
 msgstr ""
 
-#: ../inc/sys/extensions/extensions.php:607
+#: ../inc/sys/extensions/extensions.php:678
 #, php-format
 msgid ""
 "The way that %sOpenTickets Community Edition%s handles license keys has "
@@ -1961,7 +1979,7 @@ msgid ""
 "license keys are correct, and \"Save Changes\" to validate them."
 msgstr ""
 
-#: ../inc/sys/extensions/extensions.php:612
+#: ../inc/sys/extensions/extensions.php:683
 #, fuzzy
 msgid "Visit the Licenses Page"
 msgstr "Visitar la página del evento"
@@ -1971,57 +1989,57 @@ msgstr "Visitar la página del evento"
 msgid "Extensions"
 msgstr ""
 
-#: ../inc/sys/extensions/pages/extensions.page.php:106
+#: ../inc/sys/extensions/pages/extensions.page.php:102
 #, fuzzy
 msgid "OpenTickets Extensions"
 msgstr "OpenTickets Calendario"
 
-#: ../inc/sys/extensions/pages/extensions.page.php:125
+#: ../inc/sys/extensions/pages/extensions.page.php:121
 msgid "View"
 msgstr ""
 
-#: ../inc/sys/extensions/pages/extensions.page.php:132
+#: ../inc/sys/extensions/pages/extensions.page.php:128
 #: ../inc/sys/extensions/settings/licenses.php:142
 #, fuzzy
 msgid "Activated"
 msgstr "Privado"
 
-#: ../inc/sys/extensions/pages/extensions.page.php:134
+#: ../inc/sys/extensions/pages/extensions.page.php:130
 msgid "Installed"
 msgstr ""
 
-#: ../inc/sys/extensions/pages/extensions.page.php:136
+#: ../inc/sys/extensions/pages/extensions.page.php:132
 #, fuzzy
 msgid "Available"
 msgstr "Disponible:"
 
-#: ../inc/sys/extensions/pages/extensions.page.php:141
+#: ../inc/sys/extensions/pages/extensions.page.php:137
 msgid "From:"
 msgstr ""
 
-#: ../inc/sys/extensions/pages/extensions.page.php:142
+#: ../inc/sys/extensions/pages/extensions.page.php:138
 msgid "Free"
 msgstr ""
 
-#: ../inc/sys/extensions/pages/extensions.page.php:155
+#: ../inc/sys/extensions/pages/extensions.page.php:151
 #: ../inc/sys/extensions/settings/licenses.php:87
 msgid "No License Required"
 msgstr ""
 
-#: ../inc/sys/extensions/pages/extensions.page.php:157
+#: ../inc/sys/extensions/pages/extensions.page.php:153
 msgid "Already Activated"
 msgstr ""
 
-#: ../inc/sys/extensions/pages/extensions.page.php:159
+#: ../inc/sys/extensions/pages/extensions.page.php:155
 msgid "Activate License"
 msgstr ""
 
-#: ../inc/sys/extensions/pages/extensions.page.php:161
+#: ../inc/sys/extensions/pages/extensions.page.php:157
 #, fuzzy
 msgid "Purchase"
 msgstr "Comprador"
 
-#: ../inc/sys/extensions/pages/extensions.page.php:169
+#: ../inc/sys/extensions/pages/extensions.page.php:165
 #, fuzzy
 msgid "Details"
 msgstr "Orden"
@@ -2810,7 +2828,7 @@ msgid "Could not load the order item associated with this ticket."
 msgstr "No se pudo encontrar ese artículo en la orden."
 
 #: ../inc/ticket/ticket.class.php:104
-#: ../inc/venues/event-area/pricing.class.php:934
+#: ../inc/venues/event-area/pricing.class.php:950
 #: ../templates/tickets/basic-ticket.php:40
 msgid "Ticket"
 msgstr "Entrada"
@@ -3257,7 +3275,7 @@ msgstr "Este evento está protegido con contraseña"
 
 #: ../inc/venues/event-area/post-type.class.php:422
 #: ../inc/venues/event-area/post-type.class.php:719
-#: ../inc/venues/event-area/pricing.class.php:775
+#: ../inc/venues/event-area/pricing.class.php:791
 msgid "Invalid request. Please refresh the page and try again."
 msgstr "Solicitud inválida. Por favor recargue la página e intente de nuevo."
 
@@ -3362,15 +3380,15 @@ msgid "That is not a valid order."
 msgstr "Orden inválida"
 
 #: ../inc/venues/event-area/post-type.class.php:1034
-#: ../inc/venues/event-area/post-type.class.php:1431
+#: ../inc/venues/event-area/post-type.class.php:1434
 msgid "Event Areas"
 msgstr "Áreas del evento"
 
-#: ../inc/venues/event-area/post-type.class.php:1355
+#: ../inc/venues/event-area/post-type.class.php:1358
 msgid "(Unknown Ticket Type)"
 msgstr "(Tipo de entrada desconocido)"
 
-#: ../inc/venues/event-area/post-type.class.php:1360
+#: ../inc/venues/event-area/post-type.class.php:1363
 #, php-format
 msgid ""
 "There are only <span class=\"available\">%s</span> %s available currently. "
@@ -3379,19 +3397,19 @@ msgstr ""
 "Solo hay <span class=\"available\">%s</span> %s disponibles. No se pueden "
 "reservar temporalmente %d %s."
 
-#: ../inc/venues/event-area/post-type.class.php:1367
+#: ../inc/venues/event-area/post-type.class.php:1370
 #, php-format
 msgid ""
 "There are not enough %s tickets available currently. Could not temporarily "
 "reserve %d %s."
 msgstr "Solo hay %s disponibles. No se pueden reservar temporalmente %d %s."
 
-#: ../inc/venues/event-area/post-type.class.php:1377
-#: ../inc/venues/event-area/post-type.class.php:1420
+#: ../inc/venues/event-area/post-type.class.php:1380
+#: ../inc/venues/event-area/post-type.class.php:1423
 msgid "The number of tickets must be greater than 0."
 msgstr "El número de entradas debe ser mayor que 0."
 
-#: ../inc/venues/event-area/post-type.class.php:1399
+#: ../inc/venues/event-area/post-type.class.php:1402
 #, php-format
 msgid ""
 "There are only <span class=\"available\">%s</span> more %s available "
@@ -3400,7 +3418,7 @@ msgstr ""
 "Solo hay <span class=\"available\">%s</span> más %s disponibles; no se "
 "pueden reservar %d más que %s. Todavía tiene %d %s."
 
-#: ../inc/venues/event-area/post-type.class.php:1408
+#: ../inc/venues/event-area/post-type.class.php:1411
 #, php-format
 msgid ""
 "There are not enough %s tickets available currently. Could not temporarily "
@@ -3409,7 +3427,7 @@ msgstr ""
 "Solo hay %s disponibles; no se pueden reservar %d más que %s. Todavía tiene "
 "%d %s."
 
-#: ../inc/venues/event-area/post-type.class.php:1432
+#: ../inc/venues/event-area/post-type.class.php:1435
 msgid "Area"
 msgstr "Área"
 
@@ -3423,7 +3441,7 @@ msgstr ""
 msgid "Removed a ticket from your cart, because it's timer expired."
 msgstr ""
 
-#: ../inc/venues/event-area/pricing.class.php:533
+#: ../inc/venues/event-area/pricing.class.php:548
 #, php-format
 msgid ""
 "There were only %d of the %s for %s available. We reserved all of them for "
@@ -3432,67 +3450,67 @@ msgstr ""
 "Solamente hay %d de los %s para %s disponibles. Hemos reservado todos para "
 "ti en lugar de los %d que pediste."
 
-#: ../inc/venues/event-area/pricing.class.php:541
+#: ../inc/venues/event-area/pricing.class.php:557
 #, php-format
 msgid ""
 "There were no %s for %s available to give you. We have removed it from your "
 "cart."
 msgstr "No hay %s para %s disponibles; los hemos removido de tu orden."
 
-#: ../inc/venues/event-area/pricing.class.php:642
+#: ../inc/venues/event-area/pricing.class.php:658
 msgid "(no event selected)"
 msgstr "(evento sin escoger)"
 
-#: ../inc/venues/event-area/pricing.class.php:736
+#: ../inc/venues/event-area/pricing.class.php:752
 msgid "Date:"
 msgstr "Fecha:"
 
-#: ../inc/venues/event-area/pricing.class.php:738
+#: ../inc/venues/event-area/pricing.class.php:754
 msgid "Capacity:"
 msgstr "Capacidad:"
 
-#: ../inc/venues/event-area/pricing.class.php:739
+#: ../inc/venues/event-area/pricing.class.php:755
 msgid "Available:"
 msgstr "Disponible:"
 
-#: ../inc/venues/event-area/pricing.class.php:744
-#: ../inc/venues/event-area/pricing.class.php:749
+#: ../inc/venues/event-area/pricing.class.php:760
+#: ../inc/venues/event-area/pricing.class.php:765
 msgid "Different Event"
 msgstr "Evento diferente"
 
-#: ../inc/venues/event-area/pricing.class.php:745
+#: ../inc/venues/event-area/pricing.class.php:761
 msgid "Use This Event"
 msgstr "Usar este evento"
 
-#: ../inc/venues/event-area/pricing.class.php:758
+#: ../inc/venues/event-area/pricing.class.php:774
 msgid "Add Tickets"
 msgstr "Agregar entradas"
 
-#: ../inc/venues/event-area/pricing.class.php:763
+#: ../inc/venues/event-area/pricing.class.php:779
 msgid "Loading. One moment please..."
 msgstr "Cargando. Un momentito por favor..."
 
-#: ../inc/venues/event-area/pricing.class.php:825
+#: ../inc/venues/event-area/pricing.class.php:841
 msgid "Invalid order number."
 msgstr "Número de orden inválido"
 
-#: ../inc/venues/event-area/pricing.class.php:874
+#: ../inc/venues/event-area/pricing.class.php:890
 msgid "Could not find the new event."
 msgstr "No se pudo encontrar el nuevo evento."
 
-#: ../inc/venues/event-area/pricing.class.php:877
+#: ../inc/venues/event-area/pricing.class.php:893
 msgid "Could not find that order item on the order."
 msgstr "No se pudo encontrar ese artículo en la orden."
 
-#: ../inc/venues/event-area/pricing.class.php:880
+#: ../inc/venues/event-area/pricing.class.php:896
 msgid "The order item does not appear to be valid."
 msgstr "El artículo de la orden no parece ser válido."
 
-#: ../inc/venues/event-area/pricing.class.php:887
+#: ../inc/venues/event-area/pricing.class.php:903
 msgid "Add tickets"
 msgstr "Agregar entradas"
 
-#: ../inc/venues/event-area/pricing.class.php:935
+#: ../inc/venues/event-area/pricing.class.php:951
 #, php-format
 msgid ""
 "Allows this product to be assigned as a ticket, when configuring pricing on "
