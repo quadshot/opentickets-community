@@ -1547,7 +1547,7 @@ class qsot_post_type {
 		global $post;
 
 		// some only belong on parent event edit pages
-		if ( $post->post_parent == 0 ) {
+		if ( is_object( $post ) && $post->post_parent == 0 ) {
 			// metabox for assigning child events. contains calendar and event list
 			add_meta_box(
 				'event-date-time',

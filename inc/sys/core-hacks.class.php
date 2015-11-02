@@ -18,7 +18,6 @@ class qsot_core_hacks {
 			add_action('qsot-draw-page-template-list', array(__CLASS__, 'page_draw_page_template_list'), 10, 1);
 			add_filter('qsot-page-templates-list', array(__CLASS__, 'page_templates_list'), 10, 2);
 			add_filter('qsot-get-page-template-list', array(__CLASS__, 'page_get_page_template_list'), 10, 1);
-			add_action('add_meta_boxes', array(__CLASS__, 'order_add_late_meta_boxes'), 100000, 2);
 			add_filter('page_template', array(__CLASS__, 'page_template_default'), 10, 1);
 			add_filter('qsot-maybe-override-theme_default', array(__CLASS__, 'maybe_override_template'), 10, 3);
 			add_action('save_post', array(__CLASS__, 'save_page'), 10, 2);
@@ -79,22 +78,6 @@ class qsot_core_hacks {
 
 		update_post_meta($post->ID, '_wp_page_template', $_REQUEST['page_template']);
 		unset($_REQUEST['page_template']);
-	}
-
-	public static function order_add_late_meta_boxes($post_type, $post) {
-		if ($post_type !== 'shop_order') return;
-
-/*
-		remove_meta_box('woocommerce-order-totals', 'shop_order', 'side', 'default');
-		add_meta_box(
-			'woocommerce-order-totals',
-			__( 'Order Totals', 'opentickets-community-edition' ),
-			array(__CLASS__, 'woocommerce_order_totals_meta_box'),
-			'shop_order',
-			'side',
-			'default'
-		);
-*/
 	}
 
 	public static function add_view_customer_facing_emails($list) {
