@@ -21,7 +21,7 @@ class qsot_event_area {
 		$options_class_name = apply_filters('qsot-options-class-name', '');
 		if (!empty($options_class_name)) {
 			self::$options = call_user_func_array(array($options_class_name, "instance"), array());
-			//self::_setup_admin_options();
+			self::_setup_admin_options();
 		}
 
 		self::$o->event_area = apply_filters('qsot-event-area-options', array(
@@ -248,6 +248,13 @@ class qsot_event_area {
 		// figure out the purchase limit for the event
 		$limit = apply_filters( 'qsot-event-ticket-purchase-limit', 0, $event->ID );
 
+		// Button Text
+		$btn = array(
+			'reserve' => apply_filters( 'qsot-get-option-value', __( 'Reserve', 'opentickets-community-edition' ), 'qsot-reserve-button-text' ),
+			'update' => apply_filters( 'qsot-get-option-value', __( 'Update', 'opentickets-community-edition' ), 'qsot-update-button-text' ),
+			'proceed' => apply_filters( 'qsot-get-option-value', __( 'Proceed to Cart', 'opentickets-community-edition' ), 'qsot-proceed-button-text' ),
+		);
+
 		$list['ticket-selection'] = '<div class="ticket-form ticket-selection-section">'
 				.'<div class="form-inner reserve">'
 					.'<div class="title-wrap">'
@@ -261,7 +268,7 @@ class qsot_event_area {
 								? '<input type="number" step="1" min="0" max="' . $max . '" rel="qty" name="quantity" value="1" class="very-short" />'
 								: '<input type="hidden" rel="qty" name="quantity" value="1" /> ' . __( 'x', 'opentickets-community-edition' ) . ' 1'
 						)
-						.'<input type="button" value="'.__('Reserve','opentickets-community-edition').'" rel="reserve-btn" class="button" />'
+						. '<input type="button" value="' . esc_attr( $btn['reserve'] ) . '" rel="reserve-btn" class="button" />'
 					.'</div>'
 				.'</div>'
 			.'</div>';
@@ -297,13 +304,13 @@ class qsot_event_area {
 							.'<span rel="tt"></span>'
 							. ( 1 !== intval( $limit )
 									? '<input type="number" step="1" min="0" max="' . $max . '" rel="qty" name="quantity" value="1" class="very-short" />'
-										. '<input type="button" value="' . __( 'Update', 'opentickets-community-edition' ) . '" rel="update-btn" class="button" />'
+										. '<input type="button" value="' . esc_attr( $btn['update'] ) . '" rel="update-btn" class="button" />'
 									: '<input type="hidden" rel="qty" name="quantity" value="1" /> ' . __( 'x', 'opentickets-community-edition' ) . ' 1'
 							)
 						.'</div>'
 					.'</div>'
 					.'<div class="actions" rel="actions">'
-						.'<a href="'.esc_attr($cart_url).'" class="button" rel="cart-btn">'.__('Proceed to Cart','opentickets-community-edition').'</a>'
+						.'<a href="' . esc_attr( $cart_url ) . '" class="button" rel="cart-btn">' . $btn['proceed'] . '</a>'
 					.'</div>'
 				.'</div>';
 		}
@@ -1448,6 +1455,65 @@ class qsot_event_area {
 		);
 
 		return $list;
+	}
+
+	// setup the admin settings related to the event areas and ticket selection ui
+	protected static function _setup_admin_options() {
+		// setup the default values
+		self::$options->def( 'qsot-reserve-button-text', __( 'Reserve', 'opentickets-community-edition' ) );
+		self::$options->def( 'qsot-update-button-text', __( 'Update', 'opentickets-community-edition' ) );
+		self::$options->def( 'qsot-proceed-button-text', __( 'Proceed to Cart', 'opentickets-community-edition' ) );
+
+
+		// Ticket UI settings
+		self::$options->add( array(
+			'order' => 300,
+			'type' => 'title',
+			'title' => __( 'Ticket Selection UI', 'opentickets-community-edition' ),
+			'id' => 'heading-ticket-selection-2',
+			'page' => 'frontend',
+		) );
+
+		// Reserve button
+		self::$options->add( array(
+			'order' => 305,
+			'id' => 'qsot-reserve-button-text',
+			'default' => self::$options->{'qsot-reserve-button-text'},
+			'type' => 'text',
+			'title' => __( 'Reserve Button', 'opentickets-community-edition' ),
+			'desc' => __( 'Label for the Reserve Button on the Ticket Selection UI.', 'opentickets-community-edition' ),
+			'page' => 'frontend',
+		) );
+
+		// Update button
+		self::$options->add( array(
+			'order' => 310,
+			'id' => 'qsot-update-button-text',
+			'default' => self::$options->{'qsot-update-button-text'},
+			'type' => 'text',
+			'title' => __( 'Update Button', 'opentickets-community-edition' ),
+			'desc' => __( 'Label for the Update Button on the Ticket Selection UI.', 'opentickets-community-edition' ),
+			'page' => 'frontend',
+		) );
+
+		// Update button
+		self::$options->add( array(
+			'order' => 315,
+			'id' => 'qsot-proceed-button-text',
+			'default' => self::$options->{'qsot-proceed-button-text'},
+			'type' => 'text',
+			'title' => __( 'Proceed to Cart Button', 'opentickets-community-edition' ),
+			'desc' => __( 'Label for the Proceed to Cart Button on the Ticket Selection UI.', 'opentickets-community-edition' ),
+			'page' => 'frontend',
+		) );
+
+		// End Ticket UI settings
+		self::$options->add( array(
+			'order' => 399,
+			'type' => 'sectionend',
+			'id' => 'heading-ticket-selection-1',
+			'page' => 'frontend',
+		) );
 	}
 }
 

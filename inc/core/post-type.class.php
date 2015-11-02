@@ -2249,24 +2249,8 @@ class qsot_post_type {
 			'page' => 'frontend',
 		) );
 
-		self::$options->add(array(
-			'order' => 199,
-			'type' => 'sectionend',
-			'id' => 'heading-frontend-general-1',
-			'page' => 'frontend',
-		));
-
-		// homepage sub section
 		self::$options->add( array(
-			'order' => 200,
-			'type' => 'title',
-			'title' => __( 'Event Display', 'opentickets-community-edition' ),
-			'id' => 'heading-frontend-general-2',
-			'page' => 'frontend',
-		) );
-
-		self::$options->add( array(
-			'order' => 230,
+			'order' => 250,
 			'id' => 'qsot-events-on-homepage',
 			'type' => 'checkbox',
 			'title' => __( 'Show Events on Home', 'opentickets-community-edition' ),
