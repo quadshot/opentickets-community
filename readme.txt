@@ -171,6 +171,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+* [new] ability to set the button text on all ticket UI buttons
+* [fix] removed php warnings
+
 = 1.14.6 =
 * [fix] 1970 bug on hard stop value has been resolved
 
