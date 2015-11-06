@@ -171,10 +171,12 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.14.8 =
 * [new] added 'checkin only' role, which only has the ability to checkin
 * [tweak] changed needed permission for checkin from 'edit_users' to 'checkin'
 * [tweak] all users above subscriber/customer can checkin
 
+= 1.14.7 =
 * [new] ability to set the button text on all ticket UI buttons
 * [fix] removed php warnings
 
