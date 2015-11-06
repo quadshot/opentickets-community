@@ -29,6 +29,10 @@ class QSOT_checkin {
 				'func' => array( __CLASS__, 'intercept_checkins' ),
 			)
 		);
+
+		// check if the 'checkin' role and cap needs to be created
+		if ( is_admin() )
+			self::_check_roles_and_caps();
 	}
 
 	// handler for the checkin urls
@@ -40,7 +44,7 @@ class QSOT_checkin {
 	// interprets the request, and formulates an appropriate response
 	public static function event_checkin( $data, $packet ) {
 		// if the user is not logged in, or if they don't have access to check ppl in, then have them login or error out
-		if ( ! is_user_logged_in() || ! current_user_can( 'edit_users' ) ) {
+		if ( ! is_user_logged_in() || ! current_user_can( 'checkin' ) ) {
 			self::_no_access( '', '', $data, $packet );
 			exit;
 		}
@@ -351,6 +355,56 @@ class QSOT_checkin {
 		}
 
 		return $data;
+	}
+
+	// check if the 'checkin' cap and accompanying role need to be created
+	protected static function _check_roles_and_caps() {
+		// fetch the last version that this check was performed on
+		$last_check = get_option( '_qsot_checkin_role_check', '0.0.0' );
+
+		// if the last check was done at a version lower than the current version, then do it now
+		if ( version_compare( $last_check, QSOT::version() ) < 0 ) {
+			self::_update_roles_and_caps();
+			update_option( '_qsot_checkin_role_check', QSOT::version() );
+		}
+	}
+
+	// add our checkin role if it does not exist, and update all applicable roles with the capability for checkin
+	protected static function _update_roles_and_caps() {
+		// get the wp_roles object
+		$wp_roles = wp_roles();
+
+		// get the names of all roles
+		$names = $wp_roles->get_names();
+
+		// if the checkin role does not exist, then create it
+		if ( ! isset( $names['qsot-checkin'] ) )
+			add_role( 'qsot-checkin', __( 'Check-in Only', 'opentickets-community-edition' ), array( 'read' => 1, 'level_0' => 1, 'checkin' => 1 ) );
+
+		// cycle through the roles, and add the capability to the ones that need it
+		foreach ( $names as $slug => $display ) {
+			// if this is the subscriber or customer role, just skip it, becuase .... well they dont need it
+			if ( in_array( $slug, array( 'subscriber', 'customer' ) ) )
+				continue;
+
+			// get the role
+			$role = $wp_roles->get_role( $slug );
+
+			// if this is the checkin role, then add it straight away
+			if ( 'qsot-checkin' == $slug ) {
+				$role->add_cap( 'checkin', '1' );
+				continue;
+			}
+
+			$enough = false;
+			// otherwise, make sure the role has higher than the subscriber role. if it does, then add this as a cap
+			foreach ( $role->capabilities as $cap => $has ) {
+				if ( $has && ! in_array( $cap, array( 'read', 'level_0' ) ) ) {
+					$role->add_cap( 'checkin', '1' );
+					break;
+				}
+			}
+		}
 	}
 }
 
