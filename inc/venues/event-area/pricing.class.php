@@ -615,7 +615,15 @@ class qsot_seat_pricing {
 			$res = apply_filters(
 				'qsot-zoner-update-reservation',
 				false,
-				array( 'event_id' => $item['event_id'], 'state' => '*', 'customer_id' => $session_id, 'ticket_type_id' => $item['product_id'], 'qty' => $item['quantity'] ),
+				array(
+					'event_id' => $item['event_id'],
+					'state' => '*',
+					'customer_id' => $session_id,
+					'ticket_type_id' => $item['product_id'],
+					'qty' => $item['quantity'],
+					'order_id' => array( 0, $order_id ), // required because other orders for the same event by the same user with the same quantity, will get combined otherwise
+					'order_item_id' => array( 0, $item_id ), // ditto
+				),
 				array( 'order_id' => $order_id, 'order_item_id' => $item_id )
 			);
 		}

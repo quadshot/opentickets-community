@@ -992,6 +992,7 @@ class qsot_zoner {
 
 			// now actually run the query
 			$q .= implode( '', $wheres ) . $limit;
+			// update wp_qsot_event_zone_to_order set  order_item_id = 101, order_id = 353 where 1=1 and session_customer_id = '1' and event_id = 307 and ticket_type_id = 21 and quantity = 1 limit 1
 			$res = $wpdb->query( $q );
 
 			// remove any empty rows that may have beenl eft behind by a ::INC:: or ::DEC::
