@@ -171,6 +171,10 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.14.9 - Nov/10/2015 =
+* [tweak] adjusted advanced tools to show all matching events in search
+* [fix] reservations bug that could combine purchase from same user into single reservation
+
 = 1.14.8 =
 * [new] added 'checkin only' role, which only has the ability to checkin
 * [tweak] changed needed permission for checkin from 'edit_users' to 'checkin'
