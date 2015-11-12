@@ -171,6 +171,10 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.14.10 - Nov/12/2015 =
+* [tweak] modified extension updater to ignore encoding issues
+* [tweak] changed how updater inject's the list of extension updates
+
 = 1.14.9 - Nov/10/2015 =
 * [tweak] adjusted advanced tools to show all matching events in search
 * [fix] reservations bug that could combine purchase from same user into single reservation
