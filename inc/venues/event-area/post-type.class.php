@@ -1167,6 +1167,7 @@ class qsot_event_area {
 
 	// add the ticket selection UI to the output of the individual event pages
 	public static function draw_event_area($content, $event) {
+		remove_filter( 'qsot-event-the-content', array( __CLASS__, 'draw_event_area' ), 1000 );
 		$out = '';
 
 		$reserved = $interests = array();
@@ -1207,6 +1208,7 @@ class qsot_event_area {
 		// add the marker for what the current setting is
 		$out = sprintf( '<div class="synopsis-%s">%s</div>', self::$options->{'qsot-synopsis-position'}, $out );
 
+		add_filter( 'qsot-event-the-content', array( __CLASS__, 'draw_event_area' ), 1000, 2 );
 		// put the UI in the appropriate location, depending on our settings
 		if ( self::$options->{'qsot-synopsis-position'} == 'above' )
 			return $content . $out;
