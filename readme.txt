@@ -171,6 +171,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.14.11 - Nov/12/2015 =
+* [fix] fixed an edge case where an error was caused by mysql settings requiring case sensitive table names
+
 = 1.14.10 - Nov/12/2015 =
 * [tweak] modified extension updater to ignore encoding issues
 * [tweak] changed how updater inject's the list of extension updates
