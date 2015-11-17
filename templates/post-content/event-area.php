@@ -83,7 +83,7 @@ $limit = apply_filters( 'qsot-event-ticket-purchase-limit', 0, $event->ID );
 
 								<?php do_action('qsot-event-area-ticket-selection-no-js-step-one', $event, $area, $reserved); ?>
 
-								<input type="submit" value="<?php _e( 'Reserve', 'opentickets-community-edition' ) ?>" rel="reserve-btn" class="button" />
+								<input type="button" value="<?php echo esc_attr( apply_filters( 'qsot-get-option-value', __( 'Reserve', 'opentickets-community-edition' ), 'qsot-reserve-button-text' ) ) ?>" rel="reserve-btn" class="button" />
 								<?php wp_nonce_field('ticket-selection-step-one', 'submission') ?>
 								<input type="hidden" name="qsot-step" value="1" />
 							</div>
@@ -125,7 +125,7 @@ $limit = apply_filters( 'qsot-event-ticket-purchase-limit', 0, $event->ID );
 								<?php else: ?>
 									<?php if ( 1 !== intval( $limit ) ): ?>
 										<input type="number" min="0" max="<?php echo $area->meta['available'] ?>" step="1" class="very-short" name="ticket-count" value="<?php echo esc_attr( $reserved ) ?>" />
-										<input type="submit" value="<?php _e( 'Update', 'opentickets-community-edition' ) ?>" rel="reserve-btn" class="button" />
+										<input type="button" value="<?php echo esc_attr( apply_filters( 'qsot-get-option-value', __( 'Update', 'opentickets-community-edition' ), 'qsot-update-button-text' ) ) ?>" rel="update-btn" class="button" />
 										<?php wp_nonce_field('ticket-selection-step-two', 'submission') ?>
 										<input type="hidden" name="qsot-step" value="2" />
 									<?php else: ?>
@@ -139,7 +139,7 @@ $limit = apply_filters( 'qsot-event-ticket-purchase-limit', 0, $event->ID );
 					</div>
 
 					<div class="qsot-form-actions actions">
-						<a href="<?php echo esc_attr(WC()->cart->get_cart_url()) ?>" class="button">Proceed to Cart</a>
+						<a href="<?php echo esc_attr(WC()->cart->get_cart_url()) ?>" class="button"><?php echo apply_filters( 'qsot-get-option-value', __( 'Proceed to Cart', 'opentickets-community-edition' ), 'qsot-proceed-button-text' ) ?></a>
 					</div>
 				</div>
 			<?php endif; ?>

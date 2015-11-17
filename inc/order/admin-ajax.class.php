@@ -118,7 +118,8 @@ class QSOT_order_admin_ajax {
 
 		//include( 'admin/meta-boxes/views/html-order-item.php' );
 		//@@@@LOUSHOU - allow overtake of template
-		include(apply_filters('qsot-woo-template', 'meta-boxes/views/html-order-item.php', 'admin'));
+		if ( $template = QSOT_Templates::locate_woo_template( 'meta-boxes/views/html-order-item.php', 'admin' ) )
+			include( $template );
 
 		// Quit out
 		die();
@@ -147,7 +148,8 @@ class QSOT_order_admin_ajax {
 
 			//include( 'admin/meta-boxes/views/html-order-items.php' );
 			//@@@@LOUSHOU - allow overtake of template
-			include(apply_filters('qsot-woo-template', 'meta-boxes/views/html-order-items.php', 'admin'));
+			if ( $template = QSOT_Templates::locate_woo_template( 'meta-boxes/views/html-order-items.php', 'admin' ) )
+				include( $template );
 		}
 
 		die();
@@ -167,7 +169,8 @@ class QSOT_order_admin_ajax {
 
 		//include( 'admin/meta-boxes/views/html-order-items.php' );
 		//@@@@LOUSHOU - allow overtake of template
-		include(apply_filters('qsot-woo-template', 'meta-boxes/views/html-order-items.php', 'admin'));
+		if ( $template = QSOT_Templates::locate_woo_template( 'meta-boxes/views/html-order-items.php', 'admin' ) )
+			include( $template );
 
 		die();
 	}
@@ -197,7 +200,8 @@ class QSOT_order_admin_ajax {
 
 		//include( 'admin/meta-boxes/views/html-order-fee.php' );
 		//@@@@LOUSHOU - allow overtake of template
-		include(apply_filters('qsot-woo-template', 'meta-boxes/views/html-order-fee.php', 'admin'));
+		if ( $template = QSOT_Templates::locate_woo_template( 'meta-boxes/views/html-order-fee.php', 'admin' ) )
+			include( $template );
 
 		// Quit out
 		die();
@@ -227,7 +231,8 @@ class QSOT_order_admin_ajax {
 
 		//include( 'admin/meta-boxes/views/html-order-shipping.php' );
 		//@@@@LOUSHOU - allow overtake of template
-		include(apply_filters('qsot-woo-template', 'meta-boxes/views/html-order-shipping.php', 'admin'));
+		if ( $template = QSOT_Templates::locate_woo_template( 'meta-boxes/views/html-order-shipping.php', 'admin' ) )
+			include( $template );
 
 		// Quit out
 		die();

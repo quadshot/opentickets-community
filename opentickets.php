@@ -235,6 +235,35 @@ class QSOT {
 		return $list;
 	}
 
+	// current_user is the id we use to lookup tickets in relation to a product in a cart. once we have an order number this pretty much becomes obsolete, but is needed up til that moment
+	public static function current_user( $data='' ) {
+		$res = '';
+
+		// get the core woocommerce object, because we will use it as the creator of this id, if available
+		$woocommerce = WC();
+
+		// normalize our extra data
+		$data = wp_parse_args( $data, array( 'customer_user' => '', 'order_id' => '' ) );
+
+		// if the customer_user is set in our data, then use it
+		if ( $data['customer_user'] )
+			return $data['customer_user'];
+
+		// if we have the order_id, then use it to lookup the customer_user
+		if ( (int)$data['order_id'] > 0 )
+			$res = get_post_meta( $order_id, '_customer_user', true );
+
+		// if the woocommerce session is in use, then pull the id from that session
+		if ( empty( $res ) && isset( $woocommerce->session ) && is_object( $woocommerce->session ) )
+			$res = $woocommerce->session->get_customer_id();
+
+		// if we still dont have an id, then make some shit up
+		if ( empty( $res ) )
+			$res = md5( ( isset( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : time() ) . ( isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : rand( 0, PHP_INT_MAX ) ) );
+
+		return $res;
+	}
+
 	public static function special_autoloader($class) {
 		$class = strtolower($class);
 

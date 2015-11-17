@@ -178,7 +178,8 @@ class qsot_core_hacks {
 		$class = apply_filters('woocommerce_admin_order_items_class', '', $item, $order);
 
 		//include( trailingslashit($woocommerce->plugin_path).'admin/post-types/writepanels/order-fee-html.php' );
-		include(apply_filters('qsot-woo-template', 'post-types/meta-boxes/views/html-order-fee.php', 'admin'));
+		if ( $template = QSOT_Templates::locate_woo_template( 'post-types/meta-boxes/views/html-order-fee.php', 'admin' ) )
+			include( $template );
 
 		// Quit out
 		die();
@@ -243,7 +244,8 @@ class qsot_core_hacks {
 		do_action( 'woocommerce_ajax_add_order_item_meta', $item_id, $item );
 
 		//include( 'admin/post-types/writepanels/order-item-html.php' );
-		include(apply_filters('qsot-woo-template', 'post-types/meta-boxes/views/html-order-item.php', 'admin'));
+		if ( $template = QSOT_Templates::locate_woo_template( 'post-types/meta-boxes/views/html-order-item.php', 'admin' ) )
+			include $template;
 
 		// Quit out
 		die();
@@ -394,9 +396,9 @@ class qsot_core_hacks {
 						$tax_codes[ $rate->tax_rate_id ] = strtoupper( implode( '-', array_filter( $code ) ) );
 					}
 
-					foreach ( $order->get_taxes() as $item_id => $item ) {
-						include(apply_filters('qsot-woo-template', 'post-types/meta-boxes/views/html-order-tax.php', 'admin'));
-					}
+					foreach ( $order->get_taxes() as $item_id => $item )
+						if ( $template = QSOT_Templates::locate_woo_template( 'post-types/meta-boxes/views/html-order-tax.php', 'admin' ) )
+							include( $template );
 				?>
 			</div>
 			<h4><a href="#" class="add_tax_row"><?php _e( '+ Add tax row','opentickets-community-edition' ); ?> <span class="tips" data-tip="<?php _e( 'These rows contain taxes for this order. This allows you to display multiple or compound taxes rather than a single total.','opentickets-community-edition' ); ?>">[?]</span></a></a></h4>

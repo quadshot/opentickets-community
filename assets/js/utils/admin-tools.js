@@ -40,7 +40,15 @@ var QS = QS || { Tools:{} };
 						type: 'post',
 						dataType: 'json',
 						delay:300,
-						processResults: function( data, page ) { return { results:data.r }; },
+						processResults: function( data, page ) {
+							if ( ! data.s ) {
+								console.log( data.e ? data.e.join( "\n" ) : QS._str( 'Error occurred' ) );
+								return { results:[] };
+							} else if ( ! data.r ) {
+								return { results:[] };
+							}
+							return { results:data.r };
+						},
 						cache: true
 					},  
 					initSelection: function( ele, callback ) { 

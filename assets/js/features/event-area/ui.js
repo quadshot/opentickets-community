@@ -1,12 +1,12 @@
 var QS = QS || {},
-		_qsot_ea_tickets = _qsot_ea_tickets || { ajaxurl:'/wp-admin/admin-ajax.php' };
+		_qsot_gaea_tickets = _qsot_gaea_tickets || { ajaxurl:'/wp-admin/admin-ajax.php' };
 
 QS.EATicketSelection = (function($, q, qt) {
-	var S = $.extend({}, _qsot_ea_tickets),
+	var S = $.extend({}, _qsot_gaea_tickets),
 			defs = {};
 
 	function aj(sa, data, func, efunc) {
-		var data = $.extend({}, data, { action:'qsot-frontend-ticket-selection', sa:sa, nonce:S.nonce, event_id:S.edata.id }),
+		var data = $.extend({}, data, { action:'qsot-frontend-ajax', sa:sa, _n:S.nonce, event_id:S.edata.id }),
 				func = func || function(){},
 				efunc = efunc || function(){};
 
@@ -46,7 +46,7 @@ QS.EATicketSelection = (function($, q, qt) {
 			t.e.ts = $(S.templates['ticket-selection']).appendTo(t.e.m).hide();
 			t.e.o = $(S.templates['owns']).appendTo(t.e.m).hide();
 
-			t.tt = $(S.templates['tt']);
+			t.tt = $(S.templates['ticket-type']);
 			if (qt.isO(S.edata) && qt.isO(S.edata.ticket) && qt.is(S.edata.available)) {
 				t.tt.find('[rel="ttname"]').html('"'+S.edata.ticket.name+'"');
 				t.tt.find('[rel="ttprice"]').html('('+S.edata.ticket.price+')');
@@ -184,7 +184,7 @@ QS.EATicketSelection = (function($, q, qt) {
 
 			var data = t.e.ts.louSerialize();
 
-			aj('r', data, function(r) {
+			aj('gaea-reserve', data, function(r) {
 				if (!_is_valid_response(r, t.e.ts)) return;
 				_update_owns_display( r );
 				_update_availables(r.data);
@@ -207,7 +207,7 @@ QS.EATicketSelection = (function($, q, qt) {
 
 			var data = t.e.o.louSerialize();
 
-			aj('d', data, function(r) {
+			aj('gaea-update', data, function(r) {
 				if (!_is_valid_response(r, t.e.o)) return;
 				_update_owns_display( r );
 				_update_availables(r.data);
@@ -230,7 +230,7 @@ QS.EATicketSelection = (function($, q, qt) {
 
 			var data = {};
 
-			aj('d', data, function(r) {
+			aj('gaea-remove', data, function(r) {
 				if (!_is_valid_response(r, t.e.o)) return;
 				_update_owns_display( r );
 				_update_availables(r.data);

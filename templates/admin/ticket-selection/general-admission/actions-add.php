@@ -1,0 +1,4 @@
+<?php ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) ? die( header( 'Location: /' ) ) : null; ?>
+<div class="action-list" rel="btns">
+	<input type="button" class="button" rel="change-btn" value="<?php echo esc_attr( __( 'Different Event', 'opentickets-community-edition' ) ) ?>"/>
+</div>

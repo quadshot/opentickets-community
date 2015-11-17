@@ -89,7 +89,8 @@ if ( wc_tax_enabled() ) {
 
 				//include( 'html-order-item.php' );
 				//@@@@LOUSHOU - allow overtake of template
-				include(apply_filters('qsot-woo-template', 'meta-boxes/views/html-order-item.php', 'admin'));
+				if ( $template = QSOT_Templates::locate_woo_template( 'meta-boxes/views/html-order-item.php', 'admin' ) )
+					include( $template );
 
 				do_action( 'woocommerce_order_item_' . $item['type'] . '_html', $item_id, $item );
 			}
@@ -101,7 +102,8 @@ if ( wc_tax_enabled() ) {
 			foreach ( $line_items_shipping as $item_id => $item ) {
 				//include( 'html-order-shipping.php' );
 				//@@@@LOUSHOU - allow overtake of template
-				include(apply_filters('qsot-woo-template', 'meta-boxes/views/html-order-shipping.php', 'admin'));
+				if ( $template = QSOT_Templates::locate_woo_template( 'meta-boxes/views/html-order-shipping.php', 'admin' ) )
+					include( $template );
 			}
 		?>
 		</tbody>
@@ -110,7 +112,8 @@ if ( wc_tax_enabled() ) {
 			foreach ( $line_items_fee as $item_id => $item ) {
 				//include( 'html-order-fee.php' );
 				//@@@@LOUSHOU - allow overtake of template
-				include(apply_filters('qsot-woo-template', 'meta-boxes/views/html-order-fee.php', 'admin'));
+				if ( $template = QSOT_Templates::locate_woo_template( 'meta-boxes/views/html-order-fee.php', 'admin' ) )
+					include( $template );
 			}
 		?>
 		</tbody>
@@ -120,7 +123,8 @@ if ( wc_tax_enabled() ) {
 				foreach ( $refunds as $refund ) {
 					//include( 'html-order-refund.php' );
 					//@@@@LOUSHOU - allow overtake of template
-					include(apply_filters('qsot-woo-template', 'meta-boxes/views/html-order-refund.php', 'admin'));
+					if ( $template = QSOT_Templates::locate_woo_template( 'meta-boxes/views/html-order-refund.php', 'admin' ) )
+						include( $template );
 				}
 			}
 		?>

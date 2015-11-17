@@ -31,7 +31,8 @@ class WC_Meta_Box_Order_Items extends _WooCommerce_Core_WC_Meta_Box_Order_Items 
 
 		//include( 'views/html-order-items.php' );
 		//@@@@LOUSHOU - allow overtake of template
-		include(apply_filters('qsot-woo-template', 'meta-boxes/views/html-order-items.php', 'admin'));
+		if ( $template = QSOT_Templates::locate_woo_template( 'meta-boxes/views/html-order-items.php', 'admin' ) )
+			include( $template );
 	}
 
 	/**

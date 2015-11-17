@@ -159,6 +159,7 @@ QS.popMediaBox = (function($, qt) {
 									url = qt.is( attachment.sizes.thumbnail ) ? attachment.sizes.thumbnail.url : attachment.sizes.full.url,
 									size = qt.is( args.size ) ? args.size : ( ( size = t.attr( 'size' ) ) ? size : 'thumb' )
 									size = size == 'thumb' ? 'thumbnail' : size;
+									console.log( 'fasdfjakslfjklasdfljkasljkfasljfaljsf', t, size, attachment );
 							// find the appropriate image url
 							if ( qt.is( attachment.sizes[ size ] ) && qt.is( attachment.sizes[ size ].url ) )
 								url = attachment.sizes[ size ].url;
@@ -823,7 +824,6 @@ QS.EditSetting = (function($, undefined) {
 			else label = EditSetting.labels._default.apply(this, [data]);
 
 			if (label == '') label = EditSetting.labels._default.apply(this, [data]);
-			console.log( 'sigh', label, data );
 
 			this.elements.display.html(label);
 

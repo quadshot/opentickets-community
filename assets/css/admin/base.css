@@ -19,6 +19,7 @@ body div.opentickets-error a:hover { color:#DD9990; }
 
 #adminmenu #toplevel_page_opentickets .wp-menu-image,
 #adminmenu #menu-posts-qsot-event .wp-menu-image,
+#adminmenu #menu-posts-qsot-event-area .wp-menu-image,
 #adminmenu #menu-posts-qsot-seating-chart .wp-menu-image,
 #adminmenu #menu-posts-qsot-venue .wp-menu-image,
 #adminmenu #menu-posts-qsot-people .wp-menu-image { background-image:url("../../imgs/opentickets-icon-sprite.png") !important; background-size:auto auto; width:30px; height:31px;
@@ -26,6 +27,7 @@ body div.opentickets-error a:hover { color:#DD9990; }
 
 #adminmenu #toplevel_page_opentickets .wp-menu-image:before,
 #adminmenu #menu-posts-qsot-event .wp-menu-image:before,
+#adminmenu #menu-posts-qsot-event-area .wp-menu-image:before,
 #adminmenu #menu-posts-qsot-seating-chart .wp-menu-image:before,
 #adminmenu #menu-posts-qsot-venue .wp-menu-image:before,
 #adminmenu #menu-posts-qsot-people .wp-menu-image:before { content:""; }
@@ -55,6 +57,11 @@ body div.opentickets-error a:hover { color:#DD9990; }
 #adminmenu #menu-posts-qsot-people.opensub .wp-menu-image,
 #adminmenu #menu-posts-qsot-people:hover .wp-menu-image { background-position:-2px -48px; }
 
+#adminmenu #menu-posts-qsot-event-area .wp-menu-image { background-position:-26px -72px; }
+#adminmenu #menu-posts-qsot-event-area.wp-menu-open .wp-menu-image,
+#adminmenu #menu-posts-qsot-event-area.opensub .wp-menu-image,
+#adminmenu #menu-posts-qsot-event-area:hover .wp-menu-image { background-position:-2px -72px; }
+
 .icon32-opentickets-reports { background-image:url("../../imgs/opentickets-icon-sprite.png") !important; background-size:auto auto; background-position:2px -126px; }
 .icon32-opentickets-settings { background-image:url("../../imgs/opentickets-icon-sprite.png") !important; background-size:auto auto; background-position:2px -166px; }
 .icon32-opentickets { display:block; float:left; height:36px; margin-right:2px; margin-top:8px; width:36px; }
@@ -65,7 +72,8 @@ body div.opentickets-error a:hover { color:#DD9990; }
 #woocommerce-order-items .item.invalid .ticket-info { border-color:#880000; color:#880000; background-color:#f4d4d4; }
 
 .ticket-selection-dialog { font-size:12px; }
-.ticket-selection-dialog .errors .error { margin:0 0 1.5em 0; }
+.ticket-selection-dialog .errors .error { margin:0 0 1.5em 0; padding:10px 12px; border-top:1px solid #ddd; border-right:1px solid #ddd; border-bottom:1px solid #ddd; }
+.ticket-selection-dialog .errors .msg { margin:0 0 1.5em 0; padding:10px 12px; border-top:1px solid #ddd; border-right:1px solid #ddd; border-bottom:1px solid #ddd; border-left:4px solid #36dd3d; }
 .ticket-selection-dialog .actions { border-bottom:1px dotted #888888; padding:0 0 0.65em; margin-bottom:0.6em; }
 .ticket-selection-dialog .ts-section { border:1px solid #888888; padding:0.7em; background-color:#dfdfdf; margin-bottom:0.6em; }
 .ticket-selection-dialog .event-info .field { margin-right:1em; }
@@ -251,6 +259,8 @@ body.printer-friendly-report .inner-wrap { padding:8px !important; width:9.5in !
 .qsot-mb .helper { padding-top:0.4em; font-size:0.8em; color:#777; font-style:italic; }
 .qsot-mb code { font-size:inherit; font-style:normal; font-weight:400; color:inherit; }
 .qsot-mb .option-row { padding-top:0.3em; }
+.qsot-mb .image-preview { max-width:100%; }
+.qsot-mb .image-preview img { max-width:100%; }
 
 /* licenses */
 .missing-license-notice { font-style:italic; font-weight:700; color:#800; }
