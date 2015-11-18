@@ -443,6 +443,16 @@ class QSOT_Post_Type_Event_Area {
 			'high'
 		);
 
+		// add the venue selection to the seating chart ui pages
+		add_meta_box(
+			'qsot-seating-chart-venue',
+			__( 'Venue', 'opentickets-community-edition' ),
+			array( &$this, 'mb_render_venue' ),
+			'qsot-event-area',
+			'side',
+			'high'
+		);
+
 		// add all the metaboxes for each event area type
 		foreach ( $this->area_types as $area_type ) {
 			$meta_boxes = $area_type->get_meta_boxes();
@@ -523,6 +533,29 @@ class QSOT_Post_Type_Event_Area {
 					</li>
 				<?php endforeach; ?>
 			</ul>
+		<?php
+	}
+
+	// draw the box that allows selection of the venue this seating chart belongs to
+	public function mb_render_venue( $post, $mb ) {
+		// get a complete list of available venues
+		$venues = get_posts( array(
+			'post_type' => 'qsot-venue',
+			'post_status' => 'any',
+			'posts_per_page' => -1,
+		) );
+
+		// and determine the current venue for this event_area
+		$current = $post->post_parent;
+
+		// draw the form
+		?>
+			<select name="post_parent" class="widefat">
+				<option value="">-- Select Venue --</option>
+				<?php foreach ( $venues as $venue ): ?>
+					<option <?php selected( $venue->ID, $current ) ?> value="<?php echo esc_attr( $venue->ID ) ?>"><?php echo apply_filters( 'the_title', $venue->post_title, $venue->ID ) ?></option>
+				<?php endforeach; ?>
+			</select>
 		<?php
 	}
 
