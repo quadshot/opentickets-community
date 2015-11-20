@@ -3,7 +3,7 @@
 // class to handle the basic general admission event area type
 class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 	// container for the singleton instance
-	protected static $instance = null;
+	protected static $instance = array();
 
 	// get the singleton instance
 	public static function instance() {
@@ -24,9 +24,6 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		// otherwise, set this as the known instance
 		self::$instance = $this;
 
-		// defaults from parent
-		parent::__construct();
-
 		// and call the intialization function
 		$this->initialize();
 	}
@@ -39,6 +36,9 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 
 	// setup the object
 	public function initialize() {
+		// defaults from parent
+		parent::initialize();
+
 		// setup the object description
 		$this->priority = 1;
 		$this->find_priority = PHP_INT_MAX;
@@ -68,8 +68,6 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 	public function deinitialize() {
 		remove_action( 'switch_blog', array( &$this, 'setup_table_names' ), PHP_INT_MAX );
 		remove_action( 'plugins_loaded', array( &$this, 'plugins_loaded' ), 10 );
-		remove_action( 'wp_ajax_qsot-frontend-ajax', array( &$aj, 'handle_request' ) );
-		remove_action( 'wp_ajax_nopriv_qsot-frontend-ajax', array( &$aj, 'handle_request' ) );
 		remove_filter( 'qsot-gaea-zoner-reserve-results', array( &$this, 'add_tickets_to_cart' ), 10 );
 		remove_filter( 'qsot-ticket-item-meta-keys', array( &$this, 'meta_keys_maintained' ), 10 );
 		remove_filter( 'qsot-ticket-item-hidden-meta-keys', array( &$this, 'meta_keys_hidden' ), 10 );
@@ -79,9 +77,6 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 	public function plugins_loaded() {
 		// register this as an event area type
 		do_action_ref_array( 'qsot-register-event-area-type', array( &$this ) );
-
-		// register our ajax handler
-		//QSOT_Ajax::instance()->register( 'gaea-
 	}
 
 	// register the assets we may need in either the admin or the frontend, for this area_type
@@ -99,6 +94,10 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 	public function enqueue_assets( $event ) {
 		// if we do not have the required info, then bail
 		if ( ! is_object( $event ) || ! isset( $event->event_area ) || ! is_object( $event->event_area ) )
+			return;
+
+		// if this event is not using an event area of this type, then bail now
+		if ( ! isset( $event->event_area->area_type ) || ! is_object( $event->event_area->area_type ) || $this->slug !== $event->event_area->area_type->get_slug() )
 			return;
 
 		// include the base styling
@@ -331,6 +330,11 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		if ( 'qsot-event-area' != $post->post_type )
 			return false;
 
+		$type = get_post_meta( $post->ID, '_qsot-event-area-type', true );
+		// if the area_type is set, and it is not equal to this type, then bail
+		if ( ! empty( $type ) && $type !== $this->slug )
+			return false;
+
 		// otherwise, it is
 		return true;
 	}
@@ -547,7 +551,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 			$left = max( 0, $capacity - $reserved_or_confirmed );
 
 			// update the response
-			$resp['data']['available'] = $resp['data']['available_more'] = $left;
+			$resp['data']['available'] = $resp['data']['available_more'] = $capacity > 0 ? $left : 1000000;
 		}
 
 		return $resp;
@@ -1048,6 +1052,9 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		if ( empty( $oi ) )
 			return $ticket;
 
+		// update the order item to be what we just found
+		$ticket->order_item = $oi;
+
 		// add the owns info
 		$query = QSOT_Zoner_Query::instance();
 		$owns = $query->find( array(
@@ -1068,5 +1075,6 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 	}
 }
 
+// security
 if ( defined( 'ABSPATH' ) && function_exists( 'add_action' ) )
 	QSOT_General_Admission_Area_Type::instance();

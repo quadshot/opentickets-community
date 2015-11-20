@@ -19,7 +19,10 @@ abstract class QSOT_Base_Event_Area_Type {
 	protected $slug = '';
 
 	// basic constructor for the area type
-	public function __construct() {
+	public function __construct() {}
+
+	// default initialization
+	public function initialize() {
 		$this->priority = self::$inc_priority++;
 		$this->slug = sanitize_title_with_dashes( 'area-type-' . $this->priority );
 		$this->name = sprintf( __( 'Area Type %d', 'opentickets-community-edition' ), $this->priority );
@@ -35,7 +38,7 @@ abstract class QSOT_Base_Event_Area_Type {
 	public function get_name() { return $this->name; }
 
 	// get the find priority of this area type. this will determine the order in which this type is tested, to determine the type of an unknown typed event area
-	public function get_find_priority() { return $find_priority; }
+	public function get_find_priority() { return $this->find_priority; }
 
 	// get the list of metaboxes that this type requires
 	public function get_meta_boxes() { return $this->meta_boxes; }
@@ -63,7 +66,7 @@ abstract class QSOT_Base_Event_Area_Type {
 	public function enqueue_assets( $event ) {}
 
 	// enqueue the admin assets needed by this type
-	public function enqueue_admin_assets( $type=null ) {}
+	public function enqueue_admin_assets( $type=null, $exists=false, $post_id=0 ) {}
 
 	// get the frontend templates to use for this event area type
 	public function get_templates( $event ) { return array(); }

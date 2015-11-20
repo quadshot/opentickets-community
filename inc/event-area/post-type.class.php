@@ -63,8 +63,8 @@ class QSOT_Post_Type_Event_Area {
 		add_action( 'add_meta_boxes_qsot-event-area', array( &$this, 'add_meta_boxes' ), 1000 );
 
 		// enqueue our needed admin assets
-		add_action( 'qsot-admin-load-assets-qsot-event-area', array( &$this, 'enqueue_admin_assets_event_area' ), 10 );
-		add_action( 'qsot-admin-load-assets-qsot-event', array( &$this, 'enqueue_admin_assets_event' ), 10 );
+		add_action( 'qsot-admin-load-assets-qsot-event-area', array( &$this, 'enqueue_admin_assets_event_area' ), 10, 2 );
+		add_action( 'qsot-admin-load-assets-qsot-event', array( &$this, 'enqueue_admin_assets_event' ), 10, 2 );
 
 		// enqueue the frontend assets
 		add_action( 'qsot-frontend-event-assets', array( &$this, 'enqueue_assets' ), 10 );
@@ -183,7 +183,7 @@ class QSOT_Post_Type_Event_Area {
 	}
 
 	// enqueue the needed admin assets on the edit event area page
-	public function enqueue_admin_assets_event_area() {
+	public function enqueue_admin_assets_event_area( $exists, $post_id ) {
 		wp_enqueue_media();
 		wp_enqueue_script( 'qsot-event-area-admin' );
 		wp_enqueue_style( 'select2' );
@@ -195,16 +195,16 @@ class QSOT_Post_Type_Event_Area {
 
 		// do the same for each registered area type
 		foreach ( $this->area_types as $area_type )
-			$area_type->enqueue_admin_assets( 'qsot-event-area' );
+			$area_type->enqueue_admin_assets( 'qsot-event-area', $exists, $post_id );
 	}
 
 	// enqueue the needed admin assets on the edit event page
-	public function enqueue_admin_assets_event() {
+	public function enqueue_admin_assets_event( $exists, $post_id ) {
 		wp_enqueue_script( 'qsot-event-event-area-settings' );
 
 		// do the same for each registered area type
 		foreach ( $this->area_types as $area_type )
-			$area_type->enqueue_admin_assets( 'qsot-event' );
+			$area_type->enqueue_admin_assets( 'qsot-event', $exists, $post_id );
 	}
 
 	// enqueue the frontend assets we need
@@ -365,9 +365,12 @@ class QSOT_Post_Type_Event_Area {
 			return $this->area_types[ $current ];
 
 		// otherwise, cycle through the find type list, and find the first matching type
-		foreach ( $this->find_order as $slug )
-			if ( $this->area_types[ $slug ]->post_is_this_type( $post ) )
+		foreach ( $this->find_order as $slug ) {
+			if ( $this->area_types[ $slug ]->post_is_this_type( $post ) ) {
+				update_post_meta( $post->ID, '_qsot-event-area-type', $slug );
 				return $this->area_types[ $slug ];
+			}
+		}
 
 		// if no match was found, then just use the type with the highest priority (least specific)
 		$current = end( $this->find_order );
@@ -477,6 +480,12 @@ class QSOT_Post_Type_Event_Area {
 		static $area_type = false, $screen = false;
 		if ( false === $area_type )
 			$area_type = $this->event_area_type_from_event_area( $GLOBALS['post'] );
+		// if there is no area_type then bail
+		if ( ! is_object( $area_type ) || is_wp_error( $area_type ) )
+			return $classes;
+
+		// store the slug of this area type for later use
+		$slug = $area_type->get_slug();
 
 		// figure out the screen of the current metabox
 		if ( false === $screen ) {
@@ -499,6 +508,14 @@ class QSOT_Post_Type_Event_Area {
 		// if this metabox is not used by the current area type, then hide it by default
 		if ( ! $area_type->uses_meta_box( $id, $screen ) )
 			$classes[] = 'hide-if-js';
+
+		// add a class indicator for each area_type to this metabox, so that it can be easily hidden or shown with js
+		foreach ( $this->area_types as $type ) {
+			if ( $type->uses_meta_box( $id, $screen ) )
+				$classes[] = 'for-' . $type->get_slug();
+			else
+				$classes[] = 'not-for-' . $type->get_slug();
+		}
 
 		return $classes;
 	}

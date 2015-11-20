@@ -52,6 +52,9 @@ class QSOT {
 		// load all the abstract classes
 		do_action( 'qsot-load-includes', '', '#^.+\.abstract-dep\.php$#i' );
 
+		// load the core area_types
+		do_action( 'qsot-load-includes', '', '#^.+area-type\.class.php$#i' );
+
 		// load all plugins and modules later on
 		add_action('plugins_loaded', array(__CLASS__, 'load_plugins_and_modules'), 5);
 

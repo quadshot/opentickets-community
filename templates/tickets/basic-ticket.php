@@ -46,7 +46,6 @@ for ( $i = 0; $i < 5; $i++ ) {
 	</head>
 
 	<body <?php echo ( $pdf ) ? 'class="pdf"' : '' ?>>
-	<?php var_dump( $ticket->qr_data_debugs ) ?>
 		<div class="page-wrap">
 			<?php if ( ! $pdf ): ?>
 				<div class="actions-list">
