@@ -1,4 +1,4 @@
-var QS = $.extend( { Tools:{} }, QS );
+var QS = QS || { Tools:{} };
 
 ( function( $, qt ) {
 	var S = $.extend( {}, _qsot_event_area_admin );
