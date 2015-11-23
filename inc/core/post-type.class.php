@@ -647,8 +647,8 @@ class qsot_post_type {
 			return $count;
 
 		// fetch the needed data
-		$capacity = (int)get_post_meta( $event_id, self::$o->{'meta_key.capacity'}, true );
-		$purchases = (int)get_post_meta( $event_id, self::$o->{'meta_key.ea_purchased'}, true );
+		$capacity = (int)get_post_meta( $event_id, '_capacity', true );
+		$purchases = (int)get_post_meta( $event_id, '_purchased_ea', true );
 
 		return $capacity - $purchases;
 	}

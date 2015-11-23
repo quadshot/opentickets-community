@@ -299,7 +299,7 @@ class qsot_frontend_calendar {
 		if ( ! is_object( $event ) || ! isset( $event->post_parent, $event->post_title, $event->ID, $event->meta ) ) return $current;
 
 		// gather information about this event's parent, because it will be used in the output of the event data
-		$par = get_post($event->post_parent);
+		$par = get_post( $event->post_parent );
 
 		// start compiling the organized list of information
 		$e = array(
