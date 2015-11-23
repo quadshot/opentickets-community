@@ -477,6 +477,7 @@ QS.adminTicketSelection = ( function( $, qs, qt ) {
 		// start the UI with the mindset of 'changing' an existing reservation
 		me.change_ticket_ui = function( e ) {
 			e.preventDefault();
+			console.log( 'click', $( this ) );
 
 			// flag the internal state of the UI
 			me.state = 'change';
@@ -494,8 +495,10 @@ QS.adminTicketSelection = ( function( $, qs, qt ) {
 			// if there is a valid event id, then make sure we: 1) load the event directly, and 2) only show events in the calendar that have compatible pricing
 			if ( me.event_id > 0 ) {
 				me.priced_like = me.event_id;
+				me.open_dialog();
 				_load_event( me.event_id );
 			} else {
+				me.open_dialog();
 				_load_calendar();
 			}
 		};

@@ -22,7 +22,7 @@ abstract class QSOT_Base_Event_Area_Type {
 	public function __construct() {}
 
 	// default initialization
-	public function initialize() {
+	public function initialize( $ajax=true ) {
 		$this->priority = self::$inc_priority++;
 		$this->slug = sanitize_title_with_dashes( 'area-type-' . $this->priority );
 		$this->name = sprintf( __( 'Area Type %d', 'opentickets-community-edition' ), $this->priority );
@@ -111,6 +111,25 @@ abstract class QSOT_Base_Event_Area_Type {
 
 	// handle the additional display of order items for tickets that use this event area type
 	public function order_item_display( $item, $product, $event ) {}
+
+	// during the saving of the order items from the edit order screen in the admin, we may need to update the item's reservations
+	public function save_order_item( $order_id, $order_item_id, $item, $updates, $event_area ) {
+		// get the zoner for this area
+		$zoner = $this->get_zoner();
+		if ( ! is_object( $zoner ) )
+			return false;
+		$stati = $zoner->get_stati();
+
+		// update this order item's reservations
+		$res = $zoner->update( false, array(
+			'order_id' => $order_id,
+			'event_id' => $item['event_id'],
+			'state' => array( $stati['r'][0], $stati['c'][0] ),
+			'order_item_id' => $order_item_id,
+		), array( 'quantity' => $updates['order_item_qty'] ) );
+
+		return $res;
+	}
 
 	// get the cart item quantity of the matched row/s
 	public function cart_item_match_quantity( $item, $rows ) {

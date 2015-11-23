@@ -88,6 +88,9 @@ class QSOT_Post_Type_Event_Area {
 		add_action( 'woocommerce_before_view_order_itemmeta', array( &$this, 'before_view_item_meta' ), 10, 3 );
 		add_action( 'woocommerce_before_edit_order_itemmeta', array( &$this, 'before_edit_item_meta' ), 10, 3 );
 
+		// when saving the list of order items, during the editing of the list in the edit order page, we need to possibly update our reservation table
+		add_action( 'woocommerce_saved_order_items', array( &$this, 'save_order_items' ), 10, 2 );
+
 		// handle syncing of cart items to the values in the ticket table
 		add_action( 'wp_loaded', array( &$this, 'sync_cart_tickets' ), 6 );
 		add_action( 'woocommerce_cart_loaded_from_session', array( &$this, 'sync_cart_tickets' ), 6 );
@@ -614,7 +617,7 @@ class QSOT_Post_Type_Event_Area {
 	}
 
 	// during cart loading from session, we need to make sure we load all preserved keys
-	public static function load_item_data( $current, $values, $key ) {
+	public function load_item_data( $current, $values, $key ) {
 		// get a list of all the preserved keys from our event area types, and add it to the list of keys that need to be loaded
 		foreach ( apply_filters( 'qsot-ticket-item-meta-keys', array() ) as $k )
 			if ( isset( $values[ $k ] ) )
@@ -627,7 +630,7 @@ class QSOT_Post_Type_Event_Area {
 	}
 
 	// add to the list of item data that needs to be preserved
-	public static function add_item_meta( $item_id, $values ) {
+	public function add_item_meta( $item_id, $values ) {
 		// get a list of keys that need to be preserved from our event area types, and add each to the list of keys that needs to be saved in the order items when making an item from a cart item
 		foreach ( apply_filters( 'qsot-ticket-item-meta-keys', array() ) as $k ) {
 			if ( ! isset( $values[ $k ] ) )
@@ -637,23 +640,62 @@ class QSOT_Post_Type_Event_Area {
 	}
 
 	// add to the list of meta that needs to be hidden when displaying order items
-	public static function hide_item_meta( $list ) {
+	public function hide_item_meta( $list ) {
 		$list[] = '_event_id';
 		return array_filter( array_unique( apply_filters( 'qsot-ticket-item-hidden-meta-keys', $list ) ) );
 	}
 
 	// on the edit order screen, for each ticket order item, add the 'view' version of the ticket information
-	public static function before_view_item_meta( $item_id, $item, $product ) {
+	public function before_view_item_meta( $item_id, $item, $product ) {
 		self::_draw_item_ticket_info( $item_id, $item, $product, false );
 	}
 
 	// on the edit order screen, for each ticket order item, add the 'edit' version of the ticket information
-	public static function before_edit_item_meta( $item_id, $item, $product ) {
+	public function before_edit_item_meta( $item_id, $item, $product ) {
 		self::_draw_item_ticket_info( $item_id, $item, $product, true );
 	}
 
+	// when saving the order items on the edit order page, we may need to update the reservations table
+	public function save_order_items( $order_id, $items ) {
+		// if there are no order items that were edited, then bail
+		if ( ! isset( $items['order_item_id'] ) || ! is_array( $items['order_item_id'] ) || empty( $items['order_item_id'] ) )
+			return;
+
+		// get the order itself. if it is not an order, then bail
+		$order = wc_get_order( $order_id );
+		if ( ! is_object( $order ) || is_wp_error( $order ) )
+			return;
+
+		// cycle through the order items
+		foreach ( $order->get_items( 'line_item' ) as $oiid => $item ) {
+			// if this item is not on the list of edited items, then skip
+			if ( ! in_array( $oiid, $items['order_item_id'] ) )
+				continue;
+
+			// if this order item is not a ticket, then skip
+			if ( ! apply_filters( 'qsot-item-is-ticket', false, $item ) )
+				continue;
+
+			$updates = array();
+			// create a container holding all the updates for this item
+			foreach ( $items as $key => $list )
+				if ( isset( $list[ $oiid ] ) )
+					$updates[ $key ] = $list[ $oiid ];
+
+			// get the event_area and zoner for this order item
+			$event_area = apply_filters( 'qsot-event-area-for-event', false, $item['event_id'] );
+
+			// if there is no area_type for this event, then skip this item
+			if ( ! is_object( $event_area ) || ! isset( $event_area->area_type ) )
+				continue;
+
+			// run the update code for this event area on this item
+			$event_area->area_type->save_order_item( $order_id, $oiid, $item, $updates, $event_area );
+		}
+	}
+
 	// add the relevant ticket information and meta to each order item that needs it, along with a change button for event swaps
-	protected static function _draw_item_ticket_info( $item_id, $item, $product, $edit=false ) {
+	protected function _draw_item_ticket_info( $item_id, $item, $product, $edit=false ) {
 		// if the product is not a ticket, then never display event meta
 		if ( $product->ticket != 'yes' )
 			return;
@@ -690,7 +732,7 @@ class QSOT_Post_Type_Event_Area {
 	}
 
 	// sync the cart with the tickets we have in the ticket association table. if the ticket is gone from the table, then remove it from the cart (expired timer or manual delete)
-	public static function sync_cart_tickets() {
+	public function sync_cart_tickets() {
 		// get the woocommerce core object
 		$WC = WC();
 
@@ -1076,6 +1118,10 @@ class QSOT_Post_Type_Event_Area {
 			'nonce' => wp_create_nonce( 'do-qsot-admin-ajax' ),
 			'templates' => apply_filters( 'qsot-ticket-selection-templates', array(), $exists, $order_id ),
 		) );
+
+		// do the same for each registered area type
+		foreach ( $this->area_types as $area_type )
+			$area_type->enqueue_admin_assets( 'shop_order', $exists, $order_id );
 	}
 
 	// add the button that allows an admin to add a ticket to an order
@@ -1131,7 +1177,7 @@ class QSOT_Post_Type_Event_Area {
 	}
 
 	// load the event details for the admin ticket selection interface
-	public static function admin_ajax_load_event( $resp, $event ) {
+	public function admin_ajax_load_event( $resp, $event ) {
 		// if the event does not exist, then bail
 		if ( ! is_object( $event ) ) {
 			$resp['e'][] = __( 'Could not find the new event.', 'opentickets-community-edition' );

@@ -9,9 +9,9 @@ $pdf = ( isset( $_GET['frmt'] ) && 'pdf' == strtolower( $_GET['frmt'] ) );
 // determine the branding images before hand since they are reused
 $brand_imgs = array();
 for ( $i = 0; $i < 5; $i++ ) {
-	$bid = isset( $branding_image_ids[ $i ] ) ? $branding_image_ids[ $i ] : 0;
+	$bid = isset( $branding_image_ids[ $i ] ) ? $branding_image_ids[ $i ] : null;
 	$brand_imgs[ $i ] = '';
-	if ( 'noimg' !== $bid ) {
+	if ( isset( $bid ) && 'noimg' !== $bid ) {
 		$brand_imgs[ $i ] = apply_filters( 'qsot-ticket-branding-image', wp_get_attachment_image( $bid, array( 90, 99999 ), false, array( 'class' => 'branding-img' ) ), $bid, $i, $pdf );
 		$brand_imgs[ $i ] = ! empty( $brand_imgs[ $i ] )
 			? $brand_imgs[ $i ]

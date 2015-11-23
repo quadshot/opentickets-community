@@ -407,9 +407,10 @@ class QSOT_General_Admission_Zoner extends QSOT_Base_Event_Area_Zoner {
 		$args = wp_parse_args( $args, array(
 			'event_id' => false,
 			'ticket_type_id' => 0,
-			'quantity' => 0,
+			'quantity' => '',
 			'customer_id' => '',
 			'order_id' => '',
+			'order_item_id' => '',
 			'state' => '',
 			'where__extra' => '',
 		) );
@@ -418,7 +419,7 @@ class QSOT_General_Admission_Zoner extends QSOT_Base_Event_Area_Zoner {
 		$args['ticket_type_id'] = is_numeric( $args['ticket_type_id'] ) && $args['ticket_type_id'] > 0
 				? $args['ticket_type_id']
 				: ( is_object( $args['ticket_type_id'] ) && isset( $args['ticket_type_id']->id ) ? $args['ticket_type_id']->id : false );
-		$args['quantity'] = max( 0, $args['quantity'] );
+		$args['quantity'] = $args['quantity'] ? max( 0, $args['quantity'] ) : $args['quantity'];
 		$args['customer_id'] = empty( $args['customer_id'] ) ? '' : $args['customer_id'];
 
 		// find the matching confirmed row

@@ -35,7 +35,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 
 
 	// setup the object
-	public function initialize() {
+	public function initialize( $ajax=true ) {
 		// defaults from parent
 		parent::initialize();
 
@@ -48,20 +48,22 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		// after all the plugins have loaded, register this type
 		add_action( 'plugins_loaded', array( &$this, 'plugins_loaded' ), 10 );
 
-		// add the gaea ajax handlers
-		$aj = QSOT_Ajax::instance();
-		$aj->register( 'gaea-reserve', array( &$this, 'aj_reserve' ), array(), null, 'qsot-frontend-ajax' );
-		$aj->register( 'gaea-remove', array( &$this, 'aj_remove' ), array(), null, 'qsot-frontend-ajax' );
-		$aj->register( 'gaea-update', array( &$this, 'aj_update' ), array(), null, 'qsot-frontend-ajax' );
-
-		// register our admin ajax functions
-		$aj->register( 'gaea-add-tickets', array( &$this, 'admin_ajax_add_tickets' ), array( 'edit_shop_orders' ), null, 'qsot-admin-ajax' );
-		$aj->register( 'gaea-update-ticket', array( &$this, 'admin_ajax_update_ticket' ), array( 'edit_shop_orders' ), null, 'qsot-admin-ajax' );
-
 		// actions to help sync the cart with the actions we take in the event ticket UI
 		add_filter( 'qsot-gaea-zoner-reserve-results', array( &$this, 'add_tickets_to_cart' ), 10, 2 );
 		add_action( 'woocommerce_before_cart_item_quantity_zero', array( &$this, 'delete_ticket_from_cart' ), 10, 1 );
 		add_action( 'woocommerce_cart_item_removed', array( &$this, 'delete_ticket_from_cart' ), 10, 1 );
+
+		if ( $ajax ) {
+			// add the gaea ajax handlers
+			$aj = QSOT_Ajax::instance();
+			$aj->register( 'gaea-reserve', array( &$this, 'aj_reserve' ), array(), null, 'qsot-frontend-ajax' );
+			$aj->register( 'gaea-remove', array( &$this, 'aj_remove' ), array(), null, 'qsot-frontend-ajax' );
+			$aj->register( 'gaea-update', array( &$this, 'aj_update' ), array(), null, 'qsot-frontend-ajax' );
+
+			// register our admin ajax functions
+			$aj->register( 'gaea-add-tickets', array( &$this, 'admin_ajax_add_tickets' ), array( 'edit_shop_orders' ), null, 'qsot-admin-ajax' );
+			$aj->register( 'gaea-update-ticket', array( &$this, 'admin_ajax_update_ticket' ), array( 'edit_shop_orders' ), null, 'qsot-admin-ajax' );
+		}
 	}
 
 	// destroy the object
@@ -1024,7 +1026,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		$resp['updated'] = array();
 		$resp['data'] = $item;
 		$resp['data']['__order_item_id'] = $oiid;
-		$event->post_title = aply_filters( 'the_title', $event->post_title, $event->ID );
+		$event->post_title = apply_filters( 'the_title', $event->post_title, $event->ID );
 		$event->_edit_url = get_edit_post_link( $event->ID );
 		$event->_edit_link = sprintf( '<a rel="edit-event" href="%s" target="_blank" title="edit event">%s</a>', $event->_edit_url, $event->post_title );
 		$resp['event'] = $event;
