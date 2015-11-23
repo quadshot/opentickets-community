@@ -122,6 +122,32 @@ abstract class QSOT_Base_Event_Area_Type {
 		return $meta_to_save;
 	}
 
+	// draw event area image
+	public function draw_event_area_image( $event_area, $event, $reserved ) {
+		// get the id of the image we should use for this feature
+		$image_id = intval( get_post_meta( $event_area->ID, '_thumbnail_id', true ) );
+
+		// if there is no image id, then bail
+		if ( $image_id <= 0 )
+			return;
+
+		// get the image information
+		list( $image_url, $width, $height, $resized ) = wp_get_attachment_image_src( $image_id, 'full' );
+
+		// if there is noe image data, then bail
+		if ( empty( $image_url ) )
+			return;
+
+		// otherwise, draw the image
+		echo sprintf(
+			'<div class="event-area-image-wrap"><img src="%s" width="%s" height="%s" alt="%s" /></div>',
+			esc_attr( $image_url ),
+			$width,
+			$height,
+			sprintf( __( 'Image of the %s event area', 'opentickets-community-edition' ), esc_attr( apply_filters( 'the_title', $event_area->post_title, $event_area->ID ) ) )
+		);
+	}
+
 	// the function that returns the object that controls the reservations for this event area type
 	abstract public function get_zoner();
 

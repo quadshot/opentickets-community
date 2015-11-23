@@ -77,6 +77,9 @@ class QSOT_Post_Type_Event_Area {
 		// add the event ticket selection UI to the output of the event
 		add_filter( 'qsot-event-the-content', array( &$this, 'draw_event_area' ), 1000, 2 );
 
+		// draw the event area image
+		add_action( 'qsot-draw-event-area-image', array( &$this, 'draw_event_area_image' ), 10, 4 );
+
 		// handle the display and storage of all order/cart item meta data
 		add_filter( 'woocommerce_get_cart_item_from_session', array( &$this, 'load_item_data' ), 20, 3 );
 		add_action( 'woocommerce_add_order_item_meta', array( &$this, 'add_item_meta' ), 10, 3 );
@@ -286,6 +289,20 @@ class QSOT_Post_Type_Event_Area {
 			return $content . $ui;
 		else
 			return $ui . $content;
+	}
+
+	// draw the featured image for the event area, based on the event area types
+	public function draw_event_area_image( $event, $area, $reserved, $total_reserved=false ) {
+		// make sure we have the event area type handy
+		if ( ! is_object( $area ) || ! isset( $area->area_type ) || ! is_object( $area->area_type ) )
+			$area = apply_filters( 'qsot-event-area-for-event', $area, $event->ID );
+
+		// if we still do not have the event area type handy, then bail
+		if ( ! is_object( $area ) || ! isset( $area->area_type ) || ! is_object( $area->area_type ) )
+			return;
+
+		// otherwise, draw the event area image
+		$area->area_type->draw_event_area_image( $area, $event, $reserved );
 	}
 
 	// get the event area based on the event
