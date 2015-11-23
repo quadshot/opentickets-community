@@ -687,6 +687,8 @@ class QSOT {
 	public static function activation() {
 		self::load_plugins_and_modules();
 
+		OpenTickets_Community_Launcher::otce_2_0_0_compatibility_check();
+
 		do_action('qsot-activate');
 		flush_rewrite_rules();
 

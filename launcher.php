@@ -18,6 +18,13 @@ class opentickets_community_launcher {
 	protected static $o = null; // holder for all options of the events plugin
 	protected static $active = false;
 
+	// list of extensions to perform compatibility checks on
+	protected static $compatibility_checks = array(
+		array( 'file' => 'qsot-ga-multi-price/qsot-ga-multi-price.php', 'min_version' => '2.0.0' ),
+		array( 'file' => 'qsot-seating/qsot-seating.php', 'min_version' => '2.0.0' ),
+		array( 'file' => 'qsot-box-office/qsot-box-office.php', 'min_version' => '2.0.0' ),
+	);
+
 	// test comment
 	// initialize/load everything related to the core plugin
 	public static function pre_init() {
@@ -66,6 +73,8 @@ class opentickets_community_launcher {
 			if (self::_has_woocommerce_min_version()) {
 				// patch CORS issue where SSL forced admin prevents CORS from validating, making the calendar not work, and pretty much any ajax request on the frontend
 				//self::maybe_patch_CORS();
+				if ( isset( $_GET['test'] ) )
+					self::otce_2_0_0_compatibility_check();
 
 				// load opentickets
 				require_once 'opentickets.php';
@@ -81,6 +90,11 @@ class opentickets_community_launcher {
 
 		// remove the keychain functionality
 		add_action( 'plugins_loaded', array( __CLASS__, 'remove_keychain' ), -1 );
+
+		// deactivate extensions that are outdated and are incompatible with OTCE 2.0.0
+		add_action( 'activated_plugin', array( __CLASS__, 'otce_2_0_0_compatibility_check' ), -10 );
+		add_action( 'deactivated_plugin', array( __CLASS__, 'otce_2_0_0_compatibility_check' ), -10 );
+		add_action( 'admin_notices', array( __CLASS__, 'maybe_otce_2_0_0_compatibility_message' ), -10 );
 	}
 
 	// when a site uses the 'FORCE_SSL_ADMIN' constant, or hasany of the random plugins that force ssl in the admin, a bad situation occurs, in terms of ajax.
@@ -146,6 +160,65 @@ class opentickets_community_launcher {
 
 		// add a message showing that keychain is active, and that it is now obsolete
 		add_action( 'admin_notices', array( __CLASS__, 'notice_keychain_is_obsolete' ), -1 );
+	}
+
+	// on page load, if there are any plugins that are active, that are known to not be compatible with otce 2.0.0, we need to deactivate them, add a message to the admin, and redirect
+	public static function otce_2_0_0_compatibility_check( $redirect=false ) {
+		// only do this in the admin
+		if ( ! is_admin() )
+			return;
+
+		// require the needed file, if the get_plugins() is not available
+		if ( ! function_exists( 'get_plugins' ) )
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+		// get a list of all the installed plugins, so that we can test them for compatibility
+		$installed = get_plugins();
+
+		$bad_names = array();
+		$bad_keys = array();
+		// perform a series of compatibility checks, and add any that fail to a couple lists for later use
+		foreach ( self::$compatibility_checks as $item ) {
+			if ( isset( $installed[ $item['file'] ] ) && version_compare( $item['min_version'], $installed[ $item['file'] ]['Version'] ) > 0 ) {
+				$bad_names[] = $installed[ $item['file'] ]['Name'];
+				$bad_keys[] = $item['file'];
+			}
+		}
+
+		// add a message that indicates that the plugins were deactivated because they are out of date and have compatibility issues with OTCE, and should be updated
+		update_option( 'otce_2_0_0_compatibility_issues', $bad_names );
+
+		$active = self::_find_active_plugins( true );
+		$need_deactivation = array_intersect( $active, $bad_keys );
+		// if there are not any compatibility issues, then bail now
+		if ( empty( $need_deactivation ) )
+			return;
+
+		// update the active plugins
+		update_option( 'active_plugins', array_diff( $active, $need_deactivation ) );
+
+		if ( is_bool( $redirect ) && true === $redirect ) {
+			wp_redirect( remove_query_arg( 'test' ) );
+			exit;
+		}
+	}
+
+	// maybe show a message about installed plugins that have known compatibility issues with OTCE 2.0.0 (mostly old versions of extensions)
+	public static function maybe_otce_2_0_0_compatibility_message() {
+		// get the name list of all installed plugins that have compatibility problems with OTCE 2.0.0
+		$list = get_option( 'otce_2_0_0_compatibility_issues', array() );
+
+		// if there are none, then bail
+		if ( empty( $list ) )
+			return;
+
+		// otherwise, pop an error
+		?>
+			<div class="error">
+				<p><?php _e( 'There are installed plugins that need to be updated before they can be used with OpenTickets Community Edition 2.0.0 or higher. Some may have been deactivated automatically:', 'opentickets-community-edition' ) ?></p>
+				<p><strong><em><?php echo implode( ', ', $list ) ?></em></strong></p>
+			</div>
+		<?php
 	}
 
 	// pop a message showing that keychain is now obsolete, and should be removed
@@ -227,13 +300,20 @@ class opentickets_community_launcher {
 	}
 
 	// fill a static var with the list of all active plugins
-	protected static function _find_active_plugins() {
+	protected static function _find_active_plugins( $only_this_site=false ) {
+		// get a list of this site's active plugins
+		$active = get_option( 'active_plugins', array() );
+		if ( $only_this_site )
+			return $active;
+
+		// if we do not have a comleted active plugins list then...
 		if ( false === self::$active ) {
-			// aggregate a complete list of active plugins, including those that could be active on the network level
-			$active = get_option( 'active_plugins', array() );
+			// also get a list of the network plugins active
 			$network = defined( 'MULTISITE' ) && MULTISITE ? get_site_option( 'active_sitewide_plugins' ) : array();
-			$active = is_array( $active ) ? $active : array();
 			$network = is_array( $network ) ? $network : array();
+			$active = is_array( $active ) ? $active : array();
+
+			// update the internal full list cache
 			self::$active = array_merge( array_keys( $network ), $active );
 		}
 	}
