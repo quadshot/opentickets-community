@@ -102,7 +102,8 @@
 			}
 
 			$( '.wc-backbone-modal-content' ).css({
-				'margin-top': '-' + ( $( '.wc-backbone-modal-content' ).height() / 2 ) + 'px'
+				'margin-top': '-' + ( $( '.wc-backbone-modal-content' ).height() / 2 ) + 'px',
+				'margin-left': '-' + ( $( '.wc-backbone-modal-content' ).width() / 2 ) + 'px'
 			});
 
 			return this;
@@ -119,6 +120,7 @@
 		},
 
 		open: function( e ) {
+			this.delegateEvents();
 			this.$el.show();
 
 			return this;
