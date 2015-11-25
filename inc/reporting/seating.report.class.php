@@ -8,7 +8,7 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 	protected $offset = 0;
 	protected $event_id = 0;
 	protected $event = null;
-	protected $options = null;
+	protected $state_map = array();
 
 	// initialization specific to this report
 	public function init() {
@@ -18,15 +18,6 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 
 		// setup a map of seat states to descriptive words
 		$class = apply_filters( 'qsot-settings-class-name', '' );
-		$this->options = call_user_func( array( $class, 'instance' ) );
-		$this->state_map = array();
-		if ( is_object( $this->options ) ) {
-			$this->state_map = apply_filters( 'qsot-' . $this->slug . '-report-state-map', array(
-				$this->options->{'z.states.r'} => __( 'Not Paid', 'opentickets-community-edition' ),
-				$this->options->{'z.states.c'} => __( 'Paid', 'opentickets-community-edition' ),
-				$this->options->{'z.states.o'} => __( 'Checked In', 'opentickets-community-edition' ),
-			) );
-		}
 	}
 
 	// individual reports should define their own set of columns to display in html
@@ -66,6 +57,9 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 		$this->offset = 0;
 		$this->event_id = max( 0, intval( $_REQUEST['event_id'] ) );
 		$this->event = $this->event_id ? get_post( $this->event_id ) : (object)array( 'post_title' => __( '(unknown event)', 'opentickets-community-edition' ) );;
+
+		// get the list of valid state types for this event
+		$this->state_map = apply_filters( 'qsot-' . $this->slug . '-report-state-map', array(), $this->event_id );
 
 		// if this is the printer friendly version, display the report title
 		if ( $this->is_printer_friendly() ) {
@@ -249,7 +243,7 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 
 	// the report should define a function to get a partial list of rows to process for this report. for instance, we don't want to have one group of 1,000,000 rows, run all at once, because
 	// the memory implications on that are huge. instead we would need to run it in discreet groups of 1,000 or 10,000 rows at a time, depending on the processing involved
-	public function more_rows(){
+	public function more_rows() {
 		global $wpdb;
 
 		// valid states
@@ -324,10 +318,10 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 		$in = "'" . implode( "','", array_filter( array_map( 'trim', array_keys( $this->state_map ) ) ) ) . "'";
 
 		// find the total sold
-		$total = $wpdb->get_var( $wpdb->prepare( 'select * from ' . $wpdb->qsot_event_zone_to_order . ' where event_id = %d and state in (' . $in . ')', $this->event_id ) );
+		$total = $wpdb->get_var( $wpdb->prepare( 'select sum(quantity) from ' . $wpdb->qsot_event_zone_to_order . ' where event_id = %d and state in (' . $in . ')', $this->event_id ) );
 
 		// get the event capacity
-		$capacity = intval( get_post_meta( get_post_meta( $this->event->ID, $this->options->{'meta_key.event_area'}, true ), $this->options->{'event_area.mk.cap'}, true ) );
+		$capacity = intval( get_post_meta( get_post_meta( $this->event->ID, '_event_area_id', true ), '_capacity', true ) );
 
 		return max( 0, $capacity - $total );
 	}
@@ -370,7 +364,7 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 
 		// either piece together specific groupings of meta, or return the exact meta value
 		switch ( $key ) {
-			default: return isset( $meta[ $key ] ) ? $meta[ $key ] : ''; break;
+			default: return isset( $meta[ $key ] ) && '' !== $meta[ $key ] ? $meta[ $key ] : __( '(none)', 'opentickets-community-edition' ); break;
 
 			// a display name for the purchaser
 			case 'name':
@@ -382,7 +376,8 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 					$names[] = $meta['_billing_last_name'];
 
 				// fall back on the cart identifier
-				return ! empty( $names ) ? implode( ' ', $names ) : '';
+				$names = trim( implode( ' ', $names ) );
+				return ! empty( $names ) ? $names : __( '(no-name/guest)', 'opentickets-community-edition' );
 			break;
 
 			// the address for the purchaser
@@ -393,7 +388,8 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 				if ( isset( $meta['_billing_address_2'] ) )
 					$addresses[] = $meta['_billing_address_2'];
 
-				return implode( ' ', $addresses );
+				$addresses = trim( implode( ' ', $addresses ) );
+				return ! empty( $addresses ) ? $addresses : __( '(none)', 'opentickets-community-edition' );
 			break;
 		}
 	}

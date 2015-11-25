@@ -7,9 +7,9 @@ abstract class QSOT_Base_Event_Area_Zoner {
 	// basic constructor for the area type
 	public function __construct() {
 		$this->stati = array(
-			'r' => array( 'reserved', 3600, __( 'Reserved', 'opentickets-community-edition' ) ),
-			'c' => array( 'confirmed', 0, __( 'Confirmed', 'opentickets-community-edition' ) ),
-			'o' => array( 'occupied', 0, __( 'Occupied', 'opentickets-community-edition' ) ),
+			'r' => array( 'reserved', 3600, __( 'Reserved', 'opentickets-community-edition' ), __( 'Not Paid', 'opentickets-community-edition' ) ),
+			'c' => array( 'confirmed', 0, __( 'Confirmed', 'opentickets-community-edition' ), __( 'Paid', 'opentickets-community-edition' ) ),
+			'o' => array( 'occupied', 0, __( 'Occupied', 'opentickets-community-edition' ), __( 'Checked In', 'opentickets-community-edition' ) ),
 		);
 	}
 

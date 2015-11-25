@@ -53,6 +53,12 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		add_action( 'woocommerce_before_cart_item_quantity_zero', array( &$this, 'delete_ticket_from_cart' ), 10, 1 );
 		add_action( 'woocommerce_cart_item_removed', array( &$this, 'delete_ticket_from_cart' ), 10, 1 );
 
+		// certain filters should only exist in the admin
+		if ( is_admin() ) {
+			// add the list of valid state types to the list that the seating chart will use to pull records
+			add_filter( 'qsot-seating-report-state-map', array( &$this, 'add_state_types_to_report' ), 10, 2 );
+		}
+
 		if ( $ajax ) {
 			// add the gaea ajax handlers
 			$aj = QSOT_Ajax::instance();
@@ -244,6 +250,19 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		);
 
 		return apply_filters( 'qsot-frontend-event-data', $out, $event );
+	}
+
+	// when running the seating report, we need the report to know about our valid reservation states. add then here
+	public function add_state_types_to_report( $list, $event_id ) {
+		// get a list of the valid states from our zoner
+		$zoner = $this->get_zoner();
+		$stati = $zoner->get_stati();
+
+		// add each one to the list we are returning
+		foreach ( $stati as $status )
+			$list[ $status[0] ] = $status[3];
+
+		return $list;
 	}
 
 	// upon successful reservation of tickets, add those tickets to the cart

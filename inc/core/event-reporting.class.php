@@ -354,7 +354,7 @@ abstract class QSOT_Admin_Report {
 				switch ( $col ) {
 					// link the order id if present
 					case 'order_id':
-						echo $row[ $col ] > 0 ? sprintf( '<a href="%s" target="_blank" title="%s">%s</a>', edit_post_link( $value ), esc_attr( __( 'Edit order', 'opentickets-community-edition' ) ), $value ) : $value;
+						echo $row[ $col ] > 0 ? sprintf( '<a href="%s" target="_blank" title="%s">%s</a>', get_edit_post_link( $value ), esc_attr( __( 'Edit order', 'opentickets-community-edition' ) ), $value ) : $value;
 					break;
 
 					// default the purchaser name to the cart id
