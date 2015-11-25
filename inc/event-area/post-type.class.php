@@ -38,6 +38,9 @@ class QSOT_Post_Type_Event_Area {
 	protected $area_types = array();
 	protected $find_order = array();
 
+	// container for event_ids on removed order items, for the purpose of updating the purchases cache
+	protected $event_ids_with_removed_tickets = array();
+
 	// initialize the object. maybe add actions and filters
 	public function initialize() {
 		$this->_setup_admin_options();
@@ -113,9 +116,14 @@ class QSOT_Post_Type_Event_Area {
 
 		// upon order item removal, we need to deregister ticket reservations
 		add_action( 'woocommerce_before_delete_order_item', array( &$this, 'woocommerce_before_delete_order_item' ), 10, 1 );
+		add_action( 'woocommerce_delete_order_item', array( &$this, 'delete_order_item_update_event_purchases' ), 1 );
 
 		// load the information needed to display the ticket
 		add_filter( 'qsot-compile-ticket-info', array( &$this, 'add_event_area_data' ), 2000, 3 );
+
+		// action to update the total purchases for an event
+		add_action( 'qsot-update-event-purchases', array( &$this, 'update_event_purchases' ), 2000, 1 );
+		add_action( 'save_post', array( &$this, 'save_post_update_event_purchases' ), PHP_INT_MAX, 3 );
 
 		// when in the admin, add some more actions and filters
 		if ( is_admin() ) {
@@ -666,6 +674,7 @@ class QSOT_Post_Type_Event_Area {
 		if ( ! is_object( $order ) || is_wp_error( $order ) )
 			return;
 
+		$event_ids = array();
 		// cycle through the order items
 		foreach ( $order->get_items( 'line_item' ) as $oiid => $item ) {
 			// if this item is not on the list of edited items, then skip
@@ -675,6 +684,9 @@ class QSOT_Post_Type_Event_Area {
 			// if this order item is not a ticket, then skip
 			if ( ! apply_filters( 'qsot-item-is-ticket', false, $item ) )
 				continue;
+
+			// add the event_id to the list of event_ids to update purchases on
+			$event_ids[ $item['event_id'] ] = 1;
 
 			$updates = array();
 			// create a container holding all the updates for this item
@@ -692,6 +704,10 @@ class QSOT_Post_Type_Event_Area {
 			// run the update code for this event area on this item
 			$event_area->area_type->save_order_item( $order_id, $oiid, $item, $updates, $event_area );
 		}
+
+		// update the purchases for each event
+		foreach ( $event_ids as $event_id => $__ )
+			do_action( 'qsot-update-event-purchases', $event_id );
 	}
 
 	// add the relevant ticket information and meta to each order item that needs it, along with a change button for event swaps
@@ -872,6 +888,16 @@ class QSOT_Post_Type_Event_Area {
 				do_action( 'qsot-confirmed-ticket', $order, $item, $item_id, $result );
 			}
 		}
+
+		$event_ids = array();
+		$order = wc_get_order( $order_id );
+		// update the total purchases for each event on the order
+		foreach ( $order->get_items() as $item_id => $item )
+			if ( isset( $item['event_id'] ) )
+				$event_ids[ $item['event_id'] ] = 1;
+
+		foreach ( $event_ids as $event_id => $__ )
+			do_action( 'qsot-update-event-purchases', $event_id );
 	}
 	
 	// separate function to handle the order status changes to 'cancelled'
@@ -1156,6 +1182,15 @@ class QSOT_Post_Type_Event_Area {
 
 		// remove the reservations
 		$event_area->area_type->cancel_tickets( $item, $item_id, $order, $event, $event_area );
+		$this->event_ids_with_removed_tickets[ $event_id ] = 1;
+	}
+
+	// function to update the purchases on events that recently had tickets released
+	public function delete_order_item_update_event_purchases( $item_id ) {
+		// if there were events with removed tickets, then recalc the purchased tickets
+		if ( ! empty( $this->event_ids_with_removed_tickets ) )
+			foreach ( $this->event_ids_with_removed_tickets as $event_id => $_ )
+				do_action( 'qsot-update-event-purchases', $event_id );
 	}
 
 	// load the event area information and attach it to the ticket information. used when rendering the ticket
@@ -1174,6 +1209,32 @@ class QSOT_Post_Type_Event_Area {
 			$current = $current->event_area->area_type->compile_ticket( $current );
 
 		return $current;
+	}
+
+	// any time that the total purchases for an event change, we need to update the cached purchase number in the datebase
+	public function update_event_purchases( $event_id ) {
+		// get the query tool used to calc the total
+		$query = QSOT_Zoner_Query::instance();
+
+		// get the list of stati that are considered completed purchases
+		$stati = array( 'confirmed', 'occupied' );
+		/* @TODO: get this list dynamically from all area_types */
+
+		// get the total number of purchases for the event
+		$total = $query->find( array( 'event_id' => $event_id, 'state' => $stati, 'fields' => 'total' ) );
+
+		// update the value in the db
+		update_post_meta( $event_id, '_purchases_ea', $total );
+	}
+
+	// during the saving of an event, auto recalc the purchases
+	public function save_post_update_event_purchases( $post_id, $post ) {
+		// if this post is not an event, then bail
+		if ( 'qsot-event' !== $post->post_type )
+			return;
+
+		// update the event purchases list
+		do_action( 'qsot-update-event-purchases', $post_id );
 	}
 
 	// load the event details for the admin ticket selection interface

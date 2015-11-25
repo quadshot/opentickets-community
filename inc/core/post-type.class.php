@@ -646,9 +646,10 @@ class qsot_post_type {
 		if ( ! is_numeric( $event_id ) || $event_id <= 0 )
 			return $count;
 
-		// fetch the needed data
-		$capacity = (int)get_post_meta( $event_id, '_capacity', true );
-		$purchases = (int)get_post_meta( $event_id, '_purchased_ea', true );
+		$ea_id = intval( get_post_meta( $event_id, '_event_area_id', true ) );
+		$capacity = intval( get_post_meta( $ea_id, '_capacity', true ) );
+		// fetch the total number of reservations for this event
+		$purchases = intval( get_post_meta( $event_id, '_purchases_ea', true ) );
 
 		return $capacity - $purchases;
 	}
@@ -742,6 +743,15 @@ class qsot_post_type {
 				if (($pos = array_search($k, $km)) !== false) $k = $pos;
 				$m[$k] = maybe_unserialize(array_shift($v));
 			}
+
+			// get the proper capacity from the event_area
+			if ( isset( $m['_event_area_id'] ) && intval( $m['_event_area_id'] ) > 0 ) {
+				$m['_event_area_id'] = intval( $m['_event_area_id'] );
+				$m['capacity'] = get_post_meta( $m['_event_area_id'], '_capacity', true );
+			} else {
+				$m['_event_area_id'] = 0;
+			}
+
 			$m = wp_parse_args($m, array('purchases' => 0, 'capacity' => 0));
 			$m['available'] = apply_filters( 'qsot-get-availability', 0, $event->ID );
 			$m['availability'] = apply_filters( 'qsot-get-availability-text', __( 'available', 'opentickets-community-edition' ), $m['available'], $event->ID );
