@@ -602,7 +602,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 			WC()->cart->maybe_set_cart_cookies();
 		// if the request failed for a known reason, then add that reason to the response
 		} else if ( is_wp_error( $res ) ) {
-			$resp['e'] = array_merge( $resp['e'], $res->get_error_message() );
+			$resp['e'] = array_merge( $resp['e'], $res->get_error_messages() );
 		// otherwise it failed for an unknown reason. add an error to the response
 		} else {
 			$resp['e'][] = __( 'Could not update your reservations.', 'opentickets-community-edition' );
@@ -648,7 +648,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 			WC()->cart->maybe_set_cart_cookies();
 		// if the request failed for a known reason, then add that reason to the response
 		} else if ( is_wp_error( $res ) ) {
-			$resp['e'] = array_merge( $resp['e'], $res->get_error_message() );
+			$resp['e'] = array_merge( $resp['e'], $res->get_error_messages() );
 		// otherwise it failed for an unknown reason. add an error to the response
 		} else {
 			$resp['e'][] = __( 'Could not update your reservations.', 'opentickets-community-edition' );
@@ -703,7 +703,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 			WC()->cart->maybe_set_cart_cookies();
 		// if the request failed for a known reason, then add that reason to the response
 		} else if ( is_wp_error( $res ) ) {
-			$resp['e'] = array_merge( $resp['e'], $res->get_error_message() );
+			$resp['e'] = array_merge( $resp['e'], $res->get_error_messages() );
 		// otherwise it failed for an unknown reason. add an error to the response
 		} else {
 			$resp['e'][] = __( 'Could not update your reservations.', 'opentickets-community-edition' );
