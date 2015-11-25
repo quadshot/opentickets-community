@@ -1222,6 +1222,7 @@ class qsot_post_type {
 	// handle the saving of sub events, when a parent event is saved in the admin
 	public static function save_sub_events( $post_id, $post, $data ) {
 		$need_lookup = $updates = $matched = array();
+		$at_least_one_new = false;
 		// default post_arr to send to wp_insert_post
 		$defs = array(
 			'post_type' => self::$o->core_post_type,
@@ -1345,6 +1346,7 @@ class qsot_post_type {
 			if ( count( $need_lookup ) ) {
 				// cycle through them
 				foreach ( $need_lookup as $k => $item ) {
+					$at_least_one_new = true;
 					// get the date in timestamp form so that we can use it to make a pretty title
 					$d = strtotime( $item->start );
 					// if the post is set to publish in the future, then adjust the status
@@ -1442,10 +1444,12 @@ class qsot_post_type {
 		@list( $actual_start, $actual_end ) = apply_filters( 'qsot-event-date-range', array(), array( 'event_id' => $post_id ) );
 
 		$submit_start_date = $submit_end_date = array();
-		if ( isset( $data['_qsot_start_date'] ) && ! empty( $data['_qsot_start_date'] ) ) $submit_start_date[] = $data['_qsot_start_date'];
-		if ( isset( $data['_qsot_start_time'] ) && ! empty( $data['_qsot_start_time'] ) ) $submit_start_date[] = $data['_qsot_start_time'];
-		if ( isset( $data['_qsot_end_date'] ) && ! empty( $data['_qsot_end_date'] ) ) $submit_end_date[] = $data['_qsot_end_date'];
-		if ( isset( $data['_qsot_end_time'] ) && ! empty( $data['_qsot_end_time'] ) ) $submit_end_date[] = $data['_qsot_end_time'];
+		if ( ! $at_least_one_new ) {
+			if ( isset( $data['_qsot_start_date'] ) && ! empty( $data['_qsot_start_date'] ) ) $submit_start_date[] = $data['_qsot_start_date'];
+			if ( isset( $data['_qsot_start_time'] ) && ! empty( $data['_qsot_start_time'] ) ) $submit_start_date[] = $data['_qsot_start_time'];
+			if ( isset( $data['_qsot_end_date'] ) && ! empty( $data['_qsot_end_date'] ) ) $submit_end_date[] = $data['_qsot_end_date'];
+			if ( isset( $data['_qsot_end_time'] ) && ! empty( $data['_qsot_end_time'] ) ) $submit_end_date[] = $data['_qsot_end_time'];
+		}
 
 		$submit_start_date = count( $submit_start_date ) == 2 ? implode( ' ', $submit_start_date ) : '';
 		$submit_end_date = count( $submit_end_date ) == 2 ? implode( ' ', $submit_end_date ) : '';
