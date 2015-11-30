@@ -13,7 +13,7 @@ class QSOT_pdf {
 	}
 
 	// allow some pre-processing to occur on html before it gets integrated into a final pdf
-	public static function from_html( $html, $title ) {
+	public static function from_html( $html, $filename ) {
 		// give us soem breathing room
 		ini_set( 'max_execution_time', 180 );
 		//$ohtml = $html;
@@ -43,7 +43,7 @@ class QSOT_pdf {
 		$pdf = new DOMPDF();
 		$pdf->load_html( $html );
 		$pdf->render();
-		$pdf->stream( sanitize_title_with_dashes( 'ticket-' . $title ) . '.pdf', array( 'Attachment' => 1 ) );
+		$pdf->stream( sanitize_file_name( $filename ), array( 'Attachment' => 1 ) );
 		exit;
 	}
 

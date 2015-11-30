@@ -375,7 +375,8 @@ class QSOT_tickets {
 		switch ( $_GET['frmt'] ) {
 			case 'pdf':
 				$title = $ticket->product->get_title() . ' (' . $ticket->product->get_price() . ')';
-				QSOT_pdf::from_html( $out, $title );
+				$filename = apply_filters( 'qsot-ticket-pdf-filename', sanitize_title_with_dashes( 'ticket-' . $title ) . '.pdf', $title, $ticket, $template, $stylesheet, $branding_image_ids );
+				QSOT_pdf::from_html( $out, $filename );
 			break;
 			default: echo $out; break;
 		}
