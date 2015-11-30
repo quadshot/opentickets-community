@@ -1288,11 +1288,16 @@ class qsot_post_type {
 				// if the post_id was passed in with the settings, then we know what subevent post to modify with these settings already. therefore we do not need to match it up to an existing
 				// subevent or create a new subevent. lets throw it directly into the update list for usage later
 				if ( isset( $tmp->post_id ) && is_numeric( $tmp->post_id ) && $tmp->post_id > 0 ) {
+					// load the existing post, so that we can fetch the original author and content
+					$orig = get_post( $tmp->post_id );
+
 					// parse the date so that we can use it to make a proper post_title
 					$d = strtotime( $tmp->start );
+
 					// if the post is set to publish in the future, then adjust the status
 					$pub = strtotime( $tmp->pub_date );
 					if ( $pub > $now ) $tmp->status = 'future';
+
 					// add the settings to the list of posts to update
 					$updates[] = array(
 						'post_arr' => wp_parse_args( array(
@@ -1307,6 +1312,9 @@ class qsot_post_type {
 							// use that normalized title we made earlier, as to create a pretty url
 							'post_name' => $tmp->title,
 							'post_date' => $tmp->pub_date == '' || $tmp->pub_date == 'now' ? '' : date_i18n( 'Y-m-d H:i:s', strtotime( $tmp->pub_date ) ),
+							// use the original author and content, so that they are not overridden
+							'post_content' => $orig->post_content,
+							'post_author' => $orig->post_author,
 						), $defs),
 						'meta' => array( // setup the meta to save
 							self::$o->{'meta_key.capacity'} => $tmp->capacity, // max occupants
@@ -1372,6 +1380,9 @@ class qsot_post_type {
 								'post_password' => 'protected' == $tmp->visibility ? $tmp->password : '',
 								// update to the proper publish date
 								'post_date' => $tmp->pub_date == '' || $tmp->pub_date == 'now' ? '' : date_i18n( 'Y-m-d H:i:s', strtotime( $tmp->pub_date ) ),
+								// use the original author and content
+								'post_content' => $exist->post_content,
+								'post_author' => $exist->post_author,
 							), $defs ),
 							'meta' => array( // set the meta
 								self::$o->{'meta_key.capacity'} => $tmp->capacity, // occupant capacity
