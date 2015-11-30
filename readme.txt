@@ -171,6 +171,12 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.14.12 - Nov/30/2015 =
+* [new] added filter to the PDF download filename
+* [improvement] saving events maintains original sub event author and content
+* [fix] repaired 'no-image' functionality on ticket branding images
+* [fix] repaired missing ticket links in completed order email edge-case
+
 = 1.14.11 - Nov/12/2015 =
 * [fix] fixed an edge case where an error was caused by mysql settings requiring case sensitive table names
 
