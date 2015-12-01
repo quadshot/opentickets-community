@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenTickets Community Edition\n"
 "POT-Creation-Date: 2015-10-30 07:51-0800\n"
-"PO-Revision-Date: 2015-10-30 07:51-0800\n"
+"PO-Revision-Date: 2015-11-30 16:06-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es_ES\n"
@@ -679,7 +679,7 @@ msgstr "Y-m-d"
 
 #: ../inc/core/post-type.class.php:1812 ../inc/core/post-type.class.php:1818
 msgid "h:ia"
-msgstr "h:i:a"
+msgstr "h:ia"
 
 #: ../inc/core/post-type.class.php:1812
 msgid "Start Time"
