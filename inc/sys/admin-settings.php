@@ -1,4 +1,4 @@
-<?php (__FILE__ == $_SERVER['SCRIPT_FILENAME']) ? die(header('Location: /')) : null;
+<?php if ( __FILE__ == ['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
 
 require_once $GLOBALS['woocommerce']->plugin_path() . '/includes/admin/class-wc-admin-settings.php';
 

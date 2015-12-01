@@ -1,4 +1,4 @@
-<?php (__FILE__ == $_SERVER['SCRIPT_FILENAME']) ? die(header('Location: /')) : null; ?>
+<?php if ( __FILE__ == ['SCRIPT_FILENAME'] ) die( header( 'Location: /') ); ?>
 <div class="clear"></div>
 <h3><?php echo __( 'Contact Information:', 'opentickets-community-edition' ) ?></h3>
 <dl class="no-formatting">

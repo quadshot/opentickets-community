@@ -1,4 +1,4 @@
-<?php (__FILE__ == $_SERVER['SCRIPT_FILENAME']) ? die(header('Location: /')) : null; // block direct access
+<?php if ( __FILE__ == ['SCRIPT_FILENAME'] ) die( header( 'Location: /') ); // block direct access
 
 // loads the admin pages that exist on the admin menu for opentickets
 class QSOT_base_page_launcher {

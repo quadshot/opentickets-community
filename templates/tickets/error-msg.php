@@ -1,4 +1,4 @@
-<?php ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) ? die( header( 'Location: /' ) ) : null; ?>
+<?php if ( __FILE__ == ['SCRIPT_FILENAME'] ) die( header( 'Location: /') ); ?>
 <?php get_header(); ?>
 <style>
 	.message-wrapper { margin-bottom:20px; padding:1em; }
