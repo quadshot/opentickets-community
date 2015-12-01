@@ -10,6 +10,16 @@ class QSOT_pdf {
 	public static function pre_init() {
 		// during activation, we need to do a couple things
 		add_action( 'qsot-activate', array( __CLASS__, 'on_activate' ), 5000 );
+
+		// if we are in the admin, then...
+		if ( is_admin() ) {
+			add_action( 'qsot-otce-updated', array( __CLASS__, 'after_plugin_update' ), 10 );
+		}
+	}
+
+	// after the plugin is updated, we may need to copy new fonts over
+	public static function after_plugin_update() {
+		self::on_activate();
 	}
 
 	// allow some pre-processing to occur on html before it gets integrated into a final pdf
@@ -179,12 +189,19 @@ class QSOT_pdf {
 		return $atts;
 	}
 
-	// during activation
-	public static function on_activate() {
+	// fetch the pdf font cache directory
+	protected static function _font_cache_path() {
 		// determine the cache dir name
 		$u = wp_upload_dir();
 		$base_dir_name = 'qsot-dompdf-fonts-' . substr( sha1( site_url() ), 21, 5 );
 		$final_path = $u['basedir'] . DIRECTORY_SEPARATOR . $base_dir_name . DIRECTORY_SEPARATOR;
+		return $final_path;
+	}
+
+	// during activation
+	public static function on_activate() {
+		// determine the cache dir name
+		$final_path = self::_font_cache_path();
 
 		try {
 			$font_path = QSOT_cache_helper::create_find_path( $final_path, 'fonts' );
