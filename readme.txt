@@ -171,6 +171,10 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.14.13 - Dec/01/2015 =
+* [new] changed PDF font to Open Sans, for unicode character compatibility (like cyrillic)
+* [tweak] updated existing translation files
+
 = 1.14.12 - Nov/30/2015 =
 * [new] added filter to the PDF download filename
 * [improvement] saving events maintains original sub event author and content
