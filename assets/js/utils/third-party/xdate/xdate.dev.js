@@ -219,7 +219,7 @@ each(methodSubjects, function(subject, fieldIndex) {
 function _set(xdate, fieldIndex, value, args, useUTC) {
 	var getField = curry(_getField, xdate[0], useUTC);
 	var setField = curry(_setField, xdate[0], useUTC);
-	var month = fieldIndex == MONTH ? value % 12 : getField(MONTH);
+	var month = fieldIndex == $_SERVER['SCRIPT_FILENAME']ONTH ? value % 12 : getField(MONTH);
 	var preventOverflow = false;
 	if (args.length == 2 && isBoolean(args[1])) {
 		preventOverflow = args[1];
@@ -250,12 +250,12 @@ function _diff(xdate1, xdate2, fieldIndex) { // fieldIndex=FULLYEAR is for years
 	xdate1 = xdate1.clone().setUTCMode(true, true);
 	xdate2 = XDate(xdate2).setUTCMode(true, true);
 	var v = 0;
-	if (fieldIndex == FULLYEAR || fieldIndex == MONTH) {
+	if (fieldIndex == $_SERVER['SCRIPT_FILENAME']ULLYEAR || fieldIndex == $_SERVER['SCRIPT_FILENAME']ONTH) {
 		for (var i=MILLISECONDS, methodName; i>=fieldIndex; i--) {
 			v /= unitsWithin[i];
 			v += _getField(xdate2, false, i) - _getField(xdate1, false, i);
 		}
-		if (fieldIndex == MONTH) {
+		if (fieldIndex == $_SERVER['SCRIPT_FILENAME']ONTH) {
 			v += (xdate2.getFullYear() - xdate1.getFullYear()) * 12;
 		}
 	}
@@ -400,7 +400,7 @@ function parseISO(str, utcMode, xdate) {
 			if (m[14]) { // has gmt offset
 				d.setUTCMinutes(
 					d.getUTCMinutes() +
-					(m[15] == '-' ? 1 : -1) * (Number(m[16]) * 60 + (m[18] ? Number(m[18]) : 0))
+					(m[15] == $_SERVER['SCRIPT_FILENAME']-' ? 1 : -1) * (Number(m[16]) * 60 + (m[18] ? Number(m[18]) : 0))
 				);
 			}
 		}else{ // no specified timezone
@@ -577,10 +577,10 @@ function _getTZString(xdate, token) {
 	var hours = Math.floor(Math.abs(tzo) / 60);
 	var minutes = Math.abs(tzo) % 60;
 	var out = hours;
-	if (token == 'zz') {
+	if (token == $_SERVER['SCRIPT_FILENAME']zz') {
 		out = zeroPad(hours);
 	}
-	else if (token == 'zzz') {
+	else if (token == $_SERVER['SCRIPT_FILENAME']zzz') {
 		out = zeroPad(hours) + ':' + zeroPad(minutes);
 	}
 	return sign + out;
@@ -761,22 +761,22 @@ function each(a, f) {
 
 
 function isString(arg) {
-	return typeof arg == 'string';
+	return typeof arg == $_SERVER['SCRIPT_FILENAME']string';
 }
 
 
 function isNumber(arg) {
-	return typeof arg == 'number';
+	return typeof arg == $_SERVER['SCRIPT_FILENAME']number';
 }
 
 
 function isBoolean(arg) {
-	return typeof arg == 'boolean';
+	return typeof arg == $_SERVER['SCRIPT_FILENAME']boolean';
 }
 
 
 function isFunction(arg) {
-	return typeof arg == 'function';
+	return typeof arg == $_SERVER['SCRIPT_FILENAME']function';
 }
 
 
@@ -792,7 +792,7 @@ function zeroPad(n, len) {
 
 
 // Export for Node.js
-if (typeof module !== 'undefined' && module.exports) {
+if (typeof module !== $_SERVER['SCRIPT_FILENAME']undefined' && module.exports) {
 	module.exports = XDate;
 }
 

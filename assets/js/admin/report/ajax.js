@@ -128,7 +128,7 @@ var QS = QS || { Tools:{} };
 			border:'1px solid #000000',
 			speed:50 // pixels per second
 		}, settings);
-		settings.width = settings.width == 'auto' ? on.outerWidth() : settings.width;
+		settings.width = settings.width == $_SERVER['SCRIPT_FILENAME']auto' ? on.outerWidth() : settings.width;
 
 		settings._bar = $('<div></div>').insertAfter(on).css({
 			height:settings.height,
@@ -188,7 +188,7 @@ var QS = QS || { Tools:{} };
 		var data = f.louSerialize();
 		data.raction = data.action;
 
-		if (data.raction == 'extended-form') {
+		if (data.raction == $_SERVER['SCRIPT_FILENAME']extended-form') {
 			$('#report_result').empty();
 			var target = $('#form_extended').empty();
 			var msg = $('<h4></h4>').appendTo(target);

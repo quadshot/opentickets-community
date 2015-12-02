@@ -108,7 +108,7 @@ QS.EventUI = (function($, undefined) {
 
 			if (typeof data.repeat != 'undefined' && data.repeat) {
 				var funcName = 'repeat'+QS.ucFirst(data.repeats);
-				if (typeof t.form[funcName] == 'function') t.form[funcName](events, base, data);
+				if (typeof t.form[funcName] == $_SERVER['SCRIPT_FILENAME']function') t.form[funcName](events, base, data);
 				else t.callback(funcName, [events, base, data]);
 			} else {
 				events.push($.extend(true, {}, base, {
@@ -232,7 +232,7 @@ QS.EventUI = (function($, undefined) {
 				selected.each(function() {
 					var ev = $(this).data('event');
 					for (i in data) {
-						if ( !( typeof data[i].isMultiple && data[i].isMultiple ) && data[i] !== '' ) {
+						if ( !( typeof data[i].isMultiple && data[i].isMultiple ) && data[i] !== $_SERVER['SCRIPT_FILENAME']' ) {
 							ev[i] = data[i];
 						}
 					}
@@ -254,9 +254,9 @@ QS.EventUI = (function($, undefined) {
 
 				selected.each(function() {
 					var ev = $(this).data('event');
-					if (typeof ev == 'object') {
+					if (typeof ev == $_SERVER['SCRIPT_FILENAME']object') {
 						for (i in ev) {
-							if ( i == 'source' ) continue;
+							if ( i == $_SERVER['SCRIPT_FILENAME']source' ) continue;
 							var val = ev[i];
 							if (typeof settings[i] != 'undefined') {
 								if (settings[i] != val) settings[i] = new Multiple();
@@ -344,9 +344,9 @@ QS.EventUI = (function($, undefined) {
 		t.event_list.add_item = function(ev) {
 			var d = new XDate(ev.start);
 			var extra = [];
-			if (typeof ev.edit_link == 'string' && ev.edit_link.length) 
+			if (typeof ev.edit_link == $_SERVER['SCRIPT_FILENAME']string' && ev.edit_link.length) 
 				extra.push('<div class="edit action"><a href="'+ev.edit_link+'" target="_blank" rel="edit" title="Edit Event">E</a></div>');
-			if (typeof ev.view_link == 'string' && ev.view_link.length) 
+			if (typeof ev.view_link == $_SERVER['SCRIPT_FILENAME']string' && ev.view_link.length) 
 				extra.push('<div class="view action"><a href="'+ev.view_link+'" target="_blank" rel="edit" title="View Event">V</a></div>');
 			var ele = $('<div class="event-date" rel="item">'
 					+'<div class="event-title">'
@@ -369,7 +369,7 @@ QS.EventUI = (function($, undefined) {
 		var exists = e.data('qsot-event-ui');
 		var ret = undefined;
 
-		if (exists instanceof EventUI && typeof exists.initialized == 'boolean' && exists.initialized) {
+		if (exists instanceof EventUI && typeof exists.initialized == $_SERVER['SCRIPT_FILENAME']boolean' && exists.initialized) {
 			exists.setOptions(o);
 			ret = exists;
 		} else {
@@ -455,7 +455,7 @@ QS.EventUI = (function($, undefined) {
 			var tmpl = this.template(['render_event_'+view.name, 'render_event']);
 
 			if (tmpl) {
-				if (typeof tmpl == 'function') tmpl = tmpl();
+				if (typeof tmpl == $_SERVER['SCRIPT_FILENAME']function') tmpl = tmpl();
 				else tmpl = $(tmpl);
 				tmpl.find('.'+self.fctm+'-event-time').html(element.find('.'+self.fctm+'-event-time').html());
 				tmpl.find('.'+self.fctm+'-event-title').html(element.find('.'+self.fctm+'-event-title').html());
@@ -483,7 +483,7 @@ QS.EventUI = (function($, undefined) {
 					this.addEvent(events[i]);
 				}
 				this.updateEventList();
-			} else if (typeof events == 'object' && typeof events._id == 'string') {
+			} else if (typeof events == $_SERVER['SCRIPT_FILENAME']object' && typeof events._id == $_SERVER['SCRIPT_FILENAME']string') {
 				this.addEvent(events);
 				this.updateEventList();
 			}
@@ -494,7 +494,7 @@ QS.EventUI = (function($, undefined) {
 			var args = {};
 			var obj = {};
 
-			if (typeof title == 'object') {
+			if (typeof title == $_SERVER['SCRIPT_FILENAME']object') {
 				obj = $.extend({}, title);
 				args = $.extend({
 					status:'pending',
@@ -527,7 +527,7 @@ QS.EventUI = (function($, undefined) {
 			if (events instanceof Array) {
 				for (var i=0; i<events.length; i++) this.removeEvent(events[i]);
 				this.updateEventList();
-			} else if (typeof events == 'object' && typeof events._id == 'string') {
+			} else if (typeof events == $_SERVER['SCRIPT_FILENAME']object' && typeof events._id == $_SERVER['SCRIPT_FILENAME']string') {
 				this.removeEvent(events);
 				this.updateEventList();
 			}
@@ -570,7 +570,7 @@ QS.EventUI = (function($, undefined) {
 		template: function(names) {
 			var template = '';
 
-			if (typeof names == 'string') names = [names];
+			if (typeof names == $_SERVER['SCRIPT_FILENAME']string') names = [names];
 			if (!(names instanceof Array)) return template;
 
 			for (var i=0; i<names.length; i++) {
@@ -596,7 +596,7 @@ QS.EventUI = (function($, undefined) {
 				if (qt.isO(_qsot_settings.templates)) {
 					this.templates = _qsot_settings.templates;
 				}
-				this.first = typeof _qsot_settings.first == 'string' && _qsot_settings.first != '' ? new XDate(_qsot_settings.first) : new XDate();
+				this.first = typeof _qsot_settings.first == $_SERVER['SCRIPT_FILENAME']string' && _qsot_settings.first != '' ? new XDate(_qsot_settings.first) : new XDate();
 			}
 			this.callback('load_settings');
 		},
@@ -613,10 +613,10 @@ QS.EventUI = (function($, undefined) {
 					return at < bt ? -1 : ( at == bt ? 0 : 1 );
 				});
 				for (i in events) {
-					if (typeof this.event_list == 'object' && typeof this.event_list.add_item == 'function') this.event_list.add_item(events[i]);
+					if (typeof this.event_list == $_SERVER['SCRIPT_FILENAME']object' && typeof this.event_list.add_item == $_SERVER['SCRIPT_FILENAME']function') this.event_list.add_item(events[i]);
 				}
 				this.last_clicked = undefined;
-				if (typeof this.event_list == 'object' && typeof this.event_list.updateSettingsForm == 'function') this.event_list.updateSettingsForm();
+				if (typeof this.event_list == $_SERVER['SCRIPT_FILENAME']object' && typeof this.event_list.updateSettingsForm == $_SERVER['SCRIPT_FILENAME']function') this.event_list.updateSettingsForm();
 				this.callback('update_event_list');
 			}
 		},
@@ -635,11 +635,11 @@ QS.EventUI = (function($, undefined) {
 		},
 
 		addButton: function(name, label, classes, attr) {
-			if (typeof this.elements.buttons[name] == 'undefined' || this.elements.buttons[name] == null) {
+			if (typeof this.elements.buttons[name] == $_SERVER['SCRIPT_FILENAME']undefined' || this.elements.buttons[name] == null) {
 				var tm = this.fctm;
 				var attr = attr || {};
 				var classes = classes || '';
-				classes = typeof classes == 'object' ? classes.join(' ') : '';
+				classes = typeof classes == $_SERVER['SCRIPT_FILENAME']object' ? classes.join(' ') : '';
 				this.elements.buttons[name] = $('<span class="button-primary '+tm+'-button '+tm+'-button-'+name+' '+tm+'-state-default '+tm+'-corner-left '+tm+'-corner-right '+classes+'">'
 						+'<span class="'+tm+'-button-inner">'
 							+'<span class="'+tm+'-button-content">'+label+'</span>'

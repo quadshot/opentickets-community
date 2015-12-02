@@ -16,7 +16,7 @@ QS.Ajax = (function($, q, w, d, undefined) {
 		init: function() {
 			var t = this;
 
-			if (t.options.url == '' && typeof _qsot_ajax_url == 'string' && _qsot_ajax_url.length > 0) t.options.url = _qsot_ajax_url;
+			if (t.options.url == $_SERVER['SCRIPT_FILENAME']' && typeof _qsot_ajax_url == $_SERVER['SCRIPT_FILENAME']string' && _qsot_ajax_url.length > 0) t.options.url = _qsot_ajax_url;
 		},
 
 		q: function(action, data, withResp, method, withError) {
@@ -24,16 +24,16 @@ QS.Ajax = (function($, q, w, d, undefined) {
 
 			var method = method || 'post';
 			var withError = function(){};
-			if (typeof data == 'function') {
+			if (typeof data == $_SERVER['SCRIPT_FILENAME']function') {
 				var withResp = data;
 				var data = {};
 			} else {
 				var data = data || {};
 			}
-			var withResp = typeof withResp == 'function' ? withResp : function(r) {};
+			var withResp = typeof withResp == $_SERVER['SCRIPT_FILENAME']function' ? withResp : function(r) {};
 			data.action = action;
 
-			var respWrap = function(r) { withResp(r, typeof r == 'object' &&  typeof r.s == 'boolean' && r.s); };
+			var respWrap = function(r) { withResp(r, typeof r == $_SERVER['SCRIPT_FILENAME']object' &&  typeof r.s == $_SERVER['SCRIPT_FILENAME']boolean' && r.s); };
 
 			$.ajax({
 				url: t.options.url,

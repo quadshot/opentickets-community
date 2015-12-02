@@ -18,7 +18,7 @@ QS.EventAreaUICB = new QS.CB();
 			dataType: 'json',
 			contentType: 'application/x-www-form-urlencoded',
 			success: function(r) {
-				if (typeof r == 'object') {
+				if (typeof r == $_SERVER['SCRIPT_FILENAME']object') {
 					if (typeof r.e != 'undefined') console.log('ajax error: ', r.e);
 					func(r);
 				} else { efunc(); }

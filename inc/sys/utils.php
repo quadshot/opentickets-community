@@ -1,4 +1,4 @@
-<?php if ( __FILE__ == ['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
+<?php if ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
 
 // a list of helpers for basic tasks we need throughout the plugin
 class QSOT_Utils {

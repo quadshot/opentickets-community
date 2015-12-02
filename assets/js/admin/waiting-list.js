@@ -22,7 +22,7 @@ QS.AdminWaitingListUserSelector = (function($, undefined) {
 		function _trigger_dialog(e, actions) {
 			e.preventDefault();
 			t.ran = false;
-			if (typeof actions == 'object') t.actions = $.extend(t.actions, actions);
+			if (typeof actions == $_SERVER['SCRIPT_FILENAME']object') t.actions = $.extend(t.actions, actions);
 			t.e.dia.dialog('open');
 		};
 
@@ -114,7 +114,7 @@ QS.AdminWaitingList = (function($, undefined) {
 			var eid = t.e.elist.val();
 			t.currentEid = eid;
 			var ename = $(this).find('option[value="'+eid+'"]').text();
-			t.currentList = typeof t.o.lists[eid+''] == 'object' ? t.o.lists[eid+''] : [];
+			t.currentList = typeof t.o.lists[eid+''] == $_SERVER['SCRIPT_FILENAME']object' ? t.o.lists[eid+''] : [];
 			t.o.nomsg = '<p>There are no partons on the waiting list for event ['+ename+'].</p>';
 			_populate_list(t.currentList, t.o.nomsg);
 
@@ -149,7 +149,7 @@ QS.AdminWaitingList = (function($, undefined) {
 			t.e.main.block({ message:'One moment please...', overlayCSS:{ backgroundColor:'#ffffff' } });
 
 			_ajax(data, function(r) {
-				if (typeof r == 'object' && r.s) {
+				if (typeof r == $_SERVER['SCRIPT_FILENAME']object' && r.s) {
 					t.currentList.push({u:data.uid, q:data.q});
 					t.o.users[r.uid] = r.u;
 					t.e.elist.change();
@@ -179,12 +179,12 @@ QS.AdminWaitingList = (function($, undefined) {
 
 				function _error() { t.e.main.unblock(); }
 				function _success(r) {
-					if (typeof r == 'object' && r.s) {
+					if (typeof r == $_SERVER['SCRIPT_FILENAME']object' && r.s) {
 						_remove_from_stored_list(item);
 						t.e.main.unblock();
 						_populate_list(t.currentList, t.o.nomsg);
 					}
-					if (typeof r.e == 'object' && r.e.length) {
+					if (typeof r.e == $_SERVER['SCRIPT_FILENAME']object' && r.e.length) {
 						_draw_errors(r.e);
 					}
 				};
@@ -282,7 +282,7 @@ QS.AdminWaitingList = (function($, undefined) {
 		function _setup_events() {
 			if (t.e.elist.length) {
 				t.e.elist.change(_change_waiting_list);
-				if (t.e.elist.length && qt.toInt(t.o['parent']) == 0 && typeof t.o.lists == 'object') {
+				if (t.e.elist.length && qt.toInt(t.o['parent']) == 0 && typeof t.o.lists == $_SERVER['SCRIPT_FILENAME']object') {
 					t.e.elist.change();
 				}
 			} else {
@@ -413,9 +413,9 @@ QS.AdminWaitingListSeatingReport = (function($, undefined) {
 
 		function _add_msg(e, m) {
 			e.preventDefault();
-			if (typeof m == 'string') {
+			if (typeof m == $_SERVER['SCRIPT_FILENAME']string') {
 				$('<div class="errmsg">- '+m+'</div>').appendTo(t.e.main.find('#waiting-list-wrap .messages'));
-			} else if (typeof m == 'object' && m.length) {
+			} else if (typeof m == $_SERVER['SCRIPT_FILENAME']object' && m.length) {
 				for (var i=0; i<m.length; i++)
 					$('<div class="errmsg">- '+m[i]+'</div>').appendTo(t.e.main.find('#waiting-list-wrap .messages'));
 			}
@@ -465,6 +465,6 @@ QS.AdminWaitingListSeatingReport = (function($, undefined) {
 })(jQuery);
 
 jQuery(function($) {
-	if (typeof _qsot_waiting_list_settings == 'object') QS.AdminWaitingList.start(_qsot_waiting_list_settings);
-	if (typeof _qsot_sr_waiting_list_settings == 'object') QS.AdminWaitingListSeatingReport.start(_qsot_sr_waiting_list_settings);
+	if (typeof _qsot_waiting_list_settings == $_SERVER['SCRIPT_FILENAME']object') QS.AdminWaitingList.start(_qsot_waiting_list_settings);
+	if (typeof _qsot_sr_waiting_list_settings == $_SERVER['SCRIPT_FILENAME']object') QS.AdminWaitingListSeatingReport.start(_qsot_sr_waiting_list_settings);
 });

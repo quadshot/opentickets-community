@@ -248,7 +248,7 @@
 				return false;
 			},
 			getViewport = function () {
-				var m = document.compatMode == 'CSS1Compat';
+				var m = document.compatMode == $_SERVER['SCRIPT_FILENAME']CSS1Compat';
 				return {
 					l : window.pageXOffset || (m ? document.documentElement.scrollLeft : document.body.scrollLeft),
 					t : window.pageYOffset || (m ? document.documentElement.scrollTop : document.body.scrollTop),
@@ -374,7 +374,7 @@
 		return {
 			init: function (opt) {
 				opt = $.extend({}, defaults, opt||{});
-				if (typeof opt.color == 'string') {
+				if (typeof opt.color == $_SERVER['SCRIPT_FILENAME']string') {
 					opt.color = HexToHSB(opt.color);
 				} else if (opt.color.r != undefined && opt.color.g != undefined && opt.color.b != undefined) {
 					opt.color = RGBToHSB(opt.color);
@@ -449,7 +449,7 @@
 				});
 			},
 			setColor: function(col) {
-				if (typeof col == 'string') {
+				if (typeof col == $_SERVER['SCRIPT_FILENAME']string') {
 					col = HexToHSB(col);
 				} else if (col.r != undefined && col.g != undefined && col.b != undefined) {
 					col = RGBToHSB(col);

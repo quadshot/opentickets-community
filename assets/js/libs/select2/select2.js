@@ -154,8 +154,8 @@ the specific language governing permissions and limitations under the Apache Lic
         if (a === null || b === null) return false;
         // Check whether 'a' or 'b' is a string (primitive or object).
         // The concatenation of an empty string (+'') converts its argument to a string's primitive.
-        if (a.constructor === String) return a+'' === b+''; // a+'' - in case 'a' is a String object
-        if (b.constructor === String) return b+'' === a+''; // b+'' - in case 'b' is a String object
+        if (a.constructor === $_SERVER['SCRIPT_FILENAME']tring) return a+'' === b+''; // a+'' - in case 'a' is a String object
+        if (b.constructor === $_SERVER['SCRIPT_FILENAME']tring) return b+'' === a+''; // b+'' - in case 'b' is a String object
         return false;
     }
 
@@ -423,7 +423,7 @@ the specific language governing permissions and limitations under the Apache Lic
                     params = $.extend({}, $.fn.select2.ajaxDefaults.params, deprecated);
 
                 data = data ? data.call(self, query.term, query.page, query.context) : null;
-                url = (typeof url === 'function') ? url.call(self, query.term, query.page, query.context) : url;
+                url = (typeof url === $_SERVER['SCRIPT_FILENAME']function') ? url.call(self, query.term, query.page, query.context) : url;
 
                 if (handler && typeof handler.abort === "function") { handler.abort(); }
 
@@ -563,7 +563,7 @@ the specific language governing permissions and limitations under the Apache Lic
     function checkFormatter(formatter, formatterName) {
         if ($.isFunction(formatter)) return true;
         if (!formatter) return false;
-        if (typeof(formatter) === 'string') return true;
+        if (typeof(formatter) === $_SERVER['SCRIPT_FILENAME']string') return true;
         throw new Error(formatterName +" must be a string, function, or falsy value");
     }
 
@@ -1232,10 +1232,10 @@ the specific language governing permissions and limitations under the Apache Lic
                 throw "query function not defined for Select2 " + opts.element.attr("id");
             }
 
-            if (opts.createSearchChoicePosition === 'top') {
+            if (opts.createSearchChoicePosition === $_SERVER['SCRIPT_FILENAME']top') {
                 opts.createSearchChoicePosition = function(list, item) { list.unshift(item); };
             }
-            else if (opts.createSearchChoicePosition === 'bottom') {
+            else if (opts.createSearchChoicePosition === $_SERVER['SCRIPT_FILENAME']bottom') {
                 opts.createSearchChoicePosition = function(list, item) { list.push(item); };
             }
             else if (typeof(opts.createSearchChoicePosition) !== "function")  {
@@ -1460,7 +1460,7 @@ the specific language governing permissions and limitations under the Apache Lic
             //console.log("above/ offset.top", offset.top, "dropHeight", dropHeight, "top", (offset.top-dropHeight), "scrollTop", this.body.scrollTop(), "enough?", enoughRoomAbove);
 
             // fix positioning when body has an offset and is not position: static
-            if (this.body.css('position') !== 'static') {
+            if (this.body.css('position') !== $_SERVER['SCRIPT_FILENAME']static') {
                 bodyOffset = this.body.offset();
                 dropTop -= bodyOffset.top;
                 dropLeft -= bodyOffset.left;

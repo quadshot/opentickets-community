@@ -1,4 +1,4 @@
-<?php if ( __FILE__ == ['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
+<?php if ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
 
 // handles the basic rewrite rule changes and routing required for our plugin, and really any plugin that wants to use this
 class qsot_rewriter {

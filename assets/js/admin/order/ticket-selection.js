@@ -16,7 +16,7 @@ QS.adminTicketSelection = (function($, qs, qt) {
 			type: 'POST',
 			dataType: 'json',
 			success: function(r) {
-				if (typeof r == 'object') {
+				if (typeof r == $_SERVER['SCRIPT_FILENAME']object') {
 					if (typeof r.e != 'undefined') console.log('ajax error: ', r.e);
 					func(r);
 				} else { efunc(); }
@@ -68,7 +68,7 @@ QS.adminTicketSelection = (function($, qs, qt) {
 		function _start_change_event(e) {
 			e.preventDefault();
 			var dt = new XDate();
-			if (typeof t.ev == 'object' && typeof t.ev.dt == 'string') dt = new XDate(t.ev.dt);
+			if (typeof t.ev == $_SERVER['SCRIPT_FILENAME']object' && typeof t.ev.dt == $_SERVER['SCRIPT_FILENAME']string') dt = new XDate(t.ev.dt);
 			_load_calendar(dt);
 		}
 
@@ -80,7 +80,7 @@ QS.adminTicketSelection = (function($, qs, qt) {
 			t.oiid = qt.toInt(me.attr('item-id'));
 			t.oi = me.closest('.item');
 
-			if (event_id <= 0) event_id = typeof t.ev == 'object' && typeof t.ev.id != 'undfined' ? qt.toInt(t.ev.id) : 0;
+			if (event_id <= 0) event_id = typeof t.ev == $_SERVER['SCRIPT_FILENAME']object' && typeof t.ev.id != 'undfined' ? qt.toInt(t.ev.id) : 0;
 			if (event_id > 0) t.priced_like = event_id;
 
 			if (event_id > 0) {
@@ -94,7 +94,7 @@ QS.adminTicketSelection = (function($, qs, qt) {
 			e.preventDefault();
 			t.current_action = 'add';
 			var dt = new XDate();
-			if (typeof t.ev == 'object' && typeof t.ev.dt == 'string') dt = new XDate(t.ev.dt);
+			if (typeof t.ev == $_SERVER['SCRIPT_FILENAME']object' && typeof t.ev.dt == $_SERVER['SCRIPT_FILENAME']string') dt = new XDate(t.ev.dt);
 			_load_calendar(dt);
 		}
 
@@ -120,7 +120,7 @@ QS.adminTicketSelection = (function($, qs, qt) {
 				}
 
 				if (!r.s) {
-					if (typeof r.e == 'object') _dia_error(r.e);
+					if (typeof r.e == $_SERVER['SCRIPT_FILENAME']object') _dia_error(r.e);
 					else _dia_error(['There was a problem adding those tickets.']);
 					dia.qsUnblock();
 					return;
@@ -143,8 +143,8 @@ QS.adminTicketSelection = (function($, qs, qt) {
 		}
 
 		function _update_order_items(success, failure) {
-			var s = function(r) { t.e.oi.qsUnblock(); if (typeof success == 'function') success(r); },
-					e = function() { t.e.oi.qsUnblock(); if (typeof failure == 'function') failure(); };
+			var s = function(r) { t.e.oi.qsUnblock(); if (typeof success == $_SERVER['SCRIPT_FILENAME']function') success(r); },
+					e = function() { t.e.oi.qsUnblock(); if (typeof failure == $_SERVER['SCRIPT_FILENAME']function') failure(); };
 			t.e.oi.qsBlock({ css:{ zIndex:9999 }, msgcss:{ zIndex:10000 } });
 			aj('update-order-items', {}, s, e);
 		}

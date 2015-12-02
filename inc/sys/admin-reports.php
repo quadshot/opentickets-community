@@ -1,4 +1,4 @@
-<?php if ( __FILE__ == ['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
+<?php if ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
 
 class qsot_admin_settings {
 	private $start_date;

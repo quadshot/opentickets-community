@@ -1,4 +1,4 @@
-<?php if ( __FILE__ == ['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
+<?php if ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
 
 /**
  * Overtake some of the core WC ajax functions.
@@ -189,7 +189,7 @@ class QSOT_order_admin_ajax {
 		$fee            = new stdClass();
 		$fee->name      = '';
 		$fee->tax_class = '';
-		$fee->taxable   = $fee->tax_class !== '0';
+		$fee->taxable   = $fee->tax_class !== $_SERVER['SCRIPT_FILENAME']0';
 		$fee->amount    = '';
 		$fee->tax       = '';
 		$fee->tax_data  = array();

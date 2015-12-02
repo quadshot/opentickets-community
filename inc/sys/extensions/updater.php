@@ -1,4 +1,4 @@
-<?php if ( __FILE__ == ['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
+<?php if ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
 
 // handles the update checker and updating process for all our extensions
 class QSOT_Extensions_Updater {

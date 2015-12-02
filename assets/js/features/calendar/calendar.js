@@ -65,8 +65,8 @@ var QSEventsEventCalendar = (function($, w, d, undefined) {
 
 		function _current_date() {
 			if (
-					(typeof t.o.gotoDate == 'object' && t.o.gotoDate != null)
-					|| typeof t.o.gotoDate == 'string'
+					(typeof t.o.gotoDate == $_SERVER['SCRIPT_FILENAME']object' && t.o.gotoDate != null)
+					|| typeof t.o.gotoDate == $_SERVER['SCRIPT_FILENAME']string'
 			) {
 				return new XDate(t.o.gotoDate);
 			} else {
@@ -98,7 +98,7 @@ var QSEventsEventCalendar = (function($, w, d, undefined) {
 		};
 
 		function _click(calEvent, e, view) {
-			if (typeof t.o.onSelection == 'function') {
+			if (typeof t.o.onSelection == $_SERVER['SCRIPT_FILENAME']function') {
 				t.o.onSelection(e, calEvent);
 			}
 		};
@@ -126,7 +126,7 @@ var QSEventsEventCalendar = (function($, w, d, undefined) {
 								left: parseInt((dims.width - t.e._lmsg.outerWidth())/2),
 							};
 							t.e._lmsg.css(pos);
-							if (typeof view == 'object' && view != null) curVD(view);
+							if (typeof view == $_SERVER['SCRIPT_FILENAME']object' && view != null) curVD(view);
 						}
 					};
 					_on_resize(0);
@@ -192,7 +192,7 @@ var QSEventsEventCalendar = (function($, w, d, undefined) {
 
 		function _image_load_trick(imgsrc, primary_key, func) {
 			if (typeof t.fix[primary_key] != 'object') t.fix[primary_key] = {};
-			if (typeof imgsrc == 'string' && typeof t.fix[primary_key][imgsrc] != 'number') {
+			if (typeof imgsrc == $_SERVER['SCRIPT_FILENAME']string' && typeof t.fix[primary_key][imgsrc] != 'number') {
 				t.fix[primary_key][imgsrc] = 0;
 				var img = new Image();
 				img.onload = function() {
@@ -203,7 +203,7 @@ var QSEventsEventCalendar = (function($, w, d, undefined) {
 							loaded = false;
 						}
 					}
-					if (loaded && typeof func == 'function') {
+					if (loaded && typeof func == $_SERVER['SCRIPT_FILENAME']function') {
 						func();
 					}
 				};

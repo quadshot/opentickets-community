@@ -121,7 +121,7 @@ $.fn.fullCalendar = function(options) {
 
 
 	// method calling
-	if (typeof options == 'string') {
+	if (typeof options == $_SERVER['SCRIPT_FILENAME']string') {
 		var args = Array.prototype.slice.call(arguments, 1);
 		var res;
 		this.each(function() {
@@ -131,7 +131,7 @@ $.fn.fullCalendar = function(options) {
 				if (res === undefined) {
 					res = r;
 				}
-				if (options == 'destroy') {
+				if (options == $_SERVER['SCRIPT_FILENAME']destroy') {
 					$.removeData(this, 'fullCalendar');
 				}
 			}
@@ -636,7 +636,7 @@ function Calendar(element, options, eventSources) {
 		if (value === undefined) {
 			return options[name];
 		}
-		if (name == 'height' || name == 'contentHeight' || name == 'aspectRatio') {
+		if (name == $_SERVER['SCRIPT_FILENAME']height' || name == $_SERVER['SCRIPT_FILENAME']contentHeight' || name == $_SERVER['SCRIPT_FILENAME']aspectRatio') {
 			options[name] = value;
 			updateSize();
 		}
@@ -734,7 +734,7 @@ function Header(calendar, options) {
 				}
 				var prevButton;
 				$.each(this.split(','), function(j, buttonName) {
-					if (buttonName == 'title') {
+					if (buttonName == $_SERVER['SCRIPT_FILENAME']title') {
 						e.append("<span class='fc-header-title'><h2>&nbsp;</h2></span>");
 						if (prevButton) {
 							prevButton.addClass(tm + '-corner-right');
@@ -953,7 +953,7 @@ function EventManager(options, _sources) {
 				// the fetcher is in charge. made its own async request
 				return;
 			}
-			else if (typeof res == 'object') {
+			else if (typeof res == $_SERVER['SCRIPT_FILENAME']object') {
 				// the fetcher returned a new source. process it
 				_fetchEventSource(res, callback);
 				return;
@@ -1034,10 +1034,10 @@ function EventManager(options, _sources) {
 		if ($.isFunction(source) || $.isArray(source)) {
 			source = { events: source };
 		}
-		else if (typeof source == 'string') {
+		else if (typeof source == $_SERVER['SCRIPT_FILENAME']string') {
 			source = { url: source };
 		}
-		if (typeof source == 'object') {
+		if (typeof source == $_SERVER['SCRIPT_FILENAME']object') {
 			normalizeSource(source);
 			sources.push(source);
 			return source;
@@ -1198,7 +1198,7 @@ function EventManager(options, _sources) {
 			event.allDay = firstDefined(source.allDayDefault, options.allDayDefault);
 		}
 		if (event.className) {
-			if (typeof event.className == 'string') {
+			if (typeof event.className == $_SERVER['SCRIPT_FILENAME']string') {
 				event.className = event.className.split(/\s+/);
 			}
 		}else{
@@ -1216,7 +1216,7 @@ function EventManager(options, _sources) {
 	function normalizeSource(source) {
 		if (source.className) {
 			// TODO: repeat code, same code for event classNames
-			if (typeof source.className == 'string') {
+			if (typeof source.className == $_SERVER['SCRIPT_FILENAME']string') {
 				source.className = source.className.split(/\s+/);
 			}
 		}else{
@@ -1235,7 +1235,7 @@ function EventManager(options, _sources) {
 	
 	
 	function getSourcePrimitive(source) {
-		return ((typeof source == 'object') ? (source.events || source.url) : '') || source;
+		return ((typeof source == $_SERVER['SCRIPT_FILENAME']object') ? (source.events || source.url) : '') || source;
 	}
 
 
@@ -1383,13 +1383,13 @@ function setYMD(date, y, m, d) {
 
 
 function parseDate(s, ignoreTimezone) { // ignoreTimezone defaults to true
-	if (typeof s == 'object') { // already a Date object
+	if (typeof s == $_SERVER['SCRIPT_FILENAME']object') { // already a Date object
 		return s;
 	}
-	if (typeof s == 'number') { // a UNIX timestamp
+	if (typeof s == $_SERVER['SCRIPT_FILENAME']number') { // a UNIX timestamp
 		return new Date(s * 1000);
 	}
-	if (typeof s == 'string') {
+	if (typeof s == $_SERVER['SCRIPT_FILENAME']string') {
 		if (s.match(/^\d+(\.\d+)?$/)) { // a UNIX timestamp
 			return new Date(parseFloat(s) * 1000);
 		}
@@ -1449,7 +1449,7 @@ function parseISO8601(s, ignoreTimezone) { // ignoreTimezone defaults to false
 		);
 		if (m[14]) {
 			var offset = Number(m[16]) * 60 + (m[18] ? Number(m[18]) : 0);
-			offset *= m[15] == '-' ? 1 : -1;
+			offset *= m[15] == $_SERVER['SCRIPT_FILENAME']-' ? 1 : -1;
 			date = new Date(+date + (offset * 60 * 1000));
 		}
 	}
@@ -1458,10 +1458,10 @@ function parseISO8601(s, ignoreTimezone) { // ignoreTimezone defaults to false
 
 
 function parseTime(s) { // returns minutes since start of day
-	if (typeof s == 'number') { // an hour
+	if (typeof s == $_SERVER['SCRIPT_FILENAME']number') { // an hour
 		return s * 60;
 	}
-	if (typeof s == 'object') { // a Date object
+	if (typeof s == $_SERVER['SCRIPT_FILENAME']object') { // a Date object
 		return s.getHours() * 60 + s.getMinutes();
 	}
 	var m = s.match(/(\d+)(?::(\d+))?\s*(\w+)?/);
@@ -1469,7 +1469,7 @@ function parseTime(s) { // returns minutes since start of day
 		var h = parseInt(m[1], 10);
 		if (m[3]) {
 			h %= 12;
-			if (m[3].toLowerCase().charAt(0) == 'p') {
+			if (m[3].toLowerCase().charAt(0) == $_SERVER['SCRIPT_FILENAME']p') {
 				h += 12;
 			}
 		}
@@ -1513,9 +1513,9 @@ function formatDates(date1, date2, format, options) {
 				}
 			}
 		}
-		else if (c == '(') {
+		else if (c == $_SERVER['SCRIPT_FILENAME'](') {
 			for (i2=i+1; i2<len; i2++) {
-				if (format.charAt(i2) == ')') {
+				if (format.charAt(i2) == $_SERVER['SCRIPT_FILENAME'])') {
 					var subres = formatDate(date, format.substring(i+1, i2), options);
 					if (parseInt(subres.replace(/\D/, ''), 10)) {
 						res += subres;
@@ -1525,9 +1525,9 @@ function formatDates(date1, date2, format, options) {
 				}
 			}
 		}
-		else if (c == '[') {
+		else if (c == $_SERVER['SCRIPT_FILENAME'][') {
 			for (i2=i+1; i2<len; i2++) {
-				if (format.charAt(i2) == ']') {
+				if (format.charAt(i2) == $_SERVER['SCRIPT_FILENAME']]') {
 					var subformat = format.substring(i+1, i2);
 					var subres = formatDate(date, subformat, options);
 					if (subres != formatDate(otherDate, subformat, options)) {
@@ -1538,11 +1538,11 @@ function formatDates(date1, date2, format, options) {
 				}
 			}
 		}
-		else if (c == '{') {
+		else if (c == $_SERVER['SCRIPT_FILENAME']{') {
 			date = date2;
 			otherDate = date1;
 		}
-		else if (c == '}') {
+		else if (c == $_SERVER['SCRIPT_FILENAME']}') {
 			date = date1;
 			otherDate = date2;
 		}
@@ -1833,7 +1833,7 @@ function vborders(element) {
 
 
 function setMinHeight(element, height) {
-	height = (typeof height == 'number' ? height + 'px' : height);
+	height = (typeof height == $_SERVER['SCRIPT_FILENAME']number' ? height + 'px' : height);
 	element.each(function(i, _element) {
 		_element.style.cssText += ';min-height:' + height + ';_height:' + height;
 		// why can't we just use .css() ? i forget
@@ -2036,7 +2036,7 @@ function MonthView(element, calendar) {
 		addDays(visStart, -((visStart.getDay() - Math.max(firstDay, nwe) + 7) % 7));
 		addDays(visEnd, (7 - visEnd.getDay() + Math.max(firstDay, nwe)) % 7);
 		var rowCnt = Math.round((visEnd - visStart) / (DAY_MS * 7));
-		if (opt('weekMode') == 'fixed') {
+		if (opt('weekMode') == $_SERVER['SCRIPT_FILENAME']fixed') {
 			addDays(visEnd, (6 - rowCnt) * 7);
 			rowCnt = 6;
 		}
@@ -2406,7 +2406,7 @@ function BasicView(element, calendar, viewName) {
 		var rowHeightLast;
 		var cell;
 			
-		if (opt('weekMode') == 'variable') {
+		if (opt('weekMode') == $_SERVER['SCRIPT_FILENAME']variable') {
 			rowHeight = rowHeightLast = Math.floor(bodyHeight / (rowCnt==1 ? 2 : 6));
 		}else{
 			rowHeight = Math.floor(bodyHeight / rowCnt);
@@ -4411,7 +4411,7 @@ function View(element, calendar, viewName) {
 	
 	function opt(name, viewNameOverride) {
 		var v = options[name];
-		if (typeof v == 'object') {
+		if (typeof v == $_SERVER['SCRIPT_FILENAME']object') {
 			return smartProperty(v, viewNameOverride || viewName);
 		}
 		return v;

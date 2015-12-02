@@ -117,7 +117,7 @@
 
             myData = JSON.parse(text, function (key, value) {
                 var a;
-                if (typeof value === 'string') {
+                if (typeof value === $_SERVER['SCRIPT_FILENAME']string') {
                     a =
 /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/.exec(value);
                     if (a) {
@@ -130,9 +130,9 @@
 
             myData = JSON.parse('["Date(09/09/2001)"]', function (key, value) {
                 var d;
-                if (typeof value === 'string' &&
-                        value.slice(0, 5) === 'Date(' &&
-                        value.slice(-1) === ')') {
+                if (typeof value === $_SERVER['SCRIPT_FILENAME']string' &&
+                        value.slice(0, 5) === $_SERVER['SCRIPT_FILENAME']Date(' &&
+                        value.slice(-1) === $_SERVER['SCRIPT_FILENAME'])') {
                     d = new Date(value.slice(5, -1));
                     if (d) {
                         return d;
@@ -154,7 +154,7 @@
 */
 // Create a JSON object only if one does not already exist. We create the
 // methods in a closure to avoid creating global variables.
-if (typeof JSON !== 'object') {
+if (typeof JSON !== $_SERVER['SCRIPT_FILENAME']object') {
   JSON = {};
 }
 
@@ -166,7 +166,7 @@ if (typeof JSON !== 'object') {
     return n < 10 ? '0' + n : n;
   }
 
-  if (typeof Date.prototype.toJSON !== 'function') {
+  if (typeof Date.prototype.toJSON !== $_SERVER['SCRIPT_FILENAME']function') {
 
     Date.prototype.toJSON = function (key) {
 
@@ -211,7 +211,7 @@ if (typeof JSON !== 'object') {
     escapable.lastIndex = 0;
     return escapable.test(string) ? '"' + string.replace(escapable, function (a) {
       var c = meta[a];
-      return typeof c === 'string' ? c : '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
+      return typeof c === $_SERVER['SCRIPT_FILENAME']string' ? c : '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
     }) + '"' : '"' + string + '"';
   }
 
@@ -230,15 +230,15 @@ if (typeof JSON !== 'object') {
 
     // If the value has a toJSON method, call it to obtain a replacement value.
 
-    if (value && typeof value === 'object' &&
-      typeof value.toJSON === 'function') {
+    if (value && typeof value === $_SERVER['SCRIPT_FILENAME']object' &&
+      typeof value.toJSON === $_SERVER['SCRIPT_FILENAME']function') {
       value = value.toJSON(key);
     }
 
     // If we were called with a replacer function, then call the replacer to
     // obtain a replacement value.
 
-    if (typeof rep === 'function') {
+    if (typeof rep === $_SERVER['SCRIPT_FILENAME']function') {
       value = rep.call(holder, key, value);
     }
 
@@ -282,7 +282,7 @@ if (typeof JSON !== 'object') {
 
       // Is the value an array?
 
-      if (Object.prototype.toString.apply(value) === '[object Array]') {
+      if (Object.prototype.toString.apply(value) === $_SERVER['SCRIPT_FILENAME'][object Array]') {
 
         // The value is an array. Stringify every element. Use null as a placeholder
         // for non-JSON values.
@@ -302,10 +302,10 @@ if (typeof JSON !== 'object') {
 
       // If the replacer is an array, use it to select the members to be stringified.
 
-      if (rep && typeof rep === 'object') {
+      if (rep && typeof rep === $_SERVER['SCRIPT_FILENAME']object') {
         length = rep.length;
         for (i = 0; i < length; i += 1) {
-          if (typeof rep[i] === 'string') {
+          if (typeof rep[i] === $_SERVER['SCRIPT_FILENAME']string') {
             k = rep[i];
             v = str(k, value);
             if (v) {
@@ -338,7 +338,7 @@ if (typeof JSON !== 'object') {
 
   // If the JSON object does not yet have a stringify method, give it one.
 
-  if (typeof JSON.stringify !== 'function') {
+  if (typeof JSON.stringify !== $_SERVER['SCRIPT_FILENAME']function') {
     JSON.stringify = function (value, replacer, space) {
 
       // The stringify method takes a value and an optional replacer, and an optional
@@ -354,14 +354,14 @@ if (typeof JSON !== 'object') {
       // If the space parameter is a number, make an indent string containing that
       // many spaces.
 
-      if (typeof space === 'number') {
+      if (typeof space === $_SERVER['SCRIPT_FILENAME']number') {
         for (i = 0; i < space; i += 1) {
           indent += ' ';
         }
 
         // If the space parameter is a string, it will be used as the indent string.
 
-      } else if (typeof space === 'string') {
+      } else if (typeof space === $_SERVER['SCRIPT_FILENAME']string') {
         indent = space;
       }
 
@@ -369,9 +369,9 @@ if (typeof JSON !== 'object') {
       // Otherwise, throw an error.
 
       rep = replacer;
-      if (replacer && typeof replacer !== 'function' &&
-        (typeof replacer !== 'object' ||
-        typeof replacer.length !== 'number')) {
+      if (replacer && typeof replacer !== $_SERVER['SCRIPT_FILENAME']function' &&
+        (typeof replacer !== $_SERVER['SCRIPT_FILENAME']object' ||
+        typeof replacer.length !== $_SERVER['SCRIPT_FILENAME']number')) {
         throw new Error('JSON.stringify');
       }
 
@@ -387,7 +387,7 @@ if (typeof JSON !== 'object') {
 
   // If the JSON object does not yet have a parse method, give it one.
 
-  if (typeof JSON.parse !== 'function') {
+  if (typeof JSON.parse !== $_SERVER['SCRIPT_FILENAME']function') {
     JSON.parse = function (text, reviver) {
 
       // The parse method takes a text and an optional reviver function, and returns
@@ -401,7 +401,7 @@ if (typeof JSON !== 'object') {
         // that modifications can be made.
 
         var k, v, value = holder[key];
-        if (value && typeof value === 'object') {
+        if (value && typeof value === $_SERVER['SCRIPT_FILENAME']object') {
           for (k in value) {
             if (Object.prototype.hasOwnProperty.call(value, k)) {
               v = walk(value, k);
@@ -458,7 +458,7 @@ if (typeof JSON !== 'object') {
         // In the optional fourth stage, we recursively walk the new structure, passing
         // each name/value pair to a reviver function for possible transformation.
 
-        return typeof reviver === 'function' ? walk({
+        return typeof reviver === $_SERVER['SCRIPT_FILENAME']function' ? walk({
           '': j
         }, '') : j;
       }

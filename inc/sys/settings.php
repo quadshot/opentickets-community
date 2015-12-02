@@ -1,4 +1,4 @@
-<?php if ( __FILE__ == ['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
+<?php if ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
 
 /* Settings Singleton. Contains all the settings used throughout the events plugin. INTERNAL SETTINGS ONLY. for the user-input settings (admin page) checkout qsot_options */
 class qsot_settings {

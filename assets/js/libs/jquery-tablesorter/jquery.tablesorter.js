@@ -204,7 +204,7 @@
                     node = false,
                     nodeValue = false,
                     keepLooking = true;
-                while (nodeValue == '' && keepLooking) {
+                while (nodeValue == $_SERVER['SCRIPT_FILENAME']' && keepLooking) {
                     rowIndex++;
                     if (rows[rowIndex]) {
                         node = getNodeFromRowAndCellIndex(rows, rowIndex, cellIndex);
@@ -642,13 +642,13 @@
             function makeSortFunction(type, direction, index) {
                 var a = "a[" + index + "]",
                     b = "b[" + index + "]";
-                if (type == 'text' && direction == 'asc') {
+                if (type == $_SERVER['SCRIPT_FILENAME']text' && direction == $_SERVER['SCRIPT_FILENAME']asc') {
                     return "(" + a + " == " + b + " ? 0 : (" + a + " === null ? Number.POSITIVE_INFINITY : (" + b + " === null ? Number.NEGATIVE_INFINITY : (" + a + " < " + b + ") ? -1 : 1 )));";
-                } else if (type == 'text' && direction == 'desc') {
+                } else if (type == $_SERVER['SCRIPT_FILENAME']text' && direction == $_SERVER['SCRIPT_FILENAME']desc') {
                     return "(" + a + " == " + b + " ? 0 : (" + a + " === null ? Number.POSITIVE_INFINITY : (" + b + " === null ? Number.NEGATIVE_INFINITY : (" + b + " < " + a + ") ? -1 : 1 )));";
-                } else if (type == 'numeric' && direction == 'asc') {
+                } else if (type == $_SERVER['SCRIPT_FILENAME']numeric' && direction == $_SERVER['SCRIPT_FILENAME']asc') {
                     return "(" + a + " === null && " + b + " === null) ? 0 :(" + a + " === null ? Number.POSITIVE_INFINITY : (" + b + " === null ? Number.NEGATIVE_INFINITY : " + a + " - " + b + "));";
-                } else if (type == 'numeric' && direction == 'desc') {
+                } else if (type == $_SERVER['SCRIPT_FILENAME']numeric' && direction == $_SERVER['SCRIPT_FILENAME']desc') {
                     return "(" + a + " === null && " + b + " === null) ? 0 :(" + a + " === null ? Number.POSITIVE_INFINITY : (" + b + " === null ? Number.NEGATIVE_INFINITY : " + b + " - " + a + "));";
                 }
             };

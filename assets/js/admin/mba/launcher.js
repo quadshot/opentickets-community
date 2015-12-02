@@ -36,8 +36,8 @@
 		(new $.MBAMsgHandler({
 			obj:btn,
 			callback:function(msg) {
-				if (typeof msg == 'object' && msg != null) {
-					var rel = $(btn).parents((btn.attr('relative') == 'parent' ? btn.attr('parent') : btn.attr('relative')) || 'body').eq(0);
+				if (typeof msg == $_SERVER['SCRIPT_FILENAME']object' && msg != null) {
+					var rel = $(btn).parents((btn.attr('relative') == $_SERVER['SCRIPT_FILENAME']parent' ? btn.attr('parent') : btn.attr('relative')) || 'body').eq(0);
 					$(btn.attr('alt-field'), rel).val(msg.alt).change();
 					$('<img '
 						+'src="'+msg.src+'" '
@@ -59,7 +59,7 @@
 	$(document).off('click.loumba', '.lou-mba-image-deselector').on('click.loumba', '.lou-mba-image-deselector', function(e) {
 		e.preventDefault();
 		var btn = $(this);
-		var rel = $(btn).closest((btn.attr('relative') == 'parent' ? btn.attr('parent') : btn.attr('relative')) || 'body');
+		var rel = $(btn).closest((btn.attr('relative') == $_SERVER['SCRIPT_FILENAME']parent' ? btn.attr('parent') : btn.attr('relative')) || 'body');
 		var keys = ['id-field', 'src-field', 'title-field', 'alt-field'];
 		for (i in keys) $(btn.attr(keys[i]), rel).val('');
 		$(btn.attr('preview'), rel).empty()

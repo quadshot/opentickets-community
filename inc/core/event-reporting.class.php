@@ -1,4 +1,4 @@
-<?php if ( __FILE__ == ['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
+<?php if ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
 
 class qsot_reporting {
 	// holder for event plugin options
@@ -683,7 +683,7 @@ abstract class QSOT_Admin_Report {
 		 */
 		do_action( 'admin_head' );
 
-		if ( get_user_setting('mfold') == 'f' )
+		if ( get_user_setting('mfold') == $_SERVER['SCRIPT_FILENAME']f' )
 			$admin_body_class .= ' folded';
 
 		if ( !get_user_setting('unfold') )
@@ -853,7 +853,7 @@ abstract class qsot_admin_report {
 		do_action("admin_head-$hook_suffix");
 		do_action('admin_head');
 
-		if ( get_user_setting('mfold') == 'f' )
+		if ( get_user_setting('mfold') == $_SERVER['SCRIPT_FILENAME']f' )
 			$admin_body_class .= ' folded';
 
 		if ( !get_user_setting('unfold') )

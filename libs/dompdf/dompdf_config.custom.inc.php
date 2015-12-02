@@ -1,4 +1,4 @@
-<?php if ( __FILE__ == ['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
+<?php if ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
 // track version since the lib does not do it itself... sigh
 define( 'DOMPDF_VERSION', '0.6.1' );
 require_once 'dompdf.custom.functions.php';

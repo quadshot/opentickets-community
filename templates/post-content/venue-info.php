@@ -1,4 +1,4 @@
-<?php if ( __FILE__ == ['SCRIPT_FILENAME'] ) die( header( 'Location: /') ); ?>
+<?php if ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) die( header( 'Location: /') ); ?>
 <?php do_action( 'qsot-before-venue-info-outside', $venue_id, $meta ) ?>
 <div class="venue-info">
 	<?php do_action( 'qsot-before-venue-info-inside', $venue_id, $meta ) ?>

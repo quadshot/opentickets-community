@@ -51,7 +51,7 @@ var _qsot_nag_settings = _qsot_nag_settings || {};
 
 		for (var i=0; i<o.answers.length; i++) {
 			var ans = o.answers[i];
-			var core = ans.type == 'link' ? $('<a href="#">'+ans.label+'</a>') : $('<input type="button" value="'+ans.label+'"/>');
+			var core = ans.type == $_SERVER['SCRIPT_FILENAME']link' ? $('<a href="#">'+ans.label+'</a>') : $('<input type="button" value="'+ans.label+'"/>');
 			core.addClass('action');
 			if (qt.is(ans.class)) core.addClass(ans.class);
 			if (qt.is(ans.action)) core.attr('act' , ans.action);

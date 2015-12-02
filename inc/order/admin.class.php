@@ -1,4 +1,4 @@
-<?php if ( __FILE__ == ['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
+<?php if ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
 
 class qsot_order_admin {
 	// holder for event plugin options
@@ -64,7 +64,7 @@ class qsot_order_admin {
 	// draw the new user button as soon as possible on the order data metabox
 	public static function new_user_btn($order) {
 		?><script language="javascript" type="text/javascript">
-			if (typeof jQuery == 'object' || typeof jQuery == 'function')
+			if (typeof jQuery == $_SERVER['SCRIPT_FILENAME']object' || typeof jQuery == $_SERVER['SCRIPT_FILENAME']function')
 				(function($) {
 					var w = $( '<span class="new-user-btn-wrap"></span>' ).appendTo( '.order_data_column .form-field label[for="customer_user"]' );
 					$( '<a href="#" class="new-user-btn" rel="new-user-btn">new</a>' ).appendTo( w );
@@ -157,7 +157,7 @@ class qsot_order_admin {
 		if ($post->post_type != 'shop_order') return $pass;
 
 		// if guest checkout is active, this does not apply
-		if (get_option('woocommerce_enable_guest_checkout', 'no') == 'yes') return $pass;
+		if (get_option('woocommerce_enable_guest_checkout', 'no') == $_SERVER['SCRIPT_FILENAME']yes') return $pass;
 
 		// restrict for everyone except those who can manage woocommerce settings (ie: administrators)
 		if (current_user_can('manage_woocommerce')) return $pass;
@@ -172,7 +172,7 @@ class qsot_order_admin {
 		if ($post->post_type != 'shop_order') return $msg;
 
 		// if guest checkout is active, this does not apply
-		if (get_option('woocommerce_enable_guest_checkout', 'no') == 'yes') return $msg;
+		if (get_option('woocommerce_enable_guest_checkout', 'no') == $_SERVER['SCRIPT_FILENAME']yes') return $msg;
 
 		// restrict for everyone except those who can manage woocommerce settings (ie: administrators)
 		if (current_user_can('manage_woocommerce')) return $msg;
@@ -188,7 +188,7 @@ class qsot_order_admin {
 		if ($post->post_type != 'shop_order') return;
 
 		// if guest checkout is active, this does not apply
-		if (get_option('woocommerce_enable_guest_checkout', 'no') == 'yes') return;
+		if (get_option('woocommerce_enable_guest_checkout', 'no') == $_SERVER['SCRIPT_FILENAME']yes') return;
 
 		// restrict for everyone except those who can manage woocommerce settings (ie: administrators)
 		if (current_user_can('manage_woocommerce')) return;
@@ -209,7 +209,7 @@ class qsot_order_admin {
 				} else {
 					$order = new WC_Order($post_id);
 					$stati = wp_get_object_terms( array( $post_id ), array( 'shop_order_status' ), 'slugs' );
-					$ostatus = substr( $ostatus = current( $stati ), 0, 3 ) == 'wc-' ? substr( $ostatus, 3 ) : $ostatus;
+					$ostatus = substr( $ostatus = current( $stati ), 0, 3 ) == $_SERVER['SCRIPT_FILENAME']wc-' ? substr( $ostatus, 3 ) : $ostatus;
 				}
 				if ( $ostatus != 'pending' ) {
 					$order->update_status('pending', __('You cannot use "Guest" as the owner of the order, due to current Woocommerce settings.','opentickets-community-edition'));
@@ -476,7 +476,7 @@ class qsot_order_admin {
 		$last_name = trim( $_POST['new_user_last_name'] );
 
 		// if we are not using the email as the username, then
-		if ( get_option( 'woocommerce_registration_email_for_username', 'no' ) == 'no' ) {
+		if ( get_option( 'woocommerce_registration_email_for_username', 'no' ) == $_SERVER['SCRIPT_FILENAME']no' ) {
 			// if there is no specified username, then error out to that effect
 			if ( empty( $username ) ) {
 				$res['e'][] = __( 'The username is a required field.', 'opentickets-community-edition' );
@@ -517,7 +517,7 @@ class qsot_order_admin {
 
 			// compile the information we will use to create the user
 			$user_info = array(
-				'user_login' => ( get_option( 'woocommerce_registration_email_for_username', 'no' ) == 'yes' ) ? $email : $username,
+				'user_login' => ( get_option( 'woocommerce_registration_email_for_username', 'no' ) == $_SERVER['SCRIPT_FILENAME']yes' ) ? $email : $username,
 				'user_email' => $email,
 				'user_pass' => version_compare( $GLOBALS['wp_version'], '4.3.1' ) >= 0 ? null : self::_random_pass( 8 ),
 				'first_name' => $first_name,
@@ -581,7 +581,7 @@ class qsot_order_admin {
 					.'.new-user-form-wrapper .messages .msg { color:#000088; background-color:#eeeeff; border-color:#000088; } '
 				.'</style>'
 				.'<div class="messages" rel="messages"></div>'
-				.(get_option('woocommerce_registration_email_for_username', 'no') == 'yes'
+				.(get_option('woocommerce_registration_email_for_username', 'no') == $_SERVER['SCRIPT_FILENAME']yes'
 					? ''
 					: '<div class="field">'
 							.'<label for="new_user_login">'.__('Username','opentickets-community-edition').'</label>'
@@ -611,7 +611,7 @@ class qsot_order_admin {
 
 		foreach ($order->get_items() as $item) {
 			$product = $order->get_product_from_item($item);
-			if ($product->ticket == 'yes') {
+			if ($product->ticket == $_SERVER['SCRIPT_FILENAME']yes') {
 				$has = true;
 				break;
 			}
