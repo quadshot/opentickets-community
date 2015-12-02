@@ -1,4 +1,4 @@
-<?php if ( __FILE__ == ['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
+<?php ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) ? die( header( 'Location: /' ) ) : null;
 $show_available_qty = apply_filters( 'qsot-get-option-value', true, 'qsot-show-available-quantity' );
 
 // figure out the purchase limit for the event

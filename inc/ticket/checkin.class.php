@@ -1,4 +1,4 @@
-<?php if ( __FILE__ == ['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
+<?php (__FILE__ == $_SERVER['SCRIPT_FILENAME']) ? die(header('Location: /')) : null;
 
 /* Handles the various parts of the checkin procedure, from checkin code creation, code validation, injecting the code in the ticket, etc...
  */

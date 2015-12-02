@@ -1,4 +1,4 @@
-<?php if (__FILE__ == $_SERVER['SCRIPT_FILENAME']) die(header('Location: /'));
+<?php (__FILE__ == $_SERVER['SCRIPT_FILENAME']) ? die(header('Location: /')) : null;
 /**
  * Plugin Name: OpenTickets Community Edition
  * Plugin URI:  http://opentickets.com/

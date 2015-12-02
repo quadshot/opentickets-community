@@ -1,4 +1,4 @@
-<?php if ( __FILE__ == ['SCRIPT_FILENAME'] ) die( header( 'Location: /') ); // block direct access
+<?php (__FILE__ == $_SERVER['SCRIPT_FILENAME']) ? die(header('Location: /')) : null; // block direct access
 
 // class for displaying the system status page
 class QSOT_system_status_page extends QSOT_base_page {
