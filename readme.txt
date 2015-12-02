@@ -171,6 +171,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.14.14 - Dev/02/2015 =
+* [fix] fixed php syntax errors on script security
+
 = 1.14.13 - Dec/01/2015 =
 * [new] changed PDF font to Open Sans, for unicode character compatibility (like cyrillic)
 * [tweak] changed script security so that it is compatible with eAccelerator
@@ -775,6 +778,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 * initial public release
 
 == Upgrade Notice ==
+
+= 1.14.14 =
+This update repairs the php syntax problems of the last update, dealing with the script security. Apologies.
 
 = 1.14.0 =
 This update makes the Keychain extension obsolete. It will also enable you to update your OpenTickets Extensions using the WordPress updater. In addition, you will be able to browse our available OpenTickets extensions right inside your own admin.
