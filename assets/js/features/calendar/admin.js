@@ -2,7 +2,7 @@
 (function($) {
 	$(document).on('change', '#page_template', function(e) {
 		var me = $(this), par = me.closest('.postbox'), mb = par.siblings('#qsot-calendar-settings-box');
-		if (me.val() == $_SERVER['SCRIPT_FILENAME']qsot-calendar.php') {
+		if (me.val() == 'qsot-calendar.php') {
 			mb.addClass('show');
 		} else {
 			mb.removeClass('show');

@@ -1,4 +1,4 @@
-<?php if ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
+<?php if ( __FILE__ == ['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
 
 if (!class_exists('qsot_zoner')):
 
@@ -663,13 +663,13 @@ class qsot_zoner {
 				$indexed[$st] = array_sum( array_values( $cnts ) );
 
 			// if all results were requested, or if there are no results, then just return the whole list
-			if (empty($state) || $state == $_SERVER['SCRIPT_FILENAME']*' || is_array($state)) return $indexed;
+			if (empty($state) || $state == '*' || is_array($state)) return $indexed;
 
 			// otherwise, we need to only return a specific resultset, based on requested state
 			return isset($indexed[$state]) ? $indexed[$state] : 0;
 		} else {
 			// if all results were requested, or if there are no results, then just return the whole list
-			if (empty($state) || $state == $_SERVER['SCRIPT_FILENAME']*' || is_array($state)) return $indexed;
+			if (empty($state) || $state == '*' || is_array($state)) return $indexed;
 
 			// otherwise, we need to only return a specific resultset, based on requested state
 			return isset($indexed[$state]) ? $indexed[$state] : array();
@@ -734,7 +734,7 @@ class qsot_zoner {
 		}
 
 		// we have no results, we requested all results, or we requested multiple state results, then just return the whole resultset
-		if (empty($indexed) || $state == $_SERVER['SCRIPT_FILENAME']*' || is_array($state)) return $indexed;
+		if (empty($indexed) || $state == '*' || is_array($state)) return $indexed;
 
 		// otherwise only return the specified results
 		return isset($indexed[$state]) ? $indexed[$state] : array();
@@ -901,9 +901,9 @@ class qsot_zoner {
 
 			// normalize the qty, in the special DEC and INC scenarios (from checkin)
 			if ( isset( $set['qty'] ) ) {
-				if ( $set['qty'] == $_SERVER['SCRIPT_FILENAME']::DEC::' )
+				if ( $set['qty'] == '::DEC::' )
 					$set['qty'] = $total - 1;
-				else if ( $set['qty'] == $_SERVER['SCRIPT_FILENAME']::INC::' )
+				else if ( $set['qty'] == '::INC::' )
 					$set['qty'] = $total + 1;
 
 				// if the request is to update a 'reserved' quantity, then
@@ -1017,7 +1017,7 @@ class qsot_zoner {
 		if ( is_resource( self::$log_file ) ) {
 			foreach ( func_get_args() as $arg ) {
 				if ( is_scalar( $arg ) ) {
-					if ( $arg == $_SERVER['SCRIPT_FILENAME']*__f__*' ) {
+					if ( $arg == '*__f__*' ) {
 						$bt = self::bt( true );
 						$out = 'BACKTRACE: ' . implode( "\n", $bt );
 					} else {

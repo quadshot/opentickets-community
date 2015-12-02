@@ -1,4 +1,4 @@
-<?php if ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
+<?php if ( __FILE__ == ['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
 
 // allow external plugins to override this class
 if (!class_exists('qsot_base_widget')):

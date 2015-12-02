@@ -1,4 +1,4 @@
-<?php if ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
+<?php if ( __FILE__ == ['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
 
 // core functionality of the extension fetcher
 class QSOT_Extensions_Core {

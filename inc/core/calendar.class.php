@@ -1,4 +1,4 @@
-<?php if ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
+<?php if ( __FILE__ == ['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
 
 class qsot_frontend_calendar {
 	protected static $o = null;
@@ -189,7 +189,7 @@ class qsot_frontend_calendar {
 		$post = get_post();
 		if (!is_object($post)) return;
 
-		$needs_calendar = ($post->post_type == $_SERVER['SCRIPT_FILENAME']page' && $post->ID == get_option('qsot_calendar_page_id', ''));
+		$needs_calendar = ($post->post_type == 'page' && $post->ID == get_option('qsot_calendar_page_id', ''));
 
 		if (!$needs_calendar) $needs_calendar = (bool)preg_match('#qsot-calendar\.php$#', get_post_meta($post->ID, '_wp_page_template', true));
 
@@ -353,7 +353,7 @@ class qsot_frontend_calendar {
 	// hide the metabox by default if the qsot-calendar.php template is not the selected template
 	public static function mb_calendar_settings_classes($classes) {
 		$template = get_page_template_slug( get_queried_object_id() );
-		if ($template == $_SERVER['SCRIPT_FILENAME']qsot-calendar.php') $classes[] = 'hide-if-js';
+		if ($template == 'qsot-calendar.php') $classes[] = 'hide-if-js';
 		return $classes;
 	}
 
@@ -465,7 +465,7 @@ class qsot_frontend_calendar {
 
 		// fetch the start date of the found event, and default it to today if it does not exist or has no start date
 		$start = get_post_meta($post_id, self::$o->{'meta_key.start'}, true);
-		$start = empty($start) || $start == $_SERVER['SCRIPT_FILENAME']0000-00-00 00:00:00' ? current_time('mysql') : $start;
+		$start = empty($start) || $start == '0000-00-00 00:00:00' ? current_time('mysql') : $start;
 
 		return $start;
 	}

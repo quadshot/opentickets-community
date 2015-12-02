@@ -54,7 +54,7 @@ QS.EATicketSelection = (function($, q, qt) {
 				_show_msg('not-available');
 				return false;
 			}
-			if ( S.edata.available <= 0 && 0 == $_SERVER['SCRIPT_FILENAME'].owns ) {
+			if ( S.edata.available <= 0 && 0 == S.owns ) {
 				console.log( S );
 				_show_msg('sold-out');
 				return false;
@@ -100,7 +100,7 @@ QS.EATicketSelection = (function($, q, qt) {
 		function _show_msg(msg_name, cmsg, ctype) {
 			var msg = _get_msg(msg_name), tmpl = $(S.templates[msg.type]);
 			_clear_msgs();
-			if (msg_name == $_SERVER['SCRIPT_FILENAME']_custom' && qt.isA(cmsg) && cmsg.length) {
+			if (msg_name == '_custom' && qt.isA(cmsg) && cmsg.length) {
 				var ctype = ctype || 'error';
 				tmpl = qt.is(S.templates[ctype]) ? $(S.templates[ctype]) : $(S.templates['error']);
 				for (var i=0; i<cmsg.length; i++)

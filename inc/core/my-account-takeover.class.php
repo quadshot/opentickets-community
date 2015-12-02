@@ -1,4 +1,4 @@
-<?php if ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
+<?php if ( __FILE__ == ['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
 
 class qsot_my_account_takeover {
 	protected static $options = array();
@@ -26,7 +26,7 @@ class qsot_my_account_takeover {
 			add_action('woocommerce_my_account_my_orders_headers', array(__CLASS__, 'my_orders_headers'), 10, 2);
 
 			// allow users to be logged in indefinitely, more or less
-			if (self::$options->{'qsot-infinite-login'} == $_SERVER['SCRIPT_FILENAME']yes') {
+			if (self::$options->{'qsot-infinite-login'} == 'yes') {
 				//add_action('login_init', array(__CLASS__, 'long_test_cookie'), PHP_INT_MAX);
 				add_filter('auth_cookie_expiration', array(__CLASS__, 'long_login_expire'), PHP_INT_MAX, 3);
 				add_filter('auth_cookie_expire_time', array(__CLASS__, 'long_login_expire'), PHP_INT_MAX, 4);

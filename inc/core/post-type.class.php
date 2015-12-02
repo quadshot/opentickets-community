@@ -1,4 +1,4 @@
-<?php if ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
+<?php if ( __FILE__ == ['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
 
 /* Handles the creation of the qsot (events) post type. Also handles the builtin metaboxes, event save actions, and general admin interface setup for events. */
 class qsot_post_type {
@@ -247,7 +247,7 @@ class qsot_post_type {
 		global $menu, $submenu;
 
 		foreach ($menu as $ind => $mitem) {
-			if (isset($mitem[5]) && $mitem[5] == $_SERVER['SCRIPT_FILENAME']menu-posts-'.self::$o->core_post_type) {
+			if (isset($mitem[5]) && $mitem[5] == 'menu-posts-'.self::$o->core_post_type) {
 				$key = $menu[$ind][2];
 				$new_key = $menu[$ind][2] = add_query_arg(array('post_parent' => 0), $key);
 				if (isset($submenu[$key])) {
@@ -268,7 +268,7 @@ class qsot_post_type {
 	public static function patch_menu_second_hack() {
 		global $parent_file;
 
-		if ($parent_file == $_SERVER['SCRIPT_FILENAME']edit.php?post_type='.self::$o->core_post_type) $parent_file = add_query_arg(array('post_parent' => 0), $parent_file);
+		if ($parent_file == 'edit.php?post_type='.self::$o->core_post_type) $parent_file = add_query_arg(array('post_parent' => 0), $parent_file);
 	}
 
 	// based on $args, determine the start and ending date of a set of events
@@ -486,7 +486,7 @@ class qsot_post_type {
 			$final = array();
 			foreach ($columns as $col => $val) {
 				$final[$col] = $val;
-				if ($col == $_SERVER['SCRIPT_FILENAME']title') $final['child-event-count'] = __('Events','opentickets-community-edition');
+				if ($col == 'title') $final['child-event-count'] = __('Events','opentickets-community-edition');
 			}
 			$columns = $final;
 		}
@@ -581,7 +581,7 @@ class qsot_post_type {
 	public static function wp_query_orderby_meta_value_date($orderby, $query) {
 		if (
 				isset($query->query_vars['orderby'], $query->query_vars['meta_key'])
-				&& $query->query_vars['orderby'] == $_SERVER['SCRIPT_FILENAME']meta_value_date'
+				&& $query->query_vars['orderby'] == 'meta_value_date'
 				&& !empty($query->query_vars['meta_key'])
 		) {
 			$order = strtolower(isset($query->query_vars['order']) ? $query->query_vars['order'] : 'asc');
@@ -618,7 +618,7 @@ class qsot_post_type {
 			}
 		}
 
-		if (isset($q->query_vars['post_parent__not']) && $q->query_vars['post_parent__not'] !== $_SERVER['SCRIPT_FILENAME']') {
+		if (isset($q->query_vars['post_parent__not']) && $q->query_vars['post_parent__not'] !== '') {
 			$ppn = $q->query_vars['post_parent__not'];
 			if (is_scalar($ppn)) {
 				$where .= $wpdb->prepare(' AND ('.$wpdb->posts.'.post_parent != %s) ', $ppn);
@@ -837,7 +837,7 @@ class qsot_post_type {
 			else $map[$object_id.''] = '_unknown_post_type';
 		}
 
-		if ($map[$object_id.''] == self::$o->core_post_type && $key == $_SERVER['SCRIPT_FILENAME']_thumbnail_id' && $parent_id = wp_get_post_parent_id($object_id)) {
+		if ($map[$object_id.''] == self::$o->core_post_type && $key == '_thumbnail_id' && $parent_id = wp_get_post_parent_id($object_id)) {
 			remove_filter('get_post_metadata', array(__CLASS__, 'cascade_thumbnail_id'), 10);
 			$this_value = get_post_meta($object_id, $key, $single);
 			add_filter('get_post_metadata', array(__CLASS__, 'cascade_thumbnail_id'), 10, 4);
@@ -1104,7 +1104,7 @@ class qsot_post_type {
 		}
 
 		// return the generated list
-		return array($list, $earliest == $_SERVER['SCRIPT_FILENAME']HP_INT_MAX ? '' : date('Y-m-d H:i:s', $earliest));
+		return array($list, $earliest == PHP_INT_MAX ? '' : date('Y-m-d H:i:s', $earliest));
 	}
 
 	// generate the core templates used by the event ui js
@@ -1311,7 +1311,7 @@ class qsot_post_type {
 							'post_password' => 'protected' == $tmp->visibility ? $tmp->password : '',
 							// use that normalized title we made earlier, as to create a pretty url
 							'post_name' => $tmp->title,
-							'post_date' => $tmp->pub_date == $_SERVER['SCRIPT_FILENAME']' || $tmp->pub_date == $_SERVER['SCRIPT_FILENAME']now' ? '' : date_i18n( 'Y-m-d H:i:s', strtotime( $tmp->pub_date ) ),
+							'post_date' => $tmp->pub_date == '' || $tmp->pub_date == 'now' ? '' : date_i18n( 'Y-m-d H:i:s', strtotime( $tmp->pub_date ) ),
 							// use the original author and content, so that they are not overridden
 							'post_content' => $orig->post_content,
 							'post_author' => $orig->post_author,
@@ -1379,7 +1379,7 @@ class qsot_post_type {
 								// protected events have passwords
 								'post_password' => 'protected' == $tmp->visibility ? $tmp->password : '',
 								// update to the proper publish date
-								'post_date' => $tmp->pub_date == $_SERVER['SCRIPT_FILENAME']' || $tmp->pub_date == $_SERVER['SCRIPT_FILENAME']now' ? '' : date_i18n( 'Y-m-d H:i:s', strtotime( $tmp->pub_date ) ),
+								'post_date' => $tmp->pub_date == '' || $tmp->pub_date == 'now' ? '' : date_i18n( 'Y-m-d H:i:s', strtotime( $tmp->pub_date ) ),
 								// use the original author and content
 								'post_content' => $exist->post_content,
 								'post_author' => $exist->post_author,
@@ -1418,7 +1418,7 @@ class qsot_post_type {
 							// protected events have passwords
 							'post_password' => 'protected' == $tmp->visibility ? $tmp->password : '',
 							// set the appropriate publish date
-							'post_date' => $item->pub_date == $_SERVER['SCRIPT_FILENAME']' || $item->pub_date == $_SERVER['SCRIPT_FILENAME']now' ? '' : date_i18n( 'Y-m-d H:i:s', strtotime( $item->pub_date ) ),
+							'post_date' => $item->pub_date == '' || $item->pub_date == 'now' ? '' : date_i18n( 'Y-m-d H:i:s', strtotime( $item->pub_date ) ),
 						), $defs ),
 						'meta' => array( // set meta
 							self::$o->{'meta_key.capacity'} => $item->capacity, // occupant copacity

@@ -21,18 +21,18 @@ QS.queryString = (function() {
 	return query_string;
 })();
 
-QS.ucFirst = function(str) { return typeof str == $_SERVER['SCRIPT_FILENAME']string' ? str.charAt(0).toUpperCase()+str.slice(1) : str; };
+QS.ucFirst = function(str) { return typeof str == 'string' ? str.charAt(0).toUpperCase()+str.slice(1) : str; };
 
 QS.Tools = (function($, q, qt, w, d, undefined) {
 	qt = $.extend({}, qt);
 
 	qt.is = function(v) { return typeof v != 'undefined' && v != null; };
-	qt.isF = function(v) { return typeof v == $_SERVER['SCRIPT_FILENAME']function'; };
-	qt.isO = function(v) { return qt.is(v) && typeof v == $_SERVER['SCRIPT_FILENAME']object'; };
+	qt.isF = function(v) { return typeof v == 'function'; };
+	qt.isO = function(v) { return qt.is(v) && typeof v == 'object'; };
 	qt.isA = function(v) { return qt.isO(v) && v instanceof Array; };
-	qt.isB = function(v) { return typeof v == $_SERVER['SCRIPT_FILENAME']boolean'; };
-	qt.isS = function(v) { return typeof v == $_SERVER['SCRIPT_FILENAME']string'; };
-	qt.isN = function(v) { return typeof v == $_SERVER['SCRIPT_FILENAME']number'; };
+	qt.isB = function(v) { return typeof v == 'boolean'; };
+	qt.isS = function(v) { return typeof v == 'string'; };
+	qt.isN = function(v) { return typeof v == 'number'; };
 	qt.isC = function(v, c) { return qt.isO( v ) && v.constructor == c ; };
 	qt.dist = function(x1, y1, x2, y2) { var dx = x1 - x2, dy = y1 - y2; return Math.sqrt( ( dx * dx ) + ( dy * dy ) ); };
 	qt.ucw = function(v) { return v.toLowerCase().replace( /^[\u00C0-\u1FFF\u2C00-\uD7FF\w]|\b[\u00C0-\u1FFF\u2C00-\uD7FF\w]/g, function( l ) { return l.toUpperCase(); } ); };
@@ -43,20 +43,20 @@ QS.Tools = (function($, q, qt, w, d, undefined) {
 			delete div;
 			return res;
 		};
-	qt.isElement = function(o) { return typeof HTMLElement == $_SERVER['SCRIPT_FILENAME']object' ? o instanceof HTMLElement : o && typeof o == $_SERVER['SCRIPT_FILENAME']object' && o.nodeType === 1 && typeof o.nodeName == $_SERVER['SCRIPT_FILENAME']string'; };
+	qt.isElement = function(o) { return typeof HTMLElement == 'object' ? o instanceof HTMLElement : o && typeof o == 'object' && o.nodeType === 1 && typeof o.nodeName == 'string'; };
 	qt.toInt = function(val) { var n = parseInt(val); return isNaN(n) ? 0 : n; };
 	qt.toFloat = function(val) { var n = parseFloat(val); return isNaN(n) ? 0 : n; };
 	qt.ufm = function(val) { return val.replace(/^(-|\+)?(\$)/, '$1'); };
 	qt.pl = function(n, p) { return qt.toFloat(n).toFixed(p); };
 	qt.dig = function(n, w, p) { p = p || '0'; n = n + ''; return n.length >= w ? n : ( new Array( w - n.length + 1 ) ).join( p ) + n; };
-	qt.isNodeType = function(obj, type) { type = type || ''; return typeof obj == $_SERVER['SCRIPT_FILENAME']object' && obj !== null && typeof obj.nodeType == $_SERVER['SCRIPT_FILENAME']string' && obj.nodeType == type; };
+	qt.isNodeType = function(obj, type) { type = type || ''; return typeof obj == 'object' && obj !== null && typeof obj.nodeType == 'string' && obj.nodeType == type; };
 	qt.sanePts = function(pts) { for (var i=0; i<pts.length; i++) for (var j=0; j<pts[i].length; j++) pts[i][j] = parseFloat(pts[i][j]); };
 	qt._del = function(o) { delete(o); };
 	qt.btw = function(a, b, c) { var B = Math.min(b,c), C = Math.max(b,c); return B <= a && a <= C; };
 	qt.a2a = function(ag) { return Array.prototype.slice.apply(ag); };
 	qt.offpar = function(e) { var p=e.parent(), y=qt.isElement(p.get(0)); return y && $.inArray(p.css('position'), ['relative', 'absolute']) != -1 ? p : (y ? qt.offpar(p) : $('body')); };
 	qt.dashSane = function(str) {
-		str = str.toLowerCase().replace(/[^\d\w]+/g, '-'); str = str.substr(-1) == $_SERVER['SCRIPT_FILENAME']-' ? str.substr(0, str.length - 1) : str; str = str.substr(0, 1) == $_SERVER['SCRIPT_FILENAME']-' ? str.substr(1) : str; return str;
+		str = str.toLowerCase().replace(/[^\d\w]+/g, '-'); str = str.substr(-1) == '-' ? str.substr(0, str.length - 1) : str; str = str.substr(0, 1) == '-' ? str.substr(1) : str; return str;
 	};
 	qt.arrayIntersect = function(a, b) {
 		var ai=0, bi=0;
@@ -85,14 +85,14 @@ QS.Tools = (function($, q, qt, w, d, undefined) {
 			var loaded = true;
 			for (i in fix[pk]) if (fix[pk].hasOwnProperty(src) && fix[pk][src] == 0) loaded = false;
 			if (loaded) {
-				while (f = funclist[src].shift()) if (typeof f == $_SERVER['SCRIPT_FILENAME']function') f();
+				while (f = funclist[src].shift()) if (typeof f == 'function') f();
 			} else {
 				setTimeout(function() { _run_check(pk, src); }, 100);
 			}
 		};
 
 		if (typeof fix[pk] != 'object') fix[pk] = {};
-		if (typeof src == $_SERVER['SCRIPT_FILENAME']string' && typeof fix[pk][src] != 'number') {
+		if (typeof src == 'string' && typeof fix[pk][src] != 'number') {
 			fix[pk][src] = 0;
 			var img = new Image();
 			img.onload = function() {
@@ -105,7 +105,7 @@ QS.Tools = (function($, q, qt, w, d, undefined) {
 		}
 	};
 	qt.start = function(cls, name) {
-		if (typeof QS.CB == $_SERVER['SCRIPT_FILENAME']function') cls.callbacks = new QS.CB(cls);
+		if (typeof QS.CB == 'function') cls.callbacks = new QS.CB(cls);
 		cls.start = function(settings) {
 			var exists = $(window).data(name);
 			if (typeof exists != 'object' || exists == null) {
@@ -158,7 +158,7 @@ QS.popMediaBox = (function($, qt) {
 							var t = $( this ),
 									url = qt.is( attachment.sizes.thumbnail ) ? attachment.sizes.thumbnail.url : attachment.sizes.full.url,
 									size = qt.is( args.size ) ? args.size : ( ( size = t.attr( 'size' ) ) ? size : 'thumb' )
-									size = size == $_SERVER['SCRIPT_FILENAME']thumb' ? 'thumbnail' : size;
+									size = size == 'thumb' ? 'thumbnail' : size;
 							// find the appropriate image url
 							if ( qt.is( attachment.sizes[ size ] ) && qt.is( attachment.sizes[ size ].url ) )
 								url = attachment.sizes[ size ].url;
@@ -356,7 +356,7 @@ jQuery( function( $ ) {
           sets = $.extend(true, { msg:'<h1>Loading...</h1>', css:{ backgroundColor:'#000000', opacity:0.5 }, msgcss:{ color:'#ffffff' } }, settings),
           bd = $('<div class="block-backdrop"></div>').appendTo( element ), msg = $('<div class="block-msg"></div>').appendTo( element ),
 					dims = { width:element.outerWidth(), height:element.outerHeight() };
-			if ( position == $_SERVER['SCRIPT_FILENAME']static' )
+			if ( position == 'static' )
 				element.css( { position:'relative' } );
 			$(sets.msg).css({ color:'inherit' }).appendTo(msg);
       var mhei = msg.height();
@@ -391,7 +391,7 @@ QS.Features.supports = (function(w, d, f, s, undefined) {
 
 	return function(name) {
 		if (typeof cache[name] != 'undefined' && cache[name] !== null) return cache[name];
-		else if (s[name] && typeof s[name] == $_SERVER['SCRIPT_FILENAME']function') return (cache[name] = s[name]);
+		else if (s[name] && typeof s[name] == 'function') return (cache[name] = s[name]);
 		return false;
 	};
 })(window, document, QS.Features, QS.Features.support);
@@ -402,10 +402,10 @@ QS.Features.load = (function($, w, d, s, undefined) {
 	var dummy = undefined;
 	var dummy2 = undefined;
 	s._canvas = function(win, doc) { return !!(dummy = doc.createElement('canvas')).getContext; };
-	s.canvas = function(win, doc) { return s._canvas(win, doc) && typeof dummy.getContext('2d').fillText == $_SERVER['SCRIPT_FILENAME']function'; };
+	s.canvas = function(win, doc) { return s._canvas(win, doc) && typeof dummy.getContext('2d').fillText == 'function'; };
 	s.svg = function(win, doc) { return doc.implementation.hasFeature('http://www.w3.org/TR/SVG11/feature#Image', '1.1'); };
-	s.selapi = function(win, doc) { return doc.querySelectorAll && typeof doc.querySelectorAll == $_SERVER['SCRIPT_FILENAME']function' && doc.querySelector && typeof doc.querySelector == $_SERVER['SCRIPT_FILENAME']function'; };
-	s.localStorage = function(win, doc) { return typeof win.localStorage == $_SERVER['SCRIPT_FILENAME']object' && typeof win.localStorage.setItem == $_SERVER['SCRIPT_FILENAME']function'; };
+	s.selapi = function(win, doc) { return doc.querySelectorAll && typeof doc.querySelectorAll == 'function' && doc.querySelector && typeof doc.querySelector == 'function'; };
+	s.localStorage = function(win, doc) { return typeof win.localStorage == 'object' && typeof win.localStorage.setItem == 'function'; };
 	s.fallback = function(win, doc) { return true; };
 	s.cookies = function(win, doc) {
 		if (typeof doc.cookie != undefined && doc.cookie !== null) {
@@ -425,9 +425,9 @@ QS.Features.load = (function($, w, d, s, undefined) {
 		if (cascade instanceof Array) {
 			for (var i=0; i<cascade.length; i++) {
 				var f = cascade[i];
-				if (typeof f == $_SERVER['SCRIPT_FILENAME']object' && f.name && f.run && typeof f.run == $_SERVER['SCRIPT_FILENAME']function') {
+				if (typeof f == 'object' && f.name && f.run && typeof f.run == 'function') {
 					if (s[f.name]) {
-						if (typeof cache[f.name] == $_SERVER['SCRIPT_FILENAME']undefined' || cache[f.name] === null) cache[f.name] = s[f.name](w, d);
+						if (typeof cache[f.name] == 'undefined' || cache[f.name] === null) cache[f.name] = s[f.name](w, d);
 						if (cache[f.name]) {
 							res = f.run();
 							break;
@@ -435,10 +435,10 @@ QS.Features.load = (function($, w, d, s, undefined) {
 					}
 				}
 			}
-		} else if (typeof cascade == $_SERVER['SCRIPT_FILENAME']object') {
+		} else if (typeof cascade == 'object') {
 			for (i in cascade) {
 				if (s[i]) {
-					if (typeof cache[i] == $_SERVER['SCRIPT_FILENAME']undefined' || cache[i] === null) cache[i] = s[i](w, d);
+					if (typeof cache[i] == 'undefined' || cache[i] === null) cache[i] = s[i](w, d);
 					if (cache[i]) {
 						res = cascade[i]();
 						break;
@@ -455,7 +455,7 @@ QS.Features.load = (function($, w, d, s, undefined) {
 
 QS.Loader = (function(w, d, f, q, undefined) {
 	function _attach(ele, context, method) {
-		if (f.supports('selapi') && typeof context == $_SERVER['SCRIPT_FILENAME']string') context = d.querySelector(context);
+		if (f.supports('selapi') && typeof context == 'string') context = d.querySelector(context);
 		if (!q.Tools.isElement(context)) {console.log('bad context', context); return; }
 		switch (method) {
 			case 'after': context.parentNode.insertBefore(ele, context.nextSibling); break;
@@ -468,14 +468,14 @@ QS.Loader = (function(w, d, f, q, undefined) {
 	function js(path, id, context, method, func) {
 		var t = undefined;
 		if (f.supports('selapi')) t = d.querySelector('#'+id);
-		if (typeof t == $_SERVER['SCRIPT_FILENAME']undefined' || t == null) {
+		if (typeof t == 'undefined' || t == null) {
 			var t = d.createElement('script');
 			t.type = 'text/javascript';
 			t.src = path;
 			t.id = id;
-			if (typeof func == $_SERVER['SCRIPT_FILENAME']function') {
+			if (typeof func == 'function') {
 				t.onload = func;
-				t.onreadystatechange = function(ev) { if (this.readyState == $_SERVER['SCRIPT_FILENAME']complete') func(ev); };
+				t.onreadystatechange = function(ev) { if (this.readyState == 'complete') func(ev); };
 			}
 		}
 		_attach(t, context, method);
@@ -484,15 +484,15 @@ QS.Loader = (function(w, d, f, q, undefined) {
 	function css(path, id, context, method, func) {
 		var t = undefined;
 		if (f.supports('selapi')) t = d.querySelector('#'+id);
-		if (typeof t == $_SERVER['SCRIPT_FILENAME']undefined' || t == null) {
+		if (typeof t == 'undefined' || t == null) {
 			var t = d.createElement('link');
 			t.type = 'text/css';
 			t.rel = 'stylesheet';
 			t.href = path;
 			t.id = id;
-			if (typeof func == $_SERVER['SCRIPT_FILENAME']function') {
+			if (typeof func == 'function') {
 				t.onload = func;
-				t.onreadystatechange = function(ev) { if (this.readyState == $_SERVER['SCRIPT_FILENAME']complete') func(ev); };
+				t.onreadystatechange = function(ev) { if (this.readyState == 'complete') func(ev); };
 			}
 		}
 		_attach(t, context, method);
@@ -506,13 +506,13 @@ QS.CB = (function($, undefined) {
 		var t = this,
 				idx = 0,
 				_callbacks = {},
-				fname = typeof fname == $_SERVER['SCRIPT_FILENAME']string' && fname.length > 0 ? fname : 'callback',
-				sname = typeof sname == $_SERVER['SCRIPT_FILENAME']string' && sname.length > 0 ? sname : 'callbacks';
+				fname = typeof fname == 'string' && fname.length > 0 ? fname : 'callback',
+				sname = typeof sname == 'string' && sname.length > 0 ? sname : 'callbacks';
 
 		function cb_add(name, func) {
 			var res = function() {};
 
-			if (typeof func == $_SERVER['SCRIPT_FILENAME']function') {
+			if (typeof func == 'function') {
 				if (!(_callbacks[name] instanceof Array)) _callbacks[name] = [];
 				var obj = { p:idx++, f:func };
 				_callbacks[name].push( obj );
@@ -527,7 +527,7 @@ QS.CB = (function($, undefined) {
 		};
 
 		function cb_remove(name, func) {
-			if (typeof func == $_SERVER['SCRIPT_FILENAME']function' && _callbacks[name] instanceof Array) {
+			if (typeof func == 'function' && _callbacks[name] instanceof Array) {
 				_callbacks[name] = _callbacks[name].filter(function(f) { return f.f.toString() != func.toString(); });
 			} else if ( ( 'undefined' == typeof func || null === func ) && _callbacks[ name ] instanceof Array ) {
 				delete _callbacks[ name ];
@@ -559,10 +559,10 @@ QS.CB = (function($, undefined) {
 		t.trigger = cb_trigger;
 		t.debug = _debug_handlers;
 
-		if (typeof cls == $_SERVER['SCRIPT_FILENAME']function') {
+		if (typeof cls == 'function') {
 			cls.prototype[fname] = cb_trigger;
 			cls.prototype[sname] = t;
-		} else if (typeof cls == $_SERVER['SCRIPT_FILENAME']object' && cls !== null) {
+		} else if (typeof cls == 'object' && cls !== null) {
 			cls[fname] = cb_trigger;
 			cls[sname] = t;
 		}
@@ -578,7 +578,7 @@ QS.cbs = new QS.CB();
 		var self = $(this);
 		var scope = self.closest(self.attr('scope') || 'body');
 		var tar = $(self.attr('tar'), scope) || self.nextAll(':eq(0)');
-		if (tar.css('display') == $_SERVER['SCRIPT_FILENAME']none') tar.slideDown(200);
+		if (tar.css('display') == 'none') tar.slideDown(200);
 		else tar.slideUp(200);
 	}
 
@@ -587,8 +587,8 @@ QS.cbs = new QS.CB();
 		var self = $(this);
 		var scope = self.closest(self.attr('scope') || 'body');
 		var tar = $(self.attr('tar'), scope) || self.nextAll(':eq(0)');
-		if (self.is(':checked') && tar.css('display') == $_SERVER['SCRIPT_FILENAME']none') tar.slideDown(200);
-		else if (self.not(':checked') && tar.css('display') == $_SERVER['SCRIPT_FILENAME']block') tar.slideUp(200);
+		if (self.is(':checked') && tar.css('display') == 'none') tar.slideDown(200);
+		else if (self.not(':checked') && tar.css('display') == 'block') tar.slideUp(200);
 	}
 
 	// use the value of the current selected item in the select box, to determine what containers should be visible and which should be hidden
@@ -615,7 +615,7 @@ QS.cbs = new QS.CB();
 	$( document ).on( 'click.togvis', '.togvis', function( e ) {
 		if ( _maybe_init( $( this ) ) ) return;
 		// do not do this for special case scenarios. checkboxes, radio buttons, and select boxes
-		if (this.tagName.toLowerCase() == $_SERVER['SCRIPT_FILENAME']select' || (this.tagName.toLowerCase() == $_SERVER['SCRIPT_FILENAME']input' && $.inArray($(this).attr('type').toLowerCase(), ['checkbox','radio']) != -1)) return;
+		if (this.tagName.toLowerCase() == 'select' || (this.tagName.toLowerCase() == 'input' && $.inArray($(this).attr('type').toLowerCase(), ['checkbox','radio']) != -1)) return;
 		e.preventDefault();
 		_everything.call(this);
 	});
@@ -631,9 +631,9 @@ QS.cbs = new QS.CB();
 	// this, we need to only read the state and use it to determine the state of the affected containers.
 	$( document ).on( 'init.togvis', '.togvis', function(e) {
 		$( this ).data( 'togvis-init', 1 )
-		if (this.tagName.toLowerCase() == $_SERVER['SCRIPT_FILENAME']input' && $.inArray($(this).attr('type').toLowerCase(), ['checkbox', 'radio']) != -1) {
+		if (this.tagName.toLowerCase() == 'input' && $.inArray($(this).attr('type').toLowerCase(), ['checkbox', 'radio']) != -1) {
 			_cb_radio.call(this);
-		} else if (this.tagName.toLowerCase() == $_SERVER['SCRIPT_FILENAME']select') {
+		} else if (this.tagName.toLowerCase() == 'select') {
 			_select_box.call(this);
 		} else {
 			_everything.call(this);
@@ -653,7 +653,7 @@ QS.EditSetting = (function($, undefined) {
 		var ret = undefined;
 		var qt = QS.Tools;
 
-		if (exists instanceof EditSetting && typeof exists.initialized == $_SERVER['SCRIPT_FILENAME']boolean' && exists.initialized) {
+		if (exists instanceof EditSetting && typeof exists.initialized == 'boolean' && exists.initialized) {
 			ret = exists;
 		} else {
 			ret = new EditSetting(e, o);
@@ -779,14 +779,14 @@ QS.EditSetting = (function($, undefined) {
 					if (data[i] instanceof Array) {
 						self.elements.form.find('[name="'+i+'"]').removeAttr('checked').each(function() {
 							var tn = this.tagName.toLowerCase();
-							if (tn == $_SERVER['SCRIPT_FILENAME']textarea' || (tn == $_SERVER['SCRIPT_FILENAME']input' && $.inArray($(this).attr('type').toLowerCase(), ['checkbox', 'radio', 'button', 'submit', 'file', 'image']) == -1)) $(this).val('');
+							if (tn == 'textarea' || (tn == 'input' && $.inArray($(this).attr('type').toLowerCase(), ['checkbox', 'radio', 'button', 'submit', 'file', 'image']) == -1)) $(this).val('');
 						}).find('option').removeAttr('selected');
-					} else if (typeof data[i] == $_SERVER['SCRIPT_FILENAME']object') {
+					} else if (typeof data[i] == 'object') {
 						_recurse(data[i]);
 					} else {
 						self.elements.form.find('[name="'+i+'"]').removeAttr('checked').each(function() {
 							var tn = this.tagName.toLowerCase();
-							if (tn == $_SERVER['SCRIPT_FILENAME']textarea' || (tn == $_SERVER['SCRIPT_FILENAME']input' && $.inArray($(this).attr('type').toLowerCase(), ['checkbox', 'radio', 'button', 'submit', 'file', 'image']) == -1)) $(this).val('');
+							if (tn == 'textarea' || (tn == 'input' && $.inArray($(this).attr('type').toLowerCase(), ['checkbox', 'radio', 'button', 'submit', 'file', 'image']) == -1)) $(this).val('');
 						}).find('option').removeAttr('selected');
 					}
 					self.elements.main.find('[rel="'+i+'"]').val('');
@@ -799,7 +799,7 @@ QS.EditSetting = (function($, undefined) {
 		},
 
 		_only_ifs_update: function( data, only ) {
-			var sel = only && ( typeof only == $_SERVER['SCRIPT_FILENAME']string' || typeof only == $_SERVER['SCRIPT_FILENAME']number' ) ? '[data-only-if^="' + only + '="]' : '[data-only-if]';
+			var sel = only && ( typeof only == 'string' || typeof only == 'number' ) ? '[data-only-if^="' + only + '="]' : '[data-only-if]';
 			this.elements.form.find( sel ).each(function() {
 				var me = $( this ),
 				    oif = me.attr( 'data-only-if' ),
@@ -826,26 +826,26 @@ QS.EditSetting = (function($, undefined) {
 			var adjust = adjust || false;
 			this._only_ifs_update(data);
 
-			if (typeof EditSetting.labels[this.tag] == $_SERVER['SCRIPT_FILENAME']function') label = EditSetting.labels[this.tag].apply(this, [data]);
+			if (typeof EditSetting.labels[this.tag] == 'function') label = EditSetting.labels[this.tag].apply(this, [data]);
 			else label = EditSetting.labels._default.apply(this, [data]);
 
-			if (label == $_SERVER['SCRIPT_FILENAME']') label = EditSetting.labels._default.apply(this, [data]);
+			if (label == '') label = EditSetting.labels._default.apply(this, [data]);
 			console.log( 'sigh', label, data );
 
 			this.elements.display.html(label);
 
 			for (i in data) {
 				var val = '', multi = false;
-				if ( i == $_SERVER['SCRIPT_FILENAME']source' ) continue; // recursive protection
-				if ( typeof data[i] == $_SERVER['SCRIPT_FILENAME']object' && typeof data[i].isMultiple != 'undefined' && data[i].isMultiple ) { multi = true; val = ''; }
-				else if (typeof data[i] == $_SERVER['SCRIPT_FILENAME']object') val = JSON.stringify(data[i]);
-				else if (typeof data[i] == $_SERVER['SCRIPT_FILENAME']string') val = data[i];
-				else if (typeof data[i] == $_SERVER['SCRIPT_FILENAME']undefined' || data[i] == null) val = '';
+				if ( i == 'source' ) continue; // recursive protection
+				if ( typeof data[i] == 'object' && typeof data[i].isMultiple != 'undefined' && data[i].isMultiple ) { multi = true; val = ''; }
+				else if (typeof data[i] == 'object') val = JSON.stringify(data[i]);
+				else if (typeof data[i] == 'string') val = data[i];
+				else if (typeof data[i] == 'undefined' || data[i] == null) val = '';
 				else val = data[i].toString();
 				this.elements.main.find('[rel="'+i+'"]').val(val);
 				if (adjust) {
 					var field = this.elements.form.find('[name="'+i+'"]:eq(0)'), tag = field.get(0).tagName.toLowerCase();
-					if (tag == $_SERVER['SCRIPT_FILENAME']input') {
+					if (tag == 'input') {
 						switch (field.attr('type').toLowerCase()) {
 							case 'checkbox':
 							case 'radio':
@@ -863,11 +863,11 @@ QS.EditSetting = (function($, undefined) {
 								if ( !multi ) field.trigger('change');
 							break;
 						}
-					} else if (tag == $_SERVER['SCRIPT_FILENAME']select') {
+					} else if (tag == 'select') {
 						$('option', field).removeProp('selected').filter('[value="'+escape(val)+'"]').filter(function() { return $(this).css('display').toLowerCase() != 'none'; }).prop('selected', 'selected');
 						if ( !multi )
 							field.trigger('change')
-					} else if (tag == $_SERVER['SCRIPT_FILENAME']textarea') {
+					} else if (tag == 'textarea') {
 						field.val(val);
 						if ( !multi )
 							field.trigger('change')
@@ -883,9 +883,9 @@ QS.EditSetting = (function($, undefined) {
 
 	$.fn.qsEditSetting = function(o) {
 		try {
-		if (typeof o == $_SERVER['SCRIPT_FILENAME']string') {
+		if (typeof o == 'string') {
 			var es = startEditSetting($(this));
-			if (typeof es[o] == $_SERVER['SCRIPT_FILENAME']function') {
+			if (typeof es[o] == 'function') {
 				var args = Array.prototype.slice.call(arguments, 1);
 				return es[o].apply(es, args);
 			}
@@ -912,7 +912,7 @@ QS.EditSetting = (function($, undefined) {
 				switch (ele.get(0).tagName.toLowerCase()) {
 					case 'select':
 						d = data[i];
-						if ((typeof d == $_SERVER['SCRIPT_FILENAME']string' || typeof d == $_SERVER['SCRIPT_FILENAME']number') && d != '' && d != '0' && d != 0) {
+						if ((typeof d == 'string' || typeof d == 'number') && d != '' && d != '0' && d != 0) {
 							var e = $('option[value="'+data[i]+'"]', ele).filter(function() { return $(this).css('display').toLowerCase() != 'none'; });
 							if (e.length > 0) d = e.text();
 						}
@@ -920,7 +920,7 @@ QS.EditSetting = (function($, undefined) {
 
 					case 'textarea':
 						d = data[i];
-						if ((typeof d == $_SERVER['SCRIPT_FILENAME']string' || typeof d == $_SERVER['SCRIPT_FILENAME']number') && d != '' && d != '0' && d != 0) {
+						if ((typeof d == 'string' || typeof d == 'number') && d != '' && d != '0' && d != 0) {
 							d = ele.text();
 							d = d.substr(0, 25)+(d.length > 25 ? '...' : '');
 						}
@@ -928,7 +928,7 @@ QS.EditSetting = (function($, undefined) {
 
 					case 'input':
 						d = data[i];
-						if ((typeof d == $_SERVER['SCRIPT_FILENAME']string' || typeof d == $_SERVER['SCRIPT_FILENAME']number') && d != '' && d != '0' && d != 0) {
+						if ((typeof d == 'string' || typeof d == 'number') && d != '' && d != '0' && d != 0) {
 							switch (ele.attr('type')) {
 								case 'radio':
 								case 'checkbox':
@@ -944,15 +944,15 @@ QS.EditSetting = (function($, undefined) {
 					break;
 				}
 
-				if (typeof d == $_SERVER['SCRIPT_FILENAME']string') {
+				if (typeof d == 'string') {
 					ret = QS.ucFirst(d);
 					break;
-				} else if (typeof d.toLabel == $_SERVER['SCRIPT_FILENAME']function') {
+				} else if (typeof d.toLabel == 'function') {
 					ret = d.toLabel();
 					break;
 				}
 			}
-			if (ret == $_SERVER['SCRIPT_FILENAME']') ret = '(None)';
+			if (ret == '') ret = '(None)';
 			return ret;
 		}
 	});
@@ -960,7 +960,7 @@ QS.EditSetting = (function($, undefined) {
 	EditSetting.callbacks = new QS.CB(EditSetting);
 
 	function update_min_height() {
-		var opt = $( '.option-sub[rel="settings"]' ), bulk = opt.find( '.bulk-edit-settings' ), h = bulk.css('display') == $_SERVER['SCRIPT_FILENAME']none', bulkhei = bulk.show().outerHeight( true );
+		var opt = $( '.option-sub[rel="settings"]' ), bulk = opt.find( '.bulk-edit-settings' ), h = bulk.css('display') == 'none', bulkhei = bulk.show().outerHeight( true );
 		if ( h ) bulk.hide();
 		opt.css( { minHeight:bulkhei } );
 	}
@@ -978,10 +978,10 @@ QS.EditSetting = (function($, undefined) {
 	$.LOU.cookie = {
 		set: function(name, value, expire, path) {
 			var name = $.trim(name);
-			if (name == $_SERVER['SCRIPT_FILENAME']') return;
+			if (name == '') return;
 
 			var value = escape($.trim(value));
-			if (typeof expire == $_SERVER['SCRIPT_FILENAME']undefined' || expire == null || expire == 0) {
+			if (typeof expire == 'undefined' || expire == null || expire == 0) {
 				expire = '';
 			} else if (expire < 0) {
 				var dt = new Date();
@@ -993,7 +993,7 @@ QS.EditSetting = (function($, undefined) {
 				expire = ';expires='+dt.toUTCString();
 			}
 
-			if (typeof path == $_SERVER['SCRIPT_FILENAME']undefined' || path == null) {
+			if (typeof path == 'undefined' || path == null) {
 				path = '';
 			} else {
 				path = ';path='+path;
@@ -1004,7 +1004,7 @@ QS.EditSetting = (function($, undefined) {
 
 		get: function(name) {
 			var name = $.trim(name);
-			if (name == $_SERVER['SCRIPT_FILENAME']') return;
+			if (name == '') return;
 
 			var n,e,i,arr=document.cookie.split(';');
 
@@ -1033,9 +1033,9 @@ QS.EditSetting = (function($, undefined) {
 			var self = this;
 			$(selector).filter(':not(:disabled)').each(function() {
 				var me = $( this );
-				if (me.attr('type') == $_SERVER['SCRIPT_FILENAME']checkbox' || me.attr('type') == $_SERVER['SCRIPT_FILENAME']radio')
+				if (me.attr('type') == 'checkbox' || me.attr('type') == 'radio')
 					if (me.filter(':checked').length == 0) return;
-				if (typeof me.attr('name') == $_SERVER['SCRIPT_FILENAME']string' && me.attr('name').length != 0) {
+				if (typeof me.attr('name') == 'string' && me.attr('name').length != 0) {
 					var res = me.attr('name').match(/^([^\[\]]+)(\[.*\])?$/), name = res[1], val = ! me.hasClass( 'wp-editor-area' ) || ! me.attr( 'id' ) ? me.val() : tinymce.editors[ me.attr( 'id' ) ].getContent();
 					if (res[2]) {
 						var list = res[2].match(/\[[^\[\]]*\]/gi);
@@ -1055,7 +1055,7 @@ QS.EditSetting = (function($, undefined) {
 			if (typeof cur != 'object' && lvls instanceof Array && lvls.length > 0) cur = [];
 			var lvl = lvls.shift();
 			lvl = lvl.replace(/^\[([^\[\]]*)\]$/, '$1') || '';
-			if (lvl == $_SERVER['SCRIPT_FILENAME']') {
+			if (lvl == '') {
 				if (!(cur instanceof Array)) cur = [];
 				if (lvls.length > 0) cur[cur.length] = _nest_array([], lvls, val);
 				else cur[cur.length] = val;
@@ -1087,15 +1087,15 @@ QS.EditSetting = (function($, undefined) {
 
 		var nvpair = false;
 		$.each(a, function(k, v) {
-			if (k == $_SERVER['SCRIPT_FILENAME']name' && typeof v == $_SERVER['SCRIPT_FILENAME']string' && typeof a['value'] == $_SERVER['SCRIPT_FILENAME']string' && v.length > 0) {
+			if (k == 'name' && typeof v == 'string' && typeof a['value'] == 'string' && v.length > 0) {
 				cur = v;
 				nvpair = true;
 				return;
-			} else if (nvpair && k == $_SERVER['SCRIPT_FILENAME']value') {
+			} else if (nvpair && k == 'value') {
 				nvpair = false;
 				var t = cur;;
 			} else {
-				var t = cur == $_SERVER['SCRIPT_FILENAME']' ? k : cur+'['+k+']';
+				var t = cur == '' ? k : cur+'['+k+']';
 			}
 			switch (typeof(v)) {
 				case 'number':
@@ -1105,7 +1105,7 @@ QS.EditSetting = (function($, undefined) {
 				case 'object': t = $.paramAll(v, tr, t, dep+1); break;
 				default: return; break;
 			}
-			if (typeof(t) == $_SERVER['SCRIPT_FILENAME']object') {
+			if (typeof(t) == 'object') {
 				for (i in t) res[res.length] = t[i];
 			} else res[res.length] = t;
 		});
@@ -1121,7 +1121,7 @@ QS.EditSetting = (function($, undefined) {
 
 	$.deparam = function(q) {
 		var params = {};
-		if (typeof q == $_SERVER['SCRIPT_FILENAME']string') {
+		if (typeof q == 'string') {
 			var p = q.split('&');
 			for (var i=0; i<p.length; i++) {
 				var parts = p[i].split('=');
@@ -1137,7 +1137,7 @@ QS.EditSetting = (function($, undefined) {
 					t[k] = tmp;
 					tmp = t;
 				}
-				if (typeof params[n] == $_SERVER['SCRIPT_FILENAME']object') params[n] = $.extend(true, params[n], tmp);
+				if (typeof params[n] == 'object') params[n] = $.extend(true, params[n], tmp);
 				else params[n] = tmp;
 			}
 		}
@@ -1189,7 +1189,7 @@ QS.EditSetting = (function($, undefined) {
 } )( jQuery );
 
 (function($, undefined) {
-	function forParse(str) { return typeof str == $_SERVER['SCRIPT_FILENAME']string' ? str.replace(/^0+/g, '') : str; }
+	function forParse(str) { return typeof str == 'string' ? str.replace(/^0+/g, '') : str; }
 
 	// custom date parser
 	function yyyy_mm_dd__hh_iitt(str) {
@@ -1204,12 +1204,12 @@ QS.EditSetting = (function($, undefined) {
 				minutes: parseInt(forParse(m[7])),
 				seconds: parseInt(forParse(m[9]))
 			};
-			args.hours = m[11].toLowerCase() == $_SERVER['SCRIPT_FILENAME']p' && args.hours != 12
+			args.hours = m[11].toLowerCase() == 'p' && args.hours != 12
 					? args.hours + 12
-					: ( m[11].toLowerCase() == $_SERVER['SCRIPT_FILENAME']a' && args.hours == 12
+					: ( m[11].toLowerCase() == 'a' && args.hours == 12
 							? 0
 							: args.hours);
-			for (i in args) if (isNaN(args[i])) args[i] = i == $_SERVER['SCRIPT_FILENAME']month' ? -1 : 0;
+			for (i in args) if (isNaN(args[i])) args[i] = i == 'month' ? -1 : 0;
 
 			if (args.year > 0 && args.month > -1 && args.day > 0) {
 				return new XDate(

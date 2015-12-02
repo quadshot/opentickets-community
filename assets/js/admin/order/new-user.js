@@ -89,7 +89,7 @@ if (typeof jQuery != 'undefined') (function($, undefined) {
 	
 	d.on('click', '[rel="new-user-btn"]', function(e) {
 		e.preventDefault();
-		if (typeof form == $_SERVER['SCRIPT_FILENAME']undefined') form = $(settings.templates['new-user-form']).appendTo('body').dialog({
+		if (typeof form == 'undefined') form = $(settings.templates['new-user-form']).appendTo('body').dialog({
 			appendTo: 'body',
 			autoOpen: false,
 			dialogClass: 'new-user-dialog',

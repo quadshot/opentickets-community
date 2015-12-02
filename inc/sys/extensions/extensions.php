@@ -1,4 +1,4 @@
-<?php if ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
+<?php if ( __FILE__ == ['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
 
 // class to maintain a list of plugins that may or may not need updating and may or may not be installed
 // this is only needed in the admin or cron, where update queries are processed
