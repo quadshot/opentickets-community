@@ -1,4 +1,4 @@
-<?php ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) ? die( header( 'Location: /' ) ) : null; ?>
+<?php if ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) die( header( 'Location: /') ); ?>
 <div class="add-tickets-ui" rel="add-ui">
 	<div class="ticket-form ts-section">
 		<span class="ticket-name" rel="ttname"></span>

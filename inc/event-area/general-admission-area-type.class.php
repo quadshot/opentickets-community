@@ -1,4 +1,4 @@
-<?php ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) ? die( header( 'Location: /' ) ) : null;
+<?php if ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
 
 // class to handle the basic general admission event area type
 class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {

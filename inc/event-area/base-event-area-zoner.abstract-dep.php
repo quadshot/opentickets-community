@@ -1,4 +1,4 @@
-<?php ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) ? die( header( 'Location: /' ) ) : null;
+<?php if ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
 
 // the base class for all event area types. requires some basic functions and defines basic properties
 abstract class QSOT_Base_Event_Area_Zoner {

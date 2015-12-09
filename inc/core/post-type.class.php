@@ -1,4 +1,4 @@
-<?php (__FILE__ == $_SERVER['SCRIPT_FILENAME']) ? die(header('Location: /')) : null;
+<?php if ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
 
 /* Handles the creation of the qsot (events) post type. Also handles the builtin metaboxes, event save actions, and general admin interface setup for events. */
 class qsot_post_type {

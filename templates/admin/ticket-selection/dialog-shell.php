@@ -1,4 +1,4 @@
-<?php ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) ? die( header( 'Location: /' ) ) : null; ?>
+<?php if ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) die( header( 'Location: /') ); ?>
 <div class="ticket-selection-dialog" title="Select Ticket">
 	<div class="errors" rel="errors"></div>
 	<div class="event-info" rel="info"></div>
