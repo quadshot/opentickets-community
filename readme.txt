@@ -171,6 +171,10 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.15.0 - Dev/09/2015 =
+* [new] added a method to view all tickets on an order at once
+* [tweak] broke ticket templates into small template sections
+
 = 1.14.14 - Dev/02/2015 =
 * [fix] fixed php syntax errors on script security
 
@@ -778,6 +782,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 * initial public release
 
 == Upgrade Notice ==
+
+= 1.15.0 =
+This update completely changes how the tickets are displayed to the end user. If you have a custom ticket template, you are going to need to update your custom template in order to be compatible.
 
 = 1.14.14 =
 This update repairs the php syntax problems of the last update, dealing with the script security. Apologies.
