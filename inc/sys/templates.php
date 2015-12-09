@@ -2,7 +2,7 @@
 
 if (!class_exists('qsot_templates')):
 
-class qsot_templates {
+class QSOT_Templates {
 	protected static $o = null; // holder for all options of the events plugin
 
 	public static function pre_init() {
@@ -82,6 +82,24 @@ class qsot_templates {
 		}
 
 		return $current;
+	}
+
+	// include a template and extract some local vars for use inside
+	public static function include_template( $template, $args, $include_once=false ) {
+		// find the appropriate template file to use
+		$template = self::locate_template( '', (array)$template );
+
+		// if there is no matched template, then bail
+		if ( '' === $template )
+			return;
+
+		// otherwise extract the args, and include the template
+		extract( $args );
+		$func_args = func_get_args();
+		if ( isset( $func_args[2] ) && $func_args[2] )
+			include_once $template;
+		else
+			include $template;
 	}
 
 	// locate a given template. first check the theme for it, then our plugin dirs for fallbacks
@@ -192,7 +210,7 @@ class qsot_templates {
 }
 
 if (defined('ABSPATH') && function_exists('add_action')) {
-	qsot_templates::pre_init();
+	QSOT_Templates::pre_init();
 }
 
 endif;

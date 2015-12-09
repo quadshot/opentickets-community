@@ -50,12 +50,19 @@ class QSOT_tickets {
 
 		// order item display
 		add_action('qsot-ticket-item-meta', array(__CLASS__, 'order_item_ticket_link'), 1000, 3);
-		add_filter('qsot-get-ticket-link', array(__CLASS__, 'get_ticket_link'), 1000, 2);
-		add_filter('qsot-get-ticket-link-from-code', array(__CLASS__, 'get_ticket_link_from_code'), 1000, 2);
+
+		// ticket links
+		add_filter( 'qsot-get-ticket-link', array( __CLASS__, 'get_ticket_link' ), 1000, 2 );
+		add_filter( 'qsot-get-ticket-link-from-code', array( __CLASS__, 'get_ticket_link_from_code' ), 1000, 2 );
+		add_filter( 'qsot-get-order-tickets-link', array( __CLASS__, 'get_order_tickets_link' ), 1000, 2 );
+		add_action( 'woocommerce_admin_order_data_after_order_details', array( __CLASS__, 'maybe_order_tickets_link' ), 10, 1 );
+		add_action( 'woocommerce_email_before_order_table', array( __CLASS__, 'maybe_order_tickets_link_email' ), 10, 3 );
+		add_action( 'woocommerce_email_after_order_table', array( __CLASS__, 'maybe_order_tickets_link_email' ), 10, 3 );
 
 		// display ticket
 		//add_action('qsot-ticket-intercepted', array(__CLASS__, 'display_ticket'), 1000, 1);
 		add_action('qsot-rewriter-intercepted-qsot-ticket-id', array(__CLASS__, 'display_ticket'), 1000, 1);
+		add_action('qsot-rewriter-intercepted-qsot-order-ticket-id', array(__CLASS__, 'display_order_ticket'), 1000, 1);
 		add_filter('qsot-compile-ticket-info', array(__CLASS__, 'compile_ticket_info'), 1000, 3);
 		add_filter('qsot-compile-ticket-info', array(__CLASS__, 'compile_ticket_info_images'), PHP_INT_MAX, 3);
 		// one-click-email link auth
@@ -82,6 +89,15 @@ class QSOT_tickets {
 				'name' => 'qsot-ticket',
 				'query_vars' => array( 'qsot-ticket', 'qsot-ticket-id' ),
 				'rules' => array( 'ticket/(.*)?' => 'qsot-ticket=1&qsot-ticket-id=' ),
+			)
+		);
+		do_action(
+			'qsot-rewriter-add',
+			'qsot-order-tickets',
+			array(
+				'name' => 'qsot-order-tickets',
+				'query_vars' => array( 'qsot-order-tickets', 'qsot-order-ticket-id' ),
+				'rules' => array( 'order-tickets/(.*)?' => 'qsot-ticket=1&qsot-order-ticket-id=' ),
 			)
 		);
 	}
@@ -175,14 +191,10 @@ class QSOT_tickets {
 	// get the ticket link, based on the ticket code
 	public static function get_ticket_link_from_code( $current, $code ) {
 		global $wp_rewrite;
-		// only figure out the permalink struct once
-		static $post_link = null;
-		if ( null === $post_link )
-			$post_link = $wp_rewrite->get_extra_permastruct( 'post' );
 
 		$final = '';
 		// if we ARE using a permalink struct, then return a pretty permalink
-		if ( ! empty( $post_link ) ) {
+		if ( ! empty( $wp_rewrite->permalink_structure ) ) {
 			$final = site_url( '/ticket/' . $code . '/' );
 		// otherwise, return an ugly permalink
 		} else {
@@ -193,6 +205,91 @@ class QSOT_tickets {
 		}
 
 		return $final;
+	}
+
+	// get the order tickets link, based on the order
+	public static function get_order_tickets_link( $current, $order ) {
+		$order = wc_get_order( $order );
+		// if the order does not exist, then vail
+		if ( ! is_object( $order ) || is_wp_error( $order ) )
+			return $current;
+
+		global $wp_rewrite;
+
+		$final = '';
+		// if we ARE using a permalink struct, then return a pretty permalink
+		if ( ! empty( $wp_rewrite->permalink_structure ) ) {
+			$final = site_url( '/order-tickets/' . $order->order_key . '/' );
+		// otherwise, return an ugly permalink
+		} else {
+			$final = add_query_arg( array(
+				'qsot-order-tickets' => 1,
+				'qsot-order-tickets-id' => $order->order_key,
+			), site_url() );
+		}
+
+		return $final;
+	}
+
+	// maybe add the order tickets link to the edit order admin page
+	public static function maybe_order_tickets_link( $order ) {
+		// if the order is not completed, then bail
+		if ( 'completed' !== $order->get_status() )
+			return;
+
+		$at_least_one = false;
+		// if there are no tickets on the order then bail
+		foreach ( $order->get_items() as $item_id => $item ) {
+			if ( apply_filters( 'qsot-item-is-ticket', false, $item ) ) {
+				$at_least_one = true;
+				break;
+			}
+		}
+		if ( ! $at_least_one )
+			return;
+
+		// draw the link
+		echo sprintf(
+			'<a class="button-primary all-tickets-button" href="%s" title="%s" target="_blank">%s</a>',
+			apply_filters( 'qsot-get-order-tickets-link', '', $order ),
+			__( 'View all of the tickets on a single page, for this order', 'opentickets-community-edition' ),
+			__( 'View ALL Order Tickets', 'opentickets-community-edition' )
+		);
+	}
+
+	// maybe add the order tickets link to the edit order admin page
+	public static function maybe_order_tickets_link_email( $order, $sent_to_admin=false, $plain_text=false ) {
+		// if the order is not completed, then bail
+		if ( 'completed' !== $order->get_status() )
+			return;
+
+		$at_least_one = false;
+		// if there are no tickets on the order then bail
+		foreach ( $order->get_items() as $item_id => $item ) {
+			if ( apply_filters( 'qsot-item-is-ticket', false, $item ) ) {
+				$at_least_one = true;
+				break;
+			}
+		}
+		if ( ! $at_least_one )
+			return;
+
+		// create the link
+		$link = add_query_arg(
+			array( 'n' => apply_filters( 'qsot-email-link-auth', '', $order->ID ) ),
+			apply_filters( 'qsot-get-order-tickets-link', '', $order )
+		);
+
+		if ( ! $plain_text )
+			// draw the link
+			echo sprintf(
+				'<a class="button-primary all-tickets-button" href="%s" title="%s" target="_blank">%s</a>',
+				$link,
+				__( 'View all of the tickets on a single page, for this order', 'opentickets-community-edition' ),
+				__( 'View all of your tickets on a single page &raquo;', 'opentickets-community-edition' )
+			);
+		else
+			echo $link;
 	}
 
 	public static function sniff_order_id($order_id) {
@@ -285,17 +382,171 @@ class QSOT_tickets {
     return array( 'event_id' => $event_id, 'order_id' => $order_id, 'order_item_id' => $order_item_id );
 	}
 
-	public static function email_link_auth($current, $order_id) {
-		$user_id = get_post_meta($order_id, '_customer_user', true);
-		$email = get_post_meta($order_id, '_billing_email', true);
-		$str = sprintf('%s.%s.%s.%s.%s', AUTH_KEY, $user_id, $email, $order_id, NONCE_SALT);
-		$str .= '~'.sha1($str);
-		return @strrev(@md5(@strrev($str)));
+	// create a verification code that will allow a non-logged in user to by-pass the need to login to view their tickets, if they click a link in their email
+	public static function email_link_auth( $current, $order_id ) {
+		// get some basic information about the order itself
+		$user_id = get_post_meta( $order_id, '_customer_user', true );
+		$email = get_post_meta( $order_id, '_billing_email', true );
+
+		// create the code
+		$str = sprintf( '%s.%s.%s.%s.%s', AUTH_KEY, $user_id, $email, $order_id, NONCE_SALT );
+
+		// sign the code
+		$str .= '~' . sha1( $str );
+
+		// hash and encode it
+		return @strrev( @md5( @strrev( $str ) ) );
 	}
 
-	public static function validate_email_link_auth($pass, $auth, $order_id) {
-		$check = apply_filters('qsot-email-link-auth', '', $order_id);
+	// validate an email bypass-login code
+	public static function validate_email_link_auth( $pass, $auth, $order_id ) {
+		// fetch what the code should be
+		$check = apply_filters( 'qsot-email-link-auth', '', $order_id );
+
+		// determine if the supplied code is valid
 		return $check === $auth;
+	}
+
+	// fetch the html for the branding images
+	protected static function _get_branding_images( $branding_image_ids ) {
+		$brand_imgs = array();
+		// cycle through the indexes of the branding images, and if an image belongs, then load the html for it
+		for ( $i = 0; $i < 5; $i++ ) {
+			// store the image id
+			$bid = isset( $branding_image_ids[ $i ] ) ? $branding_image_ids[ $i ] : null;
+
+			// default the image html to nothing
+			$brand_imgs[ $i ] = '';
+
+			// if there is an image id, or there should be an image here, then
+			if ( isset( $bid ) && 'noimg' !== $bid ) {
+				// load the branding image
+				$brand_imgs[ $i ] = apply_filters( 'qsot-ticket-branding-image', wp_get_attachment_image( $bid, array( 90, 99999 ), false, array( 'class' => 'branding-img' ) ), $bid, $i );
+
+				// default the image to the opentickets image with a link to our site
+				$brand_imgs[ $i ] = ! empty( $brand_imgs[ $i ] )
+					? $brand_imgs[ $i ]
+					: '<a href="' . esc_attr( QSOT::product_url() ) . '" title="' . __( 'Who is OpenTickets?', 'opentickets-community-edition' ) . '">'
+							.'<img src="' . esc_attr( QSOT::plugin_url() . 'assets/imgs/opentickets-tiny.jpg' ) . '" class="ot-tiny-logo branding-img" />'
+						. '</a>';
+			}
+
+			// if there is no image, then add a spacer
+			$brand_imgs[ $i ] = empty( $brand_imgs[ $i ] ) ? '<div class="fake-branding-img">&nbsp;</div>' : $brand_imgs[ $i ];
+		}
+
+		return apply_filters( 'qsot-ticket-branding-image-html', $brand_imgs, $branding_image_ids );
+	}
+
+	// display the order tickets, or an error, depending on if we can load the tickets or not
+	public static function display_order_ticket( $order_key ) {
+		// get the order from the order_key
+		$order_id = wc_get_order_id_by_order_key( $order_key );
+		$order = wc_get_order( $order_id );
+		if ( ! is_object( $order ) && ! is_wp_error( $order ) )
+			return false;
+
+		// verify that the user can view these tickets
+		if ( ! self::_can_user_view_ticket( array( 'order_id' => $order_id ) ) ) {
+			self::_no_access( __( 'You do not have permission to view this ticket.', 'opentickets-community-edition' ) );
+			exit;
+		}
+
+		// do not display the ticket unless the order is complete
+		if ( 'completed' != $order->get_status() ) {
+			self::_no_access( __( 'The ticket cannot be displayed, because the order is not complete.', 'opentickets-community-edition' ) );
+			exit;
+		}
+
+		$errors = array();
+		$tickets = array();
+		// cycle through the order items. find any tickets in the order. foreach ticket, add it to our ticket list
+		foreach ( $order->get_items() as $item_id => $item ) {
+			// if the item is not a ticket, then bail
+			if ( ! apply_filters( 'qsot-item-is-ticket', false, $item ) )
+				continue;
+
+			// get the ticket data for display on the output ticket
+			$ticket = apply_filters( 'qsot-compile-ticket-info', false, $item_id, $order_id );
+
+			// if the ticket was not loaded, then skip it
+			if ( ! is_object( $ticket ) ) {
+				$errors[] = __( 'There was a problem loading one of your tickets.', 'opentickets-community-edition' );
+				continue;
+			}
+
+			if ( is_wp_error( $ticket ) ) {
+				$errors[] = __( 'There was a problem loading one of your tickets.', 'opentickets-community-edition' ) . '<br/><em>' . implode( '</br>', $ticket->get_error_messages() ) . '</em>';
+				continue;
+			}
+
+			$eparts = array();
+			// find out if any of the needed data is missing, or if any of it is in a format that is un expected, and generate a list of errors to report
+			if ( ! isset( $ticket->order, $ticket->order->id ) )
+				$eparts[] = __( 'the order', 'opentickets-community-edition' );
+			if ( ! isset( $ticket->product, $ticket->product->id ) )
+				$eparts[] = __( 'the ticket product information', 'opentickets-community-edition' );
+			if ( ! isset( $ticket->event, $ticket->event->ID ) )
+				$eparts[] = __( 'the event information', 'opentickets-community-edition' );
+			if ( ! isset( $ticket->venue, $ticket->venue->ID ) )
+				$eparts[] = __( 'the venue information', 'opentickets-community-edition' );
+			if ( ! isset( $ticket->order_item ) || ! is_array( $ticket->order_item ) )
+				$eparts[] = __( 'the order item information', 'opentickets-community-edition' );
+			if ( ! isset( $ticket->event_area, $ticket->event_area->ID ) )
+				$eparts[] = __( 'the event area information', 'opentickets-community-edition' );
+
+			// if there was any needed data missing, then construct an error about it, and skip this ticket
+			if ( ! empty( $eparts ) ) {
+				$errors[] = sprintf( __( 'The following ticket data could not be loaded: %s', 'opentickets-community-edition' ), '<br/>' . implode( ',<br/>', $eparts ) );
+				continue;
+			}
+
+			// at this point we have what we need for this ticket, so add it to the list
+			$tickets[] = $ticket;
+		}
+
+		// if there were not tickets successfully loaded, then error out
+		if ( empty( $tickets ) ) {
+			self::_no_access( __( 'None of the tickets for this order could be found.', 'opentickets-community-edition' ) );
+			exit;
+		}
+
+		// determine the file location for the template and it's stylesheet
+		$template = 'tickets/basic-order-tickets.php';
+		$stylesheet = apply_filters( 'qsot-locate-template', '', array( 'tickets/basic-style.css' ), false, false );
+		// account for messed up Windows paths
+		$stylesheet = str_replace( DIRECTORY_SEPARATOR, '/', $stylesheet );
+		$abspath = str_replace( DIRECTORY_SEPARATOR, '/', ABSPATH );
+		$stylesheet = str_replace( $abspath, '/', $stylesheet );
+		$stylesheet = site_url( $stylesheet );
+
+		// figure out the page title for the output
+		$page_title = sprintf(
+			__( '%s - %s', 'opentickets-community-edition' ),
+			sprintf( __( 'Order #%d', 'opentickets-community-edition' ), $order_id ),
+			__( 'All Tickets', 'opentickets-community-edition' )
+		);
+
+		// get the html for the ticket itself
+		$out = self::_get_ticket_html( self::_display_ticket_args( array(
+			'tickets' => $tickets,
+			'template' => $template,
+			'stylesheet' => $stylesheet,
+			'page_title' => $page_title,
+		) ) );
+
+		$_GET = wp_parse_args( $_GET, array( 'frmt' => 'html' ) );
+		// do something different depending on the requested format
+		switch ( $_GET['frmt'] ) {
+			case 'pdf':
+				$title = $ticket->product->get_title() . ' (' . $ticket->product->get_price() . ')';
+				$filename = apply_filters( 'qsot-order-tickets-pdf-filename', sanitize_title_with_dashes( 'ticket-' . $title ) . '.pdf', $title, $tickets, $template, $stylesheet, $branding_image_ids );
+				QSOT_pdf::from_html( $out, $filename );
+			break;
+			default: echo $out; break;
+		}
+
+		exit;
 	}
 
 	// display the ticket, or an error, depending on if we can load the ticket or not
@@ -355,7 +606,7 @@ class QSOT_tickets {
 		}
 
 		// determine the file location for the template and it's stylesheet
-		$template = apply_filters( 'qsot-locate-template', '', array( 'tickets/basic-ticket.php' ), false, false );
+		$template = 'tickets/basic-ticket.php';
 		$stylesheet = apply_filters( 'qsot-locate-template', '', array( 'tickets/basic-style.css' ), false, false );
 		// account for messed up Windows paths
 		$stylesheet = str_replace( DIRECTORY_SEPARATOR, '/', $stylesheet );
@@ -363,12 +614,22 @@ class QSOT_tickets {
 		$stylesheet = str_replace( $abspath, '/', $stylesheet );
 		$stylesheet = site_url( $stylesheet );
 
-		// load the branding image ids from our settings page
-		$branding_image_ids = self::$options->{'qsot-ticket-branding-img-ids'};
-		$branding_image_ids = is_scalar( $branding_image_ids ) ? explode( ',', $branding_image_ids ) : $branding_image_ids;
+		// figure out the page title for the output
+		$page_title = sprintf(
+			__( '%s - %s - %s - %s', 'opentickets-community-edition' ),
+			__( 'Ticket', 'opentickets-community-edition' ),
+			$ticket->event->post_title,
+			$ticket->product->get_title(),
+			$ticket->product->get_price()
+		);
 
 		// get the html for the ticket itself
-		$out = self::_get_ticket_html( array( 'ticket' => $ticket, 'template' => $template, 'stylesheet' => $stylesheet, 'branding_image_ids' => $branding_image_ids ) );
+		$out = self::_get_ticket_html( self::_display_ticket_args( array(
+			'ticket' => $ticket,
+			'template' => $template,
+			'stylesheet' => $stylesheet,
+			'page_title' => $page_title,
+		) ) );
 
 		$_GET = wp_parse_args( $_GET, array( 'frmt' => 'html' ) );
 		// do something different depending on the requested format
@@ -384,12 +645,40 @@ class QSOT_tickets {
 		exit;
 	}
 
-	protected static function _get_ticket_html($args) {
-		ob_start();
-		extract($args);
+	// compile a list of data to be used to generate the ticket output
+	protected static function _display_ticket_args( $base='' ) {
+		// load the branding image ids from our settings page
+		$branding_image_ids = self::$options->{'qsot-ticket-branding-img-ids'};
+		$branding_image_ids = is_scalar( $branding_image_ids ) ? explode( ',', $branding_image_ids ) : $branding_image_ids;
+
+		// determine the branding images before hand since they are reused
+		$brand_imgs = self::_get_branding_images( $branding_image_ids );
+
+		// normalize the args
+		return wp_parse_args( $base, array(
+			'branding_image_ids' => $branding_image_ids,
+			'brand_imgs' => $brand_imgs,
+			'pdf' => ( isset( $_GET['frmt'] ) && 'pdf' == strtolower( $_GET['frmt'] ) ),
+		) );
+	}
+
+	// generate the HTML for the ticket, and return it. do this because it may be output directly, or may be thrown into a pdf for export
+	protected static function _get_ticket_html( $args ) {
+		// extract the template name and stylesheet
+		$template = $args['template'];
+		$stylesheet = $args['stylesheet'];
+		unset( $args['template'], $args['stylesheet'] );
+
+		// enqueue our ticket styling
 		wp_enqueue_style('qsot-ticket-style', $stylesheet, array(), self::$o->version);
 
-		include_once $template;
+		// start the capture buffer
+		ob_start();
+
+		// render the ticket
+		QSOT_Templates::include_template( $template, $args );
+
+		// store the capture buffer contents, and close the buffer
 		$out = ob_get_contents();
 		ob_end_clean();
 
@@ -523,36 +812,54 @@ class QSOT_tickets {
 		return $current;
 	}
 
+	// determine if the current user can view this ticket
 	protected static function _can_user_view_ticket($args) {
 		$can = false;
+		// load the order
+		$order = wc_get_order( isset( $args['order_id'] ) ? $args['order_id'] : 0 );
+		if ( ! is_object( $order ) || is_wp_error( $order ) )
+			return $can;
 
-		$order = get_post($args['order_id']);
-		if (!is_object($order) || !isset($order->ID)) return $can;
+		// figure out if guest checkout is enabled, because special logic is used for this scenario
+		$guest_checkout = strtolower( get_option( 'woocommerce_enable_guest_checkout', 'no' ) ) == 'yes';
 
-		$guest_checkout = strtolower(get_option('woocommerce_enable_guest_checkout', 'no')) == 'yes';
-		$customer_user_id = get_post_meta($order->ID, '_customer_user', true);
+		// figure out the owner of the order, if that is stored
+		$customer_user_id = get_post_meta( $order->ID, '_customer_user', true );
+
+		// determine the current logged in user, so we can compare it to the known required data
 		$u = wp_get_current_user();
 
+		// if the user is logged in, or a form was submitted, then
 		if ( is_user_logged_in() || ! empty( $_POST ) ) {
 			if (
-					(current_user_can('edit_shop_orders')) ||
-					($customer_user_id && current_user_can('edit_user', $customer_user_id)) ||
-					($u->ID && $customer_user_id == $u->ID) ||
-					( $guest_checkout && apply_filters( 'qsot-ticket-verification-form-check', false, $order->ID ) )
+					( current_user_can( 'edit_shop_orders' ) ) || // if the current user is an admin of some sort
+					( $customer_user_id && current_user_can( 'edit_user', $customer_user_id ) ) || // or they can edit the profile of the user who the order is for
+					( $u->ID && $customer_user_id == $u->ID ) || // or they are the user that the order is for (not the same as above)
+					( $guest_checkout && apply_filters( 'qsot-ticket-verification-form-check', false, $order->ID ) ) // or they passed the guest checkout ticket verification form
 			) {
-				$can = true;
-			} else if ($guest_checkout && !isset($_POST['verification_form'])) {
+				$can = true; // then they can view the ticket
+			// otherwise, if guest checkout is enabled, and the form was not submitted, pop the guest checkout verification form
+			} else if ( $guest_checkout && ! isset( $_POST['verification_form'] ) ) {
 				self::_guest_verification_form();
-			} else if ($guest_checkout && !apply_filters('qsot-ticket-verification-form-check', false, $order->ID)) {
+			// if guest checkout is enabled, and the user submitted the guect verification form, but that submission did not pass, then hard fail
+			} else if ( $guest_checkout && ! apply_filters( 'qsot-ticket-verification-form-check', false, $order->ID ) ) {
 				self::_no_access(__('The information you supplied does not match our record.','opentickets-community-edition'));
+			// if guest checkout is not enabled, then pop the login form
+			} else if ( ! $guest_checkout ) {
+				self::_login_form();
+			// otherwise completely deny
 			} else {
 				self::_no_access();
 			}
+		// if the user is not logged in, then
 		} else {
-			if (isset($_GET['n']) && apply_filters('qsot-verify-email-link-auth', false, $_GET['n'], $args['order_id'])) {
+			// if the link contains a unique email auth code, then verify that code is for this order
+			if ( isset( $_GET['n'] ) && apply_filters( 'qsot-verify-email-link-auth', false, $_GET['n'], $args['order_id'] ) ) {
 				$can = true;
-			} else if ($guest_checkout && !isset($_POST['verification_form'])) {
+			// if guest checkout is enabled, and the verification form was not just submitted, then pop the form now
+			} else if ( $guest_checkout && ! isset( $_POST['verification_form'] ) ) {
 				self::_guest_verification_form();
+			// otherwise pop the login form
 			} else {
 				self::_login_form();
 			}
