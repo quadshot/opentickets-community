@@ -125,6 +125,10 @@ class QSOT_Post_Type_Event_Area {
 		add_action( 'qsot-update-event-purchases', array( &$this, 'update_event_purchases' ), 2000, 1 );
 		add_action( 'save_post', array( &$this, 'save_post_update_event_purchases' ), PHP_INT_MAX, 3 );
 
+		// add a column to display the area_type in the posts list page
+		add_filter( 'manage_qsot-event-area_posts_columns', array( &$this, 'add_custom_event_area_columns' ), 10, 2 );
+		add_action( 'manage_qsot-event-area_posts_custom_column', array( &$this, 'add_custom_event_area_column_values' ), 10, 2 );
+
 		// when in the admin, add some more actions and filters
 		if ( is_admin() ) {
 			// admin order editing
@@ -278,6 +282,33 @@ class QSOT_Post_Type_Event_Area {
 		) );
 
 		register_post_type( 'qsot-event-area', $args );
+	}
+
+	// add the column to the event area posts list page
+	public function add_custom_event_area_columns( $columns, $post_type='' ) {
+		$new_columns = array();
+		// add the new column after the title column
+		foreach ( $columns as $key => $val ) {
+			$new_columns[ $key ] = $val;
+			if ( 'title' == $key )
+				$new_columns['area_type'] = __( 'Area Type', 'opentickets-community-edition' );
+		}
+
+		return $new_columns;
+	}
+
+	// add the values for the custom columns we have
+	public function add_custom_event_area_column_values( $column_name, $post_id ) {
+		// get the area_type slug of the post
+		$name = get_post_meta( $post_id, '_qsot-event-area-type', true );
+
+		// if there is a registered area_type with that slug, then use the proper name from that area type instead
+		if ( is_scalar( $name ) && '' !== $name && isset( $this->area_types[ $name ] ) )
+			$name = $this->area_types[ $name ]->get_name();
+		else
+			$name = sprintf( __( '[%s]', 'opentickets-community-edition' ), $name );
+
+		echo force_balance_tags( $name );
 	}
 
 	// draw the event ticket selection UI
