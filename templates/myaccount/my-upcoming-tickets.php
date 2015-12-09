@@ -1,17 +1,18 @@
 <?php ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) ? die( header( 'Location: /' ) ) : null; ?>
-<?php if (isset($tickets) && is_array($tickets) && !empty($tickets)): ?>
+<?php if ( isset( $tickets ) && is_array( $tickets ) && ! empty( $tickets ) ): ?>
 	<h2><?php echo apply_filters('qsot_my_account_my_upcoming_tickets_title', __('Upcoming Tickets', 'opentickets-community-edition')); ?></h2>
 
 	<?php if ($display_format == 'as_list'): ?>
 
 		<ul class="ticket-list">
-			<?php foreach ($tickets as $ticket): ?>
+			<?php foreach ( $tickets as $ticket ): ?>
 				<?php
-					$name = sprintf(
-						'%s @ %s',
-						$ticket->product->get_title(),
-						wc_price( $ticket->_line_subtotal )
-					);
+					$event_area = apply_filters( 'qsot-event-area-for-event', false, $ticket->event->ID );
+					$area_type = is_object( $event_area->area_type ) ? $event_area->area_type : false;
+					if ( $area_type )
+						$name = $area_type->upcoming_tickets_display_name( $ticket );
+					else
+						$name = $ticket->product->get_title();
 				?>
 				<li>
 					<?php if ( isset( $ticket->permalink ) && $ticket->permalink ): ?>
@@ -62,11 +63,12 @@
 				<tbody>
 					<?php foreach ( $event->tickets as $ticket ): ?>
 						<?php
-							$name = sprintf(
-								'%s @ %s',
-								$ticket->product->get_title(),
-								wc_price( $ticket->_line_subtotal )
-							);
+							$event_area = apply_filters( 'qsot-event-area-for-event', false, $ticket->event->ID );
+							$area_type = is_object( $event_area->area_type ) ? $event_area->area_type : false;
+							if ( $area_type )
+								$name = $area_type->upcoming_tickets_display_name( $ticket );
+							else
+								$name = $ticket->product->get_title();
 						?>
 						<tr>
 							<td>

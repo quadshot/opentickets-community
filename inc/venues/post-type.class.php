@@ -61,7 +61,7 @@ class qsot_venue_post_type {
 
 		add_filter('qsot-upcoming-events-query', array(__CLASS__, 'events_query_only_this_venue'), 10, 2);
 		add_filter('qsot-events-core-post-types', array(__CLASS__, 'register_post_type'), 3, 1);
-		add_action('qsot-events-bulk-edit-settings', array(__CLASS__, 'venue_bulk_edit_settings'), 20, 2);
+		add_action('qsot-events-bulk-edit-settings', array(__CLASS__, 'venue_bulk_edit_settings'), 20, 3);
 		add_filter('qsot-events-save-sub-event-settings', array(__CLASS__, 'save_sub_event_settings'), 10, 3);
 		add_filter('qsot-load-child-event-settings', array(__CLASS__, 'load_child_event_settings'), 10, 3);
 		add_filter('qsot-render-event-agendaWeek-template-details', array(__CLASS__, 'agendaWeek_template_extra'), 10, 2);
@@ -348,13 +348,18 @@ class qsot_venue_post_type {
 		wp_enqueue_script( 'qsot-event-venue-settings' );
 	}
 
-	public static function venue_bulk_edit_settings($post, $mb) {
+	// add the bulk edit settings for the venue. used to select the venue for a group of events
+	public static function venue_bulk_edit_settings( $list, $post, $mb ) {
+		// get a list of all venues
 		$vargs = array(
 			'post_type' => self::$o->{'venue.post_type'},
 			'post_status' => 'publish',
 			'posts_per_page' => -1,
 		);
-		$venues = get_posts($vargs);
+		$venues = get_posts( $vargs );
+
+		// draw the form field
+		ob_start();
 		?>
 			<div class="setting-group">
 				<div class="setting" rel="setting-main" tag="venue">
@@ -379,6 +384,13 @@ class qsot_venue_post_type {
 				</div>
 			</div>
 		<?php
+		$out = ob_get_contents();
+		ob_end_clean();
+
+		// update the list
+		$list['venue'] = $out;
+
+		return $list;
 	}
 
 	public static function save_sub_event_settings($settings, $parent_id, $parent) {

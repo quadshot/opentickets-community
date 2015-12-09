@@ -2017,7 +2017,10 @@ class qsot_post_type {
 
 											</div>
 
-											<?php do_action('qsot-events-bulk-edit-settings', $post, $mb); ?>
+											<?php
+												$extra_settings = apply_filters( 'qsot-events-bulk-edit-settings', array(), $post, $mb );
+												echo implode( '', array_values( $extra_settings ) );
+											?>
 										</div>
 									</div>
 								</td>

@@ -167,6 +167,15 @@ abstract class QSOT_Base_Event_Area_Type {
 		);
 	}
 
+	// get the display name of a given ticket order item, for the upcoming tickets my-account module
+	public function upcoming_tickets_display_name( $ticket ) {
+		return sprintf(
+			'%s @ %s',
+			isset( $ticket->product ) ? $ticket->product->get_title() : __( 'Ticket', 'opentickets-community-edition' ),
+			isset( $ticket->_line_subtotal ) ? wc_price( $ticket->_line_subtotal ) : __( '(free)', 'opentickets-community-edition' )
+		);
+	}
+
 	// the function that returns the object that controls the reservations for this event area type
 	abstract public function get_zoner();
 

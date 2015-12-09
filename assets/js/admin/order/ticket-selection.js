@@ -405,7 +405,6 @@ QS.adminTicketSelection = ( function( $, qs, qt ) {
 
 		// handle all ajax calls
 		me.aj = function( sa, data, func, error_func ) {
-			console.log( 'before norm', sa, data, func, error_func, S );
 			// normalize the data
 			var data = $.extend( {}, data, { action:'qsot-admin-ajax', sa:sa, _n:S.nonce, order_id:$( '#post_ID' ).val(), customer_user:$( '#customer_user' ).val() } ),
 					// normalize the success and error functions
@@ -463,7 +462,6 @@ QS.adminTicketSelection = ( function( $, qs, qt ) {
 
 		// start the UI with the mindset of 'adding' a new reservation
 		me.add_ticket_ui = function( e ) {
-			console.log( 'click', e, me );
 			e.preventDefault();
 
 			// flag the internal state of the UI
@@ -477,7 +475,6 @@ QS.adminTicketSelection = ( function( $, qs, qt ) {
 		// start the UI with the mindset of 'changing' an existing reservation
 		me.change_ticket_ui = function( e ) {
 			e.preventDefault();
-			console.log( 'click', $( this ) );
 
 			// flag the internal state of the UI
 			me.state = 'change';

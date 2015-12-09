@@ -110,7 +110,7 @@ class QSOT_Post_Type_Event_Area {
 		add_filter( 'woocommerce_add_to_cart_validation', array( &$this, 'sniff_order_again_and_readd_to_cart' ), 10, 6 );
 
 		// sub event bulk edit stuff
-		add_action( 'qsot-events-bulk-edit-settings', array( &$this, 'event_area_bulk_edit_settings' ), 30, 2 );
+		add_action( 'qsot-events-bulk-edit-settings', array( &$this, 'event_area_bulk_edit_settings' ), 30, 3 );
 		add_filter( 'qsot-events-save-sub-event-settings', array( &$this, 'save_sub_event_settings' ), 10, 3 );
 		add_filter( 'qsot-load-child-event-settings', array( &$this, 'load_child_event_settings' ), 10, 3 );
 
@@ -1010,7 +1010,7 @@ class QSOT_Post_Type_Event_Area {
 	}
 
 	// add the form field that controls the event area selection for events, on the edit event page
-	public function event_area_bulk_edit_settings($post, $mb) {
+	public function event_area_bulk_edit_settings( $list, $post, $mb ) {
 		// get a list of all event areas
 		$eaargs = array(
 			'post_type' => 'qsot-event-area',
@@ -1021,6 +1021,7 @@ class QSOT_Post_Type_Event_Area {
 		$area_ids = get_posts( $eaargs );
 
 		// render the form fields
+		ob_start();
 		?>
 			<div class="setting-group">
 				<div class="setting" rel="setting-main" tag="event-area">
@@ -1059,6 +1060,13 @@ class QSOT_Post_Type_Event_Area {
 				</div>
 			</div>
 		<?php
+		$out = ob_get_contents();
+		ob_end_clean();
+
+		// update the list with the event-area bulk setting
+		$list['event-area'] = $out;
+
+		return $list;
 	}
 
 	// when saving a sub event, we need to make sure to save what event area it belongs to

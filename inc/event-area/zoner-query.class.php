@@ -58,7 +58,7 @@ class QSOT_Zoner_Query {
 			'where__extra' => '',
 			'before' => '',
 			'after' => '',
-			'orderby' => '',
+			'orderby' => 'since asc',
 			'limit' => 0,
 			'offset' => 0,
 			'fields' => 'all',
@@ -163,7 +163,7 @@ class QSOT_Zoner_Query {
 		$where = implode( ' ', $where );
 		$groupby = $groupby ? 'group by ' . implode( ', ', $groupby ) : '';
 		$having = implode( ' ', $having );
-		$orderby = implode( ', ', $orderby );
+		$orderby = $orderby ? 'order by ' . implode( ', ', $orderby ) : '';
 		
 		// construct the query
 		$query = "select {$fields} from {$wpdb->qsot_event_zone_to_order} ezo {$join} where 1=1 {$where} {$groupby} {$having} {$orderby} {$limit}";

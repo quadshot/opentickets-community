@@ -254,7 +254,7 @@ class QSOT {
 
 		// if we have the order_id, then use it to lookup the customer_user
 		if ( (int)$data['order_id'] > 0 )
-			$res = get_post_meta( $order_id, '_customer_user', true );
+			$res = get_post_meta( $data['order_id'], '_customer_user', true );
 
 		// if the woocommerce session is in use, then pull the id from that session
 		if ( empty( $res ) && isset( $woocommerce->session ) && is_object( $woocommerce->session ) )
@@ -265,6 +265,29 @@ class QSOT {
 			$res = md5( ( isset( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : time() ) . ( isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : rand( 0, PHP_INT_MAX ) ) );
 
 		return $res;
+	}
+
+	// get the max packet size from mysql, if we can
+	public static function max_packet() {
+		$found = null;
+		// attempt to fetch the value from cache, if we already grabbed it from the db
+		$cache = wp_cache_get( 'max-packe', 'db-value', false, $found );
+
+		// if the value was not cached yet, then do so now
+		if ( false === $found || ( null === $found && false === $cache ) ) {
+			global $wpdb;
+
+			// find the var in the mysql settings
+			$res = $wpdb->get_row( 'show variables like "max_allowed_packet"' );
+
+			// determine the value
+			$cache = is_object( $res ) && isset( $res->Value ) ? $res->Value : 1048576;
+
+			// save it in the cache
+			wp_cache_set( 'max-packet', $cache, 'db-value', 3600 );
+		}
+
+		return $cache;
 	}
 
 	public static function special_autoloader($class) {
