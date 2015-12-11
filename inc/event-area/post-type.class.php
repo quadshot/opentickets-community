@@ -313,6 +313,7 @@ class QSOT_Post_Type_Event_Area {
 
 	// draw the event ticket selection UI
 	public function draw_event_area( $content, $event ) {
+		remove_filter( 'qsot-event-the-content', array( &$this, 'draw_event_area' ), 1000 );
 		// get the event area
 		$event_area = isset( $event->event_area ) && is_object( $event->event_area ) ? $event->event_area : apply_filters( 'qsot-event-area-for-event', false, $event->ID );
 
@@ -326,6 +327,7 @@ class QSOT_Post_Type_Event_Area {
 		// get the output of the UI
 		$ui = $area_type->render_ui( $event, $event_area );
 
+		add_filter( 'qsot-event-the-content', array( &$this, 'draw_event_area' ), 1000, 2 );
 		// put the UI in the appropriate location, depending on our settings
 		if ( 'above' == apply_filters( 'qsot-get-option-value', 'below', 'qsot-synopsis-position' ) )
 			return $content . $ui;

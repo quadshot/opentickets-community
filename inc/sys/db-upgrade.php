@@ -24,11 +24,11 @@ class qsot_db_upgrader {
 			$wpdb->show_errors = false;
 		}
 
-		$versions = array_change_key_case( get_option(self::$_table_versions_key, array()) );
+		$versions = get_option(self::$_table_versions_key, array());
 		$tables = array();
-		$tables = array_change_key_case( apply_filters('qsot-upgrader-table-descriptions', $tables) );
+		$tables = apply_filters('qsot-upgrader-table-descriptions', $tables);
 
-		$existing_tables = array_map( 'strtolower', $wpdb->get_col( 'show tables' ) );
+		$existing_tables = $wpdb->get_col( 'show tables' );
 
 
 

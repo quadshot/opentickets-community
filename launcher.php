@@ -291,8 +291,15 @@ class opentickets_community_launcher {
 	// update the recorded version, so that other plugins do not have to do fancy lookups to find it
 	protected static function _check_version() {
 		$version = get_option( 'opentickets_community_edition_version', '' );
-		if ( $version !== self::$o->version )
+		if ( $version !== self::$o->version ) {
 			update_option( 'opentickets_community_edition_version', self::$o->version );
+			add_action( 'plugins_loaded', array( __CLASS__, 'run_updates' ), 1 );
+		}
+	}
+
+	// after a successful plugin update, we may need to run some code to handle some upgrade logic
+	public static function run_updates() {
+		do_action( 'qsot-otce-updated', self::$o->version );
 	}
 
 	//run out activation code upon woocommerce activation, if woocommerce is activated AFTER OpenTickets

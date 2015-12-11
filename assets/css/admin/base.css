@@ -323,3 +323,5 @@ body.printer-friendly-report .inner-wrap { padding:8px !important; width:9.5in !
 #qsot-save-results .msg { border:1px solid #000; color:#000; background-color:#eee; padding:0.7em; margin-bottom:1em; }
 #qsot-save-results .msg-good { border-color:#008; color:#008; background-color:#eef; }
 #qsot-save-results .msg-bad { border-color:#800; color:#800; background-color:#fee; }
+
+#order_data .all-tickets-button { margin-top:1em; }

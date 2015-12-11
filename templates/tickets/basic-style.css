@@ -3,15 +3,15 @@
  */
 
 html.pdf { margin:0; }
-body { margin:0; background-color:white; border:0px none transparent; box-sizing:border-box; display:block; page-break-before:avoid; width:725px; }
+body { margin:0; background-color:white; border:0px none transparent; box-sizing:border-box; display:block; page-break-before:avoid; width:725px; font-family:"Open Sans", Helvetica, Arial, sans-serif; }
 body.pdf { padding:1.2cm; }
 
 .clear { clear:both; }
 
-.actions-list { padding:10px 0; border-bottom:2px solid #888888; margin-bottom:5px; font-size:12px; font-family:Helvetica, Arial, sans-serif; font-weight:bold; }
+.actions-list { padding:10px 0; border-bottom:2px solid #888888; margin-bottom:5px; font-size:12px; font-family:"Open Sans", Helvetica, Arial, sans-serif; font-weight:bold; }
 .actions-list a { padding:0 10px; }
 
-.page-wrap { width:100%; font-family:Helvetica, Arial, sans-serif; display:block; }
+.page-wrap { width:100%; font-family:"Open Sans", Helvetica, Arial, sans-serif; display:block; }
 .page-wrap .venue-info,
 .page-wrap .ticket-wrap { padding:10px 0; margin:0 10px; page-break-inside:avoid; }
 .page-wrap .ticket-wrap .inner-wrap { border:1px solid #555555; padding:10px 10px 0; position:relative; }
@@ -35,6 +35,8 @@ body.pdf .page-wrap table.branding { position:relative; top:0; }
 
 .page-wrap ul { list-style:none outside none; margin:0; padding:0; border:0; }
 .page-wrap li { list-style:none outside none; margin:0; padding:1px 0; border:0; }
+body.pdf .page-wrap .event-information li { font-size:13px; line-height:10px !important; }
+body.pdf .page-wrap .personalization li { font-size:12px; line-height:9px !important; }
 
 .page-wrap .event-information { font-size:13px; line-height:1.1em; }
 .page-wrap .event-information .value { font-style:italic; color:#555; }

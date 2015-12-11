@@ -369,7 +369,7 @@ class qsot_Settings_Frontend extends QSOT_Settings_Page {
 
 			$raw_values = $_POST[ $field['id'] ];
 			// next sanitize the individual values for the field
-			$values = array_filter( array_map( 'absint', $raw_values ) );
+			$values = array_filter( $raw_values );
 
 			// allow modification of the data
 			$values = apply_filters( 'woocommerce_admin_settings_sanitize_option', $values, $field, $raw_values );

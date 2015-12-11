@@ -243,7 +243,9 @@ QS.popMediaBox = (function($, qt) {
 					role = me.attr( 'role' ) || 'standard',
 					mode = me.data( 'mode' ) || 'normal',
 					mode = mode.split( /\s*:\s*/ ),
-					initial_date = me.data( 'init-date' ) || ( new Date() ).toString(),
+					allow_blank = me.data( 'allow-blank' ) || false,
+					initial_date = me.data( 'init-date' ),
+					d = initial_date ? new Date( initial_date ) : ( allow_blank ? '' : new Date() ),
 					d = new Date( initial_date ),
 					min = me.data( 'min-date' ) || '',
 					max = me.data( 'max-date' ) || '',
@@ -263,6 +265,12 @@ QS.popMediaBox = (function($, qt) {
 			var display = $( '<input type="date" />' ).insertBefore( me ).attr( { id:( me.attr( 'id' ) || me.attr( 'name' ) ) + '-display', role:role + '-display' } )
 					.addClass( me.attr( 'class' ).replace( new RegExp( selector.replace( /^\.#/, '' ), 'g' ), '' ) );
 			me.data( 'display', display );
+
+			// setup the event that clears the hidden field when the display field is cleared
+			display.on( 'change', function( e ) {
+				if ( '' == $( this ).val() )
+					me.val( '' );
+			} );
 
 			// setup some basic settings for the datepicker
 			var args = {

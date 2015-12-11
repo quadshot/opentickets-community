@@ -2,6 +2,7 @@
 
 // handles the update checker and updating process for all our extensions
 class QSOT_Extensions_Updater {
+	protected static $ns = 'qsot-';
 	// the core wordpress updater url. this is the url that we sniff for on the http_response filter, to trigger another request to our server
 	protected static $core_wp_update_api_urls = array(
 		'http://api.wordpress.org/plugins/update-check/1.1/',
@@ -10,15 +11,15 @@ class QSOT_Extensions_Updater {
 
 	// setup the actions, filters, and basic data needed for this class
 	public static function pre_init() {
-		if ( isset( $_GET['fucktest'] ) )
-			die(var_dump(self::_maybe_extension_updates()));
-		// add a filter to sniff out the core wp update url requests
-		add_filter( 'http_response', array( __CLASS__, 'check_for_update_request' ), 10000, 3 );
+		// run our update checker during the initial stages of the wp.org checker
+		add_filter( 'pre_http_request', array( __CLASS__, 'check_for_updates' ), 10000, 3 );
+
+		// infuse our last extension update check response into the list of plugin updates for the site
+		//add_filter( 'pre_set_site_transient_update_plugins', array( __CLASS__, 'add_extension_updates_to_plugin_updates' ), 10000, 1 );
+		add_filter( 'site_transient_update_plugins', array( __CLASS__, 'add_extension_updates_to_plugin_updates' ), 10000, 1 );
 
 		// add a filter to load known plugin information data from the db instead of hitting some api
 		add_filter( 'plugins_api', array( __CLASS__, 'known_plugin_information' ), 1000, 3 );
-
-		//add_filter( 'plugins_api_result', function() { die(var_dump( func_get_args() )); } );
 		
 		// add filter to help when testing with a local server
 		add_filter( 'http_request_host_is_external', array( __CLASS__, 'local_server' ), 10, 3 );
@@ -34,9 +35,9 @@ class QSOT_Extensions_Updater {
 		return $allowed || ( isset( $server['host'] ) && $server['host'] == $host );
 	}
 
-	// function to check to see if the current http response is from the core wp updater api
-	// if it is, we trigger our additional opentickets updater logic, possibly
-	public static function check_for_update_request( $response, $args, $url ) {
+	// intercepts the core wp.org update requests. during the initial stages of that request, we perform our own request.
+	// we need to do it this way, because the user could be hard blocked from wp.org, which would cause our old check to never run
+	public static function check_for_updates( $response, $request, $url ) {
 		// bail first if this is not an updater url
 		if ( ! in_array( $url, self::$core_wp_update_api_urls ) )
 			return $response;
@@ -48,18 +49,28 @@ class QSOT_Extensions_Updater {
 		if ( empty( $extra ) || ! is_array( $extra ) || ( isset( $extra['errors'] ) && ! empty( $extra['errors'] ) ) )
 			return $response;
 
-		// otherwise, try to merge our extra data with the original response
-		$parsed = @json_decode( wp_remote_retrieve_body( $response ), true );
-
-		// merge each key individually
-		foreach ( $parsed as $key => $list )
-			if ( isset( $extra[ $key ] ) )
-				$parsed[ $key ] = array_merge( $extra[ $key ], $list );
-
-		// update the response body with the new list
-		$response['body'] = @json_encode( $parsed );
+		// store the result for later use
+		update_option( self::$ns . 'updater-response', @base64_encode( @json_encode( $extra ) ), 'no' );
 
 		return $response;
+	}
+
+	// uring the process of setting the plugin updates transient, we need to infuse our latest QSOT extension updates into the list
+	public static function add_extension_updates_to_plugin_updates( $updates_list ) {
+		// get our stored extension updates
+		$ext_updates = get_option( self::$ns . 'updater-response', array() );
+		$ext_updates = is_string( $ext_updates ) ? @json_decode( @base64_decode( $ext_updates ), true ) : $ext_updates;
+
+		// if there are no extension updates to add, then bail
+		if ( ! is_array( $ext_updates ) || ! isset( $ext_updates['plugins'] ) )
+			return $updates_list;
+
+		// merge the results
+		foreach ( array( 'plugins' => 'response', 'no_update' => 'no_update', 'translations' => 'translations' ) as $from => $to )
+			foreach ( $ext_updates[ $from ] as $slug => $data )
+				$updates_list->{ $to }[ $slug ] = (object) $data;
+
+		return $updates_list;
 	}
 
 	// load the 'plugin information' about our known plugins from the database instead of an api

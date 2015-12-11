@@ -216,7 +216,11 @@ class QSOT_Templates {
 	}
 
 	// include a template, and make specific $args local vars
-	public static function include_template( $template, $args, $echo__output=true ) {
+	public static function include_template( $template, $args, $echo__output=true, $lookup=true ) {
+		// get the template from the template filename
+		if ( $lookup )
+			$template = apply_filters( 'qsot-locate-template', false, (array) $template, false, false );
+
 		// extract args to local vars
 		extract( $args );
 
@@ -245,7 +249,7 @@ class QSOT_Templates {
 		if ( empty( $template ) )
 			return '';
 
-		return self::include_template( $template, $args, $echo__output );
+		return self::include_template( $template, $args, $echo__output, false );
 	}
 
 	// include a WC template part
@@ -260,7 +264,7 @@ class QSOT_Templates {
 		if ( empty( $template ) )
 			return '';
 
-		return self::include_template( $template, $args, $echo__output );
+		return self::include_template( $template, $args, $echo__output, false );
 	}
 }
 

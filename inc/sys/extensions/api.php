@@ -204,10 +204,6 @@ class QSOT_Extensions_API {
 		// otherwise, fetch the response
 		$response = $this->_fetch( 'ASC', $req );
 
-		// if we are debugging, then
-		if ( isset( $_COOKIE, $_COOKIE['ot-debug'] ) && 'now' == $_COOKIE['ot-debug'] )
-			die(var_dump($req, $response));
-
 		// if the response hard failed, then pass through
 		if ( is_wp_error( $response ) )
 			return $response;
@@ -266,10 +262,6 @@ class QSOT_Extensions_API {
 
 		// otherwise, fetch the response
 		$response = $this->_fetch( 'CHK', array( 'qcheck' => $check ) );
-
-		// if we are debugging, then
-		if ( isset( $_COOKIE, $_COOKIE['ot-debug'] ) && 'now' == $_COOKIE['ot-debug'] )
-			die(var_dump(array( 'qcheck' => $check ), $response));
 
 		// if the response hard failed, then pass through
 		if ( is_wp_error( $response ) )

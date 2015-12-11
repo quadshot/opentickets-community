@@ -243,6 +243,7 @@ class QSOT_Extensions {
 	protected function _load_known_plugins() {
 		// get the current cached list of known plugins
 		$cache = get_option( self::$ns . 'known-plugins', array() );
+		$cache = is_string( $cache ) ? @json_decode( @base64_decode( $cache ), true ) : $cache;
 
 		// if the cache is empty, and we are not on the extensions page, then do not try to load them
 		if ( empty( $cache ) && ( ! isset( $_GET['page'] ) || 'qsot-extensions' != $_GET['page'] ) )
@@ -270,6 +271,7 @@ class QSOT_Extensions {
 		$api = QSOT_Extensions_API::instance();
 
 		$existing_known = get_option( self::$ns . 'known-plugins', array() );
+		$existing_known = is_string( $existing_known ) ? @json_decode( @base64_decode( $existing_known ), true ) : $existing_known;
 		// if we already have a list of known plugins, but it is just expired, then we have a special case that can save everyone some bandwidth
 		// we can send a list of our exisitng known plugins, and their associated image hashes. if the hashes have not changed on the sending end, then they will not resend the image again, saving bandwidth
 		$image_hashes = $this->_maybe_known_image_hashes( $existing_known );
@@ -284,7 +286,7 @@ class QSOT_Extensions {
 		// otherwise, update the known plugins list, and it's cache (make sure not to autoload)
 		$this->known = $this->_handle_images( $results, $existing_known );
 		$this->known_request_time = $api->last_timer;
-		update_option( self::$ns . 'known-plugins', $this->known, 'no' );
+		update_option( self::$ns . 'known-plugins', @base64_encode( @json_encode( $this->known ) ), 'no' );
 		update_option( self::$ns . 'known-plugins-timer', $api->last_timer, 'no' );
 	}
 
@@ -504,7 +506,7 @@ class QSOT_Extensions {
 
 		// update the known plugins list
 		$this->known[ $plugin_file ]['images'][ $image_key ] = array( 'icon_rel_path' => $target['url'] . '.' . $extension );
-		update_option( self::$ns . 'known-plugins', $this->known );
+		update_option( self::$ns . 'known-plugins', @base64_encode( @json_encode( $this->known ) ), 'no' );
 
 		// get the base plugins dir, so that we can return a full local url for the new file
 		$u = wp_upload_dir();
@@ -666,6 +668,12 @@ class QSOT_Extensions {
 		// if the message should not be displayed, then bail
 		if ( ! get_option( self::$ns . 'converted-msg', 0 ) )
 			return;
+
+		// if they do not have any known plugins installed, then bail
+		if ( empty( $this->installed ) ) {
+			update_option( self::$ns . 'converted-msg', 1 );
+			return;
+		}
 
 		// url of the licenses page
 		$url = add_query_arg(

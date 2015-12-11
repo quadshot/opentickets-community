@@ -349,10 +349,14 @@ class QSOT_system_status_page extends QSOT_base_page {
 					'post_status' => 'publish',
 					'post_type' => 'qsot-event',
 					'post_parent__not_in' => array( 0 ),
-					'posts_per_page' => 40,
+					'posts_per_page' => -1,
 					'paged' => $_POST['page'],
 					'fields' => 'ids',
 					's' => $_POST['q'],
+					'meta_key' => '_start',
+					'order' => 'asc',
+					'orderby' => 'meta_value',
+					'meta_type' => 'DATETIME',
 				) );
 
 				$results = array();

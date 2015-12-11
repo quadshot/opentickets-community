@@ -171,6 +171,59 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 1.15.0 - Dev/09/2015 =
+* [new] added a method to view all tickets on an order at once
+* [tweak] broke ticket templates into small template sections
+
+= 1.14.14 - Dev/02/2015 =
+* [fix] fixed php syntax errors on script security
+
+= 1.14.13 - Dec/01/2015 =
+* [new] changed PDF font to Open Sans, for unicode character compatibility (like cyrillic)
+* [tweak] changed script security so that it is compatible with eAccelerator
+* [tweak] updated existing translation files
+
+= 1.14.12 - Nov/30/2015 =
+* [new] added filter to the PDF download filename
+* [improvement] saving events maintains original sub event author and content
+* [fix] repaired 'no-image' functionality on ticket branding images
+* [fix] repaired missing ticket links in completed order email edge-case
+
+= 1.14.11 - Nov/12/2015 =
+* [fix] fixed an edge case where an error was caused by mysql settings requiring case sensitive table names
+
+= 1.14.10 - Nov/12/2015 =
+* [tweak] modified extension updater to ignore encoding issues
+* [tweak] changed how updater inject's the list of extension updates
+
+= 1.14.9 - Nov/10/2015 =
+* [tweak] adjusted advanced tools to show all matching events in search
+* [fix] reservations bug that could combine purchase from same user into single reservation
+
+= 1.14.8 =
+* [new] added 'checkin only' role, which only has the ability to checkin
+* [tweak] changed needed permission for checkin from 'edit_users' to 'checkin'
+* [tweak] all users above subscriber/customer can checkin
+
+= 1.14.7 =
+* [new] ability to set the button text on all ticket UI buttons
+* [fix] removed php warnings
+
+= 1.14.6 =
+* [fix] 1970 bug on hard stop value has been resolved
+
+= 1.14.5 =
+* [new] ability to have a negative time formula for event sales
+* [new] ability to specify a hard stop date time for event sales
+* [improvement] changed synopsis generation for perofmance
+
+= 1.14.4 =
+* [improvement] performance boost for users with seating extension
+
+= 1.14.3 =
+* [update] new user link on edit order screen has been updated for new WC
+* [tweak] modified new reporting class to remove php 5.3 syntax
+
 = 1.14.2 =
 * [tweak] modified how extensions page grabs list for lower bandwidth installs
 * [tweak] modified how extension image caching works to be less of a load on server
@@ -729,6 +782,12 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 * initial public release
 
 == Upgrade Notice ==
+
+= 1.15.0 =
+This update completely changes how the tickets are displayed to the end user. If you have a custom ticket template, you are going to need to update your custom template in order to be compatible.
+
+= 1.14.14 =
+This update repairs the php syntax problems of the last update, dealing with the script security. Apologies.
 
 = 1.14.0 =
 This update makes the Keychain extension obsolete. It will also enable you to update your OpenTickets Extensions using the WordPress updater. In addition, you will be able to browse our available OpenTickets extensions right inside your own admin.
