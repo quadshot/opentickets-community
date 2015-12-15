@@ -27,5 +27,10 @@ var QS = QS || { Tools:{} };
 
 		// show any postboxes that ARE for this type
 		$( '.postbox.for-' + current ).fadeIn( 300 );
+
+		// trigger global callbacks for box selection
+		QS.cbs.trigger( 'postbox-' + current, [] );
 	} );
+
+	$( function() { $( '[name="qsot-event-area-type"]:checked:eq(0)' ).trigger( 'change' ); } );
 } )( jQuery, QS.Tools );
