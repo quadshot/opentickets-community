@@ -244,6 +244,7 @@ class QSOT_Extensions {
 		// get the current cached list of known plugins
 		$cache = get_option( self::$ns . 'known-plugins', array() );
 		$cache = is_string( $cache ) ? @json_decode( @base64_decode( $cache ), true ) : $cache;
+		$cache = ! is_array( $cache ) ? array() : $cache;
 
 		// if the cache is empty, and we are not on the extensions page, then do not try to load them
 		if ( empty( $cache ) && ( ! isset( $_GET['page'] ) || 'qsot-extensions' != $_GET['page'] ) )
