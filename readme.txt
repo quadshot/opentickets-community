@@ -3,7 +3,7 @@ Contributors: quadshot, loushou, coolmann
 Donate link: http://opentickets.com/
 Tags: events, event management, tickets, ticket sales, ecommerce
 Requires at least: 4.0
-Tested up to: 4.3
+Tested up to: 4.4
 Stable tag: trunk
 Copyright: Copyright (C) 2009-2014 Quadshot Software LLC
 License: GNU General Public License, version 3 (GPL-3.0)
