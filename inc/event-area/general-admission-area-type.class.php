@@ -482,7 +482,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 					'event' => $event,
 					'reserved' => $reserved,
 					'area' => $event_area,
-				), $event, $event_area ) );
+				), $event, $event_area ), true, false );
 			$out = ob_get_contents();
 			ob_end_clean();
 		}

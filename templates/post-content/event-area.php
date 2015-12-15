@@ -3,6 +3,10 @@ $show_available_qty = apply_filters( 'qsot-get-option-value', true, 'qsot-show-a
 
 // figure out the purchase limit for the event
 $limit = apply_filters( 'qsot-event-ticket-purchase-limit', 0, $event->ID );
+
+// find the zoner for the area, and the availability for this event
+$zoner = isset( $area->area_type ) && is_object( $area->area_type ) ? $area->area_type->get_zoner() : false;
+$available = is_object( $zoner ) ? $zoner->get_availability( $event, $area ) : '';
 ?>
 <div class="qsfix"></div>
 <div class="qsot-event-area-ticket-selection">
@@ -56,7 +60,7 @@ $limit = apply_filters( 'qsot-event-ticket-purchase-limit', 0, $event->ID );
 								<div class="availability-message helper">
 									<?php printf(
 										__( 'Currently, there are <span class="available">%s</span> "<span class="ticket-name">%s</span>" (<span class="ticket-price">%s</span>) available for purchase.', 'opentickets-community-edition' ),
-										( 'yes' == $show_available_qty ) ? $area->meta['available'] : '',
+										( 'yes' == $show_available_qty ) ? $available : '',
 										$area->ticket->get_title(),
 										wc_price( $area->ticket->get_price() )
 									) ?>
@@ -73,7 +77,7 @@ $limit = apply_filters( 'qsot-event-ticket-purchase-limit', 0, $event->ID );
 								<?php if ( 1 !== intval( $limit ) ): ?>
 									<?php
 										$max = 1000000;
-										$max = isset( $event->meta->available ) && is_numeric( $event->meta->available ) && $event->meta->available > 0 ? min( $max, $event->meta->available ) : $max;
+										$max = is_numeric( $available ) && $available > 0 ? min( $max, $available ) : $max;
 										$max = isset( $event->meta->purchase_limit ) && is_numeric( $event->meta->purchase_limit ) && $event->meta->purchase_limit > 0 ? min( $max, $event->meta->purchase_limit ) : $max;
 									?>
 									<input type="number" min="0" max="<?php echo $max ?>" step="1" class="very-short" name="ticket-count" value="1" />
@@ -105,7 +109,7 @@ $limit = apply_filters( 'qsot-event-ticket-purchase-limit', 0, $event->ID );
 								<div class="availability-message helper">
 									<?php printf(
 										__( 'Currently, there are <span class="available">%s</span> more "<span class="ticket-name">%s</span>" (<span class="ticket-price">%s</span>) available for purchase.', 'opentickets-community-edition' ),
-										( 'yes' == $show_available_qty ) ? $area->meta['available'] : '',
+										( 'yes' == $show_available_qty ) ? $available : '',
 										$area->ticket->get_title(),
 										wc_price( $area->ticket->get_price() )
 									) ?>
@@ -124,7 +128,7 @@ $limit = apply_filters( 'qsot-event-ticket-purchase-limit', 0, $event->ID );
 									<span rel="qty"><?php echo htmlspecialchars( $reserved ) ?></span>
 								<?php else: ?>
 									<?php if ( 1 !== intval( $limit ) ): ?>
-										<input type="number" min="0" max="<?php echo $area->meta['available'] ?>" step="1" class="very-short" name="ticket-count" value="<?php echo esc_attr( $reserved ) ?>" />
+										<input type="number" min="0" max="<?php echo $available ?>" step="1" class="very-short" name="ticket-count" value="<?php echo esc_attr( isset( $reserved[ $area->ticket->id ] ) ? $reserved[ $area->ticket->id ] : 0 ) ?>" />
 										<input type="button" value="<?php echo esc_attr( apply_filters( 'qsot-get-option-value', __( 'Update', 'opentickets-community-edition' ), 'qsot-update-button-text' ) ) ?>" rel="update-btn" class="button" />
 										<?php wp_nonce_field('ticket-selection-step-two', 'submission') ?>
 										<input type="hidden" name="qsot-step" value="2" />
