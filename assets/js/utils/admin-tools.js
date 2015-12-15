@@ -34,6 +34,11 @@ var QS = QS || { Tools:{} };
 								if ( ele.length )
 									data[ ele.attr( 'name' ) ] = ele.val();
 							}
+							if ( me.data( 'extra' ) ) {
+								var extra = me.data( 'extra' );
+								if ( qt.isO( 'extra' ) )
+									data = $.extend( data, extra );
+							}
 							return data;
 						},  
 						method: 'post',
