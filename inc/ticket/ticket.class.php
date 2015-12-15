@@ -224,7 +224,7 @@ class QSOT_tickets {
 		} else {
 			$final = add_query_arg( array(
 				'qsot-order-tickets' => 1,
-				'qsot-order-tickets-id' => $order->order_key,
+				'qsot-order-ticket-id' => $order->order_key,
 			), site_url() );
 		}
 
