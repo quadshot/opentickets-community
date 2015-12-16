@@ -61,7 +61,7 @@ class QSOT_Ajax {
 	public function handle_request() {
 		// figure out if there is an sa in the request. if not, bail
 		if ( ! ( $sa = $_POST['sa'] ) || ! isset( $this->by_sa[ $sa ] ) )
-			//die(1);
+			//die(var_dump(1, $sa, $this->by_sa));
 			return;
 
 		$action = str_replace( 'wp_ajax_', '', str_replace( 'wp_ajax_nopriv_', '', current_action() ) );

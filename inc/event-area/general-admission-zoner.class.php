@@ -219,7 +219,7 @@ class QSOT_General_Admission_Zoner extends QSOT_Base_Event_Area_Zoner {
 		// if the total is greater than or equal to the max capacity for this event, then we do not have enough tickets to issue, so bail
 		if ( $capacity > 0 && $remainder <= 0 ) {
 			$this->_remove_lock( $lock );
-			die(var_dump( $capacity, $remainder, $total_before_lock ));
+			//die(var_dump( $capacity, $remainder, $total_before_lock ));
 			return apply_filters( 'qsot-gaea-zoner-reserve-results', new WP_Error( 5, __( 'There are no tickets available to reserve.', 'opentickets-community-edition' ) ), $args );
 		}
 
