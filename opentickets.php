@@ -60,7 +60,7 @@ class QSOT {
 
 		// register the activation function, so that when the plugin is activated, it does some magic described in the activation function
 		register_activation_hook(self::$o->core_file, array(__CLASS__, 'activation'));
-		add_action( 'upgrader_process_complete', array( __CLASS__, 'maybe_activation_on_upgrade' ) );
+		add_action( 'upgrader_process_complete', array( __CLASS__, 'maybe_activation_on_upgrade' ), 10, 2 );
 
 		add_action('woocommerce_email_classes', array(__CLASS__, 'load_custom_emails'), 2);
 
@@ -708,7 +708,7 @@ class QSOT {
 	}
 
 	// maybe run the activation sequence on plugin update
-	public static function maybe_activation_on_upgrade( $upgrader, $extras ) {
+	public static function maybe_activation_on_upgrade( $upgrader, $extra ) {
 		// if the extra indicates that this upgrade is not for a plugin, then bail
 		if ( 'plugin' !== $extra['type'] )
 			return;
