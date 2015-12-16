@@ -171,6 +171,27 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.0.0 - Dec/16/2015 =
+* [new] event areas now have their own admin menu, instead of being part of the venues interface
+* [new] changed structure of how event areas are handled, which allows multiple event area types to exist on the same install (ga, gamp and seating)
+* [new] all frontend and admin UI elements are now overridable in the theme, via templates
+* [new] completely revamped entire ticket display template. now the template is modular, and each module is overrideable in the theme
+* [new] added column to event-area list page that shows the type of event area
+* [improvement] improved accuracy of event availability calculations
+* [improvement] improved upcoming tickets section of my-account page for accuracy and performance
+* [improvement] improved the performance of the event settings bulk editor
+* [improvement] improved accuracy of reservation to cart syncing
+* [improvement] improved ticket display and checkin process, and added the ability to use multiple event area types for the displayed tickets
+* [improvement] improved performance and usability of the admin ticket selection / ticket change process
+* [improvement] various javascript performance and usability improvements
+* [improvement] performance & flexibility improvements to the template fetcher
+* [fix] repairing edgecase purchase limit bug
+* [fix] fixed calendar availability bug
+* [fix] fixed 'view all tickets' link bug
+* [fix] fixed admin ticket selection modal visual display bugs
+* [fix] fixed saving event 1969 bug
+* [fix] fixed the 'missing ticket links in email' bug
+
 = 1.15.0 - Dev/09/2015 =
 * [new] added a method to view all tickets on an order at once
 * [tweak] broke ticket templates into small template sections
