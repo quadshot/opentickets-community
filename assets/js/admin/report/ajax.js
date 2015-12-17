@@ -37,8 +37,9 @@ var QS = QS || { Tools:{} };
 	// handle the form actions
 	$( document ).on( 'submit', '.qsot-ajax-form', function( e, extra_data, target ) {
 		e.preventDefault();
-		var extra_data = extra_data || {}, target = target || $( '#report-results' ), data = $.extend( true, { action:'report_ajax' }, $( this ).louSerialize(), extra_data );
+		var extra_data = extra_data || {}, target = target || $( '#report-results' ), data = $.extend( true, { action:'qsot-admin-report-ajax', _n:S._n }, $( this ).louSerialize(), extra_data );
 				msg = $( '<h4></h4>' ).appendTo( target.empty() ), span = $( '<span>' + QS._str( 'Loading...', S ) + '</span>' ).appendTo( msg );
+				console.log( 'submit', extra_data, data );
 		_loading( msg, { width:span.outerWidth() } );
 
 		$.ajax( {

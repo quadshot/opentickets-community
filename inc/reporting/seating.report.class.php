@@ -16,8 +16,9 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 		$this->group_name = $this->name = __( 'Seating', 'opentickets-community-edition' );
 		$this->group_slug = $this->slug = 'seating';
 
-		// setup a map of seat states to descriptive words
-		$class = apply_filters( 'qsot-settings-class-name', '' );
+		// add the ajax handle for this report
+		$aj = QSOT_Ajax::instance();
+		$aj->register( $this->slug, array( &$this, 'handle_ajax' ), 'edit_posts', 10, 'qsot-admin-report-ajax' );
 	}
 
 	// individual reports should define their own set of columns to display in html

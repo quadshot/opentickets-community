@@ -23,7 +23,9 @@ class qsot_reporting {
 			add_action('init', array(__CLASS__, 'register_assets'), 10);
 
 			// handle the reporting ajaz request
-			add_action( 'wp_ajax_report_ajax', array( __CLASS__, 'process_ajax' ), 10 );
+			$aj = QSOT_Ajax::instance();
+			add_action( 'wp_ajax_qsot-admin-report-ajax', array( &$aj, 'handle_request' ) );
+			add_action( 'wp_ajax_nopriv_qsot-admin-report-ajax', array( &$aj, 'handle_request' ) );
 
 			// add the printerfriendly links to the report link output
 			add_action( 'qsot-report-links', array( __CLASS__, 'add_view_links' ), 10, 2 );
@@ -48,21 +50,6 @@ class qsot_reporting {
 		);
 	}
 
-	// handle the basic report ajax request delegation
-	public static function process_ajax() {
-		// figure out the type of report, based on the request data
-		$report = $_POST['report'];
-
-		// construct an appropriate action name to hit to respond to the ajax request
-		$action = 'qsot-ajax-report-ajax' . ( empty( $report ) ? '' : '-' . $report );
-
-		// if there is a function attached to that action, then run it
-		if ( has_action( $action ) ) {
-			ini_set( 'max_execution_time', 1500 );
-			do_action( $action );
-		}
-	}
-
 	// register all the scripts and css that may be used on the basic reporting pages
 	public static function register_assets() {
 		wp_register_script( 'qsot-report-ajax', self::$o->core_url . 'assets/js/admin/report/ajax.js', array( 'qsot-tools', 'jquery-ui-datepicker', 'tablesorter' ) );
@@ -72,6 +59,7 @@ class qsot_reporting {
 	public static function load_assets() {
 		wp_enqueue_script( 'qsot-report-ajax' );
 		wp_localize_script( 'qsot-report-ajax', '_qsot_report_ajax', array(
+			'_n' => wp_create_nonce( 'do-qsot-admin-report-ajax' ),
 			'str' => array(
 				'Loading...' => __( 'Loading...', 'opentickets-community-edition' ),
 			),
@@ -119,9 +107,6 @@ abstract class QSOT_Admin_Report {
 
 		// allow reports to do some independent initialization
 		$this->init();
-
-		// add the ajax handle for this report
-		add_filter( 'qsot-ajax-report-ajax-' . $this->slug, array( &$this, 'handle_ajax' ), 10 );
 	}
 
 	// getter for slug, name and description
@@ -138,12 +123,12 @@ abstract class QSOT_Admin_Report {
 	// validate and pass on the ajax requests for this report
 	public function handle_ajax() {
 		// if the current user does not have permissions to run the report, then bail
-		if ( ! current_user_can( 'view_woocommerce_reports' ) )
-			return $this->_error( new WP_Error( 'no_permission', __( 'You do not have permission to use this report.', 'opentickets-community-edition' ) ) );
+		//if ( ! current_user_can( 'view_woocommerce_reports' ) )
+			//return $this->_error( new WP_Error( 'no_permission', __( 'You do not have permission to use this report.', 'opentickets-community-edition' ) ) );
 
 		// if the ajax request does not validate, then bail
-		if ( ! $this->_verify_run_report( true ) )
-			return $this->_error( new WP_Error( 'no_permission', __( 'You do not have permission to use this report.', 'opentickets-community-edition' ) ) );
+		//if ( ! $this->_verify_run_report( true ) )
+			//return $this->_error( new WP_Error( 'no_permission', __( 'You do not have permission to use this report.', 'opentickets-community-edition' ) ) );
 
 		// pass the request on to the processing function 
 		$this->_process_ajax();
@@ -196,8 +181,8 @@ abstract class QSOT_Admin_Report {
 	protected function _form() {
 		?>
 			<form method="post" action="<?php echo esc_attr( remove_query_arg( array( 'updated' ) ) ) ?>" class="qsot-ajax-form">
-				<input type="hidden" name="_n" value="<?php echo esc_attr( wp_create_nonce( 'qsot-run-report-' . $this->slug ) ) ?>" />
-				<input type="hidden" name="report" value="<?php echo esc_attr( $this->slug ) ?>" />
+				<input type="hidden" name="_n" value="<?php echo esc_attr( wp_create_nonce( 'do-qsot-admin-report-ajax' ) ) ?>" />
+				<input type="hidden" name="sa" value="<?php echo esc_attr( $this->slug ) ?>" />
 
 				<?php $this->form() ?>
 			</form>
@@ -207,15 +192,15 @@ abstract class QSOT_Admin_Report {
 	// verify that we should be running the report right now, based on the submitted data
 	protected function _verify_run_report( $only_orig=false ) {
 		// if the nonce or report name is not set, bail
-		if ( ! isset( $_REQUEST['_n'], $_REQUEST['report'] ) )
+		if ( ! isset( $_REQUEST['_n'], $_REQUEST['sa'] ) )
 			return false;
 
 		// if the report name does not match this report, bail
-		if ( $_REQUEST['report'] !== $this->slug )
+		if ( $_REQUEST['sa'] !== $this->slug )
 			return false;
 
 		// if the nonce does not match, then bail
-		if ( ! wp_verify_nonce( $_REQUEST['_n'], 'qsot-run-report-' . $this->slug ) )
+		if ( ! wp_verify_nonce( $_REQUEST['_n'], 'do-qsot-admin-report-ajax' ) )
 			return false;
 
 		return true;
