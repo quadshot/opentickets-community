@@ -804,6 +804,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Upgrade Notice ==
 
+= 2.0.0 =
+This is a MAJOR update. Any extensions you have for this plugin, will need to be updated. There are lots of improvements in this update, but the changes with the largest impact change how ticket reservation, authentication and syncing are handled. These changes are a major overhaul to the entire core system.
+
 = 1.15.0 =
 This update completely changes how the tickets are displayed to the end user. If you have a custom ticket template, you are going to need to update your custom template in order to be compatible.
 
