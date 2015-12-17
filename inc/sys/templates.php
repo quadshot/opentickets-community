@@ -216,7 +216,7 @@ class QSOT_Templates {
 	}
 
 	// include a template, and make specific $args local vars
-	public static function include_template( $template, $args, $echo__output=true, $lookup=true ) {
+	public static function include_template( $template, $args=array(), $echo__output=true, $lookup=true ) {
 		// get the template from the template filename
 		if ( $lookup )
 			$template = apply_filters( 'qsot-locate-template', false, (array) $template, false, false );

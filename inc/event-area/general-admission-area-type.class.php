@@ -52,6 +52,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		add_filter( 'qsot-gaea-zoner-reserve-results', array( &$this, 'add_tickets_to_cart' ), 10, 2 );
 		add_action( 'woocommerce_before_cart_item_quantity_zero', array( &$this, 'delete_ticket_from_cart' ), 10, 1 );
 		add_action( 'woocommerce_cart_item_removed', array( &$this, 'delete_ticket_from_cart' ), 10, 1 );
+		add_action( 'woocommerce_after_cart_item_quantity_update', array( &$this, 'update_reservations_on_cart_update' ), 10, 3 );
 
 		// certain filters should only exist in the admin
 		if ( is_admin() ) {
@@ -292,6 +293,51 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		$cart->add_to_cart( $args['ticket_type_id'], $args['final_qty'], '', array(), array( 'event_id' => $args['event_id'] ) );
 
 		return $success;
+	}
+
+	// when updating the quantity of tickets in the cart page, we need to perform the same update on our reservations, if allowed
+	public function update_reservations_on_cart_update( $cart_item_key, $quantity, $old_quantity ) {
+		// if this is not an update cart scenario, then bail now
+		if ( ! isset( $_POST['update_cart'] ) )
+			return;
+
+		// fetch the zoner
+		$zoner = $this->get_zoner();
+		$stati = $zoner->get_stati();
+
+		// get the cart item
+		$items = WC()->cart->get_cart();
+		$item = isset( $items[ $cart_item_key ] ) ? $items[ $cart_item_key ] : false;
+		if ( empty( $item ) || ! isset( $item['event_id'] ) )
+			return;
+
+		// load the event and check that it is for this type of event area before doing anything else
+		$area_type = apply_filters( 'qsot-event-area-type-for-event', false, $item['event_id'] );
+		if ( ! is_object( $area_type ) || is_wp_error( $area_type ) || $area_type->get_slug() !== $this->get_slug() )
+			return;
+
+		// remove recursive filter
+		remove_action( 'woocommerce_after_cart_item_quantity_update', array( &$this, 'update_reservations_on_cart_update' ), 10 );
+
+		// update the reservations
+		$result = $zoner->reserve( false, array(
+			'event_id' => $item['event_id'],
+			'ticket_type_id' => $item['product_id'],
+			'quantity' => $quantity,
+		) );
+
+		// if the update failed, then revert the quantity
+		if ( ! $result || is_wp_error( $result ) ) {
+			// reset the quantity and pop an error as to why
+			WC()->cart->set_quantity( $cart_item_key, $old_quantity, true );
+			if ( is_wp_error( $result ) )
+				wc_add_notice( implode( '', $result->get_error_messages() ), 'error' );
+			else
+				wc_add_notice( __( 'Could not update the quantity of that item.', 'opentickets-community-edition' ), 'error' );
+		}
+
+		// readd this filter for later checks
+		add_action( 'woocommerce_after_cart_item_quantity_update', array( &$this, 'update_reservations_on_cart_update' ), 10, 3 );
 	}
 
 	// during cart item removal, we need to sync the ticket table as well

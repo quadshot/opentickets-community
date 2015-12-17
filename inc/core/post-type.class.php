@@ -222,7 +222,12 @@ class qsot_post_type {
 				// add the event label to the list of meta data to display for this cart item
 				$list[] = array(
 					'name' => __( 'Event', 'opentickets-community-edition' ),
-					'display' => apply_filters( 'the_title', $event->post_title, $event->ID ), // add event->ID param so that date/time can be added appropriately
+					'display' => sprintf( // add event->ID param so that date/time can be added appropriately
+						'<a href="%s" title="%s">%s</a>',
+						get_permalink( $event->ID ),
+						__( 'View this event', 'opentickets-community-edition' ),
+						apply_filters( 'the_title', $event->post_title, $event->ID )
+					),
 				);
 			}
 		}

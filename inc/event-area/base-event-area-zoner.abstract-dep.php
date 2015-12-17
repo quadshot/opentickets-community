@@ -11,6 +11,12 @@ abstract class QSOT_Base_Event_Area_Zoner {
 			'c' => array( 'confirmed', 0, __( 'Confirmed', 'opentickets-community-edition' ), __( 'Paid', 'opentickets-community-edition' ) ),
 			'o' => array( 'occupied', 0, __( 'Occupied', 'opentickets-community-edition' ), __( 'Checked In', 'opentickets-community-edition' ) ),
 		);
+
+		// update the list of stati after all plugins have been loaded
+		if ( did_action( 'qsot-after-loading-modules-and-plugins' ) )
+			$this->update_stati_list();
+		else
+			add_filter( 'qsot-after-loading-modules-and-plugins', array( &$this, 'update_stati_list' ), 10 );
 	}
 
 	// register all the assets used by this area type
@@ -22,6 +28,11 @@ abstract class QSOT_Base_Event_Area_Zoner {
 	// enqueue the admin assets needed by this type
 	public function enqueue_admin_assets() {}
 
+	// after all plugins are loaded, update the stati list for this zoner
+	final public function update_stati_list() {
+		$this->stati = apply_filters( 'qsot-zoner-stati', $this->stati, get_class( $this ) );
+	}
+
 	// get a status from our stati list
 	public function get_stati( $key=null ) {
 		return is_string( $key ) && isset( $this->stati[ $key ] ) ? $this->stati[ $key ] : ( null === $key ? $this->stati : null );
@@ -29,7 +40,12 @@ abstract class QSOT_Base_Event_Area_Zoner {
 
 	// get a list of temporary stati
 	public function get_temp_stati() {
-		return array( 'r' => $this->stati['r'] );
+		$list = array();
+		// find the stati with a non-zero timer
+		foreach ( $this->stati as $k => $v )
+			if ( $v[1] > 0 )
+				$list[ $k ] = $v;
+		return $list;
 	}
 
 	// current_user is the id we use to lookup tickets in relation to a product in a cart. once we have an order number this pretty much becomes obsolete, but is needed up til that moment
