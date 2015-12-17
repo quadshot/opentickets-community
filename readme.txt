@@ -171,7 +171,7 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
-= 2.0.0 - Dec/16/2015 =
+= 2.0.0 - Dec/17/2015 =
 * [new] event areas now have their own admin menu, instead of being part of the venues interface
 * [new] changed structure of how event areas are handled, which allows multiple event area types to exist on the same install (ga, gamp and seating)
 * [new] all frontend and admin UI elements are now overridable in the theme, via templates
