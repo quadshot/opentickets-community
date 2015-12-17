@@ -789,7 +789,7 @@ class QSOT_Post_Type_Event_Area {
 		if ( ! is_object( $WC ) || ! isset( $WC->cart ) || ! is_object( $WC->cart ) )
 			return;
 
-		do_action( 'qsot-clear-zone-locks', array( 'customer_id' => QSOT::current_user() ) );
+		do_action( 'qsot-clear-zone-locks' ); //, array( 'customer_id' => QSOT::current_user() ) );
 
 		// if we are in the admin, bail now
 		if ( is_admin() )
