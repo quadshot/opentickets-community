@@ -630,13 +630,14 @@ class QSOT_tickets {
 			'stylesheet' => $stylesheet,
 			'page_title' => $page_title,
 		) ) );
+		//die($out);
 
 		$_GET = wp_parse_args( $_GET, array( 'frmt' => 'html' ) );
 		// do something different depending on the requested format
 		switch ( $_GET['frmt'] ) {
 			case 'pdf':
 				$title = $ticket->product->get_title() . ' (' . $ticket->product->get_price() . ')';
-				$filename = apply_filters( 'qsot-ticket-pdf-filename', sanitize_title_with_dashes( 'ticket-' . $title ) . '.pdf', $title, $ticket, $template, $stylesheet, $branding_image_ids );
+				$filename = apply_filters( 'qsot-ticket-pdf-filename', sanitize_title_with_dashes( 'ticket-' . $title ) . '.pdf', $title, $ticket, $template, $stylesheet );
 				QSOT_pdf::from_html( $out, $filename );
 			break;
 			default: echo $out; break;

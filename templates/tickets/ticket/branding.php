@@ -14,5 +14,6 @@
 		</tr>
 	</tbody>
 
-	<div class="clear"></div>
 </table>
+
+<div class="clear"></div>
