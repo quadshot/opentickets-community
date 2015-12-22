@@ -12,7 +12,14 @@ body.pdf { padding:1.2cm; }
 .actions-list a { padding:0 10px; }
 
 .page-wrap { width:100%; font-family:"Open Sans", Helvetica, Arial, sans-serif; display:block; }
-.page-wrap .venue-info,
+.pdf .page-wrap .venue-info *,
+.pdf .page-wrap .ticket-wrap *,
+.pdf .page-wrap .venue-info p,
+.pdf .page-wrap .ticket-wrap p,
+.pdf .page-wrap .venue-info,
+.pdf .page-wrap .ticket-wrap { line-height:0.9em; }
+.pdf .page-wrap .venue-info h2,
+.pdf .page-wrap .ticket-wrap h2 { line-height:1em; }
 .page-wrap .ticket-wrap { padding:10px 0; margin:0 10px; page-break-inside:avoid; }
 .page-wrap .ticket-wrap .inner-wrap { border:1px solid #555555; padding:10px 10px 0; position:relative; }
 .page-wrap table { width:100%; margin:0; padding:0; border:0 none; }

@@ -171,7 +171,10 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
-= 2.0.0 - Dec/16/2015 =
+= 2.0.1 - Dec/21/2015 =
+* [tweak] change to handle PDF tickets with long venue descriptions
+
+= 2.0.0 - Dec/17/2015 =
 * [new] event areas now have their own admin menu, instead of being part of the venues interface
 * [new] changed structure of how event areas are handled, which allows multiple event area types to exist on the same install (ga, gamp and seating)
 * [new] all frontend and admin UI elements are now overridable in the theme, via templates
@@ -803,6 +806,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 * initial public release
 
 == Upgrade Notice ==
+
+= 2.0.0 =
+This is a MAJOR update. Any extensions you have for this plugin, will need to be updated. There are lots of improvements in this update, but the changes with the largest impact change how ticket reservation, authentication and syncing are handled. These changes are a major overhaul to the entire core system.
 
 = 1.15.0 =
 This update completely changes how the tickets are displayed to the end user. If you have a custom ticket template, you are going to need to update your custom template in order to be compatible.

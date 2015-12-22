@@ -13,7 +13,7 @@
 							<?php QSOT_Templates::include_template( 'tickets/ticket/event-meta.php', $args ) ?>
 						</td>
 
-						<td width="125" rowspan="3" class="qr-code right">
+						<td width="125" rowspan="2" class="qr-code right">
 
 							<?php QSOT_Templates::include_template( 'tickets/ticket/qr-code.php', $args ) ?>
 
