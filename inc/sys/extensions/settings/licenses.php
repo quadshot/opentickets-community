@@ -42,6 +42,7 @@ class QSOT_Settings_Licenses extends QSOT_Settings_Page {
 		// load all relevant data
 		$extensions = QSOT_Extensions::instance();
 		$installed = $extensions->get_installed();
+		$known = $extensions->get_known();
 		$licenses = $extensions->get_licenses();
 		$now = time();
 		$base_url = remove_query_arg( array( 'updated', 'deact', 'act', 'error', 'msg' ) );
@@ -60,12 +61,12 @@ class QSOT_Settings_Licenses extends QSOT_Settings_Page {
 							<div class="software-heading heading-item"><?php _e( 'Software', 'opentickets-community-edition' ) ?></div>
 						</div>
 
-						<?php foreach ( $installed as $file => $plugin ): ?>
+						<?php foreach ( $known as $file => $plugin ): ?>
 							<div class="list-item installed-extension <?php echo 0 == $cnt++ % 2 ? 'odd' : 'even' ?>" data-extension="<?php echo esc_attr( $file ) ?>" role="extension">
 								<div class="status-icon">
 									<?php if ( ! isset( $licenses[ $file ] ) ): // not registered ?>
 									<?php else: ?>
-										<?php if ( isset( $plugin['_known'], $plugin['_known']['needs_license'] ) && ! $plugin['_known']['needs_license'] ): // expired ?>
+										<?php if ( isset( $plugin['needs_license'] ) && ! $plugin['needs_license'] ): // expired ?>
 											<span class="dashicons dashicons-yes"></span>
 										<?php elseif ( $now > $licenses[ $file ]['expires'] ): // expired ?>
 											<span class="dashicons dashicons-warning"></span>
@@ -78,23 +79,33 @@ class QSOT_Settings_Licenses extends QSOT_Settings_Page {
 								<div class="fields">
 									<div class="field">
 										<span class="label"><?php _e( 'Name', 'opentickets-community-edition' ) ?></span>:
-										<span class="value"><?php echo apply_filters( 'the_title', $plugin['Name'] . ' ' . sprintf( __( '(version %s)', 'opentickets-community-edition' ), $plugin['Version'] ) ) ?></span>
+										<?php
+											$name = isset( $installed[ $file ], $installed[ $file ]['Name'] ) && ! empty( $installed[ $file ]['Name'] ) ? $installed[ $file ]['Name'] : $plugin['label'];
+											$version = isset( $installed[ $file ], $installed[ $file ]['Version'] ) && ! empty( $installed[ $file ]['Version'] ) ? $installed[ $file ]['Version'] : $plugin['version'];
+										?>
+										<span class="value"><?php echo apply_filters( 'the_title', $name . ' ' . sprintf( __( '(version %s)', 'opentickets-community-edition' ), $version ) ) ?></span>
 									</div>
 
-									<?php if ( isset( $plugin['_known'], $plugin['_known']['needs_license'] ) && ! $plugin['_known']['needs_license'] ): ?>
+									<?php $is_installed = isset( $installed[ $file ] ) ? __( 'Installed', 'opentickets-community-edition' ) : __( 'Not Installed', 'opentickets-community-edition' ) ?>
+
+									<?php if ( isset( $plugin['needs_license'] ) && ! $plugin['needs_license'] ): ?>
 										<div class="field">
 											<span class="label"><?php _e( 'Status', 'opentickets-community-edition' ) ?></span>:
-											<span class="value"><?php _e( 'No License Required', 'opentickets-community-edition' ) ?></span>
+											<span class="value">
+												<?php echo sprintf( __( '(%s%s%s)', 'opentickets-community-edition' ), '<em>', $is_installed, '</em>' ) ?>
+												<?php _e( 'No License Required', 'opentickets-community-edition' ) ?>
+											</span>
 										</div>
 									<?php elseif ( ! isset( $licenses[ $file ] ) || ! isset( $licenses[ $file ]['verification_code'] ) || empty( $licenses[ $file ]['verification_code'] ) ): ?>
 										<?php $item = isset( $licenses[ $file ] ) ? $licenses[ $file ] : array() ?>
 										<div class="field">
 											<span class="label"><?php _e( 'Status', 'opentickets-community-edition' ) ?></span>:
 											<span class="value">
+												<?php echo sprintf( __( '(%s%s%s)', 'opentickets-community-edition' ), '<em>', $is_installed, '</em>' ) ?>
 												<?php _e( 'Not licensed', 'opentickets-community-edition' ) ?>
 												<?php echo sprintf(
 													__( '(%sget a license now%s)', 'opentickets-community-edition' ),
-													sprintf( '<a href="%s" title="%s" target="_blank">', isset( $plugin['_known']['to_cart_url'] ) ? $plugin['_known']['to_cart_url'] : '#', __( 'Purchase a License', 'opentickets-community-edition' ) ),
+													sprintf( '<a href="%s" title="%s" target="_blank">', isset( $plugin['to_cart_url'] ) ? $plugin['to_cart_url'] : '#', __( 'Purchase a License', 'opentickets-community-edition' ) ),
 													'</a>'
 												) ?>
 											</span>
@@ -128,17 +139,30 @@ class QSOT_Settings_Licenses extends QSOT_Settings_Page {
 									<?php elseif ( $now > $licenses[ $file ]['expires'] ): ?>
 										<div class="field">
 											<span class="label"><?php _e( 'Status', 'opentickets-community-edition' ) ?></span>:
-											<span class="value"><?php _e( 'License is Expired', 'opentickets-community-edition' ) ?></span>
+											<span class="value">
+												<?php echo sprintf( __( '(%s%s%s)', 'opentickets-community-edition' ), '<em>', $is_installed, '</em>' ) ?>
+												<?php _e( 'License is Expired', 'opentickets-community-edition' ) ?>
+												<?php echo sprintf(
+													__( '(%sdeactivate now%s)', 'opentickets-community-edition' ),
+													sprintf(
+														'<a href="%s" title="%s">',
+														add_query_arg( array( 'deact' => $file, 'donce' => wp_create_nonce( 'deactivate-' . $file ) ), $base_url ),
+														__( 'Deactivate this License', 'opentickets-community-edition' )
+													),
+													'</a>'
+												) ?>
+											</span>
 										</div>
 
 										<div class="field">
 											<span class="label"><?php _e( 'Expired On', 'opentickets-community-edition' ) ?></span>:
-											<span class="value"><?php date_i18n( get_option( 'date_format', 'F jS, Y' ), $licenses[ $file ]['expires'] ) ?></span>
+											<span class="value"><?php echo date_i18n( get_option( 'date_format', 'F jS, Y' ), $licenses[ $file ]['expires'] ) ?></span>
 										</div>
 									<?php else: ?>
 										<div class="field">
 											<span class="label"><?php _e( 'Status', 'opentickets-community-edition' ) ?></span>:
 											<span class="value">
+												<?php echo sprintf( __( '(%s%s%s)', 'opentickets-community-edition' ), '<em>', $is_installed, '</em>' ) ?>
 												<?php _e( 'Activated', 'opentickets-community-edition' ) ?>
 												<?php echo sprintf(
 													__( '(%sdeactivate now%s)', 'opentickets-community-edition' ),
