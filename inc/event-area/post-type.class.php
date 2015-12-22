@@ -820,6 +820,7 @@ class QSOT_Post_Type_Event_Area {
 			// add this row to the indexed key
 			$indexed[ $row->event_id ][ $row->state ][ $row->ticket_type_id ][] = $row;
 		}
+		//die(var_dump($indexed ));
 
 		// cycle through the cart items, and remove any that do not have a matched indexed item
 		foreach ( $WC->cart->get_cart() as $key => $item ) {

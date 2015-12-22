@@ -252,6 +252,9 @@ QS.popMediaBox = (function($, qt) {
 					def = me.data( 'default' ) || '',
 					def = '' === initial_date ? ( qt.is( def ) ? def : d ) : d;
 
+			// update the initial element to show it has a datapicker
+			me.addClass( 'has-datepicker' );
+
 			// if the selected element is not a hidden element, then make it so
 			if ( 'hidden' !== me.attr( 'type' ).toLowerCase() ) {
 				var atts = QS.AllAttrs( me );
@@ -325,7 +328,6 @@ QS.popMediaBox = (function($, qt) {
 			// initialize the datepicker now
 			display.datepicker( args );
 			display.datepicker( 'setDate', def );
-			me.addClass( 'has-datepicker' );
 		} );
 	}
 
