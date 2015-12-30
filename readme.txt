@@ -171,6 +171,11 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.0.2 - Dec/22/2015 =
+* [new] added deactivate license link on expired licenses
+* [new] updated licenses ui to provide more information
+* [tweak] show licenses page even when no extension are detected
+
 = 2.0.1 - Dec/21/2015 =
 * [tweak] change to handle PDF tickets with long venue descriptions
 
