@@ -388,8 +388,12 @@ class QSOT_checkin {
 
 	// add our checkin role if it does not exist, and update all applicable roles with the capability for checkin
 	protected static function _update_roles_and_caps() {
-		// get the wp_roles object
-		$wp_roles = wp_roles();
+		if ( function_exists( 'wp_roles' ) ) {
+			// get the wp_roles object
+			$wp_roles = wp_roles();
+		} else {
+			global $wp_roles;
+		}
 
 		// get the names of all roles
 		$names = $wp_roles->get_names();

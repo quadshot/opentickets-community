@@ -441,7 +441,7 @@ class QSOT_Post_Type_Event_Area {
 	// function to obtain a list of all the registered event area types
 	public function get_event_area_types( $desc_order=false ) {
 		// return a list of event_types ordered by priority, either asc (default) or desc (param)
-		return ! $desc ? $this->area_types : array_reverse( $this->area_types );
+		return ! $desc_order ? $this->area_types : array_reverse( $this->area_types );
 	}
 
 	// allow registration of an event area type

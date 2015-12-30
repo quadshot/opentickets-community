@@ -13,7 +13,7 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 	// initialization specific to this report
 	public function init() {
 		// setup the report namings
-		$this->group_name = $this->name = __( 'Seating', 'opentickets-community-edition' );
+		$this->group_name = $this->name = __( 'Attendees', 'opentickets-community-edition' );
 		$this->group_slug = $this->slug = 'seating';
 
 		// add the ajax handle for this report
@@ -112,12 +112,13 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 	}
 
 	// augment the printerfriendly url
-	public function printer_friendly_url() {
+	public function printer_friendly_url( $csv_file, $report ) {
 		// get the base printer friendly url from the parent class
-		$url = QSOT_Admin_Report::printer_friendly_url();
+		$url = QSOT_Admin_Report::printer_friendly_url( $csv_file, $report );
 
 		// add our special params
 		$url = add_query_arg( array(
+			'sa' => $this->slug,
 			'parent_event_id' => $_REQUEST['parent_event_id'],
 			'last_parent_id' => $_REQUEST['last_parent_id'],
 			'event_id' => $_REQUEST['event_id']
@@ -355,46 +356,6 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 		do_action( 'qsot-' . $this->slug . '-report-before-html-footer', $all_html_rows, $this );
 	}
 
-	// get a very specific piece of order meta from the list of order meta, based on the list, a specific grouping name, and the order id
-	protected function _order_meta( $all_meta, $key, $row, $default='-' ) {
-		// find the order_id from the row
-		$order_id = $row->order_id;
-
-		// get the meta for just this one order
-		$meta = isset( $all_meta[ $order_id ] ) ? $all_meta[ $order_id ] : false;
-
-		// either piece together specific groupings of meta, or return the exact meta value
-		switch ( $key ) {
-			default: return isset( $meta[ $key ] ) && '' !== $meta[ $key ] ? $meta[ $key ] : __( '(none)', 'opentickets-community-edition' ); break;
-
-			// a display name for the purchaser
-			case 'name':
-				$names = array();
-				// attempt to use the billing name
-				if ( isset( $meta['_billing_first_name'] ) )
-					$names[] = $meta['_billing_first_name'];
-				if ( isset( $meta['_billing_last_name'] ) )
-					$names[] = $meta['_billing_last_name'];
-
-				// fall back on the cart identifier
-				$names = trim( implode( ' ', $names ) );
-				return ! empty( $names ) ? $names : __( '(no-name/guest)', 'opentickets-community-edition' );
-			break;
-
-			// the address for the purchaser
-			case 'address':
-				$addresses = array();
-				if ( isset( $meta['_billing_address_1'] ) )
-					$addresses[] = $meta['_billing_address_1'];
-				if ( isset( $meta['_billing_address_2'] ) )
-					$addresses[] = $meta['_billing_address_2'];
-
-				$addresses = trim( implode( ' ', $addresses ) );
-				return ! empty( $addresses ) ? $addresses : __( '(none)', 'opentickets-community-edition' );
-			break;
-		}
-	}
-
 	// get the specific product title for the ticket type of this line item
 	protected function _ticket_type( $product_id, $default='-' ) {
 		// cache a list of products. this should never get too big on one page load, so it is fine to be internal cache
@@ -447,29 +408,6 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 		// index the final list
 		while ( $row = array_shift( $raw_comments ) )
 			$final[ $row->order_id ] = $row->comment_content;
-
-		return $final;
-	}
-
-	// fetch all order meta, indexed by order_id
-	protected function _get_order_meta( $order_ids ) {
-		// if there are no order_ids, then bail now
-		if ( empty( $order_ids ) )
-			return array();
-
-		global $wpdb;
-		// get all the post meta for all orders
-		$all_meta = $wpdb->get_results( 'select * from ' . $wpdb->postmeta . ' where post_id in (' . implode( ',', $order_ids ) . ') order by meta_id desc' );
-
-		$final = array();
-		// organize all results by order_id => meta_key => meta_value
-		foreach ( $all_meta as $row ) {
-			// make sure we have a row for this order_id already
-			$final[ $row->post_id ] = isset( $final[ $row->post_id ] ) ? $final[ $row->post_id ] : array();
-
-			// update this meta key with it's value
-			$final[ $row->post_id ][ $row->meta_key ] = $row->meta_value;
-		}
 
 		return $final;
 	}

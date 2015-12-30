@@ -39,7 +39,7 @@ class qsot_reporting {
 			return;
 
 		// construct the printer friendly url
-		$url = $report->printer_friendly_url();
+		$url = $report->printer_friendly_url( $csv_file, $report );
 
 		// add the printer-friendly link
 		echo sprintf(
@@ -170,9 +170,9 @@ abstract class QSOT_Admin_Report {
 	}
 
 	// construct a printer friendly url for this report
-	public function printer_friendly_url() {
+	public function printer_friendly_url( $csv_file, $report ) {
 		return add_query_arg(
-			array( 'pf' => 1, 'report' => $this->slug, '_n' => wp_create_nonce( 'qsot-run-report-' . $this->slug ) ),
+			array( 'pf' => 1, 'tab' => $this->slug, '_n' => wp_create_nonce( 'do-qsot-admin-report-ajax' ) ),
 			admin_url( apply_filters( 'qsot-get-menu-page-uri', '', 'main', true ) )
 		);
 	}
@@ -242,19 +242,8 @@ abstract class QSOT_Admin_Report {
 
 		$all_html_rows = 0;
 		// run the report, while there are still rows to process
-		while ( $group = $this->more_rows() ) {
-			// gather all the information that is used to create both csv and html versions of the report, for the found rows
-			$data = $this->aggregate_row_data( $group );
-
-			// add this group of results to the csv report
-			$this->_csv_render_rows( $data, $csv_file );
-
-			// render the html table rows for this group
-			$all_html_rows += $this->_html_report_rows( $data );
-
-			// clean up the memory
-			$this->_clean_memory();
-		}
+		while ( $group = $this->more_rows() )
+			$all_html_rows += $this->_handle_row_group( $group, $csv_file );
 
 		// before we close the footer, allow reportss to add some logic
 		$this->_before_html_footer( $all_html_rows );
@@ -270,6 +259,23 @@ abstract class QSOT_Admin_Report {
 
 		// tell the report that it is done running
 		$this->_finished();
+	}
+
+	// handle the subgroup of rows, while running the report. return the number of rows we generated
+	protected function _handle_row_group( $group, $csv_file ) {
+		// gather all the information that is used to create both csv and html versions of the report, for the found rows
+		$data = $this->aggregate_row_data( $group );
+
+		// add this group of results to the csv report
+		$this->_csv_render_rows( $data, $csv_file );
+
+		// render the html table rows for this group
+		$all_html_rows = $this->_html_report_rows( $data );
+
+		// clean up the memory
+		$this->_clean_memory();
+
+		return $all_html_rows;
 	}
 
 	// start and finish functions, overrideable by the individual report
@@ -355,7 +361,7 @@ abstract class QSOT_Admin_Report {
 
 					// allow a filter on all other columns
 					default:
-						echo apply_filters( 'qsot-' . $this->slug . '-report-column-' . $col . '-value', '' == $value ? '&nbsp;' : force_balance_tags( $value ), $data, $row );
+						echo apply_filters( 'qsot-' . $this->slug . '-report-column-' . $col . '-value', '' == strval( $value ) ? '&nbsp;' : force_balance_tags( strval( $value ) ), $data, $row );
 					break;
 				}
 
@@ -430,8 +436,13 @@ abstract class QSOT_Admin_Report {
 		<?php
 	}
 
+	// generate a filename for the csv for this report
+	protected function _csv_filename( $id='', $id_prefix='' ) {
+		return 'report-' . $this->slug . ( $id ? '-' . $id_prefix . $id : '' ) . '-' . wp_create_nonce( 'run-report-' . @json_encode( $_REQUEST ) ) . '.csv';
+	}
+
 	// start the csv file
-	protected function _open_csv_file() {
+	protected function _open_csv_file( $id='', $id_prefix='' ) {
 		// get the csv file path. make it if it does not exist yet
 		$csv_path = $this->_csv_path();
 
@@ -440,11 +451,12 @@ abstract class QSOT_Admin_Report {
 			return $csv_path;
 
 		// determine the file path and url
-		$basename = 'report-' . $this->slug . '-' . wp_create_nonce( 'run-report-' . @json_encode( $_REQUEST ) ) . '.csv';
+		$basename = $this->_csv_filename( $id, $id_prefix );
 		$file = array(
 			'path' => $csv_path['path'] . $basename,
 			'url' => $csv_path['url'] . $basename,
 			'fd' => null,
+			'id' => $id,
 		);
 
 		// attempt to create a new csv file for this report. if that is successful, then add the column headers and return all the file info now
@@ -502,10 +514,11 @@ abstract class QSOT_Admin_Report {
 	}
 
 	// draw the report result header, in html form
-	protected function _html_report_header() {
+	protected function _html_report_header( $use_sorter=true ) {
+		$sorter = $use_sorter ? 'use-tablesorter' : '';
 		// construct the header of the resulting table
 		?>
-			<table class="widefat use-tablesorter" cellspacing="0">
+			<table class="widefat <?php echo $sorter ?>" cellspacing="0">
 				<thead><?php $this->_html_report_columns( true ) ?></thead>
 				<tbody>
 		<?php
@@ -747,6 +760,98 @@ abstract class QSOT_Admin_Report {
 		$this->_printer_friendly_header();
 		$this->_results();
 		$this->_printer_friendly_footer();
+	}
+
+	// get the order item meta data
+	protected function _order_item_meta_from_oiid_list( $oiids ) {
+		global $wpdb;
+		$rows = array();
+		// grab all the meta for the matched order items, if any
+		if ( ! empty( $oiids ) ) {
+			$meta = $wpdb->get_results( 'select * from ' . $wpdb->prefix . 'woocommerce_order_itemmeta where order_item_id in (' . implode( ',', array_keys( $oiids ) ) . ')' );
+			
+			// index all the meta by the order_item_id
+			foreach ( $meta as $row ) {
+				if ( ! isset( $rows[ $row->order_item_id ] ) )
+					$rows[ $row->order_item_id ] = (object)array( 'order_item_id' => $row->order_item_id, 'order_id' => $oiids[ $row->order_item_id ], $row->meta_key => $row->meta_value );
+				else
+					$rows[ $row->order_item_id ]->{ $row->meta_key } = $row->meta_value;
+			}
+		}
+
+		return $rows;
+	}
+
+	// format a number to a specific number of decimals
+	public function format_number( $number, $decimals=2 ) {
+		$decimals = max( 0, $decimals );
+		// create the sprintf format based on the decimals and the currency settings
+		$frmt = $decimals ? '%01' . wc_get_price_decimal_separator() . $decimals . 'f' : '%d';
+
+		return sprintf( $frmt, $number );
+	}
+
+	// get a very specific piece of order meta from the list of order meta, based on the list, a specific grouping name, and the order id
+	protected function _order_meta( $all_meta, $key, $row, $default='-' ) {
+		// find the order_id from the row
+		$order_id = $row->order_id;
+
+		// get the meta for just this one order
+		$meta = isset( $all_meta[ $order_id ] ) ? $all_meta[ $order_id ] : false;
+
+		// either piece together specific groupings of meta, or return the exact meta value
+		switch ( $key ) {
+			default: return isset( $meta[ $key ] ) && '' !== $meta[ $key ] ? $meta[ $key ] : __( '(none)', 'opentickets-community-edition' ); break;
+
+			// a display name for the purchaser
+			case 'name':
+				$names = array();
+				// attempt to use the billing name
+				if ( isset( $meta['_billing_first_name'] ) )
+					$names[] = $meta['_billing_first_name'];
+				if ( isset( $meta['_billing_last_name'] ) )
+					$names[] = $meta['_billing_last_name'];
+
+				// fall back on the cart identifier
+				$names = trim( implode( ' ', $names ) );
+				return ! empty( $names ) ? $names : __( '(no-name/guest)', 'opentickets-community-edition' );
+			break;
+
+			// the address for the purchaser
+			case 'address':
+				$addresses = array();
+				if ( isset( $meta['_billing_address_1'] ) )
+					$addresses[] = $meta['_billing_address_1'];
+				if ( isset( $meta['_billing_address_2'] ) )
+					$addresses[] = $meta['_billing_address_2'];
+
+				$addresses = trim( implode( ' ', $addresses ) );
+				return ! empty( $addresses ) ? $addresses : __( '(none)', 'opentickets-community-edition' );
+			break;
+		}
+	}
+
+	// fetch all order meta, indexed by order_id
+	protected function _get_order_meta( $order_ids ) {
+		// if there are no order_ids, then bail now
+		if ( empty( $order_ids ) )
+			return array();
+
+		global $wpdb;
+		// get all the post meta for all orders
+		$all_meta = $wpdb->get_results( 'select * from ' . $wpdb->postmeta . ' where post_id in (' . implode( ',', $order_ids ) . ') order by meta_id desc' );
+
+		$final = array();
+		// organize all results by order_id => meta_key => meta_value
+		foreach ( $all_meta as $row ) {
+			// make sure we have a row for this order_id already
+			$final[ $row->post_id ] = isset( $final[ $row->post_id ] ) ? $final[ $row->post_id ] : array();
+
+			// update this meta key with it's value
+			$final[ $row->post_id ][ $row->meta_key ] = $row->meta_value;
+		}
+
+		return $final;
 	}
 
 	// each report should control it's own form
