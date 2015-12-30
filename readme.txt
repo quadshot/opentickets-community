@@ -171,6 +171,12 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.0.3 - Dec/30/2015 =
+* [tweak] added minor functionality to a couple js tools
+* [tweak] retooled base report to be more flexible for advanced reporting
+* [tweak] updated seating report title and printer friendly version
+* [fix] repaired activation fatal error on WP 4.0.x - 4.3.x
+
 = 2.0.2 - Dec/22/2015 =
 * [new] added deactivate license link on expired licenses
 * [new] updated licenses ui to provide more information
