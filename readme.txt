@@ -171,6 +171,11 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.0.4 - Dev/30/2015 =
+* [tweak] internal GA event area functions tweaked for flexibility
+* [fix] repaired advanced tools for GA events
+* [fix] fixed ticket links for edgecase email and my account issues
+
 = 2.0.3 - Dec/30/2015 =
 * [tweak] added minor functionality to a couple js tools
 * [tweak] retooled base report to be more flexible for advanced reporting
