@@ -26,7 +26,7 @@
 			cache: false,
 			data: data,
 			success: function( r ) {
-				if ( r.success && r.r ) {
+				if ( r.s && r.r ) {
 					var out = $( r.r ).appendTo( target.empty() );
 					QS.add_select2( $( '.use-select2', out ), S || {} );
 				} else {
@@ -57,7 +57,7 @@
 			cache: false,
 			data: data,
 			success: function( r ) {
-				if ( r.success && r.r ) {
+				if ( r.s && r.r ) {
 					var out = $( r.r ).appendTo( target.empty() );
 					QS.add_select2( $( '.use-select2', out ), S || {} );
 				} else {

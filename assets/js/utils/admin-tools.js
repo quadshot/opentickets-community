@@ -53,7 +53,7 @@ var QS = QS || { Tools:{} };
 						multiple: multiple,
 						delay:300,
 						processResults: function( data, page ) {
-							if ( ! data.success ) {
+							if ( ! data.s ) {
 								console.log( data.e ? data.e.join( "\n" ) : QS._str( 'Error occurred' ), data );
 								return { results:[] };
 							} else if ( ! data.r ) {

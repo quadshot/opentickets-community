@@ -331,10 +331,10 @@ class QSOT_system_status_page extends QSOT_base_page {
 	public function ajax_adv_tools() {
 		// if the current user cannot access this stuff, then bail
 		if ( ! current_user_can( 'manage_options' ) )
-			wp_send_json( array( 'success' => false, 'reason' => __( 'access denied.', 'opentickets-community-edition' ) ) );
+			wp_send_json( array( 's' => false, 'reason' => __( 'access denied.', 'opentickets-community-edition' ) ) );
 		// if the nonce is not set, or does not match, then bail
 		if ( ! isset( $_POST['_n'], $_POST['sa'] ) || ! wp_verify_nonce( $_POST['_n'], 'yes-do-system-status-ajax' ) )
-			wp_send_json( array( 'success' => false, 'reason' => __( 'request security failsed.', 'opentickets-community-edition' ) ) );
+			wp_send_json( array( 's' => false, 'reason' => __( 'request security failsed.', 'opentickets-community-edition' ) ) );
 
 		$sa = $_POST['sa'];
 		// do something different depending on the Sub Action
@@ -342,7 +342,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 			case 'find-events':
 				// if there is no query, return no results
 				if ( ! isset( $_POST['q'] ) || empty( $_POST['q'] ) )
-					wp_send_json( array( 'success' => true, 'r' => array() ) );
+					wp_send_json( array( 's' => true, 'r' => array() ) );
 
 				// find all child ids that match
 				$event_ids = get_posts( array(
@@ -371,7 +371,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 
 				// send the response
 				wp_send_json( array(
-					'success' => true,
+					's' => true,
 					'r' => $results,
 				) );
 			break;
@@ -380,7 +380,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 				$none = array( 'id' => 0, 'text' => __( '(none)', 'opentickets-community-edition' ) );
 				// if there is no query, return no results
 				if ( ! isset( $_POST['q'] ) || empty( $_POST['q'] ) )
-					wp_send_json( array( 'success' => true, 'r' => array() ) );
+					wp_send_json( array( 's' => true, 'r' => array() ) );
 
 				$qs = preg_split( '#\s+#', $_POST['q'] );
 				$by_id = $by_name = $by_meta = array();
@@ -435,7 +435,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 
 				// render response
 				wp_send_json( array(
-					'success' => true,
+					's' => true,
 					'r' => $results,
 				) );
 			break;
@@ -444,7 +444,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 				$none = array( 'id' => 0, 'text' => __( '(none)', 'opentickets-community-edition' ) );
 				// if there is no query, return no results
 				if ( ! isset( $_POST['q'] ) || empty( $_POST['q'] ) )
-					wp_send_json( array( 'success' => true, 'r' => array() ) );
+					wp_send_json( array( 's' => true, 'r' => array() ) );
 
 				$qs = preg_split( '#\s+#', $_POST['q'] );
 				// setup the base query parts
@@ -523,7 +523,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 
 				// render response
 				wp_send_json( array(
-					'success' => true,
+					's' => true,
 					'r' => $results,
 				) );
 			break;
@@ -531,11 +531,11 @@ class QSOT_system_status_page extends QSOT_base_page {
 			case 'load-event':
 				// if there is no event passed, then bail
 				if ( ! isset( $_POST['event_id'] ) || intval( $_POST['event_id'] ) < 0 )
-					wp_send_json( array( 'success' => false, 'reason' => __( 'invalid request.', 'opentickets-community-edition' ) ) );
+					wp_send_json( array( 's' => false, 'reason' => __( 'invalid request.', 'opentickets-community-edition' ) ) );
 
 				// send the response
 				wp_send_json( array(
-					'success' => true,
+					's' => true,
 					'r' => $this->_render_event_breakdown_form( $_POST['event_id'] ),
 				) );
 			break;
@@ -543,27 +543,27 @@ class QSOT_system_status_page extends QSOT_base_page {
 			case 'release':
 				// if there was no event id supplied, then hard fail
 				if ( ! isset( $_POST['id'] ) || intval( $_POST['event_id'] ) < 0 )
-					wp_send_json( array( 'success' => false, 'reason' => __( 'invalid request.', 'opentickets-community-edition' ) ) );
+					wp_send_json( array( 's' => false, 'reason' => __( 'invalid request.', 'opentickets-community-edition' ) ) );
 
 				// if there is no id supplied, then bail
 				if ( ! isset( $_POST['id'] ) || empty( $_POST['id'] ) )
-					wp_send_json( array( 'success' => true, 'r' => $this->_render_event_breakdown_form( $_POST['event_id'], __( 'No such ticket.', 'opentickets-community-edition' ) ) ) );
+					wp_send_json( array( 's' => true, 'r' => $this->_render_event_breakdown_form( $_POST['event_id'], __( 'No such ticket.', 'opentickets-community-edition' ) ) ) );
 
 				// otherwise, release the ticket, no matter the costs
 				$result = $this->_release_seat( $_POST['id'] );
 
 				// if the result was not successful, tnen send a message saying why
 				if ( is_wp_error( $result ) )
-					wp_send_json( array( 'success' => true, 'r' => $this->_render_event_breakdown_form( $_POST['event_id'], $result->get_error_message(), false ) ) );
+					wp_send_json( array( 's' => true, 'r' => $this->_render_event_breakdown_form( $_POST['event_id'], $result->get_error_message(), false ) ) );
 
 				// otherwise, send a result with a positive message
-				wp_send_json( array( 'success' => true, 'r' => $this->_render_event_breakdown_form( $_POST['event_id'], __( 'That ticket has been released.', 'opentickets-community-edition' ) ) ) );
+				wp_send_json( array( 's' => true, 'r' => $this->_render_event_breakdown_form( $_POST['event_id'], __( 'That ticket has been released.', 'opentickets-community-edition' ) ) ) );
 			break;
 
 			case 'add-ticket':
 				// if the minimum data is not present, then bail
 				if ( ! isset( $_POST['event_id'], $_POST['quantity'], $_POST['ticket_type_id'], $_POST['state'] ) || $_POST['event_id'] <= 0 || $_POST['quantity'] <= 0 || $_POST['ticket_type_id'] <= 0 || empty( $_POST['state'] ) )
-					wp_send_json( array( 'success' => false, 'reason' => __( 'invalid request.', 'opentickets-community-edition' ) ) );
+					wp_send_json( array( 's' => false, 'reason' => __( 'invalid request.', 'opentickets-community-edition' ) ) );
 
 				@list( $time, $mille ) = explode( '.', microtime( true ) );
 				$mille = substr( $mille, 0, 4 );
@@ -585,13 +585,13 @@ class QSOT_system_status_page extends QSOT_base_page {
 
 				// render response
 				wp_send_json( array(
-					'success' => true,
+					's' => true,
 					'r' => $this->_render_event_breakdown_form( $_POST['event_id'], $res ? __( 'Inserted new ticket', 'opentickets-community-edition' ) : __( 'New ticket failed.', 'opentickets-community-edition' ), !!$res ),
 				) );
 			break;
 		}
 
-		wp_send_json( array( 'success' => false, 'reason' => __( 'invalid request.', 'opentickets-community-edition' ) ) );
+		wp_send_json( array( 's' => false, 'reason' => __( 'invalid request.', 'opentickets-community-edition' ) ) );
 	}
 
 	// process a request to release a seat
