@@ -276,7 +276,7 @@ class QSOT_tickets {
 
 		// create the link
 		$link = add_query_arg(
-			array( 'n' => apply_filters( 'qsot-email-link-auth', '', $order->ID ) ),
+			array( 'n' => apply_filters( 'qsot-email-link-auth', '', $order->id ) ),
 			apply_filters( 'qsot-get-order-tickets-link', '', $order )
 		);
 
@@ -825,7 +825,7 @@ class QSOT_tickets {
 		$guest_checkout = strtolower( get_option( 'woocommerce_enable_guest_checkout', 'no' ) ) == 'yes';
 
 		// figure out the owner of the order, if that is stored
-		$customer_user_id = get_post_meta( $order->ID, '_customer_user', true );
+		$customer_user_id = get_post_meta( $order->id, '_customer_user', true );
 
 		// determine the current logged in user, so we can compare it to the known required data
 		$u = wp_get_current_user();
@@ -836,14 +836,14 @@ class QSOT_tickets {
 					( current_user_can( 'edit_shop_orders' ) ) || // if the current user is an admin of some sort
 					( $customer_user_id && current_user_can( 'edit_user', $customer_user_id ) ) || // or they can edit the profile of the user who the order is for
 					( $u->ID && $customer_user_id == $u->ID ) || // or they are the user that the order is for (not the same as above)
-					( $guest_checkout && apply_filters( 'qsot-ticket-verification-form-check', false, $order->ID ) ) // or they passed the guest checkout ticket verification form
+					( $guest_checkout && apply_filters( 'qsot-ticket-verification-form-check', false, $order->id ) ) // or they passed the guest checkout ticket verification form
 			) {
 				$can = true; // then they can view the ticket
 			// otherwise, if guest checkout is enabled, and the form was not submitted, pop the guest checkout verification form
 			} else if ( $guest_checkout && ! isset( $_POST['verification_form'] ) ) {
 				self::_guest_verification_form();
 			// if guest checkout is enabled, and the user submitted the guect verification form, but that submission did not pass, then hard fail
-			} else if ( $guest_checkout && ! apply_filters( 'qsot-ticket-verification-form-check', false, $order->ID ) ) {
+			} else if ( $guest_checkout && ! apply_filters( 'qsot-ticket-verification-form-check', false, $order->id ) ) {
 				self::_no_access(__('The information you supplied does not match our record.','opentickets-community-edition'));
 			// if guest checkout is not enabled, then pop the login form
 			} else if ( ! $guest_checkout ) {

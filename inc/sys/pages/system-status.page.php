@@ -667,6 +667,16 @@ class QSOT_system_status_page extends QSOT_base_page {
 		if ( ! is_object( $event ) )
 			return '<h3>' . __( 'No such event.', 'opentickets-community-edition' ) . '</h3>';
 
+		// get the event area, area type and zoner
+		$event_area = apply_filters( 'qsot-event-area-for-event', false, $event->ID );
+		$area_type = is_object( $event_area ) && ! is_wp_error( $event_area ) && isset( $event_area->area_type ) ? $event_area->area_type : false;
+		$zoner = is_object( $area_type ) && ! is_wp_error( $area_type ) ? $area_type->get_zoner() : false;
+		$stati = is_object( $zoner ) && ! is_wp_error( $zoner ) ? $zoner->get_stati() : array();
+
+		// if any of those dont exist, then bail
+		if ( ! is_object( $event_area ) || ! is_object( $area_type ) || ! is_object( $zoner ) || is_wp_error( $event_area ) || is_wp_error( $area_type ) || is_wp_error( $zoner ) )
+			return '<h3>' . __( 'Could not load that event\'s data.', 'opentickets-community-edition' ) . '</h3>';
+
 		global $wpdb;
 		// load all the ticket to event to order associations
 		$assoc = $wpdb->get_results( $wpdb->prepare( 'select * from ' . $wpdb->qsot_event_zone_to_order . ' where event_id = %d', $event_id ) );
@@ -676,6 +686,17 @@ class QSOT_system_status_page extends QSOT_base_page {
 		if ( empty( $settings_class_name ) || ! class_exists( $settings_class_name ) )
 			return '<h3>' . __( 'A problem occurred, and your request cannot be processed.', 'opentickets-community-edition' ) . '</h3>';
 		$opts = call_user_func_array( array( $settings_class_name, 'instance' ), array() );
+
+		$ticket_types = array();
+		// get all the ticket types
+		$raw_ticket_types = $area_type->get_ticket_type( array( 'event' => $event ) );
+		if ( is_array( $raw_ticket_types ) ) {
+			foreach ( $raw_ticket_types as $sub_group => $list )
+				foreach ( $list as $ticket_type )
+					$ticket_types[ $ticket_type->id ] = $ticket_type;
+		} else if ( is_object( $raw_ticket_types ) && ! is_wp_error( $raw_ticket_types ) ) {
+			$ticket_types = array( $raw_ticket_types->id => $raw_ticket_types );
+		}
 
 		ob_start();
 		// render the results
@@ -770,8 +791,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 					</div>
 
 					<?php
-						$ticket = isset( $event->meta, $event->meta->_event_area_obj, $event->meta->_event_area_obj->ticket ) ? $event->meta->_event_area_obj->ticket : false;
-						$ticket_types = apply_filters( 'qsot-system-status-adv-tools-add-ticket-ticket-types', $ticket ? array( "{$ticket->id}" => $ticket ) : array(), $event );
+						$ticket_types = apply_filters( 'qsot-system-status-adv-tools-add-ticket-ticket-types', $ticket_types, $event );
 					?>
 
 					<div class="field">
@@ -784,12 +804,11 @@ class QSOT_system_status_page extends QSOT_base_page {
 						<div class="helper"><?php _e( 'Select the ticket type for this new reservation. Keep in mind, all available type are listed here.', 'opentickets-community-edition' ) ?></div>
 					</div>
 
-					<?php $stati = array_reverse( (array) $opts->{'z.states'}, true ); ?>
 					<div class="field">
 						<label><?php _e( 'Ticket Status', 'opentickets-community-edition' ) ?></label>
 						<select class="widefat" name="state">
-							<?php foreach ( $stati as $abbr => $name ): ?>
-								<option value="<?php echo esc_attr( $name ); ?>" <?php selected( 'confirmed', $name ) ?>><?php echo $name ?></option>
+							<?php foreach ( $stati as $abbr => $settings ): ?>
+								<option value="<?php echo esc_attr( $settings[0] ); ?>" <?php selected( 'confirmed', $settings[0] ) ?>><?php echo $settings[2] ?></option>
 							<?php endforeach; ?>
 						</select>
 						<div class="helper"><?php _e( 'The status you want the ticket to have.', 'opentickets-community-edition' ) ?></div>

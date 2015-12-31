@@ -562,8 +562,17 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 	public function get_ticket_type( $data='' ) {
 		// normalize the supplied data
 		$data = wp_parse_args( $data, array(
+			'event' => false,
 			'event_area' => false,
 		) );
+
+		// if the event is supplied, use the event_area from that event
+		if ( false !== $data['event'] ) {
+			if ( is_object( $data['event'] ) && isset( $data['event']->ID ) )
+				$data['event_area'] = get_post_meta( $data['event']->ID, '_event_area_id', true );
+			else if ( is_numeric( $data['event'] ) )
+				$data['event_area'] = get_post_meta( $data['event'], '_event_area_id', true );
+		}
 
 		// if there is no event_area in the supplied, data, then bail
 		if ( false == $data['event_area'] )
