@@ -265,7 +265,7 @@ QS.popMediaBox = (function($, qt) {
 			}
 
 			// create a display version above the hidden on
-			var display = $( '<input type="date" />' ).insertBefore( me ).attr( { id:( me.attr( 'id' ) || me.attr( 'name' ) ) + '-display', role:role + '-display' } )
+			var display = $( '<input type="text" />' ).insertBefore( me ).attr( { id:( me.attr( 'id' ) || me.attr( 'name' ) ) + '-display', role:role + '-display' } )
 					.addClass( me.attr( 'class' ).replace( new RegExp( selector.replace( /^\.#/, '' ), 'g' ), '' ) );
 			me.data( 'display', display );
 
