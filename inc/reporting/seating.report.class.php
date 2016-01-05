@@ -267,6 +267,9 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 
 	// the report should define a function to process a group of results, which it contructed in the more_rows() method
 	public function aggregate_row_data( array $group ) {
+		// get a list of possible order stati
+		$wc_order_stati = wc_get_order_statuses();
+
 		$order_ids = $order_item_ids = array();
 		// create a list of order_ids and order_item_ids, based on the rows in this group
 		foreach ( $group as $row ) {
@@ -281,6 +284,9 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 		// get all the order meta, for all orders, and then index it by order_id
 		$order_meta = $this->_get_order_meta( $order_ids );
 
+		// get all the order stati
+		$order_stati = $this->_get_order_stati( $order_ids );
+
 		// get all the ticket codes, based on the order_item_ids, indexed by the order_item_ids
 		$ticket_codes = $this->_get_ticket_codes( $order_item_ids );
 
@@ -293,6 +299,15 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 		$final = array();
 		// finally, put it all together
 		foreach ( $group as $row ) {
+			$status = '-';
+			// determine the appropriate status to display
+			if ( ! isset( $order_stati[ $row->order_id ] ) )
+				$status = __( '(no-order)', 'opentickets-community-edition' );
+			else if ( 'wc-completed' == $order_stati[ $row->order_id ] )
+				$status = isset( $this->state_map[ $row->state ] ) ? $this->state_map[ $row->state ] : $wc_order_stati[ 'wc-completed' ];
+			else if ( isset( $order_stati[ $row->order_id ] ) )
+				$status = $wc_order_stati[ $order_stati[ $row->order_id ] ];
+
 			$final[] = apply_filters( 'qsot-' . $this->slug . '-report-data-row', array(
 				'purchaser' => $this->_order_meta( $order_meta, 'name', $row ),
 				'order_id' => $row->order_id ? $row->order_id : '-',
@@ -302,7 +317,7 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 				'phone' => $this->_order_meta( $order_meta, '_billing_phone', $row ),
 				'address' => $this->_order_meta( $order_meta, 'address', $row ),
 				'note' => isset( $report_comments[ $row->order_id ] ) ? $report_comments[ $row->order_id ] : '',
-				'state' => isset( $this->state_map[ $row->state ] ) ? $this->state_map[ $row->state ] : '-',
+				'state' => $status,
 				'event' => apply_filters( 'the_title', $this->event->post_title, $this->event->ID ),
 				'ticket_link' => isset( $ticket_codes[ $row->order_item_id ] ) ? apply_filters( 'qsot-get-ticket-link-from-code', $ticket_codes[ $row->order_item_id ], $ticket_codes[ $row->order_item_id ] ) : '',
 				'_raw' => $row,
@@ -310,6 +325,24 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 		}
 
 		return $final;
+	}
+
+	// get a map of all the order stati id=>status
+	protected function _get_order_stati( $order_ids ) {
+		// if there are no orders, then bail
+		if ( empty( $order_ids ) )
+			return array();
+
+		global $wpdb;
+		// grab the raw list of stati
+		$raw = $wpdb->get_results( 'select id, post_status from ' . $wpdb->posts . ' where id in( ' . implode( ',', $order_ids ) . ' )' );
+
+		$map = array();
+		// organize the results
+		while ( $row = array_pop( $raw ) )
+			$map[ $row->id . '' ] = $row->post_status;
+
+		return $map;
 	}
 
 	// calculate the availability, based on the total number of tickets sold, subtracted from the total available
