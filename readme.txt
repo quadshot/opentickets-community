@@ -171,6 +171,14 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.0.5 - Jan/06/2016 =
+* [new] attendee report shows order status on non-completed orders now, instead of just 'paid'
+* [tweak] update to prevent chrome date picker from clashing with jquery datepicker
+* [tweak] seating report accuracy increased and notices removed
+* [tweak] change QR codes so that they are no longer random on each page load
+* [fix] repaired system-status resync tool for 2.0.x
+* [fix] added cache buster to reporting js
+
 = 2.0.4 - Dev/30/2015 =
 * [tweak] internal GA event area functions tweaked for flexibility
 * [fix] repaired advanced tools for GA events
