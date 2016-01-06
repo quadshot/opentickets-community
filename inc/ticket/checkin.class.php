@@ -168,7 +168,7 @@ class QSOT_checkin {
 				'order_item_id' => $order_item_id,
 				'title' => $ticket->product->get_title() . ' (' . $ticket->product->get_price_html() . ')',
 				'price' => $ticket->product->get_price(),
-				'uniq' => md5( sha1( microtime( true ) . rand( 0, PHP_INT_MAX ) ) ),
+				'uniq' => md5( sha1( 0 . ':' . $ticket->order->id . ':' . $order_item_id ) ),
 				'ticket_num' => 0,
 			);
 
@@ -220,13 +220,14 @@ class QSOT_checkin {
 				'order_item_id' => $order_item_id,
 				'title' => $ticket->product->get_title() . ' (' . $ticket->product->get_price_html() . ')',
 				'price' => $ticket->product->get_price(),
-				'uniq' => md5( sha1( microtime( true ) . rand( 0, PHP_INT_MAX ) ) ),
+				'uniq' => '',
 			);
 
 			// for each one of the entire qty, assign each discrete one it's own index, so that it's url is slightly different, causing a different QR
 			for ( $i = 0; $i < $qty; $i++ ) {
 				// uniqify the qr
 				$info['ticket_num'] = $i;
+				$info['uniq'] = md5( sha1( $i . ':' . $ticket->order->id . ':' . $order_item_id ) );
 				// create the checkin url that is being encoded
 				$url = self::create_checkin_url( $info );
 
