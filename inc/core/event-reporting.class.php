@@ -52,7 +52,12 @@ class qsot_reporting {
 
 	// register all the scripts and css that may be used on the basic reporting pages
 	public static function register_assets() {
-		wp_register_script( 'qsot-report-ajax', self::$o->core_url . 'assets/js/admin/report/ajax.js', array( 'qsot-tools', 'jquery-ui-datepicker', 'tablesorter' ) );
+		// reuseable bits
+		$url = QSOT::plugin_url();
+		$version = QSOT::version();
+
+		// register the js
+		wp_register_script( 'qsot-report-ajax', $url . 'assets/js/admin/report/ajax.js', array( 'qsot-tools', 'jquery-ui-datepicker', 'tablesorter' ), $version );
 	}
 
 	// tell wordpress to load the assets we previously registered
