@@ -129,6 +129,9 @@ class QSOT_Post_Type_Event_Area {
 		add_filter( 'manage_qsot-event-area_posts_columns', array( &$this, 'add_custom_event_area_columns' ), 10, 2 );
 		add_action( 'manage_qsot-event-area_posts_custom_column', array( &$this, 'add_custom_event_area_column_values' ), 10, 2 );
 
+		// tools
+		add_filter( 'qsot-count-tickets', array( &$this, 'count_tickets' ), 1000, 2 );
+
 		// when in the admin, add some more actions and filters
 		if ( is_admin() ) {
 			// admin order editing
@@ -309,6 +312,47 @@ class QSOT_Post_Type_Event_Area {
 			$name = sprintf( __( '[%s]', 'opentickets-community-edition' ), $name );
 
 		echo force_balance_tags( $name );
+	}
+
+	// count the total number of tickets in the ticket table, based on some supplied args
+	public static function count_tickets( $current, $args='' ) {
+		// normalize the args
+		$args = wp_parse_args( $args, array(
+			'state' => '*',
+			'event_id' => '',
+		) );
+
+		global $wpdb;
+
+		// construct the sql to find the total tickets by state, based on the args
+		$q = 'select state, sum(quantity) tot from ' . $wpdb->qsot_event_zone_to_order . ' where 1=1';
+		// if the event_id was specified, then add it to the query
+		if ( !empty( $args['event_id'] ) ) {
+			$event_ids = array_filter( wp_parse_id_list( $arsg['event_id'] ) );
+			if ( ! empty( $event_ids ) )
+				$q .= ' and event_id in (' . implode( ',', $ids ) . ')';
+		}
+		// make the results grouped by the state, which we can then filter by later
+		$q .= ' group by state';
+
+		// grab the resuls
+		$rows = $wpdb->get_results( $q );
+		$out = array();
+
+		// if there are no results, then bail
+		if ( empty( $rows ) )
+			return ( ! empty( $args['state'] ) && $args['state'] != '*' ) ? 0 : $out;
+
+		// otherwise index the results by state
+		foreach ( $rows as $row )
+			$out[ $row->state ] = $row->tot;
+
+		// if the state was specified, then only return results for that state
+		if ( ! empty( $args['state'] ) && $args['state'] != '*' )
+			return isset( $out[ $args['state'] ] ) ? $out[ $args['state'] ] : 0;
+
+		// otherwise, return the indexed list
+		return $out;
 	}
 
 	// draw the event ticket selection UI

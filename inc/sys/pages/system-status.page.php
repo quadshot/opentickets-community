@@ -883,7 +883,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 	public function tool_RsOi2Tt( $result, $args ) {
 		if ( $this->_verify_action_nonce( 'RsOi2Tt' ) ) {
 			$state = $_GET['state'] == 'bg' ? '-bg' : '';
-			if ( $this->_perform_resync_order_items_to_ticket_table() ) $result[1]['performed'] = 'resync' . $state;
+			if ( $this->_perform_resync_order_items_to_ticket_table( $state, $result ) ) $result[1]['performed'] = 'resync' . $state;
 			else $result[1]['performed'] = 'failed-resync' . $state;
 			$result[0] = true;
 		}
@@ -956,12 +956,37 @@ class QSOT_system_status_page extends QSOT_base_page {
 	}
 
 	// handles the resynce process request
-	protected function _perform_resync_order_items_to_ticket_table() {
-		if ( 'bg' == $_GET['state'] ) {
+	protected function _perform_resync_order_items_to_ticket_table( $in_bg, $result ) {
+		if ( $in_bg ) {
 			return $this->_attempt_backport_request();
 		} else {
+			// could run a long time
 			ini_set( 'max_execution_time', 600 );
-			return $this->_do_resync();
+
+			// print a container to hold the debugging output
+			echo '<html><head><title>' . __( 'Rsync Results', 'opentickets-community-edition' ) . '</title><style>',
+					'.button { border-radius:3px; border-style:solid; border-width:1px; box-sizing:border-box; cursor:pointer; display:inline-block; font-size:13px; height:28px; line-height:26px; ',
+						'margin:0; padding:0 10px 1px; text-decoration:none; white-space:nowrap; background:#0085ba none repeat scroll 0 0; border-color:#0073aa #006799 #006799; box-shadow:0 1px 0 #006799; ',
+						'color:#fff; text-decoration:none; text-shadow:0 -1px 1px #006799, 1px 0 1px #006799, 0 1px 1px #006799, -1px 0 1px #006799; }',
+					'</style></head><body><pre>';
+
+			// actually perform the resync
+			$res = $this->_do_resync( true );
+
+			// update the resulting url query args, and create the url to link to
+			$result[1]['performed'] = $res ? 'resync' : 'failed-resync';
+			$url = add_query_arg( $result[1], remove_query_arg( array( 'updated', 'performed', 'qsot-tool', 'qsotn' ) ) );
+
+			// close the main interior container
+			echo '</pre>';
+
+			// add a button the continue to the final url
+			echo sprintf( '<a class="button" href="%s">%s</a>', esc_attr( $url ), __( 'Return to Tools Page', 'opentickets-community-edition' ) );
+
+			// close up the container
+			echo '</body></html>';
+
+			exit;
 		}
 	}
 
@@ -1017,7 +1042,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 	}
 
 	// actually perform the syncing process of order item tickets to the tickets table
-	protected function _do_resync() {
+	protected function _do_resync( $print=false ) {
 		// increase the run time timeout limit, cause this could take a while
 		global $wpdb;
 		$per = 500; // limit all big queries to a certain number of rows at a time
@@ -1026,12 +1051,6 @@ class QSOT_system_status_page extends QSOT_base_page {
 		$u = wp_get_current_user();
 		$user_id = $u->ID ? $u->ID : 1; // session_customer_id
 		$since = current_time( 'mysql' ); // since
-
-		// load the core settings
-		$settings_class = apply_filters( 'qsot-settings-class-name', '' );
-		if ( ! empty( $settings_class ) ) {
-			$o = call_user_func( array( $settings_class, 'instance' ) );
-		} else return false;
 
 		// container for the list of event_ids that need their availability recalculated
 		$event_ids = array();
@@ -1058,6 +1077,10 @@ class QSOT_system_status_page extends QSOT_base_page {
 
 		// while there are more orders to process, doing them a little at a time
 		while ( ( $order_ids = $wpdb->get_col( $wpdb->prepare( $oq, 'shop_order', $per, $offset ) ) ) ) {
+			// if we are writing results debug, do it now
+			if ( $print )
+				echo $wpdb->prepare( $oq, 'shop_order', $per, $offset ), "\nORDER IDS:\n", implode( ',', $order_ids ), "\n-----------\n";
+
 			// dont forget to increase our position in the list
 			$offset += $per;
 
@@ -1079,6 +1102,10 @@ class QSOT_system_status_page extends QSOT_base_page {
 					$item_ids[] = $pair[1];
 					$item_to_order_map[ $pair[1] . '' ] = $pair[0];
 				}
+
+				// if we debugging, then print the order item ids
+				if ( $print )
+					echo "ORDER_ITEM_IDS:\n", implode( ',', $item_ids ), "\n-----------\n";
 
 				// sanitize the list of order item ids, and if we have none, then there is nothing to do here
 				$item_ids = array_filter( array_map( 'absint', $item_ids ) );
@@ -1102,8 +1129,8 @@ class QSOT_system_status_page extends QSOT_base_page {
 						'order_item_id' => $item_id,
 						'order_id' => $item_to_order_map[ $item_id ],
 						'session_customer_id' => $user_id,
-						'since' => $since,
-						'state' => $o->{'z.states.c'},
+						'since' => get_the_date( $item_to_order_map[ $item_id ] ),
+						'state' => 'confirmed',
 					), $item, $item_id, $item_to_order_map[ $item_id ] );
 
 					// add this event to the list of events that need processing later
@@ -1134,22 +1161,49 @@ class QSOT_system_status_page extends QSOT_base_page {
 					// run the query to count the records that match (should be 1 or 0)
 					$exists = $wpdb->get_var( $testq . $where_str );
 
+					// when debugging, print a record for this update item
+					if ( $print )
+						echo $exists ? '<span style="color:#008800">' : '<span style="color:#880000">', $testq . $where_str, "\n", $exists ? 'exists' : 'does not exist', "</span>\n";
+
 					// if we have a matching record, then skip this one
 					if ( $exists ) continue;
 
 					// otherwise, create a new record that represents this order_item
-					$wpdb->insert( $wpdb->qsot_event_zone_to_order, $update );
+					$res = $wpdb->insert( $wpdb->qsot_event_zone_to_order, $update );
+
+					// if debugging, write the result of the insert request
+					if ( $print )
+						echo $res ? '<span style="color:#008800">' : '<span style="color:#880000">', '<strong>',
+								'**RESULT: ', $res ? 'created' : 'could not create',
+								"</strong></span>\n",
+								$wpdb->last_error ? '<span style="color:#880000">--' . $wpdb->last_error . "</span>\n" : '';
 				}
 			}
+
+			// clear all the caches
+			$this->_clear_caches();
 		}
 
 		// update the availability counts for all the affected events
 		foreach ( $event_ids as $event_id => $_ ) {
 			$total = apply_filters( 'qsot-count-tickets', 0, array( 'state' => $o->{'z.states.c'}, 'event_id' => $event_id ) );
-			update_post_meta( $event_id, $o->{'meta_key.ea_purchased'}, $total );
+			update_post_meta( $event_id, '_purchases_ea', $total );
 		}
 
 		return true;
+	}
+
+	// clear the db and wp_cache caches, because in a long loop they can grow enormous, consuming a lot of memory
+	protected function _clear_caches() {
+		global $wpdb, $wp_object_cache;
+		// clear our the query cache, cause it can be huge
+		$wpdb->flush();
+
+		// clear out the wp_cache cache, if we are using the core wp method, which is an internal associative array
+		if ( isset( $wp_object_cache->cache ) && is_array( $wp_object_cache->cache ) ) {
+			unset( $wp_object_cache->cache );
+			$wp_object_cache->cache = array();
+		}
 	}
 
 	// aggregate all the order item meta for all order_item_ids ($ids)
