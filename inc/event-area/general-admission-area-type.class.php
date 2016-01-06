@@ -261,7 +261,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 
 		// add each one to the list we are returning
 		foreach ( $stati as $status )
-			$list[ $status[0] ] = $status[3];
+			$list[ $status[0] ] = array( $status[3], ! $status[1] ); // label, is_permanent_state
 
 		return $list;
 	}

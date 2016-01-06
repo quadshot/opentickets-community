@@ -172,7 +172,9 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 				'post_status' => array( 'publish', 'private', 'hidden' ),
 				'posts_per_page' => -1,
 				'post_parent' => $parent_event_id,
-				'orderby' => 'title',
+				'meta_key' => '_start',
+				'meta_type' => 'DATETIME',
+				'orderby' => array( 'meta_value' => 'asc', 'title' => 'asc' ),
 				'order' => 'asc',
 			) );
 
@@ -248,8 +250,16 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 	public function more_rows() {
 		global $wpdb;
 
-		// valid states
-		$in = "'" . implode( "','", array_filter( array_map( 'trim', array_keys( $this->state_map ) ) ) ) . "'";
+		// find a list of the valid states that are permanent states. we do not want 'reserved' seats or 'interest' seats showing here
+		$valid = array();
+		foreach ( $this->state_map as $key => $state )
+			if ( $state[1] )
+				$valid[] = $key;
+		$valid = array_filter( array_map( 'trim', $valid ) );
+		// if there are no valid states, bail now
+		if ( empty( $valid ) )
+			return array();
+		$in = "'" . implode( "','", $valid ) . "'";
 
 		// grab the next group of matches
 		$rows = $wpdb->get_results( $wpdb->prepare(
@@ -304,7 +314,7 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 			if ( ! isset( $order_stati[ $row->order_id ] ) )
 				$status = __( '(no-order)', 'opentickets-community-edition' );
 			else if ( 'wc-completed' == $order_stati[ $row->order_id ] )
-				$status = isset( $this->state_map[ $row->state ] ) ? $this->state_map[ $row->state ] : $wc_order_stati[ 'wc-completed' ];
+				$status = isset( $this->state_map[ $row->state ] ) ? $this->state_map[ $row->state ][0] : $wc_order_stati[ 'wc-completed' ];
 			else if ( isset( $order_stati[ $row->order_id ] ) )
 				$status = $wc_order_stati[ $order_stati[ $row->order_id ] ];
 
