@@ -402,7 +402,7 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 		$temp = wc_get_product( $product_id );
 
 		// if the product does not exist, then store and return the default value
-		if ( is_wp_error( $temp ) )
+		if ( ! is_object( $temp ) || is_wp_error( $temp ) )
 			return $products[ $product_id ] = $default;
 
 		// otherwise return and store the product title
