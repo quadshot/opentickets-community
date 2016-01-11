@@ -8,6 +8,7 @@ if (!class_exists('QSOT_checkin')):
 class QSOT_checkin {
 	// holder for event plugin options
 	protected static $o = null;
+	protected static $options = null;
 
 	public static function pre_init() {
 		// load the plugin settings
@@ -15,8 +16,18 @@ class QSOT_checkin {
 		if (empty($settings_class_name) || !class_exists($settings_class_name)) return;
 		self::$o = call_user_func_array(array($settings_class_name, 'instance'), array());
 
+		// load all the options, and share them with all other parts of the plugin
+		$options_class_name = apply_filters('qsot-options-class-name', '');
+		if (!empty($options_class_name)) {
+			self::$options = call_user_func_array(array($options_class_name, "instance"), array());
+			self::_setup_admin_options();
+		}
+
 		// add qr to ticket
 		add_filter('qsot-compile-ticket-info', array(__CLASS__, 'add_qr_code'), 3000, 3);
+
+		// compile ticket qr data
+		add_filter( 'qsot-get-ticket-qr-data', array( __CLASS__, 'get_ticket_qr_data' ), 1000, 2 );
 
 		// add rewrite rules to intercept the QR Code scans
 		do_action(
@@ -159,124 +170,122 @@ class QSOT_checkin {
 		// is PDF the format we are generating?
 		$is_pdf = isset( $_GET['frmt'] ) && 'pdf' == $_GET['frmt'];
 
-		// if we only have one ticket, then only generate a single QR Code
-		if ( 1 == $qty ) {
-			// aggregate the ticket information to compile into the QR Code
-			$info = array(
-				'order_id' => $ticket->order->id,
-				'event_id' => $ticket->event->ID,
-				'order_item_id' => $order_item_id,
-				'title' => $ticket->product->get_title() . ' (' . $ticket->product->get_price_html() . ')',
-				'price' => $ticket->product->get_price(),
-				'uniq' => md5( sha1( 0 . ':' . $ticket->order->id . ':' . $order_item_id ) ),
-				'ticket_num' => 0,
-			);
+		// find all the codes that are to be encoded in the qr codes
+		$codes = apply_filters( 'qsot-get-ticket-qr-data', array(), array(
+			'order_id' => $ticket->order->id,
+			'event_id' => $ticket->event->ID,
+			'order_item_id' => $order_item_id,
+			'product' => $ticket->product,
+			'qty' => $qty,
+		) );
 
-			// create the url we will use for the checkin, which will be the data we encode in the qr
-			$url = self::create_checkin_url( $info );
+		$ticket->qr_code = null;
 
-			// if this is NOT a PDF request, then allow the image srcs to be externally loadable assets, so that they can be cached locally for the user
+		for ( $i = 0; $i < count( $codes ); $i++ ) {
+			// if this is NOT a PDF request, then make the qr image urls an external assets, which can be locally cached
 			if ( ! $is_pdf ) {
-				// craft the qr generator url
-				$data = array( 'd' => $url, 'p' => site_url() );
+				// create the QR generator url
+				$data = array( 'd' => $codes[ $i ], 'p' => site_url() );
 				ksort( $data );
 				$data['sig'] = sha1( NONCE_KEY . @json_encode( $data ) . NONCE_SALT );
 				$data = @json_encode( $data );
 
-				$ticket->qr_data_debug = $url;
-				// add an image tag to represent the qr code
-				$ticket->qr_code = sprintf(
+				$ticket->qr_data_debugs[ $i ] = $codes[ $i ];
+				// add the image tag to the list of image tags
+				$ticket->qr_codes[ $i ] = sprintf(
 					'<img src="%s%s" alt="%s" />',
-					//$img_url,
 					esc_attr( self::$o->core_url . 'libs/phpqrcode/index.php?d=' ),
 					esc_attr( str_replace( array( '+', '=', '/' ), array( '-', '_', '~' ), base64_encode( strrev( $data ) ) ) ),
 					esc_attr( $ticket->product->get_title() . ' (' . $ticket->product->get_price() . ')' )
 				);
-			// if this IS a PDF request, the pdf library works better if we embed the qr image data in the document in base64 encoded form. in some cases, using the alternative produces blank images on the pdf
+			// if this IS a PDF request, then embed the QR image urls as base64 encoded data strings
 			} else {
-				// use a 
-				$img_data = self::_qr_img( $url );
+				// compile the qr image url
+				$img_data = self::_qr_img( $codes[ $i ] );
 
-				// embed the image tag with the base64 encoded images
-				$ticket->qr_code = sprintf(
-					'<img src="%s" width="%s" height="%s" alt="%s" />',
-					esc_attr( $img_data[0] ),
+				// add the image tag for this qr to the list of image tags
+				$ticket->qr_codes[ $i ] = sprintf(
+					'<img class="img-%d" width="%s" height="%s" src="%s" alt="%s" />',
+					$i,
 					esc_attr( $img_data[1] ),
 					esc_attr( $img_data[2] ),
+					esc_attr( $img_data[0] ),
 					$ticket->product->get_title() . ' (' . $ticket->product->get_price() . ')'
 				);
 			}
-		// if we have more than one qty, then use slightly different logic to generate each individual qr code
-		} else if ( $qty > 1 ) {
-			$ticket->qr_code = null;
-			$ticket->qr_codes = array();
-			$ticket->qr_data_debug = null;
-			$ticket->qr_data_debugs = array();
 
-			// aggregate the shared information amungst all the qrs
-			$info = array(
-				'order_id' => $ticket->order->id,
-				'event_id' => $ticket->event->ID,
-				'order_item_id' => $order_item_id,
-				'title' => $ticket->product->get_title() . ' (' . $ticket->product->get_price_html() . ')',
-				'price' => $ticket->product->get_price(),
-				'uniq' => '',
-			);
-
-			// for each one of the entire qty, assign each discrete one it's own index, so that it's url is slightly different, causing a different QR
-			for ( $i = 0; $i < $qty; $i++ ) {
-				// uniqify the qr
-				$info['ticket_num'] = $i;
-				$info['uniq'] = md5( sha1( $i . ':' . $ticket->order->id . ':' . $order_item_id ) );
-				// create the checkin url that is being encoded
-				$url = self::create_checkin_url( $info );
-
-				// if this is NOT a PDF request, then make the qr image urls an external assets, which can be locally cached
-				if ( ! $is_pdf ) {
-					// create the QR generator url
-					$data = array( 'd' => $url, 'p' => site_url() );
-					ksort( $data );
-					$data['sig'] = sha1( NONCE_KEY . @json_encode( $data ) . NONCE_SALT );
-					$data = @json_encode( $data );
-
-					$ticket->qr_data_debugs[ $i ] = $url;
-					// add the image tag to the list of image tags
-					$ticket->qr_codes[ $i ] = sprintf(
-						'<img src="%s%s" alt="%s" />',
-						esc_attr( self::$o->core_url . 'libs/phpqrcode/index.php?d=' ),
-						esc_attr( str_replace( array( '+', '=', '/' ), array( '-', '_', '~' ), base64_encode( strrev( $data ) ) ) ),
-						esc_attr( $ticket->product->get_title() . ' (' . $ticket->product->get_price() . ')' )
-					);
-				// if this IS a PDF request, then embed the QR image urls as base64 encoded data strings
-				} else {
-					// compile the qr image url
-					$img_data = self::_qr_img( $url );
-
-					// add the image tag for this qr to the list of image tags
-					$ticket->qr_codes[ $i ] = sprintf(
-						'<img class="img-%d" width="%s" height="%s" src="%s" alt="%s" />',
-						$i,
-						esc_attr( $img_data[1] ),
-						esc_attr( $img_data[2] ),
-						esc_attr( $img_data[0] ),
-						$ticket->product->get_title() . ' (' . $ticket->product->get_price() . ')'
-					);
-				}
-				// if this is the first qr in the list, fill the qr_code property, for backwards compatibility, since some override templates may be out of date
-				if ( null == $ticket->qr_code ) {
-					$ticket->qr_data_debug = $url;
-					$ticket->qr_code = $ticket->qr_codes[ $i ];
-				}
-			}
+			// make sure that the first code is added as the primary code. eventually this will be deprecated
+			if ( null == $ticket->qr_code )
+				$ticket->qr_code = $ticket->qr_codes[ $i ];
 		}
 
-		if ( ! WP_DEBUG ) {
+		if ( ! WP_DEBUG )
 			unset( $ticket->qr_data_debugs, $ticket->qr_data_debug );
-		}
 
 		return $ticket;
 	}
 
+	// create all the codes that are encoded inside the QR Codes
+	public static function get_ticket_qr_data( $code, $args ) {
+		static $is_url = null;
+		// figure out the global settings of how these codes should be created: as urls or just codes
+		if ( null === $is_url )
+			$is_url = 'checkin-url' == self::$options->{'qsot-ticket-qr-mode'};
+
+		// normalize the input data
+		$args = wp_parse_args( $args, array(
+			'order_id' => 0,
+			'event_id' => 0,
+			'order_item_id' => 0,
+			'product' => 0,
+			'qty' => 0,
+			'index' => 0,
+		) );
+
+		// load the product if it was not sent as a product object, and bail if there is not a product
+		if ( is_numeric( $args['product'] ) && ! empty( $args['product'] ) )
+			$args['product'] = wc_get_product( $args['product'] );
+		if ( ! is_object( $args['product'] ) || is_wp_error( $args['product'] ) )
+			return $code;
+
+		// create the base data that is encoded in the packets
+		$base = array(
+			'order_id' => $args['order_id'],
+			'order_item_id' => $args['order_item_id'],
+			'event_id' => $args['event_id'],
+			'title' => $args['product']->get_title() . ' (' . $args['product']->get_price_html() . ')',
+			'price' => $args['product']->get_price(),
+			'uniq' => md5( sha1( 0 . ':' . $args['order_id'] . ':' . $args['order_item_id'] ) ),
+			'ticket_num' => 0,
+		);
+
+		$code = array();
+		// if a specific index was sent in our input, then we only want to return the code for that one index
+		if ( isset( $args['index'] ) && $args['index'] ) {
+			// comiple the data for the code
+			$info = $base;
+			$info['uniq'] = md5( sha1( $args['index'] . ':' . $args['order_id'] . ':' . $args['order_item_id'] ) );
+			$info['ticket_num'] = $args['index'];
+
+			// add the code to the return list
+			$code[] = $is_url ? self::create_checkin_url( $info ) : self::_create_checkin_packet( $info );
+		// otherwise, just add one code per ticket in the quantity
+		} else {
+			for ( $i = 0; $i < $args['qty']; $i++ ) {
+				// aggregate the data for this code
+				$info = $base;
+				$info['uniq'] = md5( sha1( $i . ':' . $args['order_id'] . ':' . $args['order_item_id'] ) );
+				$info['ticket_num'] = $i + 1;
+
+				// add the code to the return list
+				$code[] = $is_url ? self::create_checkin_url( $info ) : self::_create_checkin_packet( $info );
+			}
+		}
+
+		return $code;
+	}
+
+	// create a base64 encoded image that can be embeded in the pdf, instead of externally loaded, since that can cause problems
 	protected static function _qr_img( $data ) {
 		require_once self::$o->core_dir . 'libs/phpqrcode/qrlib.php';
 		require_once self::$o->core_dir . 'libs/phpqrcode/qsot-qrimage.php';
@@ -303,10 +312,10 @@ class QSOT_checkin {
 
 			// render the image
 			$img_data = QSOT_QRimage::jpg_base64( $tab, 2.5/*min( max( 1, $enc->size ), $maxSize )*/, $enc->margin, 100 );
-		} catch (Exception $e) {
+		} catch ( Exception $e ) {
 			$img_data = array( 'data:image/jpeg;base64,', 0, 0 );
 			// log any exceptions
-			QRtools::log($outfile, $e->getMessage());
+			QRtools::log( $outfile, $e->getMessage() );
 		}
 
 		return $img_data;
@@ -427,6 +436,47 @@ class QSOT_checkin {
 				}
 			}
 		}
+	}
+
+	// setup the options that are available to control tickets. reachable at WPAdmin -> OpenTickets (menu) -> Settings (menu) -> Frontend (tab) -> Tickets (heading)
+	protected static function _setup_admin_options() {
+		// setup the defaults, so that queries to the options object give the correct value, if none has been set by the admins
+		self::$options->def( 'qsot-ticket-qr-mode', 'checkin-url' );
+
+		// the 'Tickets' heading on the Frontend tab
+		self::$options->add( array(
+			'order' => 600,
+			'type' => 'title',
+			'title' => __( 'Checkin & QR Codes', 'opentickets-community-edition' ),
+			'id' => 'heading-checkin-1',
+			'page' => 'frontend',
+			'section' => 'tickets',
+		) );
+
+		// setup the settings section
+		self::$options->add( array(
+			'order' => 605,
+			'id' => 'qsot-ticket-qr-mode',
+			'type' => 'radio',
+			'title' => __( 'QR Code Mode', 'qsot' ),
+			'desc_tip' => __( 'How should the QR codes be created? Should they just contain the ticket code? or should be they point to a check-in url?', 'qsot' ),
+			'options' => array(
+				'checkin-url' => __( 'Check-in URL', 'qsot' ),
+				'code-only' => __( 'Ticket Code Only', 'qsot' ),
+			),
+			'default' => self::$options->{'qsot-ticket-qr-mode'},
+			'page' => 'frontend',
+			'section' => 'tickets',
+		) );
+
+		// end the 'Checkin & QR Codes' section on the page
+		self::$options->add( array(
+			'order' => 699,
+			'type' => 'sectionend',
+			'id' => 'heading-checkin-1',
+			'page' => 'frontend',
+			'section' => 'tickets',
+		) );
 	}
 }
 

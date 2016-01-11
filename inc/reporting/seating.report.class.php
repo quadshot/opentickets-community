@@ -38,6 +38,11 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 
 	// individual reports should define their own set of columns to add to the csv
 	public function csv_report_columns() {
+		// figure out the setting for the method used to create the qr codes
+		$option = apply_filters( 'qsot-get-option-value', 'checkin-url', 'qsot-ticket-qr-mode' );
+		$is_url = 'checkin-url' == $option;
+
+		// return the list of columns
 		return apply_filters( 'qsot-' . $this->slug . '-report-csv-columns', array(
 			'purchaser' => __( 'Purchaser', 'opentickets-community-edition' ),
 			'order_id' => __( 'Order #', 'opentickets-community-edition' ),
@@ -49,7 +54,7 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 			'note' => __( 'Note', 'opentickets-community-edition' ),
 			'state' => __( 'Status', 'opentickets-community-edition' ),
 			'event' => __( 'Event', 'opentickets-community-edition' ),
-			'ticket_link' => __( 'Ticket Url', 'opentickets-community-edition' ),
+			'ticket_link' => $is_url ? __( 'Ticket Url', 'opentickets-community-edition' ) : __( 'Ticket Code', 'openticket-community-edition' ),
 		) );
 	}
 
@@ -490,6 +495,71 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 		}
 
 		return $final;
+	}
+
+	// take the resulting group of row datas, and create entries in the csv for them
+	protected function _csv_render_rows( $group, $csv_file ) {
+		// if the csv file descriptor has gone away, then bail (could happen because of filters)
+		if ( ! is_array( $csv_file ) || ! isset( $csv_file['fd'] ) || ! is_resource( $csv_file['fd'] ) )
+			return;
+
+		// get a list of the csv fields to add, and their order
+		$columns = $this->csv_report_columns();
+		$cnt = count( $columns );
+
+		// cycle through the roup of rows, and create the csv entries
+		if ( is_array( $group ) ) foreach ( $group as $row ) {
+			// get all the ticket codes for this quantity of line items
+			$codes = apply_filters( 'qsot-get-ticket-qr-data', '', array(
+				'order_item_id' => $row['_raw']->order_item_id,
+				'order_id' => $row['_raw']->order_id,
+				'event_id' => $row['_raw']->event_id,
+				'product' => wc_get_product( $row['_raw']->ticket_type_id ),
+				'qty' => $row['_raw']->quantity,
+			) );
+
+			$data = array();
+			// for each code we found for this line item, we need to make a separate row
+			for ( $i = 0; $i < count( $codes ); $i++ ) {
+				$csv_row = array();
+				// create a list of data to add to the csv, based on the order of the columns we need, and the data for this row's data
+				foreach ( $columns as $col => $__ ) {
+					// update some rows with special values
+					switch ( $col ) {
+						// get the ticket code for this row
+						case 'ticket_link':
+							$csv_row[] = $codes[ $i ];
+						break;
+
+						// since we are breaking these rows down to individual line items, we need to update the line item quantity to 1, since it represents a single ticket
+						case 'quantity':
+							$csv_row[] = 1;
+						break;
+
+						// default the purchaser to a cart id
+						case 'purchaser':
+							$csv_row[] = isset( $row[ $col ] ) && $row[ $col ]
+									? ( '-' == $row[ $col ] ? ' ' . $row[ $col ] : $row[ $col ] ) // fix '-' being translated as a number in OOO
+									: sprintf( __( 'Unpaid Cart: %s', 'opentickets-community-edition' ), $row['_raw']->session_customer_id );
+						break;
+
+						// pass all other data thorugh
+						default:
+							$csv_row[] = isset( $row[ $col ] ) && $row[ $col ] ? ( '-' == $row[ $col ] ? ' ' . $row[ $col ] : $row[ $col ] ) : '';
+						break;
+					}
+				}
+
+				// allow manipulation of this data
+				$data[] = apply_filters( 'qsot-' . $this->slug . '-report-csv-row', $csv_row, $row, $columns );
+			}
+
+			// add each found row to the csv, if there are any to add
+			if ( ! empty( $data ) )
+				foreach ( $data as $csv_row )
+					if ( is_array( $csv_row ) && count( $csv_row ) == $cnt )
+						fputcsv( $csv_file['fd'], $csv_row );
+		}
 	}
 }
 
