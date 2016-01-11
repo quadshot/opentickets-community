@@ -30,17 +30,27 @@ var QS = QS || { Tools:{} };
 	// add table sorter
 	function _add_tablesorter( context ) {
 		var context = context || 'body';
-		console.log( 'sorter list', $( context ),  $( context ).find( '.use-tablesorter' ) );
 		$( context ).find( '.use-tablesorter' ).tablesorter();
 	}
 
 	// handle the form actions
-	$( document ).on( 'submit.qsot-reporting', '.qsot-ajax-form', function( e, extra_data, target ) {
+	$( document ).on( 'submit.qsot-reporting', '.qsot-ajax-form', function( e, extra_data, target, clear_other ) {
 		e.preventDefault();
 		var extra_data = extra_data || {}, target = target || $( '#report-results' ), data = $.extend( true, { action:'qsot-admin-report-ajax', _n:S._n }, $( this ).louSerialize(), extra_data );
-				msg = $( '<h4></h4>' ).appendTo( target.empty() ), span = $( '<span>' + QS._str( 'Loading...', S ) + '</span>' ).appendTo( msg );
-				console.log( 'submit', extra_data, data );
+				msg = $( '<h4></h4>' ), span = $( '<span>' + QS._str( 'Loading...', S ) + '</span>' ).appendTo( msg ),
+				clear_other = clear_other || false;
+
+		// if the new parent does not equal the old parent, then we are just refreshing the form
+		if ( data.parent_event_id != data.last_parent_id && ! target.is( '#report-form' ) ) {
+			clear_other = target;
+			target = $( '#report-form' );
+		}
+
+		// pop relevant loading messages
+		msg.appendTo( target.empty() );
 		_loading( msg, { width:span.outerWidth() } );
+		if ( qt.isO( clear_other ) && clear_other.length )
+			clear_other.empty();
 
 		$.ajax( {
 			url: ajaxurl,
@@ -68,7 +78,7 @@ var QS = QS || { Tools:{} };
 	// when clicking a button that is marked as a button to refresh the form, then submit the form with an extra param saying that it should refresh the form, and make the target the form container
 	$( document ).on( 'click', '.refresh-form', function( e ) {
 		e.preventDefault();
-		$( this ).closest( 'form' ).trigger( 'submit', [ { 'reload-form':1 }, $( '#report-form' ) ] );
+		$( this ).closest( 'form' ).trigger( 'submit', [ { 'reload-form':1 }, $( '#report-form' ), $( '#report-results' ) ] );
 	} );
 
   // on page load, add the select2 ui to any element that requires
