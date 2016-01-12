@@ -1,8 +1,5 @@
 var QS = QS || { Tools:{} };
 ( function( $, qt ) { 
-	// i18n string please
-	QS._str = function( str, S ) { var S = $.extend( true, { str:{} }, S ); return qt.is( S.str[ str ] ) ? S.str[ str ] : str; };
-
   // add select2 to a given element
   QS.add_select2 = function( eles, settings ) { 
 		var S = $.extend( { nonce:'' }, settings );

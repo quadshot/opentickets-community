@@ -60,20 +60,20 @@ class QSOT_Ajax {
 	// handle the basic validation of the ajax requests and basic security
 	public function handle_request() {
 		// figure out if there is an sa in the request. if not, bail
-		if ( ! ( $sa = $_POST['sa'] ) || ! isset( $this->by_sa[ $sa ] ) )
+		if ( ! ( $sa = $_REQUEST['sa'] ) || ! isset( $this->by_sa[ $sa ] ) )
 			//die(var_dump(1, $sa, $this->by_sa));
 			return;
 
 		$action = str_replace( 'wp_ajax_', '', str_replace( 'wp_ajax_nopriv_', '', current_action() ) );
 		// make sure there is an nonce present that matches. the frist level basic security
-		if ( ! isset( $_POST['_n'] ) || ! wp_verify_nonce( $_POST['_n'], 'do-' . $action ) )
-			//die(var_dump(2, $action, wp_create_nonce( 'do-' . $action ), $_POST));
+		if ( ! isset( $_REQUEST['_n'] ) || ! wp_verify_nonce( $_REQUEST['_n'], 'do-' . $action ) )
+			//die(var_dump(2, $action, wp_create_nonce( 'do-' . $action ), $_REQUEST));
 			return;
 
 		$event = false;
 		// if there was an event_id supplied, then load the event now, and it's event area
-		if ( isset( $_POST['event_id'] ) && intval( $_POST['event_id'] ) > 0 ) {
-			$event = apply_filters( 'qsot-get-event', $event, $_POST['event_id'] );
+		if ( isset( $_REQUEST['event_id'] ) && intval( $_REQUEST['event_id'] ) > 0 ) {
+			$event = apply_filters( 'qsot-get-event', $event, $_REQUEST['event_id'] );
 			if ( is_object( $event ) ) {
 				$ea_id = intval( get_post_meta( $event->ID, '_event_area_id', true ) );
 				if ( $ea_id > 0 ) {

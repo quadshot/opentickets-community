@@ -43,6 +43,13 @@ QS.Tools = (function($, q, qt, w, d, undefined) {
 			delete div;
 			return res;
 		};
+
+	// i18n string please
+	QS._str = qt.str = function( str, S ) { var S = $.extend( true, { str:{} }, S ); return qt.is( S.str[ str ] ) ? S.str[ str ] : str; };
+
+	// template fetcher
+	qt.tmpl = function( name, S ) { var S = $.extend( true, { templates:{} }, S ); return qt.is( S.templates[ name ] ) ? S.templates[ name ] : ''; }
+
 	qt.isElement = function(o) { return typeof HTMLElement == 'object' ? o instanceof HTMLElement : o && typeof o == 'object' && o.nodeType === 1 && typeof o.nodeName == 'string'; };
 	qt.toInt = function(val) { var n = parseInt(val); return isNaN(n) ? 0 : n; };
 	qt.toFloat = function(val) { var n = parseFloat(val); return isNaN(n) ? 0 : n; };

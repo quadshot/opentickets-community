@@ -1,115 +1,143 @@
-var QSEventsEventCalendar = (function($, w, d, undefined) {
-	var S = $.extend( { show_count:true }, _qsot_calendar_settings );
+var QS = jQuery.extend( true, { Tools:{} }, QS );
 
-	var _defs = {
-		onSelection: false,
-		calendarContainer: '.event-calendar'
-	};
+// event calendar control js
+QS.EventCalendar = ( function( $, W, D, qt, undefined ) {
+	// get the settings sent to us from PHP
+	var S = $.extend( { show_count:true }, _qsot_calendar_settings ),
+			DEFS = {
+				on_selection: false,
+				calendar_container: '.event-calendar'
+			};
 
-	function calendar(o) {
-		var t = this;
-		t.initialized = false;
-		t.fix = {};
-		t.o = $.extend({}, _defs, o, { author:'loushou', version:'0.1.0-beta' });
+	// return the function that will be stored in QS.EventCalendar
+	return function( options ) {
+		var T = $.extend( this, {
+					initialized: false,
+					fix: {},
+					elements: {},
+					options: $.extend( {}, DEFS, options, { author:'Loushou', version:'0.2.0-beta' } ),
+					url_params: {},
+					goto_form: undefined
+				} );
+
+		// call the plugin init logic
 		_init();
-		t.refresh = refresh;
-		t.setUrlParams = _set_url_params;
-		t._url_params = {};
 
-		var gotoForm;
+		// add the public methods
+		T.refresh = refresh;
+		T.setUrlParams = set_url_params;
 
+		// the initialization function
 		function _init() {
-			if (!t.initialized) {
-				t.initialized = true;
-				t.e = {
-					m: $(t.o.calendarContainer)
-				};
-				if (t.e.m.length) {
-					t.cal = t.e.m.fullCalendar({
-						eventRender: _draw_event,
-						eventSources: [
-							{
-								url: t.o.ajaxurl,
-								data: _current_url_params,
-								xhrFields: { withCredentials: true }
-							}
-						],
-						eventClick: _click,
-						viewDisplay: _header_render_hook,
-						headerRender: _header_render,
-						//eventAfterAllRender: _image_render_fix,
-						loading: _loading
-					});
-					if (typeof t.o.gotoDate != 'undefined' && t.o.gotoDate != null) t.cal.fullCalendar('gotoDate', (new XDate(t.o.gotoDate)).toDate());
-				}
+			// if we alerady initialized, then dont do it again
+			if ( T.initialized )
+				return;
+
+			// setup the base elements
+			T.elements.m = $( T.options.calendar_container );
+
+			// if the primary calendar container was not found, then bail now
+			if ( ! T.elements.m.length )
+				return;
+			T.initialized = true;
+
+			var inside = false;
+			// setup the fullcalendar plugin object
+			T.cal = T.elements.m.fullCalendar( {
+				// draws the event
+				eventRender: render_event,
+				eventAfterAllRender: function() {
+					if ( ! inside ) {
+						inside = true;
+						refresh( true );
+						inside = false;
+					}
+				},
+				// where to get the event data
+				eventSources: [
+					{
+						url: T.options.ajaxurl,
+						data: get_url_params,
+						xhrFields: { withCredneitals:true }
+					}
+				],
+				// when an event is clicked
+				eventClick: on_click,
+				// when rendering the calendar header
+				viewRender: trigger_header_render_event,
+				headerRender: add_goto_form_to_header,
+				// what to do when the events are loading from ajax
+				loading: _loading
+			} );
+
+			// if the default start date was defined, then go to it now
+			T.cal.fullCalendar( 'gotoDate', get_goto_date() )
+		}
+
+		// get the date to goto
+		function get_goto_date() { return moment( qt.isO( T.options.gotoDate ) || qt.isS( T.options.gotoDate ) ? T.options.gotoDate : undefined ); }
+
+		// get the url params currently stored internal to this object
+		function get_url_params() { return T.url_params; }
+		// set the url params stored internal to this object
+		function set_url_params( data ) { T.url_params = $.extend( true, {}, data ); }
+
+		// when rendering the header section of the calendar, we need to add the 'goto' form
+		function add_goto_form_to_header( header_element, view ) { setup_goto_form( this ).insertBefore( header_element ); }
+
+		// when rendering the new view, we need trigger a header render event, used elsewhere, to force refresh the header
+		function trigger_header_render_event( view, view_element ) { view.calendar.trigger( 'headerRender', view.calendar, $( view.element ).closest( '.fc' ).find( '.fc-header' ), view ); }
+
+		// setup and fetch the gotoForm
+		function setup_goto_form( calendar, parent_element ) {
+			// if the gotoform was not setup yet, then do it now
+			if ( ! qt.is( T.goto_form ) ) {
+				T.goto_form = $( '<div class="goto-form"></div>' );
+				var goto_date = get_goto_date(),
+						gy = goto_date.year(),
+						gm = goto_date.month(),
+						year_select = $( '<select rel="year" style="width:auto;"></select>' ).appendTo( T.goto_form ),
+						month_select = $( '<select rel="month" style="width:auto;"></select>' ).appendTo( T.goto_form ),
+						btn_classes = 'fc-button fc-button-today fc-state-default fc-corner-left fc-corner-right',
+						goto_btn = $( '<span rel="goto-btn" unselectable="on" style="-moz-user-select: none;" class="' + btn_classes + '">Goto Month</span>' ).appendTo( T.goto_form ),
+						i;
+
+				// setup the options on both the year and month select boxes
+				for ( i = gy - 10; i <= gy + 15; i++ )
+					$( '<option value="' + i + '"' + ( gy == i ? ' selected="selected"' : '' ) + '>' + i + '</option>' ).appendTo( year_select );
+				for ( i = 0; i < 12; i++ )
+					$( '<option value="' + i + '"' + ( gm == i ? ' selected="selected"' : '' ) + '>' + moment( { y:gy, M:i } ).format( 'MMMM' ) + '</option>' ).appendTo( month_select );
+
+				// setup the events for the goto button
+				goto_btn
+					.on( 'click.goto-form', function( e ) {
+						e.preventDefault();
+						calendar.gotoDate( { y:year_select.val(), M:month_select.val() } );
+					} )
+					.hover(
+						function() { $( this ).addClass( 'fc-state-hover' ); },
+						function() { $( this ).removeClass( 'fc-state-hover' ); }
+					);
 			}
-		};
 
-		function _current_url_params() {
-			return t._url_params;
-		};
+			return T.goto_form;
+		}
 
-		function _set_url_params(data) {
-			t._url_params = data || {};
-		};
+		// when clicking an event, we need to 'select' the event
+		function on_click( evt, e, view ) { if ( qt.isF( T.options.on_selection ) ) T.options.on_selction( e, evt, view ); }
 
-		function _header_render(header, view) {
-			var curDate = new XDate(this.getDate);
-			_setup_goto_form( this ).insertBefore( header );
-		};
-
-		function _header_render_hook(view) {
-			var header = $(view.element).closest('.fc').find('.fc-header');
-			view.calendar.trigger('headerRender', view.calendar, header, view);
-		};
-
-		function _current_date() {
-			if (
-					(typeof t.o.gotoDate == 'object' && t.o.gotoDate != null)
-					|| typeof t.o.gotoDate == 'string'
-			) {
-				return new XDate(t.o.gotoDate);
-			} else {
-				return new XDate();
-			}
-		};
-
-		function _setup_goto_form(calendar, appendTo) {
-			if (typeof gotoForm != 'object') {
-				gotoForm = $('<div class="goto-form"></div>');
-				var curDate = _current_date(), curY = curDate.getFullYear(), curM = curDate.getMonth();
-				var yearSelect = $('<select rel="year" style="width:auto;"></select>').appendTo(gotoForm);
-				for (var i=curDate.getFullYear()-5; i<=curDate.getFullYear()+15; i++) $('<option value="'+i+'"'+(curY == i ? ' selected="selected"' : '')+'>'+i+'</option>').appendTo(yearSelect);
-				var monthSelect = $('<select rel="month" style="width:auto;"></select>').appendTo(gotoForm);
-				for (var i=0; i<calendar.options.monthNames.length; i++) $('<option value="'+i+'"'+(curM == i ? ' selected="selected"' : '')+'>'+calendar.options.monthNames[i]+'</option>').appendTo(monthSelect);
-				var btnClses = 'fc-button fc-button-today fc-state-default fc-corner-left fc-corner-right';
-				var gotoBtn = $('<span rel="goto-btn" unselectable="on" style="-moz-user-select: none;" class="'+btnClses+'">Goto Month</span>').appendTo(gotoForm);
-				gotoBtn.bind('click.goto-form', function(e) {
-					e.preventDefault();
-					var year = yearSelect.val();
-					var month = monthSelect.val();
-					calendar.gotoDate(year, month);
-				}).hover(
-					function() { $(this).addClass('fc-state-hover'); },
-					function() { $(this).removeClass('fc-state-hover'); }
-				);
-			}
-			return gotoForm;
-		};
-
-		function _click(calEvent, e, view) {
-			if (typeof t.o.onSelection == 'function') {
-				t.o.onSelection(e, calEvent);
-			}
-		};
-
-		function _loading(loading, view) {
-			if (loading) {
-				if (typeof t.e.loading != 'object') {
-					t.e.loading = $('<div class="loading-overlay-wrap">').css({position:'absolute'}).appendTo('body');
-					t.e._lol = $('<div class="loading-overlay"></div>').css({position:'absolute', 'top':0, left:0}).appendTo(t.e.loading);
-					t.e._lmsg = $('<div class="loading-message">Loading...</div>').css({position:'absolute'}).appendTo(t.e.loading);
-
+		// as a transition between triggered actions (like a click) and rendered results (like the events being rendered in the calendar frame), we need a visual 'loading' cue. this function handles that
+		function _loading( show, view ) {
+			// if the loading container is not yet created, create it now
+			if ( ! qt.isO( T.elements.loading ) || T.elements.loading.length ) {
+				// setup the parts of the loading overlay
+				T.elements.loading = $( '<div class="loading-overlay-wrap"></div>' ).css( { position:'absolute', top:0, bottom:0, left:0, right:0, width:'auto', height:'auto' } ).appendTo( T.elements.m );
+				T.elements._loading_overlay = $( '<div class="loading-overlay"></div>' ).css( { position:'absolute', top:0, left:0, left:0, right:0, width:'auto', height:'auto' } ).appendTo( T.elements.loading );
+				T.elements._loading_msg = $( '<div class="loading-message">' + qt.str( 'Loading...', S ) + '</div>' ).css( { position:'absolute', top:0, left:0 } ).appendTo( T.elements.loading );
+				
+				// when the window resizes, then the calendar also resizes. when that happens, our loading overlay needs to be resized also, because of how we 
+				// skip this for now
+				/*
 					var check = 0;
 					var curVD = t.e.m.data('fullCalendar').options.viewDisplay;
 					function _on_resize(ch, view) {
@@ -136,17 +164,78 @@ var QSEventsEventCalendar = (function($, w, d, undefined) {
 						_on_resize(check, view);
 					};
 					$(window).bind('resize', function() { check = Math.random()*100000; _on_resize(check); });
-				}
-				t.e.loading.show();
-			} else {
-				t.e.loading.hide();
+				*/
 			}
-		};
 
-		function refresh(fullRender) {
-			if (fullRender) t.e.m.fullCalendar('render');
-			t.e.m.fullCalendar('rerenderEvents');
-		};
+			// either show or hide the loading container
+			T.elements.loading[ show ? 'show' : 'hide' ]();
+		}
+
+		// trigger a refresh, maybe even a full refresh, of the calendar
+		function refresh( full_refresh ) {
+			// if this is a full refresh request, trigger the full render action
+			if ( full_refresh )
+				T.cal.fullCalendar( 'render' );
+
+			// refresh the current events being displayed
+			T.cal.fullCalendar( 'rerenderEvents' );
+		}
+
+		// render a single event
+		function render_event( evt, element, view ) {
+			// get the template to use, based on the current view
+			var tmpl = view.name + '-view',
+					element = $( element ),
+					inner = $( qt.tmpl( tmpl, T.options ) ).appendTo( element.empty() ),
+					section;
+
+			// add some classes for the look and feel, based on the status
+			element.addClass( 'status-' + evt.status );
+			if ( evt.protected )
+				element.addClass( 'is-protected' );
+			if ( evt.passed )
+				element.addClass( 'in-the-past' );
+
+			// if there is an image block in the display, then add the image, and bump it onto the special 'image load trick' list.
+			// we need the ILT crap because once the image loads, we need to rerender the calendar so everything lines up
+			if ( '' != evt.img && ( section = inner.find( '.fc-img' ) ) && section.length ) {
+				var img = $( evt.img ).appendTo( section );
+				qt.ilt( img.attr( 'src' ), refresh, 'event-images' );
+			}
+
+			// if the title area exists, add the title
+			if ( ( section = inner.find( '.fc-title' ) ) && section.length )
+				section.html( evt.title );
+
+			// if the time block exists, add the time. format like: 9p or 5:07a
+			if ( ( section = inner.find( '.fc-time' ) ) && section.length ) {
+				var mo = moment( evt.start ), format = section.data( 'format' ) || 'h:mma', time = { m:mo.get( 'minute' ) };
+				section.html( moment( evt.start ).format( time.m > 0 ? format : format.replace( /:mm/g, '' ) ) );
+			}
+
+			// if the availability is in the output, fill that in
+			if ( qt.is( evt['avail-words'] ) && ( section = inner.find( '.fc-availability' ) ) && section.length ) {
+				section.find( '.words' ).html( evt['avail-words'] );
+				if ( qt.is( evt.available ) )
+					section.find( '.num' ).html( '[' + evt.available + ']' );
+			}
+
+			// if the short description block is present, add that too
+			if ( qt.is( evt['short-description'] ) && ( section = inner.find( '.fc-short-description' ) ) && section.length )
+				section.html( evt['short-description'] );
+		}
+
+		function _setup_goto_form() {}
+	};
+} )( jQuery, window, document, QS.Tools );
+
+// on page load, start rendering the calendar
+jQuery( function( $ ) { var cal = new QS.EventCalendar( _qsot_event_calendar_ui_settings ); } );
+
+/*
+var QSEventsEventCalendar = (function($, w, d, undefined) {
+
+
 		
 		function _image_render_fix(view) {
 			var key = view.name+'-'+view.title;
@@ -218,3 +307,4 @@ var QSEventsEventCalendar = (function($, w, d, undefined) {
 jQuery(function($) {
 	var cal = new QSEventsEventCalendar(_qsot_event_calendar_ui_settings);
 });
+*/

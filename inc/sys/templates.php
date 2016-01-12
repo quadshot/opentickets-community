@@ -238,7 +238,7 @@ class QSOT_Templates {
 	}
 
 	// include a template part
-	public static function maybe_include_template( $template_name, $args, $echo__output=false ) {
+	public static function maybe_include_template( $template_name, $args=array(), $echo__output=false ) {
 		// get the template from the template filename
 		$template = apply_filters( 'qsot-locate-template', false, array( $template_name ), false, false );
 
@@ -253,7 +253,7 @@ class QSOT_Templates {
 	}
 
 	// include a WC template part
-	public static function maybe_include_wc_template( $template_name, $args, $echo__output=false, $template_type ) {
+	public static function maybe_include_wc_template( $template_name, $args=array(), $echo__output=false, $template_type ) {
 		// get the template from the template filename
 		$template = apply_filters( 'qsot-woo-template', false, array( $template_name ), false, false );
 
