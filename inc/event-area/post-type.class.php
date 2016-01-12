@@ -101,6 +101,7 @@ class QSOT_Post_Type_Event_Area {
 		add_action( 'qsot-clear-zone-locks', array( &$this, 'clear_zone_locks' ), 10, 1 );
 
 		// during transitions of order status, we need to perform certain operations. we may need to confirm tickets, or cancel them, depending on the transition
+    add_action( 'woocommerce_checkout_update_order_meta', array( &$this, 'update_order_id' ), 100, 2 );
 		add_action( 'woocommerce_order_status_changed', array( &$this, 'order_status_changed' ), 100, 3 );
 		add_action( 'woocommerce_order_status_changed', array( &$this, 'order_status_changed_pending' ), 101, 3 );
 		add_action( 'woocommerce_order_status_changed', array( &$this, 'order_status_changed_cancel' ), 102, 3 );
@@ -936,6 +937,70 @@ class QSOT_Post_Type_Event_Area {
 
 		$wpdb->query( $q );
 	}
+
+  // when creating a new order, we need to update the related ticket rows with the new order id
+  public function update_order_id( $order_id, $posted ) {
+    // load the order
+    $order = wc_get_order( $order_id );
+
+    // cycle through the order items, and update all the ticket items to confirmed
+    foreach ( $order->get_items() as $item_id => $item ) {
+      // only do this for order items that are tickets
+      if ( ! apply_filters( 'qsot-item-is-ticket', false, $item ) )
+        continue;
+
+      // get the event, area_type and zoner for this item
+      $event = get_post( $item['event_id'] );
+      $event_area = apply_filters( 'qsot-event-area-for-event', false, $event );
+      $area_type = is_object( $event_area ) ? $event_area->area_type : null;
+
+      // if any of the data is missing, the skip this item
+      if ( ! is_object( $event ) || ! is_object( $event_area ) || ! is_object( $area_type ) )
+        continue;
+
+      // have the event_area determine how to update the order item info in the ticket table
+      //$result = $area_type->confirm_tickets( $item, $item_id, $order, $event, $event_area );
+      $result = $this->_update_order_id( $order, $item, $item_id, $event, $event_area, $area_type );
+
+      // notify externals of the change
+      do_action( 'qsot-updated-order-id', $order, $item, $item_id, $result );
+    }
+  }
+
+  // actually perform the update
+  protected function _update_order_id( $order, $item, $item_id, $event, $event_area, $area_type ) {
+    global $wpdb;
+    $cuids = array();
+
+    // figure out the list of session ids to use for the lookup
+    if ( ( $ocuid = get_post_meta( $order->id, '_customer_user', true ) ) )
+      $cuids[] = $ocuid;
+    $cuids[] = QSOT::current_user();
+    $cuids[] = md5( $order->id . ':' . site_url() );
+    $cuids = array_filter( $cuids );
+
+    // get the zoner and stati that are valid
+    $zoner = $event_area->area_type->get_zoner();
+    $stati = $zoner->get_stati();
+
+    global $wpdb;
+    // perform the update
+    return $zoner->update( false, array(
+      'event_id' => $item['event_id'],
+      'quantity' => $item['qty'],
+      'state' => array( $stati['r'][0], $stati['c'][0] ),
+      'order_id' => array( 0, $order->id ),
+      'order_item_id' => array( 0, $item_id ),
+      'ticket_type_id' => $item['product_id'],
+      'where__extra' => array(
+        $wpdb->prepare( 'and ( order_item_id = %d or ( order_item_id = 0 and session_customer_id in(\'' . implode( "','", array_map( 'esc_sql', $cuids ) ) . '\') ) )', $item_id )
+      ),   
+    ), array(
+      'order_id' => $order->id,
+      'order_item_id' => $item_id,
+      'session_customer_id' => current( $cuids ),
+    ) ); 
+  }
 
 	// when the order status changes, change the status of the order tickets
 	public function order_status_changed( $order_id, $old_status, $new_status ) {
