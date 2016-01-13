@@ -193,9 +193,9 @@ class qsot_frontend_calendar {
 		wp_register_script( 'fullcalendar-lang-zh-tw', $base_url . 'assets/js/libs/fullcalendar/lang/zh-tw.js', array( 'fullcalendar' ), '2.6.0' );
 
 		// calendar styles
-		wp_register_style( 'fullcalendar-base', $base_url . 'assets/css/features/calendar/calendar.css', array(), '2.6.0' );
-		wp_register_style( 'fullcalendar-print', $base_url . 'assets/css/features/calendar/calendar.print.css', array( 'fullcalendar-base' ), '2.6.0', 'print' );
-		wp_register_style( 'fullcalendar', false, array( 'fullcalendar-base', 'fullcalendar-print' ), '2.6.0' );
+		wp_register_style( 'fullcalendar-base', $base_url . 'assets/css/features/calendar/fullcalendar.css', array(), '2.6.0' );
+		wp_register_style( 'fullcalendar-print', $base_url . 'assets/css/features/calendar/fullcalendar.print.css', array( 'fullcalendar-base' ), '2.6.0', 'print' );
+		wp_register_style( 'fullcalendar', $base_url . 'assets/css/features/calendar/calendar.css', array( 'fullcalendar-base', 'fullcalendar-print' ), '2.6.0' );
 
 		// register our calendar controller javascript for this plugin
 		wp_register_script( 'qsot-frontend-calendar', $base_url . 'assets/js/features/calendar/calendar.js', array( 'fullcalendar', 'qsot-tools' ), $version );
@@ -336,10 +336,12 @@ class qsot_frontend_calendar {
 		$list = array();
 		// load each of the needed templates
 		$list['month-view'] = QSOT_Templates::maybe_include_template( 'qsot-calendar/views/month.php', array( 'post' => $post ) );
-		$list['week-view'] = QSOT_Templates::maybe_include_template( 'qsot-calendar/views/week.php', array( 'post' => $post ) );
-		$list['day-view'] = QSOT_Templates::maybe_include_template( 'qsot-calendar/views/day.php', array( 'post' => $post ) );
+		$list['basic-week-view'] = QSOT_Templates::maybe_include_template( 'qsot-calendar/views/basic-week.php', array( 'post' => $post ) );
+		$list['basic-day-view'] = QSOT_Templates::maybe_include_template( 'qsot-calendar/views/basic-day.php', array( 'post' => $post ) );
+		$list['basic-view'] = QSOT_Templates::maybe_include_template( 'qsot-calendar/views/basic.php', array( 'post' => $post ) );
 		$list['agenda-week-view'] = QSOT_Templates::maybe_include_template( 'qsot-calendar/views/agenda-week.php', array( 'post' => $post ) );
 		$list['agenda-day-view'] = QSOT_Templates::maybe_include_template( 'qsot-calendar/views/agenda-day.php', array( 'post' => $post ) );
+		$list['agenda-view'] = QSOT_Templates::maybe_include_template( 'qsot-calendar/views/agenda.php', array( 'post' => $post ) );
 
 		// allow addition of more views if needed
 		$list = apply_filters( 'qsot-frontend-calendar-views', $list, $post );

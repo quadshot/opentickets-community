@@ -47,10 +47,10 @@ QS.EventUI = (function($, undefined) {
 		t.elements.form.start_date_display.bind('change', function() {
 			var val = t.elements.form.start_date.val(),
 					disp_val = t.elements.form.start_date_display.val(),
-					cur = new XDate(val),
-					end = new XDate(t.elements.form.end_date.val()),
-					starton = new XDate(t.elements.form.starts_on.val()),
-					endon = new XDate(t.elements.form.ends_on.val());
+					cur = new moment(val),
+					end = new moment(t.elements.form.end_date.val()),
+					starton = new moment(t.elements.form.starts_on.val()),
+					endon = new moment(t.elements.form.ends_on.val());
 
 			if (cur.diffSeconds(end) < 0) {
 				t.elements.form.end_date_display.val( disp_val )
@@ -88,7 +88,7 @@ QS.EventUI = (function($, undefined) {
 		t.form.processAddDateTimes = function(data) {
 			if (typeof t.addEvents != 'function') return;
 
-			var current_dt = new XDate();
+			var current_dt = new moment();
 			var data = $.extend({
 				'start-time': '00:00:00',
 				'start-date': current_dt.toString( frmt( 'MM-dd-yyyy' ) ),
@@ -97,8 +97,8 @@ QS.EventUI = (function($, undefined) {
 			}, data);
 
 			var base = {
-				start: new XDate(data['start-date']+' '+data['start-time']).toDate(),
-				end: new XDate(data['end-date']+' '+data['end-time']).toDate(),
+				start: new moment(data['start-date']+' '+data['start-time']).toDate(),
+				end: new moment(data['end-date']+' '+data['end-time']).toDate(),
 				title: data['title'],
 				allDay: false,
 				editable: true,
@@ -113,8 +113,8 @@ QS.EventUI = (function($, undefined) {
 			} else {
 				events.push($.extend(true, {}, base, {
 					single: 'yes',
-					start: (new XDate(data['start-date']+' '+data['start-time'])).toDate(),
-					end: (new XDate(data['end-date']+' '+data['end-time'])).toDate()
+					start: (moment(data['start-date']+' '+data['start-time'])).toDate(),
+					end: (moment(data['end-date']+' '+data['end-time'])).toDate()
 				}));
 			}
 
@@ -128,17 +128,17 @@ QS.EventUI = (function($, undefined) {
 		};
 
 		function evenDays(from, to) {
-			var f = new XDate(from.getFullYear(), from.getMonth(), from.getDate());
-			var o = new XDate(to.getFullYear(), to.getMonth(), to.getDate());
-			return f.diffDays(o);
+			var f = moment(from.getFullYear(), from.getMonth(), from.getDate());
+			var o = moment(to.getFullYear(), to.getMonth(), to.getDate());
+			return f.diff(o, 'days');
 		};
 
 		// calculate all the repeats, for a weekly repeat
 		t.form.repeatWeekly = function(events, base, data) {
-			var d = XDate( data['repeat-starts'] ),
-					st = new XDate( base['start'] ),
-					en = new XDate( base['end'] ),
-					st_en_diff = st.diffSeconds( en ),
+			var d = moment( data['repeat-starts'] ),
+					st = moment( base['start'] ),
+					en = moment( base['end'] ),
+					st_en_diff = st.diff( en, 'seconds' ),
 					cnt = 0,
 					inRange = function() { return false; };
 
@@ -148,8 +148,8 @@ QS.EventUI = (function($, undefined) {
 			switch ( data['repeat-ends-type'] ) {
 				case 'on':
 					inRange = ( function() {
-						var e = XDate( data['repeat-ends-on'] );
-						return function() { return d.getTime() <= e.getTime(); };
+						var e = moment( data['repeat-ends-on'] );
+						return function() { return d.unix() <= e.unix(); };
 					} )(); break;
 				case 'after':
 					inRange = ( function() {
@@ -167,11 +167,11 @@ QS.EventUI = (function($, undefined) {
 				break;
 			}
 
-			function incWeeks() { d.addDays( -d.getDay() ).addWeeks( data['repeat-every'] ); }
+			function incWeeks() { d.add( -d.day(), 'd' ).add( data['repeat-every'], 'w' ); }
 			function nextDay( day ) {
-				var c = d.getDay();
+				var c = d.day();
 				if ( day < c ) return -1;
-				d.addDays( day - c );
+				d.add( day - c, 'd' );
 				return 1;
 			}
 
@@ -184,8 +184,8 @@ QS.EventUI = (function($, undefined) {
 					if ( ! inRange() )
 						break;
 					var args = $.extend( true, {}, base );
-					args['start'] = st.addDays( evenDays( st, d ) ).toDate();
-					args['end'] = st.clone().addSeconds( st_en_diff ).toDate();
+					args['start'] = st.add( evenDays( st, d ), 'd' ).toDate();
+					args['end'] = st.clone().add( st_en_diff, 's' ).toDate();
 					events.push( args );
 					cnt++;
 				}
@@ -342,7 +342,7 @@ QS.EventUI = (function($, undefined) {
 		};
 
 		t.event_list.add_item = function(ev) {
-			var d = new XDate(ev.start);
+			var d = moment(ev.start);
 			var extra = [];
 			if (typeof ev.edit_link == 'string' && ev.edit_link.length) 
 				extra.push('<div class="edit action"><a href="'+ev.edit_link+'" target="_blank" rel="edit" title="Edit Event">E</a></div>');
@@ -350,7 +350,7 @@ QS.EventUI = (function($, undefined) {
 				extra.push('<div class="view action"><a href="'+ev.view_link+'" target="_blank" rel="edit" title="View Event">V</a></div>');
 			var ele = $('<div class="event-date" rel="item">'
 					+'<div class="event-title">'
-						+'<span>'+d.toString( frmt( 'hh:mmtt' ) )+' on '+d.toString( frmt( 'ddd MM-dd-yyyy' ) )+' ('+ev.title+')</span>'
+						+'<span>'+d.format( frmt( 'hh:mma' ) )+' on '+d.format( frmt( 'ddd MM-DD-YYYY' ) )+' ('+ev.title+')</span>'
 						+'<div class="actions">'
 							+extra.join('')
 							+'<div class="remove action" rel="remove">X</div>'
@@ -381,7 +381,7 @@ QS.EventUI = (function($, undefined) {
 	}
 
 	function EventUI(e, o) {
-		this.first = new XDate();
+		this.first = moment();
 		this.setOptions(o);
 		this.loadSettings();
 		this.elements = {
@@ -504,11 +504,11 @@ QS.EventUI = (function($, undefined) {
 				}, obj);
 			} else {
 				var extra = extra || {allDay:false};
-				if (!(start instanceof Date || start instanceof XDate)) return;
+				if (!(start instanceof Date || start._isAMomentObject)) return;
 				if (typeof title != 'string') return;
 				obj = $.extend({}, {
 					title:title,
-					start:start instanceof XDate ? start.toDate() : start
+					start:start._isAMomentObject ? start.toDate() : start
 				}, extra);
 				args = $.extend({
 					status:'pending',
@@ -596,7 +596,7 @@ QS.EventUI = (function($, undefined) {
 				if (qt.isO(_qsot_settings.templates)) {
 					this.templates = _qsot_settings.templates;
 				}
-				this.first = typeof _qsot_settings.first == 'string' && _qsot_settings.first != '' ? new XDate(_qsot_settings.first) : new XDate();
+				this.first = typeof _qsot_settings.first == 'string' && _qsot_settings.first != '' ? moment(_qsot_settings.first) : moment();
 			}
 			this.callback('load_settings');
 		},
@@ -608,8 +608,8 @@ QS.EventUI = (function($, undefined) {
 			if (this.elements.event_list.length) {
 				this.elements.event_list.empty();
 				events.sort(function(a, b) {
-					var at = a.start.getTime();
-					var bt = b.start.getTime();
+					var at = moment( a.start ).unix();
+					var bt = moment( b.start ).unix();
 					return at < bt ? -1 : ( at == bt ? 0 : 1 );
 				});
 				for (i in events) {
@@ -673,8 +673,8 @@ QS.EventUI = (function($, undefined) {
 			for (var i = 0; i < events.length; i++) {
 				var ev = {
 					_id: events[i]._id,
-					start: (new XDate(events[i].start)).toString('yyyy-MM-dd HH:mm:ss'),
-					end: events[i].end instanceof Date || events[i].end instanceof XDate ? (new XDate(events[i].end)).toString('yyyy-MM-dd HH:mm:ss') : events[i].end,
+					start: (moment(events[i].start)).format('YYYY-MM-DD HH:mm:ss'),
+					end: events[i].end instanceof Date || events[i].end._isAMomentObject ? (moment(events[i].end)).format('YYYY-MM-DD HH:mm:ss') : events[i].end,
 					title: events[i].title,
 					post_id: events[i].post_id,
 					status: events[i].status,

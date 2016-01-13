@@ -4,10 +4,14 @@ var QS = jQuery.extend( true, { Tools:{} }, QS );
 QS.EventCalendar = ( function( $, W, D, qt, undefined ) {
 	// get the settings sent to us from PHP
 	var S = $.extend( { show_count:true }, _qsot_calendar_settings ),
+			H = 'hasOwnProperty',
 			DEFS = {
 				on_selection: false,
 				calendar_container: '.event-calendar'
 			};
+
+	// js equivalent to php ucwords func
+	function ucwords( str ) { return ( str + '' ).replace( /^([a-z\u00E0-\u00FC])|\s+([a-z\u00E0-\u00FC])/g, function( $1 ) { return $1.toUpperCase(); } ); }
 
 	// return the function that will be stored in QS.EventCalendar
 	return function( options ) {
@@ -18,7 +22,8 @@ QS.EventCalendar = ( function( $, W, D, qt, undefined ) {
 					options: $.extend( {}, DEFS, options, { author:'Loushou', version:'0.2.0-beta' } ),
 					url_params: {},
 					goto_form: undefined
-				} );
+				} ),
+				imgs = {};
 
 		// call the plugin init logic
 		_init();
@@ -47,11 +52,35 @@ QS.EventCalendar = ( function( $, W, D, qt, undefined ) {
 				// draws the event
 				eventRender: render_event,
 				eventAfterAllRender: function() {
+					// wrapped in if ot prevent recursion
 					if ( ! inside ) {
 						inside = true;
+
+						// run a check until all images have been loaded, then rerender
+						var interval = setInterval( function() {
+							var one_false = false, i;
+							// cycle through the images, and if any are false, then we have to bail
+							for ( i in imgs ) if ( false === imgs[ i ] ) {
+								one_false = true;
+								break;
+							}
+
+							// if any have not been loaded, the bail
+							if ( one_false )
+								return;
+
+							// otherwise, re-render
+							clearInterval( interval );
+							refresh();
+						}, 50 );
+
 						refresh( true );
+
 						inside = false;
 					}
+
+					// prevent the 'scrolling' crap in the day grid
+					T.cal.find( '.fc-scroller' ).css( { height:'auto', overflow:'auto' } );
 				},
 				// where to get the event data
 				eventSources: [
@@ -65,10 +94,13 @@ QS.EventCalendar = ( function( $, W, D, qt, undefined ) {
 				eventClick: on_click,
 				// when rendering the calendar header
 				viewRender: trigger_header_render_event,
-				headerRender: add_goto_form_to_header,
+				headerRender: add_header_elements,
+				// change up the header format
+				header: { left:'', center:'title', right:'today prev,next' },
 				// what to do when the events are loading from ajax
 				loading: _loading
 			} );
+			T.fcal = T.cal.data( 'fullCalendar' );
 
 			// if the default start date was defined, then go to it now
 			T.cal.fullCalendar( 'gotoDate', get_goto_date() )
@@ -83,13 +115,43 @@ QS.EventCalendar = ( function( $, W, D, qt, undefined ) {
 		function set_url_params( data ) { T.url_params = $.extend( true, {}, data ); }
 
 		// when rendering the header section of the calendar, we need to add the 'goto' form
-		function add_goto_form_to_header( header_element, view ) { setup_goto_form( this ).insertBefore( header_element ); }
+		function add_header_elements( header_element, view ) {
+			// add the goto form, which allows choosing a month and year, and navigating to it
+			header_element.siblings( '.goto-form' ).remove();
+			setup_goto_form( this ).insertBefore( header_element );
+
+			// add the view selector, which allows us to switch views on the fly
+			var left = header_element.find( '.fc-left' );
+			setup_view_selector( this ).appendTo( left.empty() );
+		}
 
 		// when rendering the new view, we need trigger a header render event, used elsewhere, to force refresh the header
-		function trigger_header_render_event( view, view_element ) { view.calendar.trigger( 'headerRender', view.calendar, $( view.element ).closest( '.fc' ).find( '.fc-header' ), view ); }
+		function trigger_header_render_event( view, view_element ) { view.calendar.trigger( 'headerRender', view.calendar, $( view.el ).closest( '.fc' ).find( '.fc-toolbar' ), view ); }
+
+		// setup the form that allows us to switch views easily
+		function setup_view_selector( calendar ) {
+			// if the selector has not yet been created, then create it
+			if ( ! qt.is( T.view_selector ) ) {
+				var i;
+				T.view_selector = $( '<select rel="view" style="width:auto;"></style>' );
+
+				// create an entry for each view that is available
+				for ( i in $.fullCalendar.views ) if ( $.fullCalendar.views[ H ]( i ) ) {
+					var name = ucwords( i.replace( /([A-Z])/, function( match ) { return ' ' + match.toLowerCase(); } ) );
+					$( '<option>' + name + '</option>' ).attr( 'value', i ).appendTo( T.view_selector );
+				}
+
+				// setup the switcher event
+				T.view_selector.off( 'change.qscal' ).on( 'change.qscal', function( e ) { T.fcal.changeView( $( this ).val() ); } );
+			}
+
+			var res = T.view_selector.clone( true );
+			res.find( 'option[value="' + calendar.view.name + '"]' ).prop( 'selected', 'selected' );
+			return res;
+		}
 
 		// setup and fetch the gotoForm
-		function setup_goto_form( calendar, parent_element ) {
+		function setup_goto_form( calendar ) {
 			// if the gotoform was not setup yet, then do it now
 			if ( ! qt.is( T.goto_form ) ) {
 				T.goto_form = $( '<div class="goto-form"></div>' );
@@ -120,7 +182,7 @@ QS.EventCalendar = ( function( $, W, D, qt, undefined ) {
 					);
 			}
 
-			return T.goto_form;
+			return T.goto_form.clone( true );
 		}
 
 		// when clicking an event, we need to 'select' the event
@@ -131,7 +193,7 @@ QS.EventCalendar = ( function( $, W, D, qt, undefined ) {
 			// if the loading container is not yet created, create it now
 			if ( ! qt.isO( T.elements.loading ) || T.elements.loading.length ) {
 				// setup the parts of the loading overlay
-				T.elements.loading = $( '<div class="loading-overlay-wrap"></div>' ).css( { position:'absolute', top:0, bottom:0, left:0, right:0, width:'auto', height:'auto' } ).appendTo( T.elements.m );
+				T.elements.loading = $( '<div class="loading-overlay-wrap"></div>' ).css( { position:'absolute', top:0, bottom:0, left:0, right:0, width:'auto', height:'auto' } ).appendTo( T.cal );
 				T.elements._loading_overlay = $( '<div class="loading-overlay"></div>' ).css( { position:'absolute', top:0, left:0, left:0, right:0, width:'auto', height:'auto' } ).appendTo( T.elements.loading );
 				T.elements._loading_msg = $( '<div class="loading-message">' + qt.str( 'Loading...', S ) + '</div>' ).css( { position:'absolute', top:0, left:0 } ).appendTo( T.elements.loading );
 				
@@ -181,10 +243,24 @@ QS.EventCalendar = ( function( $, W, D, qt, undefined ) {
 			T.cal.fullCalendar( 'rerenderEvents' );
 		}
 
+		// get the template name from the view name
+		function _template_name( view_name ) {
+			return view_name.replace( /([A-Z])/, function( match ) { return '-' + match.toLowerCase(); } ) + '-view';
+		}
+
+		// add a load check for images. once all rendered images are loaded, we will rerender
+		function _add_image_loaded_check( src ) {
+			var image = new Image();
+			image.onload = function() {
+				imgs[ src ] = true;
+			};
+			image.src = src;
+		}
+
 		// render a single event
 		function render_event( evt, element, view ) {
 			// get the template to use, based on the current view
-			var tmpl = view.name + '-view',
+			var tmpl = _template_name( view.name ),
 					element = $( element ),
 					inner = $( qt.tmpl( tmpl, T.options ) ).appendTo( element.empty() ),
 					section;
@@ -199,8 +275,14 @@ QS.EventCalendar = ( function( $, W, D, qt, undefined ) {
 			// if there is an image block in the display, then add the image, and bump it onto the special 'image load trick' list.
 			// we need the ILT crap because once the image loads, we need to rerender the calendar so everything lines up
 			if ( '' != evt.img && ( section = inner.find( '.fc-img' ) ) && section.length ) {
-				var img = $( evt.img ).appendTo( section );
-				qt.ilt( img.attr( 'src' ), refresh, 'event-images' );
+				var img = $( evt.img ).appendTo( section ),
+						src = img.attr( 'src' );
+
+				// if the browser did not previously load the image, then make it do so now
+				if ( ! imgs[ src ] ) {
+					imgs[ src ] = false;
+					_add_image_loaded_check( src );
+				}
 			}
 
 			// if the title area exists, add the title

@@ -11,6 +11,4 @@
 			<span class="num"></span>
 		</div>
 	</div>
-	<div class="fc-img"></div>
-	<div class="fc-short-description"></div>
 </div>

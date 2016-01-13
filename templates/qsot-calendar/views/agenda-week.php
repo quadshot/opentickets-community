@@ -6,10 +6,8 @@
 	</div>
 	<div class="meta">
 		<div class="fc-availability">
-			<span class="lbl"><?php _e( 'Availability:', 'opentickets-community-edition' )?></span>
 			<span class="words"></span>
 			<span class="num"></span>
 		</div>
 	</div>
-	<div class="fc-img"></div>
 </div>
