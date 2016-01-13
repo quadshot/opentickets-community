@@ -171,6 +171,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.0.7 - Jan/13/2016 =
+* [new] now compatible with qTranslate X !!!!
+
 = 2.0.6 - Jan/13/2016 =
 * [new] added ability to make the QR codes either URLs or just Codes
 * [new] added QR code to attendee report, so that they can be exported and then imported to third part scanner software
