@@ -26,15 +26,14 @@ class QSOT {
 		self::$plugin_dir = self::$o->core_dir;
 		self::$plugin_url = self::$o->core_url;
 		self::$product_url = self::$o->product_url;
-		
-		load_plugin_textdomain( 'opentickets-community-edition', false, dirname( plugin_basename( __FILE__ ) ) . '/langs/' );
 
 		//add_action( 'plugins_loaded', array( __CLASS__, 'admin_deactivate' ), 0 );
 
 		if (!self::_memory_check()) return;
 
-		// locale fix
-		add_action('plugins_loaded', array(__CLASS__, 'locale'), 4);
+		// load the text domain after all plugins have loaded
+		add_action( 'plugins_loaded', array( __CLASS__, 'load_textdomain' ), 4 );
+
 		// inject our own autoloader before all others in case we need to overtake some woocommerce autoloaded classes down the line. this may not work with 100% of all classes
 		// because we dont actually control the plugin load order, but it should suffice for what we may use it for. if it does not suffice at any time, then we will rethink this
 		add_action('plugins_loaded', array(__CLASS__, 'prepend_overtake_autoloader'), 4);
@@ -447,9 +446,9 @@ class QSOT {
 		return $text;
 	}
 
-	public static function locale() {
-		//$locale = apply_filters('plugin_locale', get_locale(), 'woocommerce');
-		//setlocale(LC_MONETARY, $locale);
+	public static function load_textdomain() {
+		// load the translation after all plugins have been loaded. fixes the multilingual issues
+		load_plugin_textdomain( 'opentickets-community-edition', false, dirname( plugin_basename( __FILE__ ) ) . '/langs/' );
 	}
 
 	// load all *.class.php files in the inc/ dir, and any other includes dirs that are specified by external plugins (which may or may not be useful, since external plugins
