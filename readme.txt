@@ -171,6 +171,12 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.0.6 - Jan/13/2016 =
+* [new] added ability to make the QR codes either URLs or just Codes
+* [new] added QR code to attendee report, so that they can be exported and then imported to third part scanner software
+* [fix] eliminated the 'double form' issue when running reports
+* [fix] repaired ticket reservation issue when using redirect payment types
+
 = 2.0.5 - Jan/06/2016 =
 * [new] attendee report shows order status on non-completed orders now, instead of just 'paid'
 * [tweak] update to prevent chrome date picker from clashing with jquery datepicker
