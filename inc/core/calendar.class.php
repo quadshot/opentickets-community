@@ -205,9 +205,26 @@ class qsot_frontend_calendar {
 		wp_register_script( 'qsot-admin-calendar', $base_url . 'assets/js/features/calendar/admin.js', array( 'jquery-ui-datepicker', 'qsot-frontend-calendar' ), $version );
 	}
 
+	// load the appropriate language file for the calendar
+	public static function load_calendar_language() {
+		// find the current locale being used
+		$locale = str_replace( '_', '-', strtolower( get_locale() ) );
+		$locale_parts = explode( '-', $locale );
+
+		global $wp_scripts;
+		if ( ! is_object( $wp_scripts ) )
+			return;
+		// see if we have a registered script for this language
+		if ( isset( $wp_scripts->registered[ 'fullcalendar-lang-' . $locale ] ) )
+			wp_enqueue_script( 'fullcalendar-lang-' . $locale );
+		else if ( isset( $wp_scripts->registered[ 'fullcalendar-lang-' . $locale_parts[0] ] ) )
+			wp_enqueue_script( 'fullcalendar-lang-' . $locale_parts[0] );
+	}
+
 	// load the admin js and css
 	public static function load_admin_assets( $exists, $post_id ) {
 		wp_enqueue_script( 'qsot-admin-calendar' );
+		self::load_calendar_language();
 		wp_enqueue_style( 'qsot-admin-styles' );
 		do_action( 'qsot-calendar-settings' );
 	}
@@ -259,6 +276,7 @@ class qsot_frontend_calendar {
 		if ( $needs_calendar ) {
 			// queue the basics
 			wp_enqueue_script( 'qsot-frontend-calendar' );
+			self::load_calendar_language();
 			wp_enqueue_style( 'qsot-frontend-calendar-style' );
 			do_action( 'qsot-calendar-settings' );
 
