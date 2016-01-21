@@ -96,6 +96,17 @@ class QSOT_system_status_page extends QSOT_base_page {
 			)
 		);
 		$this->register_tool(
+			'UpEASts',
+			array(
+				'name' => __( 'Update all event area stati', 'opentickets-community-edition' ),
+				'description' => __( 'When upgrading from OTCE 1.x to 2.x, some of the event areas may not have gotten their status updated, depending on how the upgrade took place. This tool repairs that.', 'opentickets-community-edition' ),
+				'function' => array( &$this, 'tool_UpEASts' ),
+				'messages' => array(
+					'updated-event-areas' => $this->_updatedw( __( 'All event area stati have been updated.', 'opentickets-community-edition' ) ),
+				),
+			)
+		);
+		$this->register_tool(
 			'FdbUg',
 			array(
 				'name' => __( 'Force the DB tables to re-initialize', 'opentickets-community-edition' ),
@@ -887,6 +898,27 @@ class QSOT_system_status_page extends QSOT_base_page {
 			else $result[1]['performed'] = 'failed-resync' . $state;
 			$result[0] = true;
 		}
+		return $result;
+	}
+
+	// repair all event area stati
+	public function tool_UpEASts( $result, $args ) {
+		// check that the repair can run
+		if ( ! $this->_verify_action_nonce( 'UpEASts' ) )
+			return $result;
+
+		global $wpdb;
+		// otherwise, perform the repair
+		$q = 'select c.id, p.post_status as parent_status from '. $wpdb->posts . ' c join ' . $wpdb->posts . ' p on p.id = c.post_parent where c.post_type = "qsot-event-area"';
+		$raw = $wpdb->get_results( $q );
+
+		// perform the updates
+		foreach ( $raw as $row )
+			$wpdb->update( $wpdb->posts, array( 'post_status' => $row->parent_status ), array( 'id' => $row->id ) );
+
+		$result[0] = true;
+		$result[1]['performed'] = 'updated-event-areas';
+
 		return $result;
 	}
 
