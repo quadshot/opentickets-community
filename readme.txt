@@ -171,6 +171,13 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.1.0 - Jan/21/2016 =
+* [new] calendar is now i18n compatible
+* [new] calendar now supports mutliple views
+* [new] all calendar event blocks are theme overrideable
+* [new] complete revamp of all calendar logic
+* [new] new look and feel of calendar
+
 = 2.0.5 - Jan/06/2016 =
 * [new] attendee report shows order status on non-completed orders now, instead of just 'paid'
 * [tweak] update to prevent chrome date picker from clashing with jquery datepicker
