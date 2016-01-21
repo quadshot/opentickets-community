@@ -18,18 +18,23 @@ body .fc-bgevent { background:@calendar_item_bg; opacity:.3; filter:alpha(opacit
 body .fc-event {
 	position:relative; /* for resize handle and other inner positioning */
 	display:block; /* make the <a> tag block */
-	font-size:.85em; line-height:1.3; border-radius:3px;
-	border:1px solid @calendar_item_border; /* default BORDER color */
+	font-size:.85em; line-height:1.3; border-radius:0;
+	border:2px solid @calendar_item_border; /* default BORDER color */
 	background-color:@calendar_item_bg; /* default BACKGROUND color */
 	font-weight:normal; /* undo jqui's ui-widget-header bold */
 }
 
 /* overpower some of bootstrap's and jqui's styles on <a> tags */
 body .fc-event-container .fc-event,
-body .fc-event-container .fc-event:hover,
 body .ui-widget .fc-event {
 	color:@calendar_item_text; /* default TEXT color */
 	text-decoration:none; /* if <a> has an href */
+}
+
+body .fc-event-container .fc-event:hover {
+	border-color: @calendar_item_border_hover; /* default BORDER color */
+	background-color: @calendar_item_bg_hover; /* default BACKGROUND color */
+	color: @calendar_item_text_hover; /* default TEXT color */
 }
 
 /* ADDED:status styling */
@@ -37,17 +42,20 @@ body .fc-event-container .fc-event.status-hidden { border:1px dashed rgb(33, 78,
 body .fc-event-container .fc-event.status-private { border:1px dashed rgb(255, 255, 255); font-style:italic; color:#c0c0c0; }
 body .fc-event .event-item { padding:0.2em 0 0.2em 0.2em; }
 
-body .fc-event-container .fc-event:hover { color:@calendar_item_text_hover; }
-
 body .fc-event.in-the-past,
 body .fc-event.in-the-past:hover,
 body .ui-widget .fc-event.in-the-past {
-	color:@past_calendar_item_text; /* default TEXT color */
-	background-color:@past_calendar_item_bg; border-color:@past_calendar_item_border;
+	color: @past_calendar_item_text; /* default TEXT color */
+	background-color: @past_calendar_item_bg;
+	border-color: @past_calendar_item_border;
 	text-decoration:none; /* if <a> has an href */
 }
 
-body .fc-event.in-the-past:hover { color:@past_calendar_item_text_hover; }
+body .fc-event.in-the-past:hover {
+	border-color: @past_calendar_item_border_hover; /* default BORDER color */
+	background-color: @past_calendar_item_bg_hover; /* default BACKGROUND color */
+	color: @past_calendar_item_text_hover; /* default TEXT color */
+}
 
 body .fc-event[href],
 body .fc-event.fc-draggable { cursor:pointer; /* give events with links and draggable events a hand mouse pointer */ }
@@ -64,6 +72,47 @@ body .fc-event.in-the-past .fc-bg { z-index:1; background:@past_calendar_item_bg
 
 /* stylize the event information elements */
 body .fc-event .fc-time { font-weight:700; }
-body .fc-event .fc-title { text-decoration:underline; font-weight:300; }
-body .fc-event .fc-availability { font-style:italic; font-weight:500; font-size:0.8em; }
+body .fc-event .fc-title { text-decoration:underline; font-weight:500; }
+body .fc-event .fc-availability { font-style:italic; font-weight:300; font-size:0.8em; }
 body .fc-event .fc-img img { max-width:100%; height:auto; width:auto; }
+
+/* calendar general */
+body .fc .fc-view table { border:0 none; }
+body .fc .fc-head-container { border:0 none; }
+body .fc .fc-head table,
+body .fc .fc-head td,
+body .fc .fc-head th { border:0 none; }
+body .fc .fc-body { border:1px solid #ddd; border-left:0 none; border-top:0 none; }
+body .fc .fc-body > tr > .fc-widget-content { border:0 none; }
+body .fc .fc-axis.fc-widget-header,
+body .fc .fc-day-header { border-color:#555; background-color:#555; color:#f8f8f8; text-align:center; font-weight:700; text-transform:uppercase; font-size:13px; line-height:1.9em; }
+body .fc .fc-view-container .fc-day-number { border-color:#aaa; background-color:#aaa; color:#fff; font-size:11px; font-weight:700; line-height:1.6; padding:0 4px; text-align:left; }
+body .fc .fc-view-container .fc-day-number.fc-today { background-color:#577483; }
+body .fc .fc-today { background-color:#E3EDF9; }
+body .fc .fc-content-skeleton td { border-color:#aaa; }
+
+body .fc .goto-form { text-align:center; padding:0 0 8px; }
+body .fc .goto-form select { text-align:left; }
+
+body .fc-unthemed .fc-divider,
+body .fc-unthemed .fc-popover,
+body .fc-unthemed .fc-row,
+body .fc-unthemed tbody,
+body .fc-unthemed td,
+body .fc-unthemed th,
+body .fc-unthemed thead { border-color:#ccc; }
+
+body .fc .fc-day-grid-event { margin:0 3px 3px; }
+body .fc tr:first-child > td > .fc-day-grid-event { margin-top:3px; }
+body .fc .fc-row { padding-bottom:7px; }
+body .fc .fc-head .fc-row { padding-bottom:0; }
+body .fc td,
+body .fc th { border-top-width:0; }
+body .fc .fc-slats td,
+body .fc .fc-slats th { border-top-width:1px; }
+
+body select.fc-state-default { box-sizing:border-box; cursor:pointer; font-size:1em; height:2.1em; margin:0; padding:0 0.6em; white-space:nowrap; width:auto; }
+
+body .fc .loading-overlay-wrap { position:absolute; top:0; bottom:0; left:0; right:0; width:auto; height:auto; z-index:8999; }
+body .fc .loading-overlay { position:absolute; top:-1em; bottom:-1em; left:-1em; right:-1em; width:auto; height:auto; background-color:rgba( 0, 0, 0, 0.5 ); }
+body .fc .loading-message { position:absolute; top:50%; left:50%; color:#fff; font-weight:700; font-style:italic; font-size:32px; transform:translate( -50%, -50% ); }

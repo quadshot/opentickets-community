@@ -209,6 +209,7 @@ class qsot_frontend_calendar {
 	public static function load_admin_assets( $exists, $post_id ) {
 		wp_enqueue_script( 'qsot-admin-calendar' );
 		wp_enqueue_style( 'qsot-admin-styles' );
+		do_action( 'qsot-calendar-settings' );
 	}
 
 	// add a sidebar that lives on the calendar page template that we added for the calendar
@@ -259,13 +260,7 @@ class qsot_frontend_calendar {
 			// queue the basics
 			wp_enqueue_script( 'qsot-frontend-calendar' );
 			wp_enqueue_style( 'qsot-frontend-calendar-style' );
-			wp_localize_script( 'qsot-frontend-calendar', '_qsot_calendar_settings', array(
-				// needs redoing, to include templates and stuff... but sigh, as a patch
-				'show_count' => 'yes' === apply_filters( 'qsot-get-option-value', 'yes', 'qsot-show-available-quantity' ),
-				'str' => array(
-					'Loading...' => __( 'Loading...', 'opentickets-community-edition' ),
-				),
-			) );
+			do_action( 'qsot-calendar-settings' );
 
 			// get the site language, so we can load the appropriate calendar language template
 			$language = strtolower( get_bloginfo( 'language' ) );
@@ -310,6 +305,16 @@ class qsot_frontend_calendar {
 
 	// add the js settings that are passed to our custom js, which tells the js the settings for the calendar
 	public static function calendar_settings( $post, $needs_calendar=true, $shortcode='' ) {
+		// generice settings for the calendar
+		wp_localize_script( 'qsot-frontend-calendar', '_qsot_calendar_settings', array(
+			// needs redoing, to include templates and stuff... but sigh, as a patch
+			'show_count' => 'yes' === apply_filters( 'qsot-get-option-value', 'yes', 'qsot-show-available-quantity' ),
+			'str' => array(
+				'Loading...' => __( 'Loading...', 'opentickets-community-edition' ),
+				'Goto Month' => __( 'Goto Month', 'opentickets-community-edition' ),
+			),
+		) );
+
 		// add the data that is passed to our calendar js
 		wp_localize_script(
 			'qsot-frontend-calendar',

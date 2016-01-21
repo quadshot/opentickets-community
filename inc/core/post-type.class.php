@@ -1041,6 +1041,9 @@ class qsot_post_type {
 				'ddd MM-dd-yyyy' => __( 'ddd MM-dd-yyyy', 'opentickets-community-edition' ),
 				'hh:mmtt' => __( 'hh:mmtt', 'opentickets-community-edition' ),
 			),
+			'str' => array(
+				'New Event Date' => __( 'New Event Date', 'opentickets-community-edition' ),
+			),
 		) );
 
 		// use the loacalize script trick to send misc settings to the event ui script, based on the current post, and allow sub/external plugins to modify this

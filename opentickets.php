@@ -607,15 +607,19 @@ class QSOT {
 			'remove_text' => '#ffffff',
 
 			// calendar defaults
-			'calendar_item_bg' => '#577483',
-			'calendar_item_border' => '#3a87ad',
-			'calendar_item_text' => '#e8e8e8',
+			'calendar_item_bg' => '#f0f0f0',
+			'calendar_item_border' => '#577483',
+			'calendar_item_text' => '#577483',
+			'calendar_item_bg_hover' => '#577483',
+			'calendar_item_border_hover' => '#577483',
 			'calendar_item_text_hover' => '#ffffff',
 
-			'past_calendar_item_bg' => '#cecece',
-			'past_calendar_item_border' => '#747474',
-			'past_calendar_item_text' => '#747474',
-			'past_calendar_item_text_hover' => '#747474',
+			'past_calendar_item_bg' => '#ffffff',
+			'past_calendar_item_border' => '#bbbbbb',
+			'past_calendar_item_text' => '#bbbbbb',
+			'past_calendar_item_bg_hover' => '#ffffff',
+			'past_calendar_item_border_hover' => '#bbbbbb',
+			'past_calendar_item_text_hover' => '#bbbbbb',
 		);
 	}
 

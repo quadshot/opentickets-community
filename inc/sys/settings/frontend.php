@@ -238,6 +238,7 @@ class qsot_Settings_Frontend extends QSOT_Settings_Page {
 						__( 'Text color of the remove reservation button on the "reserve some tickets" form.','opentickets-community-edition' )
 					);
 					echo '<div class="clear"></div>';
+					echo '<a href="#" rel="reset-colors">' . __( 'reset colors', 'opentickets-commnunity-edition' ) . '</a>';
 					echo '</div>';
 
 					// calendar
@@ -262,12 +263,25 @@ class qsot_Settings_Frontend extends QSOT_Settings_Page {
 						__( 'The text color of the active items shown on the calendar.','opentickets-community-edition' )
 					);
 					$this->color_picker(
-						__( 'Calendar Item Hover','opentickets-community-edition' ),
+						__( 'Calendar Item BG Hover','opentickets-community-edition' ),
+						'qsot_frontend_css_calendar_item_bg_hover',
+						$colors['calendar_item_bg_hover'], $defaults['calendar_item_bg_hover'],
+						__( 'The HOVER background color of the active items shown on the calendar.','opentickets-community-edition' )
+					);
+					$this->color_picker(
+						__( 'Calendar Item Border Hover','opentickets-community-edition' ),
+						'qsot_frontend_css_calendar_item_border_hover',
+						$colors['calendar_item_border_hover'], $defaults['calendar_item_border_hover'],
+						__( 'The HOVER border color of the active items shown on the calendar.','opentickets-community-edition' )
+					);
+					$this->color_picker(
+						__( 'Calendar Item Text Hover','opentickets-community-edition' ),
 						'qsot_frontend_css_calendar_item_text_hover',
 						$colors['calendar_item_text_hover'], $defaults['calendar_item_text_hover'],
 						__( 'The HOVER text color of the active items shown on the calendar.','opentickets-community-edition' )
 					);
-					echo '<div class="clear"></dv>';
+
+					echo '<div class="clear"></div>';
 					$this->color_picker(
 						__( 'Past Item BG','opentickets-community-edition' ),
 						'qsot_frontend_css_past_calendar_item_bg',
@@ -287,29 +301,25 @@ class qsot_Settings_Frontend extends QSOT_Settings_Page {
 						__( 'The text color of the active items shown on the calendar, that have already passed.','opentickets-community-edition' )
 					);
 					$this->color_picker(
-						__( 'Past Item Hover','opentickets-community-edition' ),
+						__( 'Past Item BG Hover','opentickets-community-edition' ),
+						'qsot_frontend_css_past_calendar_item_bg_hover',
+						$colors['past_calendar_item_bg_hover'], $defaults['past_calendar_item_bg_hover'],
+						__( 'The HOVER background color of the items shown on the calendar, that have already passed.','opentickets-community-edition' )
+					);
+					$this->color_picker(
+						__( 'Past Item Border Hover','opentickets-community-edition' ),
+						'qsot_frontend_css_past_calendar_item_border_hover',
+						$colors['past_calendar_item_border_hover'], $defaults['past_calendar_item_border_hover'],
+						__( 'The HOVER border color of the active items shown on the calendari, that have already passed.','opentickets-community-edition' )
+					);
+					$this->color_picker(
+						__( 'Past Item Text Hover','opentickets-community-edition' ),
 						'qsot_frontend_css_past_calendar_item_text_hover',
 						$colors['past_calendar_item_text_hover'], $defaults['past_calendar_item_text_hover'],
 						__( 'The HOVER text color of the active items shown on the calendar, that have already passed.','opentickets-community-edition' )
 					);
-					echo '</div>';
 					echo '<div class="clear"></div>';
-					$u = uniqid( 'reset-colors-' );
-					echo '<a href="#" rel="' . $u . '">reset all colors</a>';
-					?>
-						<script>
-							( function( $ ) {
-								$( '[rel="<?php echo $u ?>"]' ).on( 'click', function( e ) {
-									e.preventDefault();
-									var td = $( this ).closest( '.color_box' );
-									$( '.colorpick', td ).each( function() {
-										var def = $( this ).data( 'default' );
-										if ( def ) $( this ).val( def ).trigger( 'change' );
-									} );
-								} );
-							} )( jQuery );
-						</script>
-					<?php
+					echo '<a href="#" rel="reset-colors">' . __( 'reset colors', 'opentickets-commnunity-edition' ) . '</a></div>';
 				} else {
 					echo '<span class="description error-msg">' . sprintf(
 						__( 'To edit colours %s and %s need to be writable. See <a href="%s">the Codex</a> for more information.','opentickets-community-edition' ),
@@ -339,6 +349,7 @@ class qsot_Settings_Frontend extends QSOT_Settings_Page {
 	   		. '<input data-default="' . esc_attr( $default ) . '" name="' . esc_attr( $id ). '" id="' . esc_attr( $id ) . '" type="text" value="' . esc_attr( $value ) . '"
 						class="clrpick" style="background-color:' . esc_attr( $value ) . '" />'
 				. '<div id="colorPickerDiv_' . esc_attr( $id ) . '" class="colorpickdiv"></div>'
+				. '<span class="cb-wrap"><input type="checkbox" rel="transparent" name="' . esc_attr( $id ) . '_transparent" value="1" ' . ( 'transparent' == $value ? 'checked="checked"' : '' ) . ' />transparent</span>'
 	    . '</div>';
 	}
 
@@ -384,20 +395,35 @@ class qsot_Settings_Frontend extends QSOT_Settings_Page {
 			// Save settings
 			$colors = array();
 			foreach ( array( 'form_bg', 'form_border', 'form_action_bg', 'form_helper' ) as $k )
-				$colors[$k] = ! empty( $_POST[ 'qsot_frontend_css_' . $k ] ) ? wc_format_hex( $_POST[ 'qsot_frontend_css_' . $k ] ) : '';
+				if ( isset( $_POST[ 'qsot_frontend_css_' . $k . '_transparent' ] ) && $_POST[ 'qsot_frontend_css_' . $k . '_transparent' ] )
+					$colors[ $k ] = 'transparent';
+				else if ( ! empty( $_POST[ 'qsot_frontend_css_' . $k ] ) )
+					$colors[ $k ] = 'transparent' == $_POST[ 'qsot_frontend_css_' . $k ] ? 'transparent' : wc_format_hex( $_POST[ 'qsot_frontend_css_' . $k ] );
+				else
+					$colors[ $k ] = '';
 
 			foreach ( array( 'good_msg', 'bad_msg', 'remove' ) as $K )
 				foreach ( array( '_bg', '_border', '_text' ) as $k )
-					$colors[ $K . $k ] = ! empty( $_POST[ 'qsot_frontend_css_' . $K . $k ] ) ? wc_format_hex( $_POST[ 'qsot_frontend_css_' . $K . $k ] ) : '';
+					if ( isset( $_POST[ 'qsot_frontend_css_' . $K. $k . '_transparent' ] ) && $_POST[ 'qsot_frontend_css_' . $K. $k . '_transparent' ] )
+						$colors[ $K . $k ] = 'transparent';
+					else if ( ! empty( $_POST[ 'qsot_frontend_css_' . $K . $k ] ) )
+						$colors[ $K . $k ] = 'transparent' == $_POST[ 'qsot_frontend_css_' . $K . $k ] ? 'transparent' : wc_format_hex( $_POST[ 'qsot_frontend_css_' . $K . $k ] );
+					else
+						$colors[ $K . $k ] = '';
 
 			foreach ( array( 'past_calendar_item', 'calendar_item' ) as $K )
-				foreach ( array( '_bg', '_border', '_text', '_text_hover' ) as $k )
-					$colors[ $K . $k ] = ! empty( $_POST[ 'qsot_frontend_css_' . $K . $k ] ) ? wc_format_hex( $_POST[ 'qsot_frontend_css_' . $K . $k ] ) : '';
+				foreach ( array( '_bg', '_border', '_text', '_bg_hover', '_border_hover', '_text_hover' ) as $k )
+					if ( isset( $_POST[ 'qsot_frontend_css_' . $K. $k . '_transparent' ] ) && $_POST[ 'qsot_frontend_css_' . $K. $k . '_transparent' ] )
+						$colors[ $K . $k ] = 'transparent';
+					else if ( ! empty( $_POST[ 'qsot_frontend_css_' . $K . $k ] ) )
+						$colors[ $K . $k ] = 'transparent' == $_POST[ 'qsot_frontend_css_' . $K . $k ] ? 'transparent' : wc_format_hex( $_POST[ 'qsot_frontend_css_' . $K . $k ] );
+					else
+						$colors[ $K . $k ] = '';
 
 			// Check the colors.
 			$valid_colors = true;
 			foreach ( $colors as $color ) {
-				if ( ! preg_match( '/^#[a-f0-9]{6}$/i', $color ) ) {
+				if ( 'transparent' != $color && ! preg_match( '/^#[a-f0-9]{6}$/i', $color ) ) {
 					$valid_colors = false;
 					WC_Admin_Settings::add_error( sprintf( __( 'Error saving the Frontend Styles, %s is not a valid color, please use only valid colors code.','opentickets-community-edition' ), $color ) );
 					break;

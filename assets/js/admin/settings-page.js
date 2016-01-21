@@ -9,9 +9,14 @@ var QS = QS || { popMediaBox:function(){} };
 
 	// color picker
 	$( function() {
+		var T = '';
 		$( '.clrpick' ).iris({
 			change: function( event, ui ) {
-				$( this ).parent().find( '.clrpick' ).css({ backgroundColor: ui.color.toString(), color:ui.color.toHsl().l > 50 ? '#000' : '#fff' });
+				$( this ).parent().find( '.clrpick' ).css( {
+					backgroundColor: ui.color.toString(),
+					color: T !== ui.color.toString() ? ( ui.color.toHsl().l > 50 ? '#000' : '#fff' ) : '#bbb',
+					fontStyle: T !== ui.color.toString() ? 'normal' : 'italic'
+				} );
 			},
 			hide: true,
 			border: true
@@ -20,7 +25,11 @@ var QS = QS || { popMediaBox:function(){} };
 			$( this ).closest( '.color_box' ).find( '.iris-picker' ).show();
 		}).each( function() {
 			var color = $( this ).iris( 'color', true );
-			$( this ).css( { backgroundColor:color.toString(), color:color.toHsl().l > 50 ? '#000' : '#fff' } );
+			$( this ).parent().find( '.clrpick' ).css( {
+				backgroundColor: color.toString(),
+				color: T !== color.toString() ? ( color.toHsl().l > 50 ? '#000' : '#fff' ) : '#bbb',
+				fontStyle: T !== color.toString() ? 'normal' : 'italic'
+			} );
 		} );
 
 		$( 'body' ).click( function() {
@@ -30,5 +39,17 @@ var QS = QS || { popMediaBox:function(){} };
 		$( '.clrpick' ).click( function( event ) {
 			event.stopPropagation();
 		});
+	} );
+
+	$( document ).on( 'click', '[rel="reset-colors"]', function( e ) {
+		e.preventDefault();
+		var td = $( this ).closest( '.color-selection' );
+		$( '.clrpick', td ).each( function() {
+			var def = $( this ).data( 'default' );
+			if ( def ) {
+				$( this ).val( def ).trigger( 'change' );
+				$( this ).closest( '.color_box' ).find( '[rel="transparent"]' )[ 'transparent' == def ? 'prop' : 'removeProp' ]( 'checked', 'checked' );
+			}
+		} );
 	} );
 } )( jQuery, QS.Tools );

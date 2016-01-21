@@ -281,10 +281,10 @@ QS.adminTicketSelection = ( function( $, qs, qt ) {
 			$( S.templates['transition'] ).appendTo( me.e.transition );
 
 			// setup the calendar
-			var today = new Date(),
-					args = $.extend( {}, _qsot_event_calendar_ui_settings, { calendarContainer:me.e.calendar, onSelection:_select_event } );
-			me.calendar = new QSEventsEventCalendar( args );
-			me.calendar.cal.fullCalendar( 'gotoDate', today.getFullYear(), today.getMonth() );
+			var today = moment(),
+					args = $.extend( {}, _qsot_event_calendar_ui_settings, { calendar_container:me.e.calendar, on_selection:_select_event } );
+			me.calendar = new QS.EventCalendar( args );
+			me.calendar.cal.fullCalendar( 'gotoDate', today );
 
 			// allow more external setup
 			qs.cbs.trigger( 'setup-elements', [ me, S ] );
@@ -305,9 +305,9 @@ QS.adminTicketSelection = ( function( $, qs, qt ) {
 			if ( ! current_date ) {
 				// if there is a 'current event', then try to load the calendar for around that event date
 				if ( qt.isO( me.event_obj ) && qt.is( me.event_obj.dt ) )
-					current_date = new Date( me.event_obj.dt.replace( / /, 'T' ) )
+					current_date = moment( me.event_obj.dt.replace( / /, 'T' ) )
 				else
-					current_date = new Date();
+					current_date = moment();
 			}
 
 			// hide all dialog element so that we can load the calendar only
@@ -324,7 +324,7 @@ QS.adminTicketSelection = ( function( $, qs, qt ) {
 			me.calendar.setUrlParams( { priced_like:me.priced_like } );
 
 			// set the date only the calendar, forcing a reload of the events
-			me.calendar.cal.fullCalendar( 'gotoDate', current_date.getFullYear(), current_date.getMonth() );
+			me.calendar.cal.fullCalendar( 'gotoDate', current_date );
 
 			// allow external modification
 			qs.cbs.trigger( 'load-calendar', [ current_date, me.e, me, S ] );

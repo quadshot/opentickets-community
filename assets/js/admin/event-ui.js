@@ -44,27 +44,33 @@ QS.EventUI = (function($, undefined) {
 			}, 100 );
 		} );
 
-		t.elements.form.start_date_display.bind('change', function() {
-			var val = t.elements.form.start_date.val(),
-					disp_val = t.elements.form.start_date_display.val(),
-					cur = new moment(val),
-					end = new moment(t.elements.form.end_date.val()),
-					starton = new moment(t.elements.form.starts_on.val()),
-					endon = new moment(t.elements.form.ends_on.val());
+		// when the start date selection changes, we need to update the end date, date range start on date, and date range end on date selection to be at least that date
+		t.elements.form.start_date_display.bind( 'change', function() {
+			var val = t.elements.form.start_date.val(), // actual date value
+					disp_val = t.elements.form.start_date_display.val(), // displayed daet value
+					cur = new moment( val ), // moment object of selected date
+					end = new moment( t.elements.form.end_date.val() ), // moment object of the current selected end date
+					starton = new moment( t.elements.form.starts_on.val() ), // start on date range
+					endon = new moment( t.elements.form.ends_on.val() );// end on date range
 
-			if (cur.diffSeconds(end) < 0) {
+			// update the end date if it is earlier than the new start date
+			if ( cur.diff( end, 's' ) > 0 ) {
 				t.elements.form.end_date_display.val( disp_val )
 				t.elements.form.end_date.val( val );
 			}
-			if (cur.diffSeconds(starton) < 0) {
+
+			// update the date range start on date, if before new start date
+			if ( cur.diff( starton, 's' ) > 0 ) {
 				t.elements.form.starts_on_display.val( disp_val )
-				t.elements.form.starts_on.val(val);
+				t.elements.form.starts_on.val( val );
 			}
-			if (cur.diffSeconds(endon) < 0) {
+
+			// update the date range end on date, if before the new start date
+			if ( cur.diff( endon ) > 0 ) {
 				t.elements.form.ends_on_display.val( disp_val );
-				t.elements.form.ends_on.val(val);
+				t.elements.form.ends_on.val( val );
 			}
-		});
+		} );
 
 		if (typeof t.callback != 'function') {
 			t.callback = function(name, params) {
@@ -91,14 +97,14 @@ QS.EventUI = (function($, undefined) {
 			var current_dt = new moment();
 			var data = $.extend({
 				'start-time': '00:00:00',
-				'start-date': current_dt.toString( frmt( 'MM-dd-yyyy' ) ),
+				'start-date': current_dt.format( frmt( 'MM-DD-YYYY' ) ),
 				'end-time': '23:59:59',
-				'end-time': current_dt.toString( frmt( 'MM-dd-yyyy' ) ),
+				'end-time': current_dt.format( frmt( 'MM-DD-YYYY' ) ),
 			}, data);
 
 			var base = {
-				start: new moment(data['start-date']+' '+data['start-time']).toDate(),
-				end: new moment(data['end-date']+' '+data['end-time']).toDate(),
+				start: new moment( data['start-date'] + ' ' + data['start-time'] ).toDate(),
+				end: new moment( data['end-date'] + ' ' + data['end-time'] ).toDate(),
 				title: data['title'],
 				allDay: false,
 				editable: true,
@@ -106,43 +112,48 @@ QS.EventUI = (function($, undefined) {
 			};
 			var events = [];
 
-			if (typeof data.repeat != 'undefined' && data.repeat) {
-				var funcName = 'repeat'+QS.ucFirst(data.repeats);
-				if (typeof t.form[funcName] == 'function') t.form[funcName](events, base, data);
-				else t.callback(funcName, [events, base, data]);
+			if ( qt.is( data.repeat ) ) {
+				var funcName = 'repeat' + QS.ucFirst( data.repeats );
+				if ( qt.isF( t.form[ funcName ] ) )
+					t.form[ funcName ]( events, base, data );
+				else
+					t.callback( funcName, [ events, base, data ] );
 			} else {
-				events.push($.extend(true, {}, base, {
+				events.push( $.extend( true, {}, base, {
 					single: 'yes',
-					start: (moment(data['start-date']+' '+data['start-time'])).toDate(),
-					end: (moment(data['end-date']+' '+data['end-time'])).toDate()
-				}));
+					start: ( moment( data['start-date'] + ' ' + data['start-time'] ) ).format( moment.defaultFormat ),
+					end: ( moment( data['end-date'] + ' ' + data['end-time'] ) ).format( moment.defaultFormat )
+				} ) );
 			}
 
-			t.callback('process_add_date_time', [events, base, data]);
+			t.callback( 'process_add_date_time', [ events, base, data ] );
 			var cnt = events.length;
-			t.addEvents(events);
+			t.addEvents( events );
 
-			var msg = $('<li><strong>Added</strong> [<strong>'+cnt+'</strong>] events to the calendar below.</li>').appendTo(t.elements.form.messages);
-			t.callback('process_add_date_time_msgs', [msg]);
-			msg.show().fadeOut({duration:3000, complete:function() { msg.remove(); } });
+			var msg = $( '<li><strong>Added</strong> [<strong>' + cnt + '</strong>] events to the calendar below.</li>' )
+					.appendTo( t.elements.form.messages );
+			t.callback( 'process_add_date_time_msgs', [ msg ] );
+			msg.show().fadeOut( {
+				duration: 3000,
+				complete: function() { msg.remove(); }
+			} );
 		};
 
 		function evenDays(from, to) {
-			var f = moment(from.getFullYear(), from.getMonth(), from.getDate());
-			var o = moment(to.getFullYear(), to.getMonth(), to.getDate());
-			return f.diff(o, 'days');
+			var f = moment( { year:from.year(), month:from.month(), day:from.date() } ),
+					o = moment( { year:to.year(), month:to.month(), day:to.date() } );
+			return o.diff( f, 'd' );
 		};
 
 		// calculate all the repeats, for a weekly repeat
-		t.form.repeatWeekly = function(events, base, data) {
+		t.form.repeatWeekly = function( events, base, data ) {
+			console.log( data, base );
 			var d = moment( data['repeat-starts'] ),
 					st = moment( base['start'] ),
 					en = moment( base['end'] ),
-					st_en_diff = st.diff( en, 'seconds' ),
+					st_en_diff = en.diff( st, 's' ),
 					cnt = 0,
 					inRange = function() { return false; };
-
-			console.log( 'start', base, st, evenDays( d, st ), en, evenDays( d, en ) );
 
 			// figure out the function that determins if a given day should have an even on it
 			switch ( data['repeat-ends-type'] ) {
@@ -184,14 +195,15 @@ QS.EventUI = (function($, undefined) {
 					if ( ! inRange() )
 						break;
 					var args = $.extend( true, {}, base );
-					args['start'] = st.add( evenDays( st, d ), 'd' ).toDate();
-					args['end'] = st.clone().add( st_en_diff, 's' ).toDate();
+					st = st.clone().add( evenDays( st, d ), 'd' );
+					args['start'] = st.clone().toDate();
+					st = st.add( st_en_diff, 's' );
+					args['end'] = st.clone().toDate();
 					events.push( args );
 					cnt++;
 				}
 				incWeeks();
 			}
-			console.log( events );
 
 			return events;
 		};
@@ -425,9 +437,19 @@ QS.EventUI = (function($, undefined) {
 				eventAfterRender: function(ev, element, view) { return self.calendarAfterRender(ev, element, view) },
 				eventRender: function(ev, element, view) { var args = Array.prototype.slice.call(arguments); args.push(this); return self.eventRender.apply(self, args); },
 				eventDrop: function(ev, day, min, allDay, revertFunc, jsEv, ui, view) { var args = Array.prototype.slice.call(arguments); args.push(this); return self.eventDrop.apply(self, args); },
-				viewDisplay: function(view) { return self.addButtons(view); }
+				viewRender: function(  view, view_element ) { return self.addButtons( view ); }
 			});
 			this.calendar.fullCalendar('gotoDate', this.first.toDate());
+
+			// setup the event source
+			this.event_source = {
+				events: this.events,
+				color: this.options.evBgColor,
+				textColor: this.options.evFgColor
+			};
+
+			// update the calendar with the events
+			this.updateSources();
 
 			// import
 			NewEventDateTimeForm.call(this);
@@ -437,15 +459,16 @@ QS.EventUI = (function($, undefined) {
 				return self.beforeFormSubmit($(this));
 			});
 
-			this.calendar.fullCalendar('addEventSource', {
-				events:this.events,
-				color:this.options.evBgColor,
-				textColor:this.options.evFgColor
-			});
 			this.updateEventList();
 
 			this.callback('init');
 			this.initialized = true;
+		},
+
+		// update the event sources for the calendar
+		updateSources: function() {
+			this.calendar.fullCalendar( 'removeEventSource', this.event_source );
+			this.calendar.fullCalendar( 'addEventSource', this.event_source );
 		},
 
 		eventRender: function(ev, element, view, that) {
@@ -477,49 +500,63 @@ QS.EventUI = (function($, undefined) {
 			this.callback('drop_event', [ev, day, min, allDay, revertFunc, jsEv, ui, view, that]);
 		},
 
-		addEvents: function(events) {
-			if (events instanceof Array) {
-				for (var i=0; i<events.length; i++) {
+		// add a list of events to the global list of events used by the calendar and event list ui
+		addEvents: function( events ) {
+			// if there are events to add
+			if ( qt.isA( events ) ) {
+				// add each event
+				for ( var i = 0; i < events.length; i++ )
 					this.addEvent(events[i]);
-				}
-				this.updateEventList();
-			} else if (typeof events == 'object' && typeof events._id == 'string') {
-				this.addEvent(events);
-				this.updateEventList();
+			// otherwise if the passed event list is a single event, add that one event
+			} else if ( qt.isO( events ) && qt.isS( events._id ) ) {
+				// add the event to the event list used by the calendar
+				this.addEvent( events );
 			}
-			this.callback('add_events', [events]);
+
+			this.updateSources();
+
+			// update the event list ui below the calendar
+			this.updateEventList();
+
+			// notify that we added events
+			this.callback( 'add_events', [ events ] );
 		},
 
-		addEvent: function(title, start, extra) {
-			var args = {};
-			var obj = {};
+		// add an event the list of events used by the calendar
+		addEvent: function( title, start, extra ) {
+			var args = {},
+					obj = {};
 
-			if (typeof title == 'object') {
-				obj = $.extend({}, title);
-				args = $.extend({
-					status:'pending',
-					visibility:'public',
-					capacity:0,
-					post_id:-1
-				}, obj);
+			// if the title param is actually the entire event object, then
+			if ( qt.isO( title ) ) {
+				// normalize the event, and make a copy
+				obj = $.extend( {}, title );
+			// otherwise combine the given params to create the event object
 			} else {
-				var extra = extra || {allDay:false};
-				if (!(start instanceof Date || start._isAMomentObject)) return;
-				if (typeof title != 'string') return;
-				obj = $.extend({}, {
-					title:title,
-					start:start._isAMomentObject ? start.toDate() : start
-				}, extra);
-				args = $.extend({
-					status:'pending',
-					visibility:'public',
-					capacity:0,
-					post_id:-1
-				}, obj);
-			}
-			this.callback('add_event', [args, obj]);
+				var extra = extra || { allDay:false };
+				// check the title that was passed
+				if ( ! qt.isS( title ) ) return;
 
-			this.events.push(args);
+				// create the base event
+				obj = $.extend( {}, {
+					title: title,
+					start: start
+				}, extra );
+			}
+
+			// aggregate the args we will use for the event render on the calendar
+			args = $.extend( {
+				status: 'pending',
+				visibility: 'public',
+				capacity: 0,
+				post_id: -1
+			}, obj );
+
+			// notify of the new event
+			this.callback( 'add_event', [ args, obj ] );
+
+			// add the event to the calendar list
+			this.events.push( args );
 		},
 
 		removeEvents: function(events) {
@@ -625,13 +662,21 @@ QS.EventUI = (function($, undefined) {
 			element = $(element);
 		},
 
-		addButtons: function(view) {
+		// add the buttons we need in the admin interface
+		addButtons: function( view ) {
 			var tm = this.fctm;
-			this.elements.header_center = view.element.closest('.'+tm).find('.'+tm+'-header-center');
-			this.addButton('new_event_btn', 'New Event Date', ['togvis'], {tar:'.option-sub[rel=add]', scope:'.events-ui'}).click(function() {
-				var scope = $(this).closest( $(this).attr('scope') ), tar = $( $(this).attr('tar'), scope);
-			});
-			this.callback('add_buttons');
+
+			// find the header container that we are adding the buttons to
+			this.elements.header_center = view.el.closest( '.' + tm ).find( '.' + tm + '-toolbar .fc-center' );
+			console.log( 'fuck', this.elements.header_center, view.el.closest( '.' + tm ), view.el.closest( '.' + tm ).find( '.' + tm + '-toolbar' ), '.' + tm + '-toolbar' );
+
+			// add the new evetn date button, which when clicked, opens the new event date form
+			this.addButton( 'new_event_btn', qt.str( 'New Event Date', S ), [ 'togvis' ], { tar:'.option-sub[rel=add]', scope:'.events-ui' } ).click( function() {
+				var scope = $( this ).closest( $( this ).attr( 'scope' ) ), tar = $( $( this ).attr( 'tar' ), scope );
+			} );
+
+			// allow others to add buttons here as well
+			this.callback( 'add_buttons', [ view ] );
 		},
 
 		addButton: function(name, label, classes, attr) {
