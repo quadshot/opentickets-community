@@ -91,6 +91,20 @@ QS.EventUI = (function($, undefined) {
 			t.form.processAddDateTimes(data);
 		});
 
+		function pl( n, p ) { return qt.toFloat( n ).toFixed( p ); };
+		function dig( n, w, p ) { p = p || '0'; n = n + ''; return n.length >= w ? n : ( new Array( w - n.length + 1 ) ).join( p ) + n; };
+
+		function normalize_time( str ) {
+			var matches = str.toLowerCase().match( /^(\d{1,2})(:(\d{1,2})(:(\d{1,2}))?)?([pa]m?)?$/ ),
+					res = matches ? { hour:qt.toInt( matches[1] ), min:qt.toInt( matches[3] ), sec:qt.toInt( matches[5] ), mer:matches[6].toLowerCase().substr( 0, 1 ) } : { hour:0, min:0, sec:0, mer:'' };
+			// adjust the hour to be 24 hour time
+			if ( 'p' == res.mer && res.hour < 12 )
+				res.hour += 12;
+			else if ( 'a' == res.mer && 12 == res.hour )
+				res.hour = 0;
+			return qt.dig( res.hour, 2 ) + ':' + qt.dig( res.min, 2 ) + ':' + qt.dig( res.sec, 2 );
+		}
+
 		t.form.processAddDateTimes = function(data) {
 			if (typeof t.addEvents != 'function') return;
 
@@ -101,6 +115,9 @@ QS.EventUI = (function($, undefined) {
 				'end-time': '23:59:59',
 				'end-time': current_dt.format( frmt( 'MM-DD-YYYY' ) ),
 			}, data);
+
+			data['start-time'] = normalize_time( data['start-time'] );
+			data['end-time'] = normalize_time( data['end-time'] );
 
 			var base = {
 				start: new moment( data['start-date'] + ' ' + data['start-time'] ).toDate(),
@@ -147,7 +164,6 @@ QS.EventUI = (function($, undefined) {
 
 		// calculate all the repeats, for a weekly repeat
 		t.form.repeatWeekly = function( events, base, data ) {
-			console.log( data, base );
 			var d = moment( data['repeat-starts'] ),
 					st = moment( base['start'] ),
 					en = moment( base['end'] ),
@@ -194,11 +210,12 @@ QS.EventUI = (function($, undefined) {
 					// if we aer outside the desired range, then end our loop
 					if ( ! inRange() )
 						break;
-					var args = $.extend( true, {}, base );
+					var args = $.extend( true, {}, base ),
 					st = st.clone().add( evenDays( st, d ), 'd' );
-					args['start'] = st.clone().toDate();
-					st = st.add( st_en_diff, 's' );
-					args['end'] = st.clone().toDate();
+					var sigh = st.clone();
+					args['start'] = sigh.clone().toDate();
+					sigh = sigh.add( st_en_diff, 's' );
+					args['end'] = sigh.clone().toDate();
 					events.push( args );
 					cnt++;
 				}
@@ -668,7 +685,6 @@ QS.EventUI = (function($, undefined) {
 
 			// find the header container that we are adding the buttons to
 			this.elements.header_center = view.el.closest( '.' + tm ).find( '.' + tm + '-toolbar .fc-center' );
-			console.log( 'fuck', this.elements.header_center, view.el.closest( '.' + tm ), view.el.closest( '.' + tm ).find( '.' + tm + '-toolbar' ), '.' + tm + '-toolbar' );
 
 			// add the new evetn date button, which when clicked, opens the new event date form
 			this.addButton( 'new_event_btn', qt.str( 'New Event Date', S ), [ 'togvis' ], { tar:'.option-sub[rel=add]', scope:'.events-ui' } ).click( function() {
