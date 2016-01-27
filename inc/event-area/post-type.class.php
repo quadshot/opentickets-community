@@ -236,7 +236,7 @@ class QSOT_Post_Type_Event_Area {
 	public function enqueue_assets( $post ) {
 		// figure out the event area type of this event
 		$event_area = apply_filters( 'qsot-event-area-for-event', false, $GLOBALS['post'] );
-		$area_type = $this->event_area_type_from_event_area( $event_area );
+		$area_type = is_object( $event_area ) && ! is_wp_error( $event_area ) ? $this->event_area_type_from_event_area( $event_area ) : false;
 
 		// if there is a valid area_type, then load it's frontend assets
 		if ( is_object( $area_type ) ) {

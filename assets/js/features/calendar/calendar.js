@@ -144,20 +144,23 @@ QS.EventCalendar = ( function( $, W, D, qt, undefined ) {
 					$( '<option value="' + i + '"' + ( gy == i ? ' selected="selected"' : '' ) + '>' + i + '</option>' ).appendTo( year_select );
 				for ( i = 0; i < 12; i++ )
 					$( '<option value="' + i + '"' + ( gm == i ? ' selected="selected"' : '' ) + '>' + moment( { y:gy, M:i } ).format( 'MMMM' ) + '</option>' ).appendTo( month_select );
-
-				// setup the events for the goto button
-				goto_btn
-					.on( 'click.goto-form', function( e ) {
-						e.preventDefault();
-						calendar.gotoDate( { y:year_select.val(), M:month_select.val() } );
-					} )
-					.hover(
-						function() { $( this ).addClass( 'fc-state-hover' ); },
-						function() { $( this ).removeClass( 'fc-state-hover' ); }
-					);
 			}
 
-			return T.goto_form.clone( true );
+			var ret = T.goto_form.clone( true );
+
+			// setup the events for the goto button
+			ret.find( '[rel="goto-btn"]' )
+				.on( 'click.goto-form', function( e ) {
+					e.preventDefault();
+					console.log( 'click', ret.find( '[rel="year"]' ), ret.find( '[rel="month"]' ), ret.find( '[rel="year"]' ).val(), ret.find( '[rel="month"]' ).val() );
+					T.cal.fullCalendar( 'gotoDate', moment( { y:ret.find( '[rel="year"]' ).val(), M:ret.find( '[rel="month"]' ).val() } ) );
+				} )
+				.hover(
+					function() { $( this ).addClass( 'fc-state-hover' ); },
+					function() { $( this ).removeClass( 'fc-state-hover' ); }
+				);
+
+			return ret;
 		}
 
 		// when clicking an event, we need to 'select' the event

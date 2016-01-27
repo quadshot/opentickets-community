@@ -1047,7 +1047,7 @@ class qsot_post_type {
 		) );
 
 		// use the loacalize script trick to send misc settings to the event ui script, based on the current post, and allow sub/external plugins to modify this
-		@list($events, $first) = self::_child_event_settings($post_id);
+		@list( $events, $first ) = self::_child_event_settings($post_id);
 		wp_localize_script('qsot-events-admin-edit-page', '_qsot_settings', apply_filters('qsot-event-admin-edit-page-settings', array(
 			'first' => $first,
 			'events' => $events, // all children events
@@ -1062,10 +1062,13 @@ class qsot_post_type {
 	protected static function _child_event_settings($post_id) {
 		$list = array();
 		// if there is no post_id then return an empty list
-		if (empty($post_id)) return $list;
-		$post = get_post($post_id);
+		if ( empty( $post_id ) )
+			return array( $list, '' );
+
+		$post = get_post( $post_id );
 		// if the post_id passed does not exist, then return an empty list
-		if (!is_object($post) || !isset($post->post_title)) return $list;
+		if ( ! is_object( $post ) || ! isset( $post->post_title ) )
+			return array( $list, '' );
 
 		// default settings for the passed lit of subevent objects. modifiable by sub/external plugins, so they can add their own settings
 		$defs = apply_filters('qsot-load-child-event-settings-defaults', array(
@@ -1221,6 +1224,10 @@ class qsot_post_type {
 		$current = false; //wp_cache_get( 'show-date-time-' . $post_id, 'qsot' );
 		if ( false && false !== $current )
 			return $current;
+
+		// if we are on the page load of an admin page, then always show date and time
+		if ( is_admin() && ! ( defined( 'DOING_AJAX' ) && DOING_AJAX ) )
+			return array( 'date' => true, 'time' => true );
 
 		// find the current values
 		$current = array(
