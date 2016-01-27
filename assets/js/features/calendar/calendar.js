@@ -113,6 +113,8 @@ QS.EventCalendar = ( function( $, W, D, qt, undefined ) {
 				// create an entry for each view that is available
 				for ( i in $.fullCalendar.views ) if ( $.fullCalendar.views[ H ]( i ) ) {
 					var name = ucwords( i.replace( /([A-Z])/, function( match ) { return ' ' + match.toLowerCase(); } ) );
+					if ( -1 !== $.inArray( name.toLowerCase(), [ 'basic', 'agenda' ] ) )
+						continue;
 					$( '<option>' + name + '</option>' ).attr( 'value', i ).appendTo( T.view_selector );
 				}
 
