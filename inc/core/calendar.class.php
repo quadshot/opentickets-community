@@ -422,6 +422,68 @@ class qsot_frontend_calendar {
 		return $text;
 	}
 
+	// aggregate all the data about a list of calendar events
+	public static function get_all_calendar_events( $events ) {
+		global $wpdb;
+		static $show_count = null;
+		// figure out if we need to include the count of the availability
+		if ( null == $show_count )
+			$show_count = 'yes' === apply_filters( 'qsot-get-option-value', 'yes', 'qsot-show-available-quantity' );
+
+		// if there were no regular events passed, then bail
+		if ( empty( $events ) )
+			return array();
+
+		$parents = $indexed_meta = $parent_ids = $event_ids = array();
+		// get a list of all parent and event ids from the event list for later usage
+		foreach ( $events as $event ) {
+			$parent_ids[] = $event->post_parent;
+			$event_ids[] = $event->ID;
+		}
+
+		// get a list of all parent events, and index the list by the parent id
+		if ( ! empty( $parent_ids ) ) {
+			$raw_parents = get_posts( array( 'post__in' => $parent_ids, 'post_status' => 'any', 'post_type' => 'any', 'post_per_page' => -1 ) );
+			foreach ( $raw_parents as $parent )
+				$parents[ $parent->ID ] = $parent;
+		}
+
+		// get all the meta for each event
+		if ( ! empty( $event_ids ) ) {
+			$all_meta = $wpdb->get_results( 'select post_id, meta_key, meta_value from ' . $wpdb->postmeta . ' where post_id in (' . implode( ',', $event_ids ) . ')' );
+			foreach ( $all_meta as $row ) {
+				// create the key for this post
+				if ( ! isset( $indexed_meta[ $row->post_id ] ) ) {
+					$indexed_meta[ $row->post_id ] = array();
+				}
+
+				// add this meta item to the list for this post
+				if ( ! isset( $indexed_meta[ $row->post_id ][ $row->meta_key ] ) )
+					$indexed_meta[ $row->post_id ][ $row->meta_key ] = array( $row->meta_value );
+				else
+					$indexed_meta[ $row->post_id ][ $row->meta_key ][] = $row->meta_value;
+			}
+		}
+
+		// add the parent post and meta to each child event, if the parent or meta was found
+		foreach ( $events as $ind => $event ) {
+			if ( isset( $parents[ $event->post_parent ] ) )
+				$events[ $ind ]->parent_post = $parents[ $event->post_parent ];
+			if ( isset( $indexed_meta[ $event->ID ] ) )
+				$events[ $ind ]->meta = $indexed_meta[ $event->ID ];
+		}
+
+		$final = array();
+		// organize each event's data in a way that the event calendar can properly display it
+		foreach ( $events as $event ) {
+			$tmp = apply_filters( 'qsot-calendar-event', false, $event );
+			if ( $tmp !== false )
+				$final[] = $tmp;
+		}
+
+		return $final;
+	}
+
 	// aggregate a formatted list of a given event's information, for use in the event calendar
 	public static function get_calendar_event( $current, $event ) {
 		static $show_count = null;
@@ -432,6 +494,12 @@ class qsot_frontend_calendar {
 		// verify we have all the information about an event that we need. if not, then pass through
 		if ( ! is_object( $event ) || ! isset( $event->post_parent, $event->post_title, $event->ID, $event->meta ) ) return $current;
 
+		// get the keys to use for meta dates
+		$keys = array(
+			'start' => apply_filters( 'qsot-setting', '', 'meta_key.start' ),
+			'end' => apply_filters( 'qsot-setting', '', 'meta_key.end' ),
+		);
+
 		// gather information about this event's parent, because it will be used in the output of the event data
 		$par = get_post( $event->post_parent );
 
@@ -440,6 +508,7 @@ class qsot_frontend_calendar {
 		$zoner = is_object( $event_area ) && isset( $event_area->area_type ) && is_object( $event_area->area_type ) && ! is_wp_error( $event_area->area_type ) ? $event_area->area_type->get_zoner() : false;
 
 		// start compiling the organized list of information
+		$meta = get_post_meta( $event->ID );
 		$e = array(
 			// use the parent event title as the event title, because it does not have the date, which will already be displayed based on the calendar position. if that is not avaiable, just use the clunky title
 			'title' => apply_filters( 'the_title', is_object( $par ) && isset( $par->post_title ) ? $par->post_title : $event->post_title ),
@@ -447,8 +516,8 @@ class qsot_frontend_calendar {
 			'description' => apply_filters( 'the_content', empty( $event->post_content ) ? $par->post_content : $event->post_parent ),
 			'short_description' => self::_short_description( $event, $par ),
 			// add the start and end dates
-			'start' => get_post_meta( $event->ID, apply_filters( 'qsot-setting', '', 'meta_key.start' ), true ),
-			'end' => get_post_meta( $event->ID, apply_filters( 'qsot-setting', '', 'meta_key.end' ), true ),
+			'start' => isset( $meta[ $keys['start'] ] ) ? current( $meta[ $keys['start'] ] ) : '',
+			'end' => isset( $meta[ $keys['end'] ] ) ? current( $meta[ $keys['end'] ] ) : '',
 			// add the link to the event
 			'url' => get_permalink( $event->ID ),
 			// add the event image
