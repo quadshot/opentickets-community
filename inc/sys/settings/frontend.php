@@ -37,6 +37,7 @@ class qsot_Settings_Frontend extends QSOT_Settings_Page {
 		$sections = apply_filters( 'qsot-settings-general-sections', array(
 			'' => __( 'Events', 'opentickets-community-edition' ),
 			'styles' => __( 'Styles & Colors', 'opentickets-community-edition' ),
+			'calendar' => __( 'Calendar', 'opentickets-community-edition' ),
 			'tickets' => __( 'Tickets', 'opentickets-community-edition' ),
 			'venues' => __( 'Venues', 'opentickets-community-edition' ),
 			'my-account' => __( 'My Account', 'opentickets-community-edition' ),

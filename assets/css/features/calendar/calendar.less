@@ -75,6 +75,12 @@ body .fc-event .fc-time { font-weight:700; }
 body .fc-event .fc-title { text-decoration:underline; font-weight:500; }
 body .fc-event .fc-availability { font-style:italic; font-weight:300; font-size:0.8em; }
 body .fc-event .fc-img img { max-width:100%; height:auto; width:auto; }
+body .fc-month-view .fc-event .fc-img { padding-top:3px; }
+body .fc-basicDay-view .fc-event .fc-img { display:block; }
+body .fc-basicDay-view .fc-event .fc-img img { max-width:100%; }
+body .fc-event .fc-clear::before,
+body .fc-event .fc-clear::after { content:" "; display:block; height:0; overflow:hidden; }
+body .fc-event .fc-clear::after { clear:both; }
 
 /* calendar general */
 body .fc .fc-view table { border:0 none; }
@@ -90,6 +96,15 @@ body .fc .fc-view-container .fc-day-number { border-color:#aaa; background-color
 body .fc .fc-view-container .fc-day-number.fc-today { background-color:#577483; }
 body .fc .fc-today { background-color:#E3EDF9; }
 body .fc .fc-content-skeleton td { border-color:#aaa; }
+body .fc .fc-toolbar > .fc-center > * { float:none; }
+body .fc .fc-toolbar > .fc-center > div { float:none; }
+body .fc .fc-toolbar > .fc-center > h2 { float:none; margin-bottom:6px; }
+body .fc .fc-toolbar .fc-left,
+body .fc .fc-toolbar .fc-right { padding-top:34px; }
+body .fc .fc-toolbar.fc-bottom { padding-top:20px; }
+body .fc .fc-toolbar.fc-bottom .fc-left,
+body .fc .fc-toolbar.fc-bottom .fc-right { padding-top:0; }
+
 
 body .fc .goto-form { text-align:center; padding:0 0 8px; }
 body .fc .goto-form select { text-align:left; }
@@ -116,3 +131,8 @@ body select.fc-state-default { box-sizing:border-box; cursor:pointer; font-size:
 body .fc .loading-overlay-wrap { position:absolute; top:0; bottom:0; left:0; right:0; width:auto; height:auto; z-index:8999; }
 body .fc .loading-overlay { position:absolute; top:-1em; bottom:-1em; left:-1em; right:-1em; width:auto; height:auto; background-color:rgba( 0, 0, 0, 0.5 ); }
 body .fc .loading-message { position:absolute; top:50%; left:50%; color:#fff; font-weight:700; font-style:italic; font-size:32px; transform:translate( -50%, -50% ); }
+
+@media only screen and (min-width:450px) {
+	body .fc-basicDay-view .fc-event .fc-img { float:left; clear:none; margin:0 8px 5px 0; }
+	body .fc-basicDay-view .fc-event .fc-img img { max-width:300px; }
+}

@@ -76,8 +76,9 @@ class qsot_post_type {
 			add_filter('template_include', array(__CLASS__, 'template_include'), 10, 1);
 
 			// special event query stuff
+			add_action( 'parse_query', array( __CLASS__, 'adjust_wp_query_vars' ), PHP_INT_MAX, 1 );
 			add_filter('posts_where_request', array(__CLASS__, 'events_query_where'), 10, 2);
-			add_filter('posts_join_request', array(__CLASS__, 'events_query_join'), 10, 2);
+			//add_filter('posts_join_request', array(__CLASS__, 'events_query_join'), 10, 2);
 			add_filter('posts_orderby_request', array(__CLASS__, 'events_query_orderby'), 10, 2);
 			add_filter('posts_fields_request', array(__CLASS__, 'events_query_fields'), 10, 2);
 
@@ -585,6 +586,26 @@ class qsot_post_type {
 		return $content;
 	}
 
+	// when doing a wp_query, we need to check if some of our special query args are present, and adjust the params accordingly
+	public static function adjust_wp_query_vars( &$query ) {
+		$qv = wp_parse_args( $query->query_vars, array( 'start_date_after' => '', 'start_date_before' => '' ) );
+		// if either the start or end date is present, then ...
+		if ( ! empty( $qv['start_date_after'] ) || ! empty( $qv['start_date_before'] ) ) {
+			$query->query_vars['meta_query'] = isset( $query->query_vars['meta_query'] ) && is_array( $query->query_vars['meta_query'] ) ? $query->query_vars['meta_query'] : array( 'relation' => 'OR' );
+
+			// if both the start and end dates are present, then add a meta query for between
+			if ( ! empty( $qv['start_date_after'] ) && ! empty( $qv['start_date_before'] ) ) {
+				$query->query_vars['meta_query'][] = array( 'key' => '_start', 'value' => array( $qv['start_date_after'], $qv['start_date_before'] ), 'compare' => 'BETWEEN', 'type' => 'DATETIME' );
+			// otherwise, if only the start date is present, then add a rule for that
+			} else if ( ! empty( $qv['start_date_after'] ) ) {
+				$query->query_vars['meta_query'][] = array( 'key' => '_start', 'value' => $qv['start_date_after'], 'compare' => '>=', 'type' => 'DATETIME' );
+			// otherwise, only the end rule can be present, so add a rule for that
+			} else {
+				$query->query_vars['meta_query'][] = array( 'key' => '_start', 'value' => $qv['start_date_before'], 'compare' => '<=', 'type' => 'DATETIME' );
+			}
+		}
+	}
+
 	public static function wp_query_orderby_meta_value_date($orderby, $query) {
 		if (
 				isset($query->query_vars['orderby'], $query->query_vars['meta_key'])
@@ -600,14 +621,6 @@ class qsot_post_type {
 
 	public static function events_query_where($where, $q) {
 		global $wpdb;
-
-		if (isset($q->query_vars['start_date_after']) && strtotime($q->query_vars['start_date_after']) > 0) {
-			$where .= $wpdb->prepare(' AND (cast(qssda.meta_value as datetime) >= %s) ', $q->query_vars['start_date_after']);
-		}
-
-		if (isset($q->query_vars['start_date_before']) && strtotime($q->query_vars['start_date_before']) > 0) {
-			$where .= $wpdb->prepare(' AND (cast(qssda.meta_value as datetime) <= %s) ', $q->query_vars['start_date_before']);
-		}
 
 		if (isset($q->query_vars['post_parent__not_in']) && !empty($q->query_vars['post_parent__not_in'])) {
 			$ppni = $q->query_vars['post_parent__not_in'];
@@ -635,6 +648,7 @@ class qsot_post_type {
 		return $where;
 	}
 
+/*
 	public static function events_query_join($join, $q) {
 		global $wpdb;
 
@@ -647,6 +661,7 @@ class qsot_post_type {
 
 		return $join;
 	}
+*/
 
 	public static function events_query_fields($fields, $q) {
 		return $fields;

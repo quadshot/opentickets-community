@@ -13,4 +13,5 @@
 	</div>
 	<div class="fc-img"></div>
 	<div class="fc-short-description"></div>
+	<div class="fc-clear"></div>
 </div>

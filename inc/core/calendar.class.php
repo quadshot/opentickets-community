@@ -10,6 +10,8 @@ class qsot_frontend_calendar {
 
 	// setup the actions and filters we will need to run this feature
 	public static function pre_init() {
+		self::_setup_admin_options();
+
 		// add a bit that runs some installation/activation logic
 		add_action( 'qsot-activate', array( __CLASS__, 'create_calendar_page' ), 10 );
 
@@ -343,6 +345,9 @@ class qsot_frontend_calendar {
 					'sa' => 'qscal',
 					'_n' => wp_create_nonce( 'do-qsot-ajax' ),
 				), admin_url( '/admin-ajax.php' ) ),
+				'options' => array(
+					'month_img' => 'yes' === apply_filters( 'qsot-get-option-value', 'no', 'qsot-calendar-show-image-on-month' ),
+				),
 				'templates' => self::_get_frontend_templates( $post ),
 				'gotoDate' => self::_get_calendar_start_date( $post ),
 			), $post)
@@ -398,25 +403,18 @@ class qsot_frontend_calendar {
 		if ( current_user_can( 'read_private_posts' ) ) $args['post_status'][] = 'private';
 
 		// aggregate the list of events to render
-		$events = get_posts( $args );
-
-		// organize each event's data in a way that the event calendar can properly display it
-		foreach ( $events as $event ) {
-			$tmp = apply_filters( 'qsot-calendar-event', false, $event );
-			if ( $tmp !== false )
-				$final[] = $tmp;
-		}
+		$final = self::get_all_calendar_events( get_posts( $args ) );
 		
 		return $final;
 	}
 
 	// derive the short description from the event and parent event
-	public static function _short_description( $event, $parent, $length=200 ) {
+	public static function _short_description( $event, $parent, $length=800 ) {
 		// figure out the text to use for the description
 		$text = empty( $event->post_content ) ? $parent->post_content : $event->post_content;
 
 		// strip all tags, and shorten it to $length
-		$text = strip_tags( $text );
+		$text = trim( strip_tags( $text ) );
 		$text = strlen( $text ) > $length ? substr( $text, 0, $length ) . '...' : $text;
 
 		return $text;
@@ -450,19 +448,8 @@ class qsot_frontend_calendar {
 
 		// get all the meta for each event
 		if ( ! empty( $event_ids ) ) {
-			$all_meta = $wpdb->get_results( 'select post_id, meta_key, meta_value from ' . $wpdb->postmeta . ' where post_id in (' . implode( ',', $event_ids ) . ')' );
-			foreach ( $all_meta as $row ) {
-				// create the key for this post
-				if ( ! isset( $indexed_meta[ $row->post_id ] ) ) {
-					$indexed_meta[ $row->post_id ] = array();
-				}
-
-				// add this meta item to the list for this post
-				if ( ! isset( $indexed_meta[ $row->post_id ][ $row->meta_key ] ) )
-					$indexed_meta[ $row->post_id ][ $row->meta_key ] = array( $row->meta_value );
-				else
-					$indexed_meta[ $row->post_id ][ $row->meta_key ][] = $row->meta_value;
-			}
+			foreach ( $event_ids as $event_id )
+				$indexed_meta[ $event_id ] = get_post_meta( $event_id );
 		}
 
 		// add the parent post and meta to each child event, if the parent or meta was found
@@ -501,19 +488,19 @@ class qsot_frontend_calendar {
 		);
 
 		// gather information about this event's parent, because it will be used in the output of the event data
-		$par = get_post( $event->post_parent );
+		$par = isset( $event->parent_post ) && is_object( $event->parent_post ) ? $event->parent_post : get_post( $event->post_parent );
 
 		// get the event area and zoner so we can show availability
 		$event_area = apply_filters( 'qsot-event-area-for-event', false, $event->ID );
 		$zoner = is_object( $event_area ) && isset( $event_area->area_type ) && is_object( $event_area->area_type ) && ! is_wp_error( $event_area->area_type ) ? $event_area->area_type->get_zoner() : false;
 
 		// start compiling the organized list of information
-		$meta = get_post_meta( $event->ID );
+		$meta = isset( $event->meta ) && is_array( $event->meta ) ? $event->meta : get_post_meta( $event->ID );
 		$e = array(
 			// use the parent event title as the event title, because it does not have the date, which will already be displayed based on the calendar position. if that is not avaiable, just use the clunky title
 			'title' => apply_filters( 'the_title', is_object( $par ) && isset( $par->post_title ) ? $par->post_title : $event->post_title ),
 			// short and long description of the event
-			'description' => apply_filters( 'the_content', empty( $event->post_content ) ? $par->post_content : $event->post_parent ),
+			'description' => '', //apply_filters( 'the_content', empty( $event->post_content ) ? $par->post_content : $event->post_parent ),
 			'short_description' => self::_short_description( $event, $par ),
 			// add the start and end dates
 			'start' => isset( $meta[ $keys['start'] ] ) ? current( $meta[ $keys['start'] ] ) : '',
@@ -522,6 +509,7 @@ class qsot_frontend_calendar {
 			'url' => get_permalink( $event->ID ),
 			// add the event image
 			'img' => get_the_post_thumbnail( $event->ID ),
+			'img_full' => get_the_post_thumbnail( $event->ID, 'full' ),
 			// add the status and visibility information
 			'status' => $event->post_status,
 			'protected' => $event->post_password ? 1 : 0,
@@ -734,6 +722,47 @@ class qsot_frontend_calendar {
 			update_post_meta( $page_id, '_calendar_start_method', 'today' );
 			update_option( 'qsot_calendar_page_id', $page_id );
 		}
+	}
+	// setup the options that are available to control tickets. reachable at WPAdmin -> OpenTickets (menu) -> Settings (menu) -> Frontend (tab) -> Tickets (heading)
+	protected static function _setup_admin_options() {
+		$class = apply_filters( 'qsot-options-class-name', false );
+		if ( empty( $class ) )
+			return;
+
+		$options = call_user_func( array( $class, 'instance' ) );
+		// setup the default values
+		$options->def( 'qsot-calendar-show-image-on-month', 'yes' );
+
+		// the 'Tickets' heading on the Frontend tab
+		$options->add( array(
+			'order' => 700,
+			'type' => 'title',
+			'title' => __( 'Calendar Settings', 'opentickets-community-edition' ),
+			'id' => 'heading-frontend-calendar-1',
+			'page' => 'frontend',
+			'section' => 'calendar',
+		) );
+
+		// whether or not to show the event image on the calendar 'month' view
+		$options->add( array(
+			'order' => 729,
+			'id' => 'qsot-calendar-show-image-on-month',
+			'type' => 'checkbox',
+			'title' => __( 'Month View Image', 'opentickets-community-edition' ),
+			'desc' => __( 'Yes. Show the event featured image on the default calendar view (month view).', 'opentickets-community-edition' ),
+			'default' => 'no',
+			'page' => 'frontend',
+			'section' => 'calendar',
+		) );
+
+		// end the 'Tickets' section on the page
+		$options->add( array(
+			'order' => 799,
+			'type' => 'sectionend',
+			'id' => 'heading-frontend-calendar-1',
+			'page' => 'frontend',
+			'section' => 'calendar',
+		) );
 	}
 }
 

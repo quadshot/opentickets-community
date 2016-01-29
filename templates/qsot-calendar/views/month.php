@@ -10,4 +10,7 @@
 			<span class="num"></span>
 		</div>
 	</div>
+	<?php if ( 'yes' === apply_filters( 'qsot-get-option-value', 'no', 'qsot-calendar-show-image-on-month' ) ): ?>
+		<div class="fc-img"></div>
+	<?php endif; ?>
 </div>
