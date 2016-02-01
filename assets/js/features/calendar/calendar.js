@@ -348,7 +348,7 @@ QS.EventCalendar = ( function( $, W, D, qt, undefined ) {
 			if ( ! qt.is( this.footer ) ) {
 				footer = this.footer = new Footer( this, this.options );
 				footer_element = footer.render();
-				footer_element.insertAfter( view.el );
+				footer_element.insertAfter( header_element.nextAll( '.fc-view-container:eq(0)' ) );
 				footer_element.find( '.fc-center h2' ).remove();
 				header_element = header_element.add( footer_element );
 			}
