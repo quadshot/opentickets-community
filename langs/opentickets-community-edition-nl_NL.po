@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OpenTickets Community Edition\n"
-"POT-Creation-Date: 2016-01-06 11:46-0800\n"
-"PO-Revision-Date: 2016-01-06 11:53-0800\n"
+"POT-Creation-Date: 2016-02-01 11:44-0800\n"
+"PO-Revision-Date: 2016-02-01 11:44-0800\n"
 "Last-Translator: \n"
 "Language-Team: Quadshot <info@quadshot.com>\n"
 "Language: nl\n"
@@ -84,7 +84,7 @@ msgstr ""
 "en activeer <em><a href=\"http://www.woothemes.com/woocommerce/\" target="
 "\"_blank\">WooCommerce</a></em>."
 
-#: ../opentickets.php:126
+#: ../opentickets.php:125
 #, php-format
 msgid ""
 "<a href=\"%s\" title=\"Visit the License Key settings page\">Settings</a>"
@@ -92,7 +92,7 @@ msgstr ""
 "<a href=\"%s\" title=\"Bezoek de instellingen pagina van de licentie code"
 "\">Instellingen</a>"
 
-#: ../opentickets.php:425
+#: ../opentickets.php:421
 #, php-format
 msgid ""
 "If you like %1$sOpenTickets Community Edition%2$s please leave us a "
@@ -100,7 +100,7 @@ msgid ""
 "%4$sQuadshot%2$s in advance!"
 msgstr ""
 
-#: ../opentickets.php:436
+#: ../opentickets.php:432
 #, php-format
 msgid ""
 "Also, if you like %1$sOpenTickets Community Edition%2$s, please leave them a "
@@ -108,11 +108,11 @@ msgid ""
 "you a huge thank you as well!"
 msgstr ""
 
-#: ../opentickets.php:505
+#: ../opentickets.php:501
 msgid "Memory Requirement Problem"
 msgstr "Probleem met veriest geheugen"
 
-#: ../opentickets.php:533
+#: ../opentickets.php:529
 #, php-format
 msgid ""
 "The %%%%PRODUCT%%%% plugin <strong>requires</strong> that your server allow "
@@ -133,7 +133,7 @@ msgstr ""
 "te houden. Wanner u de server instellingen heeft aangepast zodat de minimum "
 "eisen voldaan worden, zal OpenTickts automatisch ingeschakeld worden."
 
-#: ../opentickets.php:543
+#: ../opentickets.php:539
 #, php-format
 msgid ""
 "The %%%%PRODUCT%%%% plugin <strong>requires</strong> that your server allow "
@@ -173,15 +173,15 @@ msgstr ""
 msgid "Could not find the needed library %s, for use in %s."
 msgstr "Kan de opgegeven locatie niet vinden [%s : %s]."
 
-#: ../inc/core/calendar.class.php:127
+#: ../inc/core/calendar.class.php:126
 msgid "OpenTickets Calendar"
 msgstr "OpenTickets Kalender"
 
-#: ../inc/core/calendar.class.php:155
+#: ../inc/core/calendar.class.php:248
 msgid "Non-JS Calendar Page"
 msgstr "Non-JS Kalander Pagina"
 
-#: ../inc/core/calendar.class.php:156
+#: ../inc/core/calendar.class.php:249
 msgid ""
 "Widget area on calendar template that shows when a user does not have "
 "javascript enabled."
@@ -189,60 +189,67 @@ msgstr ""
 "Widget gebied in kalender template dat laat zien waneer een gebruiker "
 "javascript uitgeschakeld heeft staan."
 
-#: ../inc/core/calendar.class.php:212
+#: ../inc/core/calendar.class.php:317 ../inc/core/calendar.class.php:740
 msgid "Calendar Settings"
 msgstr "Kalender Instellingen"
 
-#: ../inc/core/calendar.class.php:330
+#: ../inc/core/calendar.class.php:333 ../inc/core/event-reporting.class.php:69
+#: ../inc/sys/pages/system-status.page.php:857
+msgid "Loading..."
+msgstr ""
+
+#: ../inc/core/calendar.class.php:334
+msgid "Goto Month"
+msgstr ""
+
+#: ../inc/core/calendar.class.php:537
 msgid "Ended"
 msgstr "Geëindigt"
 
-#: ../inc/core/calendar.class.php:364 ../inc/core/calendar.class.php:412
+#: ../inc/core/calendar.class.php:575
 msgid "Today"
 msgstr "Vandaag"
 
-#: ../inc/core/calendar.class.php:365 ../inc/core/calendar.class.php:413
+#: ../inc/core/calendar.class.php:576
 msgid "Date of next Event"
 msgstr "Datum van volgende Event"
 
-#: ../inc/core/calendar.class.php:366 ../inc/core/calendar.class.php:390
-#: ../inc/core/calendar.class.php:391 ../inc/core/calendar.class.php:414
+#: ../inc/core/calendar.class.php:577 ../inc/core/calendar.class.php:607
+#: ../inc/core/calendar.class.php:608
 msgid "Manually entered date"
 msgstr "Handmatig ingevoerde datum"
 
-#: ../inc/core/calendar.class.php:378
+#: ../inc/core/calendar.class.php:595
 msgid "Starting Date Method"
 msgstr "Begin Datum Methode"
 
-#: ../inc/core/calendar.class.php:393 ../inc/core/post-type.class.php:1846
-#: ../inc/core/post-type.class.php:1852 ../inc/core/post-type.class.php:1935
-#: ../inc/core/post-type.class.php:1951
-#: ../inc/sys/pages/system-status.page.php:1014
+#: ../inc/core/calendar.class.php:610 ../inc/core/post-type.class.php:1896
+#: ../inc/core/post-type.class.php:1902 ../inc/core/post-type.class.php:1985
+#: ../inc/core/post-type.class.php:2001
+#: ../inc/sys/pages/system-status.page.php:1046
 msgid "m-d-Y"
 msgstr "d-m-Y"
 
-#: ../inc/core/calendar.class.php:394 ../inc/core/post-type.class.php:1762
-#: ../inc/core/post-type.class.php:1801 ../inc/core/post-type.class.php:1818
-#: ../inc/core/post-type.class.php:1845 ../inc/core/post-type.class.php:1851
-#: ../inc/core/post-type.class.php:1934 ../inc/core/post-type.class.php:1950
+#: ../inc/core/calendar.class.php:611 ../inc/core/post-type.class.php:1812
+#: ../inc/core/post-type.class.php:1851 ../inc/core/post-type.class.php:1868
+#: ../inc/core/post-type.class.php:1895 ../inc/core/post-type.class.php:1901
+#: ../inc/core/post-type.class.php:1984 ../inc/core/post-type.class.php:2000
 msgid "mm-dd-yy"
 msgstr "dd-mm-yy"
 
-#: ../inc/core/calendar.class.php:477 ../inc/core/calendar.class.php:501
+#: ../inc/core/calendar.class.php:708
 msgid "Event Calendar"
 msgstr "Event Kalender"
 
-#: ../inc/core/calendar.class.php:495
-msgid "Event Pages"
-msgstr "Event Pagina's"
+#: ../inc/core/calendar.class.php:751
+#, fuzzy
+msgid "Month View Image"
+msgstr "De Event Uitgelichte Afbeelding"
 
-#: ../inc/core/calendar.class.php:497
-msgid "These pages are used to display the upcoming events."
-msgstr "Deze pagina's worden gebruikt om aankomende events weer te geven."
-
-#: ../inc/core/calendar.class.php:502
-msgid "Page to display the calendar of upcoming events."
-msgstr "Pagina om de kalender weer te geven vaan aankomende events."
+#: ../inc/core/calendar.class.php:752
+msgid ""
+"Yes. Show the event featured image on the default calendar view (month view)."
+msgstr ""
 
 #: ../inc/core/event-reporting.class.php:48
 msgid "View a printer-friendly version of this report."
@@ -251,11 +258,6 @@ msgstr ""
 #: ../inc/core/event-reporting.class.php:49
 msgid "Printer-Friendly Report"
 msgstr "Printer Vriendelijk Versie"
-
-#: ../inc/core/event-reporting.class.php:69
-#: ../inc/sys/pages/system-status.page.php:846
-msgid "Loading..."
-msgstr ""
 
 #: ../inc/core/event-reporting.class.php:105
 #: ../inc/core/event-reporting.class.php:107
@@ -292,6 +294,7 @@ msgid "Temporary Cart"
 msgstr ""
 
 #: ../inc/core/event-reporting.class.php:405
+#: ../inc/reporting/seating.report.class.php:574
 #, php-format
 msgid "Unpaid Cart: %s"
 msgstr ""
@@ -355,9 +358,9 @@ msgstr "%1$s &lsaquo; %2$s &#8212; WordPress"
 #: ../inc/core/event-reporting.class.php:809
 #: ../inc/core/event-reporting.class.php:834
 #: ../inc/core/my-account-takeover.class.php:69
-#: ../inc/sys/pages/system-status.page.php:380
-#: ../inc/sys/pages/system-status.page.php:444
-#: ../inc/sys/pages/system-status.page.php:771
+#: ../inc/sys/pages/system-status.page.php:391
+#: ../inc/sys/pages/system-status.page.php:455
+#: ../inc/sys/pages/system-status.page.php:782
 msgid "(none)"
 msgstr "(geen)"
 
@@ -431,153 +434,158 @@ msgstr "Oneindige Login"
 msgid "Once a user logs in, they stay logged in, forever."
 msgstr "Als een gebruiker inlogd, blijft deze ingelogd, voor altijd."
 
-#: ../inc/core/post-type.class.php:224 ../inc/core/post-type.class.php:244
-#: ../inc/core/post-type.class.php:992
-#: ../inc/reporting/seating.report.class.php:51
+#: ../inc/core/post-type.class.php:225 ../inc/core/post-type.class.php:245
+#: ../inc/core/post-type.class.php:1007
+#: ../inc/reporting/seating.report.class.php:78
 msgid "Event"
 msgstr "Event"
 
-#: ../inc/core/post-type.class.php:228 ../inc/core/post-type.class.php:246
+#: ../inc/core/post-type.class.php:229 ../inc/core/post-type.class.php:247
 msgid "View this event"
 msgstr "Bekijk dit event"
 
-#: ../inc/core/post-type.class.php:494 ../inc/core/post-type.class.php:991
+#: ../inc/core/post-type.class.php:495 ../inc/core/post-type.class.php:1006
 #: ../inc/sys/settings/frontend.php:38
 msgid "Events"
 msgstr "Events"
 
-#: ../inc/core/post-type.class.php:522
+#: ../inc/core/post-type.class.php:523
 msgid "Top Level Events"
 msgstr "Top Level Events"
 
-#: ../inc/core/post-type.class.php:730
+#: ../inc/core/post-type.class.php:745
 msgid "sold-out"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:733
+#: ../inc/core/post-type.class.php:748
 msgid "low"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:736
+#: ../inc/core/post-type.class.php:751
 msgid "medium"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:739
+#: ../inc/core/post-type.class.php:754
 msgid "high"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:813
+#: ../inc/core/post-type.class.php:828
 msgid "available"
 msgstr "Beschikbaar:"
 
-#: ../inc/core/post-type.class.php:919
+#: ../inc/core/post-type.class.php:934
 msgctxt "post"
 msgid "Hidden"
 msgstr "Verborgen"
 
-#: ../inc/core/post-type.class.php:936
+#: ../inc/core/post-type.class.php:951
 #, php-format
 msgid "Hidden <span class=\"count\">(%s)</span>"
 msgid_plural "Hidden <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../inc/core/post-type.class.php:1040
+#: ../inc/core/post-type.class.php:1055
 msgid "MM-dd-yyyy"
 msgstr "dd-MM-yyyy"
 
-#: ../inc/core/post-type.class.php:1041
+#: ../inc/core/post-type.class.php:1056
 msgid "ddd MM-dd-yyyy"
 msgstr "ddd dd-MM-yyyy"
 
-#: ../inc/core/post-type.class.php:1042
+#: ../inc/core/post-type.class.php:1057
 msgid "hh:mmtt"
 msgstr "hh:mmtt"
 
-#: ../inc/core/post-type.class.php:1163
+#: ../inc/core/post-type.class.php:1060
+#, fuzzy
+msgid "New Event Date"
+msgstr "Event Datum/Tijd"
+
+#: ../inc/core/post-type.class.php:1184
 msgid "Max"
 msgstr "Max"
 
-#: ../inc/core/post-type.class.php:1166
-#: ../inc/reporting/seating.report.class.php:35
-#: ../inc/reporting/seating.report.class.php:50
+#: ../inc/core/post-type.class.php:1187
+#: ../inc/reporting/seating.report.class.php:57
+#: ../inc/reporting/seating.report.class.php:77
 #: ../inc/sys/admin-menu.class.php:364
 #: ../inc/sys/extensions/settings/licenses.php:60
 #: ../inc/sys/extensions/settings/licenses.php:93
 #: ../inc/sys/extensions/settings/licenses.php:102
 #: ../inc/sys/extensions/settings/licenses.php:141
 #: ../inc/sys/extensions/settings/licenses.php:163
-#: ../inc/sys/pages/system-status.page.php:718
+#: ../inc/sys/pages/system-status.page.php:729
 msgid "Status"
 msgstr "Status"
 
-#: ../inc/core/post-type.class.php:1204
+#: ../inc/core/post-type.class.php:1225
 msgid "m/d/Y"
 msgstr "d/m/Y"
 
-#: ../inc/core/post-type.class.php:1205
+#: ../inc/core/post-type.class.php:1226
 #: ../templates/tickets/ticket/event-meta.php:10
 #: ../templates/tickets/ticket/event-meta.php:15
 #: ../templates/tickets/ticket/event-meta.php:17
 msgid "g:ia"
 msgstr "g:ia"
 
-#: ../inc/core/post-type.class.php:1208
+#: ../inc/core/post-type.class.php:1229
 #, php-format
 msgid "on %2$s"
 msgstr "toegevoeg op %2$s"
 
-#: ../inc/core/post-type.class.php:1210
+#: ../inc/core/post-type.class.php:1231
 #, php-format
 msgid "@ %3$s"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1309
+#: ../inc/core/post-type.class.php:1334
 msgctxt "Permalink date"
 msgid "Y-m-d_gia"
 msgstr "Y-m-d"
 
-#: ../inc/core/post-type.class.php:1590
+#: ../inc/core/post-type.class.php:1615
 msgctxt "metabox title"
 msgid "Event Date Time Settings"
 msgstr "Event Datum Tijd instellingen"
 
-#: ../inc/core/post-type.class.php:1600
+#: ../inc/core/post-type.class.php:1625
 msgctxt "metabox title"
 msgid "Event Titles"
 msgstr "Event Datum/Tijd"
 
-#: ../inc/core/post-type.class.php:1610
+#: ../inc/core/post-type.class.php:1635
 msgctxt "metabox title"
 msgid "Ticket Sales Settings"
 msgstr "Ticket Selectie UI"
 
-#: ../inc/core/post-type.class.php:1621
+#: ../inc/core/post-type.class.php:1645
 msgctxt "metabox title"
 msgid "Event Run Date Range"
 msgstr "Event Looptijd Datum Beriek"
 
-#: ../inc/core/post-type.class.php:1646
+#: ../inc/core/post-type.class.php:1696
 msgctxt "metabox field heading"
 msgid "Show Date"
 msgstr "Geef Rapport Weer"
 
-#: ../inc/core/post-type.class.php:1652 ../inc/core/post-type.class.php:1681
+#: ../inc/core/post-type.class.php:1702 ../inc/core/post-type.class.php:1731
 msgctxt "checkbox description"
 msgid "Use the site wide default setting"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1659
+#: ../inc/core/post-type.class.php:1709
 msgctxt "radio button description"
 msgid "Yes, show the date"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1663
+#: ../inc/core/post-type.class.php:1713
 msgctxt "radio button description"
 msgid "No, hide the date"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1668 ../inc/core/post-type.class.php:1697
+#: ../inc/core/post-type.class.php:1718 ../inc/core/post-type.class.php:1747
 #, php-format
 msgctxt "field helper text"
 msgid ""
@@ -585,47 +593,47 @@ msgid ""
 "a specific value for these events."
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1671
+#: ../inc/core/post-type.class.php:1721
 msgctxt "option name"
 msgid "Show Date"
 msgstr "Geef Rapport Weer"
 
-#: ../inc/core/post-type.class.php:1675
+#: ../inc/core/post-type.class.php:1725
 msgctxt "metabox field heading"
 msgid "Show Time"
 msgstr "Start Tijd"
 
-#: ../inc/core/post-type.class.php:1688
+#: ../inc/core/post-type.class.php:1738
 msgctxt "radio button description"
 msgid "Yes, show the time"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1692
+#: ../inc/core/post-type.class.php:1742
 msgctxt "radio button description"
 msgid "No, hide the time"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1700
+#: ../inc/core/post-type.class.php:1750
 msgctxt "option name"
 msgid "Show Time"
 msgstr "Start Tijd"
 
-#: ../inc/core/post-type.class.php:1737 ../inc/core/post-type.class.php:2102
+#: ../inc/core/post-type.class.php:1787 ../inc/core/post-type.class.php:2152
 msgid "Purchase Limit"
 msgstr "Koper"
 
-#: ../inc/core/post-type.class.php:1741
+#: ../inc/core/post-type.class.php:1791
 msgid ""
 "The maximum number of tickets, for each child event, that a given cart can "
 "have in it. To use the site-wide global setting, use \"0\". To force no-"
 "limit, use \"-1\"."
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1746
+#: ../inc/core/post-type.class.php:1796
 msgid "Stop Sales Before - Formula"
 msgstr "Verkoop Stoppen Voor Show"
 
-#: ../inc/core/post-type.class.php:1750
+#: ../inc/core/post-type.class.php:1800
 msgid ""
 "This is the formula to calculate when tickets should stop being sold on the "
 "frontend for this show. For example, if you wish to stop selling tickets 2 "
@@ -642,158 +650,158 @@ msgstr ""
 "jaren. Laat het veld leeg om de globale instellingen voor deze formule te "
 "gebruiken."
 
-#: ../inc/core/post-type.class.php:1755
+#: ../inc/core/post-type.class.php:1805
 msgid "Stop Sales - Hard Stop"
 msgstr "Verkoop Stoppen Voor Show"
 
-#: ../inc/core/post-type.class.php:1764 ../inc/core/post-type.class.php:1803
-#: ../inc/core/post-type.class.php:1820 ../inc/core/post-type.class.php:2089
+#: ../inc/core/post-type.class.php:1814 ../inc/core/post-type.class.php:1853
+#: ../inc/core/post-type.class.php:1870 ../inc/core/post-type.class.php:2139
 msgid "@"
 msgstr "@"
 
-#: ../inc/core/post-type.class.php:1772
+#: ../inc/core/post-type.class.php:1822
 msgid ""
 "This is the date and time, after which no tickets to this event should be "
 "sold."
 msgstr ""
 
-#: ../inc/core/post-type.class.php:1795
+#: ../inc/core/post-type.class.php:1845
 msgid "Start Date/Time"
 msgstr "Start Datum/Tijd"
 
-#: ../inc/core/post-type.class.php:1812
+#: ../inc/core/post-type.class.php:1862
 msgid "End Date/Time:"
 msgstr "Eind Datum/Tijd"
 
-#: ../inc/core/post-type.class.php:1842
+#: ../inc/core/post-type.class.php:1892
 msgid "Basic Settings"
 msgstr "Algemene Instellingen"
 
-#: ../inc/core/post-type.class.php:1846
+#: ../inc/core/post-type.class.php:1896
 msgid "Start Date"
 msgstr "Start Datum"
 
-#: ../inc/core/post-type.class.php:1847 ../inc/core/post-type.class.php:1853
-#: ../inc/core/post-type.class.php:1936 ../inc/core/post-type.class.php:1952
+#: ../inc/core/post-type.class.php:1897 ../inc/core/post-type.class.php:1903
+#: ../inc/core/post-type.class.php:1986 ../inc/core/post-type.class.php:2002
 msgid "Y-m-d"
 msgstr "Y-m-d"
 
-#: ../inc/core/post-type.class.php:1848 ../inc/core/post-type.class.php:1854
+#: ../inc/core/post-type.class.php:1898 ../inc/core/post-type.class.php:1904
 msgid "h:ia"
 msgstr "h:ia"
 
-#: ../inc/core/post-type.class.php:1848
+#: ../inc/core/post-type.class.php:1898
 msgid "Start Time"
 msgstr "Start Tijd"
 
-#: ../inc/core/post-type.class.php:1849
+#: ../inc/core/post-type.class.php:1899
 msgid "to"
 msgstr "naar"
 
-#: ../inc/core/post-type.class.php:1852
+#: ../inc/core/post-type.class.php:1902
 msgid "End Date"
 msgstr "Eind Datum"
 
-#: ../inc/core/post-type.class.php:1854
+#: ../inc/core/post-type.class.php:1904
 msgid "End Time"
 msgstr "Eind Tijd"
 
-#: ../inc/core/post-type.class.php:1860 ../inc/core/post-type.class.php:1869
+#: ../inc/core/post-type.class.php:1910 ../inc/core/post-type.class.php:1919
 msgid "Repeat"
 msgstr "Herhalen"
 
-#: ../inc/core/post-type.class.php:1874
+#: ../inc/core/post-type.class.php:1924
 msgid "Repeats"
 msgstr "Herhaald"
 
-#: ../inc/core/post-type.class.php:1878
+#: ../inc/core/post-type.class.php:1928
 msgid "Weekly"
 msgstr "Weekelijks"
 
-#: ../inc/core/post-type.class.php:1884
+#: ../inc/core/post-type.class.php:1934
 msgid "Repeats Every"
 msgstr "Herhaal Elke"
 
-#: ../inc/core/post-type.class.php:1891
+#: ../inc/core/post-type.class.php:1941
 msgid "days"
 msgstr "dagen"
 
-#: ../inc/core/post-type.class.php:1892
+#: ../inc/core/post-type.class.php:1942
 msgid "weeks"
 msgstr "weken"
 
-#: ../inc/core/post-type.class.php:1897
+#: ../inc/core/post-type.class.php:1947
 msgid "Repeat on"
 msgstr "Herhaal op"
 
-#: ../inc/core/post-type.class.php:1901
+#: ../inc/core/post-type.class.php:1951
 msgid "Su"
 msgstr "Zp"
 
-#: ../inc/core/post-type.class.php:1905
+#: ../inc/core/post-type.class.php:1955
 msgid "Mo"
 msgstr "Ma"
 
-#: ../inc/core/post-type.class.php:1909
+#: ../inc/core/post-type.class.php:1959
 msgid "Tu"
 msgstr "Di"
 
-#: ../inc/core/post-type.class.php:1913
+#: ../inc/core/post-type.class.php:1963
 msgid "We"
 msgstr "Wo"
 
-#: ../inc/core/post-type.class.php:1917
+#: ../inc/core/post-type.class.php:1967
 msgid "Th"
 msgstr "Do"
 
-#: ../inc/core/post-type.class.php:1921
+#: ../inc/core/post-type.class.php:1971
 msgid "Fr"
 msgstr "Fr"
 
-#: ../inc/core/post-type.class.php:1925
+#: ../inc/core/post-type.class.php:1975
 msgid "Sa"
 msgstr "Za"
 
-#: ../inc/core/post-type.class.php:1931
+#: ../inc/core/post-type.class.php:1981
 msgid "Starts on"
 msgstr "Start op"
 
-#: ../inc/core/post-type.class.php:1941
+#: ../inc/core/post-type.class.php:1991
 msgid "Ends"
 msgstr "Eindigt"
 
-#: ../inc/core/post-type.class.php:1947
+#: ../inc/core/post-type.class.php:1997
 msgid "On"
 msgstr "Op"
 
-#: ../inc/core/post-type.class.php:1957
+#: ../inc/core/post-type.class.php:2007
 msgid "After"
 msgstr "Na"
 
-#: ../inc/core/post-type.class.php:1960
+#: ../inc/core/post-type.class.php:2010
 msgid "occurences"
 msgstr "voorkomens"
 
-#: ../inc/core/post-type.class.php:1981
+#: ../inc/core/post-type.class.php:2031
 msgid "Add to Calendar"
 msgstr "Toevoegen aan Kalender"
 
-#: ../inc/core/post-type.class.php:1997
+#: ../inc/core/post-type.class.php:2047
 msgid "Event Date/Times"
 msgstr "Event Datum/Tijd"
 
-#: ../inc/core/post-type.class.php:2003 ../inc/sys/admin-menu.class.php:214
+#: ../inc/core/post-type.class.php:2053 ../inc/sys/admin-menu.class.php:214
 #: ../inc/sys/admin-menu.class.php:215
 msgid "Settings"
 msgstr "Instellingen"
 
-#: ../inc/core/post-type.class.php:2008
+#: ../inc/core/post-type.class.php:2058
 msgid "Status:"
 msgstr "Status:"
 
-#: ../inc/core/post-type.class.php:2010 ../inc/core/post-type.class.php:2033
-#: ../inc/core/post-type.class.php:2068 ../inc/core/post-type.class.php:2104
-#: ../inc/event-area/post-type.class.php:1109
+#: ../inc/core/post-type.class.php:2060 ../inc/core/post-type.class.php:2083
+#: ../inc/core/post-type.class.php:2118 ../inc/core/post-type.class.php:2154
+#: ../inc/event-area/post-type.class.php:1193
 #: ../inc/venues/post-type.class.php:369
 #: ../templates/admin/meta-boxes/views/html-order-items.php:221
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:221
@@ -801,55 +809,55 @@ msgstr "Status:"
 msgid "Edit"
 msgstr "Aanpassen"
 
-#: ../inc/core/post-type.class.php:2015
+#: ../inc/core/post-type.class.php:2065
 msgid "Published"
 msgstr "Gepubliceerd"
 
-#: ../inc/core/post-type.class.php:2016
+#: ../inc/core/post-type.class.php:2066
 msgid "Privately Published"
 msgstr "Prive Gepubliceerd"
 
-#: ../inc/core/post-type.class.php:2017
+#: ../inc/core/post-type.class.php:2067
 msgid "Scheduled"
 msgstr "Gepland"
 
-#: ../inc/core/post-type.class.php:2019
+#: ../inc/core/post-type.class.php:2069
 msgid "Pending Review"
 msgstr "Afwachtende Review"
 
-#: ../inc/core/post-type.class.php:2020
+#: ../inc/core/post-type.class.php:2070
 msgid "Draft"
 msgstr "Concept"
 
-#: ../inc/core/post-type.class.php:2023 ../inc/core/post-type.class.php:2058
-#: ../inc/core/post-type.class.php:2094 ../inc/core/post-type.class.php:2111
-#: ../inc/event-area/post-type.class.php:1134
+#: ../inc/core/post-type.class.php:2073 ../inc/core/post-type.class.php:2108
+#: ../inc/core/post-type.class.php:2144 ../inc/core/post-type.class.php:2161
+#: ../inc/event-area/post-type.class.php:1218
 #: ../inc/venues/post-type.class.php:380
 msgid "OK"
 msgstr "OK"
 
-#: ../inc/core/post-type.class.php:2024 ../inc/core/post-type.class.php:2059
-#: ../inc/core/post-type.class.php:2095 ../inc/core/post-type.class.php:2112
-#: ../inc/event-area/post-type.class.php:1135 ../inc/sys/mba.class.php:462
+#: ../inc/core/post-type.class.php:2074 ../inc/core/post-type.class.php:2109
+#: ../inc/core/post-type.class.php:2145 ../inc/core/post-type.class.php:2162
+#: ../inc/event-area/post-type.class.php:1219 ../inc/sys/mba.class.php:462
 #: ../inc/venues/post-type.class.php:381
 #: ../templates/admin/meta-boxes/views/html-order-items.php:259
 #: ../templates/admin/meta-boxes/views/html-order-items.php:305
 msgid "Cancel"
 msgstr "Annuleren"
 
-#: ../inc/core/post-type.class.php:2031
+#: ../inc/core/post-type.class.php:2081
 msgid "Visibility"
 msgstr "Zichtbaarheid"
 
-#: ../inc/core/post-type.class.php:2037
+#: ../inc/core/post-type.class.php:2087
 msgid "Viewable to the public"
 msgstr "Zichtbaar in het openbaar"
 
-#: ../inc/core/post-type.class.php:2039
+#: ../inc/core/post-type.class.php:2089
 msgid "Public"
 msgstr "Openbaar"
 
-#: ../inc/core/post-type.class.php:2041
+#: ../inc/core/post-type.class.php:2091
 msgid ""
 "Visible on the calendar, but only those with the password can view to make "
 "reservations"
@@ -857,93 +865,93 @@ msgstr ""
 "Zichtbaar op de kalender maar allen diegene met het wachtwoord kunnen inzien "
 "om te reserveren."
 
-#: ../inc/core/post-type.class.php:2043
+#: ../inc/core/post-type.class.php:2093
 msgid "Password Protected"
 msgstr "Beveiligd met wachtwoord"
 
-#: ../inc/core/post-type.class.php:2045
+#: ../inc/core/post-type.class.php:2095
 msgid "Password:"
 msgstr "Wachtwoord:"
 
-#: ../inc/core/post-type.class.php:2049
+#: ../inc/core/post-type.class.php:2099
 msgid "Hidden from the calendar, but open to anyone with the url"
 msgstr "Verborgen op de kalender maar openbaar voor iedereen met de url"
 
-#: ../inc/core/post-type.class.php:2051
+#: ../inc/core/post-type.class.php:2101
 msgid "Hidden"
 msgstr "Verborgen"
 
-#: ../inc/core/post-type.class.php:2053
+#: ../inc/core/post-type.class.php:2103
 msgid "Only logged in admin users or the event author can view it"
 msgstr "Alleen ingelogde admin users of de event auteur kan inzien."
 
-#: ../inc/core/post-type.class.php:2055
+#: ../inc/core/post-type.class.php:2105
 msgid "Private"
 msgstr "Privé"
 
-#: ../inc/core/post-type.class.php:2066
+#: ../inc/core/post-type.class.php:2116
 msgid "Publish Date:"
 msgstr "Publiceer Datum:"
 
-#: ../inc/core/post-type.class.php:2075
+#: ../inc/core/post-type.class.php:2125
 msgid "January"
 msgstr "Januari"
 
-#: ../inc/core/post-type.class.php:2076
+#: ../inc/core/post-type.class.php:2126
 msgid "February"
 msgstr "Februari"
 
-#: ../inc/core/post-type.class.php:2077
+#: ../inc/core/post-type.class.php:2127
 msgid "March"
 msgstr "Maart"
 
-#: ../inc/core/post-type.class.php:2078
+#: ../inc/core/post-type.class.php:2128
 msgid "April"
 msgstr "April"
 
-#: ../inc/core/post-type.class.php:2079
+#: ../inc/core/post-type.class.php:2129
 msgid "May"
 msgstr "Mei"
 
-#: ../inc/core/post-type.class.php:2080
+#: ../inc/core/post-type.class.php:2130
 msgid "June"
 msgstr "Juni"
 
-#: ../inc/core/post-type.class.php:2081
+#: ../inc/core/post-type.class.php:2131
 msgid "July"
 msgstr "Juli"
 
-#: ../inc/core/post-type.class.php:2082
+#: ../inc/core/post-type.class.php:2132
 msgid "August"
 msgstr "Augustus"
 
-#: ../inc/core/post-type.class.php:2083
+#: ../inc/core/post-type.class.php:2133
 msgid "September"
 msgstr "September"
 
-#: ../inc/core/post-type.class.php:2084
+#: ../inc/core/post-type.class.php:2134
 msgid "October"
 msgstr "October"
 
-#: ../inc/core/post-type.class.php:2085
+#: ../inc/core/post-type.class.php:2135
 msgid "November"
 msgstr "November"
 
-#: ../inc/core/post-type.class.php:2086
+#: ../inc/core/post-type.class.php:2136
 msgid "December"
 msgstr "December"
 
-#: ../inc/core/post-type.class.php:2109
+#: ../inc/core/post-type.class.php:2159
 msgid ""
 "Use \"\" or \"0\" to indicate usage of the site-wide global purchase limit. "
 "Use \"-1\" to force an unlimited purchase limit."
 msgstr ""
 
-#: ../inc/core/post-type.class.php:2144
+#: ../inc/core/post-type.class.php:2194
 msgid "Event base"
 msgstr "Event base"
 
-#: ../inc/core/post-type.class.php:2148
+#: ../inc/core/post-type.class.php:2198
 #, php-format
 msgid ""
 "Enter a custom base to use. This url segment will prefix the event name in "
@@ -952,19 +960,19 @@ msgstr ""
 "Voor een custom base in. Dit url segment staat voor de event naam in de url."
 "<br/><code>voorbeeld: %s</code>"
 
-#: ../inc/core/post-type.class.php:2164
+#: ../inc/core/post-type.class.php:2214
 msgid "Event permalink base"
 msgstr "Event permalink base"
 
-#: ../inc/core/post-type.class.php:2227
+#: ../inc/core/post-type.class.php:2277
 msgid "Event Display"
 msgstr "Event Weergave"
 
-#: ../inc/core/post-type.class.php:2236
+#: ../inc/core/post-type.class.php:2286
 msgid "Stop Sales Before Show"
 msgstr "Verkoop Stoppen Voor Show"
 
-#: ../inc/core/post-type.class.php:2237
+#: ../inc/core/post-type.class.php:2287
 msgid ""
 "Amount of time to stop sales for a show, before show time. (ie: stop sales "
 "two hour before show time <code>2 hours</code>)"
@@ -972,7 +980,7 @@ msgstr ""
 "Tijd voor de show waneer de verkoop stopt. (bv. twee uur van te voren "
 "stoppen met verkoop <code>2 uur</code>)"
 
-#: ../inc/core/post-type.class.php:2238
+#: ../inc/core/post-type.class.php:2288
 msgid ""
 "valid units: hour, hours, minute, minutes, second, seconds, day, days, week, "
 "weeks, month, months, year, years"
@@ -980,15 +988,15 @@ msgstr ""
 "gebruikte eenheden: uur, uren, minuut, minuten, seconde, secondes, dag, "
 "dagen, week, weken, maand, maanden, jaar, jaren."
 
-#: ../inc/core/post-type.class.php:2246
+#: ../inc/core/post-type.class.php:2296
 msgid "Single Event Synopsis"
 msgstr "Enkele Event Samenvatting"
 
-#: ../inc/core/post-type.class.php:2247
+#: ../inc/core/post-type.class.php:2297
 msgid "Show event synopsis on single event pages"
 msgstr "Geeft event samenvattingen op enekele event pagina's weer"
 
-#: ../inc/core/post-type.class.php:2248
+#: ../inc/core/post-type.class.php:2298
 msgid ""
 "By default, just the event logo, and the event pricing options are shown. "
 "This feature will additionally show the description of the event to the user."
@@ -997,95 +1005,95 @@ msgstr ""
 "weergegeven. Deze feature laat ook de omschrijving van het event aan de "
 "gebruiker zien."
 
-#: ../inc/core/post-type.class.php:2257
+#: ../inc/core/post-type.class.php:2307
 msgid "Single Event Synopsis Position"
 msgstr "Enekele Event Samenvatting Positie"
 
-#: ../inc/core/post-type.class.php:2258
+#: ../inc/core/post-type.class.php:2308
 msgid "The display position of the Event Synopsis on the single event page."
 msgstr ""
 "De weergave positie van de Event Samenvatting op de enkele event pagina"
 
-#: ../inc/core/post-type.class.php:2260
+#: ../inc/core/post-type.class.php:2310
 msgid "Above the Ticket Selection UI"
 msgstr "Boven de Ticket Selectie UI"
 
-#: ../inc/core/post-type.class.php:2261
+#: ../inc/core/post-type.class.php:2311
 msgid "Below the Ticket Selection UI"
 msgstr "Onde de Ticket Selectie UI"
 
-#: ../inc/core/post-type.class.php:2272
+#: ../inc/core/post-type.class.php:2322
 msgid "Show Date"
 msgstr "Geef Rapport Weer"
 
-#: ../inc/core/post-type.class.php:2273
+#: ../inc/core/post-type.class.php:2323
 msgid "Show the date in the title of events, on the event details pages."
 msgstr "Geef het order nummer van het ticket weer op het ticket."
 
-#: ../inc/core/post-type.class.php:2274
+#: ../inc/core/post-type.class.php:2324
 msgid ""
 "This is the difference between a title reading \"My Event\" and \"My Event "
 "on 09/12/2015\"."
 msgstr ""
 
-#: ../inc/core/post-type.class.php:2284
+#: ../inc/core/post-type.class.php:2334
 msgid "Show Time"
 msgstr "Start Tijd"
 
-#: ../inc/core/post-type.class.php:2285
+#: ../inc/core/post-type.class.php:2335
 msgid "Show the time in the title of events, on the event details pages."
 msgstr ""
 
-#: ../inc/core/post-type.class.php:2286
+#: ../inc/core/post-type.class.php:2336
 msgid ""
 "This is the difference between a title reading \"My Event\" and \"My Event @ "
 "6:00pm\"."
 msgstr ""
 
-#: ../inc/core/post-type.class.php:2295
+#: ../inc/core/post-type.class.php:2345
 msgid "Show Events on Home"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:2296
+#: ../inc/core/post-type.class.php:2346
 msgid "Show the parent events on the homepage, mixed in with the posts."
 msgstr ""
 
-#: ../inc/core/post-type.class.php:2297
+#: ../inc/core/post-type.class.php:2347
 msgid ""
 "Checking this will cause the parent events to be displayed on the homepage, "
 "mixed in with the posts."
 msgstr ""
 
-#: ../inc/core/post-type.class.php:2313
+#: ../inc/core/post-type.class.php:2363
 msgid "Colors"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:2341
+#: ../inc/core/post-type.class.php:2391
 msgid "Availability Quantity"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:2342
+#: ../inc/core/post-type.class.php:2392
 msgid ""
 "Yes, show the quantity that is available, on the frontend, when showing the "
 "availability."
 msgstr ""
 
-#: ../inc/core/post-type.class.php:2352
+#: ../inc/core/post-type.class.php:2402
 msgid "Per Event, Per Order Ticket Purchase Limit"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:2353
+#: ../inc/core/post-type.class.php:2403
 msgid ""
 "A positive number here tells the software to enforce a purchase limit. Users "
 "will be restricted to only buying upto X tickets per event, per order. "
 "Setting to 0 means no limit."
 msgstr ""
 
-#: ../inc/core/post-type.class.php:2362
+#: ../inc/core/post-type.class.php:2412
 msgid "Locked-in Reservations"
 msgstr ""
 
-#: ../inc/core/post-type.class.php:2363
+#: ../inc/core/post-type.class.php:2413
 msgid ""
 "Checking this box means that once the end user chooses a quantity of tickets "
 "to purchase, they cannot modify that quantity. They can still delete their "
@@ -1219,7 +1227,7 @@ msgstr "Verwijderen"
 #: ../inc/event-area/general-admission-area-type.class.php:693
 #: ../inc/event-area/general-admission-area-type.class.php:748
 #: ../inc/event-area/general-admission-zoner.class.php:118
-#: ../inc/ticket/checkin.class.php:68
+#: ../inc/ticket/checkin.class.php:79
 msgid "Could not find that event."
 msgstr "Kan dat event niet vinden."
 
@@ -1247,13 +1255,13 @@ msgstr "D, jS \\of F, Y"
 
 #: ../inc/event-area/general-admission-area-type.class.php:974
 #: ../inc/event-area/general-admission-area-type.class.php:1058
-#: ../inc/event-area/post-type.class.php:1330
+#: ../inc/event-area/post-type.class.php:1414
 msgid "Could not find the new event."
 msgstr "Kan dat event niet vinden."
 
 #: ../inc/event-area/general-admission-area-type.class.php:981
 #: ../inc/event-area/general-admission-area-type.class.php:1065
-#: ../inc/event-area/post-type.class.php:1337
+#: ../inc/event-area/post-type.class.php:1421
 msgid "Could not find the new event's event area."
 msgstr "Kan dat event niet vinden."
 
@@ -1321,111 +1329,127 @@ msgstr "Kan dat order item niet vinden in de order."
 msgid "There was nothing to update."
 msgstr ""
 
-#: ../inc/event-area/post-type.class.php:248
+#: ../inc/event-area/post-type.class.php:252
 msgid "Event Area"
 msgstr "Event Locatie:"
 
-#: ../inc/event-area/post-type.class.php:249
+#: ../inc/event-area/post-type.class.php:253
 msgid "Event Areas"
 msgstr "Event Locaties"
 
-#: ../inc/event-area/post-type.class.php:257
-#: ../inc/event-area/post-type.class.php:258
+#: ../inc/event-area/post-type.class.php:261
+#: ../inc/event-area/post-type.class.php:262
 #, php-format
 msgid "Add New %s"
 msgstr "Voeg Nieuwe %s toe"
 
-#: ../inc/event-area/post-type.class.php:259
+#: ../inc/event-area/post-type.class.php:263
 #, php-format
 msgid "New %s"
 msgstr "Nieuwe %s"
 
-#: ../inc/event-area/post-type.class.php:260
+#: ../inc/event-area/post-type.class.php:264
 #, php-format
 msgid "Edit %s"
 msgstr "%s Aanpassen"
 
-#: ../inc/event-area/post-type.class.php:261
+#: ../inc/event-area/post-type.class.php:265
 #, php-format
 msgid "View %s"
 msgstr "Geef %s Weer"
 
-#: ../inc/event-area/post-type.class.php:262
+#: ../inc/event-area/post-type.class.php:266
 #, php-format
 msgid "All %s"
 msgstr ""
 
-#: ../inc/event-area/post-type.class.php:263
+#: ../inc/event-area/post-type.class.php:267
 #, php-format
 msgid "Search %s"
 msgstr "Zoek %s"
 
-#: ../inc/event-area/post-type.class.php:264
+#: ../inc/event-area/post-type.class.php:268
 #, php-format
 msgid "Parent %s:"
 msgstr "Hoofd %s:"
 
-#: ../inc/event-area/post-type.class.php:265
+#: ../inc/event-area/post-type.class.php:269
 #, php-format
 msgid "No %s found."
 msgstr "Geen %s gevonden"
 
-#: ../inc/event-area/post-type.class.php:266
+#: ../inc/event-area/post-type.class.php:270
 #, php-format
 msgid "No %s found in Trash."
 msgstr "Geen %s gevonden in prullenbak"
 
-#: ../inc/event-area/post-type.class.php:273
+#: ../inc/event-area/post-type.class.php:277
 msgid ""
 "Represents a specific physical location that an event can take place. For "
 "instance, a specific conference room at a hotel."
 msgstr ""
 
-#: ../inc/event-area/post-type.class.php:297
+#: ../inc/event-area/post-type.class.php:301
 msgid "Area Type"
 msgstr "Locatie Naam"
 
-#: ../inc/event-area/post-type.class.php:312
+#: ../inc/event-area/post-type.class.php:316
 #, php-format
 msgid "[%s]"
 msgstr ""
 
-#: ../inc/event-area/post-type.class.php:404
-#: ../inc/event-area/post-type.class.php:423
+#: ../inc/event-area/post-type.class.php:407
+msgid "Sold-out"
+msgstr ""
+
+#: ../inc/event-area/post-type.class.php:408
+msgid "Low"
+msgstr ""
+
+#: ../inc/event-area/post-type.class.php:409
+msgid "Medium"
+msgstr ""
+
+#: ../inc/event-area/post-type.class.php:410
+msgid "High"
+msgstr ""
+
+#: ../inc/event-area/post-type.class.php:424
+#: ../inc/event-area/post-type.class.php:443
 msgid "The event id you supplied is invalid."
 msgstr "De verschafte informatie is goed gekeurd."
 
-#: ../inc/event-area/post-type.class.php:409
-#: ../inc/event-area/post-type.class.php:432
+#: ../inc/event-area/post-type.class.php:429
+#: ../inc/event-area/post-type.class.php:452
 msgid "The event area id you supplied is invalid."
 msgstr "De verschafte informatie is goed gekeurd."
 
-#: ../inc/event-area/post-type.class.php:463
-#: ../inc/event-area/post-type.class.php:643
+#: ../inc/event-area/post-type.class.php:483
+#: ../inc/event-area/post-type.class.php:663
 msgid "There are no registered event area types."
 msgstr "Er zijn nog geen aantekeningen."
 
-#: ../inc/event-area/post-type.class.php:495
+#: ../inc/event-area/post-type.class.php:515
 msgid ""
 "The supplied event type does not use the QSOT_Base_Event_Type parent class."
 msgstr ""
 
-#: ../inc/event-area/post-type.class.php:547
+#: ../inc/event-area/post-type.class.php:567
 msgid "Event Area Type"
 msgstr "Event Locatie Afbeelding:"
 
-#: ../inc/event-area/post-type.class.php:557
+#: ../inc/event-area/post-type.class.php:577
 #: ../inc/venues/post-type.class.php:706
 msgid "Venue"
 msgstr "Locatie"
 
-#: ../inc/event-area/post-type.class.php:803
+#: ../inc/event-area/post-type.class.php:823
 msgid "Change"
 msgstr ""
 
-#: ../inc/event-area/post-type.class.php:813
-#: ../inc/event-area/post-type.class.php:819
-#: ../inc/reporting/seating.report.class.php:205
+#: ../inc/event-area/post-type.class.php:833
+#: ../inc/event-area/post-type.class.php:839
+#: ../inc/reporting/seating.report.class.php:232
 #: ../templates/admin/ticket-selection/general-admission/info.php:3
 #: ../templates/checkin/already-occupied.php:25
 #: ../templates/checkin/occupy-failure.php:25
@@ -1433,71 +1457,71 @@ msgstr ""
 msgid "Event:"
 msgstr "Event:"
 
-#: ../inc/event-area/post-type.class.php:819
+#: ../inc/event-area/post-type.class.php:839
 msgid "(no event selected)"
 msgstr "(geen event geselecteerd)"
 
-#: ../inc/event-area/post-type.class.php:1107
+#: ../inc/event-area/post-type.class.php:1191
 msgid "Event Area:"
 msgstr "Event Locatie:"
 
-#: ../inc/event-area/post-type.class.php:1114
+#: ../inc/event-area/post-type.class.php:1198
 msgid "-None-"
 msgstr "-Geen-"
 
-#: ../inc/event-area/post-type.class.php:1241
+#: ../inc/event-area/post-type.class.php:1325
 msgid "Add tickets"
 msgstr "Voeg tickets toe"
 
-#: ../inc/event-area/post-type.class.php:1345
+#: ../inc/event-area/post-type.class.php:1429
 msgid "Could not find that order."
 msgstr "Kan die locatie niet vinden."
 
-#: ../inc/event-area/post-type.class.php:1367
+#: ../inc/event-area/post-type.class.php:1451
 #: ../templates/event-area/general-admission/ticket-selection.php:16
 #: ../templates/post-content/event-area.php:90
 msgid "Reserve"
 msgstr "Reserveer"
 
-#: ../inc/event-area/post-type.class.php:1368
+#: ../inc/event-area/post-type.class.php:1452
 #: ../templates/event-area/general-admission/owns.php:33
 #: ../templates/post-content/event-area.php:132
 msgid "Update"
 msgstr "Update"
 
-#: ../inc/event-area/post-type.class.php:1369
+#: ../inc/event-area/post-type.class.php:1453
 #: ../templates/event-area/general-admission/owns.php:17
 #: ../templates/event-area/general-admission/owns.php:40
 #: ../templates/post-content/event-area.php:146
 msgid "Proceed to Cart"
 msgstr "Door naar Winkelwagen"
 
-#: ../inc/event-area/post-type.class.php:1376
-#: ../inc/sys/settings/frontend.php:155
+#: ../inc/event-area/post-type.class.php:1460
+#: ../inc/sys/settings/frontend.php:156
 msgid "Ticket Selection UI"
 msgstr "Ticket Selectie UI"
 
-#: ../inc/event-area/post-type.class.php:1387
+#: ../inc/event-area/post-type.class.php:1471
 msgid "Reserve Button"
 msgstr "Reserveer"
 
-#: ../inc/event-area/post-type.class.php:1388
+#: ../inc/event-area/post-type.class.php:1472
 msgid "Label for the Reserve Button on the Ticket Selection UI."
 msgstr "Boven de Ticket Selectie UI"
 
-#: ../inc/event-area/post-type.class.php:1398
+#: ../inc/event-area/post-type.class.php:1482
 msgid "Update Button"
 msgstr "Update"
 
-#: ../inc/event-area/post-type.class.php:1399
+#: ../inc/event-area/post-type.class.php:1483
 msgid "Label for the Update Button on the Ticket Selection UI."
 msgstr "Boven de Ticket Selectie UI"
 
-#: ../inc/event-area/post-type.class.php:1409
+#: ../inc/event-area/post-type.class.php:1493
 msgid "Proceed to Cart Button"
 msgstr "Door naar Winkelwagen"
 
-#: ../inc/event-area/post-type.class.php:1410
+#: ../inc/event-area/post-type.class.php:1494
 msgid "Label for the Proceed to Cart Button on the Ticket Selection UI."
 msgstr ""
 
@@ -1620,8 +1644,8 @@ msgid "Username"
 msgstr "Gebruikersnaam"
 
 #: ../inc/order/admin.class.php:591
-#: ../inc/reporting/seating.report.class.php:31
-#: ../inc/reporting/seating.report.class.php:46
+#: ../inc/reporting/seating.report.class.php:53
+#: ../inc/reporting/seating.report.class.php:73
 #: ../templates/tickets/verification-form.php:11
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:77
 msgid "Email"
@@ -1690,38 +1714,42 @@ msgstr ""
 msgid "Attendees"
 msgstr ""
 
-#: ../inc/reporting/seating.report.class.php:27
-#: ../inc/reporting/seating.report.class.php:42
+#: ../inc/reporting/seating.report.class.php:31
+msgid "Attendee Report note"
+msgstr ""
+
+#: ../inc/reporting/seating.report.class.php:49
+#: ../inc/reporting/seating.report.class.php:69
 msgid "Purchaser"
 msgstr "Koper"
 
-#: ../inc/reporting/seating.report.class.php:28
-#: ../inc/reporting/seating.report.class.php:43
+#: ../inc/reporting/seating.report.class.php:50
+#: ../inc/reporting/seating.report.class.php:70
 msgid "Order #"
 msgstr "Order #"
 
-#: ../inc/reporting/seating.report.class.php:29
-#: ../inc/reporting/seating.report.class.php:44
-#: ../inc/sys/pages/system-status.page.php:716
-#: ../inc/sys/pages/system-status.page.php:798
+#: ../inc/reporting/seating.report.class.php:51
+#: ../inc/reporting/seating.report.class.php:71
+#: ../inc/sys/pages/system-status.page.php:727
+#: ../inc/sys/pages/system-status.page.php:809
 msgid "Ticket Type"
 msgstr "Ticket Type"
 
-#: ../inc/reporting/seating.report.class.php:30
-#: ../inc/reporting/seating.report.class.php:45
-#: ../inc/sys/pages/system-status.page.php:717
-#: ../inc/sys/pages/system-status.page.php:788
+#: ../inc/reporting/seating.report.class.php:52
+#: ../inc/reporting/seating.report.class.php:72
+#: ../inc/sys/pages/system-status.page.php:728
+#: ../inc/sys/pages/system-status.page.php:799
 msgid "Quantity"
 msgstr "Aantal"
 
-#: ../inc/reporting/seating.report.class.php:32
-#: ../inc/reporting/seating.report.class.php:47
+#: ../inc/reporting/seating.report.class.php:54
+#: ../inc/reporting/seating.report.class.php:74
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:80
 msgid "Phone"
 msgstr "Telefoon"
 
-#: ../inc/reporting/seating.report.class.php:33
-#: ../inc/reporting/seating.report.class.php:48
+#: ../inc/reporting/seating.report.class.php:55
+#: ../inc/reporting/seating.report.class.php:75
 #: ../inc/venues/post-type.class.php:207
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:227
 #: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-data.php:229
@@ -1730,56 +1758,61 @@ msgstr "Telefoon"
 msgid "Address"
 msgstr "Adres"
 
-#: ../inc/reporting/seating.report.class.php:34
-#: ../inc/reporting/seating.report.class.php:49
+#: ../inc/reporting/seating.report.class.php:56
+#: ../inc/reporting/seating.report.class.php:76
 msgid "Note"
 msgstr "Notitie"
 
-#: ../inc/reporting/seating.report.class.php:52
+#: ../inc/reporting/seating.report.class.php:79
 msgid "Ticket Url"
 msgstr "Tickt url"
 
-#: ../inc/reporting/seating.report.class.php:60
+#: ../inc/reporting/seating.report.class.php:79
+#, fuzzy
+msgid "Ticket Code"
+msgstr "Ticket Type"
+
+#: ../inc/reporting/seating.report.class.php:87
 msgid "(unknown event)"
 msgstr "(onbekend)"
 
-#: ../inc/reporting/seating.report.class.php:67
+#: ../inc/reporting/seating.report.class.php:94
 #, php-format
 msgid "Seating Report: %s"
 msgstr "Stoelen Rapport: %s"
 
-#: ../inc/reporting/seating.report.class.php:197
+#: ../inc/reporting/seating.report.class.php:224
 msgid "Year:"
 msgstr "Jaar:"
 
-#: ../inc/reporting/seating.report.class.php:199
+#: ../inc/reporting/seating.report.class.php:226
 msgid "[All Years]"
 msgstr "[Alle Jaren]"
 
-#: ../inc/reporting/seating.report.class.php:208
-#: ../inc/reporting/seating.report.class.php:219
-#: ../inc/sys/pages/system-status.page.php:316
+#: ../inc/reporting/seating.report.class.php:235
+#: ../inc/reporting/seating.report.class.php:246
+#: ../inc/sys/pages/system-status.page.php:327
 msgid "Select an Event"
 msgstr "Selecteer Afbeelding"
 
-#: ../inc/reporting/seating.report.class.php:212
+#: ../inc/reporting/seating.report.class.php:239
 msgid "Lookup Showings"
 msgstr "Geef Shows Weer"
 
-#: ../inc/reporting/seating.report.class.php:217
+#: ../inc/reporting/seating.report.class.php:244
 msgid "Showing:"
 msgstr "Shows:"
 
-#: ../inc/reporting/seating.report.class.php:221
-#: ../inc/sys/pages/system-status.page.php:166
+#: ../inc/reporting/seating.report.class.php:248
+#: ../inc/sys/pages/system-status.page.php:177
 msgid "Show Report"
 msgstr "Geef Rapport Weer"
 
-#: ../inc/reporting/seating.report.class.php:315
+#: ../inc/reporting/seating.report.class.php:342
 msgid "(no-order)"
 msgstr ""
 
-#: ../inc/reporting/seating.report.class.php:389
+#: ../inc/reporting/seating.report.class.php:416
 msgid "AVAILABLE"
 msgstr ""
 
@@ -2430,7 +2463,7 @@ msgid ""
 msgstr ""
 
 #: ../inc/sys/extensions/settings/licenses.php:61
-#: ../inc/sys/pages/system-status.page.php:1396
+#: ../inc/sys/pages/system-status.page.php:1428
 msgid "Software"
 msgstr "Software"
 
@@ -2583,10 +2616,27 @@ msgstr ""
 "ticket-tabel kan niet gestart worden. Probeer de niet achtergrond methode."
 
 #: ../inc/sys/pages/system-status.page.php:101
+#, fuzzy
+msgid "Update all event area stati"
+msgstr "de Factuur Informatie"
+
+#: ../inc/sys/pages/system-status.page.php:102
+msgid ""
+"When upgrading from OTCE 1.x to 2.x, some of the event areas may not have "
+"gotten their status updated, depending on how the upgrade took place. This "
+"tool repairs that."
+msgstr ""
+
+#: ../inc/sys/pages/system-status.page.php:105
+#, fuzzy
+msgid "All event area stati have been updated."
+msgstr "Uw instellingen zijn opgeslagen."
+
+#: ../inc/sys/pages/system-status.page.php:112
 msgid "Force the DB tables to re-initialize"
 msgstr "Forceer de DB tabellen om te herinitialiseren"
 
-#: ../inc/sys/pages/system-status.page.php:102
+#: ../inc/sys/pages/system-status.page.php:113
 msgid ""
 "In some very rare cases, you may need to force the db tables to be "
 "recreated. This button, does that."
@@ -2594,35 +2644,35 @@ msgstr ""
 "In sommige zeldzame gevallen is het nodig om de DB tabellen opnieuw op te "
 "bouwen. Deze knop doet dat."
 
-#: ../inc/sys/pages/system-status.page.php:105
+#: ../inc/sys/pages/system-status.page.php:116
 msgid "Purged the OTCE table versions, forcing a reinitialize of the tables."
 msgstr ""
 "OCTE tabel versies verwijdered. Tabellen zijn aan het herinitializeren."
 
-#: ../inc/sys/pages/system-status.page.php:112
+#: ../inc/sys/pages/system-status.page.php:123
 msgid "Remove Ticket File Cache"
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:113
+#: ../inc/sys/pages/system-status.page.php:124
 msgid ""
 "All non-local assets used to create tickets (like external images [google "
 "map] and css [custom tickets]) are cached locally. This will remove that "
 "cache, forcing all assets to be recached."
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:116
-#: ../inc/sys/pages/system-status.page.php:117
+#: ../inc/sys/pages/system-status.page.php:127
+#: ../inc/sys/pages/system-status.page.php:128
 msgid ""
 "Removed all the locally cached Ticket assets. Every external asset will now "
 "be recached."
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:165
+#: ../inc/sys/pages/system-status.page.php:176
 msgid ""
 "Copy and paste this information into your ticket when contacting support:"
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:300
+#: ../inc/sys/pages/system-status.page.php:311
 msgid ""
 "The tools provided on this page are moderately dangerous, and can cause "
 "problems on your site, if you are not absolutely certain you know what you "
@@ -2635,195 +2685,195 @@ msgid ""
 "these tools at your own risk."
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:304
+#: ../inc/sys/pages/system-status.page.php:315
 msgid "I understand."
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:321
+#: ../inc/sys/pages/system-status.page.php:332
 msgid "Load Event Info"
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:334
+#: ../inc/sys/pages/system-status.page.php:345
 msgid "access denied."
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:337
+#: ../inc/sys/pages/system-status.page.php:348
 msgid "request security failsed."
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:433
+#: ../inc/sys/pages/system-status.page.php:444
 #, php-format
 msgid "Order #%d (%s %s, %s)"
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:516
+#: ../inc/sys/pages/system-status.page.php:527
 #, php-format
 msgid "%s x %d %s [Order #%d]"
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:534
-#: ../inc/sys/pages/system-status.page.php:546
-#: ../inc/sys/pages/system-status.page.php:566
-#: ../inc/sys/pages/system-status.page.php:594
+#: ../inc/sys/pages/system-status.page.php:545
+#: ../inc/sys/pages/system-status.page.php:557
+#: ../inc/sys/pages/system-status.page.php:577
+#: ../inc/sys/pages/system-status.page.php:605
 msgid "invalid request."
 msgstr "Ongeldige order."
 
-#: ../inc/sys/pages/system-status.page.php:550
+#: ../inc/sys/pages/system-status.page.php:561
 msgid "No such ticket."
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:560
+#: ../inc/sys/pages/system-status.page.php:571
 msgid "That ticket has been released."
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:589
+#: ../inc/sys/pages/system-status.page.php:600
 msgid "Inserted new ticket"
 msgstr "Reserveer tickets:"
 
-#: ../inc/sys/pages/system-status.page.php:589
+#: ../inc/sys/pages/system-status.page.php:600
 msgid "New ticket failed."
 msgstr "Gebruiker afmaken mislukt:"
 
-#: ../inc/sys/pages/system-status.page.php:618
+#: ../inc/sys/pages/system-status.page.php:629
 msgid "The event id was invalid."
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:620
+#: ../inc/sys/pages/system-status.page.php:631
 msgid "The quantity was invalid."
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:622
+#: ../inc/sys/pages/system-status.page.php:633
 msgid "The product id was invalid."
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:624
+#: ../inc/sys/pages/system-status.page.php:635
 msgid "The session id was invalid."
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:639
+#: ../inc/sys/pages/system-status.page.php:650
 msgid "Could not find that DB record."
 msgstr "Kan die locatie niet vinden."
 
-#: ../inc/sys/pages/system-status.page.php:668
+#: ../inc/sys/pages/system-status.page.php:679
 msgid "No such event."
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:678
+#: ../inc/sys/pages/system-status.page.php:689
 msgid "Could not load that event's data."
 msgstr "Kan dat event niet laden."
 
-#: ../inc/sys/pages/system-status.page.php:687
+#: ../inc/sys/pages/system-status.page.php:698
 msgid "A problem occurred, and your request cannot be processed."
 msgstr ""
 "Er is een probleem ontstaan tijdens het verwijderen van uw reservering."
 
-#: ../inc/sys/pages/system-status.page.php:714
-#: ../inc/sys/pages/system-status.page.php:775
+#: ../inc/sys/pages/system-status.page.php:725
+#: ../inc/sys/pages/system-status.page.php:786
 msgid "Order"
 msgstr "Order"
 
-#: ../inc/sys/pages/system-status.page.php:719
+#: ../inc/sys/pages/system-status.page.php:730
 #: ../templates/admin/meta-boxes/views/html-order-items.php:219
 msgid "Actions"
 msgstr "Acties"
 
-#: ../inc/sys/pages/system-status.page.php:736
+#: ../inc/sys/pages/system-status.page.php:747
 msgid "Edit this Order"
 msgstr "Order Aanpassen"
 
-#: ../inc/sys/pages/system-status.page.php:740
+#: ../inc/sys/pages/system-status.page.php:751
 msgid "No Order (unassociated)"
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:740
+#: ../inc/sys/pages/system-status.page.php:751
 msgid "No Order (in a cart)"
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:748
+#: ../inc/sys/pages/system-status.page.php:759
 msgid "Edit this Ticket"
 msgstr "Bekijk dit ticket"
 
-#: ../inc/sys/pages/system-status.page.php:750
+#: ../inc/sys/pages/system-status.page.php:761
 msgid "(unknown ticket type)"
 msgstr "(Onbekend Ticket Type)"
 
-#: ../inc/sys/pages/system-status.page.php:756
+#: ../inc/sys/pages/system-status.page.php:767
 msgid "Release"
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:762
+#: ../inc/sys/pages/system-status.page.php:773
 msgid "No DB records for this event."
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:769
+#: ../inc/sys/pages/system-status.page.php:780
 msgid "Add a Ticket"
 msgstr "Voeg Tickets Toe"
 
-#: ../inc/sys/pages/system-status.page.php:777
+#: ../inc/sys/pages/system-status.page.php:788
 msgid ""
 "Leave this blank, or set it to 0, if you want the ticket to be completely "
 "unassociated."
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:781
+#: ../inc/sys/pages/system-status.page.php:792
 msgid "Order Item"
 msgstr "Oder Datum:"
 
-#: ../inc/sys/pages/system-status.page.php:784
+#: ../inc/sys/pages/system-status.page.php:795
 msgid ""
 "This can be hard to find, but is required if you want this new ticket to "
 "have an association."
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:790
+#: ../inc/sys/pages/system-status.page.php:801
 msgid ""
 "The number of these tickets you want to reserve. Must be greater than 0."
 msgstr "Het aantal tickets moet hoger zijn dan 0."
 
-#: ../inc/sys/pages/system-status.page.php:804
+#: ../inc/sys/pages/system-status.page.php:815
 msgid ""
 "Select the ticket type for this new reservation. Keep in mind, all available "
 "type are listed here."
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:808
+#: ../inc/sys/pages/system-status.page.php:819
 msgid "Ticket Status"
 msgstr "Tickets"
 
-#: ../inc/sys/pages/system-status.page.php:814
+#: ../inc/sys/pages/system-status.page.php:825
 msgid "The status you want the ticket to have."
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:821
+#: ../inc/sys/pages/system-status.page.php:832
 msgid "Add Ticket"
 msgstr "Voeg Tickets Toe"
 
-#: ../inc/sys/pages/system-status.page.php:845
+#: ../inc/sys/pages/system-status.page.php:856
 msgid "No results found."
 msgstr "Geen gevonden"
 
-#: ../inc/sys/pages/system-status.page.php:955
+#: ../inc/sys/pages/system-status.page.php:987
 msgid "Missed one or more file during cache purge."
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:967
+#: ../inc/sys/pages/system-status.page.php:999
 msgid "Rsync Results"
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:984
+#: ../inc/sys/pages/system-status.page.php:1016
 msgid "Return to Tools Page"
 msgstr ""
 
-#: ../inc/sys/pages/system-status.page.php:1004
+#: ../inc/sys/pages/system-status.page.php:1036
 msgid "FAILED:"
 msgstr "MISLUKT:"
 
-#: ../inc/sys/pages/system-status.page.php:1004
-#: ../inc/sys/pages/system-status.page.php:1010
+#: ../inc/sys/pages/system-status.page.php:1036
+#: ../inc/sys/pages/system-status.page.php:1042
 msgid "Background Order-Item -> Tickets Table"
 msgstr "Achtergrond Order-Item -> Tickets-Table"
 
-#: ../inc/sys/pages/system-status.page.php:1006
+#: ../inc/sys/pages/system-status.page.php:1038
 msgid ""
 "There was a problem trying to resync your order-items to the ticket-table. "
 "Try using the non-background version. If that also fails, report a bug on <a "
@@ -2833,19 +2883,19 @@ msgstr ""
 "Probeer de niet achtergron methode. Mocht die ook falen, rapporter een bug "
 "op <a href=\"%\">het forum</a>"
 
-#: ../inc/sys/pages/system-status.page.php:1010
+#: ../inc/sys/pages/system-status.page.php:1042
 msgid "SUCCESS:"
 msgstr "GESLAAGT:"
 
-#: ../inc/sys/pages/system-status.page.php:1011
+#: ../inc/sys/pages/system-status.page.php:1043
 msgid "Your order-items have been succesfully resynced with the ticket-table."
 msgstr "Uw order-items zijn succesvol hergesynchroniseerd met de ticket-table."
 
-#: ../inc/sys/pages/system-status.page.php:1323
+#: ../inc/sys/pages/system-status.page.php:1355
 msgid "Environment"
 msgstr "Omgeving"
 
-#: ../inc/sys/pages/system-status.page.php:1345
+#: ../inc/sys/pages/system-status.page.php:1377
 #, php-format
 msgid ""
 "You have less than the required amount of memory allocated. The minimum "
@@ -2854,13 +2904,13 @@ msgstr ""
 "U heeft minder dan de vereiste hoeveelheid geheugen toegewezen. Het minimum "
 "is 48MB. U heeft %s."
 
-#: ../inc/sys/pages/system-status.page.php:1350
+#: ../inc/sys/pages/system-status.page.php:1382
 #, php-format
 msgid ""
 "Please <a href=\"%s\">increase your memory allocation</a> to at least 48MB."
 msgstr "<a href=\"%s\">Verhoog uw toegewezen geheugen</a> tot tenminste 48MB."
 
-#: ../inc/sys/pages/system-status.page.php:1355
+#: ../inc/sys/pages/system-status.page.php:1387
 #, php-format
 msgid ""
 "You have more than the minimum required memory, but we still recommend you "
@@ -2869,7 +2919,7 @@ msgstr ""
 "U heeft meer dan de minimum hoeveelheid geheugen toegewezen, maar wij raden "
 "aan om alsnog minstens 64MB toe te wijzen. U heeft %s."
 
-#: ../inc/sys/pages/system-status.page.php:1360
+#: ../inc/sys/pages/system-status.page.php:1392
 #, php-format
 msgid ""
 "We strongly recommend that you <a href=\"%s\">increase your memory "
@@ -2878,7 +2928,7 @@ msgstr ""
 "We raden ten zeerste aan dat <a href=\"%s\">u het toegewezen geheugen "
 "verhoogt</a> naar tenminste 48MB."
 
-#: ../inc/sys/pages/system-status.page.php:1364
+#: ../inc/sys/pages/system-status.page.php:1396
 #, php-format
 msgid ""
 "You have more than the required minimum memory of 64MB. Your current total "
@@ -2886,7 +2936,7 @@ msgid ""
 msgstr ""
 "U heeft meer dan het minimum van 64MB geheugen toegewezen. U heeft totaal %s."
 
-#: ../inc/sys/pages/system-status.page.php:1384
+#: ../inc/sys/pages/system-status.page.php:1416
 #, php-format
 msgid ""
 "Having your uploads directory writable not only allows you to upload your "
@@ -2898,33 +2948,33 @@ msgstr ""
 "kan OpenTickets (en andere plugins) hun cache bestanden opslaan. <a href=%s"
 "\"> Maak om deze reden uw upload map write able.</a>"
 
-#: ../inc/sys/pages/system-status.page.php:1408
+#: ../inc/sys/pages/system-status.page.php:1440
 msgid "Data"
 msgstr "Data"
 
-#: ../inc/sys/pages/system-status.page.php:1496
+#: ../inc/sys/pages/system-status.page.php:1528
 #, php-format
 msgid "%s%s by %s"
 msgstr "%s%s bij %s"
 
-#: ../inc/sys/pages/system-status.page.php:1497
-#: ../inc/sys/pages/system-status.page.php:1503
+#: ../inc/sys/pages/system-status.page.php:1529
+#: ../inc/sys/pages/system-status.page.php:1535
 msgid "PARENT"
 msgstr "HOOFD"
 
-#: ../inc/sys/pages/system-status.page.php:1502
-#: ../inc/sys/pages/system-status.page.php:1548
+#: ../inc/sys/pages/system-status.page.php:1534
+#: ../inc/sys/pages/system-status.page.php:1580
 #, php-format
 msgid "%s%s (%s) by %s (%s)"
 msgstr "%s%s (%s) bij %s (%s)"
 
-#: ../inc/sys/pages/system-status.page.php:1542
+#: ../inc/sys/pages/system-status.page.php:1574
 #, php-format
 msgid "<b>%s</b>%s by %s"
 msgstr "<b>%s</b>%s bij %s"
 
-#: ../inc/sys/pages/system-status.page.php:1543
-#: ../inc/sys/pages/system-status.page.php:1549
+#: ../inc/sys/pages/system-status.page.php:1575
+#: ../inc/sys/pages/system-status.page.php:1581
 msgid "ON"
 msgstr "AAN"
 
@@ -2936,74 +2986,78 @@ msgstr "Front-End"
 msgid "Styles & Colors"
 msgstr ""
 
-#: ../inc/sys/settings/frontend.php:40 ../inc/ticket/ticket.class.php:124
+#: ../inc/sys/settings/frontend.php:40 ../inc/sys/settings/frontend.php:247
+msgid "Calendar"
+msgstr "Kalender"
+
+#: ../inc/sys/settings/frontend.php:41 ../inc/ticket/ticket.class.php:124
 #: ../inc/ticket/ticket.class.php:942
 msgid "Tickets"
 msgstr "Tickets"
 
-#: ../inc/sys/settings/frontend.php:41 ../inc/venues/post-type.class.php:705
+#: ../inc/sys/settings/frontend.php:42 ../inc/venues/post-type.class.php:705
 #: ../inc/venues/post-type.class.php:744
 msgid "Venues"
 msgstr "Locaties"
 
-#: ../inc/sys/settings/frontend.php:42
+#: ../inc/sys/settings/frontend.php:43
 msgid "My Account"
 msgstr "Mijn Account Pagina"
 
-#: ../inc/sys/settings/frontend.php:73
+#: ../inc/sys/settings/frontend.php:74
 msgid "The first image cannot be changed."
 msgstr ""
 
-#: ../inc/sys/settings/frontend.php:75
+#: ../inc/sys/settings/frontend.php:76
 msgid "The last image cannot be changed."
 msgstr ""
 
-#: ../inc/sys/settings/frontend.php:92 ../inc/sys/settings/frontend.php:105
-#: ../inc/sys/settings/frontend.php:118
+#: ../inc/sys/settings/frontend.php:93 ../inc/sys/settings/frontend.php:106
+#: ../inc/sys/settings/frontend.php:119
 #, php-format
 msgid "Image #%s"
 msgstr ""
 
-#: ../inc/sys/settings/frontend.php:95 ../inc/sys/settings/frontend.php:121
+#: ../inc/sys/settings/frontend.php:96 ../inc/sys/settings/frontend.php:122
 msgid "static image"
 msgstr "Gebruik deze afbeelding"
 
-#: ../inc/sys/settings/frontend.php:110
+#: ../inc/sys/settings/frontend.php:111
 msgid "remove image"
 msgstr "Verwijder Tekst"
 
-#: ../inc/sys/settings/frontend.php:111 ../inc/ticket/ticket.class.php:956
+#: ../inc/sys/settings/frontend.php:112 ../inc/ticket/ticket.class.php:956
 #: ../inc/ticket/ticket.class.php:974
 msgid "no image"
 msgstr "Logo Afbeelding"
 
-#: ../inc/sys/settings/frontend.php:140
+#: ../inc/sys/settings/frontend.php:141
 msgid "Frontend Styles"
 msgstr "Front-End Stijlen"
 
-#: ../inc/sys/settings/frontend.php:157
+#: ../inc/sys/settings/frontend.php:158
 msgid "Form BG"
 msgstr "Van Achtergrond"
 
-#: ../inc/sys/settings/frontend.php:160
+#: ../inc/sys/settings/frontend.php:161
 msgid ""
 "Background color of the \"reserve some tickets\" form on the event page."
 msgstr ""
 "Achtergrond kleur van de \"reserveer tickets\" formulier op de event page."
 
-#: ../inc/sys/settings/frontend.php:163
+#: ../inc/sys/settings/frontend.php:164
 msgid "Form Border"
 msgstr "Van Border"
 
-#: ../inc/sys/settings/frontend.php:166
+#: ../inc/sys/settings/frontend.php:167
 msgid "Border color around the \"reserve some tickets\" form."
 msgstr "Border kleur rond het \"reserveer tickets\" formulier."
 
-#: ../inc/sys/settings/frontend.php:169
+#: ../inc/sys/settings/frontend.php:170
 msgid "Action BG"
 msgstr "Actie Achtergrond"
 
-#: ../inc/sys/settings/frontend.php:172
+#: ../inc/sys/settings/frontend.php:173
 msgid ""
 "Background of the \"action\" section, below the \"reserve some tickets\" "
 "form, where the proceed to cart button appears."
@@ -3011,21 +3065,21 @@ msgstr ""
 "Achtergrond van de \"actie\" sectie, onder het \"reserveer tickets\" "
 "formulier, waar de doorgaan naar winkelmandje knop verschijnt."
 
-#: ../inc/sys/settings/frontend.php:175
+#: ../inc/sys/settings/frontend.php:176
 msgid "Helper"
 msgstr "Helper"
 
-#: ../inc/sys/settings/frontend.php:178
+#: ../inc/sys/settings/frontend.php:179
 msgid "Text color of the \"helper text\" on the \"reserve some tickets\" form."
 msgstr ""
 "Tekst kleur of the van de \"helper text\" op her \"reserveer tickets\" "
 "formulier."
 
-#: ../inc/sys/settings/frontend.php:183
+#: ../inc/sys/settings/frontend.php:184
 msgid "Bad BG"
 msgstr "Error Achtergrond"
 
-#: ../inc/sys/settings/frontend.php:186
+#: ../inc/sys/settings/frontend.php:187
 msgid ""
 "Background color of the error message block on the \"reserve some tickets\" "
 "form."
@@ -3033,11 +3087,11 @@ msgstr ""
 "Achtergrond kleur van het error bericht blok op het \"reserveer tickets\" "
 "formulier."
 
-#: ../inc/sys/settings/frontend.php:189
+#: ../inc/sys/settings/frontend.php:190
 msgid "Bad Border"
 msgstr "Error Border"
 
-#: ../inc/sys/settings/frontend.php:192
+#: ../inc/sys/settings/frontend.php:193
 msgid ""
 "Border color around the error message block on the \"reserve some tickets\" "
 "form."
@@ -3045,22 +3099,22 @@ msgstr ""
 "Border kleur rond he error bericht blok op het \"reserveer tickets\" "
 "formulier."
 
-#: ../inc/sys/settings/frontend.php:195
+#: ../inc/sys/settings/frontend.php:196
 msgid "Bad Text"
 msgstr "Error Tekst"
 
-#: ../inc/sys/settings/frontend.php:198
+#: ../inc/sys/settings/frontend.php:199
 msgid ""
 "Text color of the error message block on the \"reserve some tickets\" form."
 msgstr ""
 "Tekst kleur van het error bericht blok op het \"reserveer tickets\" "
 "formulier."
 
-#: ../inc/sys/settings/frontend.php:203
+#: ../inc/sys/settings/frontend.php:204
 msgid "Good BG"
 msgstr "Succes Achtergrond"
 
-#: ../inc/sys/settings/frontend.php:206
+#: ../inc/sys/settings/frontend.php:207
 msgid ""
 "Background color of the success message block on the \"reserve some tickets"
 "\" form."
@@ -3068,11 +3122,11 @@ msgstr ""
 "Achtergrond kleur van het succes bericht blok op het \"reserveer tickets\" "
 "formulier."
 
-#: ../inc/sys/settings/frontend.php:209
+#: ../inc/sys/settings/frontend.php:210
 msgid "Good Border"
 msgstr "Succes Border"
 
-#: ../inc/sys/settings/frontend.php:212
+#: ../inc/sys/settings/frontend.php:213
 msgid ""
 "Border color around the success message block on the \"reserve some tickets"
 "\" form."
@@ -3080,22 +3134,22 @@ msgstr ""
 "Border kleur rond he succes bericht blok op het \"reserveer tickets\" "
 "formulier."
 
-#: ../inc/sys/settings/frontend.php:215
+#: ../inc/sys/settings/frontend.php:216
 msgid "Good Text"
 msgstr "Succes Tekst"
 
-#: ../inc/sys/settings/frontend.php:218
+#: ../inc/sys/settings/frontend.php:219
 msgid ""
 "Text color of the success message block on the \"reserve some tickets\" form."
 msgstr ""
 "Tekst kleur van het succes bericht blok op het \"reserveer tickets\" "
 "formulier."
 
-#: ../inc/sys/settings/frontend.php:223
+#: ../inc/sys/settings/frontend.php:224
 msgid "Remove BG"
 msgstr "Verwijder Acherground"
 
-#: ../inc/sys/settings/frontend.php:226
+#: ../inc/sys/settings/frontend.php:227
 msgid ""
 "Background color of the remove reservation button on the \"reserve some "
 "tickets\" form."
@@ -3103,11 +3157,11 @@ msgstr ""
 "Achtergrond kleur van de verwijder reservering knop op het \"reserveer "
 "tickets\" formulier."
 
-#: ../inc/sys/settings/frontend.php:229
+#: ../inc/sys/settings/frontend.php:230
 msgid "Remove Border"
 msgstr "Verwijder Border"
 
-#: ../inc/sys/settings/frontend.php:232
+#: ../inc/sys/settings/frontend.php:233
 msgid ""
 "Border color around the remove reservation button on the \"reserve some "
 "tickets\" form."
@@ -3115,11 +3169,11 @@ msgstr ""
 "Border kleur van de verwijder reservering knop op het \"reserveer tickets\" "
 "formulier."
 
-#: ../inc/sys/settings/frontend.php:235
+#: ../inc/sys/settings/frontend.php:236
 msgid "Remove Text"
 msgstr "Verwijder Tekst"
 
-#: ../inc/sys/settings/frontend.php:238
+#: ../inc/sys/settings/frontend.php:239
 msgid ""
 "Text color of the remove reservation button on the \"reserve some tickets\" "
 "form."
@@ -3127,47 +3181,68 @@ msgstr ""
 "Tekst kleur van de verwijder reservering knop op het \"reserveer tickets\" "
 "formulier."
 
-#: ../inc/sys/settings/frontend.php:245
-msgid "Calendar"
-msgstr "Kalender"
+#: ../inc/sys/settings/frontend.php:242 ../inc/sys/settings/frontend.php:323
+msgid "reset colors"
+msgstr ""
 
-#: ../inc/sys/settings/frontend.php:247
+#: ../inc/sys/settings/frontend.php:249
 msgid "Calendar Item BG"
 msgstr "Kalender Item Achtergrond"
 
-#: ../inc/sys/settings/frontend.php:250
+#: ../inc/sys/settings/frontend.php:252
 msgid "The background color of the active items shown on the calendar."
 msgstr "De achtergrond kleur van de acive items weergegeven op de kalender."
 
-#: ../inc/sys/settings/frontend.php:253
+#: ../inc/sys/settings/frontend.php:255
 msgid "Calendar Item Border"
 msgstr "Kalender Item Border"
 
-#: ../inc/sys/settings/frontend.php:256
+#: ../inc/sys/settings/frontend.php:258
 msgid "The border color of the active items shown on the calendar."
 msgstr "De border kleur van de active items weergegeven op de kalender."
 
-#: ../inc/sys/settings/frontend.php:259
+#: ../inc/sys/settings/frontend.php:261
 msgid "Calendar Item Text"
 msgstr "Kalender Item Tekst"
 
-#: ../inc/sys/settings/frontend.php:262
+#: ../inc/sys/settings/frontend.php:264
 msgid "The text color of the active items shown on the calendar."
 msgstr "De text kleur van de active items weergegeven op de kalender."
 
-#: ../inc/sys/settings/frontend.php:265
-msgid "Calendar Item Hover"
+#: ../inc/sys/settings/frontend.php:267
+#, fuzzy
+msgid "Calendar Item BG Hover"
 msgstr "Kalender Item Hover"
 
-#: ../inc/sys/settings/frontend.php:268
+#: ../inc/sys/settings/frontend.php:270
+#, fuzzy
+msgid "The HOVER background color of the active items shown on the calendar."
+msgstr "De achtergrond kleur van de acive items weergegeven op de kalender."
+
+#: ../inc/sys/settings/frontend.php:273
+#, fuzzy
+msgid "Calendar Item Border Hover"
+msgstr "Kalender Item Border"
+
+#: ../inc/sys/settings/frontend.php:276
+#, fuzzy
+msgid "The HOVER border color of the active items shown on the calendar."
+msgstr "De border kleur van de active items weergegeven op de kalender."
+
+#: ../inc/sys/settings/frontend.php:279
+#, fuzzy
+msgid "Calendar Item Text Hover"
+msgstr "Kalender Item Hover"
+
+#: ../inc/sys/settings/frontend.php:282
 msgid "The HOVER text color of the active items shown on the calendar."
 msgstr "De HOVER tekst kleur van de active items weergegeven op de kalender."
 
-#: ../inc/sys/settings/frontend.php:272
+#: ../inc/sys/settings/frontend.php:287
 msgid "Past Item BG"
 msgstr "Verlopen Item Achtergrond"
 
-#: ../inc/sys/settings/frontend.php:275
+#: ../inc/sys/settings/frontend.php:290
 msgid ""
 "The background color of the items shown on the calendar, that have already "
 "passed."
@@ -3175,11 +3250,11 @@ msgstr ""
 "De achtergrond kleur van de active items weergegeven op de kalender, die al "
 "verlopen zijn."
 
-#: ../inc/sys/settings/frontend.php:278
+#: ../inc/sys/settings/frontend.php:293
 msgid "Past Item Border"
 msgstr "Verlopen Item Border"
 
-#: ../inc/sys/settings/frontend.php:281
+#: ../inc/sys/settings/frontend.php:296
 msgid ""
 "The border color of the active items shown on the calendari, that have "
 "already passed."
@@ -3187,11 +3262,11 @@ msgstr ""
 "De border kleur van de active items weergegeven op de kalender, die al "
 "verlopen zijn."
 
-#: ../inc/sys/settings/frontend.php:284
+#: ../inc/sys/settings/frontend.php:299
 msgid "Past Item Text"
 msgstr "Verlopen Item Tekst"
 
-#: ../inc/sys/settings/frontend.php:287
+#: ../inc/sys/settings/frontend.php:302
 msgid ""
 "The text color of the active items shown on the calendar, that have already "
 "passed."
@@ -3199,11 +3274,40 @@ msgstr ""
 "De tekst kleur van de active items weergegeven op de kalender, die al "
 "verlopen zijn."
 
-#: ../inc/sys/settings/frontend.php:290
-msgid "Past Item Hover"
+#: ../inc/sys/settings/frontend.php:305
+#, fuzzy
+msgid "Past Item BG Hover"
 msgstr "Verlopen Item Hover"
 
-#: ../inc/sys/settings/frontend.php:293
+#: ../inc/sys/settings/frontend.php:308
+#, fuzzy
+msgid ""
+"The HOVER background color of the items shown on the calendar, that have "
+"already passed."
+msgstr ""
+"De achtergrond kleur van de active items weergegeven op de kalender, die al "
+"verlopen zijn."
+
+#: ../inc/sys/settings/frontend.php:311
+#, fuzzy
+msgid "Past Item Border Hover"
+msgstr "Verlopen Item Border"
+
+#: ../inc/sys/settings/frontend.php:314
+#, fuzzy
+msgid ""
+"The HOVER border color of the active items shown on the calendari, that have "
+"already passed."
+msgstr ""
+"De border kleur van de active items weergegeven op de kalender, die al "
+"verlopen zijn."
+
+#: ../inc/sys/settings/frontend.php:317
+#, fuzzy
+msgid "Past Item Text Hover"
+msgstr "Verlopen Item Hover"
+
+#: ../inc/sys/settings/frontend.php:320
 msgid ""
 "The HOVER text color of the active items shown on the calendar, that have "
 "already passed."
@@ -3211,7 +3315,7 @@ msgstr ""
 "De HOVER tekst kleur van de active items weergegeven op de kalender, die al "
 "verlopen zijn."
 
-#: ../inc/sys/settings/frontend.php:315
+#: ../inc/sys/settings/frontend.php:326
 #, php-format
 msgid ""
 "To edit colours %s and %s need to be writable. See <a href=\"%s\">the Codex</"
@@ -3220,7 +3324,7 @@ msgstr ""
 "Om kleuren aan te passen, moeten %s and %s schrijfbaar zijn. Bekijk <a href="
 "\"%s\">de Codex</a> voor meer informatie."
 
-#: ../inc/sys/settings/frontend.php:402
+#: ../inc/sys/settings/frontend.php:429
 #, php-format
 msgid ""
 "Error saving the Frontend Styles, %s is not a valid color, please use only "
@@ -3245,17 +3349,41 @@ msgstr "WooCommerce"
 msgid "Save changes"
 msgstr "Wijzigingen Opslaan"
 
-#: ../inc/ticket/checkin.class.php:148 ../inc/ticket/ticket.class.php:735
+#: ../inc/ticket/checkin.class.php:159 ../inc/ticket/ticket.class.php:735
 msgid "Could not laod the order that this ticket belongs to."
 msgstr "Kan dat order item niet vinden in de order."
 
-#: ../inc/ticket/checkin.class.php:153 ../inc/ticket/ticket.class.php:742
+#: ../inc/ticket/checkin.class.php:164 ../inc/ticket/ticket.class.php:742
 msgid "Could not load the order item associated with this ticket."
 msgstr "Kan dat order item niet vinden in de order."
 
-#: ../inc/ticket/checkin.class.php:404
+#: ../inc/ticket/checkin.class.php:413
 msgid "Check-in Only"
 msgstr "Ingecheked"
+
+#: ../inc/ticket/checkin.class.php:450
+msgid "Checkin & QR Codes"
+msgstr ""
+
+#: ../inc/ticket/checkin.class.php:461
+msgid "QR Code Mode"
+msgstr ""
+
+#: ../inc/ticket/checkin.class.php:462
+msgid ""
+"How should the QR codes be created? Should they just contain the ticket "
+"code? or should be they point to a check-in url?"
+msgstr ""
+
+#: ../inc/ticket/checkin.class.php:464
+#, fuzzy
+msgid "Check-in URL"
+msgstr "Ingecheked"
+
+#: ../inc/ticket/checkin.class.php:465
+#, fuzzy
+msgid "Ticket Code Only"
+msgstr "Tickt url"
 
 #: ../inc/ticket/product.class.php:159
 msgid ""
@@ -4105,6 +4233,22 @@ msgstr "Bezoek de Event pagina [%s]"
 msgid "Send an email"
 msgstr ""
 
+#: ../templates/qsot-calendar/views/agenda-day.php:4
+#: ../templates/qsot-calendar/views/agenda-week.php:4
+#: ../templates/qsot-calendar/views/basic-day.php:4
+#: ../templates/qsot-calendar/views/basic-week.php:4
+#: ../templates/qsot-calendar/views/month.php:7
+#, fuzzy
+msgid "h:mma"
+msgstr "hh:mmtt"
+
+#: ../templates/qsot-calendar/views/agenda-day.php:9
+#: ../templates/qsot-calendar/views/basic-day.php:9
+#: ../templates/qsot-calendar/views/basic-week.php:9
+#, fuzzy
+msgid "Availability:"
+msgstr "Beschikbaar:"
+
 #: ../templates/tickets/error-msg.php:9
 msgid "An error has occurred while attempting to view the ticket"
 msgstr "Er is een fout opgetreden bij het bekijken van het ticket."
@@ -4300,13 +4444,31 @@ msgstr "Er zijn nog geen aantekeningen."
 msgid "Add note"
 msgstr "Aantekening toevoegen"
 
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:74
-msgid "Customer note"
-msgstr "Klant aantekening"
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:67
+msgid ""
+"Add a note for your reference, or add a customer note (the user will be "
+"notified)."
+msgstr ""
 
-#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:81
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:74
+msgid "Note to customer"
+msgstr ""
+
+#: ../woocommerce/includes/admin/meta-boxes/class-wc-meta-box-order-notes.php:78
 msgid "Private note"
 msgstr "Privé aantekening"
+
+#~ msgid "Event Pages"
+#~ msgstr "Event Pagina's"
+
+#~ msgid "These pages are used to display the upcoming events."
+#~ msgstr "Deze pagina's worden gebruikt om aankomende events weer te geven."
+
+#~ msgid "Page to display the calendar of upcoming events."
+#~ msgstr "Pagina om de kalender weer te geven vaan aankomende events."
+
+#~ msgid "Customer note"
+#~ msgstr "Klant aantekening"
 
 #~ msgid "Seating"
 #~ msgstr "Stoelen"
