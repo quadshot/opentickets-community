@@ -64,21 +64,21 @@ class WC_Meta_Box_Order_Notes extends _WooCommerce_Core_WC_Meta_Box_Order_Notes 
 		echo '</ul>';
 		?>
 		<div class="add_note">
-			<h4><?php _e( 'Add note', 'woocommerce' ); ?> <img class="help_tip" data-tip='<?php esc_attr_e( 'Add a note for your reference, or add a customer note (the user will be notified).', 'woocommerce' ); ?>' src="<?php echo WC()->plugin_url(); ?>/assets/images/help.png" height="16" width="16" /></h4>
+			<h4><?php _e( 'Add note', 'woocommerce' ); ?> <?php echo wc_help_tip( __( 'Add a note for your reference, or add a customer note (the user will be notified).', 'woocommerce' ) ); ?></h4>
 			<p>
 				<textarea type="text" name="order_note" id="add_order_note" class="input-text" cols="20" rows="5"></textarea>
 			</p>
 			<p>
 				<?php
-					$note_types = apply_filters('woocommerce_order_note_types', array(
-						'customer' => __('Customer note', 'woocommerce'),
-					), $post);
+					$note_types = apply_filters( 'woocommerce_order_note_types', array(
+						'customer' => __( 'Note to customer', 'woocommerce' ),
+					), $post );
 				?>
 				<select name="order_note_type" id="order_note_type">
-					<?php foreach ($note_types as $val => $label): ?>
-						<option value="<?php echo esc_attr($val) ?>"><?php echo $label ?></option>
-					<?php endforeach; ?>
 					<option value=""><?php _e( 'Private note', 'woocommerce' ); ?></option>
+					<?php foreach ( $note_types as $val => $label ): ?>
+						<option value="<?php echo esc_attr( $val ) ?>"><?php echo $label ?></option>
+					<?php endforeach; ?>
 				</select>
 				<a href="#" class="add_note button"><?php _e( 'Add', 'woocommerce' ); ?></a>
 			</p>
