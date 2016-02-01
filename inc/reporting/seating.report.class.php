@@ -16,9 +16,31 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 		$this->group_name = $this->name = __( 'Attendees', 'opentickets-community-edition' );
 		$this->group_slug = $this->slug = 'seating';
 
+		// add a note type to order notes, that allows a note to show up on this report in it's own column
+		add_filter( 'woocommerce_order_note_types', array( &$this, 'add_order_note_types' ), 10, 2 );
+		add_action( 'wp_insert_comment', array( &$this, 'save_new_order_note_types' ), 10, 4 );
+		add_filter( 'woocommerce_get_order_note_type', array( &$this, 'get_order_note_type' ), 10, 2 );
+
 		// add the ajax handle for this report
 		$aj = QSOT_Ajax::instance();
 		$aj->register( $this->slug, array( &$this, 'handle_ajax' ), 'edit_posts', 10, 'qsot-admin-report-ajax' );
+	}
+
+	// add the seating chart order note type
+	public function add_order_note_types( $list, $order ) {
+		$list['seating-report-note'] = __( 'Attendee Report note', 'opentickets-community-edition' );
+		return $list;
+	}
+
+	// get the order note type for display
+	public function get_order_note_type( $type, $note ) {
+		if ( get_comment_meta( $note->comment_ID, 'is_seating_report_note', true ) == 1 ) $type = 'attendee report note';
+		return $type;
+	}
+
+	// when saving the note on the order, make sure to mark our meta if the note type requires it
+	public function save_new_order_note_types( $comment_id, $comment ) {
+		update_comment_meta( $comment_id, 'is_seating_report_note', ( is_admin() && isset( $_POST['note_type'] ) && 'seating-report-note' == $_POST['note_type'] ) ? 1 : 0 );
 	}
 
 	// individual reports should define their own set of columns to display in html
@@ -431,18 +453,27 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 			return array();
 
 		// get a list of all seating report note comment ids
+		remove_action( 'comment_feed_where', array( 'WC_Comments', 'exclude_order_comments_from_feed_where' ) );
+		remove_action( 'comment_feed_where', array( 'WC_Comments', 'exclude_webhook_comments_from_feed_where' ) );
+		remove_filter( 'comments_clauses', array( 'WC_Comments', 'exclude_order_comments' ), 10, 1 );
+		remove_filter( 'comments_clauses', array( 'WC_Comments', 'exclude_webhook_comments' ), 10, 1 );
 		$comment_ids = get_comments( array(
 			'post__in' => $order_ids,
 			'approve' => 'approve',
 			'type' => 'order_note',
+			'post_type' => 'shop_order',
 			'meta_query' => array(
-				array( 'key' => 'is_seating_report_note', 'value' => '1', 'compare' => '=' ),
+				array( 'key' => 'is_seating_report_note', 'value' => '1' ),
 			),
 			'orderby' => 'comment_date_gmt',
 			'order' => 'desc',
 			'number' => null,
 			'fields' => 'ids'
 		) );
+		add_action( 'comment_feed_where', array( 'WC_Comments', 'exclude_order_comments_from_feed_where' ) );
+		add_action( 'comment_feed_where', array( 'WC_Comments', 'exclude_webhook_comments_from_feed_where' ) );
+		add_filter( 'comments_clauses', array( 'WC_Comments', 'exclude_order_comments' ), 10, 1 );
+		add_filter( 'comments_clauses', array( 'WC_Comments', 'exclude_webhook_comments' ), 10, 1 );
 
 		// if there are none, then bail now
 		if ( empty( $comment_ids ) )
@@ -450,7 +481,7 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 
 		global $wpdb;
 		// otherwise, get a list of all matched comments, and organize them by order_id
-		$raw_comments = $wpdb->get_results( 'select comment_post_id order_id, comment_content from ' . $wpdb->comments . ' where comment_id in(' . implode( ',', $comment_ids ) . ' order by comment_date asc' );
+		$raw_comments = $wpdb->get_results( 'select comment_post_id order_id, comment_content from ' . $wpdb->comments . ' where comment_id in(' . implode( ',', $comment_ids ) . ') order by comment_date asc' );
 
 		$final = array();
 		// index the final list
