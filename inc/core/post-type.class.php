@@ -1613,17 +1613,42 @@ class qsot_post_type {
 				'side',
 				'core'
 			);
-		}
 
-		// allows specification of when the events (includes child events) start and stop. controls chronology of dislay order
-		add_meta_box(
-			'event-run-date-range',
-			_x( 'Event Run Date Range', 'metabox title', 'opentickets-community-edition' ),
-			array( __CLASS__, 'mb_event_run_date_range' ),
-			self::$o->core_post_type,
-			'side',
-			'core'
-		);
+			// allows specification of when the events (includes child events) start and stop. controls chronology of dislay order
+			add_meta_box(
+				'event-run-date-range',
+				_x( 'Event Run Date Range', 'metabox title', 'opentickets-community-edition' ),
+				array( __CLASS__, 'mb_event_run_date_range' ),
+				self::$o->core_post_type,
+				'side',
+				'core'
+			);
+		// setup the child event metaboxes
+		/*
+		} else if ( is_object( $post ) && 0 != $post->post_parent ) {
+			add_meta_box(
+				'qsot-single-event-settings',
+				_x( 'Event Settings', 'metabox title', 'opentickets-community-edition' ),
+				array( __CLASS__, 'mb_single_event_settings' ),
+				self::$o->core_post_type,
+				'normal',
+				'high'
+			);
+		*/
+		}
+	}
+
+	// metabox for editing a single event's settings
+	public static function mb_single_event_settings( $post, $mb ) {
+		// adjust the start and end times for our WP offset setting
+		$start_raw = QSOT_Utils::gmt_timestamp( get_post_meta( $post->ID, '_start', true ) );
+		$end_raw = QSOT_Utils::gmt_timestamp( get_post_meta( $post->ID, '_end', true ) );
+
+		// create the various date parts
+		$start = date( 'c', $start_raw );
+		$start_time = date( 'H:i:s', $start_raw );
+		$end = date( 'c', $end_raw );
+		$end_time = date( 'H:i:s', $end_raw );
 	}
 
 	// render the metabox that allows control over whether event titles include the date and time
