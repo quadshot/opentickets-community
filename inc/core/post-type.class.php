@@ -914,6 +914,9 @@ class qsot_post_type {
 		wp_register_style('qsot-admin-styles', self::$o->core_url.'assets/css/admin/ui.css', array('qsot-jquery-ui'), self::$o->version);
 		// ajax js
 		wp_register_script('qsot-frontend-ajax', self::$o->core_url.'assets/js/utils/ajax.js', array('qsot-tools'), self::$o->version);
+
+		// script that handles the single event edit page interfaces
+		wp_register_script( 'qsot-admin-single-event-settings', self::$o->core_url . 'assets/js/admin/single-event.js', array( 'qsot-events-admin-edit-page' ), self::$o->version );
 	}
 
 	public static function load_frontend_assets(&$wp) {
@@ -1069,8 +1072,70 @@ class qsot_post_type {
 			'templates' => self::_ui_templates($post_id), // all templates used by the ui js
 		), $post_id));
 
+		$post = get_post( $post_id );
+		// if this is the single child event edit page, then load the data about the given child event and the ui code so we can update the UI with it
+		if ( is_object( $post ) && ! is_wp_error( $post ) && 0 !== $post->post_parent ) { 
+			wp_enqueue_script( 'qsot-admin-single-event-settings' );
+			wp_localize_script( 'qsot-admin-single-event-settings', '_qsot_single_event', array(
+				'evt' => self::_single_child_event_settings(
+					$post_id,
+					// default settings for the passed lit of subevent objects. modifiable by sub/external plugins, so they can add their own settings
+					apply_filters( 'qsot-load-child-event-settings-defaults', array(
+						'title' => $post->post_title,
+						'start' => '0000-00-00 00:00:00',
+						'end' => '0000-00-00 00:00:00',
+						'allDay' => false,
+						'editable' => true,
+						'status' => 'pending', // status
+						'visibility' => 'public', // visibiltiy
+						'password' => '', // protected password
+						'pub_date' => '', // date to publish
+						'capacity' => 0, // max occupants
+						'post_id' => -1, // sub event post_id used for lookup during save process
+						'edit_link' => '', // edit individual event link
+						'view_link' => '', // view individual event link
+						'purchase_limit' => '', // limit the number of tickets that can be purchased on a single order for this event
+					), $post_id )
+				),
+			) );
+		}
+
 		// allow sub/external plugins to load their own stuff right now
 		do_action('qsot-events-edit-page-assets', $existing, $post_id);
+	}
+
+	// load the data and format it for a single child event
+	protected static function _single_child_event_settings( $event, $defs ) {
+		$event = get_post( $event );
+
+		// load the meta, and reduce the list to only the first value for each piece of meta (since there is rarely any duplicates)
+		$meta = get_post_meta($event->ID);
+		foreach ($meta as $k => $v) $meta[$k] = array_shift($v);
+
+		// determine the start date for the item. default to the _start meta value, and fallback on the post slug (super bad if this ever gets used. mainly for recovery purposes)
+		$start = isset($meta[self::$o->{'meta_key.start'}])
+				? $meta[self::$o->{'meta_key.start'}]
+				: date('Y-m-d H:i:s', strtotime(preg_replace('#(\d{4}-\d{2}-\d{2})_(\d{1,2})-(\d{2})((a|p)m)#', '\1 \2:\3\4', $event->post_name)));
+		$start = date('Y-m-d\TH:i:sP', strtotime($start));
+		$end = isset($meta[self::$o->{'meta_key.end'}])
+				? $meta[self::$o->{'meta_key.end'}]
+				: date('Y-m-d H:i:s', strtotime('+1 hour', $start));
+		$end = date('Y-m-d\TH:i:sP', strtotime($end));
+
+		// return the formatted event by transposing the data for the event, over top of the defaults, and allowing external sources to modify it
+		return apply_filters( 'qsot-load-child-event-settings', wp_parse_args( array(
+			'start' => $start,
+			'status' => in_array( $event->post_status, array( 'hidden', 'private' ) ) ? 'publish' : $event->post_status,
+			'visibility' => in_array( $event->post_status, array( 'hidden', 'private' ) ) ? $event->post_status : ( $event->post_password ? 'protected' : 'public' ),
+			'password' => $event->post_password,
+			'pub_date' => $event->post_date,
+			'capacity' => isset( $meta[ self::$o->{'meta_key.capacity'} ] ) ? $meta[ self::$o->{'meta_key.capacity'} ] : 0,
+			'end' => $end,
+			'post_id' => $event->ID,
+			'edit_link' => get_edit_post_link( $event->ID ),
+			'view_link' => get_permalink( $event->ID ),
+			'purchase_limit' => get_post_meta( $event->ID, self::$o->{'meta_key.purchase_limit'}, true ),
+		), $defs ), $defs, $event );
 	}
 
 	// load a list of all the child events to teh given event. this will be sent to the js event ui interface as settings to aid in construction of the interface
@@ -1089,6 +1154,7 @@ class qsot_post_type {
 		$defs = apply_filters('qsot-load-child-event-settings-defaults', array(
 			'title' => $post->post_title,
 			'start' => '0000-00-00 00:00:00',
+			'end' => '0000-00-00 00:00:00',
 			'allDay' => false,
 			'editable' => true,
 			'status' => 'pending', // status
@@ -1115,34 +1181,11 @@ class qsot_post_type {
 		$earliest = PHP_INT_MAX;
 		// foreach sub event we found, do some stuff
 		foreach ($events as $event) {
-			// load the meta, and reduce the list to only the first value for each piece of meta (since there is rarely any duplicates)
-			$meta = get_post_meta($event->ID);
-			foreach ($meta as $k => $v) $meta[$k] = array_shift($v);
-			// determine the start date for the item. default to the _start meta value, and fallback on the post slug (super bad if this ever gets used. mainly for recovery purposes)
-			$start = isset($meta[self::$o->{'meta_key.start'}])
-					? $meta[self::$o->{'meta_key.start'}]
-					: date('Y-m-d H:i:s', strtotime(preg_replace('#(\d{4}-\d{2}-\d{2})_(\d{1,2})-(\d{2})((a|p)m)#', '\1 \2:\3\4', $event->post_name)));
-			$start = date('Y-m-d\TH:i:sP', strtotime($start));
-			$earliest = min(strtotime($start), $earliest);
-			$end = isset($meta[self::$o->{'meta_key.end'}])
-					? $meta[self::$o->{'meta_key.end'}]
-					: date('Y-m-d H:i:s', strtotime('+1 hour', $start));
-			$end = date('Y-m-d\TH:i:sP', strtotime($end));
-			// add an item to the list, by transposing the loaded settings for this sub event over the list of default settings, and then allowing sub/external plugins to modify them
-			// to add their own settings for the interface.
-			$list[] = apply_filters('qsot-load-child-event-settings', wp_parse_args(array(
-				'start' => $start,
-				'status' => in_array( $event->post_status, array( 'hidden', 'private' ) ) ? 'publish' : $event->post_status,
-				'visibility' => in_array( $event->post_status, array( 'hidden', 'private' ) ) ? $event->post_status : ( $event->post_password ? 'protected' : 'public' ),
-				'password' => $event->post_password,
-				'pub_date' => $event->post_date,
-				'capacity' => isset($meta[self::$o->{'meta_key.capacity'}]) ? $meta[self::$o->{'meta_key.capacity'}] : 0,
-				'end' => $end,
-				'post_id' => $event->ID,
-				'edit_link' => get_edit_post_link($event->ID),
-				'view_link' => get_permalink($event->ID),
-				'purchase_limit' => get_post_meta( $event->ID, self::$o->{'meta_key.purchase_limit'}, true ),
-			), $defs), $defs, $event);
+			// add the child event data to the list
+			$list[] = $tmp = self::_single_child_event_settings( $event, $defs );
+
+			// track the earliest start time
+			$earliest = min( strtotime( $tmp['start'] ), $earliest );
 		}
 
 		// return the generated list
@@ -1278,7 +1321,10 @@ class qsot_post_type {
 	// save function for the parent events
 	public static function save_event( $post_id, $post ) {
 		if ( $post->post_type != self::$o->core_post_type ) return; // only run for our event post type
-		if ( $post->post_parent != 0 ) return; // this is only for parent event posts
+		if ( $post->post_parent != 0 ) {
+			self::save_single_event( $post_id, $post );
+			return; // this is only for parent event posts
+		}
 
 		// if there were settings for the sub events sent, then process those settings
 		if ( isset( $_POST['_qsot_event_settings'], $_POST['_qsot_event_settings'] ) )
@@ -1287,6 +1333,51 @@ class qsot_post_type {
 		// if the 'show date' and 'show time' settings are present, update them as needed
 		if ( isset( $_POST['qsot-event-title-settings'] ) && wp_verify_nonce( $_POST['qsot-event-title-settings'], 'qsot-event-title' ) )
 			self::save_event_title_settings( $post_id, $post, $_POST );
+	}
+
+	// save a single child event when the page is accessed and edited directly
+	public static function save_single_event( $post_id, $post ) {
+		// gather the submitted event settings
+		$event_data = @json_decode( isset( $_POST['qsot-event-settings'] ) ? stripslashes( $_POST['qsot-event-settings'] ) : 'null' );
+
+		// if there are no settings submitted, then bail
+		if ( empty( $event_data ) )
+			return;
+
+		// laod the event area from the submitted data, so we can cache the capacity
+		$event_area = apply_filters( 'qsot-get-event-area', false, isset( $event_data->{'event-area'} ) ? $event_data->{'event-area'} : 0 );
+		if ( ! is_object( $event_area ) || is_wp_error( $event_area ) )
+			return;
+		$event_data->capacity = isset( $event_area->meta['_capacity'] ) ? $event_area->meta['_capacity'] : 0;
+
+		$event_data->start = QSOT_Utils::gmt_timestamp( $event_data->start );
+		$event_data->end = QSOT_Utils::gmt_timestamp( $event_data->end );
+		// if the start date is after the end date, then adjust the end date to be at least the start date plus one hour
+		if ( $event_data->start > $event_data->end )
+			$event_data->end = $event_data->start + 3600;
+
+		// emulate the array of 'childe event updates' from the mass updater
+		$update = array(
+			'post_arr' => array(),
+			'meta' => array( // set meta
+				self::$o->{'meta_key.capacity'} => $event_data->capacity, // occupant copacity
+				self::$o->{'meta_key.end'} => date( 'Y-m-d H:i:s', $event_data->end ), // end data for lookup and display
+				self::$o->{'meta_key.start'} => date( 'Y-m-d H:i:s', $event_data->start ), // start date for lookup and display
+				self::$o->{'meta_key.purchase_limit'} => $event_data->purchase_limit, // the specific child event purchase limit
+			),
+			'submitted' => $event_data,
+		);
+
+		$parent = get_post( $post->post_parent );
+		// allow injection/modification of the insert/update data
+		$update = apply_filters( 'qsot-events-save-sub-event-settings', $update, $parent->ID, $parent );
+
+		// update/add the meta to the new subevent
+		foreach ( $update['meta'] as $k => $v )
+			update_post_meta( $post_id, $k, $v );
+
+		// notify externals of an update to the sub event
+		do_action( 'qsot-events-save-sub-event', $post_id, $update, $parent->ID, $parent );
 	}
 
 	// save the event title settings from the 'Event Titles' metabox
@@ -1649,7 +1740,6 @@ class qsot_post_type {
 				'core'
 			);
 		// setup the child event metaboxes
-		/*
 		} else if ( is_object( $post ) && 0 != $post->post_parent ) {
 			add_meta_box(
 				'qsot-single-event-settings',
@@ -1659,21 +1749,88 @@ class qsot_post_type {
 				'normal',
 				'high'
 			);
-		*/
 		}
+	}
+
+	// is the supplied post a protected post
+	public static function is_protected( $post ) {
+		return 'publish' == $post->post_status && '' !== $post->post_password;
 	}
 
 	// metabox for editing a single event's settings
 	public static function mb_single_event_settings( $post, $mb ) {
-		// adjust the start and end times for our WP offset setting
-		$start_raw = QSOT_Utils::gmt_timestamp( get_post_meta( $post->ID, '_start', true ) );
-		$end_raw = QSOT_Utils::gmt_timestamp( get_post_meta( $post->ID, '_end', true ) );
+		add_filter( 'qsot-before-events-bulk-edit-settings', array( __CLASS__, 'single_event_fields' ), 10, 3 );
+		?>
+			<div class="single-event-settings fields">
+				<?php self::bulk_edit_form( $post, $mb, array(
+					'is_visible' => true,
+					'has_title' => false,
+					'has_before' => true,
+					'visibility' => false,
+					'status' => false,
+					'publish_date' => false,
+				) ) ?>
+			</div>
+		<?php
+		remove_filter( 'qsot-before-events-bulk-edit-settings', array( __CLASS__, 'single_event_fields' ), 10 );
+	}
 
-		// create the various date parts
-		$start = date( 'c', $start_raw );
-		$start_time = date( 'H:i:s', $start_raw );
-		$end = date( 'c', $end_raw );
-		$end_time = date( 'H:i:s', $end_raw );
+	// render a date edit bulk edit field
+	protected static function _date_field( $tag, $title, $post, $mb ) {
+		?>
+			<div class="setting" rel="setting-main" tag="<?php echo esc_attr( $tag ) ?>">
+				<div class="setting-current">
+					<span class="setting-name"><?php echo $title ?></span>
+					<span class="setting-current-value" rel="setting-display"></span>
+					<a class="edit-btn" href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]"><?php _e('Edit','opentickets-community-edition') ?></a>
+					<input type="hidden" name="settings[<?php echo esc_attr( $tag ) ?>]" value="" scope="[rel=setting-main]" rel="<?php echo esc_attr( $tag ) ?>" />
+				</div>
+				<div class="setting-edit-form" rel="setting-form">
+					<input type="hidden" name="<?php echo esc_attr( $tag ) ?>" value="" />
+					<div class="date-edit" tar="[name='<?php echo esc_attr( $tag ) ?>']" scope="[rel='setting-form']">
+						<select rel="month">
+							<option value="1">01 - <?php _e( 'January', 'opentickets-community-edition' ) ?></option>
+							<option value="2">02 - <?php _e( 'February', 'opentickets-community-edition' ) ?></option>
+							<option value="3">03 - <?php _e( 'March', 'opentickets-community-edition' ) ?></option>
+							<option value="4">04 - <?php _e( 'April', 'opentickets-community-edition' ) ?></option>
+							<option value="5">05 - <?php _e( 'May', 'opentickets-community-edition' ) ?></option>
+							<option value="6">06 - <?php _e( 'June', 'opentickets-community-edition' ) ?></option>
+							<option value="7">07 - <?php _e( 'July', 'opentickets-community-edition' ) ?></option>
+							<option value="8">08 - <?php _e( 'August', 'opentickets-community-edition' ) ?></option>
+							<option value="9">09 - <?php _e( 'September', 'opentickets-community-edition' ) ?></option>
+							<option value="10">10 - <?php _e( 'October', 'opentickets-community-edition' ) ?></option>
+							<option value="11">11 - <?php _e( 'November', 'opentickets-community-edition' ) ?></option>
+							<option value="12">12 - <?php _e( 'December', 'opentickets-community-edition' ) ?></option>
+						</select>
+						<input type="text" rel="day" value="" size="2" />,
+						<input type="text" rel="year" value="" size="4" class="year" /> <?php _e( '@', 'opentickets-community-edition' ) ?>
+						<input type="text" rel="hour" value="" size="2" /> :
+						<input type="text" rel="minute" value="" size="2" />
+					</div>
+					<div class="edit-setting-actions">
+						<input type="button" class="button" rel="setting-save" value="<?php _e( 'OK', 'opentickets-community-edition' ) ?>" />
+						<a href="#" rel="setting-cancel"><?php _e( 'Cancel', 'opentickets-community-edition' ) ?></a>
+					</div>
+				</div>
+			</div>
+		<?php
+	}
+
+	// add the extra fields for when we are editing a single event instead of bulk editing a bunch
+	public static function single_event_fields( $fields, $post, $mb ) {
+		// start date for event
+		ob_start();
+		self::_date_field( 'start', __( 'Start Date:', 'opentickets-community-edition' ), $post, $mb );
+		$fields['start'] = ob_get_contents();
+		ob_end_clean();
+
+		// end date for event
+		ob_start();
+		self::_date_field( 'end', __( 'End Date:', 'opentickets-community-edition' ), $post, $mb );
+		$fields['end'] = ob_get_contents();
+		ob_end_clean();
+
+		return $fields;
 	}
 
 	// render the metabox that allows control over whether event titles include the date and time
@@ -2049,129 +2206,7 @@ class qsot_post_type {
 								</td>
 
 								<td>
-									<div class="bulk-edit-settings hide-if-js" rel="settings-main-form">
-										<h4><?php _e('Settings','opentickets-community-edition') ?></h4>
-										<div class="settings-form">
-											<div class="setting-group">
-												<div class="setting" rel="setting-main" tag="status">
-													<div class="setting-current">
-														<span class="setting-name"><?php _e('Status:','opentickets-community-edition') ?></span>
-														<span class="setting-current-value" rel="setting-display"></span>
-														<a class="edit-btn" href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]"><?php _e('Edit','opentickets-community-edition') ?></a>
-														<input type="hidden" name="settings[status]" value="" scope="[rel=setting-main]" rel="status" />
-													</div>
-													<div class="setting-edit-form" rel="setting-form">
-														<select name="status">
-															<option value="publish" data-only-if="status=,publish,pending,draft,hidden,private"><?php _e('Published','opentickets-community-edition') ?></option>
-															<option value="private" data-only-if="status=private"><?php _e('Privately Published','opentickets-community-edition') ?></option>
-															<option value="future" data-only-if="status=future"><?php _e('Scheduled','opentickets-community-edition') ?></option>
-															<?php do_action( 'qsot-event-setting-custom-status', $post, $mb ) ?>
-															<option value="pending"><?php _e('Pending Review','opentickets-community-edition') ?></option>
-															<option value="draft"><?php _e('Draft','opentickets-community-edition') ?></option>
-														</select>
-														<div class="edit-setting-actions">
-															<input type="button" class="button" rel="setting-save" value="<?php _e('OK','opentickets-community-edition') ?>" />
-															<a href="#" rel="setting-cancel"><?php _e('Cancel','opentickets-community-edition') ?></a>
-														</div>
-													</div>
-												</div>
-
-												<div class="setting" rel="setting-main" tag="visibility">
-													<div class="setting-current">
-														<span class="setting-name"><?php _e('Visibility','opentickets-community-edition') ?>:</span>
-														<span class="setting-current-value" rel="setting-display"></span>
-														<a href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]"><?php _e('Edit','opentickets-community-edition') ?></a>
-														<input type="hidden" name="settings[visibility]" value="" scope="[rel=setting-main]" rel="visibility" />
-													</div>
-													<div class="setting-edit-form" rel="setting-form">
-														<div class="cb-wrap" title="<?php _e('Viewable to the public','opentickets-community-edition') ?>">
-															<input type="radio" name="visibility" value="public" />
-															<span class="cb-text"><?php _e('Public','opentickets-community-edition') ?></span>
-														</div>
-														<div class="cb-wrap" title="<?php _e('Visible on the calendar, but only those with the password can view to make reservations','opentickets-community-edition') ?>">
-															<input type="radio" name="visibility" value="protected" />
-															<span class="cb-text"><?php _e('Password Protected','opentickets-community-edition') ?></span>
-															<div class="extra" data-only-if="visibility=protected">
-																<label><?php _e('Password:','opentickets-community-edition') ?></label><br/>
-																<input type="text" name="password" value="" rel="password" />
-															</div>
-														</div>
-														<div class="cb-wrap" title="<?php _e('Hidden from the calendar, but open to anyone with the url','opentickets-community-edition') ?>">
-															<input type="radio" name="visibility" value="hidden" />
-															<span class="cb-text"><?php _e('Hidden','opentickets-community-edition') ?></span>
-														</div>
-														<div class="cb-wrap" title="<?php _e('Only logged in admin users or the event author can view it','opentickets-community-edition') ?>">
-															<input type="radio" name="visibility" value="private" />
-															<span class="cb-text"><?php _e('Private','opentickets-community-edition') ?></span>
-														</div>
-														<div class="edit-setting-actions">
-															<input type="button" class="button" rel="setting-save" value="<?php _e('OK','opentickets-community-edition') ?>" />
-															<a href="#" rel="setting-cancel"><?php _e('Cancel','opentickets-community-edition') ?></a>
-														</div>
-													</div>
-												</div>
-
-												<div class="setting" rel="setting-main" tag="pub_date">
-													<div class="setting-current">
-														<span class="setting-name"><?php _e('Publish Date:','opentickets-community-edition') ?></span>
-														<span class="setting-current-value" rel="setting-display"></span>
-														<a class="edit-btn" href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]"><?php _e('Edit','opentickets-community-edition') ?></a>
-														<input type="hidden" name="settings[pub_date]" value="" scope="[rel=setting-main]" rel="pub_date" />
-													</div>
-													<div class="setting-edit-form" rel="setting-form">
-														<input type="hidden" name="pub_date" value="" />
-														<div class="date-edit" tar="[name='pub_date']" scope="[rel='setting-form']">
-															<select rel="month">
-																<option value="1">01 - <?php _e('January','opentickets-community-edition') ?></option>
-																<option value="2">02 - <?php _e('February','opentickets-community-edition') ?></option>
-																<option value="3">03 - <?php _e('March','opentickets-community-edition') ?></option>
-																<option value="4">04 - <?php _e('April','opentickets-community-edition') ?></option>
-																<option value="5">05 - <?php _e('May','opentickets-community-edition') ?></option>
-																<option value="6">06 - <?php _e('June','opentickets-community-edition') ?></option>
-																<option value="7">07 - <?php _e('July','opentickets-community-edition') ?></option>
-																<option value="8">08 - <?php _e('August','opentickets-community-edition') ?></option>
-																<option value="9">09 - <?php _e('September','opentickets-community-edition') ?></option>
-																<option value="10">10 - <?php _e('October','opentickets-community-edition') ?></option>
-																<option value="11">11 - <?php _e('November','opentickets-community-edition') ?></option>
-																<option value="12">12 - <?php _e('December','opentickets-community-edition') ?></option>
-															</select>
-															<input type="text" rel="day" value="" size="2" />,
-															<input type="text" rel="year" value="" size="4" class="year" /> <?php _e('@','opentickets-community-edition') ?>
-															<input type="text" rel="hour" value="" size="2" /> :
-															<input type="text" rel="minute" value="" size="2" />
-														</div>
-														<div class="edit-setting-actions">
-															<input type="button" class="button" rel="setting-save" value="<?php _e('OK','opentickets-community-edition') ?>" />
-															<a href="#" rel="setting-cancel"><?php _e('Cancel','opentickets-community-edition') ?></a>
-														</div>
-													</div>
-												</div>
-
-												<div class="setting" rel="setting-main" tag="purchase_limit">
-													<div class="setting-current">
-														<span class="setting-name"><?php _e( 'Purchase Limit', 'opentickets-community-edition' ) ?>:</span>
-														<span class="setting-current-value" rel="setting-display"></span>
-														<a href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]"><?php _e('Edit','opentickets-community-edition') ?></a>
-														<input type="hidden" name="settings[purchase_limit]" value="" scope="[rel='setting-main']" rel="purchase_limit" />
-													</div>
-													<div class="setting-edit-form" rel="setting-form">
-														<input type="number" name="purchase_limit" step="1" value="" />
-														<div class="helper"><?php _e( 'Use "" or "0" to indicate usage of the site-wide global purchase limit. Use "-1" to force an unlimited purchase limit.', 'opentickets-community-edition' ) ?></div>
-														<div class="edit-setting-actions">
-															<input type="button" class="button" rel="setting-save" value="<?php _e('OK','opentickets-community-edition') ?>" />
-															<a href="#" rel="setting-cancel"><?php _e('Cancel','opentickets-community-edition') ?></a>
-														</div>
-													</div>
-												</div>
-
-											</div>
-
-											<?php
-												$extra_settings = apply_filters( 'qsot-events-bulk-edit-settings', array(), $post, $mb );
-												echo implode( '', array_values( $extra_settings ) );
-											?>
-										</div>
-									</div>
+									<?php self::bulk_edit_form( $post, $mb ) ?>
 								</td>
 							</tr>
 						</tbody>
@@ -2179,6 +2214,125 @@ class qsot_post_type {
 				</div>
 
 				<?php do_action('qsot-events-more-settings') ?>
+			</div>
+		<?php
+	}
+
+	// draw the bulk edit form
+	public static function bulk_edit_form( $post, $mb, $settings='' ) {
+		$settings = wp_parse_args( $settings, array(
+			'is_visible' => false,
+			'has_title' => true,
+			'has_before' => false,
+			'status' => true,
+			'visibility' => true,
+			'publish_date' => true,
+		) );
+		?>
+			<div class="bulk-edit-settings <?php echo ! $settings['is_visible'] ? 'hide-if-js' : '' ?>" rel="settings-main-form">
+				<?php if ( $settings['has_title'] ): ?>
+					<h4><?php _e( 'Settings', 'opentickets-community-edition' ) ?></h4>
+				<?php endif; ?>
+
+				<div class="settings-form">
+					<div class="setting-group">
+						<?php if ( $settings['has_before'] ): ?>
+							<?php
+								$extra_settings = apply_filters( 'qsot-before-events-bulk-edit-settings', array(), $post, $mb );
+								echo implode( '', array_values( $extra_settings ) );
+							?>
+						<?php endif; ?>
+
+						<?php if ( $settings['status'] ): ?>
+							<div class="setting" rel="setting-main" tag="status">
+								<div class="setting-current">
+									<span class="setting-name"><?php _e('Status:','opentickets-community-edition') ?></span>
+									<span class="setting-current-value" rel="setting-display"></span>
+									<a class="edit-btn" href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]"><?php _e('Edit','opentickets-community-edition') ?></a>
+									<input type="hidden" name="settings[status]" value="" scope="[rel=setting-main]" rel="status" />
+								</div>
+								<div class="setting-edit-form" rel="setting-form">
+									<select name="status">
+										<option value="publish" data-only-if="status=,publish,pending,draft,hidden,private"><?php _e('Published','opentickets-community-edition') ?></option>
+										<option value="private" data-only-if="status=private"><?php _e('Privately Published','opentickets-community-edition') ?></option>
+										<option value="future" data-only-if="status=future"><?php _e('Scheduled','opentickets-community-edition') ?></option>
+										<?php do_action( 'qsot-event-setting-custom-status', $post, $mb ) ?>
+										<option value="pending"><?php _e('Pending Review','opentickets-community-edition') ?></option>
+										<option value="draft"><?php _e('Draft','opentickets-community-edition') ?></option>
+									</select>
+									<div class="edit-setting-actions">
+										<input type="button" class="button" rel="setting-save" value="<?php _e('OK','opentickets-community-edition') ?>" />
+										<a href="#" rel="setting-cancel"><?php _e('Cancel','opentickets-community-edition') ?></a>
+									</div>
+								</div>
+							</div>
+						<?php endif; ?>
+
+						<?php if ( $settings['status'] ): ?>
+							<div class="setting" rel="setting-main" tag="visibility">
+								<div class="setting-current">
+									<span class="setting-name"><?php _e('Visibility','opentickets-community-edition') ?>:</span>
+									<span class="setting-current-value" rel="setting-display"></span>
+									<a href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]"><?php _e('Edit','opentickets-community-edition') ?></a>
+									<input type="hidden" name="settings[visibility]" value="" scope="[rel=setting-main]" rel="visibility" />
+								</div>
+								<div class="setting-edit-form" rel="setting-form">
+									<div class="cb-wrap" title="<?php _e('Viewable to the public','opentickets-community-edition') ?>">
+										<input type="radio" name="visibility" value="public" />
+										<span class="cb-text"><?php _e('Public','opentickets-community-edition') ?></span>
+									</div>
+									<div class="cb-wrap" title="<?php _e('Visible on the calendar, but only those with the password can view to make reservations','opentickets-community-edition') ?>">
+										<input type="radio" name="visibility" value="protected" />
+										<span class="cb-text"><?php _e('Password Protected','opentickets-community-edition') ?></span>
+										<div class="extra" data-only-if="visibility=protected">
+											<label><?php _e('Password:','opentickets-community-edition') ?></label><br/>
+											<input type="text" name="password" value="" rel="password" />
+										</div>
+									</div>
+									<div class="cb-wrap" title="<?php _e('Hidden from the calendar, but open to anyone with the url','opentickets-community-edition') ?>">
+										<input type="radio" name="visibility" value="hidden" />
+										<span class="cb-text"><?php _e('Hidden','opentickets-community-edition') ?></span>
+									</div>
+									<div class="cb-wrap" title="<?php _e('Only logged in admin users or the event author can view it','opentickets-community-edition') ?>">
+										<input type="radio" name="visibility" value="private" />
+										<span class="cb-text"><?php _e('Private','opentickets-community-edition') ?></span>
+									</div>
+									<div class="edit-setting-actions">
+										<input type="button" class="button" rel="setting-save" value="<?php _e('OK','opentickets-community-edition') ?>" />
+										<a href="#" rel="setting-cancel"><?php _e('Cancel','opentickets-community-edition') ?></a>
+									</div>
+								</div>
+							</div>
+						<?php endif; ?>
+
+						<?php if ( $settings['publish_date'] ): ?>
+							<?php self::_date_field( 'pub_date', __( 'Publish Date:', 'opentickets-community-edition' ), $post, $mb ); ?>
+						<?php endif; ?>
+
+						<div class="setting" rel="setting-main" tag="purchase_limit">
+							<div class="setting-current">
+								<span class="setting-name"><?php _e( 'Purchase Limit', 'opentickets-community-edition' ) ?>:</span>
+								<span class="setting-current-value" rel="setting-display"></span>
+								<a href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]"><?php _e('Edit','opentickets-community-edition') ?></a>
+								<input type="hidden" name="settings[purchase_limit]" value="" scope="[rel='setting-main']" rel="purchase_limit" />
+							</div>
+							<div class="setting-edit-form" rel="setting-form">
+								<input type="number" name="purchase_limit" step="1" value="" />
+								<div class="helper"><?php _e( 'Use "" or "0" to indicate usage of the site-wide global purchase limit. Use "-1" to force an unlimited purchase limit.', 'opentickets-community-edition' ) ?></div>
+								<div class="edit-setting-actions">
+									<input type="button" class="button" rel="setting-save" value="<?php _e('OK','opentickets-community-edition') ?>" />
+									<a href="#" rel="setting-cancel"><?php _e('Cancel','opentickets-community-edition') ?></a>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+					<?php
+						$extra_settings = apply_filters( 'qsot-events-bulk-edit-settings', array(), $post, $mb );
+						echo implode( '', array_values( $extra_settings ) );
+					?>
+				</div>
 			</div>
 		<?php
 	}

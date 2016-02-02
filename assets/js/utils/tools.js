@@ -166,7 +166,6 @@ QS.popMediaBox = (function($, qt) {
 									url = qt.is( attachment.sizes.thumbnail ) ? attachment.sizes.thumbnail.url : attachment.sizes.full.url,
 									size = qt.is( args.size ) ? args.size : ( ( size = t.attr( 'size' ) ) ? size : 'thumb' )
 									size = size == 'thumb' ? 'thumbnail' : size;
-									console.log( 'fasdfjakslfjklasdfljkasljkfasljfaljsf', t, size, attachment );
 							// find the appropriate image url
 							if ( qt.is( attachment.sizes[ size ] ) && qt.is( attachment.sizes[ size ].url ) )
 								url = attachment.sizes[ size ].url;
@@ -189,7 +188,6 @@ QS.popMediaBox = (function($, qt) {
       return;
 		// otherwise create a new instance of the lightbox
     } else {
-			console.log( 'new', args );
 			// initialize the base lightbox
       custom[ args.type ] = wp.media( {
         frame: 'select',
@@ -658,11 +656,12 @@ QS.cbs = new QS.CB();
 })(jQuery);
 
 QS.EditSetting = (function($, undefined) {
+	var qt = QS.Tools;
+
 	function startEditSetting(e, o) {
 		var e = $(e);
 		var exists = e.data('qsot-edit-setting');
 		var ret = undefined;
-		var qt = QS.Tools;
 
 		if (exists instanceof EditSetting && typeof exists.initialized == 'boolean' && exists.initialized) {
 			ret = exists;
@@ -724,21 +723,21 @@ QS.EditSetting = (function($, undefined) {
 
 				function init() {
 					function update_from_val() {
-						var val = tar.val(), d = val ? new XDate( val ) : new XDate();
-						d = d.valid() ? d : new XDate();
-						y.val( d.getFullYear() );
-						m.find( 'option' ).removeProp( 'selected' ).filter( '[value=' + ( d.getMonth() + 1 ) + ']' ).prop( 'selected', 'selected' );
-						a.val( d.getDate() );
-						h.val( d.getHours() );
-						n.val( d.getMinutes() );
+						var val = tar.val(), d = val ? moment( val ) : moment();
+						d = d.isValid() ? d : moment();
+						y.val( d.year() );
+						m.find( 'option' ).removeProp( 'selected' ).filter( '[value=' + ( d.month() + 1 ) + ']' ).prop( 'selected', 'selected' );
+						a.val( d.date() );
+						h.val( d.hours() );
+						n.val( d.minutes() );
 						update_from_boxes();
 					}
 					tar.on( 'change update', update_from_val );
 
 					function update_from_boxes() {
-						var d = new XDate( y.val(), m.val() - 1, a.val(), h.val(), n.val(), 0, 0 );
-						if ( d.valid() )
-							tar.val( d.toString( 'yyyy-MM-dd HH:mm:ss' ) );
+						var d = moment( { year:y.val(), month:m.val() - 1, day:a.val(), hour:h.val(), minute:n.val(), second:0 } );
+						if ( d.isValid() )
+							tar.val( d.format( 'YYYY-MM-DD HH:mm:ss' ) );
 					}
 					m.add( y ).add( a ).add( h ).add( n ).on( 'change keyup update', update_from_boxes );
 				}
@@ -848,6 +847,7 @@ QS.EditSetting = (function($, undefined) {
 				var val = '', multi = false;
 				if ( i == 'source' ) continue; // recursive protection
 				if ( typeof data[i] == 'object' && typeof data[i].isMultiple != 'undefined' && data[i].isMultiple ) { multi = true; val = ''; }
+				else if ( qt.isF( data[ i ].toString ) ) val = data[ i ].toString();
 				else if (typeof data[i] == 'object') val = JSON.stringify(data[i]);
 				else if (typeof data[i] == 'string') val = data[i];
 				else if (typeof data[i] == 'undefined' || data[i] == null) val = '';
@@ -916,8 +916,8 @@ QS.EditSetting = (function($, undefined) {
 		_default: function(data) {
 			var ret = '';
 			for (i in data) {
-				var d = '';
-				var ele = $('[name="'+i+'"]', this.elements.main);
+				var d = '',
+						ele = this.elements.main.find( '[name="' + i + '"]' );
 				if ( ele.length == 0 ) continue;
 				switch (ele.get(0).tagName.toLowerCase()) {
 					case 'select':
@@ -1170,7 +1170,6 @@ QS.EditSetting = (function($, undefined) {
 ( function( $, undefined ) {
 	// allow for checkboxes to be specified that control enabling and disabling other form elements
 	$( document ).on( 'change', '[data-toggle-disabled]', function( e ) {
-		console.log( 'changed', me, 'scope', scope, 'tar', tar );
 		var me = $( this ), scope = me.closest( me.attr( 'scope' ) || '.field' ), tar = scope.find( me.data( 'toggle-disabled' ) || me.attr( 'data-toggle-disabled' ) );
 		// if there are actually elements to toggle the enabled status on, then
 		if ( tar.length ) {
@@ -1198,6 +1197,7 @@ QS.EditSetting = (function($, undefined) {
 	} );
 } )( jQuery );
 
+/*
 (function($, undefined) {
 	function forParse(str) { return typeof str == 'string' ? str.replace(/^0+/g, '') : str; }
 
@@ -1222,13 +1222,13 @@ QS.EditSetting = (function($, undefined) {
 			for (i in args) if (isNaN(args[i])) args[i] = i == 'month' ? -1 : 0;
 
 			if (args.year > 0 && args.month > -1 && args.day > 0) {
-				return new XDate(
-					args.year,
-					args.month,
-					args.day,
-					args.hours,
-					args.minutes,
-					args.seconds
+				return moment(
+					year: args.year,
+					month: args.month,
+					day: args.day,
+					hours: args.hours,
+					minutes: args.minutes,
+					seconds: args.seconds
 				);
 			}
 		}
@@ -1236,6 +1236,7 @@ QS.EditSetting = (function($, undefined) {
 
 	XDate.parsers.push(yyyy_mm_dd__hh_iitt);
 })(jQuery);
+*/
 
 if (!Array.prototype.filter) { // in case the Array.filter function does not exist.... use the one that is specified on developer.mozilla.org (the best solution)
 	Array.prototype.filter = function(fun /*, thisp */) {
