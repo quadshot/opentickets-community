@@ -62,36 +62,59 @@ class QSOT_checkin {
 
 		$template = '';
 
-		// if the seat is already checked in, load a template saying so
-		if ( apply_filters( 'qsot-is-already-occupied', false, $data['order_id'], $data['event_id'], $data['order_item_id'] ) ) {
-			$template = 'checkin/already-occupied.php';
-		// otherwise
-		} else {
-			// load the event, event area, and area type objects
-			$event = get_post( $data['event_id'] );
-			$event_area = apply_filters( 'qsot-event-area-for-event', false, $event );
-			$area_type = is_object( $event_area ) && isset( $event_area->area_type ) ? $event_area->area_type : null;
-			$zoner = is_object( $area_type ) ? $area_type->get_zoner() : null;
+		// load the event, event area, and area type objects
+		$event = get_post( $data['event_id'] );
+		$event_area = apply_filters( 'qsot-event-area-for-event', false, $event );
+		$area_type = is_object( $event_area ) && isset( $event_area->area_type ) ? $event_area->area_type : null;
+		$zoner = is_object( $area_type ) ? $area_type->get_zoner() : null;
+		$stati = is_object( $zoner ) ? $zoner->get_stati() : array();
 
-			// if the zoner was not loaded, then this is a hard failure
-			if ( ! is_object( $zoner ) ) {
+		// if the zoner was not loaded, then this is a hard failure
+		if ( ! is_object( $zoner ) ) {
+			$template = 'checkin/occupy-failure.php';
+			$extra_msg = __( 'Could not find that event.', 'opentickets-community-edition' );
+		} else {
+			// load the order item
+			$order = wc_get_order( $data['order_id'] );
+			$order_items = $order->get_items();
+			$order_item = isset( $order_items[ $data['order_item_id'] ] ) ? $order_items[ $data['order_item_id'] ] : false;
+
+			// if there is no order item then bail
+			if ( ! $order_item ) {
 				$template = 'checkin/occupy-failure.php';
-				$extra_msg = __( 'Could not find that event.', 'opentickets-community-edition' );
+				$extra_msg = __( 'Could not find that order.', 'opentickets-community-edition' );
 			} else {
-				// try to check the seat in
-				$res = $zoner->occupy( false, array(
-					'order_id' => $data['order_id'],
+				// check if the seat is already occupied
+				$qargs = array(
 					'event_id' => $data['event_id'],
+					'order_id' => $data['order_id'],
 					'order_item_id' => $data['order_item_id'],
-					'__raw' => $data,
-				) );
-				// if it was successful, have a message saying that
-				if ( $res && ! is_wp_error( $res ) ) $template = 'checkin/occupy-success.php';
-				// otherwise, have a message saying it failed
-				else {
-					$template = 'checkin/occupy-failure.php';
-					if ( is_wp_error( $res ) )
-						$extra_msg = implode( ' ', $res->get_error_messages() );
+					'state' => $stati['o'][0],
+				);
+				$res = $zoner->find( $qargs );
+				$res = current( $res );
+
+				// if the seat is already checked in, load a template saying so
+				if ( is_object( $res ) && $res->quantity >= $order_item['qty'] ) {
+				//if ( apply_filters( 'qsot-is-already-occupied', false, $data['order_id'], $data['event_id'], $data['order_item_id'] ) ) {
+					$template = 'checkin/already-occupied.php';
+				// otherwise
+				} else {
+					// try to check the seat in
+					$res = $zoner->occupy( false, array(
+						'order_id' => $data['order_id'],
+						'event_id' => $data['event_id'],
+						'order_item_id' => $data['order_item_id'],
+						'__raw' => $data,
+					) );
+					// if it was successful, have a message saying that
+					if ( $res && ! is_wp_error( $res ) ) $template = 'checkin/occupy-success.php';
+					// otherwise, have a message saying it failed
+					else {
+						$template = 'checkin/occupy-failure.php';
+						if ( is_wp_error( $res ) )
+							$extra_msg = implode( ' ', $res->get_error_messages() );
+					}
 				}
 			}
 		}
