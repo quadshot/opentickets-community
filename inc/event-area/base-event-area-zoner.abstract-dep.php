@@ -13,10 +13,10 @@ abstract class QSOT_Base_Event_Area_Zoner {
 		);
 
 		// update the list of stati after all plugins have been loaded
-		if ( did_action( 'qsot-after-loading-modules-and-plugins' ) )
+		if ( did_action( 'after_setup_theme' ) )
 			$this->update_stati_list();
 		else
-			add_filter( 'qsot-after-loading-modules-and-plugins', array( &$this, 'update_stati_list' ), 10 );
+			add_filter( 'after_setup_theme', array( &$this, 'update_stati_list' ), 10 );
 	}
 
 	// register all the assets used by this area type
