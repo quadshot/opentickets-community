@@ -171,6 +171,11 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.1.1 - Feb/04/2016 =
+* [tweak] changed load order so that cart-timers can be modified in the theme
+* [tweak] tweaked checking logic so that proper errors are reported when ticket has been previously checked in
+* [fix] fixed bug where ticket codes were improperly reported on attendee report after a checkin
+
 = 2.1.0 - Jan/21/2016 =
 * [new] calendar is now i18n compatible
 * [new] calendar now supports mutliple views
