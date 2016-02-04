@@ -1097,6 +1097,9 @@ class qsot_post_type {
 						'purchase_limit' => '', // limit the number of tickets that can be purchased on a single order for this event
 					), $post_id )
 				),
+				'str' => array(
+					'MMMM, Do YYYY h:mma' => _x( 'MMMM, Do YYYY h:mma', 'momentjs date string', 'opentickets-community-edition' ), // momentjs date format for display of start and end times
+				),
 			) );
 		}
 
@@ -1116,11 +1119,11 @@ class qsot_post_type {
 		$start = isset($meta[self::$o->{'meta_key.start'}])
 				? $meta[self::$o->{'meta_key.start'}]
 				: date('Y-m-d H:i:s', strtotime(preg_replace('#(\d{4}-\d{2}-\d{2})_(\d{1,2})-(\d{2})((a|p)m)#', '\1 \2:\3\4', $event->post_name)));
-		$start = date('Y-m-d\TH:i:sP', strtotime($start));
+		//$start = date('Y-m-d\TH:i:sP', strtotime($start));
 		$end = isset($meta[self::$o->{'meta_key.end'}])
 				? $meta[self::$o->{'meta_key.end'}]
 				: date('Y-m-d H:i:s', strtotime('+1 hour', $start));
-		$end = date('Y-m-d\TH:i:sP', strtotime($end));
+		//$end = date('Y-m-d\TH:i:sP', strtotime($end));
 
 		// return the formatted event by transposing the data for the event, over top of the defaults, and allowing external sources to modify it
 		return apply_filters( 'qsot-load-child-event-settings', wp_parse_args( array(
@@ -1783,10 +1786,10 @@ class qsot_post_type {
 					<span class="setting-name"><?php echo $title ?></span>
 					<span class="setting-current-value" rel="setting-display"></span>
 					<a class="edit-btn" href="#" rel="setting-edit" scope="[rel=setting]" tar="[rel=form]"><?php _e('Edit','opentickets-community-edition') ?></a>
-					<input type="hidden" name="settings[<?php echo esc_attr( $tag ) ?>]" value="" scope="[rel=setting-main]" rel="<?php echo esc_attr( $tag ) ?>" />
+					<input type="hidden" name="settings[<?php echo esc_attr( $tag ) ?>]" value="" scope="[rel=setting-main]" rel="<?php echo esc_attr( $tag ) ?>" class="is-date" />
 				</div>
 				<div class="setting-edit-form" rel="setting-form">
-					<input type="hidden" name="<?php echo esc_attr( $tag ) ?>" value="" />
+					<input type="hidden" name="<?php echo esc_attr( $tag ) ?>" value="" class="is-date" data-display="<?php echo _x( 'MMMM, Do YYYY h:mma', 'momentjs date string', 'opentickets-community-edition' ) ?>" />
 					<div class="date-edit" tar="[name='<?php echo esc_attr( $tag ) ?>']" scope="[rel='setting-form']">
 						<select rel="month">
 							<option value="1">01 - <?php _e( 'January', 'opentickets-community-edition' ) ?></option>
@@ -1806,6 +1809,7 @@ class qsot_post_type {
 						<input type="text" rel="year" value="" size="4" class="year" /> <?php _e( '@', 'opentickets-community-edition' ) ?>
 						<input type="text" rel="hour" value="" size="2" /> :
 						<input type="text" rel="minute" value="" size="2" />
+						<span class="helper"><?php _e( '24-hour format', 'opentickets-community-edition' ) ?></span>
 					</div>
 					<div class="edit-setting-actions">
 						<input type="button" class="button" rel="setting-save" value="<?php _e( 'OK', 'opentickets-community-edition' ) ?>" />

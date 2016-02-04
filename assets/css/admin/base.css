@@ -177,6 +177,8 @@ table.mbtable tbody td.currency.negative { font-weight:bold; color:#880000; }
 .cb-wrap { white-space:nowrap; }
 
 .bulk-edit-settings .setting-group .setting-name { font-style:italic; text-decoration:underline; }
+#qsot-single-event-settings .bulk-edit-settings .setting-group .setting-name { font-weight:700; color:#333; }
+#qsot-single-event-settings .bulk-edit-settings .setting-group .setting-current-value { color:#777; }
 
 #poststuff #woocommerce-order-totals .totals_group #_order_subtotal,
 #poststuff #woocommerce-order-totals .totals_group #_items_discount { margin:6px 0 10px; }

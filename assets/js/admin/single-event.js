@@ -1,6 +1,7 @@
-( function( $ ) {
+( function( $, qt ) {
 	var S = $.extend( true, { evt:{} }, _qsot_single_event ),
 			H = 'hasOwnProperty';
+			console.log( 'S', S );
 
 	// update the interface with the settings from the event
 	function update_settings( data ) {
@@ -17,8 +18,8 @@
 			var setting_main = field.closest( field.attr( 'scope' ) || 'body' );
 			if ( setting_main.length > 0 ) {
 				var updateArgs = {},
-						val = -1 === $.inArray( i, ['start', 'end'] ) ? data[ i ] : ( function( d ) { return {
-							toLabel: function() { return moment( d ).format( 'YYYY-MM-DD HH:mm:ss' ); },
+						val = -1 === $.inArray( i, ['start', 'end'] ) || qt.isO( data[ i ] ) ? data[ i ] : ( function( d ) { return {
+							toLabel: function() { return moment( d ).format( qt.str( 'MMMM, Do YYYY h:mma', S ) ); },
 							toString: function() { return d; }
 						}; } )( data[ i ] );
 				updateArgs[ i ] = val;
@@ -36,6 +37,15 @@
 	} );
 
 	$( function() {
+		var i, j;
+		for ( i in S.evt ) if ( S.evt.hasOwnProperty( i ) ) {
+			if ( -1 !== $.inArray( i, ['start', 'end'] ) && ! qt.isO( S.evt[ i ] ) ) {
+				S.evt[ i ] = ( function( d ) { return {
+					toLabel: function() { return moment( d ).format( qt.str( 'MMMM, Do YYYY h:mma', S ) ); },
+					toString: function() { return d; }
+				}; } )( S.evt[ i ] );
+			}
+		}
 		update_settings( S.evt );
 	} );
-} )( jQuery );
+} )( jQuery, QS.Tools );

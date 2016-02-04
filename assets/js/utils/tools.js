@@ -724,6 +724,7 @@ QS.EditSetting = (function($, undefined) {
 				function init() {
 					function update_from_val() {
 						var val = tar.val(), d = val ? moment( val ) : moment();
+						console.log( 'update_from_val', tar.val(), val, d );
 						d = d.isValid() ? d : moment();
 						y.val( d.year() );
 						m.find( 'option' ).removeProp( 'selected' ).filter( '[value=' + ( d.month() + 1 ) + ']' ).prop( 'selected', 'selected' );
@@ -743,6 +744,7 @@ QS.EditSetting = (function($, undefined) {
 				}
 				init();
 
+				console.log( 'where is this fucking edit button', edit_btn );
 				edit_btn.on( 'click', function() {
 					if ( ! main.hasClass( '.edit-btn' ) )
 						tar.trigger( 'change' );
@@ -954,7 +956,13 @@ QS.EditSetting = (function($, undefined) {
 					break;
 				}
 
-				if (typeof d == 'string') {
+				if ( qt.isO( d ) && qt.isF( d.toLabel ) && qt.isF( d.toString ) ) {
+					var frmt = ele.data( 'display' ) || 'MMMM, Do YYYY h:mma';
+					ret = d.toLabel();
+				} else if ( ele.hasClass( 'is-date' ) ) {
+					var frmt = ele.data( 'display' ) || 'MMMM, Do YYYY h:mma';
+					ret = moment( d ).format( frmt );
+				} else if (typeof d == 'string') {
 					ret = QS.ucFirst(d);
 					break;
 				} else if (typeof d.toLabel == 'function') {
