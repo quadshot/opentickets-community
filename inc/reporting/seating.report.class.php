@@ -538,46 +538,51 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 		$columns = $this->csv_report_columns();
 		$cnt = count( $columns );
 
+		$index = 0;
 		// cycle through the roup of rows, and create the csv entries
 		if ( is_array( $group ) ) foreach ( $group as $row ) {
-			// get all the ticket codes for this quantity of line items
-			$codes = apply_filters( 'qsot-get-ticket-qr-data', '', array(
-				'order_item_id' => $row['_raw']->order_item_id,
-				'order_id' => $row['_raw']->order_id,
-				'event_id' => $row['_raw']->event_id,
-				'product' => wc_get_product( $row['_raw']->ticket_type_id ),
-				'qty' => $row['_raw']->quantity,
-			) );
-
 			$data = array();
-			// for each code we found for this line item, we need to make a separate row
-			for ( $i = 0; $i < count( $codes ); $i++ ) {
-				$csv_row = array();
-				// create a list of data to add to the csv, based on the order of the columns we need, and the data for this row's data
-				foreach ( $columns as $col => $__ ) {
-					// update some rows with special values
-					switch ( $col ) {
-						// get the ticket code for this row
-						case 'ticket_link':
-							$csv_row[] = $codes[ $i ];
-						break;
+			for ( $i = 0; $i < $row['_raw']->quantity; $i++ ) {
+				$index += 1;
 
-						// since we are breaking these rows down to individual line items, we need to update the line item quantity to 1, since it represents a single ticket
-						case 'quantity':
-							$csv_row[] = 1;
-						break;
+				// get all the ticket codes for this quantity of line items
+				$codes = apply_filters( 'qsot-get-ticket-qr-data', '', array(
+					'order_item_id' => $row['_raw']->order_item_id,
+					'order_id' => $row['_raw']->order_id,
+					'event_id' => $row['_raw']->event_id,
+					'product' => wc_get_product( $row['_raw']->ticket_type_id ),
+					'index' => $index,
+				) );
 
-						// default the purchaser to a cart id
-						case 'purchaser':
-							$csv_row[] = isset( $row[ $col ] ) && $row[ $col ]
-									? ( '-' == $row[ $col ] ? ' ' . $row[ $col ] : $row[ $col ] ) // fix '-' being translated as a number in OOO
-									: sprintf( __( 'Unpaid Cart: %s', 'opentickets-community-edition' ), $row['_raw']->session_customer_id );
-						break;
+				// for each code we found for this line item, we need to make a separate row
+				for ( $j = 0; $j < count( $codes ); $j++ ) {
+					$csv_row = array();
+					// create a list of data to add to the csv, based on the order of the columns we need, and the data for this row's data
+					foreach ( $columns as $col => $__ ) {
+						// update some rows with special values
+						switch ( $col ) {
+							// get the ticket code for this row
+							case 'ticket_link':
+								$csv_row[] = $codes[ $j ];
+							break;
 
-						// pass all other data thorugh
-						default:
-							$csv_row[] = isset( $row[ $col ] ) && $row[ $col ] ? ( '-' == $row[ $col ] ? ' ' . $row[ $col ] : $row[ $col ] ) : '';
-						break;
+							// since we are breaking these rows down to individual line items, we need to update the line item quantity to 1, since it represents a single ticket
+							case 'quantity':
+								$csv_row[] = 1;
+							break;
+
+							// default the purchaser to a cart id
+							case 'purchaser':
+								$csv_row[] = isset( $row[ $col ] ) && $row[ $col ]
+										? ( '-' == $row[ $col ] ? ' ' . $row[ $col ] : $row[ $col ] ) // fix '-' being translated as a number in OOO
+										: sprintf( __( 'Unpaid Cart: %s', 'opentickets-community-edition' ), $row['_raw']->session_customer_id );
+							break;
+
+							// pass all other data thorugh
+							default:
+								$csv_row[] = isset( $row[ $col ] ) && $row[ $col ] ? ( '-' == $row[ $col ] ? ' ' . $row[ $col ] : $row[ $col ] ) : '';
+							break;
+						}
 					}
 				}
 

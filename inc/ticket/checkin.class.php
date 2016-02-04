@@ -244,6 +244,8 @@ class QSOT_checkin {
 
 		if ( ! WP_DEBUG )
 			unset( $ticket->qr_data_debugs, $ticket->qr_data_debug );
+		else if ( defined( 'WP_DEBUG_TICKETS' ) && WP_DEBUG_TICKETS )
+			var_dump( $ticket->qr_data_debugs );
 
 		return $ticket;
 	}
@@ -297,7 +299,7 @@ class QSOT_checkin {
 			for ( $i = 0; $i < $args['qty']; $i++ ) {
 				// aggregate the data for this code
 				$info = $base;
-				$info['uniq'] = md5( sha1( $i . ':' . $args['order_id'] . ':' . $args['order_item_id'] ) );
+				$info['uniq'] = md5( sha1( ( $i + 1 ) . ':' . $args['order_id'] . ':' . $args['order_item_id'] ) );
 				$info['ticket_num'] = $i + 1;
 
 				// add the code to the return list
