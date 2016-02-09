@@ -248,7 +248,7 @@ class QSOT_pdf {
 
 				// generate the contents of the config file
 				$contents = <<<CONTENTS
-<?php ( __FILE__ == {$variable_names[0]} ) ? die( header( 'Location: /' ) ) : null;
+<?php if ( __FILE__ == {$variable_names[0]} ) die( header( 'Location: /' ) );
 if ( ! defined( 'DOMPDF_FONT_DIR' ) )
 	define( 'DOMPDF_FONT_DIR', '$font_path' );
 if ( ! defined( 'DOMPDF_FONT_CACHE' ) )
