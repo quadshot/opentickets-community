@@ -239,6 +239,9 @@ abstract class QSOT_Admin_Report {
 		// tell the report is about to start running
 		$this->_starting();
 
+		// add the header row to the csv
+		$this->_csv_header_row( $csv_file );
+
 		// draw the csv link
 		$this->_csv_link( $csv_file );
 
@@ -446,6 +449,12 @@ abstract class QSOT_Admin_Report {
 		return 'report-' . $this->slug . ( $id ? '-' . $id_prefix . $id : '' ) . '-' . wp_create_nonce( 'run-report-' . @json_encode( $_REQUEST ) ) . '.csv';
 	}
 
+	// add the header row to the csv
+	protected function _csv_header_row( $file ) {
+		$columns = $this->csv_report_columns();
+		fputcsv( $file['fd'], array_values( $columns ) );
+	}
+
 	// start the csv file
 	protected function _open_csv_file( $id='', $id_prefix='' ) {
 		// get the csv file path. make it if it does not exist yet
@@ -466,8 +475,6 @@ abstract class QSOT_Admin_Report {
 
 		// attempt to create a new csv file for this report. if that is successful, then add the column headers and return all the file info now
 		if ( $file['fd'] = fopen( $file['path'], 'w+' ) ) {
-			$columns = $this->csv_report_columns();
-			fputcsv( $file['fd'], array_values( $columns ) );
 			return $file;
 		}
 

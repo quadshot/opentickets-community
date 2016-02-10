@@ -55,7 +55,7 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 			'address' => array( 'title' => __( 'Address', 'opentickets-community-edition' ) ),
 			'note' => array( 'title' => __( 'Note', 'opentickets-community-edition' ) ),
 			'state' => array( 'title' => __( 'Status', 'opentickets-community-edition' ) ),
-		) );
+		), $this->event );
 	}
 
 	// individual reports should define their own set of columns to add to the csv
@@ -77,7 +77,7 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 			'state' => __( 'Status', 'opentickets-community-edition' ),
 			'event' => __( 'Event', 'opentickets-community-edition' ),
 			'ticket_link' => $is_url ? __( 'Ticket Url', 'opentickets-community-edition' ) : __( 'Ticket Code', 'openticket-community-edition' ),
-		) );
+		), $this->event );
 	}
 
 	// when starting to run the report, make sure our position counters are reset and that we know what event we are running this thing for
