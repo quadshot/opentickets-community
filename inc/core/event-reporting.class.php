@@ -231,7 +231,7 @@ abstract class QSOT_Admin_Report {
 			return;
 
 		// start the csv output file. if that fails, there is no point in continuing
-		if ( ! ( $csv_file = $this->_open_csv_file() ) )
+		if ( ! ( $csv_file = $this->_open_csv_file( '', '', true ) ) )
 			return $this->_error( new WP_Error( 'no_csv_file', __( 'Could not open the CSV file path. Aborting report generation.', 'opentickets-community-edition' ) ) );
 		elseif ( is_wp_error( $csv_file ) )
 			return $this->_error( $csv_file );
@@ -456,7 +456,7 @@ abstract class QSOT_Admin_Report {
 	}
 
 	// start the csv file
-	protected function _open_csv_file( $id='', $id_prefix='' ) {
+	protected function _open_csv_file( $id='', $id_prefix='', $skip_headers=false ) {
 		// get the csv file path. make it if it does not exist yet
 		$csv_path = $this->_csv_path();
 
@@ -475,6 +475,8 @@ abstract class QSOT_Admin_Report {
 
 		// attempt to create a new csv file for this report. if that is successful, then add the column headers and return all the file info now
 		if ( $file['fd'] = fopen( $file['path'], 'w+' ) ) {
+			if ( ! $skip_headers )
+				$this->_csv_header_row( $file );
 			return $file;
 		}
 
