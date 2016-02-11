@@ -1323,6 +1323,8 @@ class qsot_post_type {
 		);
 		$now = time();
 
+		$can_pub = current_user_can( 'publish_posts' );
+
 		// cycle through all the subevent settings that were sent. some will be new, some will be modified, some will be modified but have lost their post id. determine what each is,
 		// and properly group them for possible later processing
 		foreach ( $data['_qsot_event_settings'] as $item ) {
@@ -1344,6 +1346,9 @@ class qsot_post_type {
 					// if the post is set to publish in the future, then adjust the status
 					$pub = strtotime( $tmp->pub_date );
 					if ( $pub > $now ) $tmp->status = 'future';
+
+					// restrict publish to only those who have permissions
+					$tmp->status = 'publish' == $tmp->status && ! $can_pub ? 'pending' : $tmp->status;
 
 					// add the settings to the list of posts to update
 					$updates[] = array(
@@ -1410,6 +1415,10 @@ class qsot_post_type {
 						// if the post is set to publish in the future, then adjust the status
 						$pub = strtotime( $tmp->pub_date );
 						if ( $pub > $now ) $tmp->status = 'future';
+
+						// restrict publish to only those who have permissions
+						$tmp->status = 'publish' == $tmp->status && ! $can_pub ? 'pending' : $tmp->status;
+
 						// remove the settings from the list that needs a match up, since we just matched it
 						unset( $need_lookup[ $exist->post_name ] );
 						// add the settings to the list of posts to update
@@ -1454,6 +1463,10 @@ class qsot_post_type {
 					// if the post is set to publish in the future, then adjust the status
 					$pub = strtotime( $item->pub_date );
 					if ( $pub > $now ) $item->status = 'future';
+
+					// restrict publish to only those who have permissions
+					$item->status = 'publish' == $item->status && ! $can_pub ? 'pending' : $item->status;
+
 					// add the settings to the list of posts to update/insert
 					$updates[] = array(
 						'post_arr' => wp_parse_args( array( // will INSERT because there is no post_id
@@ -1462,9 +1475,9 @@ class qsot_post_type {
 							// user pretty url slug
 							'post_name' => $item->title,
 							// set the post status of the event
-							'post_status' => in_array( $tmp->visibility, array( 'public', 'protected' ) ) ? $tmp->status : $tmp->visibility,
+							'post_status' => in_array( $item->visibility, array( 'public', 'protected' ) ) ? $item->status : $item->visibility,
 							// protected events have passwords
-							'post_password' => 'protected' == $tmp->visibility ? $tmp->password : '',
+							'post_password' => 'protected' == $item->visibility ? $item->password : '',
 							// set the appropriate publish date
 							'post_date' => $item->pub_date == '' || $item->pub_date == 'now' ? '' : date_i18n( 'Y-m-d H:i:s', strtotime( $item->pub_date ) ),
 						), $defs ),
