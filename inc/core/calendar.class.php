@@ -399,7 +399,7 @@ class qsot_frontend_calendar {
 		if ( isset( $_REQUEST['has_price'] ) ) $args['has_price'] = $_REQUEST['has_price'];
 
 		// can the current user see specially statused events? if so add those also
-		if ( apply_filters( 'qsot-show-hidden-events', current_user_can( 'edit_posts' ) ) ) $args['post_status'][] = 'hidden';
+		if ( apply_filters( 'qsot-show-hidden-events', current_user_can( 'edit_posts' ) || current_user_can( 'box_office' ) ) ) $args['post_status'][] = 'hidden';
 		if ( current_user_can( 'read_private_posts' ) ) $args['post_status'][] = 'private';
 
 		// aggregate the list of events to render
