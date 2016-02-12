@@ -400,7 +400,7 @@ class qsot_frontend_calendar {
 
 		// can the current user see specially statused events? if so add those also
 		if ( apply_filters( 'qsot-show-hidden-events', current_user_can( 'edit_posts' ) || current_user_can( 'box_office' ) ) ) $args['post_status'][] = 'hidden';
-		if ( current_user_can( 'read_private_posts' ) ) $args['post_status'][] = 'private';
+		if ( current_user_can( 'read_private_posts' ) || current_user_can( 'box_office' ) ) $args['post_status'][] = 'private';
 
 		// aggregate the list of events to render
 		$final = self::get_all_calendar_events( get_posts( $args ) );
