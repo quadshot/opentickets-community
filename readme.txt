@@ -171,6 +171,15 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.1.2 - Feb/12/2016 =
+* [new] added box-office, box-office-manager, and content-manager roles in from old enterprise version
+* [tweak] modified code for wp.dompdf.config.php generation for eaccellerate
+* [tweak] changed reporting csv header logic so that headers can be defined by event
+* [tweak] added ability to modify report columns
+* [tweak] restricted event publishing to ppl with the ability to do so
+* [fix] repaired a recurring event publish bug dealing with visibility
+* [fix] fixed PDF corruption issues, both when WP_DEBUG and not
+
 = 2.1.1 - Feb/04/2016 =
 * [tweak] changed load order so that cart-timers can be modified in the theme
 * [tweak] tweaked checking logic so that proper errors are reported when ticket has been previously checked in
