@@ -182,7 +182,11 @@ function explode_url($url) {
   $path = "";
   $file = "";
 
-  $arr = parse_url($url);
+	// patch to translate new style file paths to old style file paths, for older versions of php compatibility
+	$url = preg_replace( '#^file://([^\/])#', 'file:///$1', $url );
+
+	// hide any failure messages that may pop
+  $arr = @parse_url($url);
 
   // Exclude windows drive letters...
   if ( isset($arr["scheme"]) && $arr["scheme"] !== "file" && strlen($arr["scheme"]) > 1 ) {

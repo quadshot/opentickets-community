@@ -43,7 +43,10 @@ class qsot_remote_file {
 
 	// determine if a url is of a local resource
 	protected static function _smells_local( $url ) {
-		// run the url through the url parser
+		// patch to translate new style file paths to old style file paths, for older versions of php compatibility
+		$url = preg_replace( '#^file://([^\/])#', 'file:///$1', $url );
+
+		// hide any failure messages that may pop
 		$parsed_url = @parse_url( $url );
 
 		// if there is no url host, then it is assumed that the host is the local host, meaning it is a local file

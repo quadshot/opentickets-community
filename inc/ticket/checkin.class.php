@@ -244,7 +244,7 @@ class QSOT_checkin {
 
 		if ( ! WP_DEBUG )
 			unset( $ticket->qr_data_debugs, $ticket->qr_data_debug );
-		else if ( defined( 'WP_DEBUG_TICKETS' ) && WP_DEBUG_TICKETS )
+		else if ( ! $is_pdf && isset( $ticket->qr_data_debugs ) && defined( 'WP_DEBUG_TICKETS' ) && WP_DEBUG_TICKETS )
 			var_dump( $ticket->qr_data_debugs );
 
 		return $ticket;
