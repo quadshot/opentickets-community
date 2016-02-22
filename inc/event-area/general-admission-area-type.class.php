@@ -1029,8 +1029,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 			$resp['s'] = true;
 
 			// add the item to the order
-			$item_id = $order->add_product( $product, $res );
-			wc_add_order_item_meta( $item_id, '_event_id', $event->ID );
+			$item_id = $this->_add_or_update_order_item( $order, $product, $event, $res, array( 'event_id' => $event->ID ) );
 
 			// update the reservation entry with the order_item_id
 			$new_state = in_array( $order->get_status(), apply_filters( 'qsot-zoner-confirmed-statuses', array( 'on-hold', 'processing', 'completed' ) ) ) ? $stati['c'][0] : $stati['r'][0];
@@ -1049,6 +1048,45 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		}
 
 		return $resp;
+	}
+
+	// add a new item or update an existing item for this reservation request
+	protected function _add_or_update_order_item( $order, $product, $event, $qty, $args ) {
+		$found = 0;
+		// cycle through the order items and find the first matching order item for this event and product combo
+		foreach ( $order->get_items( 'line_item' ) as $oiid => $item ) {
+			// if there is no product_id on this item, skip it
+			if ( ! isset( $item['product_id'] ) || $item['product_id'] != $product->id )
+				continue;
+
+			$matched = true;
+			// figure out if all the args match
+			foreach ( $args as $k => $v ) {
+				if ( ! isset( $item[ $k ] ) || $item[ $k ] != $v ) {
+					$match = false;
+					break;
+				}
+			}
+
+			// if all the fields match, then use this order item
+			if ( $matched ) {
+				$found = $oiid;
+				break;
+			}
+		}
+
+		$item_id = 0;
+		// if the product-event combo was found in an existing order item, then simply update the quantity of that order item
+		if ( $found > 0 ) {
+			$order->update_product( $found, $product, array( 'qty' => $qty ) );
+			$item_id = $found;
+		// otherwise add a new order item for this seleciton
+		} else {
+			$item_id = $order->add_product( $product, $qty );
+			wc_add_order_item_meta( $item_id, '_event_id', $event->ID );
+		}
+
+		return $item_id;
 	}
 
 	// handle the admin ajax request to update an existing ticket

@@ -212,9 +212,10 @@ class QSOT_General_Admission_Zoner extends QSOT_Base_Event_Area_Zoner {
 
 		// tally all records for this event before this lock.
 		$total_before_lock = $this->find( array( 'event_id' => $args['event_id'], 'state' => '*', 'fields' => 'total', 'before' => $lock->since ) );
+		$my_total_before_lock = $this->find( array( 'event_id' => $args['event_id'], 'state' => '*', 'fields' => 'total', 'before' => $lock->since, 'customer_id' => $args['customer_id'] ) );
 
 		// figure out the total available for the event, at the point of the lock. if there is no capacity, then default to the amount in the lock
-		$remainder = $capacity > 0 ? $capacity - $total_before_lock : $lock_for;
+		$remainder = $capacity > 0 ? $capacity - $total_before_lock + $my_total_before_lock : $lock_for;
 
 		// if the total is greater than or equal to the max capacity for this event, then we do not have enough tickets to issue, so bail
 		if ( $capacity > 0 && $remainder <= 0 ) {
