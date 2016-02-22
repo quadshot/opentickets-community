@@ -342,7 +342,7 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 				$status = __( '(no-order)', 'opentickets-community-edition' );
 			else if ( 'wc-completed' == $order_stati[ $row->order_id ] )
 				$status = isset( $this->state_map[ $row->state ] ) ? $this->state_map[ $row->state ][0] : $wc_order_stati[ 'wc-completed' ];
-			else if ( isset( $order_stati[ $row->order_id ] ) )
+			else if ( isset( $order_stati[ $row->order_id ], $wc_order_stati[ $order_stati[ $row->order_id ] ] ) )
 				$status = $wc_order_stati[ $order_stati[ $row->order_id ] ];
 
 			$final[] = apply_filters( 'qsot-' . $this->slug . '-report-data-row', array(
@@ -493,6 +493,8 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 
 	// get all the ticket codes, indexed by the order_item_id
 	protected function _get_ticket_codes( $order_item_ids ) {
+		if ( empty( $order_item_ids ) )
+			return array();
 		global $wpdb;
 		// get the raw list
 		$results = $wpdb->get_results( 'select * from ' . $wpdb->qsot_ticket_codes . ' where order_item_id in(' . implode( ',', $order_item_ids ) . ')' );
