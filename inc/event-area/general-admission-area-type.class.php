@@ -1024,12 +1024,12 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		) );
 
 		// if the response was successful, then...
-		if ( $res && ! is_wp_error( $res ) ) {
+		if ( ! is_wp_error( $res ) && is_scalar( $res ) && $res > 0 ) {
 			// update the response status
 			$resp['s'] = true;
 
 			// add the item to the order
-			$item_id = $order->add_product( $product, $quantity );
+			$item_id = $order->add_product( $product, $res );
 			wc_add_order_item_meta( $item_id, '_event_id', $event->ID );
 
 			// update the reservation entry with the order_item_id

@@ -277,7 +277,7 @@ class QSOT_General_Admission_Zoner extends QSOT_Base_Event_Area_Zoner {
 			)
 		);
 
-		return apply_filters( 'qsot-gaea-zoner-reserve-results', true, $args );
+		return apply_filters( 'qsot-gaea-zoner-reserve-results', $final_qty, $args );
 	}
 
 	// remove a reservation based on specified criteria
