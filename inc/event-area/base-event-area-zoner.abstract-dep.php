@@ -6,11 +6,17 @@ abstract class QSOT_Base_Event_Area_Zoner {
 
 	// basic constructor for the area type
 	public function __construct() {
+		// load the plugin options
+		$options = QSOT_Options::instance();
+
+		// setup the base stati
 		$this->stati = array(
-			'r' => array( 'reserved', 3600, __( 'Reserved', 'opentickets-community-edition' ), __( 'Not Paid', 'opentickets-community-edition' ) ),
-			'c' => array( 'confirmed', 0, __( 'Confirmed', 'opentickets-community-edition' ), __( 'Paid', 'opentickets-community-edition' ) ),
-			'o' => array( 'occupied', 0, __( 'Occupied', 'opentickets-community-edition' ), __( 'Checked In', 'opentickets-community-edition' ) ),
+			'r' => array( 'reserved', 3600, __( 'Reserved', 'opentickets-community-edition' ), __( 'Not Paid', 'opentickets-community-edition' ), 3600 ),
+			'c' => array( 'confirmed', 0, __( 'Confirmed', 'opentickets-community-edition' ), __( 'Paid', 'opentickets-community-edition' ), 0 ),
+			'o' => array( 'occupied', 0, __( 'Occupied', 'opentickets-community-edition' ), __( 'Checked In', 'opentickets-community-edition' ), 0 ),
 		);
+		$this->_setup_options();
+		$this->stati['r'][1] = intval( $options->{'qsot-reserved-state-timer'} );
 
 		// update the list of stati after all plugins have been loaded
 		if ( did_action( 'after_setup_theme' ) )
@@ -120,6 +126,9 @@ abstract class QSOT_Base_Event_Area_Zoner {
 			}
 		}
 	}
+
+	// setup the options for allowing timers to be set
+	protected function _setup_options() {}
 
 	// define a function to grab the availability for an event
 	abstract public function get_availability( $event, $event_area );

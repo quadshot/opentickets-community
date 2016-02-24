@@ -2429,8 +2429,19 @@ class qsot_post_type {
 			'default' => 'yes',
 		));
 
+
+		// add the setting section for teh abstract reservation features
+		self::$options->add( array(
+			'order' => 100, 
+			'type' => 'title',
+			'title' => __( 'Limitations', 'opentickets-community-edition' ),
+			'id' => 'heading-limitations',
+			'page' => 'general',
+			'section' => 'reservations',
+		) ); 
+
 		// enforce a limit on the number of tickets per event, per order, that a user can purchase
-		self::$options->add(array(
+		self::$options->add( array(
 			'order' => 125,
 			'id' => 'qsot-event-purchase-limit',
 			'type' => 'number',
@@ -2438,17 +2449,30 @@ class qsot_post_type {
 			'title' => __( 'Per Event, Per Order Ticket Purchase Limit', 'opentickets-community-edition' ),
 			'desc' => __( 'A positive number here tells the software to enforce a purchase limit. Users will be restricted to only buying upto X tickets per event, per order. Setting to 0 means no limit.', 'opentickets-community-edition' ),
 			'default' => 0,
-		));
+			'page' => 'general',
+			'section' => 'reservations',
+		) );
 
 		// prevent end users from modifying the quantity of their reservations after they chose the number initially. they are still allowed to delete the reservations
-		self::$options->add(array(
+		self::$options->add( array(
 			'order' => 127,
 			'id' => 'qsot-locked-reservations',
 			'type' => 'checkbox',
 			'title' => __( 'Locked-in Reservations', 'opentickets-community-edition' ),
 			'desc' => __( 'Checking this box means that once the end user chooses a quantity of tickets to purchase, they cannot modify that quantity. They can still delete their reservations and start over though.', 'opentickets-community-edition' ),
 			'default' => 'no',
-		));
+			'page' => 'general',
+			'section' => 'reservations',
+		) );
+
+		// End state timers
+		self::$options->add( array(
+			'order' => 199, 
+			'type' => 'sectionend',
+			'id' => 'heading-limitations',
+			'page' => 'general',
+			'section' => 'reservations',
+		) ); 
 	}
 }
 

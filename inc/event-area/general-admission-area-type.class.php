@@ -54,6 +54,9 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		add_action( 'woocommerce_cart_item_removed', array( &$this, 'delete_ticket_from_cart' ), 10, 1 );
 		add_action( 'woocommerce_after_cart_item_quantity_update', array( &$this, 'update_reservations_on_cart_update' ), 10, 3 );
 
+		// load the zoner when on the settings pages
+		add_action( 'load-opentickets_page_opentickets-settings', array( &$this, 'get_zoner' ), -1 );
+
 		// certain filters should only exist in the admin
 		if ( is_admin() ) {
 			// add the list of valid state types to the list that the seating chart will use to pull records

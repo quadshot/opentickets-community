@@ -487,4 +487,48 @@ class QSOT_General_Admission_Zoner extends QSOT_Base_Event_Area_Zoner {
 
 		return $capacity - $taken;
 	}
+
+	// setup the options for allowing timers to be set
+	protected function _setup_options() {
+		// the the plugin settings object
+		$options = QSOT_Options::instance();
+
+		// setup the default values, based on the default timers already established
+		$options->def( 'qsot-reserved-state-timer', $this->stati['r'][4] );
+
+		// update db option if it was reset to a blank value
+		if ( '' === get_option( 'qsot-reserved-state-timer', '' ) )
+			update_option( 'qsot-reserved-state-timer', $this->stati['r'][4] );
+
+		// add the setting section for these timers
+		$options->add( array(
+			'order' => 500, 
+			'type' => 'title',
+			'title' => __( 'State Timers', 'opentickets-community-edition' ),
+			'id' => 'heading-state-timers',
+			'page' => 'general',
+			'section' => 'reservations',
+		) ); 
+
+		// Reserved timer
+		$options->add( array(
+			'order' => 505, 
+			'id' => 'qsot-reserved-state-timer',
+			'default' => $options->{'qsot-reserved-state-timer'},
+			'type' => 'text',
+			'title' => __( '"Reserved" timer (in seconds)', 'opentickets-community-edition' ),
+			'desc' => __( 'The maximum length of time between the moment the user selects a ticket, until they decide to pay for the ticket. After this time expires, if the user has not promised to pay, the tickets will be removed from their cart, and released back into the ticket pool.', 'opentickets-community-edition' ),
+			'page' => 'general',
+			'section' => 'reservations',
+		) ); 
+
+		// End state timers
+		$options->add( array(
+			'order' => 599, 
+			'type' => 'sectionend',
+			'id' => 'heading-state-timers',
+			'page' => 'general',
+			'section' => 'reservations',
+		) ); 
+	}
 }
