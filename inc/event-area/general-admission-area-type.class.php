@@ -1035,11 +1035,11 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 			$item_id = $this->_add_or_update_order_item( $order, $product, $event, $res, array( 'event_id' => $event->ID ) );
 
 			// update the reservation entry with the order_item_id
-			$new_state = in_array( $order->get_status(), apply_filters( 'qsot-zoner-confirmed-statuses', array( 'on-hold', 'processing', 'completed' ) ) ) ? $stati['c'][0] : $stati['r'][0];
+			$new_state = $stati['c'][0];
 			$zoner->update( false, array(
 				'event_id' => $event->ID,
 				'order_id' => $order->id,
-				'quantity' => $quantity,
+				'quantity' => $res,
 				'customer_id' => $customer_id,
 				'ticket_type_id' => $ticket_type_id,
 				'state' => $stati['r'][0],
