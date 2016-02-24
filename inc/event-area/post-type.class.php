@@ -1131,13 +1131,21 @@ class QSOT_Post_Type_Event_Area {
 				// remove the order item
 				wc_delete_order_item( $item_id );
 
+				$product_name = __( 'Unknown Ticket Type', 'opentickets-community-edition' );
+				// load the product for the ticket we are removing, so we can use the title in the message
+				$product = wc_get_product( $item['product_id'] );
+				if ( is_object( $product ) && ! is_wp_error( $product ) )
+					$product_name = $product->get_title();
+
 				$event_start = get_post_meta( $event->ID, '_start', true );
 				$event_date_time = date_i18n( get_option( 'date_format', __( 'Y-m-d', 'opentickets-commnunity-edition' ) ), strtotime( $event_start ) ) . ' '
 						. date_i18n( get_option( 'time_format', __( 'H:i:s', 'opentickets-commnunity-edition' ) ), strtotime( $event_start ) );
 				// add a note explaining what we did
 				$order->add_order_note( apply_filters( 'qsot-removing-cancelled-order-ticket-msg', sprintf(
-					__( 'Removed (%d) tickets for event "%s" [#%d] from the order, because the order was cancelled. This released those tickets back into the ticket pool.', 'opentickets-community-edition' ),
+					__( 'Removed (%d) x "%s" [T#%d] tickets for event "%s" [E#%d] from the order, because the order was cancelled. This released those tickets back into the ticket pool.', 'opentickets-community-edition' ),
 					$item['qty'],
+					$product_name,
+					$item['product_id'],
 					apply_filters( 'the_title', $event->post_title . ' @ ' . $event_date_time ),
 					$event->ID
 				), $event, $item ) );
