@@ -171,6 +171,18 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.2.0 - Feb/25/2016 =
+* [new] all tickets on non-cancelled orders are considered 'confirmed' now
+* [new] adding an order note during order cancellation that includes information about the tickets that were removed
+* [new] added settings to control the ticket state timers for temporary states
+* [tweak] disabled phpqr error logging by default, because of pdf creation issues
+* [tweak] isolated thumbnail cascade meta lookup to only events
+* [tweak] changed js to no longer override $.param function, since it does what we need now
+* [tweak] adjusted line item status output on seating report
+* [fix] fixed an edgecase overbooking issue, that could occur during admin seat allocation
+* [fix] fixed weird order status bugs on seating report
+* [fix] corrected a refund template warning
+
 = 2.1.2 - Feb/12/2016 =
 * [new] added box-office, box-office-manager, and content-manager roles in from old enterprise version
 * [tweak] modified code for wp.dompdf.config.php generation for eaccellerate
