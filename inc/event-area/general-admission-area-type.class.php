@@ -54,6 +54,9 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		add_action( 'woocommerce_cart_item_removed', array( &$this, 'delete_ticket_from_cart' ), 10, 1 );
 		add_action( 'woocommerce_after_cart_item_quantity_update', array( &$this, 'update_reservations_on_cart_update' ), 10, 3 );
 
+		// load the zoner when on the settings pages
+		add_action( 'load-opentickets_page_opentickets-settings', array( &$this, 'get_zoner' ), -1 );
+
 		// certain filters should only exist in the admin
 		if ( is_admin() ) {
 			// add the list of valid state types to the list that the seating chart will use to pull records
@@ -261,7 +264,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 
 		// add each one to the list we are returning
 		foreach ( $stati as $status )
-			$list[ $status[0] ] = array( $status[3], ! $status[1] ); // label, is_permanent_state
+			$list[ $status[0] ] = $status;
 
 		return $list;
 	}
@@ -974,6 +977,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 			$resp['e'][] = __( 'Could not find the new event.', 'opentickets-community-edition' );
 			return $resp;
 		}
+		do_action( 'qsot-clear-zone-locks', array( 'event_id' => $event->ID ) );
 		
 		// attempt to load the event_area for that event, and if not loaded, then bail
 		$event_area = apply_filters( 'qsot-event-area-for-event', false, $event );
@@ -1024,20 +1028,19 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		) );
 
 		// if the response was successful, then...
-		if ( $res && ! is_wp_error( $res ) ) {
+		if ( ! is_wp_error( $res ) && is_scalar( $res ) && $res > 0 ) {
 			// update the response status
 			$resp['s'] = true;
 
 			// add the item to the order
-			$item_id = $order->add_product( $product, $quantity );
-			wc_add_order_item_meta( $item_id, '_event_id', $event->ID );
+			$item_id = $this->_add_or_update_order_item( $order, $product, $res, array( 'event_id' => $event->ID ) );
 
 			// update the reservation entry with the order_item_id
-			$new_state = in_array( $order->get_status(), apply_filters( 'qsot-zoner-confirmed-statuses', array( 'on-hold', 'processing', 'completed' ) ) ) ? $stati['c'][0] : $stati['r'][0];
+			$new_state = $stati['c'][0];
 			$zoner->update( false, array(
 				'event_id' => $event->ID,
 				'order_id' => $order->id,
-				'quantity' => $quantity,
+				'quantity' => $res,
 				'customer_id' => $customer_id,
 				'ticket_type_id' => $ticket_type_id,
 				'state' => $stati['r'][0],
@@ -1049,6 +1052,46 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		}
 
 		return $resp;
+	}
+
+	// add a new item or update an existing item for this reservation request
+	protected function _add_or_update_order_item( $order, $product, $qty, $args ) {
+		$found = 0;
+		// cycle through the order items and find the first matching order item for this event and product combo
+		foreach ( $order->get_items( 'line_item' ) as $oiid => $item ) {
+			// if there is no product_id on this item, skip it
+			if ( ! isset( $item['product_id'] ) || $item['product_id'] != $product->id )
+				continue;
+
+			$matched = true;
+			// figure out if all the args match
+			foreach ( $args as $k => $v ) {
+				if ( ! isset( $item[ $k ] ) || $item[ $k ] != $v ) {
+					$match = false;
+					break;
+				}
+			}
+
+			// if all the fields match, then use this order item
+			if ( $matched ) {
+				$found = $oiid;
+				break;
+			}
+		}
+
+		$item_id = 0;
+		// if the product-event combo was found in an existing order item, then simply update the quantity of that order item
+		if ( $found > 0 ) {
+			$order->update_product( $found, $product, array( 'qty' => $qty ) );
+			$item_id = $found;
+		// otherwise add a new order item for this seleciton
+		} else {
+			$item_id = $order->add_product( $product, $qty );
+			foreach ( $args as $k => $v )
+				wc_add_order_item_meta( $item_id, '_' . $k, $v );
+		}
+
+		return $item_id;
 	}
 
 	// handle the admin ajax request to update an existing ticket

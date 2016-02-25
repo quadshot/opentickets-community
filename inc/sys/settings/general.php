@@ -34,6 +34,7 @@ class qsot_Settings_General extends QSOT_Settings_Page {
 	public function get_sections() {
 		$sections = apply_filters( 'qsot-settings-general-sections', array(
 			'' => __( 'Site Wide', 'opentickets-community-edition' ),
+			'reservations' => __( 'Reservations', 'opentickets-community-edition' ),
 			'wc-emails' => __( 'WooCommerce Emails', 'opentickets-community-edition' ),
 		) );
 

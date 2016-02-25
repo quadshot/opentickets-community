@@ -212,9 +212,11 @@ class QSOT_General_Admission_Zoner extends QSOT_Base_Event_Area_Zoner {
 
 		// tally all records for this event before this lock.
 		$total_before_lock = $this->find( array( 'event_id' => $args['event_id'], 'state' => '*', 'fields' => 'total', 'before' => $lock->since ) );
+		$my_total_before_lock = $this->find( array( 'event_id' => $args['event_id'], 'state' => '*', 'fields' => 'total', 'before' => $lock->since, 'ticket_type_id' => $args['ticket_type_id'], 'customer_id' => $args['customer_id'] ) );
+		//die(var_dump( $capacity, $total_before_lock, $my_total_before_lock, $lock_for ));
 
 		// figure out the total available for the event, at the point of the lock. if there is no capacity, then default to the amount in the lock
-		$remainder = $capacity > 0 ? $capacity - $total_before_lock : $lock_for;
+		$remainder = $capacity > 0 ? $capacity - $total_before_lock + $my_total_before_lock : $lock_for;
 
 		// if the total is greater than or equal to the max capacity for this event, then we do not have enough tickets to issue, so bail
 		if ( $capacity > 0 && $remainder <= 0 ) {
@@ -256,7 +258,18 @@ class QSOT_General_Admission_Zoner extends QSOT_Base_Event_Area_Zoner {
 				'session_customer_id' => $args['customer_id'],
 				'event_id' => $args['event_id'],
 				'ticket_type_id' => $args['ticket_type_id'],
-				'state' => $this->stati['r'][0],
+				'state' => $this->stati['r'][0], // reserved
+				'order_id' => $args['order_id'],
+			)
+		);
+		// needed because now all tickets on orders are in confirmed status
+		$wpdb->delete(
+			$wpdb->qsot_event_zone_to_order,
+			array(
+				'session_customer_id' => $args['customer_id'],
+				'event_id' => $args['event_id'],
+				'ticket_type_id' => $args['ticket_type_id'],
+				'state' => $this->stati['c'][0], // confirmed
 				'order_id' => $args['order_id'],
 			)
 		);
@@ -277,7 +290,7 @@ class QSOT_General_Admission_Zoner extends QSOT_Base_Event_Area_Zoner {
 			)
 		);
 
-		return apply_filters( 'qsot-gaea-zoner-reserve-results', true, $args );
+		return apply_filters( 'qsot-gaea-zoner-reserve-results', $final_qty, $args );
 	}
 
 	// remove a reservation based on specified criteria
@@ -485,5 +498,49 @@ class QSOT_General_Admission_Zoner extends QSOT_Base_Event_Area_Zoner {
 		$taken = $this->find( array( 'fields' => 'total', 'event_id' => $event->ID ) );
 
 		return $capacity - $taken;
+	}
+
+	// setup the options for allowing timers to be set
+	protected function _setup_options() {
+		// the the plugin settings object
+		$options = QSOT_Options::instance();
+
+		// setup the default values, based on the default timers already established
+		$options->def( 'qsot-reserved-state-timer', $this->stati['r'][4] );
+
+		// update db option if it was reset to a blank value
+		if ( '' === get_option( 'qsot-reserved-state-timer', '' ) )
+			update_option( 'qsot-reserved-state-timer', $this->stati['r'][4] );
+
+		// add the setting section for these timers
+		$options->add( array(
+			'order' => 500, 
+			'type' => 'title',
+			'title' => __( 'State Timers', 'opentickets-community-edition' ),
+			'id' => 'heading-state-timers',
+			'page' => 'general',
+			'section' => 'reservations',
+		) ); 
+
+		// Reserved timer
+		$options->add( array(
+			'order' => 505, 
+			'id' => 'qsot-reserved-state-timer',
+			'default' => $options->{'qsot-reserved-state-timer'},
+			'type' => 'text',
+			'title' => __( '"Reserved" timer (in seconds)', 'opentickets-community-edition' ),
+			'desc' => __( 'The maximum length of time between the moment the user selects a ticket, until they decide to pay for the ticket. After this time expires, if the user has not promised to pay, the tickets will be removed from their cart, and released back into the ticket pool.', 'opentickets-community-edition' ),
+			'page' => 'general',
+			'section' => 'reservations',
+		) ); 
+
+		// End state timers
+		$options->add( array(
+			'order' => 599, 
+			'type' => 'sectionend',
+			'id' => 'heading-state-timers',
+			'page' => 'general',
+			'section' => 'reservations',
+		) ); 
 	}
 }

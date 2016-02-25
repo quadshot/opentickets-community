@@ -864,22 +864,45 @@ class qsot_post_type {
 		return $html;
 	}
 
-	public static function cascade_thumbnail_id($current, $object_id, $key, $single) {
+	// find an appropriate thumbnail based on the supplied info
+	public static function cascade_thumbnail_id( $current, $object_id, $key, $single ) {
+		// if we are not looking up the thumbnail_id, bail immediately
+		if ( '_thumbnail_id' !== $key )
+			return $current;
+
+		// if the thumb was already found, bail now
+		if ( $current )
+			return $current;
+
 		static $map = array();
 
-		if (!isset($map[$object_id.''])) {
-			$obj = get_post($object_id);
-			if ($obj->ID == $object_id) $map[$object_id.''] = $obj->post_type;
-			else $map[$object_id.''] = '_unknown_post_type';
+		// if we have not looked up the post type for the supplied object_id yet, then look it up now
+		if ( ! isset( $map[ $object_id . '' ] ) ) {
+			$obj = get_post( $object_id );
+			// if the post was loaded
+			if ( is_object( $obj ) && ! is_wp_error( $obj ) && $obj->ID == $object_id )
+				$map[$object_id.''] = $obj->post_type;
+			// otherwise, cache something at least so we dont keep looking it up
+			else
+				$map[ $object_id . '' ] = '_unknown_post_type';
 		}
 
-		if ($map[$object_id.''] == self::$o->core_post_type && $key == '_thumbnail_id' && $parent_id = wp_get_post_parent_id($object_id)) {
-			remove_filter('get_post_metadata', array(__CLASS__, 'cascade_thumbnail_id'), 10);
-			$this_value = get_post_meta($object_id, $key, $single);
-			add_filter('get_post_metadata', array(__CLASS__, 'cascade_thumbnail_id'), 10, 4);
+		// if the supplied object is an event, and it is not a parent event, then...
+		if ( $map[ $object_id . '' ] == self::$o->core_post_type && $key == '_thumbnail_id' && $parent_id = wp_get_post_parent_id( $object_id ) ) {
+			// prevent weird recursion
+			remove_filter( 'get_post_metadata', array( __CLASS__, 'cascade_thumbnail_id' ), 10 );
 
-			if (empty($this_value)) $current = get_post_meta($parent_id, $key, $single);
-			else $current = $this_value;
+			// lookup this event's thumb
+			$this_value = get_post_meta( $object_id, $key, $single );
+
+			// restore thumbnail cascade
+			add_filter( 'get_post_metadata', array( __CLASS__, 'cascade_thumbnail_id' ), 10, 4 );
+
+			// if we did not find a thumb for this specific event, try to lookup the parent event's thumb
+			if ( empty( $this_value ) )
+				$current = get_post_meta( $parent_id, $key, $single );
+			else
+				$current = $this_value;
 		}
 
 		return $current;
@@ -2406,8 +2429,19 @@ class qsot_post_type {
 			'default' => 'yes',
 		));
 
+
+		// add the setting section for teh abstract reservation features
+		self::$options->add( array(
+			'order' => 100, 
+			'type' => 'title',
+			'title' => __( 'Limitations', 'opentickets-community-edition' ),
+			'id' => 'heading-limitations',
+			'page' => 'general',
+			'section' => 'reservations',
+		) ); 
+
 		// enforce a limit on the number of tickets per event, per order, that a user can purchase
-		self::$options->add(array(
+		self::$options->add( array(
 			'order' => 125,
 			'id' => 'qsot-event-purchase-limit',
 			'type' => 'number',
@@ -2415,17 +2449,30 @@ class qsot_post_type {
 			'title' => __( 'Per Event, Per Order Ticket Purchase Limit', 'opentickets-community-edition' ),
 			'desc' => __( 'A positive number here tells the software to enforce a purchase limit. Users will be restricted to only buying upto X tickets per event, per order. Setting to 0 means no limit.', 'opentickets-community-edition' ),
 			'default' => 0,
-		));
+			'page' => 'general',
+			'section' => 'reservations',
+		) );
 
 		// prevent end users from modifying the quantity of their reservations after they chose the number initially. they are still allowed to delete the reservations
-		self::$options->add(array(
+		self::$options->add( array(
 			'order' => 127,
 			'id' => 'qsot-locked-reservations',
 			'type' => 'checkbox',
 			'title' => __( 'Locked-in Reservations', 'opentickets-community-edition' ),
 			'desc' => __( 'Checking this box means that once the end user chooses a quantity of tickets to purchase, they cannot modify that quantity. They can still delete their reservations and start over though.', 'opentickets-community-edition' ),
 			'default' => 'no',
-		));
+			'page' => 'general',
+			'section' => 'reservations',
+		) );
+
+		// End state timers
+		self::$options->add( array(
+			'order' => 199, 
+			'type' => 'sectionend',
+			'id' => 'heading-limitations',
+			'page' => 'general',
+			'section' => 'reservations',
+		) ); 
 	}
 }
 

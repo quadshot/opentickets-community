@@ -1124,8 +1124,9 @@ QS.EditSetting = (function($, undefined) {
 
 	$.param = function(a, tr, ty) {
 		switch (ty) {
-			case 'standard': return $.paramStandard(a, tr); break;
-			default: return $.paramAll(a, tr); break;
+			//case 'standard':
+			default: return $.paramStandard(a, tr); break;
+			//default: return $.paramAll(a, tr); break;
 		}
 	}
 
