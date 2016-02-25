@@ -264,7 +264,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 
 		// add each one to the list we are returning
 		foreach ( $stati as $status )
-			$list[ $status[0] ] = array( $status[3], ! $status[1] ); // label, is_permanent_state
+			$list[ $status[0] ] = $status;
 
 		return $list;
 	}
@@ -977,6 +977,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 			$resp['e'][] = __( 'Could not find the new event.', 'opentickets-community-edition' );
 			return $resp;
 		}
+		do_action( 'qsot-clear-zone-locks', array( 'event_id' => $event->ID ) );
 		
 		// attempt to load the event_area for that event, and if not loaded, then bail
 		$event_area = apply_filters( 'qsot-event-area-for-event', false, $event );
@@ -1032,7 +1033,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 			$resp['s'] = true;
 
 			// add the item to the order
-			$item_id = $this->_add_or_update_order_item( $order, $product, $event, $res, array( 'event_id' => $event->ID ) );
+			$item_id = $this->_add_or_update_order_item( $order, $product, $res, array( 'event_id' => $event->ID ) );
 
 			// update the reservation entry with the order_item_id
 			$new_state = $stati['c'][0];
@@ -1054,7 +1055,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 	}
 
 	// add a new item or update an existing item for this reservation request
-	protected function _add_or_update_order_item( $order, $product, $event, $qty, $args ) {
+	protected function _add_or_update_order_item( $order, $product, $qty, $args ) {
 		$found = 0;
 		// cycle through the order items and find the first matching order item for this event and product combo
 		foreach ( $order->get_items( 'line_item' ) as $oiid => $item ) {
@@ -1086,7 +1087,8 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		// otherwise add a new order item for this seleciton
 		} else {
 			$item_id = $order->add_product( $product, $qty );
-			wc_add_order_item_meta( $item_id, '_event_id', $event->ID );
+			foreach ( $args as $k => $v )
+				wc_add_order_item_meta( $item_id, '_' . $k, $v );
 		}
 
 		return $item_id;

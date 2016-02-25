@@ -49,7 +49,7 @@ abstract class QSOT_Base_Event_Area_Zoner {
 		$list = array();
 		// find the stati with a non-zero timer
 		foreach ( $this->stati as $k => $v )
-			if ( $v[1] > 0 )
+			if ( $v[4] > 0 )
 				$list[ $k ] = $v;
 		return $list;
 	}

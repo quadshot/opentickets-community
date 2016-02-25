@@ -280,7 +280,7 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 		// find a list of the valid states that are permanent states. we do not want 'reserved' seats or 'interest' seats showing here
 		$valid = array();
 		foreach ( $this->state_map as $key => $state )
-			if ( $state[1] )
+			//if ( 0 == $state[4] )
 				$valid[] = $key;
 		$valid = array_filter( array_map( 'trim', $valid ) );
 		// if there are no valid states, bail now
@@ -341,7 +341,9 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 			if ( ! isset( $order_stati[ $row->order_id ] ) )
 				$status = __( '(no-order)', 'opentickets-community-edition' );
 			else if ( 'wc-completed' == $order_stati[ $row->order_id ] )
-				$status = isset( $this->state_map[ $row->state ] ) ? $this->state_map[ $row->state ][0] : $wc_order_stati[ 'wc-completed' ];
+				$status = isset( $this->state_map[ $row->state ] ) ? $this->state_map[ $row->state ][3] : $wc_order_stati[ 'wc-completed' ];
+			else if ( isset( $this->state_map[ $row->state ] ) && $this->state_map[ $row->state ][4] > 0 )
+				$status = $this->state_map[ $row->state ][3];
 			else if ( isset( $order_stati[ $row->order_id ], $wc_order_stati[ $order_stati[ $row->order_id ] ] ) )
 				$status = $wc_order_stati[ $order_stati[ $row->order_id ] ];
 
@@ -565,7 +567,7 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 						switch ( $col ) {
 							// get the ticket code for this row
 							case 'ticket_link':
-								$csv_row[] = $codes[ $j ];
+								$csv_row[] = is_array( $codes ) ? $codes[ $j ] : '-';
 							break;
 
 							// since we are breaking these rows down to individual line items, we need to update the line item quantity to 1, since it represents a single ticket
