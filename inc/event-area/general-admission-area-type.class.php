@@ -330,7 +330,13 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		) );
 
 		// if the update failed, then revert the quantity
-		if ( ! $result || is_wp_error( $result ) ) {
+		if ( ! is_wp_error( $result ) && is_scalar( $result ) && $result > 0 ) {
+			// if the final quantity does not equal the requested quantity, then pop a message indicating that the reason is because there are not enough tickets
+			if ( $result != $quantity )
+				wc_add_notice( sprintf( __( 'There were not %d tickets available. We reserved %d for you instead, which is all that is available.', 'opentickets-community-edition' ), $quantity, $result ), 'error' );
+
+			WC()->cart->set_quantity( $cart_item_key, $result, true );
+		} else if ( ! $result || is_wp_error( $result ) ) {
 			// reset the quantity and pop an error as to why
 			WC()->cart->set_quantity( $cart_item_key, $old_quantity, true );
 			if ( is_wp_error( $result ) )

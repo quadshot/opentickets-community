@@ -98,8 +98,8 @@ class QSOT_Post_Type_Event_Area {
 		add_action( 'woocommerce_saved_order_items', array( &$this, 'save_order_items' ), 10, 2 );
 
 		// handle syncing of cart items to the values in the ticket table
-		add_action( 'wp_loaded', array( &$this, 'sync_cart_tickets' ), 6 );
-		add_action( 'woocommerce_cart_loaded_from_session', array( &$this, 'sync_cart_tickets' ), 6 );
+		add_action( 'wp_loaded', array( &$this, 'sync_cart_tickets' ), 21 );
+		//add_action( 'woocommerce_cart_loaded_from_session', array( &$this, 'sync_cart_tickets' ), 6 );
 		add_action( 'qsot-sync-cart', array( &$this, 'sync_cart_tickets' ), 10 );
 		add_action( 'qsot-clear-zone-locks', array( &$this, 'clear_zone_locks' ), 10, 1 );
 
