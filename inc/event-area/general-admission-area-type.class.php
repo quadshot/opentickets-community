@@ -1073,7 +1073,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 			// figure out if all the args match
 			foreach ( $args as $k => $v ) {
 				if ( ! isset( $item[ $k ] ) || $item[ $k ] != $v ) {
-					$match = false;
+					$matched = false;
 					break;
 				}
 			}
