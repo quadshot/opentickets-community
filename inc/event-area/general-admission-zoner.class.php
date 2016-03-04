@@ -456,6 +456,13 @@ class QSOT_General_Admission_Zoner extends QSOT_Base_Event_Area_Zoner {
 		if ( empty( $data ) )
 			return apply_filters( 'qsot-gaea-zoner-update-results', new WP_Error( 'missing_data', __( 'There was nothing to update.', 'opentickets-community-edition' ) ), $args );
 
+		// figure out the limit of the number of tickets a user can get for this event
+		$hard_limit = apply_filters( 'qsot-event-ticket-purchase-limit', 0, $args['event_id'] );
+
+		// correct the data's quantity to be the maximum they can purchase, if they are requesting more
+		if ( isset( $data['quantity'] ) )
+			$data['quantity'] = min( $hard_limit, $data['quantity'] );
+
 		global $wpdb;
 		// update the row with the supplied data
 		$q = 'update ' . $wpdb->qsot_event_zone_to_order . ' set ';

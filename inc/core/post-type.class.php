@@ -1303,17 +1303,22 @@ class qsot_post_type {
 		if ( $post->post_type != self::$o->core_post_type ) return; // only run for our event post type
 		if ( $post->post_parent != 0 ) return; // this is only for parent event posts
 
-		// if there were settings for the sub events sent, then process those settings
+		// if there were settings for the sub events sent, then process those settings, on the next action
+		// on next action because apparently recursive calls to save_post action causes the outermost loop to skip everything after the function that caused the recursion
 		if ( isset( $_POST['_qsot_event_settings'], $_POST['_qsot_event_settings'] ) )
-			self::save_sub_events( $post_id, $post, $_POST );
+			add_action( 'wp_insert_post', array( __CLASS__, 'save_sub_events' ), 100, 3 );
 
-		// if the 'show date' and 'show time' settings are present, update them as needed
+		// if the 'show date' and 'show time' settings are present, update them as needed, on the next action
+		// on next action because apparently recursive calls to save_post action causes the outermost loop to skip everything after the function that caused the recursion
 		if ( isset( $_POST['qsot-event-title-settings'] ) && wp_verify_nonce( $_POST['qsot-event-title-settings'], 'qsot-event-title' ) )
-			self::save_event_title_settings( $post_id, $post, $_POST );
+			add_action( 'wp_insert_post', array( __CLASS__, 'save_event_title_settings' ), 100, 3 );
 	}
 
 	// save the event title settings from the 'Event Titles' metabox
-	public static function save_event_title_settings( $post_id, $post, $data ) {
+	public static function save_event_title_settings( $post_id, $post, $was_updated ) {
+		remove_action( 'wp_insert_post', array( __CLASS__, 'save_event_title_settings' ), 100 );
+		$data = $_POST;
+
 		// figure out the current settings
 		//$current = apply_filters( 'qsot-show-date-time', array( 'date' => true, 'time' => false ), $post_id );
 
@@ -1334,7 +1339,10 @@ class qsot_post_type {
 	}
 
 	// handle the saving of sub events, when a parent event is saved in the admin
-	public static function save_sub_events( $post_id, $post, $data ) {
+	public static function save_sub_events( $post_id, $post, $was_updated ) {
+		remove_action( 'wp_insert_post', array( __CLASS__, 'save_sub_events' ), 100 );
+		$data = $_POST;
+
 		$need_lookup = $updates = $matched = array();
 		$at_least_one_new = false;
 		// default post_arr to send to wp_insert_post

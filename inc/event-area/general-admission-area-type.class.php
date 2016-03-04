@@ -168,7 +168,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 
 		// if there is no event area, then bail
 		if ( ! isset( $event->event_area ) || ! is_object( $event->event_area ) )
-			return apply_filters( 'qsot-event-frontend-templates', array(), $event );
+			return apply_filters( 'qsot-gaea-event-frontend-templates', apply_filters( 'qsot-event-frontend-templates', array(), $event ) );
 
 		// get a list of all the templates we need
 		$needed_templates = apply_filters( 'qsot-gaea-frontend-templates', array( 'ticket-selection', 'owns', 'msgs', 'msg', 'error', 'ticket-type' ), $event, $this );
@@ -201,7 +201,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		foreach ( $needed_templates as $template )
 			$templates[ $template ] = QSOT_Templates::maybe_include_template( 'event-area/general-admission/' . $template . '.php', $args );
 
-		return $templates;
+		return apply_filters( 'qsot-gaea-event-frontend-templates', $templates, $event );
 	}
 
 	// get the admin templates that are needed based on type and args

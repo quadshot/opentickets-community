@@ -1,5 +1,8 @@
 <?php if ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) die( header( 'Location: /') ); ?>
 <div class="ticket-form ticket-selection-section">
+
+	<?php do_action( 'qsot-gaea-before-ticket-selection-form', $args ) ?>
+
 	<div class="form-inner reserve">
 		<div class="title-wrap">
 			<h3><?php _e( 'Step 1: How Many?', 'opentickets-community-edition' ) ?></h3>
@@ -16,4 +19,7 @@
 			<input type="button" value="<?php echo esc_attr( apply_filters( 'qsot-get-option-value', __( 'Reserve', 'opentickets-community-edition' ), 'qsot-reserve-button-text' ) ) ?>" rel="reserve-btn" class="button" />
 		</div>
 	</div>
+
+	<?php do_action( 'qsot-gaea-after-ticket-selection-form', $args ) ?>
+
 </div>
