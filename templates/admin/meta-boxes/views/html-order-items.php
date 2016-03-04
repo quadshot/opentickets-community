@@ -21,7 +21,7 @@ if ( wc_tax_enabled() ) {
 	$classes_options     = array();
 	$classes_options[''] = __( 'Standard', 'woocommerce' );
 
-	if ( $tax_classes ) {
+	if ( ! empty( $tax_classes ) ) {
 		foreach ( $tax_classes as $class ) {
 			$classes_options[ sanitize_title( $class ) ] = $class;
 		}
@@ -52,7 +52,7 @@ if ( wc_tax_enabled() ) {
 				<th><input type="checkbox" class="check-column" /></th>
 				<th class="item sortable" colspan="2" data-sort="string-ins"><?php _e( 'Item', 'woocommerce' ); ?></th>
 
-				<?php do_action( 'woocommerce_admin_order_item_headers' ); ?>
+				<?php do_action( 'woocommerce_admin_order_item_headers', $order ); ?>
 
 				<th class="item_cost sortable" data-sort="float"><?php _e( 'Cost', 'woocommerce' ); ?></th>
 				<th class="quantity sortable" data-sort="int"><?php _e( 'Qty', 'woocommerce' ); ?></th>
@@ -92,8 +92,9 @@ if ( wc_tax_enabled() ) {
 				if ( $template = QSOT_Templates::locate_woo_template( 'meta-boxes/views/html-order-item.php', 'admin' ) )
 					include( $template );
 
-				do_action( 'woocommerce_order_item_' . $item['type'] . '_html', $item_id, $item );
+				do_action( 'woocommerce_order_item_' . $item['type'] . '_html', $item_id, $item, $order );
 			}
+			do_action( 'woocommerce_admin_order_items_after_line_items', $order->id );
 		?>
 		</tbody>
 		<tbody id="order_shipping_line_items">
@@ -105,6 +106,7 @@ if ( wc_tax_enabled() ) {
 				if ( $template = QSOT_Templates::locate_woo_template( 'meta-boxes/views/html-order-shipping.php', 'admin' ) )
 					include( $template );
 			}
+			do_action( 'woocommerce_admin_order_items_after_shipping', $order->id );
 		?>
 		</tbody>
 		<tbody id="order_fee_line_items">
@@ -115,6 +117,7 @@ if ( wc_tax_enabled() ) {
 				if ( $template = QSOT_Templates::locate_woo_template( 'meta-boxes/views/html-order-fee.php', 'admin' ) )
 					include( $template );
 			}
+			do_action( 'woocommerce_admin_order_items_after_fees', $order->id );
 		?>
 		</tbody>
 		<tbody id="order_refunds">
@@ -126,6 +129,7 @@ if ( wc_tax_enabled() ) {
 					if ( $template = QSOT_Templates::locate_woo_template( 'meta-boxes/views/html-order-refund.php', 'admin' ) )
 						include( $template );
 				}
+				do_action( 'woocommerce_admin_order_items_after_refunds', $order->id );
 			}
 		?>
 		</tbody>
@@ -153,7 +157,7 @@ if ( wc_tax_enabled() ) {
 	?>
 	<table class="wc-order-totals">
 		<tr>
-			<td class="label"><?php _e( 'Discount', 'woocommerce' ); ?> <span class="tips" data-tip="<?php _e( 'This is the total discount. Discounts are defined per line item.', 'woocommerce' ); ?>">[?]</span>:</td>
+			<td class="label"><?php echo wc_help_tip( __( 'This is the total discount. Discounts are defined per line item.', 'woocommerce' ) ); ?> <?php _e( 'Discount', 'woocommerce' ); ?>:</td>
 			<td class="total">
 				<?php echo wc_price( $order->get_total_discount(), array( 'currency' => $order->get_order_currency() ) ); ?>
 			</td>
@@ -163,8 +167,16 @@ if ( wc_tax_enabled() ) {
 		<?php do_action( 'woocommerce_admin_order_totals_after_discount', $order->id ); ?>
 
 		<tr>
-			<td class="label"><?php _e( 'Shipping', 'woocommerce' ); ?> <span class="tips" data-tip="<?php _e( 'This is the shipping and handling total costs for the order.', 'woocommerce' ); ?>">[?]</span>:</td>
-			<td class="total"><?php echo wc_price( $order->get_total_shipping(), array( 'currency' => $order->get_order_currency() ) ); ?></td>
+			<td class="label"><?php echo wc_help_tip( __( 'This is the shipping and handling total costs for the order.', 'woocommerce' ) ); ?> <?php _e( 'Shipping', 'woocommerce' ); ?>:</td>
+			<td class="total"><?php
+				if ( ( $refunded = $order->get_total_shipping_refunded() ) > 0 ) {
+					echo '<del>' . strip_tags( wc_price( $order->get_total_shipping(), array( 'currency' => $order->get_order_currency() ) ) ) . '</del> <ins>' . wc_price( $order->get_total_shipping() - $refunded, array( 'currency' => $order->get_order_currency() ) ) . '</ins>';
+				} else {
+					echo wc_price( $order->get_total_shipping(), array( 'currency' => $order->get_order_currency() ) );
+				}
+
+
+			?></td>
 			<td width="1%"></td>
 		</tr>
 
@@ -174,7 +186,13 @@ if ( wc_tax_enabled() ) {
 			<?php foreach ( $order->get_tax_totals() as $code => $tax ) : ?>
 				<tr>
 					<td class="label"><?php echo $tax->label; ?>:</td>
-					<td class="total"><?php echo $tax->formatted_amount; ?></td>
+					<td class="total"><?php
+						if ( ( $refunded = $order->get_total_tax_refunded_by_rate_id( $tax->rate_id ) ) > 0 ) {
+							echo '<del>' . strip_tags( $tax->formatted_amount ) . '</del> <ins>' . wc_price( WC_Tax::round( $tax->amount, wc_get_price_decimals() ) - WC_Tax::round( $refunded, wc_get_price_decimals() ), array( 'currency' => $order->get_order_currency() ) ) . '</ins>';
+						} else {
+							echo $tax->formatted_amount;
+						}
+					?></td>
 					<td width="1%"></td>
 				</tr>
 			<?php endforeach; ?>
@@ -185,19 +203,19 @@ if ( wc_tax_enabled() ) {
 		<tr>
 			<td class="label"><?php _e( 'Order Total', 'woocommerce' ); ?>:</td>
 			<td class="total">
-				<div class="view"><?php
-					if ( $order->get_total_refunded() > 0 ) {
-						echo '<del>' . strip_tags( $order->get_formatted_order_total() ) . '</del> <ins>' . wc_price( $order->get_total() - $order->get_total_refunded(), array( 'currency' => $order->get_order_currency() ) ) . '</ins>';
-					} else {
-						echo esc_html( strip_tags( $order->get_formatted_order_total() ) );
-					}
-				?></div>
+				<div class="view"><?php echo $order->get_formatted_order_total(); ?></div>
 				<div class="edit" style="display: none;">
 					<input type="text" class="wc_input_price" id="_order_total" name="_order_total" placeholder="<?php echo wc_format_localized_price( 0 ); ?>" value="<?php echo ( isset( $data['_order_total'][0] ) ) ? esc_attr( wc_format_localized_price( $data['_order_total'][0] ) ) : ''; ?>" />
 					<div class="clear"></div>
 				</div>
 			</td>
-			<td><?php if ( $order->is_editable() ) : ?><div class="wc-order-edit-line-item-actions"><a class="edit-order-item" href="#"></a></div><?php endif; ?></td>
+			<td>
+				<?php if ( $order->is_editable() ) : ?>
+					<div class="wc-order-edit-line-item-actions">
+						<a class="edit-order-item" href="#"></a>
+					</div>
+				<?php endif; ?>
+			</td>
 		</tr>
 
 		<?php do_action( 'woocommerce_admin_order_totals_after_total', $order->id ); ?>
@@ -218,17 +236,17 @@ if ( wc_tax_enabled() ) {
 		<select>
 			<option value=""><?php _e( 'Actions', 'woocommerce' ); ?></option>
 			<?php if ( $order->is_editable() ) : ?>
-				<optgroup label="<?php _e( 'Edit', 'woocommerce' ); ?>">
+				<optgroup label="<?php esc_attr_e( 'Edit', 'woocommerce' ); ?>">
 					<option value="delete"><?php _e( 'Delete selected line item(s)', 'woocommerce' ); ?></option>
 				</optgroup>
 			<?php endif; ?>
-			<optgroup label="<?php _e( 'Stock Actions', 'woocommerce' ); ?>">
+			<optgroup label="<?php esc_attr_e( 'Stock Actions', 'woocommerce' ); ?>">
 				<option value="reduce_stock"><?php _e( 'Reduce line item stock', 'woocommerce' ); ?></option>
 				<option value="increase_stock"><?php _e( 'Increase line item stock', 'woocommerce' ); ?></option>
 			</optgroup>
 		</select>
 
-		<button type="button" class="button do_bulk_action wc-reload" title="<?php _e( 'Apply', 'woocommerce' ); ?>"><span><?php _e( 'Apply', 'woocommerce' ); ?></span></button>
+		<button type="button" class="button do_bulk_action wc-reload" title="<?php esc_attr_e( 'Apply', 'woocommerce' ); ?>"><span><?php _e( 'Apply', 'woocommerce' ); ?></span></button>
 	</p>
 	<p class="add-items">
 		<?php if ( $order->is_editable() ) : ?>
@@ -239,7 +257,7 @@ if ( wc_tax_enabled() ) {
 		<?php if ( wc_tax_enabled() && $order->is_editable() ) : ?>
 			<button type="button" class="button add-order-tax"><?php _e( 'Add Tax', 'woocommerce' ); ?></button>
 		<?php endif; ?>
-		<?php if ( ( $order->get_total() - $order->get_total_refunded() ) > 0 ) : ?>
+		<?php if ( 0 < $order->get_total() - $order->get_total_refunded() || 0 < absint( $order->get_item_count() - $order->get_item_count_refunded() ) ) : ?>
 			<button type="button" class="button refund-items"><?php _e( 'Refund', 'woocommerce' ); ?></button>
 		<?php endif; ?>
 		<?php
@@ -263,7 +281,7 @@ if ( wc_tax_enabled() ) {
 		do_action( 'woocommerce_order_item_add_line_buttons', $order );
 	?>
 </div>
-<?php if ( ( $order->get_total() - $order->get_total_refunded() ) > 0 ) : ?>
+<?php if ( 0 < $order->get_total() - $order->get_total_refunded() || 0 < absint( $order->get_item_count() - $order->get_item_count_refunded() ) ) : ?>
 <div class="wc-order-data-row wc-order-refund-items" style="display: none;">
 	<table class="wc-order-totals">
 		<tr style="display:none;">
@@ -308,17 +326,19 @@ if ( wc_tax_enabled() ) {
 </div>
 <?php endif; ?>
 
-<script type="text/template" id="wc-modal-add-products">
+<script type="text/template" id="tmpl-wc-modal-add-products">
 	<div class="wc-backbone-modal">
 		<div class="wc-backbone-modal-content">
 			<section class="wc-backbone-modal-main" role="main">
 				<header class="wc-backbone-modal-header">
-					<a class="modal-close modal-close-link" href="#"><span class="close-icon"><span class="screen-reader-text">Close media panel</span></span></a>
 					<h1><?php _e( 'Add products', 'woocommerce' ); ?></h1>
+					<button class="modal-close modal-close-link dashicons dashicons-no-alt">
+						<span class="screen-reader-text">Close modal panel</span>
+					</button>
 				</header>
 				<article>
 					<form action="" method="post">
-						<input type="hidden" id="add_item_id" name="add_order_items" class="wc-product-search" style="width: 100%;" data-placeholder="<?php _e( 'Search for a product&hellip;', 'woocommerce' ); ?>" data-multiple="true" />
+						<input type="hidden" id="add_item_id" name="add_order_items" class="wc-product-search" style="width: 100%;" data-placeholder="<?php esc_attr_e( 'Search for a product&hellip;', 'woocommerce' ); ?>" data-multiple="true" />
 					</form>
 				</article>
 				<footer>
@@ -329,16 +349,18 @@ if ( wc_tax_enabled() ) {
 			</section>
 		</div>
 	</div>
-	<div class="wc-backbone-modal-backdrop modal-close">&nbsp;</div>
+	<div class="wc-backbone-modal-backdrop modal-close"></div>
 </script>
 
-<script type="text/template" id="wc-modal-add-tax">
+<script type="text/template" id="tmpl-wc-modal-add-tax">
 	<div class="wc-backbone-modal">
 		<div class="wc-backbone-modal-content">
 			<section class="wc-backbone-modal-main" role="main">
 				<header class="wc-backbone-modal-header">
-					<a class="modal-close modal-close-link" href="#"><span class="close-icon"><span class="screen-reader-text">Close media panel</span></span></a>
 					<h1><?php _e( 'Add tax', 'woocommerce' ); ?></h1>
+					<button class="modal-close modal-close-link dashicons dashicons-no-alt">
+						<span class="screen-reader-text">Close modal panel</span>
+					</button>
 				</header>
 				<article>
 					<form action="" method="post">
@@ -371,7 +393,7 @@ if ( wc_tax_enabled() ) {
 						<?php if ( absint( $wpdb->get_var( "SELECT COUNT(tax_rate_id) FROM {$wpdb->prefix}woocommerce_tax_rates;" ) ) > 100 ) : ?>
 							<p>
 								<label for="manual_tax_rate_id"><?php _e( 'Or, enter tax rate ID:', 'woocommerce' ); ?></label><br/>
-								<input type="number" name="manual_tax_rate_id" id="manual_tax_rate_id" step="1" placeholder="<?php _e( 'Optional', 'woocommerce' ); ?>" />
+								<input type="number" name="manual_tax_rate_id" id="manual_tax_rate_id" step="1" placeholder="<?php esc_attr_e( 'Optional', 'woocommerce' ); ?>" />
 							</p>
 						<?php endif; ?>
 					</form>
@@ -384,7 +406,7 @@ if ( wc_tax_enabled() ) {
 			</section>
 		</div>
 	</div>
-	<div class="wc-backbone-modal-backdrop modal-close">&nbsp;</div>
+	<div class="wc-backbone-modal-backdrop modal-close"></div>
 </script>
 
 <?php do_action( 'woocommerce_order_items_extra_modals', $order ) ?>

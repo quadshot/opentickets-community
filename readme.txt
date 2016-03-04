@@ -171,7 +171,7 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
-= 2.2.0 - Feb/25/2016 =
+= 2.2.0 - Feb/26/2016 =
 * [new] all tickets on non-cancelled orders are considered 'confirmed' now
 * [new] adding an order note during order cancellation that includes information about the tickets that were removed
 * [new] added settings to control the ticket state timers for temporary states
@@ -179,6 +179,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 * [tweak] isolated thumbnail cascade meta lookup to only events
 * [tweak] changed js to no longer override $.param function, since it does what we need now
 * [tweak] adjusted line item status output on seating report
+* [tweak] limiting cart to reservation sync, and pushing it after cart corrections occur
+* [tweak] added message to inform user when there are not enough tickets to complete the cart update, when chaning the quantity on the cart with failure
+* [tweak] updating admin override templates to better match woocommerce core templates
 * [fix] fixed an edgecase overbooking issue, that could occur during admin seat allocation
 * [fix] fixed weird order status bugs on seating report
 * [fix] corrected a refund template warning
