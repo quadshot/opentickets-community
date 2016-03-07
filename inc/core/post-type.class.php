@@ -1878,10 +1878,10 @@ class qsot_post_type {
 		$end_raw = QSOT_Utils::gmt_timestamp( get_post_meta( $post->ID, '_end', true ) );
 
 		// create the various date parts
-		$start = date( 'c', $start_raw );
-		$start_time = date( 'H:i:s', $start_raw );
-		$end = date( 'c', $end_raw );
-		$end_time = date( 'H:i:s', $end_raw );
+		$start = $start_raw > 0 ? date( 'c', $start_raw ) : '';
+		$start_time = $start_raw > 0 ? date( 'H:i:s', $start_raw ) : '00:00:00';
+		$end = $end_raw > 0 ? date( 'c', $end_raw ) : '';
+		$end_time = $end_raw > 0 ? date( 'H:i:s', $end_raw ) : '00:00:00';
 
 		?>
 			<div class="qsot-mb">
@@ -1935,17 +1935,19 @@ class qsot_post_type {
 									<td width="50%">
 										<h4><?php _e('Basic Settings','opentickets-community-edition') ?></h4>
 										<div class="date-time-block subsub">
+
 											<?php $now = current_time( 'timestamp' ) ?>
-											<input type="text" class="use-datepicker date-text" name="start-date-display" real="[name='start-date']" scope="td" frmt="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>"
+											<input type="text" class="use-i18n-datepicker date-text" name="start-date" scope="td" data-display-format="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>"
 													value="<?php echo date( __( 'm-d-Y', 'opentickets-community-edition' ), $now ) ?>" title="<?php _e('Start Date','opentickets-community-edition') ?>" />
-											<input type="hidden" name="start-date" value="<?php echo date( __( 'Y-m-d', 'opentickets-community-edition' ), $now ) ?>" />
 											<input type="text" class="time-text" name="start-time" value="<?php echo date(__('h:ia','opentickets-community-edition'), $now) ?>" title="<?php _e('Start Time','opentickets-community-edition') ?>" />
+
 											<?php _e('to','opentickets-community-edition') ?><br/>
+
 											<?php $end = strtotime('+1 hour', $now); ?>
-											<input type="text" class="use-datepicker date-text" name="end-date-display" real="[name='end-date']" scope="td" frmt="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>"
+											<input type="text" class="use-i18n-datepicker date-text" name="end-date" scope="td" data-display-format="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>"
 													value="<?php echo date( __( 'm-d-Y', 'opentickets-community-edition' ), $end ) ?>" title="<?php _e('End Date','opentickets-community-edition') ?>" />
-											<input type="hidden" name="end-date" value="<?php echo date( __( 'Y-m-d', 'opentickets-community-edition' ), $now ) ?>" />
 											<input type="text" class="time-text" name="end-time" value="<?php echo date(__('h:ia','opentickets-community-edition'), $end) ?>" title="<?php _e('End Time','opentickets-community-edition') ?>" />
+
 										</div>
 
 										<div class="event-settings-block subsub">
@@ -2024,10 +2026,8 @@ class qsot_post_type {
 														<tr>
 															<th><?php _e('Starts on','opentickets-community-edition') ?>:</th>
 															<td>
-																<input type="text" class="widefat date-text use-datepicker" name="repeat-starts-display" real="[name='repeat-starts']" scope="td"
-																		frmt="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>"
+																<input type="text" class="widefat date-text use-i18n-datepicker" name="repeat-starts" scope="td" data-display-format="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>"
 																		value="<?php echo esc_attr( date( __( 'm-d-Y', 'opentickets-community-edition' ), $now ) ) ?>" />
-																<input type="hidden" name="repeat-starts" value="<?php echo esc_attr( date( __( 'Y-m-d', 'opentickets-community-edition' ), $now ) ) ?>" />
 															</td>
 														</tr>
 

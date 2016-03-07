@@ -166,7 +166,6 @@ QS.popMediaBox = (function($, qt) {
 									url = qt.is( attachment.sizes.thumbnail ) ? attachment.sizes.thumbnail.url : attachment.sizes.full.url,
 									size = qt.is( args.size ) ? args.size : ( ( size = t.attr( 'size' ) ) ? size : 'thumb' )
 									size = size == 'thumb' ? 'thumbnail' : size;
-									console.log( 'fasdfjakslfjklasdfljkasljkfasljfaljsf', t, size, attachment );
 							// find the appropriate image url
 							if ( qt.is( attachment.sizes[ size ] ) && qt.is( attachment.sizes[ size ].url ) )
 								url = attachment.sizes[ size ].url;
@@ -189,7 +188,6 @@ QS.popMediaBox = (function($, qt) {
       return;
 		// otherwise create a new instance of the lightbox
     } else {
-			console.log( 'new', args );
 			// initialize the base lightbox
       custom[ args.type ] = wp.media( {
         frame: 'select',

@@ -96,7 +96,19 @@ QS.EventUI = (function($, undefined) {
 
 		function normalize_time( str ) {
 			var matches = str.toLowerCase().match( /^(\d{1,2})(:(\d{1,2})(:(\d{1,2}))?)?([pa]m?)?$/ ),
-					res = matches ? { hour:qt.toInt( matches[1] ), min:qt.toInt( matches[3] ), sec:qt.toInt( matches[5] ), mer:matches[6].toLowerCase().substr( 0, 1 ) } : { hour:0, min:0, sec:0, mer:'' };
+					res = matches
+						? {
+							hour: qt.toInt( matches[1] ),
+							min: qt.toInt( matches[3] ),
+							sec: qt.toInt( matches[5] ),
+							mer: qt.is( matches[6] ) ? matches[6].toLowerCase().substr( 0, 1 ) : ''
+						}
+						: {
+							hour: 0,
+							min: 0,
+							sec: 0,
+							mer: ''
+						};
 			// adjust the hour to be 24 hour time
 			if ( 'p' == res.mer && res.hour < 12 )
 				res.hour += 12;
@@ -113,7 +125,7 @@ QS.EventUI = (function($, undefined) {
 				'start-time': '00:00:00',
 				'start-date': current_dt.format( frmt( 'MM-DD-YYYY' ) ),
 				'end-time': '23:59:59',
-				'end-time': current_dt.format( frmt( 'MM-DD-YYYY' ) ),
+				'end-date': current_dt.format( frmt( 'MM-DD-YYYY' ) ),
 			}, data);
 
 			data['start-time'] = normalize_time( data['start-time'] );
@@ -202,24 +214,38 @@ QS.EventUI = (function($, undefined) {
 				return 1;
 			}
 
-			if ( qt.isO( data['repeat-on'] ) && Object.keys( data['repeat-on'] ).length ) while (inRange()) {
-				for ( i in data['repeat-on'] ) {
-					// initial run, in case first day is in middle of list. list m,tu,th,sa and first day is th
-					if ( nextDay( data['repeat-on'][ i ] ) < 0 )
-						continue;
-					// if we aer outside the desired range, then end our loop
-					if ( ! inRange() )
-						break;
-					var args = $.extend( true, {}, base ),
-					st = st.clone().add( evenDays( st, d ), 'd' );
-					var sigh = st.clone();
-					args['start'] = sigh.clone().toDate();
-					sigh = sigh.add( st_en_diff, 's' );
-					args['end'] = sigh.clone().toDate();
-					events.push( args );
-					cnt++;
+			if ( qt.isO( data['repeat-on'] ) && Object.keys( data['repeat-on'] ).length ) {
+				// while we are still in range of the maximal event date
+				while ( inRange() ) {
+					// for each day of the week we need to repeat on
+					for ( i in data['repeat-on'] ) {
+						// initial run, in case first day is in middle of list, skip ahead to the first day. (ex: list 'm', 'tu', 'th', 'sa' and first day is 'th')
+						if ( nextDay( data['repeat-on'][ i ] ) < 0 )
+							continue;
+
+						// if we are outside the desired range, then end our loop
+						if ( ! inRange() )
+							break;
+
+						// create a new copy of the base event data
+						var args = $.extend( true, {}, base ),
+								// copy the start date, and add a number of days to it equal to the distance to the current day of this loop
+								st = st.clone().add( evenDays( st, d ), 'd' );
+
+						// create the start and end dates for this event
+						var sigh = st.clone();
+						args['start'] = sigh.clone().toDate();
+						sigh = sigh.add( st_en_diff, 's' );
+						args['end'] = sigh.clone().toDate();
+
+						// push the event to the event list
+						events.push( args );
+
+						// keep track of how many events we have created, in case this is a quantity limited loop
+						cnt++;
+					}
+					incWeeks();
 				}
-				incWeeks();
 			}
 
 			return events;
