@@ -51,7 +51,7 @@ class qsot_Settings_Frontend extends QSOT_Settings_Page {
 	 *
 	 * @return array
 	 */
-	public function get_settings() {
+	public function get_page_settings() {
 		global $current_section;
 		return apply_filters( 'qsot-get-page-settings', array(), $this->id, $current_section );
 	}

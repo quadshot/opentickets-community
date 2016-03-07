@@ -18,6 +18,9 @@ class qsot_admin_settings extends WC_Admin_Settings {
 			// load the woocommerce wysiwyg field js
 			add_action( 'woocommerce_admin_field_wysiwyg', array( __CLASS__, 'field_wysiwyg' ) );
 
+			// handle qtranslate LSB fields
+			add_action( 'woocommerce_admin_field_qtranslate-lsb', array( __CLASS__, 'field_lsb' ) );
+
 			$settings = array();
 
 			// load the woocoomerce settings api
@@ -66,6 +69,15 @@ class qsot_admin_settings extends WC_Admin_Settings {
 		exit;
 	}
 
+	// handle the output of the qTranslate LSB fields on the settings page
+	public static function field_lsb( $args ) {
+		// if the qtranslate plugin is not active, then bail
+		if ( ! defined( 'QTRANSLATE_DIR' ) )
+			return;
+		?><tr valign="top"><td colspan="2"><div id="<?php echo esc_attr( $args['id'] ) ?>"></div></td></tr><?php
+	}
+
+	// handle the output of wysiwyg fields on the settings pages
 	public static function field_wysiwyg( $args ) {
 		$args = wp_parse_args( $args, array(
 			'id' => '',

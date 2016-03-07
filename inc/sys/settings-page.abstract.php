@@ -27,6 +27,42 @@ abstract class QSOT_Settings_Page extends WC_Settings_Page {
 
 		echo '</ul><br class="clear" />';
 	}
+
+	// override for the get_settings function in the parent class
+	public function get_settings() {
+		$fields = $this->get_page_settings();
+		return $this->_add_qtranslate( $fields );
+	}
+
+	// add the qtranslate LSB indicators to the settings pages
+	protected function _add_qtranslate( $fields ) {
+		$need = false;
+		$would_need = array( 'textarea', 'wysiwyg', 'text' );
+		$fields = (array) $fields;
+		// cycle through the fields, and determine if we need a qtranslate
+		foreach ( $fields as $field ) {
+			if ( in_array( $field['type'], $would_need ) ) {
+				$need = true;
+				break;
+			}
+		}
+
+		// if we need qtranslate, add one at the top and bottom
+		if ( $need ) {
+			array_unshift( $fields, array(
+				'order' => 1,
+				'type' => 'qtranslate-lsb',
+				'id' => 'qsot-qtranslate-top',
+			) );
+			array_push( $fields, array(
+				'order' => PHP_INT_MAX,
+				'type' => 'qtranslate-lsb',
+				'id' => 'qsot-qtranslate-bottom',
+			) );
+		}
+
+		return $fields;
+	}
 }
 
 endif;

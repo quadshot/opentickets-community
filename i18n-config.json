@@ -1,0 +1,12 @@
+{
+	"vendor":{ "plugins/opentickets-community-edition":"2.0" },
+	"admin-config": {
+		"opentickets-admin": {
+			"pages": { "admin.php":".*page=opentickets-settings.*" },
+			"anchors": {
+				"heading-admin-orders-1": { "id":"qsot-qtranslate-top", "where":"first" },
+				"heading-admin-orders-1_end": { "id":"qsot-qtranslate-bottom", "where":"last" }
+			}
+		}
+	}
+}
