@@ -624,10 +624,10 @@ class qsot_order_admin {
 		$print = apply_filters('qsot-order-has-tickets', false, $order);
 		if ($print) {
 			if ($html) {
-				$msg = self::$options->{'qsot-completed-order-email-message-top'};
+				$msg = apply_filters( 'the_content', self::$options->{'qsot-completed-order-email-message-top'} );
 				if (!empty($msg)) echo '<div class="custom-email-message">'.$msg.'</div>';
 			} else {
-				$msg = self::$options->{'qsot-completed-order-email-message-text-top'};
+				$msg = apply_filters( 'the_title', self::$options->{'qsot-completed-order-email-message-text-top'} );
 				if (!empty($msg)) echo "\n****************************************************\n\n".$msg;
 			}
 		}
@@ -637,10 +637,10 @@ class qsot_order_admin {
 		$print = apply_filters('qsot-order-has-tickets', false, $order);
 		if ($print) {
 			if ($html) {
-				$msg = self::$options->{'qsot-completed-order-email-message'};
+				$msg = apply_filters( 'the_content', self::$options->{'qsot-completed-order-email-message'} );
 				if (!empty($msg)) echo '<div class="custom-email-message">'.$msg.'</div>';
 			} else {
-				$msg = self::$options->{'qsot-completed-order-email-message-text'};
+				$msg = apply_filters( 'the_title', self::$options->{'qsot-completed-order-email-message-text'} );
 				if (!empty($msg)) echo "\n****************************************************\n\n".$msg;
 			}
 		}
