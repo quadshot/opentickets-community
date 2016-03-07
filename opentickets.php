@@ -444,8 +444,14 @@ class QSOT {
 	}
 
 	public static function load_textdomain() {
+		$domain = 'opentickets-community-edition';
+		$locale = apply_filters( 'plugin_locale', get_locale(), $domain );
+
+		// first load any custom language file defined in the site languages path
+		load_textdomain( $domain, WP_LANG_DIR . '/plugins/' . $domain . '/custom-' . $domain . '-' . $locale . '.mo' );
+
 		// load the translation after all plugins have been loaded. fixes the multilingual issues
-		load_plugin_textdomain( 'opentickets-community-edition', false, dirname( plugin_basename( __FILE__ ) ) . '/langs/' );
+		load_plugin_textdomain( $domain, false, dirname( plugin_basename( __FILE__ ) ) . '/langs/' );
 	}
 
 	// load all *.class.php files in the inc/ dir, and any other includes dirs that are specified by external plugins (which may or may not be useful, since external plugins
