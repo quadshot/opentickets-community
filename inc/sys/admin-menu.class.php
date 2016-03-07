@@ -519,7 +519,7 @@ class qsot_admin_menu {
 		self::$options->add(array(
 			'order' => 103,
 			'id' => 'qsot-event-permalink-slug',
-			'class' => 'i18n-multilingual',
+			//'class' => 'i18n-multilingual', // cant do yet i dont think
 			'type' => 'text',
 			'title' => __( 'Event Link Slug', 'opentickets-community-edition' ),
 			'desc' => __( 'The url slug that is prepended to the event name in the url. (ex: <code>http://example.com/<strong>event</strong>/my-event/</code>)', 'opentickets-community-edition' ),
