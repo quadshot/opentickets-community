@@ -1161,7 +1161,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 						'order_item_id' => $item_id,
 						'order_id' => $item_to_order_map[ $item_id ],
 						'session_customer_id' => $user_id,
-						'since' => get_the_date( $item_to_order_map[ $item_id ] ),
+						'since' => get_the_date( 'Y-m-d H:i:s', $item_to_order_map[ $item_id ] ),
 						'state' => 'confirmed',
 					), $item, $item_id, $item_to_order_map[ $item_id ] );
 
