@@ -1382,7 +1382,7 @@ class qsot_post_type {
 					$tmp->status = 'publish' == $tmp->status && ! $can_pub ? 'pending' : $tmp->status;
 
 					// add the settings to the list of posts to update
-					$updates[] = array(
+					$update_item = array(
 						'post_arr' => wp_parse_args( array(
 							// be sure to set the id of the post to update, otherwise we get a completely new post
 							'ID' => $tmp->post_id,
@@ -1393,7 +1393,7 @@ class qsot_post_type {
 							// protected events have passwords
 							'post_password' => 'protected' == $tmp->visibility ? $tmp->password : '',
 							// use that normalized title we made earlier, as to create a pretty url
-							'post_name' => $tmp->title,
+							'post_name' => $orig->post_name, //$tmp->title,
 							'post_date' => $tmp->pub_date == '' || $tmp->pub_date == 'now' ? '' : date_i18n( 'Y-m-d H:i:s', strtotime( $tmp->pub_date ) ),
 							// use the original author and content, so that they are not overridden
 							'post_content' => $orig->post_content,
@@ -1407,6 +1407,7 @@ class qsot_post_type {
 						),
 						'submitted' => $tmp,
 					);
+					$updates[] = $update_item;
 					$matched[] = $tmp->post_id; // track the post_ids we have matched up to settings. will use later to determine subevents to delete
 				// if no post id was passed, then we need to attempt to match this item up to an existing subevent
 				} else {
@@ -1460,7 +1461,7 @@ class qsot_post_type {
 								// use the title of the parent post as the base name, and then add the date/time when needed later
 								'post_title' => $post->post_title,
 								// use the normalized event slug for pretty urls
-								'post_name' => $tmp->title,
+								'post_name' => $exist->post_name, //$tmp->title,
 								// set the post status of the event
 								'post_status' => in_array( $tmp->visibility, array( 'public', 'protected' ) ) ? $tmp->status : $tmp->visibility,
 								// protected events have passwords
