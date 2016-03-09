@@ -171,6 +171,14 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.2.1 - Mar/8/2016 =
+* [new] most settings are now qtranslate capable, including email aumentations
+* [new] added ability to define a custom translation, outside the plugin directory
+* [new] added several filters to ticket reservation process and templates
+* [tweak] changed how child events are saved
+* [tweak] changed logic so that when the parent event is saved, child event slugs are not updated if the child event exists already
+* [fix] corrected resync tool date format problem
+
 = 2.2.0 - Feb/26/2016 =
 * [new] all tickets on non-cancelled orders are considered 'confirmed' now
 * [new] adding an order note during order cancellation that includes information about the tickets that were removed
