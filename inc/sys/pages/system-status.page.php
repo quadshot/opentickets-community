@@ -110,7 +110,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 			'FdbUg',
 			array(
 				'name' => __( 'Force the DB tables to re-initialize', 'opentickets-community-edition' ),
-				'description' => __( 'In some very rare cases, you may need to force the db tables to be recreated. This button, does that.', 'opentickets-community-edition' ),
+				'description' => __( 'If you wish to validate the OpenTickets database tables and update them if necessary, use this tool.', 'opentickets-community-edition' ),
 				'function' => array( &$this, 'tool_FdbUg' ),
 				'messages' => array(
 					'removed-db-table-versions' => $this->_updatedw( __( 'Purged the OTCE table versions, forcing a reinitialize of the tables.', 'opentickets-community-edition' ) ),
