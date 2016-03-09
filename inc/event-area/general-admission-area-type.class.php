@@ -712,14 +712,23 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		// get the list of zoner stati
 		$stati = $zoner->get_stati();
 
-		// process the reservation request
-		$res = $zoner->remove( false, array(
+		// aggregate the args used for the remote function
+		$rargs = array(
 			'event_id'=> $event->ID,
-			'ticket_type_id' => $ticket_type->id,
-			'customer_id' => $zoner->current_user(),
+			'ticket_type_id' => $ticket_type,
+			// after an order is created, the user's user_id becomes the session_customer_id. adding this logic for thos wishywashy ppl
+			'customer_id' => array_filter( array( $current_user, $current_user_id ) ),
 			'order_id' => 0,
-			'state' => $stati['r'][0],
-		) );
+			'state' => array( $stati['r'][0], $stati['c'][0] ),
+		);
+
+		// include any order ids for orders that still require payment
+		$rargs['order_id'] = is_array( $rargs['order_id'] ) ? $rargs['order_id'] : array( absint( $rargs['order_id'] ) );
+		$rargs['order_id'][] = isset( WC()->session->order_awaiting_payment ) ? absint( WC()->session->order_awaiting_payment ) : 0;
+		$rargs['order_id'] = array_unique( $rargs['order_id'] );
+
+		// attempt to remove the reservation
+		$res = $zoner->remove( false, $rargs );
 
 		// if the result was successful
 		if ( $res && ! is_wp_error( $res ) ) {
