@@ -213,7 +213,6 @@ class QSOT_General_Admission_Zoner extends QSOT_Base_Event_Area_Zoner {
 		// tally all records for this event before this lock.
 		$total_before_lock = $this->find( array( 'event_id' => $args['event_id'], 'state' => '*', 'fields' => 'total', 'before' => $lock->since ) );
 		$my_total_before_lock = $this->find( array( 'event_id' => $args['event_id'], 'state' => '*', 'fields' => 'total', 'before' => $lock->since, 'ticket_type_id' => $args['ticket_type_id'], 'customer_id' => $args['customer_id'] ) );
-		//die(var_dump( $capacity, $total_before_lock, $my_total_before_lock, $lock_for ));
 
 		// figure out the total available for the event, at the point of the lock. if there is no capacity, then default to the amount in the lock
 		$remainder = $capacity > 0 ? $capacity - $total_before_lock + $my_total_before_lock : $lock_for;
@@ -221,7 +220,6 @@ class QSOT_General_Admission_Zoner extends QSOT_Base_Event_Area_Zoner {
 		// if the total is greater than or equal to the max capacity for this event, then we do not have enough tickets to issue, so bail
 		if ( $capacity > 0 && $remainder <= 0 ) {
 			$this->_remove_lock( $lock );
-			//die(var_dump( $capacity, $remainder, $total_before_lock ));
 			return apply_filters( 'qsot-gaea-zoner-reserve-results', new WP_Error( 5, __( 'There are no tickets available to reserve.', 'opentickets-community-edition' ) ), $args );
 		}
 
@@ -460,7 +458,7 @@ class QSOT_General_Admission_Zoner extends QSOT_Base_Event_Area_Zoner {
 		$hard_limit = apply_filters( 'qsot-event-ticket-purchase-limit', 0, $args['event_id'] );
 
 		// correct the data's quantity to be the maximum they can purchase, if they are requesting more
-		if ( isset( $data['quantity'] ) )
+		if ( $hard_limit > 0 && isset( $data['quantity'] ) )
 			$data['quantity'] = min( $hard_limit, $data['quantity'] );
 
 		global $wpdb;
