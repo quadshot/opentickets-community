@@ -177,6 +177,7 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 * [new] added several filters to ticket reservation process and templates
 * [tweak] changed how child events are saved
 * [tweak] changed logic so that when the parent event is saved, child event slugs are not updated if the child event exists already
+* [fix] fixed 'new event date' interface to accept international date formats
 * [fix] corrected resync tool date format problem
 
 = 2.2.0 - Feb/26/2016 =
