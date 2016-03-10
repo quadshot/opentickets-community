@@ -211,8 +211,21 @@ class QSOT_General_Admission_Zoner extends QSOT_Base_Event_Area_Zoner {
 		$capacity = $ea_id > 0 ? get_post_meta( $ea_id, '_capacity', true ) : 0;
 
 		// tally all records for this event before this lock.
-		$total_before_lock = $this->find( array( 'event_id' => $args['event_id'], 'state' => '*', 'fields' => 'total', 'before' => $lock->since ) );
-		$my_total_before_lock = $this->find( array( 'event_id' => $args['event_id'], 'state' => '*', 'fields' => 'total', 'before' => $lock->since, 'ticket_type_id' => $args['ticket_type_id'], 'customer_id' => $args['customer_id'] ) );
+		$total_before_lock = $this->find( array(
+			'event_id' => $args['event_id'],
+			'state' => '*',
+			'fields' => 'total',
+			'before' => $lock->since,
+		) );
+		$my_total_before_lock = $this->find( array(
+			'event_id' => $args['event_id'],
+			'state' => '*',
+			'order_id' => array_unique( array( 0, isset( WC()->session->order_awaiting_payment ) ? absint( WC()->session->order_awaiting_payment ) : 0 ) ),
+			'fields' => 'total',
+			'before' => $lock->since,
+			'ticket_type_id' => $args['ticket_type_id'],
+			'customer_id' => $args['customer_id'],
+		) );
 
 		// figure out the total available for the event, at the point of the lock. if there is no capacity, then default to the amount in the lock
 		$remainder = $capacity > 0 ? $capacity - $total_before_lock + $my_total_before_lock : $lock_for;

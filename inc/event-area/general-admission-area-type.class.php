@@ -712,6 +712,10 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		// get the list of zoner stati
 		$stati = $zoner->get_stati();
 
+		// get information about the current user, so we can identify them
+		$current_user = $zoner->current_user();
+		$current_user_id = get_current_user_id();
+
 		// aggregate the args used for the remote function
 		$rargs = array(
 			'event_id'=> $event->ID,
