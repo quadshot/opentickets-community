@@ -171,6 +171,10 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.2.2 - Mar/9/2016 =
+* [fix] repaired 'remove reservation' buttons
+* [fix] solved issue for users who order tickets from the same event more than once
+
 = 2.2.1 - Mar/8/2016 =
 * [new] most settings are now qtranslate capable, including email aumentations
 * [new] added ability to define a custom translation, outside the plugin directory
