@@ -626,7 +626,7 @@ QS.EventUI = (function($, undefined) {
 			// cycle through all array items in the events array
 			for (var i=0; i<this.events.length; i++) {
 				// if the current array item (event) matches the event we are trying to remove
-				if (this.events[i]._id == ev._id) {
+				if (this.events[i].post_id == ev.post_id) {
 					// remove this item
 					delete this.events[i];
 					// add to the count of removed items
@@ -645,6 +645,9 @@ QS.EventUI = (function($, undefined) {
 
 			var exists = $('[rel="items-removed"]', this.elements.main);
 			if (exists.length == 0) $('<input type="hidden" rel="items-removed" name="events-removed" value="1" />').appendTo(this.elements.main);
+
+			this.updateSources();
+			this.updateEventList();
 		},
 
 		template: function(names) {
