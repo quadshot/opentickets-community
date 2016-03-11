@@ -30,8 +30,8 @@ class qsot_order_admin {
 			add_action('save_post', array(__CLASS__, 'enforce_non_guest_orders'), PHP_INT_MAX - 1, 2);
 			add_action('admin_notices', array(__CLASS__, 'cannot_use_guest'), 10);
 
-			add_action('woocommerce_email_customer_details', array(__CLASS__, 'print_custom_email_message'), 1000);
-			add_action('woocommerce_email_before_order_table', array(__CLASS__, 'print_custom_email_message_top'), 1000);
+			// add messages to the completed order email only
+			add_action( 'woocommerce_email_subject_customer_completed_order', array( __CLASS__, 'add_completed_order_email_messages' ), 1, 1 );
 			add_filter('qsot-order-has-tickets', array(__CLASS__, 'has_tickets'), 10, 2);
 
 			// add the new user button to the interface
@@ -618,6 +618,13 @@ class qsot_order_admin {
 		}
 
 		return $has;
+	}
+
+	// only add the extra custom completed order email messages, to the complete order emails
+	public static function add_completed_order_email_messages( $subject ) {
+		add_action('woocommerce_email_customer_details', array(__CLASS__, 'print_custom_email_message'), 1000);
+		add_action('woocommerce_email_before_order_table', array(__CLASS__, 'print_custom_email_message_top'), 1000);
+		return $subject;
 	}
 
 	public static function print_custom_email_message_top($order, $html=true) {
