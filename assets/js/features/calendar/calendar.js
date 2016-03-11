@@ -313,7 +313,7 @@ QS.EventCalendar = ( function( $, W, D, qt, undefined ) {
 					{
 						url: T.options.ajaxurl,
 						data: get_url_params,
-						xhrFields: { withCredneitals:true }
+						xhrFields: { withCredentials:true }
 					}
 				],
 				// when an event is clicked
