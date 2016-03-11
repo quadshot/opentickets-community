@@ -14,6 +14,10 @@ class QSOT_tickets {
 	protected static $templates = array();
 	protected static $stylesheets = array();
 
+	// containers for current settings when protecting pdf output from errors
+	protected static $ERROR_REPORTING = null;
+	protected static $DISPLAY_ERRORS = null;
+
 	// order tracking
 	protected static $order_id = 0;
 
@@ -29,6 +33,10 @@ class QSOT_tickets {
 			self::$options = call_user_func_array(array($options_class_name, "instance"), array());
 			self::_setup_admin_options();
 		}
+
+		// hide errors as soon as possible, if we are transmitting a pdf
+		if ( isset( $_GET['frmt'] ) && 'pdf' == $_GET['frmt'] )
+			self::_hide_errors();
 
 		// setup the db tables for the ticket code lookup
 		// we offload this to a different table so that we can index the ticket codes for lookup speed
@@ -438,13 +446,32 @@ class QSOT_tickets {
 		return apply_filters( 'qsot-ticket-branding-image-html', $brand_imgs, $branding_image_ids );
 	}
 
+	// hide errors
+	protected static function _hide_errors() {
+		self::$ERROR_REPORTING = error_reporting( 0 );
+		self::$DISPLAY_ERRORS = ini_get( 'display_errors' );
+		ini_set( 'display_errors', 0 );
+	}
+
+	// restore errors
+	protected static function _restore_errors() {
+		if ( null !== self::$ERROR_REPORTING )
+			error_reporting( self::$ERROR_REPORTING );
+		if ( null !== self::$DISPLAY_ERRORS )
+			ini_set( 'display_errors', self::$DISPLAY_ERRORS );
+
+		self::$ERROR_REPORTING = self::$DISPLAY_ERRORS = null;
+	}
+
 	// display the order tickets, or an error, depending on if we can load the tickets or not
 	public static function display_order_ticket( $order_key ) {
 		// get the order from the order_key
 		$order_id = wc_get_order_id_by_order_key( $order_key );
 		$order = wc_get_order( $order_id );
-		if ( ! is_object( $order ) && ! is_wp_error( $order ) )
+		if ( ! is_object( $order ) && ! is_wp_error( $order ) ) {
+			self::_restore_errors();
 			return false;
+		}
 
 		// verify that the user can view these tickets
 		if ( ! self::_can_user_view_ticket( array( 'order_id' => $order_id ) ) ) {
@@ -546,6 +573,8 @@ class QSOT_tickets {
 			default: echo $out; break;
 		}
 
+		self::_restore_errors();
+
 		exit;
 	}
 
@@ -555,12 +584,16 @@ class QSOT_tickets {
 		$args = apply_filters( 'qsot-decode-ticket-code', array(), $code );
 
 		// make sure we have the basic required data for loading the ticket
-		if ( ! is_array( $args ) || ! isset( $args['order_id'], $args['order_item_id'] ) || empty( $args['order_id'] ) || empty( $args['order_item_id'] ) )
+		if ( ! is_array( $args ) || ! isset( $args['order_id'], $args['order_item_id'] ) || empty( $args['order_id'] ) || empty( $args['order_item_id'] ) ) {
+			self::_restore_errors();
 			return false;
+		}
 
 		// make sure that the current user can view this ticket
-		if ( ! self::_can_user_view_ticket( $args ) )
+		if ( ! self::_can_user_view_ticket( $args ) ) {
+			self::_restore_errors();
 			return false;
+		}
 
 		// load all the data needed to render the ticket
 		$ticket = apply_filters( 'qsot-compile-ticket-info', false, $args['order_item_id'], $args['order_id'] );
@@ -642,6 +675,8 @@ class QSOT_tickets {
 			break;
 			default: echo $out; break;
 		}
+
+		self::_restore_errors();
 
 		exit;
 	}
