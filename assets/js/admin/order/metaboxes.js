@@ -62,7 +62,7 @@
 						order_total: line_totals + tax + shipping + - order_discount
 					};
 					QS.cbs.trigger( 'calculate-action', [ all_totals ] );
-					console.log('calculate-action', all_totals);
+					//console.log('calculate-action', all_totals);
 
 					// Set Total
 					$( '#_order_total' )

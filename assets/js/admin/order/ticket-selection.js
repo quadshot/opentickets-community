@@ -366,7 +366,7 @@ QS.adminTicketSelection = ( function( $, qs, qt ) {
 				if ( qt.is( r.data.area_type ) && qt.isO( QS.eventAreaTypes[ r.data.area_type ] ) ) {
 					// set the global event holder with the event data
 					me.event_obj = r.data;
-					console.log( 'Loaded Event:', me.event_obj );
+					//console.log( 'Loaded Event:', me.event_obj );
 
 					// make sure that event area type is initialized, and tell it to load the event
 					QS.eventAreaTypes[ r.data.area_type ].initialize( me, S );
