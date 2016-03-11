@@ -171,6 +171,13 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.2.3 - Mar/11/2016 =
+* [tweak] added code to prevent as many third party plugin and theme PHP errors as possible during PDF generation
+* [tweak] saving WYSIWYG based settings no longer strips out formatting
+* [tweak] 'custom completed order email message' now only shows on the completed order email
+* [fix] fixed frontend calendar population problem, when using an HTTP frontend and an HTTPS backend
+* [fix] fixed the 'red x' buttons on the 'black event boxes' on the calendar in the edit event admin page
+
 = 2.2.2 - Mar/9/2016 =
 * [fix] repaired 'remove reservation' buttons
 * [fix] solved issue for users who order tickets from the same event more than once
