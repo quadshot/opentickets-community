@@ -18,6 +18,9 @@ class qsot_admin_settings extends WC_Admin_Settings {
 			// load the woocommerce wysiwyg field js
 			add_action( 'woocommerce_admin_field_wysiwyg', array( __CLASS__, 'field_wysiwyg' ) );
 
+			// allow html in wysiwyg fields
+			add_filter( 'woocommerce_admin_settings_sanitize_option', array( __CLASS__, 'save_field_wysiwyg' ), 10, 3 );
+
 			// handle qtranslate LSB fields
 			add_action( 'woocommerce_admin_field_qtranslate-lsb', array( __CLASS__, 'field_lsb' ) );
 
@@ -110,6 +113,15 @@ class qsot_admin_settings extends WC_Admin_Settings {
 				);
 			?></td>
 		</tr><?php
+	}
+
+	// when saving the wysiwyg field, we need to allow html
+	public static function save_field_wysiwyg( $value, $option, $raw ) {
+		// if this is not a wysiwyg field, then pass the value through
+		if ( ! isset( $option['type'] ) || 'wysiwyg' !== $option['type'] )
+			return $value;
+
+		return wp_kses_post( trim( $raw ) );
 	}
 
 	/**
