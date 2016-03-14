@@ -189,7 +189,7 @@ class QSOT_General_Admission_Zoner extends QSOT_Base_Event_Area_Zoner {
 			// normalize the search params
 			$find_args = $lock_args;
 			unset( $find_args['quantity'] );
-			$find_args['before'] = $lock->since;
+			$find_args['before'] = $lock->since . '.' . $lock->mille;
 			$find_args['state'] = $this->stati['r'][0];
 
 			// find all the records this user has for this event on this cart so far.
