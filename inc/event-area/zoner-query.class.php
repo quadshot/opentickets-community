@@ -42,6 +42,30 @@ class QSOT_Zoner_Query {
 	public function deinitialize() {
 	}
 
+	// break a time value into the timestamp and the mille seconds
+	protected function _break_time( $time ) {
+		$output = array( 'time' => $time, 'mille' => 0 );
+		// split the timestamp into the two parts, timestamp and mille
+		$time = explode( '.', $time );
+
+		// if the mille is set, use it
+		if ( count( $time ) > 1 )
+			$output['mille'] = absint( array_pop( $time ) );
+
+		// set the timestamp to just the mysql timestamp
+		$output['time'] = current( $time );
+
+		// normalize that time stamp into a mysql format
+		if ( is_numeric( $output['time'] ) )
+			$output['time'] = date( 'Y-m-d H:i:s', $output['time'] );
+
+		// validate the timestamp, and scratch it if not valid
+		if ( ! preg_match( '#\d{4}-\d{2}-\d{2}( \d{2}:\d{2}:\d{2})?#', $output['time'] ) || strtotime( $output['time'] ) <= 0 )
+			$output['time'] = '';
+
+		return $output;
+	}
+
 	// find some rows, based on some search criteria
 	public function find( $args ) {
 		global $wpdb;
@@ -57,9 +81,7 @@ class QSOT_Zoner_Query {
 			'state' => '',
 			'where__extra' => '',
 			'before' => '',
-			'before_inclusive' => true,
 			'after' => '',
-			'after_inclusive' => true,
 			'orderby' => 'since asc',
 			'limit' => 0,
 			'offset' => 0,
@@ -102,18 +124,28 @@ class QSOT_Zoner_Query {
 
 		// handle before and after, in relation to the 'since' field
 		if ( '' !== $args['before'] ) {
-			$op = $args['before_inclusive'] ? '<=' : '<';
-			if ( preg_match( '#\d{4}-\d{2}-\d{2}( \d{2}:\d{2}:\d{2})?#', $args['before'] ) )
-				$where[] = $wpdb->prepare( 'and since ' . $op . ' %s', $args['before'] );
-			else if ( is_numeric( $args['before'] ) )
-				$where[] = $wpdb->prepare( 'and since ' . $op . ' %s', date( 'Y-m-d H:i:s', $args['before'] ) );
+			$op = '<';
+			$args['before'] = $this->_break_time( $args['before'] );
+			if ( isset( $args['before']['time'], $args['before']['mille'] ) && $args['before']['time'] ) {
+				$where[] = $wpdb->prepare(
+					'and ( since ' . $op . ' %s or ( since = %s and mille ' . $op . ' %d ) )',
+					$args['before']['time'],
+					$args['before']['time'],
+					$args['before']['mille']
+				);
+			}
 		}
 		if ( '' !== $args['after'] ) {
-			$op = $args['after_inclusive'] ? '>=' : '>';
-			if ( preg_match( '#\d{4}-\d{2}-\d{2}( \d{2}:\d{2}:\d{2})?#', $args['after'] ) )
-				$where[] = $wpdb->prepare( 'and since ' . $op . ' %s', $args['after'] );
-			else if ( is_numeric( $args['after'] ) )
-				$where[] = $wpdb->prepare( 'and since ' . $op . ' %s', date( 'Y-m-d H:i:s', $args['after'] ) );
+			$op = '>';
+			$args['after'] = $this->_break_time( $args['after'] );
+			if ( isset( $args['after']['time'], $args['after']['mille'] ) && $args['after']['time'] ) {
+				$where[] = $wpdb->prepare(
+					'and ( since ' . $op . ' %s or ( since = %s and mille ' . $op . ' %d ) )',
+					$args['after']['time'],
+					$args['after']['time'],
+					$args['after']['mille']
+				);
+			}
 		}
 
 		// if there was an orderby specified, then use it

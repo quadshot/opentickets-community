@@ -215,14 +215,14 @@ class QSOT_General_Admission_Zoner extends QSOT_Base_Event_Area_Zoner {
 			'event_id' => $args['event_id'],
 			'state' => '*',
 			'fields' => 'total',
-			'before' => $lock->since,
-		) ) - $lock_for; // remove $lock_for, because this query includes the lock itself now
+			'before' => $lock->since . '.' . $lock->mille,
+		) ); // remove $lock_for, because this query includes the lock itself now
 		$my_total_before_lock = $this->find( array(
 			'event_id' => $args['event_id'],
 			'state' => '*',
 			'order_id' => array_unique( array( 0, isset( WC()->session->order_awaiting_payment ) ? absint( WC()->session->order_awaiting_payment ) : 0 ) ),
 			'fields' => 'total',
-			'before' => $lock->since,
+			'before' => $lock->since . '.' . $lock->mille,
 			'ticket_type_id' => $args['ticket_type_id'],
 			'customer_id' => $args['customer_id'],
 		) );
