@@ -216,7 +216,7 @@ class QSOT_General_Admission_Zoner extends QSOT_Base_Event_Area_Zoner {
 			'state' => '*',
 			'fields' => 'total',
 			'before' => $lock->since,
-		) );
+		) ) - $lock_for; // remove $lock_for, because this query includes the lock itself now
 		$my_total_before_lock = $this->find( array(
 			'event_id' => $args['event_id'],
 			'state' => '*',

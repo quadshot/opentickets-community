@@ -57,7 +57,9 @@ class QSOT_Zoner_Query {
 			'state' => '',
 			'where__extra' => '',
 			'before' => '',
+			'before_inclusive' => true,
 			'after' => '',
+			'after_inclusive' => true,
 			'orderby' => 'since asc',
 			'limit' => 0,
 			'offset' => 0,
@@ -100,16 +102,18 @@ class QSOT_Zoner_Query {
 
 		// handle before and after, in relation to the 'since' field
 		if ( '' !== $args['before'] ) {
+			$op = $args['before_inclusive'] ? '<=' : '<';
 			if ( preg_match( '#\d{4}-\d{2}-\d{2}( \d{2}:\d{2}:\d{2})?#', $args['before'] ) )
-				$where[] = $wpdb->prepare( 'and since < %s', $args['before'] );
+				$where[] = $wpdb->prepare( 'and since ' . $op . ' %s', $args['before'] );
 			else if ( is_numeric( $args['before'] ) )
-				$where[] = $wpdb->prepare( 'and since < %s', date( 'Y-m-d H:i:s', $args['before'] ) );
+				$where[] = $wpdb->prepare( 'and since ' . $op . ' %s', date( 'Y-m-d H:i:s', $args['before'] ) );
 		}
 		if ( '' !== $args['after'] ) {
+			$op = $args['after_inclusive'] ? '>=' : '>';
 			if ( preg_match( '#\d{4}-\d{2}-\d{2}( \d{2}:\d{2}:\d{2})?#', $args['after'] ) )
-				$where[] = $wpdb->prepare( 'and since < %s', $args['after'] );
+				$where[] = $wpdb->prepare( 'and since ' . $op . ' %s', $args['after'] );
 			else if ( is_numeric( $args['after'] ) )
-				$where[] = $wpdb->prepare( 'and since < %s', date( 'Y-m-d H:i:s', $args['after'] ) );
+				$where[] = $wpdb->prepare( 'and since ' . $op . ' %s', date( 'Y-m-d H:i:s', $args['after'] ) );
 		}
 
 		// if there was an orderby specified, then use it
