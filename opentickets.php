@@ -80,6 +80,10 @@ class QSOT {
 
 		// add an admin footer promo text bit. sorry guys we need this
 		add_action( 'admin_footer_text', array( __CLASS__, 'admin_footer_text' ), PHP_INT_MAX, 1 );
+
+		// if in the admin, make sure to record the first date this user has been using this software
+		if ( is_admin() )
+			self::_check_used_since();
 	}
 
 	public static function me() { return self::$me; }
@@ -711,6 +715,24 @@ class QSOT {
 		}
 
 		return true;
+	}
+
+	// make sure we record the earliest known date that this site started using our software
+	protected static function _check_used_since() {
+		// get the current value
+		$current = get_option( '_qsot_used_since', '' );
+
+		// if the current value does not exist, then try to set it to the publish date of the first event
+		if ( '' == $current || ! strtotime( $current ) ) {
+			global $wpdb;
+			$event_date = $wpdb->get_var( $wpdb->prepare( 'select post_date from ' . $wpdb->posts . ' where post_type = %s order by post_date asc, id asc', self::$o->core_post_type ) );
+			// if we found the date, then use it
+			if ( $event_date )
+				update_option( '_qsot_used_since', $current = $event_date );
+			// otherwise, use today
+			else
+				update_option( '_qsot_used_since', current_time( 'mysql' ) );
+		}
 	}
 
 	// maybe run the activation sequence on plugin update
