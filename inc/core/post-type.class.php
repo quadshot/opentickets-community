@@ -1067,6 +1067,11 @@ class qsot_post_type {
 		// if this is not an edit page of our post type, then we need none of these assets loaded
 		} else return;
 
+		// remove the cascade thumbnail logic because it interfers with the child event thumb selection
+		remove_filter( 'post_thumbnail_html', array( __CLASS__, 'cascade_thumbnail' ), 10, 5 );
+		remove_filter( 'get_post_metadata', array( __CLASS__, 'cascade_thumbnail_id' ), 10, 4 );
+
+		wp_enqueue_script( 'set-post-thumbnail' );
 		// load the eit page js, which also loads all it's dependencies
 		wp_enqueue_script('qsot-events-admin-edit-page');
 		// load the fullcalendar styles and the misc interface styling
