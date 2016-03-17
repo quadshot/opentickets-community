@@ -171,6 +171,10 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.2.4 - Mar/17/2016 =
+* [tweak] changed all reservation checks to use millesecond precision
+* [fix] resolved child event featured image issue
+
 = 2.2.3 - Mar/11/2016 =
 * [tweak] added code to prevent as many third party plugin and theme PHP errors as possible during PDF generation
 * [tweak] saving WYSIWYG based settings no longer strips out formatting
