@@ -128,6 +128,26 @@ QS.Tools = (function($, q, qt, w, d, undefined) {
 	return qt;
 })(jQuery, QS, QS.Tools, window, document);
 
+/* focus checker. when a specific element receives focus, check an adjacent checkbox or radio button */
+( function( $, qt ) {
+	$( document ).on( 'focus', '.focus-check', function() {
+		var me = $( this ),
+				scope = me.data( 'scope' ) || false,
+				target = me.data( 'target' ) || false, ele;
+
+		// if we do not have the needed data, then bail
+		if ( ! scope || ! target )
+			return;
+
+		// if the supplied data does not point to an actual element, bail
+		ele = $( scope ).find( target );
+		if ( ! ele.length )
+			return;
+
+		ele.prop( 'checked', true );
+	} );
+} )( jQuery, QS.Tools );
+
 QS.popMediaBox = (function($, qt) {
 	var custom = {};
 

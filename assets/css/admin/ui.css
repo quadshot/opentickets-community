@@ -68,7 +68,7 @@ table.settings-table .setting { margin-bottom:5px; }
 .option-sub.no-border { border:0; padding:0; margin:0; margin-bottom:8px; }
 .option-sub .bulk-edit-settings { position:absolute; top:10px; padding:1em 1.5em; background-color:#FFFFFF; border:1px solid #dddddd; z-index:800; }
 
-.date-text { width:90px; }
+body .date-text { width:90px; }
 .time-text { width:75px; }
 
 .clear { clear:both; }

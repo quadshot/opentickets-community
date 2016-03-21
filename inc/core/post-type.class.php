@@ -1938,7 +1938,7 @@ class qsot_post_type {
 						<table class="event-date-time-settings settings-table">
 							<tbody>
 								<tr>
-									<td width="50%">
+									<td width="35%">
 										<h4><?php _e('Basic Settings','opentickets-community-edition') ?></h4>
 										<div class="date-time-block subsub">
 
@@ -2056,7 +2056,7 @@ class qsot_post_type {
 																			<input type="radio" name="repeat-ends-type" value="after" />
 																			<span class="cb-text"><?php _e('After','opentickets-community-edition') ?>:</span>
 																		</span>
-																		<input type="number" class="widefat date-text" name="repeat-ends-after" value="15" />
+																		<input type="number" class="widefat date-text focus-check" data-scope="li" data-target="input[type='radio']" name="repeat-ends-after" value="15" />
 																		<span> <?php _e('occurences','opentickets-community-edition') ?></span>
 																	</li>
 																	<?php do_action('qsot-events-repeat-ends-type', $post, $mb) ?>

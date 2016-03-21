@@ -1,6 +1,8 @@
 var QS = QS || {};
 QS.EventUI = (function($, undefined) {
-	var qt = QS.Tools, S = $.extend( true, { frmts:{} }, _qsot_event_ui_settings );
+	var qt = QS.Tools,
+			S = $.extend( true, { frmts:{} }, _qsot_event_ui_settings ),
+			new_post_id = -1;
 
 	function frmt( str ) {
 		return ( 'string' == typeof str && qt.is( S.frmts[ str ] ) ) ? S.frmts[ str ] : str;
@@ -136,8 +138,7 @@ QS.EventUI = (function($, undefined) {
 				end: new moment( data['end-date'] + ' ' + data['end-time'] ).toDate(),
 				title: data['title'],
 				allDay: false,
-				editable: true,
-				post_id: -1,
+				editable: true
 			};
 			var events = [];
 
@@ -387,11 +388,12 @@ QS.EventUI = (function($, undefined) {
 			t.event_list.updateSettingsForm();
 		};
 
+		// remove an item from the calendar, based on the clicking of the red X
 		function remove(e) {
 			e.preventDefault();
-			var self = $(this);
-			var scope = self.closest('[rel=item]');
-			var ev = scope.data('event');
+			var self = $( this ),
+					scope = self.closest( '[rel=item]' ),
+					ev = scope.data( 'event' );
 			scope.remove();
 			t.removeEvents(ev);
 		};
@@ -412,7 +414,7 @@ QS.EventUI = (function($, undefined) {
 						+'</div>'
 					+'</div>'
 				+'</div>').data('event', ev).click(highlight);
-			ele.find('[rel=remove]').click(remove);
+			ele.find( '[rel=remove]' ).click( remove );
 			t.callback('event_list_item', [ele]);
 			if (ele.length)
 				ele.appendTo(t.elements.event_list);
@@ -523,13 +525,14 @@ QS.EventUI = (function($, undefined) {
 			if (tmpl) {
 				if (typeof tmpl == 'function') tmpl = tmpl();
 				else tmpl = $(tmpl);
-				tmpl.find('.'+self.fctm+'-event-time').html(element.find('.'+self.fctm+'-event-time').html());
-				tmpl.find('.'+self.fctm+'-event-title').html(element.find('.'+self.fctm+'-event-title').html());
-				tmpl.find('.'+self.fctm+'-capacity').html('('+_toNum(ev.capacity)+')');
-				tmpl.find('.'+self.fctm+'-visibility').html('['+QS.ucFirst(ev.visibility)+']');
-				tmpl.find('[rel=remove]').click(function() { self.removeEvents([ev]); });
+				var item = tmpl.clone();
+				item.find('.'+self.fctm+'-event-time').html(element.find('.'+self.fctm+'-event-time').html());
+				item.find('.'+self.fctm+'-event-title').html(element.find('.'+self.fctm+'-event-title').html());
+				item.find('.'+self.fctm+'-capacity').html('('+_toNum(ev.capacity)+')');
+				item.find('.'+self.fctm+'-visibility').html('['+QS.ucFirst(ev.visibility)+']');
+				item.find( '[rel=remove]' ).data( 'event', ev ).click( function() { self.removeEvents( [ $( this ).data( 'event' ) ] ); } );
 				element.empty();
-				tmpl.appendTo(element);
+				item.appendTo(element);
 			} else {
 				$('<span class="'+self.fctm+'-capacity"> ('+_toNum(ev.capacity)+') </span>')
 					.insertBefore(element.find('.'+self.fctm+'-event-title'));
@@ -587,12 +590,13 @@ QS.EventUI = (function($, undefined) {
 				}, extra );
 			}
 
+
 			// aggregate the args we will use for the event render on the calendar
 			args = $.extend( {
 				status: 'pending',
 				visibility: 'public',
 				capacity: 0,
-				post_id: -1
+				post_id: new_post_id--
 			}, obj );
 
 			// notify of the new event
@@ -774,16 +778,16 @@ QS.EventUI = (function($, undefined) {
 		},
 
 		beforeFormSubmit: function(form) {
-			var events = this.calendar.fullCalendar('clientEvents');
-			var defaults = {
-				post_id:-1,
-				status:'pending',
-				visibility:'public',
-				password:'',
-				pub_date:'',
-				purchase_limit: 0,
-				capacity:0
-			};
+			var events = this.calendar.fullCalendar('clientEvents'),
+					post_id_dec = -1,
+					defaults = {
+						status:'pending',
+						visibility:'public',
+						password:'',
+						pub_date:'',
+						purchase_limit: 0,
+						capacity:0
+					};
 			this.callback( 'before-submit-defaults', [ defaults ] );
 
 			for (var i = 0; i < events.length; i++) {
@@ -800,7 +804,7 @@ QS.EventUI = (function($, undefined) {
 					purchase_limit: events[i].purchase_limit || 0,
 					capacity: events[i].capacity
 				};
-				ev = $.extend({}, defaults, ev);
+				ev = $.extend( { post_id:post_id_dec-- }, defaults, ev );
 				this.callback('before_submit_event_item', [ ev, events[i], defaults ]);
 				var txt = JSON.stringify(ev);
 				$('<input type="hidden" name="_qsot_event_settings['+i+']" value=""/>').val(txt).appendTo(form);
