@@ -1930,6 +1930,9 @@ class qsot_post_type {
 	}
 
 	public static function mb_event_date_time_settings($post, $mb) {
+		$now = current_time( 'timestamp' );
+		$end = strtotime( '+1 hour', $now );
+		$one_week = strtotime( '+1 week', $now );
 		?>
 			<div class="<?php echo self::$o->pre ?>event-date-time-wrapper events-ui">
 				<input type="hidden" name="save-recurrence" value="1"/>
@@ -1942,15 +1945,15 @@ class qsot_post_type {
 										<h4><?php _e('Basic Settings','opentickets-community-edition') ?></h4>
 										<div class="date-time-block subsub">
 
-											<?php $now = current_time( 'timestamp' ) ?>
-											<input type="text" class="use-i18n-datepicker date-text" name="start-date" scope="td" data-display-format="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>"
+											<input type="text" class="use-i18n-datepicker date-text" name="start-date" scope="td" data-link-with=".repeat-options [role='from']"
+													data-display-format="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>"
 													value="<?php echo date( __( 'm-d-Y', 'opentickets-community-edition' ), $now ) ?>" title="<?php _e('Start Date','opentickets-community-edition') ?>" role="from" />
 											<input type="text" class="time-text" name="start-time" value="<?php echo date(__('h:ia','opentickets-community-edition'), $now) ?>" title="<?php _e('Start Time','opentickets-community-edition') ?>" />
 
 											<?php _e('to','opentickets-community-edition') ?><br/>
 
-											<?php $end = strtotime('+1 hour', $now); ?>
-											<input type="text" class="use-i18n-datepicker date-text" name="end-date" scope="td" data-display-format="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>"
+											<input type="text" class="use-i18n-datepicker date-text" name="end-date" scope="td" data-link-with=".repeat-options [role='from']"
+													data-display-format="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>"
 													value="<?php echo date( __( 'm-d-Y', 'opentickets-community-edition' ), $end ) ?>" title="<?php _e('End Date','opentickets-community-edition') ?>" role="to" />
 											<input type="text" class="time-text" name="end-time" value="<?php echo date(__('h:ia','opentickets-community-edition'), $end) ?>" title="<?php _e('End Time','opentickets-community-edition') ?>" />
 
@@ -2032,8 +2035,9 @@ class qsot_post_type {
 														<tr>
 															<th><?php _e('Starts on','opentickets-community-edition') ?>:</th>
 															<td>
-																<input type="text" class="widefat date-text use-i18n-datepicker" name="repeat-starts" scope="td" data-display-format="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>"
-																		value="<?php echo esc_attr( date( __( 'm-d-Y', 'opentickets-community-edition' ), $now ) ) ?>" />
+																<input type="text" class="widefat date-text use-i18n-datepicker ends-on" name="repeat-starts" scope=".repeat-options"
+																		data-display-format="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>"
+																		value="<?php echo esc_attr( date( __( 'm-d-Y', 'opentickets-community-edition' ), $now ) ) ?>" role="from" />
 															</td>
 														</tr>
 
@@ -2046,10 +2050,9 @@ class qsot_post_type {
 																			<input type="radio" name="repeat-ends-type" value="on" checked="checked" />
 																			<span class="cb-text"><?php _e('On','opentickets-community-edition') ?>:</span>
 																		</span>
-																		<input type="text" class="widefat date-text use-datepicker" name="repeat-ends-on-display" real="[name='repeat-ends-on']" scope="td"
-																				frmt="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>"
-																				value="<?php echo date( __( 'm-d-Y', 'opentickets-community-edition' ), $now ) ?>" />
-																		<input type="hidden" name="repeat-ends-on" value="<?php echo date( __('Y-m-d', 'opentickets-community-edition' ), $now ) ?>" />
+																		<input type="text" class="widefat date-text use-i18n-datepicker" name="repeat-ends-on" scope=".repeat-options"
+																				data-display-format="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>"
+																				value="<?php echo esc_attr( date( __( 'm-d-Y', 'opentickets-community-edition' ), $one_week ) ) ?>" role="to" />
 																	</li>
 																	<li>
 																		<span class="cb-wrap">
