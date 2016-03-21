@@ -1944,14 +1944,14 @@ class qsot_post_type {
 
 											<?php $now = current_time( 'timestamp' ) ?>
 											<input type="text" class="use-i18n-datepicker date-text" name="start-date" scope="td" data-display-format="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>"
-													value="<?php echo date( __( 'm-d-Y', 'opentickets-community-edition' ), $now ) ?>" title="<?php _e('Start Date','opentickets-community-edition') ?>" />
+													value="<?php echo date( __( 'm-d-Y', 'opentickets-community-edition' ), $now ) ?>" title="<?php _e('Start Date','opentickets-community-edition') ?>" role="from" />
 											<input type="text" class="time-text" name="start-time" value="<?php echo date(__('h:ia','opentickets-community-edition'), $now) ?>" title="<?php _e('Start Time','opentickets-community-edition') ?>" />
 
 											<?php _e('to','opentickets-community-edition') ?><br/>
 
 											<?php $end = strtotime('+1 hour', $now); ?>
 											<input type="text" class="use-i18n-datepicker date-text" name="end-date" scope="td" data-display-format="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>"
-													value="<?php echo date( __( 'm-d-Y', 'opentickets-community-edition' ), $end ) ?>" title="<?php _e('End Date','opentickets-community-edition') ?>" />
+													value="<?php echo date( __( 'm-d-Y', 'opentickets-community-edition' ), $end ) ?>" title="<?php _e('End Date','opentickets-community-edition') ?>" role="to" />
 											<input type="text" class="time-text" name="end-time" value="<?php echo date(__('h:ia','opentickets-community-edition'), $end) ?>" title="<?php _e('End Time','opentickets-community-edition') ?>" />
 
 										</div>

@@ -713,38 +713,64 @@ QS.EventUI = (function($, undefined) {
 			var tm = this.fctm;
 
 			// find the header container that we are adding the buttons to
-			this.elements.header_center = view.el.closest( '.' + tm ).find( '.' + tm + '-toolbar .fc-center' );
+			this.elements.header = $( '.qsot-action-toolbar' );
+			if ( ! this.elements.header.length ) {
+				this.elements.orig_header = view.el.closest( '.' + tm ).find( '.' + tm + '-toolbar' );
+				this.elements.header = $( '<div class="qsot-action-toolbar ' + tm + '-toolbar"></div>' ).insertBefore( this.elements.orig_header );
+			}
+			this.elements.header_center = $( '<div class="' + tm + '-center"></div>' ).appendTo( this.elements.header );
 
 			// add the new evetn date button, which when clicked, opens the new event date form
-			this.addButton( 'new_event_btn', qt.str( 'New Event Date', S ), [ 'togvis' ], { tar:'.option-sub[rel=add]', scope:'.events-ui' } ).click( function() {
-				var scope = $( this ).closest( $( this ).attr( 'scope' ) ), tar = $( $( this ).attr( 'tar' ), scope );
-			} );
+			this.addButton( 'new_event_btn', 'New Event Date', [ 'togvis', 'button', 'button-primary' ], { tar:'.option-sub[rel=add]', scope:'.events-ui' } ).appendTo( this.elements.header_center );
 
 			// allow others to add buttons here as well
 			this.callback( 'add_buttons', [ view ] );
 		},
 
-		addButton: function(name, label, classes, attr) {
-			if (typeof this.elements.buttons[name] == 'undefined' || this.elements.buttons[name] == null) {
-				var tm = this.fctm;
-				var attr = attr || {};
-				var classes = classes || '';
-				classes = typeof classes == 'object' ? classes.join(' ') : '';
-				this.elements.buttons[name] = $('<span class="button-primary '+tm+'-button '+tm+'-button-'+name+' '+tm+'-state-default '+tm+'-corner-left '+tm+'-corner-right '+classes+'">'
-						+'<span class="'+tm+'-button-inner">'
-							+'<span class="'+tm+'-button-content">'+label+'</span>'
-							+'<span class="'+tm+'-button-effect"><span></span></span>'
-						+'</span>'
-					+'</span>').attr(attr).appendTo(this.elements.header_center).hover(
-						function() { $(this).not('.' + tm + '-state-active').not('.' + tm + '-state-disabled').addClass(tm + '-state-hover'); },
-						function() { $(this).removeClass(tm + '-state-hover').removeClass(tm + '-state-down'); }
-					).click(function() {
-						var self = $(this);
-						if (self.hasClass(tm + '-state-active')) self.removeClass(tm + '-state-active');
-						else self.addClass(tm + '-state-active');
-					});
+		// create a button and return it
+		addButton: function( name, label, classes, attr ) {
+			// if the button does not already exist, create it
+			if ( ! qt.is( this.elements.buttons[ name ] ) ) {
+				// normalize the input
+				var tm = this.fctm,
+						attr = attr || {},
+						classes = classes || '';
+				classes = qt.isA( classes ) ? classes : ( qt.isO( classes ) ? '' : classes.split( /\s+/ ) );
+
+				// add some default classes
+				classes.concat( [
+					tm + '-button',
+					tm + '-button-' + name,
+					tm + '-state-default',
+					tm + '-corner-left',
+					tm + '-corner-right'
+				] );
+				classes = classes.join( ' ' );
+
+				// create the button
+				this.elements.buttons[ name ] = $( '<span>'
+						+ '<span class="' + tm + '-button-inner">'
+							+ '<span class="' + tm + '-button-content">' + qt.str( label, S ) + '</span>'
+							+ '<span class="' + tm + '-button-effect"><span></span></span>'
+						+ '</span>'
+					+ '</span>').addClass( classes ).attr( attr )
+					// handle the visual change, using the fc state css, when hovered
+					.hover(
+						function() { $( this ).not( '.' + tm + '-state-active' ).not( '.' + tm + '-state-disabled' ).addClass( tm + '-state-hover' ); },
+						function() { $( this ).removeClass( tm + '-state-hover' ).removeClass( tm + '-state-down' ); }
+					)
+					// handle the visual changes upon click of the button
+					.click( function() {
+						var self = $( this );
+						if ( self.hasClass( tm + '-state-active' ) )
+							self.removeClass( tm + '-state-active' );
+						else
+							self.addClass( tm + '-state-active' );
+					} );
 			}
-			return this.elements.buttons[name];
+
+			// returned the created or cached element
+			return this.elements.buttons[ name ];
 		},
 
 		beforeFormSubmit: function(form) {
