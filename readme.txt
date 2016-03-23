@@ -171,6 +171,15 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.2.5 - Mar/23/2016 =
+* [tweak] cleaned up the event repetition interface so that it is more userfriendly now
+* [tweak] moved 'new event date' button to be centered with calendar contents
+* [tweak] adjusted calendar styling to fix better on the page, and look better
+* [tweak] fixed calendar syncing while adding new events, which prevents weird new event start date in some cases
+* [fix] repaired update of '_purchases_ea' meta key
+* [fix] corrected some typos in error messages
+* [fix] repaired 'red Xs' on the admin edit event calendar, so that it no longer removes all events in some cases
+
 = 2.2.4 - Mar/17/2016 =
 * [tweak] changed all reservation checks to use millesecond precision
 * [fix] resolved child event featured image issue
