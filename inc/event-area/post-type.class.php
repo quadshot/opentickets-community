@@ -105,7 +105,7 @@ class QSOT_Post_Type_Event_Area {
 
 		// during transitions of order status (and order creation), we need to perform certain operations. we may need to confirm tickets, or cancel them, depending on the transition
 		add_action( 'woocommerce_checkout_update_order_meta', array( &$this, 'update_order_id' ), 100, 2 );
-		//add_action( 'woocommerce_order_status_changed', array( &$this, 'order_status_changed' ), 100, 3 );
+		add_action( 'woocommerce_order_status_changed', array( &$this, 'order_status_changed' ), 100, 3 );
 		//add_action( 'woocommerce_order_status_changed', array( &$this, 'order_status_changed_pending' ), 101, 3 );
 		add_action( 'woocommerce_order_status_changed', array( &$this, 'order_status_changed_cancel' ), 102, 3 );
 		add_action( 'woocommerce_checkout_update_order_meta', array( &$this, 'order_has_been_created' ), 10000, 2 );
@@ -127,7 +127,7 @@ class QSOT_Post_Type_Event_Area {
 		add_filter( 'qsot-compile-ticket-info', array( &$this, 'add_event_area_data' ), 2000, 3 );
 
 		// action to update the total purchases for an event
-		add_action( 'qsot-update-event-purchases', array( &$this, 'update_event_purchases' ), 2000, 1 );
+		add_action( 'qsot-update-event-purchases', array( &$this, 'update_event_purchases' ), 2000, 2 );
 		add_action( 'save_post', array( &$this, 'save_post_update_event_purchases' ), PHP_INT_MAX, 3 );
 
 		// add a column to display the area_type in the posts list page
@@ -1022,14 +1022,15 @@ class QSOT_Post_Type_Event_Area {
 		) );
 	}
 
-	/*
-	// when the order status changes, change the status of the order tickets
+	// when the order status changes, change make sure to update the ticket purchase count
 	public function order_status_changed( $order_id, $old_status, $new_status ) {
-		// if the status is a status that should have confirmed tickets, then .... make them confirmed
-		if ( ! in_array( $new_status, apply_filters( 'qsot-zoner-cancelled-statuses', array( 'cancelled' ) ) ) ) {
-		//if ( in_array( $new_status, apply_filters( 'qsot-zoner-confirmed-statuses', array( 'on-hold', 'processing', 'completed' ) ) ) ) {
+		// if the status is a status that should have it's count, counted, then do so
+		if ( in_array( $new_status, apply_filters( 'qsot-zoner-confirmed-statuses', array( 'on-hold', 'processing', 'completed' ) ) ) ) {
 			// load the order
 			$order = wc_get_order( $order_id );
+
+			// container for all the event ids that need an update
+			$updates = array();
 			
 			// cycle through the order items, and update all the ticket items to confirmed
 			foreach ( $order->get_items() as $item_id => $item ) {
@@ -1037,34 +1038,15 @@ class QSOT_Post_Type_Event_Area {
 				if ( ! apply_filters( 'qsot-item-is-ticket', false, $item ) )
 					continue;
 
-				// get the event, area_type and zoner for this item
-				$event = get_post( $item['event_id'] );
-				$event_area = apply_filters( 'qsot-event-area-for-event', false, $event );
-				$area_type = is_object( $event_area ) ? $event_area->area_type : null;
-
-				// if any of the data is missing, the skip this item
-				if ( ! is_object( $event ) || ! is_object( $event_area ) || ! is_object( $area_type ) )
-					continue;
-
-				// have the event_area determine how to update the order item info in the ticket table
-				$result = $area_type->confirm_tickets( $item, $item_id, $order, $event, $event_area );
-
-				// notify externals of the change
-				do_action( 'qsot-confirmed-ticket', $order, $item, $item_id, $result );
+				// tally this ticket's amount, grouping by event_id
+				$updates[ $item['event_id'] ] = 1;
 			}
+
+			// update the counts for all events that had tickets purchased
+			foreach ( $updates as $event_id => $_ )
+				do_action( 'qsot-update-event-purchases', $event_id );
 		}
-
-		$event_ids = array();
-		$order = wc_get_order( $order_id );
-		// update the total purchases for each event on the order
-		foreach ( $order->get_items() as $item_id => $item )
-			if ( isset( $item['event_id'] ) )
-				$event_ids[ $item['event_id'] ] = 1;
-
-		foreach ( $event_ids as $event_id => $__ )
-			do_action( 'qsot-update-event-purchases', $event_id );
 	}
-	*/
 	
 	/*
 	// separate function to handle the order status changes to 'cancelled'
