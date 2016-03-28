@@ -163,7 +163,7 @@ QS.popMediaBox = (function($, qt) {
 					if ( preview_cont.length ) {
 						preview_cont.each( function() {
 							var t = $( this ),
-									url = qt.is( attachment.sizes.thumbnail ) ? attachment.sizes.thumbnail.url : attachment.sizes.full.url,
+									url = qt.is( attachment.sizes.full ) ? attachment.sizes.full.url : '',
 									size = qt.is( args.size ) ? args.size : ( ( size = t.attr( 'size' ) ) ? size : 'thumb' )
 									size = size == 'thumb' ? 'thumbnail' : size;
 							// find the appropriate image url
@@ -249,7 +249,7 @@ QS.popMediaBox = (function($, qt) {
 					mode = me.data( 'mode' ) || 'normal',
 					mode = mode.split( /\s*:\s*/ ),
 					allow_blank = me.data( 'allow-blank' ) || false,
-					initial_date = me.data( 'init-date' ),
+					initial_date = me.data( 'init-date' ) || me.val(),
 					d = initial_date ? new Date( initial_date ) : ( allow_blank ? '' : new Date() ),
 					d = new Date( initial_date ),
 					min = me.data( 'min-date' ) || '',

@@ -286,7 +286,7 @@ class QSOT_Post_Type_Event_Area {
 			'has_archive' => true,
 			'hierarchical' => false,
 			'menu_position' => 22,
-			'supports' => array( 'title' )
+			'supports' => array( 'title', 'author' )
 		) );
 
 		register_post_type( 'qsot-event-area', $args );
