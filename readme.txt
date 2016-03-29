@@ -171,6 +171,11 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.2.5.1 - Mar/29/2016 =
+* [tweak] changed default QR Code generator from phpqrcode library to google apis
+* [tweak] added code to help phpqrcode find the wp-config file more easily
+* [tweak] moved DOMPDF cache to uploads dir, since that is more likely writable than the plugin dir
+
 = 2.2.5 - Mar/23/2016 =
 * [tweak] cleaned up the event repetition interface so that it is more userfriendly now
 * [tweak] moved 'new event date' button to be centered with calendar contents
