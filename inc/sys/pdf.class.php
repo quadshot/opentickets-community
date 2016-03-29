@@ -6,20 +6,150 @@ if ( ! defined( 'QSOT_DEBUG_PDF' ) )
 	define( 'QSOT_DEBUG_PDF', 0 );
 
 class QSOT_pdf {
+	protected static $dompdf_admin_notice = '';
+
 	// setup our class
 	public static function pre_init() {
 		// during activation, we need to do a couple things
 		add_action( 'qsot-activate', array( __CLASS__, 'on_activate' ), 5000 );
 
+		// setup the dompdf temp dir path, right before we are about to render the page
+		add_action( 'wp_loaded', array( __CLASS__, 'setup_dompdf_tmp_path' ), 10 );
+
 		// if we are in the admin, then...
 		if ( is_admin() ) {
 			add_action( 'qsot-otce-updated', array( __CLASS__, 'after_plugin_update' ), 10 );
+
+			// add an admin notice for any DOMPDF related error messages
+			add_action( 'admin_notices', array( __CLASS__, 'show_dompdf_admin_notices' ), 10 );
 		}
 	}
 
 	// after the plugin is updated, we may need to copy new fonts over
 	public static function after_plugin_update() {
 		self::on_activate();
+	}
+
+	// during page load, setup the paths that dompdf will use. some paths include the FONT dirs and the TEMP path
+	public static function setup_dompdf_tmp_path() {
+		// setup the TMP path
+		if ( ! defined( 'DOMPDF_TEMP_DIR' ) )
+			define( 'DOMPDF_TEMP_DIR', self::_get_dompdf_tmp_dir() );
+
+		// determine the cache dir name
+		$final_path = self::_font_cache_path();
+
+		try {
+			// find the font path to use
+			$font_path = QSOT_cache_helper::create_find_path( $final_path, 'fonts' );
+			if ( ! is_writable( $font_path ) )
+				throw new Exception( sprintf( __( 'The %s path is not writable. Please update the permissions to allow write access.', 'opentickets-community-edition' ), 'fonts' ) );
+
+			// setup the FONT paths
+			if ( ! defined( 'DOMPDF_FONT_DIR' ) )
+				define( 'DOMPDF_FONT_DIR', $font_path );
+			if ( ! defined( 'DOMPDF_FONT_CACHE' ) )
+				define( 'DOMPDF_FONT_CACHE', $font_path );
+		} catch ( Exception $e ) { }
+	}
+
+	// display any dompdf related admin notices
+	public static function show_dompdf_admin_notices() {
+		// if there is no message to display, then bail early
+		if ( ! self::$dompdf_admin_notice )
+			return;
+
+		// render the message
+		?>
+			<div class="error">
+				<p>
+					<span class="dashicons dashicons-no"></span>
+					<?php echo self::$dompdf_admin_notice ?>
+				</p>
+			</div>
+		<?php
+	}
+
+	// actually find or create the appropriate dompdf tmp dir path
+	protected static function _get_dompdf_tmp_dir() {
+		// get the unique dir name from the database
+		$dirname = get_option( '_qsot_dompdf_tmp_path', '' );
+
+		// if that name does not exist yet, make one
+		if ( empty( $dirname ) )
+			$dirname = self::_new_dompdf_tmp_dirname();
+
+		// get the actual path to the directory to use
+		$pathname = self::_find_or_create_dompdf_tmp_dir( $dirname );
+
+		// if the path lookup failed, fallback to what the system reports as the tmp dir
+		return $pathname ? $pathname : sys_get_temp_dir();
+	}
+
+	// find or create the temp dir, based on the temp dir name supplied
+	protected static function _find_or_create_dompdf_tmp_dir( $dirname ) {
+		// keep track of the times we attempt to create a new dir
+		static $iteration = 0;
+
+		$u = wp_upload_dir();
+		$pathname = trailingslashit( $u['basedir'] ) . $dirname;
+		// if the dir exists, return it now
+		if ( file_exists( $pathname ) && is_dir( $pathname ) && is_writable( $pathname ) && is_readable( $pathname ) )
+			return $pathname;
+
+		// otherwise increment the creation attempt tracker
+		$iteration++;
+
+		// if we have tried to create it more than twice, then bail
+		if ( $iteration > 2 ) {
+			self::$dompdf_admin_notice = __( 'Tried to create a new DOMPDF temp directory twice, and failed both times. There is probably a permission issue in your uploads directory.', 'opentickets-community-edition' );
+			return false;
+		}
+
+		// if the path exists, but is not a dir, try once more
+		if ( file_exists( $pathname ) && ! is_dir( $pathname ) )
+			return self::_find_or_create_dompdf_tmp_dir( self::_new_dompdf_tmp_dirname() );
+
+		// if the path simply does not exist, attempt to create it now
+		if ( ! file_exists( $pathname ) ) {
+			// if the parent dir is not writable, then bail with an error
+			if ( ! is_writable( $u['basedir'] ) || ! mkdir( $pathname, 0755, true ) ) {
+				self::$dompdf_admin_notice = sprintf(
+					__( 'Your main uploads path is NOT writable. You must resolve this issue before PDF creation will work properly. The path is %s', 'opentickets-community-edition' ),
+					'<code>' . $u['basedir'] . '</code>'
+				);
+				return false;
+			}
+		}
+
+		// if the file exists, is a dir, but is not readable, bail with a message
+		if ( file_exists( $pathname ) && ! is_readable( $pathname ) ) {
+			self::$dompdf_admin_notice = sprintf(
+				__( 'The DOMPDF temp path does exist, but the file permissions do not allow reading. Please open the file permissions for path %s so that it is readable and writable.', 'opentickets-community-edition' ),
+				'<code>' . $u['basedir'] . '</code>'
+			);
+			return false;
+		}
+
+		// if the file exists, is a dir, but is not writable, bail with a message
+		if ( file_exists( $pathname ) && ! is_readable( $pathname ) ) {
+			self::$dompdf_admin_notice = sprintf(
+				__( 'The DOMPDF temp path does exist, but the file permissions do not allow writing, which is required. Please open the file permissions for path %s so that it is readable and writable.', 'opentickets-community-edition' ),
+				'<code>' . $u['basedir'] . '</code>'
+			);
+			return false;
+		}
+
+		// if we got here, it means we have a problem that i dont know how to test. bail with a generic message
+		self::$dompdf_admin_notice = __( 'The DOMPDF temporary dir does not exist and could not be created for an unknown reason. Please contact support, or troubleshoot the issue yourself.', 'opentickets-community-edition' );
+		return false;
+	}
+
+	// create a new dirname for the dompdf tmp path
+	protected static function _new_dompdf_tmp_dirname() {
+		$dirname = 'qsot-dompdf-tmp-' . substr( md5( AUTH_SALT . microtime( true ) . rand( 0, PHP_INT_MAX ) . AUTH_KEY ), 11, 15 );
+		update_option( '_qsot_dompdf_tmp_path', $dirname );
+		return $dirname;
 	}
 
 	// allow some pre-processing to occur on html before it gets integrated into a final pdf
@@ -41,6 +171,9 @@ class QSOT_pdf {
 		// if we are debugging the pdf, then depending on the mode, dump the html contents onw
 		if ( ( QSOT_DEBUG_PDF & 2 ) ) { // || ( current_user_can( 'edit_posts' ) && isset( $_GET['as'] ) && 'html' == $_GET['as'] ) ) {
 			echo '<pre>';
+			echo "RELEVANT DIRS\n";
+			var_dump( DOMPDF_TEMP_DIR, DOMPDF_FONT_DIR, DOMPDF_FONT_CACHE );
+			echo "\n\nHTML OUTPUT\n";
 			echo htmlspecialchars( $html );
 			echo '</pre>';
 			die();
@@ -212,16 +345,18 @@ class QSOT_pdf {
 			return;
 		}
 
-		// make sure that the libs dir is also writable
 		$libs_dir = QSOT::plugin_dir() . 'libs/';
+		// make sure that the libs dir is also writable
+		/* dont need this since we never remove the files
 		if ( ! @file_exists( $libs_dir ) || ! is_dir( $libs_dir ) || ! is_writable( $libs_dir ) ) 
 			return;
+		*/
 
 		// find all the fonts that come with the lib we packaged with the plugin, and move them to the new fonts dir, if they are not already there
 		$remove_files = $updated_files = array();
 		$core_fonts_dir = $libs_dir . 'dompdf/lib/fonts/';
 		// open the core included fonts dir
-		if ( @file_exists( $core_fonts_dir ) && is_writable( $core_fonts_dir ) && ( $dir = opendir( $core_fonts_dir ) ) ) {
+		if ( @file_exists( $core_fonts_dir ) && is_readable( $core_fonts_dir ) && ( $dir = opendir( $core_fonts_dir ) ) ) {
 			// find all the files in the dir
 			while ( $file_basename = readdir( $dir ) ) {
 				$filename = $core_fonts_dir . $file_basename;
@@ -240,6 +375,7 @@ class QSOT_pdf {
 			file_put_contents( $font_path . 'updated', 'updated on ' . date( 'Y-m-d H:i:s' ) . ":\n" . implode( "\n", $remove_files ) );
 
 			// attempt to create the new custom config file
+			/* handling this a different way now
 			if ( $config_file = fopen( $libs_dir . 'wp.dompdf.config.php', 'w+' ) ) {
 				// create variable names to use in the heredoc
 				$variable_names = array(
@@ -260,14 +396,17 @@ CONTENTS;
 				fclose( $config_file );
 
 				// remove any files that are marked to be removed, now that we have successfully written them to the new location, and pointed DOMPDF at them
-				/* skip this for now */
-				/*
-				if ( is_array( $remove_files ) && count( $remove_files ) )
-					foreach ( $remove_files as $remove_file )
-						if ( is_writable( $remove_file ) && ! is_dir( $remove_file ) && ! is_link( $remove_file ) )
-							@unlink( $remove_file );
-				*/
+				// skip this for now
+				//if ( is_array( $remove_files ) && count( $remove_files ) )
+				//	foreach ( $remove_files as $remove_file )
+				//		if ( is_writable( $remove_file ) && ! is_dir( $remove_file ) && ! is_link( $remove_file ) )
+				//			@unlink( $remove_file );
 			}
+			*/
+
+			// attempt to remove the previously created wp.dompdf.config.php file, since we dont need it anymore
+			if ( file_exists( $libs_dir . 'wp.dompdf.config.php' ) && is_writable( $libs_dir . 'wp.dompdf.config.php' ) )
+				@unlink( $libs_dir . 'wp.dompdf.config.php' );
 		}
 	}
 }
