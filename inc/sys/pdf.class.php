@@ -195,7 +195,10 @@ class QSOT_pdf {
 		// next, 'flatten' all styles
 		$html = preg_replace_callback( '#\<link([^\>]*?(?:(?:(\'|")[^\2]*?\2)[^\>]*?)*?)\>#s', array( __CLASS__, '_flatten_styles' ), $html );
 
-		// first, find all images in the html, and try to localize them into base64 strings
+		// remove the srcset and sizes attributes
+		$html = preg_replace( '#(sizes|srcset)="[^"]*?"#', '', $html );
+
+		// find all images in the html, and try to localize them into base64 strings
 		$html = preg_replace_callback( '#\<img([^\>]*?(?:(?:(\'|")[^\2]*?\2)[^\>]*?)*?)\>#s', array( __CLASS__, '_parse_image' ), $html );
 
 		return $html;
