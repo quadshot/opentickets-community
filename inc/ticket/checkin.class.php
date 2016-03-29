@@ -205,37 +205,20 @@ class QSOT_checkin {
 		$ticket->qr_code = null;
 
 		for ( $i = 0; $i < count( $codes ); $i++ ) {
-			// if this is NOT a PDF request, then make the qr image urls an external assets, which can be locally cached
-			if ( ! $is_pdf ) {
-				// create the QR generator url
-				$data = array( 'd' => $codes[ $i ], 'p' => site_url() );
-				ksort( $data );
-				$data['sig'] = sha1( NONCE_KEY . @json_encode( $data ) . NONCE_SALT );
-				$data = @json_encode( $data );
+			// get the url, width and height to use for the image tag
+			@list( $url, $width, $height ) = self::qr_img_url( $codes[ $i ], $is_pdf );
 
-				$ticket->qr_data_debugs[ $i ] = $codes[ $i ];
-				// add the image tag to the list of image tags
-				$ticket->qr_codes[ $i ] = sprintf(
-					'<img src="%s%s" alt="%s" />',
-					esc_attr( self::$o->core_url . 'libs/phpqrcode/index.php?d=' ),
-					esc_attr( str_replace( array( '+', '=', '/' ), array( '-', '_', '~' ), base64_encode( strrev( $data ) ) ) ),
-					esc_attr( $ticket->product->get_title() . ' (' . $ticket->product->get_price() . ')' )
-				);
-			// if this IS a PDF request, then embed the QR image urls as base64 encoded data strings
-			} else {
-				// compile the qr image url
-				$img_data = self::_qr_img( $codes[ $i ] );
-
-				// add the image tag for this qr to the list of image tags
-				$ticket->qr_codes[ $i ] = sprintf(
-					'<img class="img-%d" width="%s" height="%s" src="%s" alt="%s" />',
-					$i,
-					esc_attr( $img_data[1] ),
-					esc_attr( $img_data[2] ),
-					esc_attr( $img_data[0] ),
-					$ticket->product->get_title() . ' (' . $ticket->product->get_price() . ')'
-				);
-			}
+			// create the image url
+			$atts = array( 'src' => $url, 'alt' => $ticket->product->get_title() . ' (' . $ticket->product->get_price() . ')' );
+			if ( null !== $width )
+				$atts['width'] = $width;
+			if ( null !== $height )
+				$atts['height'] = $height;
+			// compile the img atts
+			$atts_arr = array();
+			foreach ( $atts as $k => $v )
+				$atts_arr[] = sprintf( '%s="%s"', $k, esc_attr( $v ) );
+			$ticket->qr_codes[ $i ] = '<img ' . implode( ' ', $atts_arr ) . ' />';
 
 			// make sure that the first code is added as the primary code. eventually this will be deprecated
 			if ( null == $ticket->qr_code )
@@ -248,6 +231,48 @@ class QSOT_checkin {
 			var_dump( $ticket->qr_data_debugs );
 
 		return $ticket;
+	}
+
+	// get the qr image url
+	public static function qr_img_url( $code, $is_pdf=false ) {
+		static $su = false;
+		// cache the site url, used for qr code validation in phpqrcode lib
+		if ( false === $su )
+			$su = site_url();
+
+		$url = '';
+		$width = null;
+		$height = null;
+
+		// PHPQRCODE lib section. obsolete in favor of google charts. still configurable for use with constant.... for now
+		if ( defined( 'QSOT_USE_PHPQRCODE' ) && QSOT_USE_PHPQRCODE ) {
+			// if this is not a pdf request, then return an http(s) based url
+			if ( ! $is_pdf ) {
+				// pack the data into something we can pass to the lib
+				$data = array( 'd' => $code, 'p' => $su );
+				ksort( $data );
+				$data['sig'] = sha1( NONCE_KEY . @json_encode( $data ) . NONCE_SALT );
+				$data = @json_encode( $data );
+
+				// create the url
+				$url = add_query_arg( array( 'd' => str_replace( array( '+', '=', '/' ), array( '-', '_', '~' ), base64_encode( strrev( $data ) ) ) ), self::$o->core_url . 'libs/phpqrcode/index.php' );
+			} else {
+				@list( $url, $width, $height ) = self::_qr_img( $code );
+			}
+		// default is to use google apis
+		} else {
+			$width = $height = 185;
+			$args = array(
+				'cht' => 'qr',
+				'chld' => 'L|1',
+				'choe' => 'UTF-8',
+				'chs' => $width . 'x' . $height,
+				'chl' => rawurlencode( $code ),
+			);
+			$url = add_query_arg( $args, 'https://chart.googleapis.com/chart' );
+		}
+
+		return array( $url, $width, $height );
 	}
 
 	// create all the codes that are encoded inside the QR Codes
