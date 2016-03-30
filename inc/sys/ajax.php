@@ -240,25 +240,42 @@ class QSOT_Ajax {
 		// get the search string
 		$search = isset( $_REQUEST['q'] ) ? $_REQUEST['q'] : '';
 
-		// construct the first query
-		$ids1 = get_posts( array(
+		// setup serch args
+		$args1 = array(
 			'post_type' => 'product',
-			'post_status' => 'publish',
+ 			'post_status' => array( 'publish' ),
+			'perm' => 'readable',
 			'posts_per_page' -1,
 			'meta_query' => array(
 				array( 'key' => '_sku', 'value' => $search, 'compare' => 'LIKE' ),
 			),
 			'fields' => 'ids',
-		) );
+		);
 
-		// second search
-		$ids2 = get_posts( array(
+		// if the current user can read private posts, add private as a post status
+		if ( current_user_can( 'read_private_posts' ) )
+			$args1['post_status'][] = 'private';
+
+		// construct the first query
+		$ids1 = get_posts( $args1 );
+
+
+		// setup the second group of search args
+		$args2 = array(
 			'post_type' => 'product',
-			'post_status' => 'publish',
+			'post_status' => array( 'publish' ),
+			'perm' => 'readable',
 			'posts_per_page' -1,
 			's' => $search,
 			'fields' => 'ids',
-		) );
+		);
+
+		// if the current user can read private posts, add private as a post status
+		if ( current_user_can( 'read_private_posts' ) )
+			$args2['post_status'][] = 'private';
+
+		// second search
+		$ids2 = get_posts( $args2 );
 
 		// combine results
 		$ids = array_filter( array_unique( array_merge( $ids1, $ids2 ) ) );
