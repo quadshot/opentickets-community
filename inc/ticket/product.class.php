@@ -141,7 +141,7 @@ class QSOT_Ticket_Product {
 			$ticket->post->meta['price'] = apply_filters('qsot-price-formatted', $ticket->post->meta['price_raw']);
 
 			// shorthand the propername of the ticket, so we dont have to keep doing it
-			$ticket->post->proper_name = $ticket->get_title();
+			$ticket->post->proper_name = apply_filters( 'the_title', $ticket->get_title(), $ticket->id );
 
 			// add the ticket to the indexed return list
 			$tickets[ '' . $ticket->post->ID ] = $ticket;
