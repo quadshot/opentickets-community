@@ -119,6 +119,8 @@ class QSOT_pdf {
 					'<code>' . $u['basedir'] . '</code>'
 				);
 				return false;
+			} else {
+				return true;
 			}
 		}
 
