@@ -171,7 +171,7 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
-= 2.2.5.1 - Mar/31/2016 =
+= 2.2.5.4 - Mar/31/2016 =
 * [new] private tickets now follow core wordpress 'private post' logic
 * [tweak] changed default QR Code generator from phpqrcode library to google apis
 * [tweak] added code to help phpqrcode find the wp-config file more easily
