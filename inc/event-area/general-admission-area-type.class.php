@@ -610,7 +610,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 			return new WP_Error( 'invalid_ticket_type', __( 'Could not find the price for this event.', 'opentickets-community-edition' ) );
 
 		// if the current user canread this ticket, return it, otherwise fail
-		if ( ! current_user_can( 'read', $result->id ) )
+		if ( 'private' == $result->post->post_status && ! current_user_can( 'read', $result->id ) )
 			return new WP_Error( 'access_denied', __( 'Cannot find the price for this event.', 'opentickets-community-edition' ) );
 
 		return $result;
