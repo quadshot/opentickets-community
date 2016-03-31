@@ -138,11 +138,11 @@ if ( wc_tax_enabled() ) {
 <div class="wc-order-data-row wc-order-totals-items wc-order-items-editable">
 	<?php
 		$coupons = $order->get_items( array( 'coupon' ) );
-		if ( $coupons ) {
-			?>
-			<div class="wc-used-coupons">
-				<ul class="wc_coupon_list"><?php
-					echo '<li><strong>' . __( 'Coupon(s) Used', 'woocommerce' ) . '</strong></li>';
+		?>
+		<div class="wc-used-coupons">
+			<ul class="wc_coupon_list"><?php
+				echo '<li><strong>' . __( 'Coupon(s) Used', 'woocommerce' ) . '</strong></li>';
+				if ( $coupons ) {
 					foreach ( $coupons as $item_id => $item ) {
 						$post_id = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE post_title = %s AND post_type = 'shop_coupon' AND post_status = 'publish' LIMIT 1;", $item['name'] ) );
 
@@ -150,10 +150,10 @@ if ( wc_tax_enabled() ) {
 
 						echo '<li class="code"><a href="' . esc_url( $link ) . '" class="tips" data-tip="' . esc_attr( wc_price( $item['discount_amount'], array( 'currency' => $order->get_order_currency() ) ) ) . '"><span>' . esc_html( $item['name'] ). '</span></a></li>';
 					}
-				?></ul>
-			</div>
-			<?php
-		}
+				}
+			?></ul>
+		</div>
+		<?php
 	?>
 	<table class="wc-order-totals">
 		<tr>
