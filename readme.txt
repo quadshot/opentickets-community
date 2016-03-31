@@ -177,6 +177,7 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 * [tweak] added code to help phpqrcode find the wp-config file more easily
 * [tweak] moved DOMPDF cache to uploads dir, since that is more likely writable than the plugin dir
 * [fix] repaired edgecase overbook bug when using GAMP extension
+* [fix] repaired admin ticket selection on GA events
 
 = 2.2.5 - Mar/23/2016 =
 * [tweak] cleaned up the event repetition interface so that it is more userfriendly now
