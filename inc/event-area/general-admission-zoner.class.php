@@ -127,7 +127,7 @@ class QSOT_General_Admission_Zoner extends QSOT_Base_Event_Area_Zoner {
 		// determine how many tickets they currently have for this event
 		$find_args = $args;
 		$find_args['fields'] = 'total';
-		unset( $find_args['quantity'] );
+		unset( $find_args['quantity'], $find_args['ticket_type_id'] );
 		$total_for_event = $this->find( $find_args );
 
 		// if the current total they have is great than or equal to the event limit, then bail with an error stating that they are already at the limit
@@ -473,6 +473,36 @@ class QSOT_General_Admission_Zoner extends QSOT_Base_Event_Area_Zoner {
 		// correct the data's quantity to be the maximum they can purchase, if they are requesting more
 		if ( $hard_limit > 0 && isset( $data['quantity'] ) )
 			$data['quantity'] = min( $hard_limit, $data['quantity'] );
+
+		// check if this amount can be added to the cart. could run into purchase limit
+		$can_add_to_cart = apply_filters( 'qsot-can-add-tickets-to-cart', true, null, $find_args );
+
+		// handle the response from our check
+		// if there was an error, cleanup and bail
+		if ( is_wp_error( $can_add_to_cart ) ) {
+			return apply_filters( 'qsot-gaea-zoner-reserve-results', $can_add_to_cart, $args );
+		// if there was a fail but no error, then cleanup and bail
+		} else if ( ! $can_add_to_cart ) {
+			return apply_filters( 'qsot-gaea-zoner-reserve-results', new WP_Error( 6, __( 'Could not reserve those tickets.', 'opentickets-community-edition' ) ), $args );
+		// if there was a change in the quantity to use, then adjust the quantity accordingly
+		} else if ( is_numeric( $can_add_to_cart ) && $can_add_to_cart < $lock_for ) {
+			$data['quantity'] = $can_add_to_cart;
+		}
+
+		// determine the capacity for the event
+		$ea_id = get_post_meta( $args['event_id'], '_event_area_id', true );
+		$capacity = $ea_id > 0 ? get_post_meta( $ea_id, '_capacity', true ) : 0;
+
+		// tally all records for this event before this record
+		$total_before_record = $this->find( array(
+			'event_id' => $args['event_id'],
+			'state' => '*',
+			'fields' => 'total',
+			'before' => $row->since . '.' . $row->mille,
+		) ); 
+
+		// figure out the the absolute maximum number that the user can reserve
+		$data['quantity'] = min( $capacity > 0 ? $capacity - $total_before_record : $data['quantity'], $data['quantity'] );
 
 		global $wpdb;
 		// update the row with the supplied data
