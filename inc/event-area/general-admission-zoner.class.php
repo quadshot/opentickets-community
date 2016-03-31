@@ -485,7 +485,7 @@ class QSOT_General_Admission_Zoner extends QSOT_Base_Event_Area_Zoner {
 		} else if ( ! $can_add_to_cart ) {
 			return apply_filters( 'qsot-gaea-zoner-reserve-results', new WP_Error( 6, __( 'Could not reserve those tickets.', 'opentickets-community-edition' ) ), $args );
 		// if there was a change in the quantity to use, then adjust the quantity accordingly
-		} else if ( is_numeric( $can_add_to_cart ) && $can_add_to_cart < $lock_for ) {
+		} else if ( is_numeric( $can_add_to_cart ) && $can_add_to_cart < $data['quantity'] ) {
 			$data['quantity'] = $can_add_to_cart;
 		}
 
