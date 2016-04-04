@@ -54,19 +54,19 @@ class QSOT_Utils {
 	 *
 	 * @return int returns a valid timestamp, adjusted for our WordPress timezone setting
 	 */
-	public static function gmt_timestamp( $date=null ) {
+	public static function gmt_timestamp( $date=null, $method='to', $date_format='date' ) {
 		// default to the current date
 		if ( null === $date )
 			$date = date( 'c' );
 
 		// get the strtotime interpretation
-		$raw = @strtotime( $date );
+		$raw = 'timestamp' == $date_format ? $date : @strtotime( $date );
 
 		// if that failed, then bail
 		if ( false === $raw )
 			return false;
 
 		// adjust the raw time we got above, to achieve the GMT time
-		return $raw - ( get_option( 'gmt_offset', 0 ) * HOUR_IN_SECONDS );
+		return $raw + ( ( 'to' == $method ? -1 : 1 ) * ( get_option( 'gmt_offset', 0 ) * HOUR_IN_SECONDS ) );
 	}
 }

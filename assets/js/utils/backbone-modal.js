@@ -82,11 +82,11 @@
 		},
 
 		adjust_size: function() {
-			var $content  = $( '.wc-backbone-modal-content' ).find( 'article' ),
-					cur_h = ( 0 === $content.height() ) ? 90 : $content.height();
+			var $content = $( '.wc-backbone-modal-content' ).find( 'article' ),
+					cur_h = ( 0 === $content.height() ) ? 90 : $content.outerHeight();
 			$content.css( { height:'auto' } );
-			var content_h = ( 0 === $content.height() ) ? 90 : $content.height(),
-					max_h     = $( window ).height() - 250;
+			var content_h = ( 0 === $content.outerHeight() ) ? 90 : $content.outerHeight(),
+					max_h = $( window ).height() - 250;
 			$content.css( { height:cur_h } );
 
 			if ( content_h > max_h ) {

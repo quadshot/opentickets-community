@@ -128,6 +128,26 @@ QS.Tools = (function($, q, qt, w, d, undefined) {
 	return qt;
 })(jQuery, QS, QS.Tools, window, document);
 
+/* focus checker. when a specific element receives focus, check an adjacent checkbox or radio button */
+( function( $, qt ) {
+	$( document ).on( 'focus', '.focus-check', function() {
+		var me = $( this ),
+				scope = me.data( 'scope' ) || false,
+				target = me.data( 'target' ) || false, ele;
+
+		// if we do not have the needed data, then bail
+		if ( ! scope || ! target )
+			return;
+
+		// if the supplied data does not point to an actual element, bail
+		ele = $( scope ).find( target );
+		if ( ! ele.length )
+			return;
+
+		ele.prop( 'checked', true );
+	} );
+} )( jQuery, QS.Tools );
+
 QS.popMediaBox = (function($, qt) {
 	var custom = {};
 
@@ -163,7 +183,7 @@ QS.popMediaBox = (function($, qt) {
 					if ( preview_cont.length ) {
 						preview_cont.each( function() {
 							var t = $( this ),
-									url = qt.is( attachment.sizes.thumbnail ) ? attachment.sizes.thumbnail.url : attachment.sizes.full.url,
+									url = qt.is( attachment.sizes.full ) ? attachment.sizes.full.url : '',
 									size = qt.is( args.size ) ? args.size : ( ( size = t.attr( 'size' ) ) ? size : 'thumb' )
 									size = size == 'thumb' ? 'thumbnail' : size;
 							// find the appropriate image url
@@ -249,7 +269,7 @@ QS.popMediaBox = (function($, qt) {
 					mode = me.data( 'mode' ) || 'normal',
 					mode = mode.split( /\s*:\s*/ ),
 					allow_blank = me.data( 'allow-blank' ) || false,
-					initial_date = me.data( 'init-date' ),
+					initial_date = me.data( 'init-date' ) || me.val(),
 					d = initial_date ? new Date( initial_date ) : ( allow_blank ? '' : new Date() ),
 					d = new Date( initial_date ),
 					min = me.data( 'min-date' ) || '',
@@ -271,7 +291,7 @@ QS.popMediaBox = (function($, qt) {
 
 			// create a display version above the hidden on
 			var display = $( '<input type="text" />' ).insertBefore( me ).attr( { id:( me.attr( 'id' ) || me.attr( 'name' ) ) + '-display', role:role + '-display' } )
-					.addClass( me.attr( 'class' ).replace( new RegExp( selector.replace( /^\.#/, '' ), 'g' ), '' ) );
+						.addClass( me.attr( 'class' ).replace( new RegExp( selector.replace( /^\.#/, '' ), 'g' ), '' ) );
 			me.data( 'display', display );
 
 			// setup the event that clears the hidden field when the display field is cleared
@@ -307,25 +327,63 @@ QS.popMediaBox = (function($, qt) {
 			switch ( role ) {
 				case 'from':
 					args.onSelect = function( str, obj ) {
-						var d = display.datepicker( 'getDate' ),
-								other = scope.find( '[role="to"]' ).data( 'display' ),
-								other_d = other.length ? other.datepicker( 'getDate' ) : d
+						var d;
+						scope.find( '[role="to"]' ).each( function( ind ) {
+							var other = $( this ).data( 'display' ),
+									other_d = other.length ? other.datepicker( 'getDate' ) : d
 
-						if ( other.length && d && other_d && d.getTime() > other_d.getTime() ) {
-							other.datepicker( 'setDate', d );
-						}
+							d = display.datepicker( 'getDate' );
+
+							if ( other.length && d && other_d && d.getTime() > other_d.getTime() ) {
+								other.datepicker( 'setDate', d );
+							}
+						} );
+
+						var link_with = me.data( 'link-with' ) || false;
+						link_with = link_with ? scope.find( link_with ).add( link_with ) : false;
+						// update all 'link with' datepickers
+						if ( link_with )
+							link_with.each( function() {
+								if ( ! $( this ).hasClass( 'has-datepicker' ) )
+									return;
+								var display = $( this ).data( 'display' );
+								if ( qt.isO( display ) && display.length ) {
+									display.datepicker( 'setDate', d );
+									var on_sel = display.datepicker( 'option', 'onSelect' );
+									if ( qt.isF( on_sel ) )
+										on_sel( d );
+								}
+							} );
 					};
 				break;
 
 				case 'to':
 					args.onSelect = function( str, obj ) {
-						var d = display.datepicker( 'getDate' ),
-								other = scope.find( '[role="from"]' ).data( 'display' ),
-								other_d = other.length ? other.datepicker( 'getDate' ) : d
+						var d;
+						scope.find( '[role="from"]' ).each( function() {
+							var other = $( this ).data( 'display' ),
+									other_d = other.length ? other.datepicker( 'getDate' ) : d
 
-						if ( other.length && d && other_d && d.getTime() < other_d.getTime() ) {
-							other.datepicker( 'setDate', d );
-						}
+							d = display.datepicker( 'getDate' );
+
+							if ( other.length && d && other_d && d.getTime() < other_d.getTime() ) {
+								other.datepicker( 'setDate', d );
+							}
+						} );
+
+						var link_with = me.data( 'link-with' ) || false;
+						link_with = link_with ? scope.find( link_with ).add( link_with ) : false;
+						// update all 'link with' datepickers
+						if ( link_with )
+							link_with.each( function() {
+								if ( ! $( this ).hasClass( 'has-datepicker' ) )
+									return;
+								var display = $( this ).data( 'display' );
+								if ( qt.isO( display ) && display.length ) {
+									display.datepicker( 'setDate', d );
+									display.datepicker( 'option', 'onSelect' )( d );
+								}
+							} );
 					};
 				break;
 			}

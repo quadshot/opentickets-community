@@ -146,7 +146,7 @@ QS.eventAreaTypes['general-admission'] = ( function( $, qs, qt) {
 				if ( ! qt.is( r.s ) || ! r.s ) {
 					true_dialog.qsUnblock();
 					// show any passed errors, or a default error
-					me.ui.dialog_msgs( qt.isA( r.e ) ? r.e : [ qs._str( 'There was a problem adding thos tickets.', me.S ) ], 'error' );
+					me.ui.dialog_msgs( qt.isA( r.e ) ? r.e : [ qs._str( 'There was a problem adding those tickets.', me.S ) ], 'error' );
 					return;
 				}
 
@@ -178,7 +178,7 @@ QS.eventAreaTypes['general-admission'] = ( function( $, qs, qt) {
 				if ( ! qt.is( r.s ) || ! r.s || ! qt.isO( r.data ) || ! qt.isO( r.event ) ) {
 					true_dialog.qsUnblock();
 					// show any passed errors, or a default error
-					me.ui.dialog_msgs( qt.isA( r.e ) ? r.e : [ qs._str( 'There was a problem adding thos tickets.', me.S ) ], 'error' );
+					me.ui.dialog_msgs( qt.isA( r.e ) ? r.e : [ qs._str( 'There was a problem adding those tickets.', me.S ) ], 'error' );
 					return;
 				}
 

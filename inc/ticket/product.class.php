@@ -98,7 +98,8 @@ class QSOT_Ticket_Product {
 		// args used in the get_post() method to find all ticket products
 		$args = array(
 			'post_type' => 'product',
-			'post_status' => 'publish',
+			'post_status' => array( 'publish' ),
+			'perm' => 'readable',
 			'posts_per_page' => -1,
 			'orderby' => 'title',
 			'order' => 'asc',
@@ -111,6 +112,10 @@ class QSOT_Ticket_Product {
 				),
 			),
 		);
+
+		// if the current user can read private posts, then add private post_status
+		if ( current_user_can( 'read_private_posts' ) )
+			$args['post_status'][] = 'private';
 
 		// get the ids of all the ticket products
 		$ids = get_posts( $args );
@@ -136,7 +141,7 @@ class QSOT_Ticket_Product {
 			$ticket->post->meta['price'] = apply_filters('qsot-price-formatted', $ticket->post->meta['price_raw']);
 
 			// shorthand the propername of the ticket, so we dont have to keep doing it
-			$ticket->post->proper_name = $ticket->get_title();
+			$ticket->post->proper_name = apply_filters( 'the_title', $ticket->get_title(), $ticket->id );
 
 			// add the ticket to the indexed return list
 			$tickets[ '' . $ticket->post->ID ] = $ticket;
