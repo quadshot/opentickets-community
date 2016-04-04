@@ -349,7 +349,9 @@ QS.popMediaBox = (function($, qt) {
 								var display = $( this ).data( 'display' );
 								if ( qt.isO( display ) && display.length ) {
 									display.datepicker( 'setDate', d );
-									display.datepicker( 'option', 'onSelect' )( d );
+									var on_sel = display.datepicker( 'option', 'onSelect' );
+									if ( qt.isF( on_sel ) )
+										on_sel( d );
 								}
 							} );
 					};
