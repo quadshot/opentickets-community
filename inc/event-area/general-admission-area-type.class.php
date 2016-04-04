@@ -242,16 +242,19 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		$out = array(
 			'id' => $event->ID,
 			'name' => apply_filters( 'the_title', $event->post_title, $event->ID ),
-			'ticket' => false,
 			'link' => get_permalink( $event->ID ),
 			'parent_link' => get_permalink( $event->post_parent ),
 			'capacity' => $cap,
 			'available' => $left,
-			'ticket' => array(
+			'ticket' => null,
+		);
+
+		// if the ticket type is valid, then add it's information to the output
+		if ( ! is_wp_error( $ticket ) && is_object( $ticket ) && isset( $ticket->id ) )
+			$out['ticket'] = array(
 				'name' => $ticket->get_title(),
 				'price' => apply_filters( 'qsot-price-formatted', $ticket->get_price() ),
-			),
-		);
+			);
 
 		return apply_filters( 'qsot-frontend-event-data', $out, $event );
 	}
@@ -599,7 +602,18 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		if ( ! isset( $data['event_area']->meta, $data['event_area']->meta['_pricing_options'] ) )
 			return new WP_Error( 'invalid_event_area', __( 'Could not find that event.', 'opentickets-community-edition' ) );
 
-		return wc_get_product( $data['event_area']->meta['_pricing_options'] );
+		// get the resulting ticket
+		$result = wc_get_product( $data['event_area']->meta['_pricing_options'] );
+		if ( is_wp_error( $result ) )
+			return $result;
+		if ( ! is_object( $result ) || ! isset( $result->id ) )
+			return new WP_Error( 'invalid_ticket_type', __( 'Could not find the price for this event.', 'opentickets-community-edition' ) );
+
+		// if the current user canread this ticket, return it, otherwise fail
+		if ( 'private' == $result->post->post_status && ! current_user_can( 'read', $result->id ) )
+			return new WP_Error( 'access_denied', __( 'Cannot find the price for this event.', 'opentickets-community-edition' ) );
+
+		return $result;
 	}
 
 	// add the 'data' to each response passed to this function
