@@ -56,7 +56,7 @@ table.settings-table .setting { margin-bottom:5px; }
 
 .cb-wrap { white-space:nowrap; padding-right:0.5em; }
 .cb-wrap input[type="checkbox"],
-.cb-wrap input[type="radio"] { vertical-align:baseline; margin-right:0; }
+.cb-wrap input[type="radio"] { vertical-align:text-bottom; margin-right:2px; }
 .cb-wrap .cb-text { vertical-align:baseline; }
 
 .option-scope .actions { padding-top:8px; text-align:center; }

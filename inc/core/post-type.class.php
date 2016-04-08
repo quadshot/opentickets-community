@@ -55,6 +55,9 @@ class qsot_post_type {
 			// ** I cannot replicate this problem in independent tests, outside wp, but I can reliably get this to happen within.
 			add_action( 'save_post', 'qsot_noop', 998 );
 
+			// action that is used to actually handle the saving of sub-events
+			add_action( 'qsot-save-sub-events', array( __CLASS__, 'handle_save_sub_events' ), 100, 4 );
+
 			// obtain start and end date range based on criteria
 			add_filter('qsot-event-date-range', array(__CLASS__, 'get_date_range'), 100, 2);
 
@@ -1348,7 +1351,16 @@ class qsot_post_type {
 		remove_action( 'wp_insert_post', array( __CLASS__, 'save_sub_events' ), 100 );
 		$data = $_POST;
 
-		$need_lookup = $updates = $matched = array();
+		// expand the json data
+		foreach ( $data['_qsot_event_settings'] as $ind => $item )
+			$data['_qsot_event_settings'][ $ind ] = @json_decode( stripslashes( $item ) );
+
+		do_action( 'qsot-save-sub-events', $post_id, $post, $data, current_user_can( 'publish_posts' ) );
+	}
+
+	// actually does the saving of sub events
+	public static function handle_save_sub_events( $post_id, $post, $data, $can_pub=null ) {
+		$need_lookup = $deletes = $updates = $matched = array();
 		$at_least_one_new = false;
 		// default post_arr to send to wp_insert_post
 		$defs = array(
@@ -1359,13 +1371,14 @@ class qsot_post_type {
 		);
 		$now = time();
 
-		$can_pub = current_user_can( 'publish_posts' );
+		$can_pub = null !== $can_pub ? $can_pub : current_user_can( 'publish_posts' );
 
 		// cycle through all the subevent settings that were sent. some will be new, some will be modified, some will be modified but have lost their post id. determine what each is,
 		// and properly group them for possible later processing
 		foreach ( $data['_qsot_event_settings'] as $item ) {
 			// expand the settings
-			$tmp = @json_decode( stripslashes( $item ) );
+			$tmp = ! is_scalar( $item ) ? $item : @json_decode( stripslashes( $item ) );
+
 			// if the settings are a valid set of settings, then continue with this item
 			if ( is_object( $tmp ) ) {
 				// change the title to be the date, which makes for better permalinks
@@ -1373,47 +1386,53 @@ class qsot_post_type {
 				// if the post_id was passed in with the settings, then we know what subevent post to modify with these settings already. therefore we do not need to match it up to an existing
 				// subevent or create a new subevent. lets throw it directly into the update list for usage later
 				if ( isset( $tmp->post_id ) && is_numeric( $tmp->post_id ) && $tmp->post_id > 0 ) {
-					// load the existing post, so that we can fetch the original author and content
-					$orig = get_post( $tmp->post_id );
+					// if the post is marked as having been deleted, then add it to the deletes list
+					if ( isset( $tmp->deleted ) && is_numeric( $tmp->deleted ) && 1 == $tmp->deleted ) {
+						$deletes[] = $tmp->post_id;
+					// otherwise, add it to the updates list
+					} else {
+						// load the existing post, so that we can fetch the original author and content
+						$orig = get_post( $tmp->post_id );
 
-					// parse the date so that we can use it to make a proper post_title
-					$d = strtotime( $tmp->start );
+						// parse the date so that we can use it to make a proper post_title
+						$d = strtotime( $tmp->start );
 
-					// if the post is set to publish in the future, then adjust the status
-					$pub = strtotime( $tmp->pub_date );
-					if ( $pub > $now ) $tmp->status = 'future';
+						// if the post is set to publish in the future, then adjust the status
+						$pub = strtotime( $tmp->pub_date );
+						if ( $pub > $now ) $tmp->status = 'future';
 
-					// restrict publish to only those who have permissions
-					$tmp->status = 'publish' == $tmp->status && ! $can_pub ? 'pending' : $tmp->status;
+						// restrict publish to only those who have permissions
+						$tmp->status = 'publish' == $tmp->status && ! $can_pub ? 'pending' : $tmp->status;
 
-					// add the settings to the list of posts to update
-					$update_item = array(
-						'post_arr' => wp_parse_args( array(
-							// be sure to set the id of the post to update, otherwise we get a completely new post
-							'ID' => $tmp->post_id,
-							// use the title from the parent event. later, during display, the date and time will be added to the title if needed
-							'post_title' => $post->post_title,
-							// set the post status of the event
-							'post_status' => in_array( $tmp->visibility, array( 'public', 'protected' ) ) ? $tmp->status : $tmp->visibility,
-							// protected events have passwords
-							'post_password' => 'protected' == $tmp->visibility ? $tmp->password : '',
-							// use that normalized title we made earlier, as to create a pretty url
-							'post_name' => $orig->post_name, //$tmp->title,
-							'post_date' => $tmp->pub_date == '' || $tmp->pub_date == 'now' ? '' : date_i18n( 'Y-m-d H:i:s', strtotime( $tmp->pub_date ) ),
-							// use the original author and content, so that they are not overridden
-							'post_content' => $orig->post_content,
-							'post_author' => $orig->post_author,
-						), $defs),
-						'meta' => array( // setup the meta to save
-							self::$o->{'meta_key.capacity'} => $tmp->capacity, // max occupants
-							self::$o->{'meta_key.end'} => $tmp->end, // end time, for lookup and display purposes later
-							self::$o->{'meta_key.start'} => $tmp->start, // start time for lookup and display purposes later
-							self::$o->{'meta_key.purchase_limit'} => $tmp->purchase_limit, // the specific child event purchase limit
-						),
-						'submitted' => $tmp,
-					);
-					$updates[] = $update_item;
-					$matched[] = $tmp->post_id; // track the post_ids we have matched up to settings. will use later to determine subevents to delete
+						// add the settings to the list of posts to update
+						$update_item = array(
+							'post_arr' => wp_parse_args( array(
+								// be sure to set the id of the post to update, otherwise we get a completely new post
+								'ID' => $tmp->post_id,
+								// use the title from the parent event. later, during display, the date and time will be added to the title if needed
+								'post_title' => $post->post_title,
+								// set the post status of the event
+								'post_status' => in_array( $tmp->visibility, array( 'public', 'protected' ) ) ? $tmp->status : $tmp->visibility,
+								// protected events have passwords
+								'post_password' => 'protected' == $tmp->visibility ? $tmp->password : '',
+								// use that normalized title we made earlier, as to create a pretty url
+								'post_name' => $orig->post_name, //$tmp->title,
+								'post_date' => $tmp->pub_date == '' || $tmp->pub_date == 'now' ? '' : date_i18n( 'Y-m-d H:i:s', strtotime( $tmp->pub_date ) ),
+								// use the original author and content, so that they are not overridden
+								'post_content' => $orig->post_content,
+								'post_author' => $orig->post_author,
+							), $defs),
+							'meta' => array( // setup the meta to save
+								self::$o->{'meta_key.capacity'} => $tmp->capacity, // max occupants
+								self::$o->{'meta_key.end'} => $tmp->end, // end time, for lookup and display purposes later
+								self::$o->{'meta_key.start'} => $tmp->start, // start time for lookup and display purposes later
+								self::$o->{'meta_key.purchase_limit'} => $tmp->purchase_limit, // the specific child event purchase limit
+							),
+							'submitted' => $tmp,
+						);
+						$updates[] = $update_item;
+						$matched[] = $tmp->post_id; // track the post_ids we have matched up to settings. will use later to determine subevents to delete
+					}
 				// if no post id was passed, then we need to attempt to match this item up to an existing subevent
 				} else {
 					// add this item to the needs lookup list
@@ -1517,6 +1536,8 @@ class qsot_post_type {
 							'post_password' => 'protected' == $item->visibility ? $item->password : '',
 							// set the appropriate publish date
 							'post_date' => $item->pub_date == '' || $item->pub_date == 'now' ? '' : date_i18n( 'Y-m-d H:i:s', strtotime( $item->pub_date ) ),
+							// use the same post_author as the parent post
+							'post_author' => $post->post_author,
 						), $defs ),
 						'meta' => array( // set meta
 							self::$o->{'meta_key.capacity'} => $item->capacity, // occupant copacity
@@ -1539,19 +1560,28 @@ class qsot_post_type {
 				'post_parent' => $post_id, // and a child of the current event
 				'post_status' => 'any', // can be of any status, even our special ones
 				'posts_per_page' => -1, // fetch a comprehensive list
+				'fields' => 'ids', // return only a list of ids
 			);
 
 			// only fetch the unmatched ones
 			if ( ! empty( $matched ) )
 				$args['post__not_in'] = $matched;
 
-			// get the list
-			$delete = get_posts( $args );
+			// get the list of unmatched items, which are to be deleted
+			$additional_deletes = get_posts( $args );
 
+			// add each found item to the official deletes list
+			foreach ( $additional_deletes as $delete )
+				$deletes[] = $delete;
+		}
+
+		$deletes = array_filter( array_unique( $deletes ) );
+		// if there are any posts in the list designated for deletion, then delete them now
+		if ( ! empty( $deletes ) && is_array( $deletes ) ) {
 			// delete all posts in the list
-			if ( is_array( $delete ) )
-				foreach ( $delete as $del )
-					wp_delete_post( $del->ID, true );
+			foreach ( $deletes as $del_id )
+				if ( current_user_can( 'delete_post', $del_id ) && apply_filters( 'qsot-event-can-be-deleted', true, $del_id ) )
+					wp_delete_post( $del_id, true );
 		}
 
 		// for every item in the update list, either update or create a subevent
