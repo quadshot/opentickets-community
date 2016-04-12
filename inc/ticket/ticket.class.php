@@ -34,10 +34,6 @@ class QSOT_tickets {
 			self::_setup_admin_options();
 		}
 
-		// hide errors as soon as possible, if we are transmitting a pdf
-		if ( isset( $_GET['frmt'] ) && 'pdf' == $_GET['frmt'] )
-			self::_hide_errors();
-
 		// setup the db tables for the ticket code lookup
 		// we offload this to a different table so that we can index the ticket codes for lookup speed
 		self::setup_table_names();
@@ -565,12 +561,12 @@ class QSOT_tickets {
 		$_GET = wp_parse_args( $_GET, array( 'frmt' => 'html' ) );
 		// do something different depending on the requested format
 		switch ( $_GET['frmt'] ) {
-			case 'pdf':
-				$title = $ticket->product->get_title() . ' (' . $ticket->product->get_price() . ')';
-				$filename = apply_filters( 'qsot-order-tickets-pdf-filename', sanitize_title_with_dashes( 'ticket-' . $title ) . '.pdf', $title, $tickets, $template, $stylesheet, $branding_image_ids );
-				QSOT_pdf::from_html( $out, $filename );
-			break;
-			default: echo $out; break;
+			default: echo apply_filters( 'qsot-display-order-tickets-output-' . $_GET['frmt'] . '-format', $out, $order_key, array(
+				'tickets' => $tickets,
+				'template' => $template,
+				'stylesheet' => $stylesheet,
+				'page_title' => $page_title,
+			), $order ); break;
 		}
 
 		self::_restore_errors();
@@ -668,12 +664,13 @@ class QSOT_tickets {
 		$_GET = wp_parse_args( $_GET, array( 'frmt' => 'html' ) );
 		// do something different depending on the requested format
 		switch ( $_GET['frmt'] ) {
-			case 'pdf':
-				$title = $ticket->product->get_title() . ' (' . $ticket->product->get_price() . ')';
-				$filename = apply_filters( 'qsot-ticket-pdf-filename', sanitize_title_with_dashes( 'ticket-' . $title ) . '.pdf', $title, $ticket, $template, $stylesheet );
-				QSOT_pdf::from_html( $out, $filename );
-			break;
 			default: echo $out; break;
+			default: echo apply_filters( 'qsot-display-ticket-output-' . $_GET['frmt'] . '-format', $out, $code, array(
+				'ticket' => $ticket,
+				'template' => $template,
+				'stylesheet' => $stylesheet,
+				'page_title' => $page_title,
+			) ); break;
 		}
 
 		self::_restore_errors();
@@ -694,11 +691,11 @@ class QSOT_tickets {
 		return wp_parse_args( $base, array(
 			'branding_image_ids' => $branding_image_ids,
 			'brand_imgs' => $brand_imgs,
-			'pdf' => ( isset( $_GET['frmt'] ) && 'pdf' == strtolower( $_GET['frmt'] ) ),
+			'pdf' => apply_filters( 'qsot-is-pdf-ticket', false ), // maintaining for backwards compatibility
 		) );
 	}
 
-	// generate the HTML for the ticket, and return it. do this because it may be output directly, or may be thrown into a pdf for export
+	// generate the HTML for the ticket, and return it. do this because it may be output directly
 	protected static function _get_ticket_html( $args ) {
 		// extract the template name and stylesheet
 		$template = $args['template'];

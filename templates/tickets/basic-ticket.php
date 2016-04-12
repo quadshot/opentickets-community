@@ -22,8 +22,6 @@
 	<body <?php echo ( $pdf ) ? 'class="pdf"' : '' ?>>
 		<div class="page-wrap">
 
-			<?php QSOT_Templates::include_template( 'tickets/ticket/actions.php', $args ) ?>
-
 			<?php QSOT_Templates::include_template( 'tickets/ticket/ticket.php', $args ) ?>
 
 			<?php

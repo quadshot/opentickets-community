@@ -190,9 +190,6 @@ class QSOT_checkin {
 		// determine the quantity of the tickets that were purchased for this item
 		$qty = isset( $item['qty'] ) ? $item['qty'] : 1;
 
-		// is PDF the format we are generating?
-		$is_pdf = isset( $_GET['frmt'] ) && 'pdf' == $_GET['frmt'];
-
 		// find all the codes that are to be encoded in the qr codes
 		$codes = apply_filters( 'qsot-get-ticket-qr-data', array(), array(
 			'order_id' => $ticket->order->id,
@@ -206,7 +203,7 @@ class QSOT_checkin {
 
 		for ( $i = 0; $i < count( $codes ); $i++ ) {
 			// get the url, width and height to use for the image tag
-			@list( $url, $width, $height ) = self::qr_img_url( $codes[ $i ], $is_pdf );
+			@list( $url, $width, $height ) = self::qr_img_url( $codes[ $i ] );
 
 			// create the image url
 			$atts = array( 'src' => $url, 'alt' => $ticket->product->get_title() . ' (' . $ticket->product->get_price() . ')' );
@@ -227,14 +224,14 @@ class QSOT_checkin {
 
 		if ( ! WP_DEBUG )
 			unset( $ticket->qr_data_debugs, $ticket->qr_data_debug );
-		else if ( ! $is_pdf && isset( $ticket->qr_data_debugs ) && defined( 'WP_DEBUG_TICKETS' ) && WP_DEBUG_TICKETS )
+		else if ( isset( $ticket->qr_data_debugs ) && defined( 'WP_DEBUG_TICKETS' ) && WP_DEBUG_TICKETS )
 			var_dump( $ticket->qr_data_debugs );
 
 		return $ticket;
 	}
 
 	// get the qr image url
-	public static function qr_img_url( $code, $is_pdf=false ) {
+	public static function qr_img_url( $code ) {
 		static $su = false;
 		// cache the site url, used for qr code validation in phpqrcode lib
 		if ( false === $su )
@@ -243,34 +240,33 @@ class QSOT_checkin {
 		$url = '';
 		$width = null;
 		$height = null;
+		$using_phpqrcode = defined( 'QSOT_USE_PHPQRCODE' ) && QSOT_USE_PHPQRCODE;
 
 		// PHPQRCODE lib section. obsolete in favor of google charts. still configurable for use with constant.... for now
-		if ( defined( 'QSOT_USE_PHPQRCODE' ) && QSOT_USE_PHPQRCODE ) {
-			// if this is not a pdf request, then return an http(s) based url
-			if ( ! $is_pdf ) {
-				// pack the data into something we can pass to the lib
-				$data = array( 'd' => $code, 'p' => $su );
-				ksort( $data );
-				$data['sig'] = sha1( NONCE_KEY . @json_encode( $data ) . NONCE_SALT );
-				$data = @json_encode( $data );
+		if ( $using_phpqrcode ) {
+			// pack the data into something we can pass to the lib
+			$data = array( 'd' => $code, 'p' => $su );
+			ksort( $data );
+			$data['sig'] = sha1( NONCE_KEY . @json_encode( $data ) . NONCE_SALT );
+			$data = @json_encode( $data );
 
-				// create the url
-				$url = add_query_arg( array( 'd' => str_replace( array( '+', '=', '/' ), array( '-', '_', '~' ), base64_encode( strrev( $data ) ) ) ), self::$o->core_url . 'libs/phpqrcode/index.php' );
-			} else {
-				@list( $url, $width, $height ) = self::_qr_img( $code );
-			}
+			// create the url
+			$url = add_query_arg( array( 'd' => str_replace( array( '+', '=', '/' ), array( '-', '_', '~' ), base64_encode( strrev( $data ) ) ) ), self::$o->core_url . 'libs/phpqrcode/index.php' );
 		// default is to use google apis
 		} else {
 			$width = $height = 185;
-			$args = array(
+			$data = array(
 				'cht' => 'qr',
 				'chld' => 'L|1',
 				'choe' => 'UTF-8',
 				'chs' => $width . 'x' . $height,
 				'chl' => rawurlencode( $code ),
 			);
-			$url = add_query_arg( $args, 'https://chart.googleapis.com/chart' );
+			$url = add_query_arg( $data, 'https://chart.googleapis.com/chart' );
 		}
+
+		// add a filter for modification of url (like base64 encodeing or external domain or something
+		$url = apply_filters( 'qsot-qr-img-url', $url, $code, $data, $using_phpqrcode );
 
 		return array( $url, $width, $height );
 	}
