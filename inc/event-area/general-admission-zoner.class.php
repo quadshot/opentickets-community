@@ -503,8 +503,21 @@ class QSOT_General_Admission_Zoner extends QSOT_Base_Event_Area_Zoner {
 				'before' => $row->since . '.' . $row->mille,
 			) ); 
 
-			// figure out the the absolute maximum number that the user can reserve
+			// figure out the the absolute maximum number that the user can reserve, based solely on the previous purchases prior to this record
 			$data['quantity'] = min( $capacity > 0 ? $capacity - $total_before_record : $data['quantity'], $data['quantity'] );
+
+			// tally all records for this event that this user owns
+			$total_before_record = $this->find( array(
+				'event_id' => $args['event_id'],
+				'customer_id' => $args['customer_id'],
+				'order_id' => $args['order_id'],
+				'state' => '*',
+				'fields' => 'total',
+			) );
+
+			// figure out the the absolute maximum number that the user can reserve, based on previous absolute maximum calcs, and factoring in their own previous reservations for this event in this transation
+			// this is needed because GAMP allows multiple different types of tickets to be purchased by the same user on the same transaction
+			$data['quantity'] = min( $capacity > 0 ? $capacity - $total_before_record + $row->quantity : $data['quantity'], $data['quantity'] );
 		}
 
 		global $wpdb;
