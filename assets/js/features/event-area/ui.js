@@ -19,6 +19,8 @@ QS.EATicketSelection = (function($, q, qt) {
 			dataType: 'json',
 			success: function(r) {
 				if (qt.isO(r)) {
+					if ( 'undefined' != typeof r._nn )
+						S.nonce = r._nn;
 					if (typeof r.e != 'undefined') console.log('ajax error: ', r.e);
 					func(r);
 				} else { efunc( r ); }

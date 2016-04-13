@@ -61,14 +61,14 @@ class QSOT_Ajax {
 	public function handle_request() {
 		// figure out if there is an sa in the request. if not, bail
 		if ( ! ( $sa = $_REQUEST['sa'] ) || ! isset( $this->by_sa[ $sa ] ) )
-			//die(var_dump(1, $sa, $this->by_sa));
-			return;
+			die(var_dump(1, $sa, $this->by_sa));
+			//return;
 
 		$action = str_replace( 'wp_ajax_', '', str_replace( 'wp_ajax_nopriv_', '', current_action() ) );
 		// make sure there is an nonce present that matches. the frist level basic security
 		if ( ! isset( $_REQUEST['_n'] ) || ! wp_verify_nonce( $_REQUEST['_n'], 'do-' . $action ) )
-			//die(var_dump(2, $action, wp_create_nonce( 'do-' . $action ), $_REQUEST));
-			return;
+			die(var_dump(2, $action, wp_create_nonce( 'do-' . $action ), $_REQUEST));
+			//return;
 
 		$event = false;
 		// if there was an event_id supplied, then load the event now, and it's event area
@@ -108,6 +108,10 @@ class QSOT_Ajax {
 		// if we did not run any handlers, then fail no matter what
 		if ( ! $ran_one )
 			$out['s'] = false;
+		// otherwise, if we ran at least one function, check and see if we need to update the NONCE for the next request.
+		// this is needed because WooCommerce messes with the NONCE value when a user changes state from anonymous guest, to anonymous customer
+		else if ( ( $new_nonce = wp_create_nonce( 'do-' . $action ) ) && $new_nonce !== $_REQUEST['_n'] )
+			$out['_nn'] = $new_nonce;
 
 		// if there are no error messages, just remove the key from the response
 		if ( empty( $out['e'] ) )
