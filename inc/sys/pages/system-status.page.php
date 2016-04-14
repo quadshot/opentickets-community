@@ -117,18 +117,6 @@ class QSOT_system_status_page extends QSOT_base_page {
 				),
 			)
 		);
-		$this->register_tool(
-			'RmTFC',
-			array(
-				'name' => __( 'Remove Ticket File Cache', 'opentickets-community-edition' ),
-				'description' => __( 'All non-local assets used to create tickets (like external images [google map] and css [custom tickets]) are cached locally. This will remove that cache, forcing all assets to be recached.', 'opentickets-community-edition' ),
-				'function' => array( &$this, 'tool_RmTFC' ),
-				'messages' => array(
-					'removed-ticket-asset-cache' => $this->_updatedw( __( 'Removed all the locally cached Ticket assets. Every external asset will now be recached.', 'opentickets-community-edition' ) ),
-					'failed-ticket-asset-cache' => $this->_errorw( __( 'Removed all the locally cached Ticket assets. Every external asset will now be recached.', 'opentickets-community-edition' ) ),
-				),
-			)
-		);
 	}
 
 	// generic wrappers for admin messages
@@ -929,23 +917,6 @@ class QSOT_system_status_page extends QSOT_base_page {
 			$result[1]['performed'] = 'removed-db-table-versions';
 			$result[0] = true;
 		}
-		return $result;
-	}
-
-	// handle the 'remove all cached pdf assets' request
-	public function tool_RmTFC( $result, $args ) {
-		if ( $this->_verify_action_nonce( 'RmTFC' ) ) {
-			$path = QSOT_cache_helper::create_find_cache_dir();
-			try {
-				self::_empty_dir( $path );
-				$result[1]['performed'] = 'removed-ticket-asset-cache';
-				$result[0] = true;
-			} catch ( Exception $e ) {
-				$result[1]['performed'] = 'failed-ticket-asset-cache';
-				$result[0] = true;
-			}
-		}
-
 		return $result;
 	}
 

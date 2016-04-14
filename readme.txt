@@ -171,6 +171,11 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.2.7 - TBD =
+* [DEPRECATE] removed PDF library. all modern browsers/os combos support this natively now
+* [tweak] minor js tweaks for extension compatibility
+* [fix] repaired ajax bug during ticket selection, caused by WC session update, and it's effects on the nonce values
+
 = 2.2.6 - Mar/31/2016 =
 * [new] private tickets now follow core wordpress 'private post' logic
 * [translation] udpated german translation
