@@ -61,14 +61,14 @@ class QSOT_Ajax {
 	public function handle_request() {
 		// figure out if there is an sa in the request. if not, bail
 		if ( ! ( $sa = $_REQUEST['sa'] ) || ! isset( $this->by_sa[ $sa ] ) )
-			die(var_dump(1, $sa, $this->by_sa));
-			//return;
+			//die(var_dump(1, $sa, $this->by_sa));
+			return;
 
 		$action = str_replace( 'wp_ajax_', '', str_replace( 'wp_ajax_nopriv_', '', current_action() ) );
 		// make sure there is an nonce present that matches. the frist level basic security
 		if ( ! isset( $_REQUEST['_n'] ) || ! wp_verify_nonce( $_REQUEST['_n'], 'do-' . $action ) )
-			die(var_dump(2, $action, wp_create_nonce( 'do-' . $action ), $_REQUEST));
-			//return;
+			//die(var_dump(2, $action, wp_create_nonce( 'do-' . $action ), $_REQUEST));
+			return;
 
 		$event = false;
 		// if there was an event_id supplied, then load the event now, and it's event area
