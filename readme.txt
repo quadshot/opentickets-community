@@ -171,13 +171,22 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
-= 2.2.5.4 - Mar/31/2016 =
+= 2.3.0 - 04/15/2016 =
+* [DEPRECATE] removed PDF library. all modern browsers/os combos support this natively now
+* [tweak] minor js tweaks for extension compatibility
+* [fix] repaired ajax bug during ticket selection, caused by WC session update, and it's effects on the nonce values
+* [fix] logic tweak to prevent potential edge case GAMP reservation issues
+
+= 2.2.6 - Mar/31/2016 =
 * [new] private tickets now follow core wordpress 'private post' logic
+* [translation] udpated german translation
 * [tweak] changed default QR Code generator from phpqrcode library to google apis
 * [tweak] added code to help phpqrcode find the wp-config file more easily
 * [tweak] moved DOMPDF cache to uploads dir, since that is more likely writable than the plugin dir
+* [tweak] changed styling of modals to be sized correctly
 * [fix] repaired edgecase overbook bug when using GAMP extension
 * [fix] repaired admin ticket selection on GA events
+* [fix] repaired i18n datepicker bug
 
 = 2.2.5 - Mar/23/2016 =
 * [tweak] cleaned up the event repetition interface so that it is more userfriendly now

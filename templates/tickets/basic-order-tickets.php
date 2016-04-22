@@ -25,8 +25,6 @@ $venues = array();
 	<body <?php echo ( $pdf ) ? 'class="pdf"' : '' ?>>
 		<div class="page-wrap">
 
-			<?php QSOT_Templates::include_template( 'tickets/ticket/actions.php', $args ) ?>
-
 			<?php
 				foreach ( $tickets as $ticket ):
 					$venues[ $ticket->venue->ID ] = $ticket->venue;

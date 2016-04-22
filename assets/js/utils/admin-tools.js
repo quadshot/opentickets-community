@@ -39,7 +39,7 @@ var QS = QS || { Tools:{} };
 							}
 							if ( me.data( 'extra' ) ) {
 								var extra = me.data( 'extra' );
-								if ( qt.isO( 'extra' ) )
+								if ( qt.isO( extra ) )
 									data = $.extend( data, extra );
 							}
 							return data;
