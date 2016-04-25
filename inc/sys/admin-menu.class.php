@@ -355,33 +355,44 @@ class qsot_admin_menu {
 
 	public static function send_all_stats() {
 		$fields = array(
-			__('Title','opentickets-community-edition'),
-			__('Author','opentickets-community-edition'),
-			__('Author Name','opentickets-community-edition'),
-			__('Author URI','opentickets-community-edition'),
-			__('Description','opentickets-community-edition'),
-			__('Version','opentickets-community-edition'),
-			__('Status','opentickets-community-edition'),
-			__('Template','opentickets-community-edition'),
-			__('Stylesheet','opentickets-community-edition'),
-			__('Template Files','opentickets-community-edition'),
-			__('Stylesheet Files','opentickets-community-edition'),
-			__('Template Dir','opentickets-community-edition'),
-			__('Stylesheet Dir','opentickets-community-edition'),
-			__('Screenshot','opentickets-community-edition'),
-			__('Tags','opentickets-community-edition'),
-			__('Theme Root','opentickets-community-edition'),
-			__('Theme Root URI','opentickets-community-edition'),
-			__('Parent Theme','opentickets-community-edition')
+			'Title',
+			'Author',
+			'Author Name',
+			'Author URI',
+			'Description',
+			'Version',
+			'Status',
+			'Template',
+			'Stylesheet',
+			'Template Files',
+			'Stylesheet Files',
+			'Template Dir',
+			'Stylesheet Dir',
+			'Screenshot',
+			'Tags',
+			'Theme Root',
+			'Theme Root URI',
+			'Parent Theme'
 		);
-		$only_keys = array(__('Template Files','opentickets-community-edition') => 1, __('Stylesheet Files','opentickets-community-edition') => 1);
+		$only_keys = array(
+			'Template Files' => 1,
+			'Stylesheet Files' => 1
+		);
 		$current_theme = wp_get_theme();
 		$current_theme_title = $current_theme->offsetGet('Title');
 		$raw_themes = wp_get_themes();
 		$themes = array();
-		foreach ($raw_themes as $theme) {
+		// get all theme data for all themes
+		foreach ( $raw_themes as $theme ) {
 			$trecord = array();
-			foreach ($fields as $field) $trecord[$field] = isset($only_keys[$field]) ? array_keys($theme->offsetGet($field)) : $theme->offsetGet($field);
+			// cycle through the fields we want to capture
+			foreach ( $fields as $field ) {
+				// find this theme's value or the given field
+				$theme_offset = $theme->offsetGet( $field );
+
+				// normalize that value into something meaningful
+				$trecord[$field] = isset( $only_keys[ $field ] ) && is_array( $theme_offset ) ? array_keys( $theme_offset ) : $theme_offset;
+			}
 			$trecord['!!ACTIVE!!'] = (int)($theme->offsetGet('Title') == $current_theme_title);
 			$themes[$trecord['Title']] = $trecord;
 		}
