@@ -176,6 +176,11 @@ abstract class QSOT_Base_Event_Area_Type {
 		);
 	}
 
+	// method to fetch the capacity of the event area
+	public function get_capacity( $area, $type='total' ) {
+		return $area->_capacity;
+	}
+
 	// the function that returns the object that controls the reservations for this event area type
 	abstract public function get_zoner();
 

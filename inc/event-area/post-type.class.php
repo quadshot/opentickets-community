@@ -136,6 +136,7 @@ class QSOT_Post_Type_Event_Area {
 
 		// tools
 		add_filter( 'qsot-count-tickets', array( &$this, 'count_tickets' ), 1000, 2 );
+		add_filter( 'qsot-get-event-capacity', array( &$this, 'get_event_capacity' ), 100, 3 );
 
 		// when in the admin, add some more actions and filters
 		if ( is_admin() ) {
@@ -307,20 +308,42 @@ class QSOT_Post_Type_Event_Area {
 
 	// add the values for the custom columns we have
 	public function add_custom_event_area_column_values( $column_name, $post_id ) {
-		// get the area_type slug of the post
-		$name = get_post_meta( $post_id, '_qsot-event-area-type', true );
+		switch ( $column_name ) {
+			case 'area_type':
+				// get the area_type slug of the post
+				$name = get_post_meta( $post_id, '_qsot-event-area-type', true );
 
-		// if there is a registered area_type with that slug, then use the proper name from that area type instead
-		if ( is_scalar( $name ) && '' !== $name && isset( $this->area_types[ $name ] ) )
-			$name = $this->area_types[ $name ]->get_name();
-		else
-			$name = sprintf( __( '[%s]', 'opentickets-community-edition' ), $name );
+				// if there is a registered area_type with that slug, then use the proper name from that area type instead
+				if ( is_scalar( $name ) && '' !== $name && isset( $this->area_types[ $name ] ) )
+					$name = $this->area_types[ $name ]->get_name();
+				else
+					$name = sprintf( __( '[%s]', 'opentickets-community-edition' ), $name );
 
-		echo force_balance_tags( $name );
+				echo force_balance_tags( $name );
+			break;
+		}
+	}
+
+	// get the event capacity of the specified event or event area 'qsot-get-event-capacity' 
+	public function get_event_capacity( $capacity, $event, $type='total' ) {
+		// normalize the event
+		$event = ! ( $event instanceof WP_Post ) ? get_post( $event ) : $event;
+
+		// find the event area, because that is where the capacity is actually stored
+		$event_area = 'qsot-event-area' == $event->post_type
+				? apply_filters( 'qsot-get-event-area', $event, $event )
+				: ( is_object( $event ) && isset( $event->event_area ) && is_object( $event->event_area ) ? $event->event_area : apply_filters( 'qsot-event-area-for-event', null, $event ) );
+
+		// if there is an event area, then use it to find the capacity
+		if ( ( $event_area instanceof WP_Post ) && is_object( $event_area->area_type ) && ! is_wp_error( $event_area->area_type ) ) {
+			$capacity = $event_area->area_type->get_capacity( $event_area, $type );
+		}
+
+		return $capacity;
 	}
 
 	// count the total number of tickets in the ticket table, based on some supplied args
-	public static function count_tickets( $current, $args='' ) {
+	public function count_tickets( $current, $args='' ) {
 		// normalize the args
 		$args = wp_parse_args( $args, array(
 			'state' => '*',

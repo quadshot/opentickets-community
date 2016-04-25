@@ -207,8 +207,9 @@ class QSOT_General_Admission_Zoner extends QSOT_Base_Event_Area_Zoner {
 		}
 
 		// determine the capacity for the event
-		$ea_id = get_post_meta( $args['event_id'], '_event_area_id', true );
-		$capacity = $ea_id > 0 ? get_post_meta( $ea_id, '_capacity', true ) : 0;
+		$capacity = apply_filters( 'qsot-get-event-capacity', 0, $args['event_id'] );
+		//$ea_id = get_post_meta( $args['event_id'], '_event_area_id', true );
+		//$capacity = $ea_id > 0 ? get_post_meta( $ea_id, '_capacity', true ) : 0;
 
 		// tally all records for this event before this lock.
 		$total_before_lock = $this->find( array(
@@ -492,8 +493,9 @@ class QSOT_General_Admission_Zoner extends QSOT_Base_Event_Area_Zoner {
 			}
 
 			// determine the capacity for the event
-			$ea_id = get_post_meta( $args['event_id'], '_event_area_id', true );
-			$capacity = $ea_id > 0 ? get_post_meta( $ea_id, '_capacity', true ) : 0;
+			$capacity = apply_filters( 'qsot-get-event-capacity', 0, $args['event_id'] );
+			//$ea_id = get_post_meta( $args['event_id'], '_event_area_id', true );
+			//$capacity = $ea_id > 0 ? get_post_meta( $ea_id, '_capacity', true ) : 0;
 
 			// tally all records for this event before this record
 			$total_before_record = $this->find( array(
@@ -552,7 +554,9 @@ class QSOT_General_Admission_Zoner extends QSOT_Base_Event_Area_Zoner {
 
 		// otherwise, calculate and store it
 		// start by grabbing the capacity
-		$capacity = intval( isset( $event_area->meta['_capacity'] ) ? $event_area->meta['_capacity'] : 0 );
+		//$capacity = intval( isset( $event_area->meta['_capacity'] ) ? $event_area->meta['_capacity'] : 0 );
+		$event->event_area = $event_area;
+		$capacity = apply_filters( 'qsot-get-event-capacity', 0, $event );
 
 		// if there is no capacity, then there is an infinite number of tickets left, which we will cap at 1000000 at a time
 		if ( $capacity <= 0 )

@@ -235,7 +235,8 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		$reserved_or_confirmed = $zoner->find( array( 'fields' => 'total', 'state' => array( $stati['r'][0], $stati['c'][0] ), 'event_id' => $event->ID ) );
 
 		// figure out how many that leaves for the picking
-		$cap = isset( $event->event_area->meta, $event->event_area->meta['_capacity'] ) ? $event->event_area->meta['_capacity'] : 0;
+		//$cap = isset( $event->event_area->meta, $event->event_area->meta['_capacity'] ) ? $event->event_area->meta['_capacity'] : 0;
+		$cap = apply_filters( 'qsot-get-event-capacity', 0, $event );
 		$left = $cap > 0 ? max( 0, $cap - $reserved_or_confirmed ) : 1000000;
 
 		// start putting together the results
@@ -646,7 +647,8 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 			$reserved_or_confirmed = $zoner->find( array( 'fields' => 'total', 'event_id' => $event->ID ) );
 
 			// calculate how many are left
-			$capacity = isset( $event_area->meta, $event_area->meta['_capacity'] ) ? $event_area->meta['_capacity'] : 0;
+			$event->event_area = $event_area;
+			$capacity = apply_filters( 'qsot-get-event-capacity', 0, $event );
 			$left = max( 0, $capacity - $reserved_or_confirmed );
 
 			// update the response
