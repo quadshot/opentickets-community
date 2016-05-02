@@ -1579,9 +1579,13 @@ class qsot_post_type {
 		// if there are any posts in the list designated for deletion, then delete them now
 		if ( ! empty( $deletes ) && is_array( $deletes ) ) {
 			// delete all posts in the list
-			foreach ( $deletes as $del_id )
-				if ( current_user_can( 'delete_post', $del_id ) && apply_filters( 'qsot-event-can-be-deleted', true, $del_id ) )
+			foreach ( $deletes as $del_id ) {
+				if ( current_user_can( 'delete_post', $del_id ) && apply_filters( 'qsot-event-can-be-deleted', true, $del_id ) ) {
 					wp_delete_post( $del_id, true );
+
+					do_action( 'qsot-events-delete-sub-event', $del_id );
+				}
+			}
 		}
 
 		// for every item in the update list, either update or create a subevent
