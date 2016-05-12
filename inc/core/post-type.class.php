@@ -1145,39 +1145,61 @@ class qsot_post_type {
 
 		$earliest = PHP_INT_MAX;
 		// foreach sub event we found, do some stuff
-		foreach ($events as $event) {
+		foreach ( $events as $event ) {
 			// load the meta, and reduce the list to only the first value for each piece of meta (since there is rarely any duplicates)
-			$meta = get_post_meta($event->ID);
-			foreach ($meta as $k => $v) $meta[$k] = array_shift($v);
-			// determine the start date for the item. default to the _start meta value, and fallback on the post slug (super bad if this ever gets used. mainly for recovery purposes)
-			$start = isset($meta[self::$o->{'meta_key.start'}])
-					? $meta[self::$o->{'meta_key.start'}]
-					: date('Y-m-d H:i:s', strtotime(preg_replace('#(\d{4}-\d{2}-\d{2})_(\d{1,2})-(\d{2})((a|p)m)#', '\1 \2:\3\4', $event->post_name)));
-			$start = date('Y-m-d\TH:i:sP', strtotime($start));
-			$earliest = min(strtotime($start), $earliest);
-			$end = isset($meta[self::$o->{'meta_key.end'}])
-					? $meta[self::$o->{'meta_key.end'}]
-					: date('Y-m-d H:i:s', strtotime('+1 hour', $start));
-			$end = date('Y-m-d\TH:i:sP', strtotime($end));
+			$meta = get_post_meta( $event->ID );
+			foreach ( $meta as $k => $v )
+				$meta[ $k ] = array_shift( $v );
+
+			// determine the start & end date for the item. default to the _start meta value, and fallback on the post slug (super bad if this ever gets used. mainly for recovery purposes)
+			$start = isset( $meta[ self::$o->{'meta_key.start'} ] )
+					? $meta[ self::$o->{'meta_key.start'} ]
+					: date( 'Y-m-d H:i:s', strtotime( preg_replace( '#(\d{4}-\d{2}-\d{2})_(\d{1,2})-(\d{2})((a|p)m)#', '\1 \2:\3\4', $event->post_name ) ) );
+			$start = self::_to_c( $start );
+			$earliest = min( strtotime( $start ), $earliest );
+			$end = isset( $meta[ self::$o->{'meta_key.end'} ] )
+					? $meta[ self::$o->{'meta_key.end'} ]
+					: date( 'Y-m-d H:i:s', strtotime( '+1 hour', $start ) );
+			$end = self::_to_c( $end );
+
 			// add an item to the list, by transposing the loaded settings for this sub event over the list of default settings, and then allowing sub/external plugins to modify them
 			// to add their own settings for the interface.
-			$list[] = apply_filters('qsot-load-child-event-settings', wp_parse_args(array(
+			$list[] = apply_filters( 'qsot-load-child-event-settings', wp_parse_args( array(
 				'start' => $start,
 				'status' => in_array( $event->post_status, array( 'hidden', 'private' ) ) ? 'publish' : $event->post_status,
 				'visibility' => in_array( $event->post_status, array( 'hidden', 'private' ) ) ? $event->post_status : ( $event->post_password ? 'protected' : 'public' ),
 				'password' => $event->post_password,
 				'pub_date' => $event->post_date,
-				'capacity' => isset($meta[self::$o->{'meta_key.capacity'}]) ? $meta[self::$o->{'meta_key.capacity'}] : 0,
+				'capacity' => isset( $meta[ self::$o->{'meta_key.capacity'} ] ) ? $meta[ self::$o->{'meta_key.capacity'} ] : 0,
 				'end' => $end,
 				'post_id' => $event->ID,
-				'edit_link' => get_edit_post_link($event->ID),
-				'view_link' => get_permalink($event->ID),
+				'edit_link' => get_edit_post_link( $event->ID ),
+				'view_link' => get_permalink( $event->ID ),
 				'purchase_limit' => get_post_meta( $event->ID, self::$o->{'meta_key.purchase_limit'}, true ),
-			), $defs), $defs, $event);
+			), $defs ), $defs, $event );
 		}
 
 		// return the generated list
 		return array($list, $earliest == PHP_INT_MAX ? '' : date('Y-m-d H:i:s', $earliest));
+	}
+
+	// convert 'Y-m-d H:i:s' to 'c'
+	protected static function _to_c( $ymd ) {
+		// 2004-02-12T15:19:21+00:00
+		static $off = false;
+		// if we are already in c format, then use it
+		if ( false !== strpos( $ymd, 'T' ) )
+			return $ymd;
+
+		// if we dont match the legacy format, then bail
+		if ( ! preg_match( '#\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}#', $ymd ) )
+			return $ymd;
+
+		// if we never loaded offset before, do it now
+		if ( false === $off )
+			$off = date_i18n( 'P' );
+
+		return str_replace( ' ', 'T', $ymd ) . $off;
 	}
 
 	// generate the core templates used by the event ui js
