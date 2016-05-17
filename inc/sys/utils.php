@@ -95,4 +95,17 @@ class QSOT_Utils {
 
 		return str_replace( ' ', 'T', $ymd ) . $off;
 	}
+
+	/**
+	 * Local Adjusted time from mysql
+	 *
+	 * Accepts a mysql timestamp Y-m-d H:i:s, and converts it to a timestamp that is usable in the date() php function to achieve local time translations.
+	 *
+	 * @param string $date a mysql timestamp in Y-m-d H:i:s format
+	 *
+	 * @return int a unix-timestamp, adjusted so that it produces accurrate local times for the server
+	 */
+	public static function local_timestamp( $date ) {
+		return self::gmt_timestamp( self::to_c( $date ), 'from' );
+	}
 }
