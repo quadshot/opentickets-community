@@ -1155,12 +1155,12 @@ class qsot_post_type {
 			$start = isset( $meta[ self::$o->{'meta_key.start'} ] )
 					? $meta[ self::$o->{'meta_key.start'} ]
 					: date( 'Y-m-d H:i:s', strtotime( preg_replace( '#(\d{4}-\d{2}-\d{2})_(\d{1,2})-(\d{2})((a|p)m)#', '\1 \2:\3\4', $event->post_name ) ) );
-			$start = self::_to_c( $start );
+			$start = QSOT_Utils::to_c( $start );
 			$earliest = min( strtotime( $start ), $earliest );
 			$end = isset( $meta[ self::$o->{'meta_key.end'} ] )
 					? $meta[ self::$o->{'meta_key.end'} ]
 					: date( 'Y-m-d H:i:s', strtotime( '+1 hour', $start ) );
-			$end = self::_to_c( $end );
+			$end = QSOT_Utils::to_c( $end );
 
 			// add an item to the list, by transposing the loaded settings for this sub event over the list of default settings, and then allowing sub/external plugins to modify them
 			// to add their own settings for the interface.
@@ -1181,25 +1181,6 @@ class qsot_post_type {
 
 		// return the generated list
 		return array($list, $earliest == PHP_INT_MAX ? '' : date('Y-m-d H:i:s', $earliest));
-	}
-
-	// convert 'Y-m-d H:i:s' to 'c'
-	protected static function _to_c( $ymd ) {
-		// 2004-02-12T15:19:21+00:00
-		static $off = false;
-		// if we are already in c format, then use it
-		if ( false !== strpos( $ymd, 'T' ) )
-			return $ymd;
-
-		// if we dont match the legacy format, then bail
-		if ( ! preg_match( '#\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}#', $ymd ) )
-			return $ymd;
-
-		// if we never loaded offset before, do it now
-		if ( false === $off )
-			$off = date_i18n( 'P' );
-
-		return str_replace( ' ', 'T', $ymd ) . $off;
 	}
 
 	// generate the core templates used by the event ui js
@@ -1936,14 +1917,14 @@ class qsot_post_type {
 	// allows control over the start and end time of a run of events
 	public static function mb_event_run_date_range( $post, $mb ) {
 		// adjust the start and end times for our WP offset setting
-		$start_raw = QSOT_Utils::gmt_timestamp( get_post_meta( $post->ID, '_start', true ) );
-		$end_raw = QSOT_Utils::gmt_timestamp( get_post_meta( $post->ID, '_end', true ) );
+		$start = QSOT_Utils::to_c( get_post_meta( $post->ID, '_start', true ) );
+		$end = QSOT_Utils::to_c( get_post_meta( $post->ID, '_end', true ) );
+		$start_raw = QSOT_Utils::gmt_timestamp( $start, 'from' );
+		$end_raw = QSOT_Utils::gmt_timestamp( $end, 'from' );
 
 		// create the various date parts
-		$start = $start_raw > 0 ? date( 'c', $start_raw ) : '';
-		$start_time = $start_raw > 0 ? date( 'H:i:s', $start_raw ) : '00:00:00';
-		$end = $end_raw > 0 ? date( 'c', $end_raw ) : '';
-		$end_time = $end_raw > 0 ? date( 'H:i:s', $end_raw ) : '00:00:00';
+		$start_time = $start_raw > 0 ? date_i18n( 'H:i:s', $start_raw ) : '00:00:00';
+		$end_time = $end_raw > 0 ? date_i18n( 'H:i:s', $end_raw ) : '00:00:00';
 
 		?>
 			<div class="qsot-mb">

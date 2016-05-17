@@ -69,4 +69,30 @@ class QSOT_Utils {
 		// adjust the raw time we got above, to achieve the GMT time
 		return $raw + ( ( 'to' == $method ? -1 : 1 ) * ( get_option( 'gmt_offset', 0 ) * HOUR_IN_SECONDS ) );
 	}
+
+	/**
+	 * Convert date to 'c' format
+	 *
+	 * Accepts a mysql Y-m-d H:i:s format, and converts it to a system local time 'c' date format.
+	 *
+	 * @param string $ymd which is a mysql date stamp ('Y-m-d H:i:s')
+	 *
+	 * @return string new date formatted string using the 'c' date format
+	 */
+	public static function to_c( $ymd ) {
+		static $off = false;
+		// if we are already in c format, then use it
+		if ( false !== strpos( $ymd, 'T' ) )
+			return $ymd;
+
+		// if we dont match the legacy format, then bail
+		if ( ! preg_match( '#\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}#', $ymd ) )
+			return $ymd;
+
+		// if we never loaded offset before, do it now
+		if ( false === $off )
+			$off = date_i18n( 'P' );
+
+		return str_replace( ' ', 'T', $ymd ) . $off;
+	}
 }
