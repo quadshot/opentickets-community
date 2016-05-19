@@ -1250,7 +1250,7 @@ class qsot_post_type {
 			return $title;
 
 		// otherwise figure out what bits need to be added
-		$start = strtotime( get_post_meta( $post_id, '_start', true ) );
+		$start = QSOT_Utils::local_timestamp( get_post_meta( $post_id, '_start', true ) );
 		// bail if the date is invalid
 		if ( 0 == $start )
 			return $title;

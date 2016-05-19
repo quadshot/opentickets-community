@@ -1,6 +1,6 @@
 <?php if ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
-	$start_time = strtotime( $ticket->event->meta->start );
-	$end_time = strtotime( $ticket->event->meta->end );
+	$start_time = QSOT_Utils::local_timestamp( $ticket->event->meta->start );
+	$end_time = QSOT_Utils::local_timestamp( $ticket->event->meta->end );
 	$same_day = strtotime( 'today', $start_time ) == strtotime( 'today', $end_time );
 ?>
 <ul>

@@ -1143,8 +1143,8 @@ class QSOT_Post_Type_Event_Area {
 					$product_name = $product->get_title();
 
 				$event_start = get_post_meta( $event->ID, '_start', true );
-				$event_date_time = date_i18n( get_option( 'date_format', __( 'Y-m-d', 'opentickets-commnunity-edition' ) ), strtotime( $event_start ) ) . ' '
-						. date_i18n( get_option( 'time_format', __( 'H:i:s', 'opentickets-commnunity-edition' ) ), strtotime( $event_start ) );
+				$event_date_time = date_i18n( get_option( 'date_format', __( 'Y-m-d', 'opentickets-commnunity-edition' ) ), QSOT_Utils::local_timestamp( $event_start ) ) . ' '
+						. date_i18n( get_option( 'time_format', __( 'H:i:s', 'opentickets-commnunity-edition' ) ), QSOT_Utils::local_timestamp( $event_start ) );
 				// add a note explaining what we did
 				$order->add_order_note( apply_filters( 'qsot-removing-cancelled-order-ticket-msg', sprintf(
 					__( 'Removed (%d) x "%s" [T#%d] tickets for event "%s" [E#%d] from the order, because the order was cancelled. This released those tickets back into the ticket pool.', 'opentickets-community-edition' ),

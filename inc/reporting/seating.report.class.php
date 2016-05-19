@@ -177,7 +177,7 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 		// construct a list of parent events, which contains their ids, titles, and start years
 		foreach ( $parents as $parent_id ) {
 			// get the year when the vent starts
-			$year = date( 'Y', strtotime( get_post_meta( $parent_id, '_start', true ) ) );
+			$year = date( 'Y', QSOT_Utils::local_timestamp( get_post_meta( $parent_id, '_start', true ) ) );
 
 			// construct this parent record
 			$temp = array(
