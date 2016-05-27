@@ -1385,7 +1385,7 @@ class qsot_post_type {
 			// if the settings are a valid set of settings, then continue with this item
 			if ( is_object( $tmp ) ) {
 				// change the title to be the date, which makes for better permalinks
-				$tmp->title = date_i18n( _x( 'Y-m-d_gia', 'Permalink date', 'opentickets-community-edition' ), strtotime( $tmp->start ) );
+				$tmp->title = date( _x( 'Y-m-d_gia', 'Permalink date', 'opentickets-community-edition' ), QSOT_Utils::local_timestamp( $tmp->start ) );
 				// if the post_id was passed in with the settings, then we know what subevent post to modify with these settings already. therefore we do not need to match it up to an existing
 				// subevent or create a new subevent. lets throw it directly into the update list for usage later
 				if ( isset( $tmp->post_id ) && is_numeric( $tmp->post_id ) && $tmp->post_id > 0 ) {
