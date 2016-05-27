@@ -387,7 +387,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		$area_type = apply_filters( 'qsot-event-area-type-for-event', false, $event );
 
 		// if the event's area type is not this type, then bail
-		if ( ! is_object( $area_type ) || $area_type->get_slug() !== $this->get_slug() )
+		if ( ! is_object( $area_type ) || is_wp_error( $area_type ) || $area_type->get_slug() !== $this->get_slug() )
 			return;
 
 		// get the zoner
