@@ -41,7 +41,7 @@ var QS = QS || { Tools:{} };
 				clear_other = clear_other || false;
 
 		// if the new parent does not equal the old parent, then we are just refreshing the form
-		if ( data.parent_event_id != data.last_parent_id && ! target.is( '#report-form' ) ) {
+		if ( data.last_parent_id && data.parent_event_id != data.last_parent_id && ! target.is( '#report-form' ) ) {
 			clear_other = target;
 			target = $( '#report-form' );
 		}
