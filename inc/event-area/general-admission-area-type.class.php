@@ -937,6 +937,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		// get the available amount of tickets left on the event
 		$zoner = $this->get_zoner();
 		$data['_available'] = $zoner->get_availability( $event, $event_area );
+		$stati = $zoner->get_stati();
 
 		// add the raw event data, in case we want it, and the edit event link
 		$event->event_area = $event_area;
@@ -991,6 +992,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 
 			// determine how many tickets are owned by this order, and update our data accordingly
 			$owns = is_object( $zoner ) ? $zoner->find( array( 'fields' => 'total', 'order_id' => $order->id, 'event_id' => $event->ID ) ) : 0;
+			$owns_int = is_object( $zoner ) ? $zoner->find( array( 'state' => $stati['i'][0], 'fields' => 'total', 'order_id' => $order->id, 'event_id' => $event->ID ) ) : 0;
 
 			// if the order owns tickets, then update values
 			if ( $owns > 0 ) {
@@ -998,7 +1000,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 				$data['_owns'] = $owns;
 
 				// adjust the available tickets so that they account for those already owned
-				$data['_available'] = max( 0, $data['_available'] - $data['_owns'] );
+				$data['_available'] = max( 0, $data['_available'] - $owns_int );
 			}
 		}
 
@@ -1085,6 +1087,14 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 			$event->event_area = $event_area;
 			do_action( 'qsot-order-admin-gaea-added-tickets', $order, $event, $quantity, $customer_id, $item_id );
 		}
+
+		// add the data for the event area to the response too, so we can update the area data on the display
+		$resp['data'] = array(
+			'id' => $event->ID,
+			'name' => apply_filters( 'the_title', $event->post_title, $event->ID ),
+			'area_type' => $event_area->area_type->get_slug(),
+		);
+		$resp['data'] = $event_area->area_type->admin_ajax_load_event( $resp['data'], $event, $event_area, $order );
 
 		return $resp;
 	}

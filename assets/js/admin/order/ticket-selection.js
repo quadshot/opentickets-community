@@ -150,6 +150,7 @@ QS.eventAreaTypes['general-admission'] = ( function( $, qs, qt) {
 					return;
 				}
 
+				me.load_event( r.data );
 				// otherwise, update the order items list
 				me.ui.update_order_items( function() { true_dialog.qsUnblock(); } );
 			}, function() { true_dialog.qsUnblock(); })
