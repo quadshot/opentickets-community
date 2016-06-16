@@ -171,6 +171,15 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.4.0 - 06//16/2016 =
+* [new] added the ability to specify a per-event capacity override using event meta
+* [new] added filter to the 'remove child event' flow, so that externals know the event was removed
+* [tweak] overhaul on handling of event times, so that they always appear in local time
+* [tweak] when adding tickets to an order via the admin, the displayed capacity now updates as you select them
+* [fix] repaired reports form submission issue that caused the form to disappear in some cases
+* [fix] repaired javascript error preventing certain events from saving in the admin
+* [fix] resolved activation bug when activating some themes while OTCE was active
+
 = 2.3.0 - 04/15/2016 =
 * [DEPRECATE] removed PDF library. all modern browsers/os combos support this natively now
 * [tweak] minor js tweaks for extension compatibility
