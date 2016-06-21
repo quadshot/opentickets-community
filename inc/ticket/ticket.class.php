@@ -664,7 +664,6 @@ class QSOT_tickets {
 		$_GET = wp_parse_args( $_GET, array( 'frmt' => 'html' ) );
 		// do something different depending on the requested format
 		switch ( $_GET['frmt'] ) {
-			default: echo $out; break;
 			default: echo apply_filters( 'qsot-display-ticket-output-' . $_GET['frmt'] . '-format', $out, $code, array(
 				'ticket' => $ticket,
 				'template' => $template,
