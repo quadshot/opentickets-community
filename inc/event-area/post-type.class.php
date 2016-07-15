@@ -1370,6 +1370,7 @@ class QSOT_Post_Type_Event_Area {
 		//wp_enqueue_style( 'wp-jquery-ui-dialog' );
 		wp_enqueue_script( 'qsot-admin-ticket-selection' );
 		wp_localize_script( 'qsot-admin-ticket-selection', '_qsot_admin_ticket_selection', array(
+			'ajaxurl' => admin_url( 'admin-ajax.php' ),
 			'nonce' => wp_create_nonce( 'do-qsot-admin-ajax' ),
 			'templates' => apply_filters( 'qsot-ticket-selection-templates', array(), $exists, $order_id ),
 		) );
