@@ -1087,6 +1087,7 @@ class qsot_post_type {
 				'ddd MM-dd-yyyy' => __( 'ddd MM-dd-yyyy', 'opentickets-community-edition' ),
 				'hh:mmtt' => __( 'hh:mmtt', 'opentickets-community-edition' ),
 			),
+			'tz' => get_option('timezone_string'),
 			'str' => array(
 				'New Event Date' => __( 'New Event Date', 'opentickets-community-edition' ),
 			),
@@ -1256,8 +1257,8 @@ class qsot_post_type {
 			return $title;
 
 		// add the date/time to the title
-		$date = date_i18n( __( 'm/d/Y', 'opentickets-community-edition' ), $start );
-		$time = date_i18n( __( 'g:ia', 'opentickets-community-edition' ), $start );
+		$date = date( __( 'm/d/Y', 'opentickets-community-edition' ), $start );
+		$time = date( __( 'g:ia', 'opentickets-community-edition' ), $start );
 		$format = '%1$s';
 		if ( $needs['date'] )
 			$format .= ' ' . __( 'on %2$s', 'opentickets-community-edition' );

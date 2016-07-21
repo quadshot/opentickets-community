@@ -145,11 +145,11 @@ class QSOT_tickets {
 		$url = apply_filters('qsot-get-ticket-link', '', $item_id);
 		if (empty($url)) return;
 
-		$title = 'View this ticket';
-		$display = 'View ticket';
+		$title = __( 'View this ticket', 'opentickets-community-edition' );
+		$display = __( 'View ticket', 'opentickets-community-edition' );
 		if ($item['qty'] > 1) {
-			$title = 'View these tickets';
-			$display = 'View tickets';
+			$title = __( 'View these tickets', 'opentickets-community-edition' );
+			$display = __( 'View tickets', 'opentickets-community-edition' );
 		}
 
 		?><a target="_blank" href="<?php echo esc_attr($url) ?>" title="<?php echo esc_attr(__($title)) ?>"><?php echo __($display) ?></a><?php

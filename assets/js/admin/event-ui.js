@@ -1,8 +1,12 @@
 var QS = QS || {};
 QS.EventUI = (function($, undefined) {
 	var qt = QS.Tools,
-			S = $.extend( true, { frmts:{} }, _qsot_event_ui_settings ),
+			S = $.extend( true, { frmts:{}, tz:moment.tz.guess() }, _qsot_event_ui_settings ),
 			new_post_id = -1;
+
+	console.log( 'timezone', _qsot_event_ui_settings, S );
+	// set the default timezone for momentjs
+	moment.tz.setDefault( S.tz );
 
 	function frmt( str ) {
 		return ( 'string' == typeof str && qt.is( S.frmts[ str ] ) ) ? S.frmts[ str ] : str;

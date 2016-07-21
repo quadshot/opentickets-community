@@ -135,7 +135,8 @@ class qsot_frontend_calendar {
 		$version = QSOT::version();
 
 		// register the moment.js library since the fullcalendar lib uses it
-		wp_register_script( 'moment-js', $base_url . 'assets/js/libs/fullcalendar/lib/moment.min.js', array( 'jquery' ), '2.11.0' );
+		wp_register_script( 'moment-core-js', $base_url . 'assets/js/libs/fullcalendar/lib/moment.min.js', array( 'jquery' ), '2.11.0' );
+		wp_register_script( 'moment-js', $base_url . 'assets/js/libs/moment-timezone/moment-timezone-all-years.js', array( 'moment-core-js' ), '0.5.4-2016d' ); //timezone lib
 
 		// register the fullcalendar jquery plugin's assets
 		// base javascript
