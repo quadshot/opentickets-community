@@ -171,6 +171,11 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.4.2 - 07/21/2016 =
+* [new] added momentjs-timezone lib to handle differences between server and local machine time conversions when creating events
+* [fix] patch to help VBO installs that are in subdirs
+* [fix] fixed php7 syntax errors. (thought we already released this, but apparently not)
+
 = 2.4.0 - 06//16/2016 =
 * [new] added the ability to specify a per-event capacity override using event meta
 * [new] added filter to the 'remove child event' flow, so that externals know the event was removed
