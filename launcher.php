@@ -3,7 +3,7 @@
  * Plugin Name: OpenTickets Community Edition
  * Plugin URI:  http://opentickets.com/
  * Description: Event Management and Online Ticket Sales Platform
- * Version:     2.4.2
+ * Version:     2.4.3
  * Author:      Quadshot Software LLC
  * Author URI:  http://quadshot.com/
  * Copyright:   Copyright (C) 2009-2014 Quadshot Software LLC
@@ -53,7 +53,7 @@ class opentickets_community_launcher {
 			'pre' => 'qsot-',
 			'fctm' => 'fc',
 			'always_reserve' => 0,
-			'version' => '2.4.2',
+			'version' => '2.4.3',
 			'min_wc_version' => '2.6.1',
 			'core_post_type' => 'qsot-event',
 			'core_post_rewrite_slug' => 'event',

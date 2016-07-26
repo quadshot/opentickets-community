@@ -171,6 +171,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.4.3 - 07/26/2016 =
+* added moment-timezone library, missing from last update
+
 = 2.4.2 - 07/21/2016 =
 * [new] added momentjs-timezone lib to handle differences between server and local machine time conversions when creating events
 * [fix] patch to help VBO installs that are in subdirs
