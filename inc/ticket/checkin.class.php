@@ -49,7 +49,7 @@ class QSOT_checkin {
 	// handler for the checkin urls
 	public static function intercept_checkins( $value, $qvar, $all_data, $query_vars ) {
 		$packet = urldecode( $all_data['qsot-checkin-packet'] );
-		self::event_checkin( self::_parse_checkin_packet( $packet ), $packet );
+		self::event_checkin( self::parse_checkin_packet( $packet ), $packet );
 	}
 
 	// interprets the request, and formulates an appropriate response
@@ -62,61 +62,30 @@ class QSOT_checkin {
 
 		$template = '';
 
-		// load the event, event area, and area type objects
-		$event = get_post( $data['event_id'] );
-		$event_area = apply_filters( 'qsot-event-area-for-event', false, $event );
-		$area_type = is_object( $event_area ) && isset( $event_area->area_type ) ? $event_area->area_type : null;
-		$zoner = is_object( $area_type ) ? $area_type->get_zoner() : null;
-		$stati = is_object( $zoner ) ? $zoner->get_stati() : array();
+		// process the checkin
+		$results = self::process_checkin( $data );
 
-		// if the zoner was not loaded, then this is a hard failure
-		if ( ! is_object( $zoner ) ) {
-			$template = 'checkin/occupy-failure.php';
-			$extra_msg = __( 'Could not find that event.', 'opentickets-community-edition' );
-		} else {
-			// load the order item
-			$order = wc_get_order( $data['order_id'] );
-			$order_items = $order->get_items();
-			$order_item = isset( $order_items[ $data['order_item_id'] ] ) ? $order_items[ $data['order_item_id'] ] : false;
+		// if the result is a wp_error, then change the template accordingly
+		if ( is_wp_error( $results ) ) {
+			switch ( $results->get_error_code() ) {
+				default:
+				// could not find the order
+				case 'no_order':
+				// could not find the event
+				case 'no_event':
+					$template = 'checkin/occupy-failure.php';
+					$extra_msg = implode( ' ', $results->get_error_messages() );
+				break;
 
-			// if there is no order item then bail
-			if ( ! $order_item ) {
-				$template = 'checkin/occupy-failure.php';
-				$extra_msg = __( 'Could not find that order.', 'opentickets-community-edition' );
-			} else {
-				// check if the seat is already occupied
-				$qargs = array(
-					'event_id' => $data['event_id'],
-					'order_id' => $data['order_id'],
-					'order_item_id' => $data['order_item_id'],
-					'state' => $stati['o'][0],
-				);
-				$res = $zoner->find( $qargs );
-				$res = current( $res );
-
-				// if the seat is already checked in, load a template saying so
-				if ( is_object( $res ) && $res->quantity >= $order_item['qty'] ) {
-				//if ( apply_filters( 'qsot-is-already-occupied', false, $data['order_id'], $data['event_id'], $data['order_item_id'] ) ) {
+				// ticket was already checked in
+				case 'already_occupied':
 					$template = 'checkin/already-occupied.php';
-				// otherwise
-				} else {
-					// try to check the seat in
-					$res = $zoner->occupy( false, array(
-						'order_id' => $data['order_id'],
-						'event_id' => $data['event_id'],
-						'order_item_id' => $data['order_item_id'],
-						'__raw' => $data,
-					) );
-					// if it was successful, have a message saying that
-					if ( $res && ! is_wp_error( $res ) ) $template = 'checkin/occupy-success.php';
-					// otherwise, have a message saying it failed
-					else {
-						$template = 'checkin/occupy-failure.php';
-						if ( is_wp_error( $res ) )
-							$extra_msg = implode( ' ', $res->get_error_messages() );
-					}
-				}
+					$extra_msg = implode( ' ', $results->get_error_messages() );
+				break;
 			}
+		// otherwise, it was a success
+		} else {
+			$template = 'checkin/occupy-success.php';
 		}
 
 		// load the information used by the checkin template
@@ -132,6 +101,66 @@ class QSOT_checkin {
 		include_once $template;
 
 		exit;
+	}
+
+	// process the actual checkin request, and respond in a fashion that can be interpreted
+	public static function process_checkin( $data ) {
+		// load the event, event area, and area type objects
+		$event = get_post( $data['event_id'] );
+		$event_area = apply_filters( 'qsot-event-area-for-event', false, $event );
+		$area_type = is_object( $event_area ) && isset( $event_area->area_type ) ? $event_area->area_type : null;
+		$zoner = is_object( $area_type ) ? $area_type->get_zoner() : null;
+		$stati = is_object( $zoner ) ? $zoner->get_stati() : array();
+
+		// if the zoner was not loaded, then this is a hard failure
+		if ( ! is_object( $zoner ) ) {
+			return new WP_Error( 'no_event', __( 'Could not find that event.', 'opentickets-community-edition' ) );
+		} else {
+			// load the order item
+			$order = wc_get_order( $data['order_id'] );
+			$order_items = $order->get_items();
+			$order_item = isset( $order_items[ $data['order_item_id'] ] ) ? $order_items[ $data['order_item_id'] ] : false;
+
+			// if there is no order item then bail
+			if ( ! $order_item ) {
+				return new WP_Error( 'no_order', __( 'Could not find that order.', 'opentickets-community-edition' ) );
+			} else {
+				// check if the seat is already occupied
+				$qargs = array(
+					'event_id' => $data['event_id'],
+					'order_id' => $data['order_id'],
+					'order_item_id' => $data['order_item_id'],
+					'state' => $stati['o'][0],
+				);
+				$res = $zoner->find( $qargs );
+				$res = current( $res );
+
+				// if the seat is already checked in, load a template saying so
+				if ( is_object( $res ) && $res->quantity >= $order_item['qty'] ) {
+					return new WP_Error( 'already_occupied', __( 'That ticket has already been checked in.', 'opentickets-community-edition' ) );
+				// otherwise
+				} else {
+					// try to check the seat in
+					$res = $zoner->occupy( false, array(
+						'order_id' => $data['order_id'],
+						'event_id' => $data['event_id'],
+						'order_item_id' => $data['order_item_id'],
+						'__raw' => $data,
+					) );
+					// if it was successful, have a message saying that
+					if ( $res && ! is_wp_error( $res ) ) {
+						return true;
+					// otherwise, have a message saying it failed
+					} else {
+						if ( is_wp_error( $res ) )
+							return $res;
+						else
+							return new WP_Error( 'unknown_error', __( 'An unknown error occurred during the check-in process. Check-in failed.', 'opentickets-community-edition' ) );
+					}
+				}
+			}
+		}
+		// there is no way to get this far that i know of
 	}
 
 	// when a user does not have access to check a ticket in, either they are logged out, or they do not have permission. respond to either situation
@@ -200,6 +229,8 @@ class QSOT_checkin {
 		) );
 
 		$ticket->qr_code = null;
+		$ticket->qr_codes = isset( $ticket->qr_codes ) && is_array( $ticket->qr_codes ) ? $ticket->qr_codes : array();
+		$ticket->qr_data_debugs = $codes;
 
 		for ( $i = 0; $i < count( $codes ); $i++ ) {
 			// get the url, width and height to use for the image tag
@@ -397,8 +428,16 @@ class QSOT_checkin {
 	}
 
 	// unpack the data stored in the checkin url packet, and put it in array format again, so that it can be used to perform the checkin
-	protected static function _parse_checkin_packet($raw) {
+	public static function parse_checkin_packet($raw) {
 		$data = array();
+		$default_data = array(
+			'event_id' => null,
+			'order_id' => null,
+			'order_item_id' => null,
+			'price' => null,
+			'title' => null,
+			'uniq' => null,
+		);
 		// make the reverse string replacements from above, otherwise the base64 won't decode
 		$raw = str_replace( array( '-', '_', '~' ), array( '+', '=', '/' ), $raw );
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG )
@@ -411,7 +450,8 @@ class QSOT_checkin {
 		$pack = explode( '|', strrev( $packet ), 2 );
 		$hash = strrev( array_shift( $pack ) );
 		$pack = strrev( implode( '|', $pack ) );
-		if ( ! $pack || ! $hash || sha1( $pack . AUTH_SALT ) != $hash ) return $data;
+		if ( ! $pack || ! $hash || sha1( $pack . AUTH_SALT ) != $hash )
+			return $default_data;
 
 		$data = null;
 		// allow other plugins to interpret the packet on their own; for instance, if they have custom packet logic above at filter 'qsot-create-checkin-packet'
@@ -419,12 +459,12 @@ class QSOT_checkin {
 
 		// if there is no plugin override, then assume we are dealing with the default packet, and parse that
 		if ( null === $data ) {
-			$data = array();
+			$data = $default_data;
 			$parts = explode( ';', $packet, 4 );
 			$data['order_id'] = array_shift( $parts );
 			$data['order_item_id'] = array_shift( $parts );
-			list( $data['event_id'], $data['price'] ) = explode( '.', array_shift( $parts ) );
-			list( $data['title'], $data['uniq'] ) = explode( ':', array_shift( $parts ) );
+			@list( $data['event_id'], $data['price'] ) = explode( '.', array_shift( $parts ) );
+			@list( $data['title'], $data['uniq'] ) = explode( ':', array_shift( $parts ) );
 		}
 
 		return $data;

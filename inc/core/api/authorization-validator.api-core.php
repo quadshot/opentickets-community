@@ -17,6 +17,10 @@ class QSOT_API_Authorization_Validator {
 
 	// validate that the appropriate credentials have been passed with the request
 	public function validate( QSOT_API_Request $request ) {
+		// if the api is disabled, account for that here
+		if ( QSOT_API::is_disabled() )
+			throw new QSOT_API_Exception( __( 'API is Disabled', 'opentickets-community-edition' ), 403, 'api_disabled' );
+
 		// get the credentials from the request
 		$auth_token = $request->post( 'auth_token' );
 		@list( $app_id, $app_secret ) = explode( '|', $auth_token );
@@ -34,6 +38,15 @@ class QSOT_API_Authorization_Validator {
 
 	// validate whether the supplied credentials are valid or not
 	protected function _are_valid_credentials( $app_id, $app_secret ) {
-		return 'testing' == $app_id && 'testing' == $app_secret;
+		// load api creds from db
+		$key = get_option( 'qsot-app-api-key', '' );
+		$secret = get_option( 'qsot-app-api-secret', '' );
+
+		// if there are no creds generated, then bail
+		if ( '' === $key || '' === $secret )
+			return false;
+
+		// otherwise, test credentials
+		return $key == $app_id && $secret == $app_secret;
 	}
 }

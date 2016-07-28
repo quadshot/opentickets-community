@@ -33,6 +33,7 @@ class qsot_admin_settings extends WC_Admin_Settings {
 			// load the various settings pages
 			$settings[] = include( 'settings/general.php' );
 			$settings[] = include( 'settings/frontend.php' );
+			$settings[] = include( 'settings/api.php' );
 
 			// allow adding of other pages if needed
 			self::$settings = array_filter( array_values( apply_filters( 'qsot_get_settings_pages', $settings ) ) );

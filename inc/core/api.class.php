@@ -11,10 +11,15 @@ class QSOT_API {
 	public static function instance() { return ( self::$_instance instanceof self ) ? self::$_instance : ( self::$_instance = new self ); }
 	protected function __construct() { $this->initialize(); }
 
+	const ALPHANUM = 'alphanum';
+
 	// setup the object
 	protected function initialize() {
 		// test method
-		add_action( 'init', array( &$this, 'TESTING' ), 1 );
+		//add_action( 'init', array( &$this, 'TESTING' ), 1 );
+
+		// if we have not yet generated an api key and secret, then do so now, if we are in the admin
+		add_action( 'admin_init', array( &$this, 'maybe_generate_api_credentials' ) );
 
 		// load all the required api core code
 		do_action( 'qsot-load-includes', '', '#^.+\.api-core\.php$#i' );
@@ -23,10 +28,18 @@ class QSOT_API {
 		do_action( 'qsot-rewriter-add', 'qsot-api', array( 'func' => array( &$this, 'handle_requests' ) ) );
 	}
 
+	// determine if the api is diabled
+	public static function is_disabled() { return ( defined( 'QSOT_DISABLE_API' ) && QSOT_DISABLE_API ); }
+
 	// ****** REMOVE
 	public function TESTING() {
+		$token = get_option( 'qsot-app-api-key', '' ) . '|' . get_option( 'qsot-app-api-secret', '' );
 		if ( isset( $_GET['test-api'] ) && 'opentickets' == $_GET['test-api'] ) {
-			$response = wp_remote_post( home_url( '/qsot-api/checkin/' ), array( 'body' => array( 'code' => '1234', 'auth_token' => 'testing|testing' ) ) );
+			$response = wp_remote_post( home_url( '/qsot-api/checkin/' ), array( 'body' => array( 'auth_token' => $token, 'code' => 'http://ot.dev.dev?qsot-event-checkin=1&qsot-checkin-packet=MDk1ZmRiODE3YzQ4MWNmOTVkNGZlMjdiNGQ5Mjc5Mzk1NWFmZjEzZHwxOjBjODcwNDljNjBjZDlmZDZiY2U1MDZkMjZhMWE2OTllOik-bmFwcy88MDAuMDM-bmFwcy88OzYzIyY-ImxvYm15U3ljbmVycnVjLWVjaXJQLWVjcmVtbW9jb293Ij1zc2FsYyBuYXBzPD4idG51b21hIHRudW9tYS1lY2lyUC1lY3JlbW1vY29vdyI9c3NhbGMgbmFwczwoIHRla2NpVCB5Y2lyUDswMy45MTAxOzM1MTswMjAx' ) ) );
+			echo wp_remote_retrieve_body( $response );
+			exit;
+		} else if ( isset( $_GET['test-api'] ) && 'failure' == $_GET['test-api'] ) {
+			$response = wp_remote_post( home_url( '/qsot-api/checkin/' ), array( 'body' => array( 'auth_token' => $token, 'code' => 'http://ot.dev.dev?qsot-event-checkin=1&qsot-checkin-packet=AAAAMDk1ZmRiODE3YzQ4MWNmOTVkNGZlMjdiNGQ5Mjc5Mzk1NWFmZjEzZHwxOjBjODcwNDljNjBjZDlmZDZiY2U1MDZkMjZhMWE2OTllOik-bmFwcy88MDAuMDM-bmFwcy88OzYzIyY-ImxvYm15U3ljbmVycnVjLWVjaXJQLWVjcmVtbW9jb293Ij1zc2FsYyBuYXBzPD4idG51b21hIHRudW9tYS1lY2lyUC1lY3JlbW1vY29vdyI9c3NhbGMgbmFwczwoIHRla2NpVCB5Y2lyUDswMy45MTAxOzM1MTswMjAx' ) ) );
 			echo wp_remote_retrieve_body( $response );
 			exit;
 		}
@@ -88,6 +101,48 @@ class QSOT_API {
 			return new WP_Error( 'not_found', __( 'API endpoint not found', 'opentickets-community-edition' ), $classname );
 
 		return $classname;
+	}
+
+	// possibly generate api credentials, if we have not done so already, and if the api is not disabled
+	public function maybe_generate_api_credentials() {
+		// only do this in the admin
+		if ( ! is_admin() || defined( 'DOING_AJAX' ) )
+			return;
+
+		// if the api is disabled, do nothing
+		if ( QSOT_API::is_disabled() )
+			return;
+
+		$key = get_option( 'qsot-app-api-key', '' );
+		$secret = get_option( 'qsot-app-api-secret', '' );
+		// check if the credentials have already been generated 
+		if ( '' !== $key && '' !== $secret )
+			return;
+
+		// otherwise, generate them now
+		update_option( 'qsot-app-api-key', $this->_gen_key( 32, self::ALPHANUM ) );
+		update_option( 'qsot-app-api-secret', $this->_gen_key( 64, self::ALPHANUM ) );
+	}
+
+	// generate a random sequence of characters, based on the given character set
+	protected function _gen_key( $length, $set='alphanum' ) {
+		$use_set = '';
+		$set_len = 0;
+		// determine the proper character set to use
+		switch ( $set ) {
+			default:
+			case 'alphanum':
+				$use_set = str_shuffle( 'abcdefghijklmnopqrstuvwxyz0123456789' );
+				$set_len = strlen( $use_set );
+			break;
+		}
+
+		$final = '';
+		// cycle through the number of requeted chars
+		for ( $i = 0; $i < $length; $i++ )
+			$final .= $use_set{ rand( 0, $set_len-1 ) };
+
+		return $final;
 	}
 }
 
