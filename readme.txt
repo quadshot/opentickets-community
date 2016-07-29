@@ -171,6 +171,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.4.4 - 07/29/2016=
+* fixing modal issues caused by changing in WooCommerce CSS
+
 = 2.4.3 - 07/26/2016 =
 * added moment-timezone library, missing from last update
 
