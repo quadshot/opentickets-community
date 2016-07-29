@@ -328,3 +328,6 @@ body.printer-friendly-report .inner-wrap { padding:8px !important; width:9.5in !
 #qsot-save-results .msg-bad { border-color:#800; color:#800; background-color:#fee; }
 
 #order_data .all-tickets-button { margin-top:1em; }
+
+/* modals */
+#wc-backbone-modal-dialog .wc-backbone-modal .wc-backbone-modal-content { margin:0; }
