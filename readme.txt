@@ -1,7 +1,7 @@
 === OpenTickets Community Edition ===
 Contributors: quadshot, loushou, coolmann
 Donate link: http://opentickets.com/
-Tags: events, event management, tickets, ticket sales, ecommerce
+Tags: events, event management, event tickets, ticket sales, ecommerce, tickets
 Requires at least: 4.0
 Tested up to: Latest
 Stable tag: trunk
@@ -15,23 +15,23 @@ An event management and online ticket sales platform, built on top of WooCommerc
 
 = OpenTickets Community Edition =
 
-[OpenTickets Community Edition](http://opentickets.com/community-edition "Event management and online ticket sales platform") ("OTCE") is a free open source WordPress plugin that allows you to publish events and sell tickets online. OTCE was created to allow people with WordPress websites to easily setup and sell tickets to their events. 
+[OpenTickets Community Edition](http://opentickets.com/community-edition "Event management and online ticket sales platform") ("OTCE") is a free open source WordPress plugin that allows you to publish events and sell event tickets online. OTCE was created to allow people with WordPress websites to easily setup and sell tickets to their events. 
 
 OTCE is an alternative to other ticketing systems, that will reduce your overhead and eliminate service fees, because it is software you run on your own existing website. It was created for venues, artists, bands, nonprofits, festivals and event organizers who sell General Admission tickets.
 
 OTCE runs on [WordPress](http://wordpress.org/ "Your favorite software") and requires [WooCommerce](http://woocommerce.com/ "Free WordPress based eCommerce Software") to operate. WooCommerce is a free open source ecommerce platform for WordPress. You can download your own copy of that from the [WooCommerce Wordpress.org Plugin Page](https://wordpress.org/plugins/woocommerce/)
 
-With WordPress and WooCommerce installed, you can install the OTCE plugin and start selling tickets to your event wihtin a few minutes. OTCE information and instructions are available on our website's [Community Edition page](http://opentickets.com/community-edition/ "Visit the Community Edition information page"), or you can watch some of our videos on how to get started on our [Videos page](http://opentickets.com/videos/ "Visit our videos page").
+With WordPress and WooCommerce installed, you can install the OTCE plugin and start selling event tickets wihtin a few minutes. OTCE information and instructions are available on our website's [Community Edition page](http://opentickets.com/community-edition/ "Visit the Community Edition information page"), or you can watch some of our videos on how to get started on our [Videos page](http://opentickets.com/videos/ "Visit our videos page").
 
 The OTCE plugin empowers you with tools to:
 
 * Publish Venues
 * Publish Events
 * Display Calendar of Events
-* Create and Sell Tickets
-* Allow Customers to keep Digital and/or Print Tickets
-* Checkin People to Events with a QR Reader 
-* Ticket Sales Reporting
+* Create and Sell Event Tickets
+* Allow Customers to keep Digital and/or Print e-Tickets
+* Checkin People to your Events with a QR Reader 
+* Event Ticket Reporting
 
 There are also various [Enterprise Extensions](http://opentickets.com/extensions/ "See a list of the available Extensions") which add even more functionality to this robust core plugin. 
 
