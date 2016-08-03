@@ -609,12 +609,17 @@ QS.CB = (function($, undefined) {
 		};
 
 		function cb_trigger(name, params) {
-			var params = params || [];
-			var cbs = cb_get(name);
+			var params = params || [],
+					cbs = cb_get(name), res;
 			if (cbs instanceof Array) {
-				for (var i=0; i<cbs.length; i++)
-					cbs[i].f.apply(this, params);
+				for (var i=0; i<cbs.length; i++) {
+					res = cbs[i].f.apply(this, params);
+					if ( false === res )
+						break;
+				}
 			}
+
+			return res;
 		};
 
 		function _debug_handlers() { console.log('debug_'+sname, $.extend({}, _callbacks)); };
