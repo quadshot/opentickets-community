@@ -666,14 +666,14 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		// if the quantity is not a positive number, then bail
 		if ( $qty <= 0 ) {
 			$resp['e'][] = __( 'The quantity must be greater than zero.', 'opentickets-community-edition' );
-			return $this->_add_data( $resp, $event );
+			return $this->_add_data( apply_filters( 'qsot-seating-ajax-response-reserve', $resp, $event, null, $ticket_type ), $event );
 		}
 
 		// get the event_area based on the event
 		$event_area = apply_filters( 'qsot-event-area-for-event', false, $event );
 		if ( ! is_object( $event_area ) ) {
 			$resp['e'][] = __( 'Could not find that event.', 'opentickets-community-edition' );
-			return $this->_add_data( $resp, $event );
+			return $this->_add_data( apply_filters( 'qsot-seating-ajax-response-reserve', $resp, $event, null, $ticket_type ), $event );
 		}
 
 		// determine the ticket type to use for the 
@@ -707,7 +707,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 			$resp['e'][] = __( 'Could not update your reservations.', 'opentickets-community-edition' );
 		}
 
-		return $this->_add_data( $resp, $event, $event_area, $ticket_type );
+		return $this->_add_data( apply_filters( 'qsot-seating-ajax-response-reserve', $resp, $event, $event_area, $ticket_type ), $event, $event_area, $ticket_type );
 	}
 
 	// handle the remove reservation ajax requests
@@ -716,7 +716,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		$event_area = apply_filters( 'qsot-event-area-for-event', false, $event );
 		if ( ! is_object( $event_area ) ) {
 			$resp['e'][] = __( 'Could not find that event.', 'opentickets-community-edition' );
-			return $this->_add_data( $resp, $event );
+			return $this->_add_data( apply_filters( 'qsot-seating-ajax-response-remove', $resp, $event, null, $ticket_type ), $event );
 		}
 
 		// determine the ticket type to use for the 
@@ -766,7 +766,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 			$resp['e'][] = __( 'Could not update your reservations.', 'opentickets-community-edition' );
 		}
 
-		return $this->_add_data( $resp, $event, $event_area, $ticket_type );
+		return $this->_add_data( apply_filters( 'qsot-seating-ajax-response-remove', $resp, $event, $event_area, $ticket_type ), $event, $event_area, $ticket_type );
 	}
 
 	// handle the update reservation ajax requests
@@ -777,14 +777,14 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		// if the quantity is not a positive number, then bail
 		if ( $qty <= 0 ) {
 			$resp['e'][] = __( 'The quantity must be greater than zero.', 'opentickets-community-edition' );
-			return $this->_add_data( $resp, $event );
+			return $this->_add_data( apply_filters( 'qsot-seating-ajax-response-update', $resp, $event, null, $ticket_type ), $event );
 		}
 
 		// get the event_area based on the event
 		$event_area = apply_filters( 'qsot-event-area-for-event', false, $event );
 		if ( ! is_object( $event_area ) ) {
 			$resp['e'][] = __( 'Could not find that event.', 'opentickets-community-edition' );
-			return $this->_add_data( $resp, $event );
+			return $this->_add_data( apply_filters( 'qsot-seating-ajax-response-update', $resp, $event, null, $ticket_type ), $event );
 		}
 
 		// determine the ticket type to use for the 
@@ -821,7 +821,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 			$resp['e'][] = __( 'Could not update your reservations.', 'opentickets-community-edition' );
 		}
 
-		return $this->_add_data( $resp, $event, $event_area, $ticket_type );
+		return $this->_add_data( apply_filters( 'qsot-seating-ajax-response-update', $resp, $event, $event_area, $ticket_type ), $event, $event_area, $ticket_type );
 	}
 
 	// confirm the tickets defined by an order item
