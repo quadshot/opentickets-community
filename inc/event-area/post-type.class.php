@@ -104,11 +104,11 @@ class QSOT_Post_Type_Event_Area {
 		add_action( 'qsot-clear-zone-locks', array( &$this, 'clear_zone_locks' ), 10, 1 );
 
 		// during transitions of order status (and order creation), we need to perform certain operations. we may need to confirm tickets, or cancel them, depending on the transition
-		add_action( 'woocommerce_checkout_update_order_meta', array( &$this, 'update_order_id' ), 100, 2 );
+		add_action( 'woocommerce_checkout_order_processed', array( &$this, 'update_order_id' ), 100, 2 );
 		add_action( 'woocommerce_order_status_changed', array( &$this, 'order_status_changed' ), 100, 3 );
 		//add_action( 'woocommerce_order_status_changed', array( &$this, 'order_status_changed_pending' ), 101, 3 );
 		add_action( 'woocommerce_order_status_changed', array( &$this, 'order_status_changed_cancel' ), 102, 3 );
-		add_action( 'woocommerce_checkout_update_order_meta', array( &$this, 'order_has_been_created' ), 10000, 2 );
+		add_action( 'woocommerce_checkout_order_processed', array( &$this, 'order_has_been_created' ), 10000, 2 );
 
 		// solve order again conundrum
 		add_filter( 'woocommerce_order_again_cart_item_data', array( &$this, 'adjust_order_again_items' ), 10, 3 );
@@ -886,7 +886,13 @@ class QSOT_Post_Type_Event_Area {
 		// find all reservations for this user
 		// @NOTE: need more uniform way of determining 'reserved' is what we are looking for
 		$reserved = 'reserved';
-		$results = QSOT_Zoner_Query::instance()->find( array( 'state' => $reserved, 'customer_id' => QSOT::current_user() ) );
+		$confirmed = 'confirmed';
+		$where = array();
+		$user_ids = array_filter( (array) QSOT::current_user() );
+		$where[] = 'state = "' . $reserved . '" and session_customer_id in ("' . implode( '","', array_map( 'esc_sql', $user_ids ) ) . '")';
+		if ( isset( $WC->session->order_awaiting_payment ) && intval( $WC->session->order_awaiting_payment ) > 0 )
+			$where[] = 'state = "' . $confirmed . '" and order_id = ' . absint( $WC->session->order_awaiting_payment );
+		$results = QSOT_Zoner_Query::instance()->find( array( 'where__extra' => array( ' and ((' . implode( ') or (', $where ) . '))' ) ) );
 
 		$event_to_area_type = $indexed = array();
 		// create an indexed list from those results
@@ -908,7 +914,6 @@ class QSOT_Post_Type_Event_Area {
 			// add this row to the indexed key
 			$indexed[ $row->event_id ][ $row->state ][ $row->ticket_type_id ][] = $row;
 		}
-		//die(var_dump($indexed ));
 
 		// cycle through the cart items, and remove any that do not have a matched indexed item
 		foreach ( $WC->cart->get_cart() as $key => $item ) {
@@ -922,13 +927,27 @@ class QSOT_Post_Type_Event_Area {
 
 			$quantity = 0;
 			// if there is a basic indexed matched key for this item, then find the appropriate quantity to use
-			if ( isset( $indexed[ $eid ], $indexed[ $eid ][ $reserved ], $indexed[ $eid ][ $reserved ][ $pid ] ) ) {
-				// if there is not an appropriate area type for this event, then just pass it through using the indexed item quantity. this is the generic method, list_pluck
-				if ( ! isset( $event_to_area_type[ $eid ] ) || ! is_object( $event_to_area_type[ $eid ] ) || is_wp_error( $event_to_area_type[ $eid ] ) ) {
-					$quantity = array_sum( wp_list_pluck( $indexed[ $eid ][ $reserved ][ $pid ], 'quantity' ) );
-				// otherwise use the method of finding the quantity defined by the area_type itself
-				} else {
-					$quantity = $event_to_area_type[ $eid ]->cart_item_match_quantity( $item, $indexed[ $eid ][ $reserved ][ $pid ] );
+			if ( isset( $indexed[ $eid ] ) ) {
+				if ( isset( $indexed[ $eid ][ $reserved ], $indexed[ $eid ][ $reserved ][ $pid ] ) ) {
+					// if there is not an appropriate area type for this event, then just pass it through using the indexed item quantity. this is the generic method, list_pluck
+					if ( ! isset( $event_to_area_type[ $eid ] ) || ! is_object( $event_to_area_type[ $eid ] ) || is_wp_error( $event_to_area_type[ $eid ] ) ) {
+						$quantity = array_sum( wp_list_pluck( $indexed[ $eid ][ $reserved ][ $pid ], 'quantity' ) );
+					// otherwise use the method of finding the quantity defined by the area_type itself
+					} else {
+						$quantity = $event_to_area_type[ $eid ]->cart_item_match_quantity( $item, $indexed[ $eid ][ $reserved ][ $pid ] );
+					}
+				} else if ( isset( $indexed[ $eid ][ $confirmed ], $indexed[ $eid ][ $confirmed ][ $pid ] ) ) {
+					// if these items have an order id
+					$order_ids = array_filter( wp_list_pluck( $indexed[ $eid ][ $confirmed ][ $pid ], 'order_id' ) );
+					if ( count( $order_ids ) == count( $indexed[ $eid ][ $confirmed ][ $pid ] ) ) {
+						// if there is not an appropriate area type for this event, then just pass it through using the indexed item quantity. this is the generic method, list_pluck
+						if ( ! isset( $event_to_area_type[ $eid ] ) || ! is_object( $event_to_area_type[ $eid ] ) || is_wp_error( $event_to_area_type[ $eid ] ) ) {
+							$quantity = array_sum( wp_list_pluck( $indexed[ $eid ][ $confirmed ][ $pid ], 'quantity' ) );
+						// otherwise use the method of finding the quantity defined by the area_type itself
+						} else {
+							$quantity = $event_to_area_type[ $eid ]->cart_item_match_quantity( $item, $indexed[ $eid ][ $confirmed ][ $pid ] );
+						}
+					}
 				}
 			}
 
