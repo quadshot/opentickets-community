@@ -173,6 +173,7 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 = 2.4.5 - 08/15/2016 =
 * [new] support for the new Table Service plugin
+* [fix] repaired bug where logged out users who create an account during checkout, and fail their first payment, do no lose their tickets
 
 = 2.4.4 - 07/29/2016 =
 * fixing modal issues caused by changing in WooCommerce CSS
