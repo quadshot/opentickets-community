@@ -109,6 +109,7 @@ class QSOT_Post_Type_Event_Area {
 		//add_action( 'woocommerce_order_status_changed', array( &$this, 'order_status_changed_pending' ), 101, 3 );
 		add_action( 'woocommerce_order_status_changed', array( &$this, 'order_status_changed_cancel' ), 102, 3 );
 		add_action( 'woocommerce_checkout_order_processed', array( &$this, 'order_has_been_created' ), 10000, 2 );
+		add_action( 'woocommerce_resume_order', array( &$this, 'on_resume_order_disassociate' ), 10, 1 );
 
 		// solve order again conundrum
 		add_filter( 'woocommerce_order_again_cart_item_data', array( &$this, 'adjust_order_again_items' ), 10, 3 );
@@ -998,6 +999,41 @@ class QSOT_Post_Type_Event_Area {
 			$q .= $wpdb->prepare( ' and session_customer_id = %s', $args['customer_id'] );
 
 		$wpdb->query( $q );
+	}
+
+	// when resuming an order, we need to disassociate all order_item_ids from previous records, because the order items are about to get removed and recreated by core WC.
+	// this means we will not be able to properly update the order item id associations, because the original order item id will be gone
+	public function on_resume_order_disassociate( $order_id ) {
+		// start a basic zoner to do our bidding
+		$zoner = QSOT_General_Admission_Zoner::instance();
+
+		$args = array(
+			'event_id' => false,
+			'ticket_type_id' => false,
+			'quantity' => '',
+			'customer_id' => '',
+			'order_id' => $order_id,
+			'order_item_id' => '',
+			'state' => '*',
+			'where__extra' => '',
+		);
+		// find all rows that are associated with the order
+		$rows = $zoner->find( $args );
+
+		// udpate each row to not be associated with the order_item_id it previously was
+		if ( is_array( $rows ) ) foreach ( $rows as $row ) {
+			$zoner->update(
+				false,
+				array(
+					'order_id' => $order_id,
+					'order_item_id' => $row->order_item_id,
+					'state' => $row->state,
+				),
+				array(
+					'order_item_id' => 0,
+				)
+			);
+		}
 	}
 
 	// when creating a new order, we need to update the related ticket rows with the new order id
