@@ -9,19 +9,21 @@
 
 	EditSetting.callbacks.add('update', function(data, adjust) {
 		if (this.tag == 'venue' && ($.inArray(typeof data.venue, ['string', 'number']) != -1 || (typeof data.venue == 'object' && typeof data.venue.toString == 'function'))) {
-			var test = $.inArray(typeof data.venue, ['string', 'number']) != -1 ? data.venue : data.venue.toString();
-			var ea = this.elements.main_form.find('[tag="event-area"]');
+			var test = $.inArray(typeof data.venue, ['string', 'number']) != -1 ? data.venue : data.venue.toString(),
+					ea = this.elements.main_form.find('[tag="event-area"]');
 			if (ea.length) {
 				ea = ea.qsEditSetting('get');
 				if (typeof ea == 'object' && ea.initialized) {
-					ea.elements.form.find('[name="event-area"] option').hide();
-					ea.elements.form.find('[name="event-area"] option').not('[venue-id]').show();
-					ea.elements.form.find('[name="event-area"] option[venue-id="'+test+'"]').show();
+					var pool = ea.elements.form.find('[name="event-area-pool"]'),
+							display = ea.elements.form.find('[name="event-area"]'),
+							current = data['event-area'] || display.val();
+					display.empty();
+					pool.find('option').not('[venue-id]').clone().appendTo( display );
+					pool.find('option[venue-id="'+test+'"]').clone().appendTo( display );
+					pool.find('option[value="'+current+'"]').clone().prop( 'selected', 'selected' ).appendTo( display );
 				}
 			}
-		} else if (this.tag == 'event-area' && (
-				$.inArray(typeof data['event-area'], ['string', 'number']) != -1 || (typeof data['event-area'] == 'object' && typeof data['event-area'].toString == 'function')
-		)) {
+		} else if ( this.tag == 'event-area' && ( $.inArray( typeof data['event-area'], ['string', 'number'] ) != -1 || ( typeof data['event-area'] == 'object' && typeof data['event-area'].toString == 'function' ) ) ) {
 			var test = $.inArray(typeof data['event-area'], ['string', 'number']) != -1 ? data['event-area'] : data['event-area'].toString(),
 					ea = this.elements.main_form.find('[tag="event-area"]');
 			if (ea.length) {

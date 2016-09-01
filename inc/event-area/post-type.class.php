@@ -1295,6 +1295,29 @@ class QSOT_Post_Type_Event_Area {
 			'fields' => 'ids',
 		);
 		$area_ids = get_posts( $eaargs );
+		
+		ob_start();
+		?>
+			<?php foreach ( $area_ids as $area_id ): ?>
+				<?php
+					// get the event area
+					$event_area = apply_filters( 'qsot-get-event-area', false, $area_id );
+
+					// get the capacity of the event area. this is used to update the 'capacity' part of the calendar blocks in the admin
+					$capacity = isset( $event_area->meta, $event_area->meta['_capacity'] ) ? (int) $event_area->meta['_capacity'] : get_post_meta( $event_area->ID, '_capacity', true );
+
+					// if the area_type is set, then use it to find the appropriate display name of this event area
+					if ( isset( $event_area->area_type ) && is_object( $event_area->area_type ) )
+						$display_name = $event_area->area_type->get_event_area_display_name( $event_area );
+					// otherwise, use a generic method
+					else
+						$display_name = apply_filters( 'the_title', $event_area->post_title, $event_area->ID );
+				?>
+				<option value="<?php echo esc_attr( $event_area->ID ) ?>" venue-id="<?php echo $event_area->post_parent ?>" capacity="<?php echo esc_attr( $capacity ) ?>"><?php echo $display_name; ?></option>
+			<?php endforeach; ?>
+		<?php
+		$options = ob_get_contents();
+		ob_end_clean();
 
 		// render the form fields
 		ob_start();
@@ -1308,25 +1331,13 @@ class QSOT_Post_Type_Event_Area {
 						<input type="hidden" name="settings[event-area]" value="" scope="[rel=setting-main]" rel="event-area" />
 					</div>
 					<div class="setting-edit-form" rel="setting-form">
+						<select name="event-area-pool" style="display:none;">
+							<option value="0"><?php _e( '-None-', 'opentickets-community-edition' ) ?></option>
+							<?php echo $options ?>
+						</select>
 						<select name="event-area">
 							<option value="0"><?php _e( '-None-', 'opentickets-community-edition' ) ?></option>
-							<?php foreach ( $area_ids as $area_id ): ?>
-								<?php
-									// get the event area
-									$event_area = apply_filters( 'qsot-get-event-area', false, $area_id );
-
-									// get the capacity of the event area. this is used to update the 'capacity' part of the calendar blocks in the admin
-									$capacity = isset( $event_area->meta, $event_area->meta['_capacity'] ) ? (int) $event_area->meta['_capacity'] : get_post_meta( $event_area->ID, '_capacity', true );
-
-									// if the area_type is set, then use it to find the appropriate display name of this event area
-									if ( isset( $event_area->area_type ) && is_object( $event_area->area_type ) )
-										$display_name = $event_area->area_type->get_event_area_display_name( $event_area );
-									// otherwise, use a generic method
-									else
-										$display_name = apply_filters( 'the_title', $event_area->post_title, $event_area->ID );
-								?>
-								<option value="<?php echo esc_attr( $event_area->ID ) ?>" venue-id="<?php echo $event_area->post_parent ?>" capacity="<?php echo esc_attr( $capacity ) ?>"><?php echo $display_name; ?></option>
-							<?php endforeach; ?>
+							<?php echo $options ?>
 						</select>
 						<div class="edit-setting-actions">
 							<input type="button" class="button" rel="setting-save" value="<?php _e( 'OK', 'opentickets-community-edition' ) ?>" />
