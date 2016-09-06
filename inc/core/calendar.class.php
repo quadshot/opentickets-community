@@ -700,8 +700,13 @@ class qsot_frontend_calendar {
 		// check if there is a page already set in our settings
 		$page_id = intval( get_option( 'qsot_calendar_page_id', 0 ) );
 
-		// if there is a page_id already, then bail now, cause it already exists
+		$page = null;
+		// if there is a page_id already, then load the respective post object
 		if ( $page_id > 0 )
+			$page = get_post( $page_id );
+
+		// if the page is already created, bail now
+		if ( $page_id > 0 && is_object( $page ) && 'page' == $page->post_type )
 			return;
 
 		// basic settings of the page itself
