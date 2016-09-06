@@ -1,21 +1,21 @@
 === OpenTickets Community Edition ===
 Contributors: quadshot, loushou, coolmann
 Donate link: http://opentickets.com/
-Tags: events, event management, event tickets, ticket sales, ecommerce, tickets
+Tags: event tickets, tickets, ticketing, event ticketing, ticket sales, events, event management, ecommerce
 Requires at least: 4.0
-Tested up to: Latest
+Tested up to: 4.6
 Stable tag: trunk
-Copyright: Copyright (C) 2009-2014 Quadshot Software LLC
+Copyright: Copyright (C) 2009-2016 Quadshot Software LLC
 License: GNU General Public License, version 3 (GPL-3.0)
 License URI: http://www.gnu.org/copyleft/gpl.html
 
-An event management and online ticket sales platform, built on top of WooCommerce.
+An event management and online ticket sales platform, built on top of WooCommerce. The most complete WordPress Ticketing system.
 
 == Description ==
 
 = OpenTickets Community Edition =
 
-[OpenTickets Community Edition](http://opentickets.com/community-edition "Event management and online ticket sales platform") ("OTCE") is a free open source WordPress plugin that allows you to publish events and sell event tickets online. OTCE was created to allow people with WordPress websites to easily setup and sell tickets to their events. 
+[OpenTickets Community Edition](http://opentickets.com/community-edition "Event management and online ticket sales platform") ("OTCE") is a free, open source WordPress plugin that allows you to publish events and sell event tickets online. OTCE was created to allow people with WordPress websites to easily setup and sell tickets to their events. 
 
 OTCE is an alternative to other ticketing systems, that will reduce your overhead and eliminate service fees, because it is software you run on your own existing website. It was created for venues, artists, bands, nonprofits, festivals and event organizers who sell General Admission tickets.
 
@@ -25,10 +25,10 @@ With WordPress and WooCommerce installed, you can install the OTCE plugin and st
 
 The OTCE plugin empowers you with tools to:
 
+* Create and Sell Event Tickets
+* Display Calendar of Events
 * Publish Venues
 * Publish Events
-* Display Calendar of Events
-* Create and Sell Event Tickets
 * Allow Customers to keep Digital and/or Print e-Tickets
 * Checkin People to your Events with a QR Reader 
 * Event Ticket Reporting
@@ -39,7 +39,7 @@ OTCE is licensed under GPLv3.
 
 = Your first Event =
 
-Need help setting up your first event? Visit the [OpenTickets Community Edition Basic Help](http://opentickets.com/community-edition/#your-first-event) and follow the steps under _Creating your first Event, Start to Finish_.
+Need help creating your first ticket and setting up your first event? Visit the [OpenTickets Community Edition Basic Help](http://opentickets.com/community-edition/#your-first-event) and follow the steps under _Creating your first Event, Start to Finish_.
 
 = Need some help? =
 
