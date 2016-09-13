@@ -171,6 +171,10 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.4.6 - 09/13/2016 =
+* [fix] resolved issue in MS-Edge where event areas were not getting filtered by venue selection, during event creation
+* [fix] resolved activation scenario where calendar page was not getting auto created sometimes
+
 = 2.4.5 - 08/19/2016 =
 * [new] support for the new Table Service plugin
 * [fix] repaired bug where logged out users who create an account during checkout, and fail their first payment, do no lose their tickets
