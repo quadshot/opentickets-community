@@ -250,14 +250,15 @@ class qsot_venue_post_type {
 			htmlentities2(urlencode($string))
 		);
 
-		$map_uri = 'http://maps.googleapis.com/maps/api/staticmap?'.htmlentities2(sprintf(
+		// build the map url
+		$map_uri = esc_url( 'http://maps.googleapis.com/maps/api/staticmap?' . sprintf(
 			'center=%s&zoom=%s&size=%sx%s&maptype=roadmap&markers=%s&sensor=false&format=jpg',
-			urlencode($string),
-			urlencode($settings['zoom']),
-			urlencode($settings['width']),
-			urlencode($settings['height']),
-			sprintf('color:%s%%7Clabel:%s%%7C%s', urlencode($settings['color']), urlencode($settings['label']), urlencode($string))
-		));
+			urlencode( $string ),
+			urlencode( $settings['zoom'] ),
+			urlencode( $settings['width'] ),
+			urlencode( $settings['height'] ),
+			sprintf( 'color:%s%%7Clabel:%s%%7C%s', urlencode( $settings['color'] ), urlencode( $settings['label'] ), urlencode( $string ) )
+		) );
 
 		$out = '';
 		switch ($settings['type']) {
