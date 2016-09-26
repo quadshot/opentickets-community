@@ -1085,7 +1085,6 @@ class qsot_post_type {
 			'frmts' => array(
 				'MM-dd-yyyy' => __( 'MM-dd-yyyy', 'opentickets-community-edition' ),
 				'ddd MM-dd-yyyy' => __( 'ddd MM-dd-yyyy', 'opentickets-community-edition' ),
-				'hh:mmtt' => __( 'hh:mmtt', 'opentickets-community-edition' ),
 			),
 			'tz' => get_option('timezone_string'),
 			'str' => array(
