@@ -521,8 +521,10 @@ QS.adminTicketSelection = ( function( $, qs, qt ) {
 				// on success, update the list
 
 				// if the response is not valid, then error
-				if ( ! qt.isO( r ) || ! qt.isA( r.i ) || ! r.i.length ) {
+				if ( ! qt.isO( r ) || ! qt.isA( r.i ) ) {
 					me.dialog_msgs( [ qs._str( 'Tickets were added, but you must refresh the page to see them in the order items list.', S ) ] );
+				// if the response was successful, but there was no items displayed, then do nothing
+				} else if ( ! r.i.length ) {
 				// otherwise, update the list
 				} else {
 					me.e.order_items.empty();
