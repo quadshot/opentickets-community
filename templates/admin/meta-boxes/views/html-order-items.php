@@ -250,7 +250,7 @@ if ( wc_tax_enabled() ) {
 	</p>
 	<p class="add-items">
 		<?php if ( $order->is_editable() ) : ?>
-			<button type="button" class="button add-line-item"><?php _e( 'Add line item(s)', 'woocommerce' ); ?></button>
+			<button type="button" class="button add-line-item"><?php _e( 'Add item(s)', 'woocommerce' ); ?></button>
 		<?php else : ?>
 			<span class="description tips" data-tip="<?php esc_attr_e( 'To edit this order change the status back to "Pending"', 'woocommerce' ); ?>"><?php _e( 'This order has been paid for and is no longer editable', 'woocommerce' ); ?></span>
 		<?php endif; ?>

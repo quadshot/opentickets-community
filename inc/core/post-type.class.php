@@ -932,8 +932,9 @@ class qsot_post_type {
 	public static function register_assets() {
 		$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
 
+		$calendar = qsot_frontend_calendar::load_calendar_language();
 		// main event ui js. combines all the moving parts to make the date/time selection process more user friendly than other crappy event plugins
-		wp_register_script('qsot-event-ui', self::$o->core_url.'assets/js/admin/event-ui.js', array('qsot-tools', 'fullcalendar'), self::$o->version);
+		wp_register_script('qsot-event-ui', self::$o->core_url.'assets/js/admin/event-ui.js', array('qsot-tools', $calendar), self::$o->version);
 		// initialization js. initializes all the moving parts. called at the top of the edit event page
 		wp_register_script('qsot-events-admin-edit-page', self::$o->core_url.'assets/js/admin/edit-page.js', array('qsot-event-ui', 'jquery-ui-datepicker'), self::$o->version);
 		// general additional styles for the event ui interface

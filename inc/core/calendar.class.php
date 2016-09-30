@@ -16,7 +16,7 @@ class qsot_frontend_calendar {
 		add_action( 'qsot-activate', array( __CLASS__, 'create_calendar_page' ), 10 );
 
 		// handle registration and enqueuing of our calendar assets
-		add_filter( 'init', array( __CLASS__, 'register_assets' ), 10 );
+		add_filter( 'init', array( __CLASS__, 'register_assets' ), -1 );
 		add_filter( 'wp_enqueue_scripts', array( __CLASS__, 'add_assets' ), 10000 );
 
 		// handle the ajax requests for the calendar
@@ -218,10 +218,15 @@ class qsot_frontend_calendar {
 		if ( ! is_object( $wp_scripts ) )
 			return;
 		// see if we have a registered script for this language
-		if ( isset( $wp_scripts->registered[ 'fullcalendar-lang-' . $locale ] ) )
+		if ( isset( $wp_scripts->registered[ 'fullcalendar-lang-' . $locale ] ) ) {
 			wp_enqueue_script( 'fullcalendar-lang-' . $locale );
-		else if ( isset( $wp_scripts->registered[ 'fullcalendar-lang-' . $locale_parts[0] ] ) )
+			return 'fullcalendar-lang-' . $locale;
+		} else if ( isset( $wp_scripts->registered[ 'fullcalendar-lang-' . $locale_parts[0] ] ) ) {
 			wp_enqueue_script( 'fullcalendar-lang-' . $locale_parts[0] );
+			return 'fullcalendar-lang-' . $locale_parts[0];
+		}
+
+		return 'fullcalendar';
 	}
 
 	// load the admin js and css
@@ -333,6 +338,11 @@ class qsot_frontend_calendar {
 			'str' => array(
 				'Loading...' => __( 'Loading...', 'opentickets-community-edition' ),
 				'Goto Month' => __( 'Goto Month', 'opentickets-community-edition' ),
+				'Basic Day' => _x( 'Basic Day', 'calendar-view', 'opentickets-community-edition' ),
+				'Basic Week' => _x( 'Basic Week', 'calendar-view', 'opentickets-community-edition' ),
+				'Month' => _x( 'Month', 'calendar-view', 'opentickets-community-edition' ),
+				'Agenda Day' => _x( 'Agenda Day', 'calendar-view', 'opentickets-community-edition' ),
+				'Agenda Week' => _x( 'Agenda Week', 'calendar-view', 'opentickets-community-edition' ),
 			),
 		) );
 

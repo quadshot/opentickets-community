@@ -394,7 +394,7 @@ QS.EventCalendar = ( function( $, W, D, qt, undefined ) {
 					var name = ucwords( i.replace( /([A-Z])/, function( match ) { return ' ' + match.toLowerCase(); } ) );
 					if ( -1 !== $.inArray( name.toLowerCase(), [ 'basic', 'agenda' ] ) )
 						continue;
-					$( '<option>' + name + '</option>' ).attr( 'value', i ).appendTo( T.view_selector );
+					$( '<option>' + qt.str( name, S ) + '</option>' ).attr( 'value', i ).appendTo( T.view_selector );
 				}
 
 				// setup the switcher event
