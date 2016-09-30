@@ -1056,12 +1056,43 @@ class QSOT_tickets {
 
 		// end the 'Tickets' section on the page
 		self::$options->add(array(
-			'order' => 599,
+			'order' => 549,
 			'type' => 'sectionend',
 			'id' => 'heading-frontend-tickets-1',
 			'page' => 'frontend',
 			'section' => 'tickets',
 		));
+
+		// the 'Google Maps' heading on the Frontend tab
+		self::$options->add( array(
+			'order' => 550,
+			'type' => 'title',
+			'title' => __( 'Google Maps API', 'opentickets-community-edition' ),
+			'id' => 'heading-frontend-google-maps-1',
+			'page' => 'frontend',
+			'section' => 'tickets',
+		) );
+
+		// Google Maps API key
+		self::$options->add( array(
+			'order' => 551,
+			'id' => 'qsot-google-maps-api-key',
+			'type' => 'text',
+			'title' => __( 'API Key', 'opentickets-community-edition' ),
+			'desc' => '<br/>'
+					. __( 'As of June 22, 2016, Google Maps now requires an API key for any sites that started using their api After June, 22, 2016. Enter your API here to activate the maps on your tickets, if they are missing.', 'opentickets-community-edition' ),
+			'page' => 'frontend',
+			'section' => 'tickets',
+		) );
+
+		// end the 'Google Maps' section on the page
+		self::$options->add( array(
+			'order' => 599,
+			'type' => 'sectionend',
+			'id' => 'heading-frontend-google-maps-1',
+			'page' => 'frontend',
+			'section' => 'tickets',
+		) );
 	}
 }
 

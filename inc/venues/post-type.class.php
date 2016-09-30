@@ -223,6 +223,8 @@ class qsot_venue_post_type {
 	public static function map_string($_, $data, $settings='') {
 		static $id = 0;
 
+		$api_key = apply_filters( 'qsot-get-option-value', '', 'qsot-google-maps-api-key' );
+
 		$settings = wp_parse_args($settings, apply_filters('qsot-default-map-settings', array(
 			'type' => 'map',
 			'height' => 400,
@@ -252,7 +254,8 @@ class qsot_venue_post_type {
 
 		// build the map url
 		$map_uri = esc_url( 'http://maps.googleapis.com/maps/api/staticmap?' . sprintf(
-			'center=%s&zoom=%s&size=%sx%s&maptype=roadmap&markers=%s&sensor=false&format=jpg',
+			'key=%s&center=%s&zoom=%s&size=%sx%s&maptype=roadmap&markers=%s&sensor=false&format=jpg',
+			urlencode( $api_key ),
 			urlencode( $string ),
 			urlencode( $settings['zoom'] ),
 			urlencode( $settings['width'] ),
