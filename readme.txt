@@ -171,6 +171,13 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.5.0 - 10/03/2016 =
+* [tweak] updated date strings for ES translation
+* [tweak] updated how google map url is created so that encoding is always correct
+* [new] new setting for Google Maps, to provide API key, since Google now requires it for static map usage
+* [fix] repaired calendar translations in the admin, so that now it is actually translated
+* [fix] repaired issue where sometimes creating a new order in the admin and selecting tickets, caused an error message to show
+
 = 2.4.6 - 09/13/2016 =
 * [fix] resolved issue in MS-Edge where event areas were not getting filtered by venue selection, during event creation
 * [fix] resolved activation scenario where calendar page was not getting auto created sometimes
