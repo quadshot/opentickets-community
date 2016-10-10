@@ -171,7 +171,7 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
-= 2.5.0 - 10/03/2016 =
+= 2.5.0 - 10/10/2016 =
 * [tweak] updated date strings for ES translation
 * [tweak] updated how google map url is created so that encoding is always correct
 * [new] new setting for Google Maps, to provide API key, since Google now requires it for static map usage
