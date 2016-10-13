@@ -127,6 +127,8 @@ abstract class QSOT_Admin_Report {
 
 	// validate and pass on the ajax requests for this report
 	public function handle_ajax() {
+		// memory limit fix for plugins that mess with the memory limit
+		ini_set( 'memory_limit', defined( 'WP_MEMORY_LIMIT' ) ? WP_MEMORY_LIMIT : '256M' );
 		// if the current user does not have permissions to run the report, then bail
 		//if ( ! current_user_can( 'view_woocommerce_reports' ) )
 			//return $this->_error( new WP_Error( 'no_permission', __( 'You do not have permission to use this report.', 'opentickets-community-edition' ) ) );
