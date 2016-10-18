@@ -127,8 +127,17 @@ abstract class QSOT_Admin_Report {
 
 	// validate and pass on the ajax requests for this report
 	public function handle_ajax() {
+		$max = defined( 'WP_MAX_MEMORY_LIMIT' ) ? WP_MAX_MEMORY_LIMIT : '256M';
+		$max_val = QSOT::xb2b( $max );
+		if ( $max_val < 268435456 )
+			$max = '256M';
 		// memory limit fix for plugins that mess with the memory limit
-		ini_set( 'memory_limit', defined( 'WP_MEMORY_LIMIT' ) ? WP_MEMORY_LIMIT : '256M' );
+		ini_set( 'memory_limit', $max );
+		if ( isset( $_COOKIE, $_COOKIE['otdebug'] ) && 'opentickets' == $_COOKIE['otdebug'] ) {
+			error_reporting( E_ALL );
+			ini_set( 'display_errors', 1 );
+			ini_set( 'html_errors', 1 );
+		}
 		// if the current user does not have permissions to run the report, then bail
 		//if ( ! current_user_can( 'view_woocommerce_reports' ) )
 			//return $this->_error( new WP_Error( 'no_permission', __( 'You do not have permission to use this report.', 'opentickets-community-edition' ) ) );
