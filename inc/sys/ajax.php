@@ -64,10 +64,19 @@ class QSOT_Ajax {
 			//die(var_dump(1, $sa, $this->by_sa));
 			return;
 
+		$bypass_nonce = false;
+		// are there any actions for this sa that do not require an nonce
+		foreach ( $this->by_sa[ $sa ] as $order => $action_data ) {
+			if ( ! $action_data['requires_nonce'] ) {
+				$bypass_nonce = true;
+				break;
+			}
+		}
+
 		$action = str_replace( 'wp_ajax_', '', str_replace( 'wp_ajax_nopriv_', '', current_action() ) );
 		// make sure there is an nonce present that matches. the frist level basic security
-		if ( ! isset( $_REQUEST['_n'] ) || ! wp_verify_nonce( $_REQUEST['_n'], 'do-' . $action ) )
-			//die(var_dump(2, $action, wp_create_nonce( 'do-' . $action ), $_REQUEST));
+		$nonce_passes = ( isset( $_REQUEST['_n'] ) && wp_verify_nonce( $_REQUEST['_n'], 'do-' . $action ) );
+		if ( ! $bypass_nonce && ! $nonce_passes )
 			return;
 
 		$event = false;
@@ -95,6 +104,10 @@ class QSOT_Ajax {
 			foreach ( $handlers as $handler ) {
 				// if this handler is only good for certain actions, then make sure that we are on one of those actions
 				if ( is_array( $handler['only_for'] ) && count( $handler['only_for'] ) && ! in_array( $action, $handler['only_for'] ) )
+					continue;
+
+				// if this action requires an nonce, and the nonce failed, then skip it
+				if ( $handler['requires_nonce'] && ! $nonce_passes )
 					continue;
 
 				// if the current user has access to this handler, then call it
@@ -156,7 +169,7 @@ class QSOT_Ajax {
 	}
 
 	// allow registration of sub action handlers
-	public function register( $sa, $func, $requirements=array(), $order=null, $only_for=null ) {
+	public function register( $sa, $func, $requirements=array(), $order=null, $only_for=null, $requires_nonce=true ) {
 		// sanitize input
 		$sa = trim( $sa );
 		$requirements = (array)$requirements;
@@ -190,6 +203,8 @@ class QSOT_Ajax {
 			// 'my-action'
 			// array( 'my-action', 'your-action' )
 			'only_for' => $only_for ? (array)$only_for : null,
+			// whether this ajax call requires the nonce validation or not
+			'requires_nonce' => !! $requires_nonce,
 		);
 
 		return true;
