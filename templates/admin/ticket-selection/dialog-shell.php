@@ -1,5 +1,5 @@
 <?php if ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) die( header( 'Location: /') ); ?>
-<div class="ticket-selection-dialog" title="Select Ticket">
+<div class="ticket-selection-dialog" title="<?php echo esc_attr( __( 'Select Ticket', 'opentickets-community-edition' ) ) ?>">
 	<div class="errors" rel="errors"></div>
 	<div class="event-info" rel="info"></div>
 	<div class="actions" rel="actions"></div>

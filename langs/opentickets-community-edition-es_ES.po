@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: OpenTickets Community Edition\n"
-"POT-Creation-Date: 2016-10-11 06:44-0800\n"
-"PO-Revision-Date: 2016-10-18 06:16-0800\n"
+"POT-Creation-Date: 2016-11-02 06:12-0800\n"
+"PO-Revision-Date: 2016-11-02 06:12-0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es_ES\n"
@@ -287,45 +287,45 @@ msgstr "Versión para imprimir"
 msgid "Report %s"
 msgstr "Reportes %s"
 
-#: ../inc/core/event-reporting.class.php:163
-#: ../inc/core/event-reporting.class.php:771
+#: ../inc/core/event-reporting.class.php:174
+#: ../inc/core/event-reporting.class.php:782
 msgid "You do not have permission to use this report."
 msgstr "Hey, no tiene permiso suficiente para realizar esta operación."
 
-#: ../inc/core/event-reporting.class.php:235
+#: ../inc/core/event-reporting.class.php:246
 msgid "Could not open the CSV file path. Aborting report generation."
 msgstr ""
 
-#: ../inc/core/event-reporting.class.php:298
+#: ../inc/core/event-reporting.class.php:309
 msgid "There are no tickts sold for this event yet."
 msgstr "No hay reportes disponibles para"
 
-#: ../inc/core/event-reporting.class.php:356
+#: ../inc/core/event-reporting.class.php:367
 #: ../templates/myaccount/my-upcoming-tickets.php:33
 #: ../templates/myaccount/my-upcoming-tickets.php:87
 msgid "Edit order"
 msgstr "Editar orden"
 
-#: ../inc/core/event-reporting.class.php:365
+#: ../inc/core/event-reporting.class.php:376
 #, php-format
 msgid "Cart Session ID: %s"
 msgstr "ID de la variación: %s"
 
-#: ../inc/core/event-reporting.class.php:366
+#: ../inc/core/event-reporting.class.php:377
 msgid "Temporary Cart"
 msgstr ""
 
-#: ../inc/core/event-reporting.class.php:408
+#: ../inc/core/event-reporting.class.php:419
 #: ../inc/reporting/seating.report.class.php:582
 #, php-format
 msgid "Unpaid Cart: %s"
 msgstr ""
 
-#: ../inc/core/event-reporting.class.php:440
+#: ../inc/core/event-reporting.class.php:451
 msgid "Download this CSV"
 msgstr "Descargar CSV"
 
-#: ../inc/core/event-reporting.class.php:484
+#: ../inc/core/event-reporting.class.php:495
 #, php-format
 msgid ""
 "Could not open the file [%s] for writing. Please verify the file permissions "
@@ -335,7 +335,7 @@ msgstr ""
 "verifique que '%s' tiene permiso para crear una carpeta en el servidor e "
 "inténtelo de nuevo."
 
-#: ../inc/core/event-reporting.class.php:511
+#: ../inc/core/event-reporting.class.php:522
 #, php-format
 msgid ""
 "The report cache directory [%s] is not writable. Please update the file "
@@ -345,13 +345,13 @@ msgstr ""
 "verifique que '%s' tiene permiso para crear una carpeta en el servidor e "
 "inténtelo de nuevo."
 
-#: ../inc/core/event-reporting.class.php:515
+#: ../inc/core/event-reporting.class.php:526
 #, php-format
 msgid "Please remove (or move) the file [%s] and run the report again."
 msgstr ""
 
-#: ../inc/core/event-reporting.class.php:518
-#: ../inc/core/event-reporting.class.php:522
+#: ../inc/core/event-reporting.class.php:529
+#: ../inc/core/event-reporting.class.php:533
 msgid ""
 "Could not create a new directory inside your uploads folder. Update the file "
 "permissions to allow writing."
@@ -360,28 +360,28 @@ msgstr ""
 "verifique que '%s' tiene permiso para crear una carpeta en el servidor e "
 "inténtelo de nuevo."
 
-#: ../inc/core/event-reporting.class.php:596
+#: ../inc/core/event-reporting.class.php:607
 #, php-format
 msgid "Network Admin: %s"
 msgstr "Admin. de la red %s"
 
-#: ../inc/core/event-reporting.class.php:598
+#: ../inc/core/event-reporting.class.php:609
 #, php-format
 msgid "User Dashboard: %s"
 msgstr ""
 
-#: ../inc/core/event-reporting.class.php:603
+#: ../inc/core/event-reporting.class.php:614
 #, php-format
 msgid "%1$s &#8212; WordPress"
 msgstr "%1$s &#8212; WordPress"
 
-#: ../inc/core/event-reporting.class.php:605
+#: ../inc/core/event-reporting.class.php:616
 #, php-format
 msgid "%1$s &lsaquo; %2$s &#8212; WordPress"
 msgstr "%1$s &lsaquo; %2$s &#8212; WordPress"
 
-#: ../inc/core/event-reporting.class.php:818
-#: ../inc/core/event-reporting.class.php:843
+#: ../inc/core/event-reporting.class.php:829
+#: ../inc/core/event-reporting.class.php:854
 #: ../inc/core/my-account-takeover.class.php:69
 #: ../inc/sys/pages/system-status.page.php:379
 #: ../inc/sys/pages/system-status.page.php:443
@@ -389,7 +389,7 @@ msgstr "%1$s &lsaquo; %2$s &#8212; WordPress"
 msgid "(none)"
 msgstr "(ninguno)"
 
-#: ../inc/core/event-reporting.class.php:831
+#: ../inc/core/event-reporting.class.php:842
 msgid "(no-name/guest)"
 msgstr ""
 
@@ -1293,13 +1293,13 @@ msgstr "l jS \\de F Y, h:ia"
 
 #: ../inc/event-area/general-admission-area-type.class.php:1014
 #: ../inc/event-area/general-admission-area-type.class.php:1146
-#: ../inc/event-area/post-type.class.php:1540
+#: ../inc/event-area/post-type.class.php:1556
 msgid "Could not find the new event."
 msgstr "No se pudo encontrar el nuevo evento."
 
 #: ../inc/event-area/general-admission-area-type.class.php:1022
 #: ../inc/event-area/general-admission-area-type.class.php:1153
-#: ../inc/event-area/post-type.class.php:1547
+#: ../inc/event-area/post-type.class.php:1563
 msgid "Could not find the new event's event area."
 msgstr "No se pudo encontrar el nuevo evento."
 
@@ -1545,60 +1545,131 @@ msgstr "Área del evento:"
 msgid "-None-"
 msgstr "-Ninguna-"
 
+#: ../inc/event-area/post-type.class.php:1443
+msgid ""
+"Tickets were added, but you must refresh the page to see them in the order "
+"items list."
+msgstr ""
+"Se han añadido entradas, pero debe actualizar la página para verlas en la "
+"lista de artículos de pedido."
+
+#: ../inc/event-area/post-type.class.php:1444
+msgid "Tickets have been added."
+msgstr "Se han añadido boletos."
+
+#: ../inc/event-area/post-type.class.php:1445
+#: ../templates/admin/ticket-selection/general-admission/inner-add.php:6
+msgid "Add Tickets"
+msgstr "Agregar entradas"
+
+#: ../inc/event-area/post-type.class.php:1446
+msgid "Change Ticket Count"
+msgstr "Cambiar cuenta de entradas"
+
+#: ../inc/event-area/post-type.class.php:1447
+#: ../templates/admin/meta-boxes/views/html-order-items.php:278
+msgid "Save"
+msgstr "Guardar"
+
+#: ../inc/event-area/post-type.class.php:1448
+msgid "You must specify a quantity greater than 1."
+msgstr "Debe especificar una cantidad mayor que 1."
+
+#: ../inc/event-area/post-type.class.php:1449
+msgid "Processing..."
+msgstr "Tratamiento..."
+
+#: ../inc/event-area/post-type.class.php:1450
+msgid "Invalid response."
+msgstr "Respuesta invalida."
+
 #: ../inc/event-area/post-type.class.php:1451
+msgid "There was a problem adding those tickets."
+msgstr "Se ha producido un problema al agregar las entradas."
+
+#: ../inc/event-area/post-type.class.php:1452
+msgid "Could not update those tickets."
+msgstr "No se han podido actualizar las entradas."
+
+#: ../inc/event-area/post-type.class.php:1453
+msgid ""
+"There was a problem loading the requested information. Please close this "
+"modal and try again."
+msgstr ""
+"Se ha producido un problema al cargar la información solicitada. Cierra este "
+"modal y vuelve a intentarlo."
+
+#: ../inc/event-area/post-type.class.php:1454
+msgid ""
+"There was a problem loading the requested Event. Switching to calendar view."
+msgstr ""
+"Se ha producido un problema al cargar el Evento solicitado. Cambiar a la "
+"vista de calendario."
+
+#: ../inc/event-area/post-type.class.php:1455
+msgid "Could not load that event, because it has an invalid event area type."
+msgstr ""
+"No se pudo cargar ese evento, porque tiene un tipo de área de evento no "
+"válido."
+
+#: ../inc/event-area/post-type.class.php:1456
+msgid "Could not load that event."
+msgstr "No se pudo cargar ese evento."
+
+#: ../inc/event-area/post-type.class.php:1467
 msgid "Add tickets"
 msgstr "Agregar entradas"
 
-#: ../inc/event-area/post-type.class.php:1555
+#: ../inc/event-area/post-type.class.php:1571
 #: ../inc/ticket/checkin.class.php:85
 msgid "Could not find that order."
 msgstr "No se encontró ese lugar."
 
-#: ../inc/event-area/post-type.class.php:1577
+#: ../inc/event-area/post-type.class.php:1593
 #: ../templates/event-area/general-admission/ticket-selection.php:19
 #: ../templates/post-content/event-area.php:115
 msgid "Reserve"
 msgstr "Reservar"
 
-#: ../inc/event-area/post-type.class.php:1578
+#: ../inc/event-area/post-type.class.php:1594
 #: ../templates/event-area/general-admission/owns.php:33
 #: ../templates/post-content/event-area.php:174
 msgid "Update"
 msgstr "Actualizar"
 
-#: ../inc/event-area/post-type.class.php:1579
+#: ../inc/event-area/post-type.class.php:1595
 #: ../templates/event-area/general-admission/owns.php:17
 #: ../templates/event-area/general-admission/owns.php:40
 #: ../templates/post-content/event-area.php:197
 msgid "Proceed to Cart"
 msgstr "Ver la orden"
 
-#: ../inc/event-area/post-type.class.php:1586
+#: ../inc/event-area/post-type.class.php:1602
 #: ../inc/sys/settings/frontend.php:156
 msgid "Ticket Selection UI"
 msgstr ""
 
-#: ../inc/event-area/post-type.class.php:1598
+#: ../inc/event-area/post-type.class.php:1614
 msgid "Reserve Button"
 msgstr "Reservar"
 
-#: ../inc/event-area/post-type.class.php:1599
+#: ../inc/event-area/post-type.class.php:1615
 msgid "Label for the Reserve Button on the Ticket Selection UI."
 msgstr ""
 
-#: ../inc/event-area/post-type.class.php:1610
+#: ../inc/event-area/post-type.class.php:1626
 msgid "Update Button"
 msgstr "Actualizar"
 
-#: ../inc/event-area/post-type.class.php:1611
+#: ../inc/event-area/post-type.class.php:1627
 msgid "Label for the Update Button on the Ticket Selection UI."
 msgstr ""
 
-#: ../inc/event-area/post-type.class.php:1622
+#: ../inc/event-area/post-type.class.php:1638
 msgid "Proceed to Cart Button"
 msgstr "Ver la orden"
 
-#: ../inc/event-area/post-type.class.php:1623
+#: ../inc/event-area/post-type.class.php:1639
 msgid "Label for the Proceed to Cart Button on the Ticket Selection UI."
 msgstr ""
 
@@ -3806,10 +3877,6 @@ msgstr "Agregar comisión"
 msgid "Add shipping cost"
 msgstr "Agregar costo de envío"
 
-#: ../templates/admin/meta-boxes/views/html-order-items.php:278
-msgid "Save"
-msgstr "Guardar"
-
 #: ../templates/admin/meta-boxes/views/html-order-items.php:288
 msgid "Restock refunded items"
 msgstr "Reañadir en el inventario los artículos reintegrados"
@@ -3900,6 +3967,10 @@ msgstr "Editar orden"
 msgid "Edit Product"
 msgstr "Editar producto"
 
+#: ../templates/admin/ticket-selection/dialog-shell.php:2
+msgid "Select Ticket"
+msgstr "Seleccionar Ticket"
+
 #: ../templates/admin/ticket-selection/transition.php:2
 msgid "Loading. One moment please..."
 msgstr "Cargando. Un momentito por favor..."
@@ -3924,10 +3995,6 @@ msgstr "Capacidad:"
 #: ../templates/admin/ticket-selection/general-admission/info.php:7
 msgid "Available:"
 msgstr "Disponible:"
-
-#: ../templates/admin/ticket-selection/general-admission/inner-add.php:6
-msgid "Add Tickets"
-msgstr "Agregar entradas"
 
 #: ../templates/checkin/already-occupied.php:9
 msgid "Ticket has PREVIOUSLY checked in!"
