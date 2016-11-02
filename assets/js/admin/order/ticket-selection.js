@@ -530,7 +530,7 @@ QS.adminTicketSelection = ( function( $, qs, qt ) {
 					me.e.order_items.empty();
 					for ( var i=0; i < r.i.length; i++ )
 						$( r.i[ i ] ).appendTo( me.e.order_items );
-					me.dialog_msgs( [ qs._str( 'Tickets have been added.' ) ], 'msg' );
+					me.dialog_msgs( [ qs._str( 'Tickets have been added.', S ) ], 'msg' );
 				}
 
 				me.e.order_items.qsUnblock();

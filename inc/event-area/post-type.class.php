@@ -1439,6 +1439,22 @@ class QSOT_Post_Type_Event_Area {
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
 			'nonce' => wp_create_nonce( 'do-qsot-admin-ajax' ),
 			'templates' => apply_filters( 'qsot-ticket-selection-templates', array(), $exists, $order_id ),
+			'str' => array(
+				'Tickets were added, but you must refresh the page to see them in the order items list.' => __( 'Tickets were added, but you must refresh the page to see them in the order items list.', 'opentickets-community-edition' ),
+				'Tickets have been added.' => __( 'Tickets have been added.', 'opentickets-community-edition' ),
+				'Add Tickets' => __( 'Add Tickets', 'opentickets-community-edition' ),
+				'Change Ticket Count' => __( 'Change Ticket Count', 'opentickets-community-edition' ),
+				'Save' => __( 'Save', 'opentickets-community-edition' ),
+				'You must specify a quantity greater than 1.' => __( 'You must specify a quantity greater than 1.', 'opentickets-community-edition' ),
+				'Processing...' => __( 'Processing...', 'opentickets-community-edition' ),
+				'Invalid response.' => __( 'Invalid response.', 'opentickets-community-edition' ),
+				'There was a problem adding those tickets.' => __( 'There was a problem adding those tickets.', 'opentickets-community-edition' ),
+				'Could not update those tickets.' => __( 'Could not update those tickets.', 'opentickets-community-edition' ),
+				'There was a problem loading the requested information. Please close this modal and try again.' => __( 'There was a problem loading the requested information. Please close this modal and try again.', 'opentickets-community-edition' ),
+				'There was a problem loading the requested Event. Switching to calendar view.' => __( 'There was a problem loading the requested Event. Switching to calendar view.', 'opentickets-community-edition' ),
+				'Could not load that event, because it has an invalid event area type.' => __( 'Could not load that event, because it has an invalid event area type.', 'opentickets-community-edition' ),
+				'Could not load that event.' => __( 'Could not load that event.', 'opentickets-community-edition' ),
+			),
 		) );
 
 		// do the same for each registered area type
