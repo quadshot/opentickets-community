@@ -83,17 +83,72 @@ class QSOT_Utils {
 		static $off = false;
 		// if we are already in c format, then use it
 		if ( false !== strpos( $ymd, 'T' ) )
-			return $ymd;
+			return self::dst_adjust( $ymd );
 
 		// if we dont match the legacy format, then bail
 		if ( ! preg_match( '#\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}#', $ymd ) )
-			return $ymd;
+			return self::dst_adjust( $ymd );
 
 		// if we never loaded offset before, do it now
 		if ( false === $off )
 			$off = date_i18n( 'P' );
 
-		return str_replace( ' ', 'T', $ymd ) . $off;
+		return self::dst_adjust( str_replace( ' ', 'T', $ymd ) . $off );
+	}
+
+	/**
+	 * Hande daylight savings time
+	 * 
+	 * Takes a timestamp that has a timezone, and adjusts the timezone for dailylight savings time, if needed.
+	 *
+	 * @param string $date a timestamp string with a timezone
+	 *
+	 * @return string a modified timestamp that has an adjusted timezone portion
+	 */
+	public static function dst_adjust( $string ) {
+		static $tz_string = null;
+		// only grab the tiemzone string once
+		if ( null === $tz_string )
+			$tz_string = get_option( 'timezone_string', 'UTC' );
+
+		// store current tz and update to proper one for daylight savign calc
+		$orig = date_default_timezone_get();
+		if ( $tz_string )
+			date_default_timezone_set( $tz_string );
+
+		// get the parts of the timezone
+		preg_match( '#^(?P<date>\d{4}-\d{2}-\d{2})T(?P<time>\d{2}:\d{2}:\d{2})(?P<tz>.*)$#', $string, $match );
+
+		// if the timezone is set, then possibly adjust it
+		if ( isset( $match['date'], $match['time'], $match['tz'] ) ) {
+			// etract the pieces of the timestamp
+			$date = $match['date'];
+			$time = $match['time'];
+			$off = $match['tz'];
+
+			// adjust for dst. we need to adjust for NOW being dst, not then
+			if ( date( 'I', time() ) ) {
+				preg_match( '#^(?P<hour>[-+]\d{2}):(?P<minute>\d{2})$#', $off, $match );
+				if ( isset( $match['hour'], $match['minute'] ) ) {
+					$new_hour = intval( $match['hour'] ) + 1;
+					// "spring forward" means the offset is increased by one hour
+					$off = sprintf(
+						'%s%02s%02s',
+						$new_hour < 0 ? '-' : '+',
+						abs( $new_hour ),
+						$match['minute']
+					);
+				}
+			}
+
+			// create the updated timestamp
+			$string = $date . 'T' . $time . $off;
+		}
+
+		// restore tz
+		date_default_timezone_set( $orig );
+
+		return $string;
 	}
 
 	/**
