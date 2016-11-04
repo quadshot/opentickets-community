@@ -1156,12 +1156,12 @@ class qsot_post_type {
 			$start = isset( $meta[ self::$o->{'meta_key.start'} ] )
 					? $meta[ self::$o->{'meta_key.start'} ]
 					: date( 'Y-m-d H:i:s', strtotime( preg_replace( '#(\d{4}-\d{2}-\d{2})_(\d{1,2})-(\d{2})((a|p)m)#', '\1 \2:\3\4', $event->post_name ) ) );
-			$start = QSOT_Utils::to_c( $start );
+			$start = QSOT_Utils::to_c( $start, false, false );
 			$earliest = min( strtotime( $start ), $earliest );
 			$end = isset( $meta[ self::$o->{'meta_key.end'} ] )
 					? $meta[ self::$o->{'meta_key.end'} ]
 					: date( 'Y-m-d H:i:s', strtotime( '+1 hour', $start ) );
-			$end = QSOT_Utils::to_c( $end );
+			$end = QSOT_Utils::to_c( $end, false, false );
 
 			// add an item to the list, by transposing the loaded settings for this sub event over the list of default settings, and then allowing sub/external plugins to modify them
 			// to add their own settings for the interface.

@@ -79,21 +79,22 @@ class QSOT_Utils {
 	 *
 	 * @return string new date formatted string using the 'c' date format
 	 */
-	public static function to_c( $ymd ) {
+	public static function to_c( $ymd, $relative_to_date=false, $dst_adjust=true ) {
 		static $off = false;
 		// if we are already in c format, then use it
 		if ( false !== strpos( $ymd, 'T' ) )
-			return self::dst_adjust( $ymd );
+			return $dst_adjust ? self::dst_adjust( $ymd, $relative_to_date ) : $ymd;
 
 		// if we dont match the legacy format, then bail
 		if ( ! preg_match( '#\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}#', $ymd ) )
-			return self::dst_adjust( $ymd );
+			return $dst_adjust ? self::dst_adjust( $ymd, $relative_to_date ) : $ymd;
 
 		// if we never loaded offset before, do it now
 		if ( false === $off )
 			$off = date_i18n( 'P' );
 
-		return self::dst_adjust( str_replace( ' ', 'T', $ymd ) . $off );
+		$out = str_replace( ' ', 'T', $ymd ) . $off;
+		return $dst_adjust ? self::dst_adjust( $out, $relative_to_date ) : $out;
 	}
 
 	/**
@@ -105,8 +106,11 @@ class QSOT_Utils {
 	 *
 	 * @return string a modified timestamp that has an adjusted timezone portion
 	 */
-	public static function dst_adjust( $string ) {
+	public static function dst_adjust( $string, $relative_to_date=false ) {
 		static $tz_string = null;
+		$relative_to_date = ! $relative_to_date ? date( 'c' ) : $relative_to_date;
+		$relative_ts = strtotime( $relative_to_date );
+		$relative_ts = $relative_ts ? $relative_ts : time();
 		// only grab the tiemzone string once
 		if ( null === $tz_string )
 			$tz_string = get_option( 'timezone_string', 'UTC' );
@@ -126,11 +130,14 @@ class QSOT_Utils {
 			$time = $match['time'];
 			$off = $match['tz'];
 
+			$current_dst = date( 'I', time() );
+			$relative_dst = date( 'I', $relative_ts );
+			$diff = $relative_dst - $current_dst;
 			// adjust for dst. we need to adjust for NOW being dst, not then
-			if ( date( 'I', time() ) ) {
+			if ( $diff ) {
 				preg_match( '#^(?P<hour>[-+]\d{2}):(?P<minute>\d{2})$#', $off, $match );
 				if ( isset( $match['hour'], $match['minute'] ) ) {
-					$new_hour = intval( $match['hour'] ) + 1;
+					$new_hour = intval( $match['hour'] ) - $diff;
 					// "spring forward" means the offset is increased by one hour
 					$off = sprintf(
 						'%s%02s%02s',
@@ -160,7 +167,7 @@ class QSOT_Utils {
 	 *
 	 * @return int a unix-timestamp, adjusted so that it produces accurrate local times for the server
 	 */
-	public static function local_timestamp( $date ) {
-		return self::gmt_timestamp( self::to_c( $date ), 'from' );
+	public static function local_timestamp( $date, $relative_to_date=false, $dst_adjust=true ) {
+		return self::gmt_timestamp( self::to_c( $date, $relative_to_date, $dst_adjust ), 'from' );
 	}
 }
