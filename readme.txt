@@ -171,6 +171,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.5.2.1 - Nov/10/2016 =
+* [tweak] changing how we handle DST timestamps display again
+
 = 2.5.2 - Nov/7/2016 =
 * [translation] updating all translation files with strings for the admin interface
 * [translation] updating ES translation for new strings
