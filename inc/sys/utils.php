@@ -79,22 +79,22 @@ class QSOT_Utils {
 	 *
 	 * @return string new date formatted string using the 'c' date format
 	 */
-	public static function to_c( $ymd, $relative_to_date=false, $dst_adjust=true ) {
+	public static function to_c( $ymd, $dst_adjust=true ) {
 		static $off = false;
 		// if we are already in c format, then use it
 		if ( false !== strpos( $ymd, 'T' ) )
-			return $dst_adjust ? self::dst_adjust( $ymd, $relative_to_date ) : $ymd;
+			return $dst_adjust ? self::dst_adjust( $ymd ) : $ymd;
 
 		// if we dont match the legacy format, then bail
 		if ( ! preg_match( '#\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}#', $ymd ) )
-			return $dst_adjust ? self::dst_adjust( $ymd, $relative_to_date ) : $ymd;
+			return $dst_adjust ? self::dst_adjust( $ymd ) : $ymd;
 
 		// if we never loaded offset before, do it now
 		if ( false === $off )
 			$off = date_i18n( 'P' );
 
 		$out = str_replace( ' ', 'T', $ymd ) . $off;
-		return $dst_adjust ? self::dst_adjust( $out, $relative_to_date ) : $out;
+		return $dst_adjust ? self::dst_adjust( $out ) : $out;
 	}
 
 	/**
@@ -106,56 +106,108 @@ class QSOT_Utils {
 	 *
 	 * @return string a modified timestamp that has an adjusted timezone portion
 	 */
-	public static function dst_adjust( $string, $relative_to_date=false ) {
-		static $tz_string = null;
-		$relative_to_date = ! $relative_to_date ? date( 'c' ) : $relative_to_date;
-		$relative_ts = strtotime( $relative_to_date );
-		$relative_ts = $relative_ts ? $relative_ts : time();
-		// only grab the tiemzone string once
-		if ( null === $tz_string )
-			$tz_string = get_option( 'timezone_string', 'UTC' );
+	public static function dst_adjust( $string ) {
+		// first... assume ALL incoming timestamps are from the NON-DST timezone.
+		// then... adjust it if we are currently DST
 
-		// store current tz and update to proper one for daylight savign calc
-		$orig = date_default_timezone_get();
+		// get the parts of the supplied time string
+		preg_match( '#^(?P<date>\d{4}-\d{2}-\d{2})(?:T| )(?P<time>\d{2}:\d{2}:\d{2})(?P<tz>.*)?$#', $string, $match );
+
+		// if we dont have a date or time, bail now
+		if ( ! isset( $match['date'], $match['time'] ) )
+			return $string;
+		
+		// if the tz is not set, then default to current SITE non-dst offset
+		if ( ! isset( $match['tz'] ) )
+			$match['tz'] = self::non_dst_tz_offset();
+
+		// adjust the offset based on whether this is dst or not
+		$match['tz'] = self::_dst_adjust( $match['tz'] );
+
+		// reconstitute the string and return
+		return $match['date'] . 'T' . $match['time'] . $match['tz'];
+	}
+
+	// determine if currently in dst time
+	public static function in_dst( $time=null ) {
+		// update to the site timezone
+		$tz_string = get_option( 'timezone_string', 'UTC' );
+		$orig_tz_string = date_default_timezone_get();
 		if ( $tz_string )
 			date_default_timezone_set( $tz_string );
 
-		// get the parts of the timezone
-		preg_match( '#^(?P<date>\d{4}-\d{2}-\d{2})T(?P<time>\d{2}:\d{2}:\d{2})(?P<tz>.*)$#', $string, $match );
+		$time = null === $time ? time() : $time;
+		// get the current dst status
+		$dst_status = date( 'I', $time );
 
-		// if the timezone is set, then possibly adjust it
-		if ( isset( $match['date'], $match['time'], $match['tz'] ) ) {
-			// etract the pieces of the timestamp
-			$date = $match['date'];
-			$time = $match['time'];
-			$off = $match['tz'];
+		// restore the timezone before this calc
+		date_default_timezone_set( $orig_tz_string );
 
-			$current_dst = date( 'I', time() );
-			$relative_dst = date( 'I', $relative_ts );
-			$diff = $relative_dst - $current_dst;
-			// adjust for dst. we need to adjust for NOW being dst, not then
-			if ( $diff ) {
-				preg_match( '#^(?P<hour>[-+]\d{2}):(?P<minute>\d{2})$#', $off, $match );
-				if ( isset( $match['hour'], $match['minute'] ) ) {
-					$new_hour = intval( $match['hour'] ) - $diff;
-					// "spring forward" means the offset is increased by one hour
-					$off = sprintf(
-						'%s%02s%02s',
-						$new_hour < 0 ? '-' : '+',
-						abs( $new_hour ),
-						$match['minute']
-					);
-				}
+		return !! $dst_status;
+	}
+
+	// get the non-DST timezone
+	public static function non_dst_tz_offset() {
+		static $offset = null;
+		// do this once per page load
+		if ( null !== $offset )
+			return $offset;
+
+		// update to the site timezone
+		$tz_string = get_option( 'timezone_string', 'UTC' );
+		$orig_tz_string = date_default_timezone_get();
+		if ( $tz_string )
+			date_default_timezone_set( $tz_string );
+
+		// get the current offset and dst status
+		$current_offset = date( 'P' );
+		$dst_status = date( 'I' );
+
+		// calculate the appropriate offset based on the current one and the dst flag
+		$offset = self::_dst_adjust( $current_offset, $dst_status );
+
+		// restore the timezone before this calc
+		date_default_timezone_set( $orig_tz_string );
+
+		return $offset;
+	}
+
+	// accept a mysql or 'c' formatted timestamp, and make it use the current non-dst SITE timezone
+	public static function make_non_dst( $string ) {
+		static $offset = null;
+		if ( null === $offset )
+			$offset = self::non_dst_tz_offset();
+
+		// check if the timestamp is valid
+		if ( ! preg_match( '#^(\d{4}-\d{2}-\d{2})(?:T| )(\d{2}:\d{2}:\d{2}).*$#', $string ) )
+			return $string;
+
+		// first remove an existing timezone
+		$string = preg_replace( '#^(\d{4}-\d{2}-\d{2})(?:T| )(\d{2}:\d{2}:\d{2}).*$#', '\1T\2', $string );
+
+		// add the SITE offset to the base string, and return
+		return $string . $offset;
+	}
+
+	// adjust a timezone offset to account for DST, to get the non-DST timezone
+	protected static function _dst_adjust( $offset, $dst=null ) {
+		$dst = null === $dst ? self::in_dst() : !!$dst;
+		// if it is a dst time offset
+		if ( $dst ) {
+			preg_match( '#^(?P<hour>[-+]\d{2}):(?P<minute>\d{2})$#', $offset, $match );
+			if ( isset( $match['hour'], $match['minute'] ) ) {
+				$new_hour = intval( $match['hour'] ) - 1;
+				// "spring forward" means the offset is increased by one hour
+				$offset = sprintf(
+					'%s%02s%02s',
+					$new_hour < 0 ? '-' : '+',
+					abs( $new_hour ),
+					$match['minute']
+				);
 			}
-
-			// create the updated timestamp
-			$string = $date . 'T' . $time . $off;
 		}
 
-		// restore tz
-		date_default_timezone_set( $orig );
-
-		return $string;
+		return $offset;
 	}
 
 	/**
@@ -167,7 +219,60 @@ class QSOT_Utils {
 	 *
 	 * @return int a unix-timestamp, adjusted so that it produces accurrate local times for the server
 	 */
-	public static function local_timestamp( $date, $relative_to_date=false, $dst_adjust=true ) {
-		return self::gmt_timestamp( self::to_c( $date, $relative_to_date, $dst_adjust ), 'from' );
+	public static function local_timestamp( $date, $dst_adjust=true ) {
+		return self::gmt_timestamp( self::to_c( $date, $dst_adjust ), 'from' );
+	}
+
+	// code to update all the site event start and end times to the same timezone as the SITE, in non-dst, is currently set to
+	public static function normalize_event_times() {
+		// get current site timeoffset
+		$offset = self::non_dst_tz_offset();
+
+		$perpage = 1000;
+		$pg_offset = 1;
+		// get a list of all the event ids to update. throttle at 1000 per cycle
+		$args = array(
+			'post_type' => 'qsot-event',
+			'post_status' => array( 'any', 'trash' ),
+			'post_parent__not_in' => array( 0 ),
+			'fields' => 'ids',
+			'posts_per_page' => $perpage,
+			'paged' => $pg_offset,
+		);
+
+		// grab the next 1000
+		while ( $event_ids = get_posts( $args ) ) {
+			// inc page for next iteration
+			$pg_offset++;
+			$args['paged'] = $pg_offset;
+
+			// cycle through all results
+			while ( is_array( $event_ids ) && count( $event_ids ) ) {
+				// get the next event_id to update
+				$event_id = array_shift( $event_ids );
+
+				// get the start and end time of this event from db
+				$start = get_post_meta( $event_id, '_start', true );
+				$end = get_post_meta( $event_id, '_end', true );
+				$orig_values = array( 'start' => $start, 'end' => $end );
+
+				// normalize each time so that it does not include an offset
+				$start = preg_replace( '#^(\d{4}-\d{2}-\d{2})(?:T| )(\d{2}:\d{2}:\d{2}).*$#', '\1T\2', $start );
+				$end = preg_replace( '#^(\d{4}-\d{2}-\d{2})(?:T| )(\d{2}:\d{2}:\d{2}).*$#', '\1T\2', $end );
+
+				// update each time to include the correct offset
+				$start .= $offset;
+				$end .= $offset;
+
+				// save both times in the new format
+				update_post_meta( $event_id, '_start', $start );
+				update_post_meta( $event_id, '_end', $end );
+				// save original bad values for posterity
+				add_post_meta( $event_id, '_tsFix_update', $orig_values );
+			}
+		}
+
+		// add a record of the last time this ran
+		update_option( '_last_run_otce_normalize_event_times', time() );
 	}
 }

@@ -1428,8 +1428,8 @@ class qsot_post_type {
 							), $defs),
 							'meta' => array( // setup the meta to save
 								self::$o->{'meta_key.capacity'} => $tmp->capacity, // max occupants
-								self::$o->{'meta_key.end'} => $tmp->end, // end time, for lookup and display purposes later
-								self::$o->{'meta_key.start'} => $tmp->start, // start time for lookup and display purposes later
+								self::$o->{'meta_key.end'} => QSOT_Utils::make_non_dst( $tmp->end ), // end time, for lookup and display purposes later
+								self::$o->{'meta_key.start'} => QSOT_Utils::make_non_dst( $tmp->start ), // start time for lookup and display purposes later
 								self::$o->{'meta_key.purchase_limit'} => $tmp->purchase_limit, // the specific child event purchase limit
 							),
 							'submitted' => $tmp,
@@ -1502,8 +1502,8 @@ class qsot_post_type {
 							), $defs ),
 							'meta' => array( // set the meta
 								self::$o->{'meta_key.capacity'} => $tmp->capacity, // occupant capacity
-								self::$o->{'meta_key.end'} => $tmp->end, // event end date/time for later lookup and display
-								self::$o->{'meta_key.start'} => $tmp->start, // event start data/time for later lookup and display
+								self::$o->{'meta_key.end'} => QSOT_Utils::make_non_dst( $tmp->end ), // event end date/time for later lookup and display
+								self::$o->{'meta_key.start'} => QSOT_Utils::make_non_dst( $tmp->start ), // event start data/time for later lookup and display
 								self::$o->{'meta_key.purchase_limit'} => $tmp->purchase_limit, // the specific child event purchase limit
 							),
 							'submitted' => $tmp,
@@ -1545,8 +1545,8 @@ class qsot_post_type {
 						), $defs ),
 						'meta' => array( // set meta
 							self::$o->{'meta_key.capacity'} => $item->capacity, // occupant copacity
-							self::$o->{'meta_key.end'} => $item->end, // end data for lookup and display
-							self::$o->{'meta_key.start'} => $item->start, // start date for lookup and display
+							self::$o->{'meta_key.end'} => QSOT_Utils::make_non_dst( $item->end ), // end data for lookup and display
+							self::$o->{'meta_key.start'} => QSOT_Utils::make_non_dst( $item->start ), // start date for lookup and display
 							self::$o->{'meta_key.purchase_limit'} => $tmp->purchase_limit, // the specific child event purchase limit
 						),
 						'submitted' => $item,

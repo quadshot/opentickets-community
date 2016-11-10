@@ -60,6 +60,7 @@ class QSOT {
 		// register the activation function, so that when the plugin is activated, it does some magic described in the activation function
 		register_activation_hook(self::$o->core_file, array(__CLASS__, 'activation'));
 		add_action( 'upgrader_process_complete', array( __CLASS__, 'maybe_activation_on_upgrade' ), 10, 2 );
+		add_action( 'admin_init', array( __CLASS__, 'maybe_update_event_timestamps' ), 100 );
 
 		add_action('woocommerce_email_classes', array(__CLASS__, 'load_custom_emails'), 2);
 
@@ -747,6 +748,16 @@ class QSOT {
 
 		// run the activation sequence
 		self::activation();
+	}
+
+	// on admin load, check if we need to update all the event timestamps now. if so, do it
+	public static function maybe_update_event_timestamps() {
+		// find out the last time the timestamp updater ran
+		$last_run = get_option( '_last_run_otce_normalize_event_times', '' );
+
+		// if it never ran, do it now
+		if ( ! $last_run )
+			QSOT_Utils::normalize_event_times();
 	}
 
 	// do magic 

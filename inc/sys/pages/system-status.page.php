@@ -117,6 +117,17 @@ class QSOT_system_status_page extends QSOT_base_page {
 				),
 			)
 		);
+		$this->register_tool(
+			'tsFix',
+			array(
+				'name' => __( 'Update Start and End times to site Timezone', 'opentickets-community-edition' ),
+				'description' => __( 'If you are having time display issues, use this tool to match the event times to the correct timezone.', 'opentickets-community-edition' ),
+				'function' => array( &$this, 'tool_tsFix' ),
+				'messages' => array(
+					'updated-tses' => $this->_updatedw( __( 'Updated all the start and end times for all events, to be in the correct timezone.', 'opentickets-community-edition' ) ),
+				),
+			)
+		);
 	}
 
 	// generic wrappers for admin messages
@@ -919,6 +930,22 @@ class QSOT_system_status_page extends QSOT_base_page {
 		}
 		return $result;
 	}
+
+	// cycle through all events, and update the timezone of the start and end times to match the site timezone
+	public function tool_tsFix( $result, $args ) {
+		// check that the repair can run
+		if ( ! $this->_verify_action_nonce( 'tsFix' ) )
+			return $result;
+
+		// update all the event times to use the same tz as the site (non-dst)
+		QSOT_Utils::normalize_event_times();
+
+		// update and return the results data
+		$result[1]['performed'] = 'updated-tses';
+		$result[0] = true;
+		return $result;
+	}
+
 
 	// empty all files from a directory (skips subdirs)
 	protected function _empty_dir( $path ) {
