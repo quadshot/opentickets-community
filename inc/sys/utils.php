@@ -143,7 +143,7 @@ class QSOT_Utils {
 		// restore the timezone before this calc
 		date_default_timezone_set( $orig_tz_string );
 
-		return !! $dst_status;
+		return apply_filters( 'qsot-is-dst', !! $dst_status, $time );
 	}
 
 	// get the non-DST timezone
@@ -196,7 +196,7 @@ class QSOT_Utils {
 		if ( $dst ) {
 			preg_match( '#^(?P<hour>[-+]\d{2}):(?P<minute>\d{2})$#', $offset, $match );
 			if ( isset( $match['hour'], $match['minute'] ) ) {
-				$new_hour = intval( $match['hour'] ) - 1;
+				$new_hour = intval( $match['hour'] ) + 1;
 				// "spring forward" means the offset is increased by one hour
 				$offset = sprintf(
 					'%s%02s%02s',
@@ -208,6 +208,32 @@ class QSOT_Utils {
 		}
 
 		return $offset;
+	}
+
+	// test dst calcs
+	protected static function test_dst_calc() {
+		function yes_dst() { return true; }
+		function no_dst() { return false; }
+
+		$ts1 = '2016-09-12T14:30:00-08:00';
+		$ts2 = '2016-11-12T14:30:00-08:00';
+
+		add_filter( 'qsot-is-dst', 'yes_dst' );
+		var_dump( QSOT_Utils::to_c( $ts1, 1 ), QSOT_Utils::to_c( $ts2, 1 ) );
+		$time = QSOT_Utils::gmt_timestamp( QSOT_Utils::to_c( $ts1, 1 ), 'from' );
+		$time2 = QSOT_Utils::gmt_timestamp( QSOT_Utils::to_c( $ts2, 1 ), 'from' );
+		date_default_timezone_set( 'Etc/GMT-1' );
+		var_dump( '09-12-dst', date( 'D, F jS, Y g:ia', $time ) );
+		var_dump( '11-12-dst', date( 'D, F jS, Y g:ia', $time ) );
+
+		remove_filter( 'qsot-is-dst', 'yes_dst' );
+		add_filter( 'qsot-is-dst', 'no_dst' );
+		var_dump( QSOT_Utils::to_c( $ts1, 1 ), QSOT_Utils::to_c( $ts2, 1 ) );
+		$time = QSOT_Utils::gmt_timestamp( QSOT_Utils::to_c( $ts1, 1 ), 'from' );
+		$time2 = QSOT_Utils::gmt_timestamp( QSOT_Utils::to_c( $ts2, 1 ), 'from' );
+		date_default_timezone_set( 'UTC' );
+		var_dump( '09-12-nodst', date( 'D, F jS, Y g:ia', $time ) );
+		var_dump( '11-12-nodst', date( 'D, F jS, Y g:ia', $time ) );
 	}
 
 	/**
