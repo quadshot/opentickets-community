@@ -302,3 +302,166 @@ class QSOT_Utils {
 		update_option( '_last_run_otce_normalize_event_times', time() );
 	}
 }
+
+// date formatter utils
+class QSOT_Date_Formats {
+	// map of php-date format letters to base date-time-segment-type
+	protected static $php_format_map = array(
+		// days
+		'd' => 'd',
+		'D' => 'd',
+		'j' => 'd',
+		'l' => 'd',
+		'N' => 'd',
+		'S' => 'd',
+		'w' => 'd',
+		'z' => 'd',
+
+		// month
+		'F' => 'm',
+		'm' => 'm',
+		'M' => 'm',
+		'n' => 'm',
+		't' => 'm',
+
+		// Year
+		'y' => 'Y',
+		'Y' => 'Y',
+		'o' => 'Y',
+
+		// hour
+		'g' => 'h',
+		'G' => 'h',
+		'h' => 'h',
+		'H' => 'h',
+
+		// minute
+		'i' => 'i',
+
+		// second
+		's' => 's',
+
+		// meridiem
+		'a' => 'a',
+		'A' => 'a',
+
+		// timezone
+		'O' => 'z',
+		'P' => 'z',
+		'T' => 'z',
+		'Z' => 'z',
+
+		// nothing important
+		'W' => false,
+		'B' => false,
+		'u' => false,
+		'e' => false,
+		'I' => false,
+		'c' => false,
+		'r' => false,
+		'U' => false,
+	);
+
+	// list of php-formats used within our plugin that might be customized
+	public static $php_custom_date_formats = array(
+		'D, F jS, Y',
+	);
+	public static $php_custom_time_formats = array(
+		'g:ia',
+	);
+	public static $moment_custom_date_formats = array(
+		'mm-dd-yy',
+	);
+	public static $moment_custom_time_formats = array(
+	);
+	public static $jqueryui_custom_date_formats = array(
+	);
+	public static $jqueryui_custom_time_formats = array(
+	);
+
+	// report whether this site uses DST or not, according to settings
+	public static function use_dst() { return get_option( 'qsot-use-dst', 'yes' ) == 'yes'; }
+
+	// report date and time format settings
+	public static function date_format() { return get_option( 'qsot-date-format', 'm-d-Y' ); }
+	public static function hour_format() { return get_option( 'qsot-hour-format', '12-hour' ); }
+	public static function is_12_hour() { return get_option( 'qsot-hour-format', '12-hour' ) == '12-hour'; }
+	public static function is_24_hour() { return get_option( 'qsot-hour-format', '12-hour' ) == '24-hour'; }
+
+	// load all custom formats from the db
+	protected static function _load_custom_formats() {
+		$formats = array();
+		foreach ( self::$php_custom_date_formats as $format )
+			if ( $value = get_option( 'qsot-custom-php-date-format-' . sanitize_title_with_dashes( $format ), '' ) )
+				$formats[ $format ] = $value;
+		foreach ( self::$php_custom_time_formats as $format )
+			if ( $value = get_option( 'qsot-custom-php-date-format-' . sanitize_title_with_dashes( $format ), '' ) )
+				$formats[ $format ] = $value;
+		return $formats;
+	}
+
+	// reorder a time format, based on the settings
+	public static function php_date_format( $format='m-d-Y' ) {
+		static $conversions = false;
+		// load all custom formats from db, the first time this function is called
+		if ( false === $conversions )
+			$conversions = self::_load_custom_formats();
+		// only do this conversion once per input format
+		if ( isset( $conversions[ $format ] ) )
+			return $conversions[ $format ];
+
+		$segment = array();
+		$last_segment = false;
+		$i = 0;
+		$ii = strlen( $format );
+		// break up the requested format into parts
+		for ( $i = 0; $i < $ii; $i++ ) {
+			// if the next char is a back slash, skip it and the next letter
+			if ( '\\' == $format[ $i ] ) {
+				if ( $last_segment )
+					$segment[ $last_segment ] .= substr( $format, $i, 2 );
+				$i++;
+				continue;
+			}
+
+			// if the next letter is not in the php format map, or is irrelevant, then skip it
+			if ( ! isset( self::$php_format_map[ $format[ $i ] ] ) ) {
+				if ( $last_segment )
+					$segment[ $last_segment ] .= substr( $format, $i, 1 );
+				continue;
+			}
+
+			// otherwise, add this letter to the relevant segment
+			$last_segment = self::$php_format_map[ $format[ $i ] ];
+			if ( ! isset( $segment[ self::$php_format_map[ $format[ $i ] ] ] ) )
+				$segment[ self::$php_format_map[ $format[ $i ] ] ] = '';
+			$segment[ self::$php_format_map[ $format[ $i ] ] ] .= $format[ $i ];
+		}
+
+		$date_format_array = explode( '-', self::date_format() );
+		$date_format = '';
+		// reorder the date portion of the format, based on the settings
+		foreach ( $date_format_array as $segment_key )
+			$date_format .= isset( $segment[ $segment_key ] ) ? $segment[ $segment_key ] : '';
+
+		$time_format = '';
+		$is_24_hour = self::is_24_hour();
+		// construct the time format
+		if ( $is_24_hour && isset( $segment['h'] ) )
+			$time_format .= strtoupper( $segment['h'] );
+		elseif ( ! $is_24_hour && isset( $segment['h'] ) )
+			$time_format .= strtolower( $segment['h'] );
+		if ( isset( $segment['i'] ) )
+			$time_format .= $segment['i'];
+		if ( isset( $segment['s'] ) )
+			$time_format .= $segment['s'];
+		if ( ! $is_24_hour && isset( $segment['a'] ) )
+			$time_format .= $segment['a'];
+		if ( isset( $segment['z'] ) )
+			$time_format .= $segment['z'];
+
+		// glue that shit together, and return
+		$conversion[ $format ] = trim( $date_format . ' ' . $time_format );
+		return $conversion[ $format ];
+	}
+}

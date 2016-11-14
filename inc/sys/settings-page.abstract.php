@@ -28,6 +28,18 @@ abstract class QSOT_Settings_Page extends WC_Settings_Page {
 		echo '</ul><br class="clear" />';
 	}
 
+	protected function _get_page_settings() { return array(); }
+
+	/**
+	 * Get settings array
+	 *
+	 * @return array
+	 */
+	public function get_page_settings() {
+		global $current_section;
+		return apply_filters( 'qsot-get-page-settings', $this->_get_page_settings(), $this->id, $current_section );
+	}
+
 	// override for the get_settings function in the parent class
 	public function get_settings() {
 		$fields = $this->get_page_settings();
@@ -62,6 +74,14 @@ abstract class QSOT_Settings_Page extends WC_Settings_Page {
 		}
 
 		return $fields;
+	}
+
+	// setup the basic hooks we need for the settings page
+	protected function _setup_settings_page_hooks() {
+		add_action( 'qsot_sections_' . $this->id, array( $this, 'output_sections' ) );
+		add_filter( 'qsot_settings_tabs_array', array( $this, 'add_settings_page' ), 20 );
+		add_action( 'qsot_settings_' . $this->id, array( $this, 'output' ) );
+		add_action( 'qsot_settings_save_' . $this->id, array( $this, 'save' ) );
 	}
 }
 
