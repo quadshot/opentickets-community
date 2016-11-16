@@ -597,6 +597,7 @@ class qsot_frontend_calendar {
 		// get the current settings
 		$method = get_post_meta( $post->ID, '_calendar_start_method', true );
 		$date = get_post_meta( $post->ID, '_calendar_start_manual', true );
+		$date = ! $date ? date( 'c' ) : $date;
 
 		// default the settings to 'today' (above)
 		$method = isset( $valid[ $method ] ) ? $method : 'today';
@@ -618,7 +619,7 @@ class qsot_frontend_calendar {
 				<p><strong><?php _e( 'Manually entered date', 'opentickets-community-edition' ) ?></strong></p>
 				<label class="screen-reader-text" for="qsot-cal-start-manual"><?php _e( 'Manually entered date', 'opentickets-community-edition' ) ?></label>
 				<input size="11" type="text" class="use-datepicker" id="qsot-cal-start-manual-display" name="_calendar_start_manual_display"
-						value="<?php echo esc_attr( date( __( 'm-d-Y', 'opentickets-community-edition' ), strtotime( $date ) ) ) ?>"
+						value="<?php echo esc_attr( date( QSOT_Date_Formats::php_date_format( 'm-d-Y' ), strtotime( $date ) ) ) ?>"
 						real="#qsot-cal-start-manual" scope="[rel='extra-manual']" frmt="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>" />
 				<input type="hidden" id="qsot-cal-start-manual" name="_calendar_start_manual" value="<?php echo esc_attr( $date ) ?>" />
 			</div>

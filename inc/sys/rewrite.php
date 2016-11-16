@@ -22,6 +22,9 @@ class qsot_rewriter {
 
 		// during activation, we need to flush the rewrite rules, because there are a few classes that register spcial rules
 		add_action( 'qsot-activate', array( __CLASS__, 'on_activate' ), 1000 );
+
+		// handle old event slug lookups
+		add_action( 'template_redirect', array( __CLASS__, 'old_event_slug_redirect' ), PHP_INT_MAX );
 	}
 
 	// ona ctivation, flush the rewrite rules so that our cusotm ones can be calculated on page load
@@ -178,6 +181,75 @@ class qsot_rewriter {
 		}
 
 		return $out;
+	}
+
+	public static function old_event_slug_redirect() {
+		global $wp_query;
+
+		if ( is_404() && '' !== $wp_query->query_vars['name'] && isset( $wp_query->query_vars['qsot-event'] ) && '' !== $wp_query->query_vars['qsot-event'] ) :
+			global $wpdb;
+
+			// Guess the current post_type based on the query vars.
+			if ( get_query_var( 'post_type' ) ) {
+				$post_type = get_query_var( 'post_type' );
+			} elseif ( get_query_var( 'attachment' ) ) {
+				$post_type = 'attachment';
+			} elseif ( ! empty( $wp_query->query_vars['pagename'] ) ) {
+				$post_type = 'page';
+			} else {
+				$post_type = 'post';
+			}
+
+			if ( is_array( $post_type ) ) {
+				if ( count( $post_type ) > 1 )
+					return;
+				$post_type = reset( $post_type );
+			}
+
+			// only redirect event post types
+			if ( 'qsot-event' !== $post_type )
+				return;
+
+			$query = $wpdb->prepare("SELECT post_id FROM $wpdb->postmeta, $wpdb->posts WHERE ID = post_id AND post_type = %s AND meta_key = '_wp_old_slug' AND meta_value = %s", $post_type, $wp_query->query_vars['qsot-event']);
+
+			// if year, monthnum, or day have been specified, make our query more precise
+			// just in case there are multiple identical _wp_old_slug values
+			if ( '' != $wp_query->query_vars['year'] )
+				$query .= $wpdb->prepare(" AND YEAR(post_date) = %d", $wp_query->query_vars['year']);
+			if ( '' != $wp_query->query_vars['monthnum'] )
+				$query .= $wpdb->prepare(" AND MONTH(post_date) = %d", $wp_query->query_vars['monthnum']);
+			if ( '' != $wp_query->query_vars['day'] )
+				$query .= $wpdb->prepare(" AND DAYOFMONTH(post_date) = %d", $wp_query->query_vars['day']);
+
+			$id = (int) $wpdb->get_var($query);
+
+			if ( ! $id )
+				return;
+
+			$link = get_permalink( $id );
+
+			if ( isset( $GLOBALS['wp_query']->query_vars['paged'] ) && $GLOBALS['wp_query']->query_vars['paged'] > 1 ) {
+				$link = user_trailingslashit( trailingslashit( $link ) . 'page/' . $GLOBALS['wp_query']->query_vars['paged'] );
+			} elseif( is_embed() ) {
+				$link = user_trailingslashit( trailingslashit( $link ) . 'embed' );
+			}
+
+			/**
+			 * Filters the old slug redirect URL.
+			 *
+			 * @since 4.4.0
+			 *
+			 * @param string $link The redirect URL.
+			 */
+			$link = apply_filters( 'old_slug_redirect_url', $link );
+
+			if ( ! $link ) {
+				return;
+			}
+
+			wp_redirect( $link, 301 ); // Permanent redirect
+			exit;
+		endif;
 	}
 }
 

@@ -249,6 +249,36 @@ class QSOT_Utils {
 		return self::gmt_timestamp( self::to_c( $date, $dst_adjust ), 'from' );
 	}
 
+	// accept a user input value for a time, and convert it to 24 hour time
+	public static function to_24_hour( $raw_time ) {
+		// get the various time parts
+		preg_match( '#^(?P<hour>\d{1,2})(?:[^\dAPMapm]?(?<minute>\d{1,2}))?(?:[^\dAPMapm]?(?<second>\d{1,2}))?(?P<meridiem>[APMapm]+)?$#', $raw_time, $match );
+
+		// if we have no matches of at least the hour field, then bail
+		if ( ! is_array( $match ) || ! isset( $match['hour'] ) )
+			return '';
+
+		$match['hour'] = absint( $match['hour'] );
+		// update the hour based on meridiem if present
+		if ( isset( $match['meridiem'] ) ) {
+			$mer = strtolower( $match['meridiem'] );
+			// if it is pm and the hour is not 12pm, then add 12 hours
+			if ( in_array( $mer, array( 'p', 'pm' ) ) && 12 != $match['hour'] )
+				$match['hour'] = $match['hour'] + 12;
+			// if it is am and the hour is 12am, make it a 0, for midnight
+			if ( in_array( $mer, array( 'a', 'am' ) ) && 12 == $match['hour'] )
+				$match['hour'] = 0;
+		}
+
+		// glue it back up and fill it in
+		return sprintf(
+			'%02s:%02s:%02s',
+			$match['hour'],
+			isset( $match['minute'] ) ? absint( $match['minute'] ) : 0,
+			isset( $match['second'] ) ? absint( $match['second'] ) : 0
+		);
+	}
+
 	// code to update all the site event start and end times to the same timezone as the SITE, in non-dst, is currently set to
 	public static function normalize_event_times() {
 		// get current site timeoffset
@@ -365,9 +395,19 @@ class QSOT_Date_Formats {
 	// list of php-formats used within our plugin that might be customized
 	public static $php_custom_date_formats = array(
 		'D, F jS, Y',
+		'D, F jS, Y h:ia',
+		'D, F jS, Y \@ g:ia',
+		'F jS, Y',
+		'l jS \\o\\f F Y, h:ia',
+		'Y-m-d_gia',
+		'Y-m-d',
+		'm-d-Y',
+		'm/d/Y',
 	);
 	public static $php_custom_time_formats = array(
 		'g:ia',
+		'h:ia',
+		'H:i:s',
 	);
 	public static $moment_custom_date_formats = array(
 		'mm-dd-yy',
@@ -463,5 +503,15 @@ class QSOT_Date_Formats {
 		// glue that shit together, and return
 		$conversion[ $format ] = trim( $date_format . ' ' . $time_format );
 		return $conversion[ $format ];
+	}
+
+	// reorder the time format, based on the settings, for a momentjs format
+	public static function moment_date_format( $format='mm-dd-yy' ) {
+		return $format;
+	}
+
+	// reorder the time format, based on the settings, for a jquery format
+	public static function jquery_date_format( $format='mm-dd-yy' ) {
+		return $format;
 	}
 }

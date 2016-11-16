@@ -55,6 +55,10 @@ class qsot_post_type {
 			// ** I cannot replicate this problem in independent tests, outside wp, but I can reliably get this to happen within.
 			add_action( 'save_post', 'qsot_noop', 998 );
 
+			// save child events
+			add_action( 'save_post', array( __CLASS__, 'save_child_event' ), 100000, 3 );
+			add_action( 'post_updated', array( __CLASS__, 'record_old_slug' ), PHP_INT_MAX, 3 );
+
 			// action that is used to actually handle the saving of sub-events
 			add_action( 'qsot-save-sub-events', array( __CLASS__, 'handle_save_sub_events' ), 100, 4 );
 
@@ -1257,8 +1261,8 @@ class qsot_post_type {
 			return $title;
 
 		// add the date/time to the title
-		$date = date( __( 'm/d/Y', 'opentickets-community-edition' ), $start );
-		$time = date( __( 'g:ia', 'opentickets-community-edition' ), $start );
+		$date = date( QSOT_Date_Formats::php_date_format( 'm/d/Y' ), $start );
+		$time = date( QSOT_Date_Formats::php_date_format( 'g:ia' ), $start );
 		$format = '%1$s';
 		if ( $needs['date'] )
 			$format .= ' ' . __( 'on %2$s', 'opentickets-community-edition' );
@@ -1326,6 +1330,79 @@ class qsot_post_type {
 			add_action( 'wp_insert_post', array( __CLASS__, 'save_event_title_settings' ), 100, 3 );
 	}
 
+	// handle the saving of an individual child event
+	public static function save_child_event( $post_id, $post=null, $updated=false ) {
+		static $ran_for = array();
+		// only run this function once for a post
+		if ( isset( $ran_for[ 'post-' . $post_id ] ) )
+			return;
+		$ran_for[ 'post-' . $post_id ] = 1;
+
+		// load the post, just in case it was not sent
+		$post = get_post( $post_id );
+
+		// handle saving of the event date time changes
+		if ( isset( $_POST['qsot-single-event-settings'] ) && wp_verify_nonce( $_POST['qsot-single-event-settings'], 'qsot-save-single-event-settings' ) ) {
+			$dt = $_POST['qsot-single-event'];
+			// if some settings are missing, bail now
+			if ( ! isset( $dt['start_date'], $dt['start_time'], $dt['end_date'], $dt['end_time'] ) )
+				return;
+
+			// normalize the time entered, to a usable timestamp
+			$start_time = QSOT_Utils::to_24_hour( $dt['start_time'] );
+			$end_time = QSOT_Utils::to_24_hour( $dt['end_time'] );
+
+			// construct date time stamps
+			$offset = QSOT_Utils::non_dst_tz_offset();
+			$start = preg_replace( '#^(\d{4}-\d{2}-\d{2})(?:T| )(\d{2}:\d{2}:\d{2}).*$#', '\1T\2', $dt['start_date'] . ' ' . $start_time ) . $offset;
+			$end = preg_replace( '#^(\d{4}-\d{2}-\d{2})(?:T| )(\d{2}:\d{2}:\d{2}).*$#', '\1T\2', $dt['end_date'] . ' ' . $end_time ) . $offset;
+
+			// if the times are in the correct format, then save them
+			if ( preg_match( '#^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\+|-)\d{2}:\d{2}$#', $start ) && preg_match( '#^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\+|-)\d{2}:\d{2}$#', $end ) ) {
+				update_post_meta( $post_id, '_start', $start );
+				update_post_meta( $post_id, '_end', $end );
+
+				// if we need to update the permalink too, do that now. this is the reason this function has recursion protection
+				if ( isset( $_POST['qsot-update-permalink'] ) ) {
+					// update the post_name
+					$post_arr = array(
+						'ID' => $post_id,
+						'post_name' => date( QSOT_Date_Formats::php_date_format( 'Y-m-d_gia' ), QSOT_Utils::local_timestamp( $start ) ),
+					);
+					wp_update_post( $post_arr );
+				}
+			}
+		}
+	}
+
+	// on event update, record the old slug if needed
+	public static function record_old_slug( $post_id, $post, $post_before ) {
+		// Don't bother if it hasn't changed.
+		if ( $post->post_name == $post_before->post_name ) {
+			return;
+		}
+
+		// We're only concerned with published, non-hierarchical objects.
+		if ( 'qsot-event' !== $post->post_type || ! ( 'publish' === $post->post_status || ( 'attachment' === get_post_type( $post ) && 'inherit' === $post->post_status ) ) ) {
+			return;
+		}
+
+		$old_slugs = (array) get_post_meta( $post_id, '_wp_old_slug' );
+		$parent = get_post( $post_before->post_parent );
+		$old_slug = $parent->post_name . '/' . $post_before->post_name;
+		$new_slug = $parent->post_name . '/' . $post->post_name;
+
+		// If we haven't added this old slug before, add it now.
+		if ( ! empty( $post_before->post_name ) && ! in_array( $old_slug, $old_slugs ) ) {
+			add_post_meta( $post_id, '_wp_old_slug', $old_slug );
+		}
+
+		// If the new slug was used previously, delete it from the list.
+		if ( in_array( $new_slug, $old_slugs ) ) {
+			delete_post_meta( $post_id, '_wp_old_slug', $new_slug );
+		}
+	}
+
 	// save the event title settings from the 'Event Titles' metabox
 	public static function save_event_title_settings( $post_id, $post, $was_updated ) {
 		remove_action( 'wp_insert_post', array( __CLASS__, 'save_event_title_settings' ), 100 );
@@ -1383,10 +1460,14 @@ class qsot_post_type {
 			// expand the settings
 			$tmp = ! is_scalar( $item ) ? $item : @json_decode( stripslashes( $item ) );
 
+			// update the timestamps to be non-dst for storage
+			$tmp->start = QSOT_Utils::make_non_dst( $tmp->start );
+			$tmp->end = QSOT_Utils::make_non_dst( $tmp->end );
+
 			// if the settings are a valid set of settings, then continue with this item
 			if ( is_object( $tmp ) ) {
 				// change the title to be the date, which makes for better permalinks
-				$tmp->title = date( _x( 'Y-m-d_gia', 'Permalink date', 'opentickets-community-edition' ), QSOT_Utils::local_timestamp( $tmp->start ) );
+				$tmp->title = date( QSOT_Date_Formats::php_date_format( 'Y-m-d_gia' ), QSOT_Utils::local_timestamp( $tmp->start ) );
 				// if the post_id was passed in with the settings, then we know what subevent post to modify with these settings already. therefore we do not need to match it up to an existing
 				// subevent or create a new subevent. lets throw it directly into the update list for usage later
 				if ( isset( $tmp->post_id ) && is_numeric( $tmp->post_id ) && $tmp->post_id > 0 ) {
@@ -1428,8 +1509,8 @@ class qsot_post_type {
 							), $defs),
 							'meta' => array( // setup the meta to save
 								self::$o->{'meta_key.capacity'} => $tmp->capacity, // max occupants
-								self::$o->{'meta_key.end'} => QSOT_Utils::make_non_dst( $tmp->end ), // end time, for lookup and display purposes later
-								self::$o->{'meta_key.start'} => QSOT_Utils::make_non_dst( $tmp->start ), // start time for lookup and display purposes later
+								self::$o->{'meta_key.end'} => $tmp->end, // end time, for lookup and display purposes later
+								self::$o->{'meta_key.start'} => $tmp->start, // start time for lookup and display purposes later
 								self::$o->{'meta_key.purchase_limit'} => $tmp->purchase_limit, // the specific child event purchase limit
 							),
 							'submitted' => $tmp,
@@ -1502,8 +1583,8 @@ class qsot_post_type {
 							), $defs ),
 							'meta' => array( // set the meta
 								self::$o->{'meta_key.capacity'} => $tmp->capacity, // occupant capacity
-								self::$o->{'meta_key.end'} => QSOT_Utils::make_non_dst( $tmp->end ), // event end date/time for later lookup and display
-								self::$o->{'meta_key.start'} => QSOT_Utils::make_non_dst( $tmp->start ), // event start data/time for later lookup and display
+								self::$o->{'meta_key.end'} => $tmp->end, // event end date/time for later lookup and display
+								self::$o->{'meta_key.start'} => $tmp->start, // event start data/time for later lookup and display
 								self::$o->{'meta_key.purchase_limit'} => $tmp->purchase_limit, // the specific child event purchase limit
 							),
 							'submitted' => $tmp,
@@ -1545,8 +1626,8 @@ class qsot_post_type {
 						), $defs ),
 						'meta' => array( // set meta
 							self::$o->{'meta_key.capacity'} => $item->capacity, // occupant copacity
-							self::$o->{'meta_key.end'} => QSOT_Utils::make_non_dst( $item->end ), // end data for lookup and display
-							self::$o->{'meta_key.start'} => QSOT_Utils::make_non_dst( $item->start ), // start date for lookup and display
+							self::$o->{'meta_key.end'} => $item->end, // end data for lookup and display
+							self::$o->{'meta_key.start'} => $item->start, // start date for lookup and display
 							self::$o->{'meta_key.purchase_limit'} => $tmp->purchase_limit, // the specific child event purchase limit
 						),
 						'submitted' => $item,
@@ -1737,31 +1818,58 @@ class qsot_post_type {
 				'core'
 			);
 		// setup the child event metaboxes
-		/*
 		} else if ( is_object( $post ) && 0 != $post->post_parent ) {
 			add_meta_box(
 				'qsot-single-event-settings',
 				_x( 'Event Settings', 'metabox title', 'opentickets-community-edition' ),
 				array( __CLASS__, 'mb_single_event_settings' ),
 				self::$o->core_post_type,
-				'normal',
+				'side',
 				'high'
 			);
-		*/
 		}
 	}
 
 	// metabox for editing a single event's settings
 	public static function mb_single_event_settings( $post, $mb ) {
-		// adjust the start and end times for our WP offset setting
-		$start_raw = QSOT_Utils::gmt_timestamp( get_post_meta( $post->ID, '_start', true ) );
-		$end_raw = QSOT_Utils::gmt_timestamp( get_post_meta( $post->ID, '_end', true ) );
+		// load actual start/end datetime
+		$start = get_post_meta( $post->ID, '_start', true );
+		$start_c = QSOT_Utils::to_c( $start );
+		$end = get_post_meta( $post->ID, '_end', true );
+		$end_c = QSOT_Utils::to_c( $end );
 
-		// create the various date parts
-		$start = date( 'c', $start_raw );
-		$start_time = date( 'H:i:s', $start_raw );
-		$end = date( 'c', $end_raw );
-		$end_time = date( 'H:i:s', $end_raw );
+		// get just the date and time portions
+		$start_time = date( QSOT_Date_Formats::php_date_format( 'g:ia' ), QSOT_Utils::gmt_timestamp( $start_c, 'from', 'g:ia' ) );
+		$end_time = date( QSOT_Date_Formats::php_date_format( 'g:ia' ), QSOT_Utils::gmt_timestamp( $end_c, 'from', 'g:ia' ) );
+
+		// render the settings box
+		?>
+			<div class="qsot-mb single-event-settings">
+				<input type="hidden" name="qsot-single-event-settings" value="<?php echo esc_attr( wp_create_nonce( 'qsot-save-single-event-settings' ) ) ?>" />
+
+				<div class="field">
+					<label for="qsot-single-event-start-date"><?php _e( 'Start Date/time', 'opentickets-community-edition' ) ?></label>
+					<input type="text" class="widefat use-i18n-datepicker" name="qsot-single-event[start_date]" value="<?php echo esc_attr( $start_c ) ?>"
+							data-display-format="<?php echo QSOT_Date_Formats::jquery_date_format( 'mm-dd-yy' ) ?>" role="from" scope=".qsot-mb" />
+					<span class="at-time"><input type="text" class="widefat use-timepicker" name="qsot-single-event[start_time]" value="<?php echo esc_attr( $start_time ) ?>" /></span>
+				</div>
+
+				<div class="field">
+					<label for="qsot-single-event-end-date"><?php _e( 'End Date/time', 'opentickets-community-edition' ) ?></label>
+					<input type="text" class="widefat use-i18n-datepicker" name="qsot-single-event[end_date]" value="<?php echo esc_attr( $end_c ) ?>"
+							data-display-format="<?php echo QSOT_Date_Formats::jquery_date_format( 'mm-dd-yy' ) ?>" role="to" scope=".qsot-mb" />
+					<span class="at-time"><input type="text" class="widefat use-timepicker" name="qsot-single-event[end_time]" value="<?php echo esc_attr( $end_time ) ?>" /></span>
+				</div>
+
+				<div class="field">
+					<label for="qsot-update-permalink"><?php _e( 'Permalink', 'opentickets-community-edition' ) ?></label>
+					<span class="cb-wrap">
+						<input type="checkbox" value="1" name="qsot-update-permalink" id="qsot-update-permalink" />
+						<span class="cb-words"><?php _e( 'Yes, update the permalink upon save.', 'opentickets-community-edition' ) ?></span>
+					</span>
+				</div>
+			</div>
+		<?php
 	}
 
 	// render the metabox that allows control over whether event titles include the date and time
@@ -1968,7 +2076,9 @@ class qsot_post_type {
 	}
 
 	public static function mb_event_date_time_settings($post, $mb) {
-		$now = current_time( 'timestamp' );
+		$ts = $now = date( 'c' );
+		$ts_1_week = date( 'c', strtotime( $ts . ' +1 week' )  );
+		$now = QSOT_Utils::local_timestamp( $now, 'from' );
 		$end = strtotime( '+1 hour', $now );
 		$one_week = strtotime( '+1 week', $now );
 		?>
@@ -1985,14 +2095,14 @@ class qsot_post_type {
 
 											<input type="text" class="use-i18n-datepicker date-text" name="start-date" scope="td" data-link-with=".repeat-options [role='from']"
 													data-display-format="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>"
-													value="<?php echo date( __( 'm-d-Y', 'opentickets-community-edition' ), $now ) ?>" title="<?php _e('Start Date','opentickets-community-edition') ?>" role="from" />
+													value="<?php echo $ts ?>" title="<?php _e('Start Date','opentickets-community-edition') ?>" role="from" />
 											<input type="text" class="time-text" name="start-time" value="<?php echo date(__('h:ia','opentickets-community-edition'), $now) ?>" title="<?php _e('Start Time','opentickets-community-edition') ?>" />
 
 											<?php _e('to','opentickets-community-edition') ?><br/>
 
 											<input type="text" class="use-i18n-datepicker date-text" name="end-date" scope="td" data-link-with=".repeat-options [role='from']"
 													data-display-format="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>"
-													value="<?php echo date( __( 'm-d-Y', 'opentickets-community-edition' ), $end ) ?>" title="<?php _e('End Date','opentickets-community-edition') ?>" role="to" />
+													value="<?php echo $ts ?>" title="<?php _e('End Date','opentickets-community-edition') ?>" role="to" />
 											<input type="text" class="time-text" name="end-time" value="<?php echo date(__('h:ia','opentickets-community-edition'), $end) ?>" title="<?php _e('End Time','opentickets-community-edition') ?>" />
 
 										</div>
@@ -2075,7 +2185,7 @@ class qsot_post_type {
 															<td>
 																<input type="text" class="widefat date-text use-i18n-datepicker ends-on" name="repeat-starts" scope=".repeat-options"
 																		data-display-format="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>"
-																		value="<?php echo esc_attr( date( __( 'm-d-Y', 'opentickets-community-edition' ), $now ) ) ?>" role="from" />
+																		value="<?php echo esc_attr( $ts ) ?>" role="from" />
 															</td>
 														</tr>
 
@@ -2090,7 +2200,7 @@ class qsot_post_type {
 																		</span>
 																		<input type="text" class="widefat date-text use-i18n-datepicker" name="repeat-ends-on" scope=".repeat-options"
 																				data-display-format="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>"
-																				value="<?php echo esc_attr( date( __( 'm-d-Y', 'opentickets-community-edition' ), $one_week ) ) ?>" role="to" />
+																				value="<?php echo esc_attr( $ts_1_week ) ?>" role="to" />
 																	</li>
 																	<li>
 																		<span class="cb-wrap">

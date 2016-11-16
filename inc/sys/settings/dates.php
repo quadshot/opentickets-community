@@ -29,7 +29,7 @@ class QSOT_Date_Settings_Page extends QSOT_Settings_Page {
 							__( 'All of these settings can be customized using a %sPHP date format%s. You can find full documentation of PHP date formatting, on %sthe php date function page%s.', 'opentickets-community-edition' ),
 							'<u>',
 							'</u>',
-							'<a href="http://php.net/manual/en/function.date.php" title="Visit the PHP documentation page">',
+							'<a target="_blank" href="http://php.net/manual/en/function.date.php" title="Visit the PHP documentation page">',
 							'</a>'
 						) ?></p>
 					</div>
@@ -44,7 +44,7 @@ class QSOT_Date_Settings_Page extends QSOT_Settings_Page {
 							__( 'All of these settings can be customized using a %sMomentJS date format%s. You can find full documentation of MomentJS date formatting, on %sthe MomentJS API page%s.', 'opentickets-community-edition' ),
 							'<u>',
 							'</u>',
-							'<a href="http://momentjs.com/docs/#/displaying/" title="Visit the MomentJS documentation page">',
+							'<a target="_blank" href="http://momentjs.com/docs/#/displaying/" title="Visit the MomentJS documentation page">',
 							'</a>'
 						) ?></p>
 					</div>
@@ -59,7 +59,7 @@ class QSOT_Date_Settings_Page extends QSOT_Settings_Page {
 							__( 'All of these settings can be customized using a %sjQueryUI date format%s. You can find full documentation of jQueryUI date formatting, on %sthe dateFormat function API page%s.', 'opentickets-community-edition' ),
 							'<u>',
 							'</u>',
-							'<a href="http://api.jqueryui.com/datepicker/#utility-formatDate" title="Visit the jQueryUI documentation page">',
+							'<a target="_blank" href="http://api.jqueryui.com/datepicker/#utility-formatDate" title="Visit the jQueryUI documentation page">',
 							'</a>'
 						) ?></p>
 					</div>
@@ -165,13 +165,13 @@ class QSOT_Date_Settings_Page extends QSOT_Settings_Page {
 				'order' => 350,
 				'id' => 'qsot-use-dst',
 				'type' => 'radio',
-				'title' => __( 'Daylight Savings Time', 'opentickets-community-edition' ),
-				'desc_tip' => __( 'Select whether your area of the world uses daylight savings time.', 'opentickets-community-edition' ),
+				'title' => __( 'Acknowledge DST', 'opentickets-community-edition' ),
+				'desc_tip' => __( 'Select whether your area of the world uses Daylight Savings Time (DST).', 'opentickets-community-edition' ),
 				'options' => array(
 					'yes' => __( 'Yes', 'opentickets-community-edition' ),
 					'no' => __( 'No', 'opentickets-community-edition' ),
 				),
-				'default' => 'Yes',
+				'default' => 'yes',
 				'page' => 'dates',
 				'section' => '',
 			),

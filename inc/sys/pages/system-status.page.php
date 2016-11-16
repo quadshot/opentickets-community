@@ -1041,7 +1041,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 			$message = __( 'Your order-items have been succesfully resynced with the ticket-table.', 'opentickets-community-edition' ) . "\n\n";
 		}
 
-		$subject = '[' . date_i18n( __( 'm-d-Y', 'opentickets-community-edition' ) ) . '] ' . $subject;
+		$subject = '[' . date_i18n( QSOT_Date_Formats::php_date_format( 'm-d-Y' ) ) . '] ' . $subject;
 		$purl = @parse_url( site_url() );
 		$headers = array( 'From: Opentickets Background Process <background@' . $purl['host'] . '>' );
 		wp_mail( $notify_email, $subject, $message, $headers );
