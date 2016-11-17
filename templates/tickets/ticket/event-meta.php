@@ -7,7 +7,7 @@
 	<li><h2><?php echo $ticket->event->parent_post_title ?></h2></li>
 	<li>
 		<span class="label"><?php _e( 'Starts:', 'opentickets-community-edition' ) ?></span>
-		<span class="value"><?php echo date( QSOT_Date_Formats::php_date_format( 'D, F jS, Y \@ g:ia' ), $start_time ), $start_time ) ?></span>
+		<span class="value"><?php echo date( QSOT_Date_Formats::php_date_format( 'D, F jS, Y \@ g:ia' ), $start_time ) ?></span>
 	</li>
 	<li>
 		<span class="label"><?php _e( 'Ends:', 'opentickets-community-edition' ) ?></span>
