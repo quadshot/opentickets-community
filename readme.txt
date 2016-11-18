@@ -171,9 +171,10 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
-= 2.5.3.1 - Nov/16/2016 =
+= 2.6.0 - Nov/18/2016 =
 * [new] major overhaul on displayed time formats. now they are all options in the admin
 * [new] ability to edit an individual event, change the start/end time, and update the permalink with auto-redirect of old one
+* [tweak] update to better process manually typed in time values when creating and editing events
 
 = 2.5.3 - Nov/11/2016 =
 * [tweak] changing how we handle DST timestamps display again
