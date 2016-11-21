@@ -824,3 +824,12 @@ QS.EventUI = (function($, undefined) {
 
 	return EventUI;
 })(jQuery);
+
+// single event edit page
+( function( $ ) {
+	$( document ).on( 'change.qsot keyup.qsot', '.single-event-settings input, .single-event-settings select, .single-event-settings textarea', function() {
+		if ( $( this ).not( '#qsot-update-permalink' ).length ) {
+			$( '#qsot-update-permalink' ).prop( 'checked', 'checked' );
+		}
+	} );
+} )( jQuery );

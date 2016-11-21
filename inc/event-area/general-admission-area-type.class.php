@@ -928,7 +928,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 	// add the gaea event data to the admin ajax load event response
 	public function admin_ajax_load_event( $data, $event, $event_area, $order ) {
 		// add the html versions of the start and end date
-		$frmt = __( 'D, F jS, Y h:ia', 'opentickets-community-edition' );
+		$frmt = QSOT_Date_Formats::php_date_format( 'D, F jS, Y h:ia' );
 		$data['_html_date'] = sprintf( '<span class="from">%s</span> - <span class="to">%s</span>', date_i18n( $frmt, QSOT_Utils::local_timestamp( $event->meta->start ) ), date_i18n( $frmt, QSOT_Utils::local_timestamp( $event->meta->end ) ) );
 
 		// add the capacity

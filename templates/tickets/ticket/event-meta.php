@@ -7,14 +7,14 @@
 	<li><h2><?php echo $ticket->event->parent_post_title ?></h2></li>
 	<li>
 		<span class="label"><?php _e( 'Starts:', 'opentickets-community-edition' ) ?></span>
-		<span class="value"><?php echo date( __( 'D, F jS, Y', 'opentickets-community-edition' ), $start_time ), __( ' @ ', 'opentickets-community-edition' ), date( __( 'g:ia', 'opentickets-community-edition' ), $start_time ) ?></span>
+		<span class="value"><?php echo date( QSOT_Date_Formats::php_date_format( 'D, F jS, Y \@ g:ia' ), $start_time ) ?></span>
 	</li>
 	<li>
 		<span class="label"><?php _e( 'Ends:', 'opentickets-community-edition' ) ?></span>
 		<?php if ( $same_day ): ?>
-			<span class="value"><?php echo __( ' @ ', 'opentickets-community-edition' ), date( __( 'g:ia', 'opentickets-community-edition' ), $end_time ) ?></span>
+			<span class="value"><?php echo __( ' @ ', 'opentickets-community-edition' ), date( QSOT_Date_Formats::php_date_format( 'g:ia' ), $end_time ) ?></span>
 		<?php else: ?>
-			<span class="value"><?php echo date( __( 'D, F jS, Y', 'opentickets-community-edition' ), $end_time ), __( ' @ ', 'opentickets-community-edition' ), date( __( 'g:ia', 'opentickets-community-edition' ), $end_time ) ?></span>
+			<span class="value"><?php echo date( QSOT_Date_Formats::php_date_format( 'D, F jS, Y \@ g:ia' ), $end_time ) ?></span>
 		<?php endif; ?>
 	</li>
 	<li>

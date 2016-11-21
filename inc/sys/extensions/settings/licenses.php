@@ -156,7 +156,7 @@ class QSOT_Settings_Licenses extends QSOT_Settings_Page {
 
 										<div class="field">
 											<span class="label"><?php _e( 'Expired On', 'opentickets-community-edition' ) ?></span>:
-											<span class="value"><?php echo date_i18n( get_option( 'date_format', 'F jS, Y' ), $licenses[ $file ]['expires'] ) ?></span>
+											<span class="value"><?php echo date_i18n( get_option( 'date_format', QSOT_Date_Formats::php_date_format( 'F jS, Y' ) ), $licenses[ $file ]['expires'] ) ?></span>
 										</div>
 									<?php else: ?>
 										<div class="field">
@@ -178,7 +178,7 @@ class QSOT_Settings_Licenses extends QSOT_Settings_Page {
 
 										<div class="field">
 											<span class="label"><?php _e( 'Expires On', 'opentickets-community-edition' ) ?></span>:
-											<span class="value"><?php echo date_i18n( get_option( 'date_format', 'F jS, Y' ), $licenses[ $file ]['expires'] ) ?></span>
+											<span class="value"><?php echo date_i18n( get_option( 'date_format', QSOT_Date_Formats::php_date_format( 'F jS, Y' ) ), $licenses[ $file ]['expires'] ) ?></span>
 										</div>
 									<?php endif; ?>
 								</div>

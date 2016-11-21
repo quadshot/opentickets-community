@@ -264,6 +264,8 @@ body.printer-friendly-report .inner-wrap { padding:8px !important; width:9.5in !
 .qsot-mb .option-row { padding-top:0.3em; }
 .qsot-mb .image-preview { max-width:100%; }
 .qsot-mb .image-preview img { max-width:100%; }
+.qsot-mb .field .at-time { display:block; margin-left:1.5em; position:relative; width:auto; }
+.qsot-mb .field .at-time::before { content:"@"; left:-1.5em; line-height:28px; position:absolute; } 
 
 /* licenses */
 .missing-license-notice { font-style:italic; font-weight:700; color:#800; }
