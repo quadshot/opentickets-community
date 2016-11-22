@@ -100,7 +100,7 @@ QS.EventUI = (function($, undefined) {
 		function dig( n, w, p ) { p = p || '0'; n = n + ''; return n.length >= w ? n : ( new Array( w - n.length + 1 ) ).join( p ) + n; };
 
 		function normalize_time( str ) {
-			var matches = str.toLowerCase().match( /^(\d{1,2})(:(\d{1,2})(.?(\d{1,2})?)?)?.?([pa]m?)?$/ ),
+			var matches = str.toLowerCase().match( /^(\d{1,2})(:(\d{1,2})(\.?(\d{1,2})?)?)?.?([pa]m?)?$/ ),
 					res = matches
 						? {
 							hour: qt.toInt( matches[1] ),
