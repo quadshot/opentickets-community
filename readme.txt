@@ -171,6 +171,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.6.0.1 - Nov/22/2016 =
+* [fix] fixed issue where sometimes the 'event area' would show as '0' during event creation
+
 = 2.6.0 - Nov/18/2016 =
 * [new] major overhaul on displayed time formats. now they are all options in the admin
 * [new] ability to edit an individual event, change the start/end time, and update the permalink with auto-redirect of old one
