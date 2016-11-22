@@ -902,7 +902,6 @@ QS.EditSetting = (function($, undefined) {
 			else label = EditSetting.labels._default.apply(this, [data]);
 
 			if (label == '') label = EditSetting.labels._default.apply(this, [data]);
-console.log( 'update', data, adjust, label, this );
 
 			this.elements.display.html(label);
 

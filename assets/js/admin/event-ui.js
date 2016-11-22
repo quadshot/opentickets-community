@@ -326,8 +326,11 @@ QS.EventUI = (function($, undefined) {
 					}
 				});
 
-				var i = undefined;
-				for (i in settings) {
+				var n = undefined,
+						i = undefined,
+						ordered = _order_keys( settings );
+				for ( n = 0; n < ordered.length; n++ ) {
+					i = ordered[ n ];
 					var field = t.elements.bulk_edit.settings_form.find('[name="settings['+i+']"]');
 					if (field.length > 0) {
 						var setting_main = field.closest(field.attr('scope') || 'body');
@@ -350,6 +353,17 @@ QS.EventUI = (function($, undefined) {
 				$('[rel=form]', t.elements.bulk_edit.settings_form).hide();
 				$('[rel=edit]', t.elements.bulk_edit.settings_form).show();
 			}
+		}
+
+		function _order_keys( obj ) {
+			var raw = Object.keys( obj ),
+					map = { 'venue':1, 'event-area':2, 'price-struct':3 };
+			raw.sort( function( a, b ) {
+				var aval = map[ a ] ? map[ a ] : 9999,
+						bval = map[ b ] ? map[ b ] : 9999;
+				return aval - bval;
+			} );
+			return raw;
 		}
 
 		t.event_list.getSelection = function() {

@@ -18,6 +18,9 @@ abstract class QSOT_Base_Event_Area_Type {
 	protected $name = '';
 	protected $slug = '';
 
+	// features supported by this area type
+	protected $supported = array( 'tickets' => 1 );
+
 	// basic constructor for the area type
 	public function __construct() {}
 
@@ -26,6 +29,13 @@ abstract class QSOT_Base_Event_Area_Type {
 		$this->priority = self::$inc_priority++;
 		$this->slug = sanitize_title_with_dashes( 'area-type-' . $this->priority );
 		$this->name = sprintf( __( 'Area Type %d', 'opentickets-community-edition' ), $this->priority );
+	}
+
+	// check if a feature is supported
+	public function supports( $feature=null ) {
+		if ( null === $feature )
+			return $this->supported;
+		return is_string( $feature ) && isset( $this->supported[ $feature ] );
 	}
 
 	// get the priority of this area type
