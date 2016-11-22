@@ -38,7 +38,7 @@
 					pool.find('option[venue-id="'+test+'"]').clone().appendTo( display );
 
 					// select the current value from the display box
-					if ( ! display.find( 'option[value="' + current + ']' ).length )
+					if ( ! display.find( 'option[value="' + current + '"]' ).length )
 						pool.find( 'option[value="' + current + '"]' ).clone().appendTo( display );
 					display.find( 'option[value="' + current + '"]' ).prop( 'selected', 'selected' );
 				}

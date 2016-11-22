@@ -902,6 +902,7 @@ QS.EditSetting = (function($, undefined) {
 			else label = EditSetting.labels._default.apply(this, [data]);
 
 			if (label == '') label = EditSetting.labels._default.apply(this, [data]);
+console.log( 'update', data, adjust, label, this );
 
 			this.elements.display.html(label);
 
@@ -1015,7 +1016,7 @@ QS.EditSetting = (function($, undefined) {
 					break;
 				}
 
-				if (typeof d == 'string') {
+				if (typeof d == 'string' && d != '' && d != '0' && d != 0) {
 					ret = QS.ucFirst(d);
 					break;
 				} else if (typeof d.toLabel == 'function') {

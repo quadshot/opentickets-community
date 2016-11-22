@@ -4,7 +4,6 @@ QS.EventUI = (function($, undefined) {
 			S = $.extend( true, { frmts:{}, tz:moment.tz.guess() }, _qsot_event_ui_settings ),
 			new_post_id = -1;
 
-	console.log( 'timezone', _qsot_event_ui_settings, S );
 	// set the default timezone for momentjs
 	moment.tz.setDefault( S.tz );
 
