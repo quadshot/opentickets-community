@@ -2107,14 +2107,14 @@ class qsot_post_type {
 										<div class="date-time-block subsub">
 
 											<input type="text" class="use-i18n-datepicker date-text" name="start-date" scope="td" data-link-with=".repeat-options [role='from']"
-													data-display-format="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>"
+													data-display-format="<?php echo QSOT_Date_Formats::jquery_date_format( 'mm-dd-yy' ) ?>"
 													value="<?php echo $ts ?>" title="<?php _e('Start Date','opentickets-community-edition') ?>" role="from" />
 											<input type="text" class="time-text" name="start-time" value="<?php echo date(__('h:ia','opentickets-community-edition'), $now) ?>" title="<?php _e('Start Time','opentickets-community-edition') ?>" />
 
 											<?php _e('to','opentickets-community-edition') ?><br/>
 
 											<input type="text" class="use-i18n-datepicker date-text" name="end-date" scope="td" data-link-with=".repeat-options [role='from']"
-													data-display-format="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>"
+													data-display-format="<?php echo QSOT_Date_Formats::jquery_date_format( 'mm-dd-yy' ) ?>"
 													value="<?php echo $ts ?>" title="<?php _e('End Date','opentickets-community-edition') ?>" role="to" />
 											<input type="text" class="time-text" name="end-time" value="<?php echo date(__('h:ia','opentickets-community-edition'), $end) ?>" title="<?php _e('End Time','opentickets-community-edition') ?>" />
 
@@ -2197,7 +2197,7 @@ class qsot_post_type {
 															<th><?php _e('Starts on','opentickets-community-edition') ?>:</th>
 															<td>
 																<input type="text" class="widefat date-text use-i18n-datepicker ends-on" name="repeat-starts" scope=".repeat-options"
-																		data-display-format="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>"
+																		data-display-format="<?php echo QSOT_Date_Formats::jquery_date_format( 'mm-dd-yy' ) ?>"
 																		value="<?php echo esc_attr( $ts ) ?>" role="from" />
 															</td>
 														</tr>
@@ -2212,7 +2212,7 @@ class qsot_post_type {
 																			<span class="cb-text"><?php _e('On','opentickets-community-edition') ?>:</span>
 																		</span>
 																		<input type="text" class="widefat date-text use-i18n-datepicker" name="repeat-ends-on" scope=".repeat-options"
-																				data-display-format="<?php echo esc_attr( __( 'mm-dd-yy', 'opentickets-community-edition' ) ) ?>"
+																				data-display-format="<?php echo QSOT_Date_Formats::jquery_date_format( 'mm-dd-yy' ) ?>"
 																				value="<?php echo esc_attr( $ts_1_week ) ?>" role="to" />
 																	</li>
 																	<li>

@@ -392,6 +392,114 @@ class QSOT_Date_Formats {
 		'U' => false,
 	);
 
+	// map of moment-date format letters to base date-time-segment-type
+	protected static $moment_format_map = array(
+		// days
+		'd' => 'd',
+		'do' => 'd',
+		'dd' => 'd',
+		'ddd' => 'd',
+		'dddd' => 'd',
+		'D' => 'd',
+		'Do' => 'd',
+		'DD' => 'd',
+		'DDD' => 'd',
+		'DDDo' => 'd',
+		'DDDD' => 'd',
+		'e' => 'd',
+		'E' => 'd',
+
+		// month
+		'M' => 'm',
+		'Mo' => 'm',
+		'MM' => 'm',
+		'MMM' => 'm',
+		'MMMM' => 'm',
+
+		// Year
+		'Y' => 'Y',
+		'YY' => 'Y',
+		'YYYY' => 'Y',
+
+		// hour
+		'h' => 'h',
+		'hh' => 'h',
+		'H' => 'h',
+		'HH' => 'h',
+		'k' => 'h',
+		'kk' => 'h',
+
+		// minute
+		'm' => 'i',
+		'mm' => 'i',
+
+		// second
+		's' => 's',
+		'ss' => 's',
+
+		// meridiem
+		'a' => 'a',
+		'A' => 'a',
+
+		// timezone
+		'z' => 'z',
+		'zz' => 'z',
+		'Z' => 'z',
+		'ZZ' => 'z',
+
+		// nothing important
+		'-' => false,
+		'/' => false,
+		'.' => false,
+		' ' => false,
+		'x' => false,
+		'X' => false,
+		'S' => false,
+		'SS' => false,
+		'SSS' => false,
+		'SSSS' => false,
+		'SSSSS' => false,
+		'gg' => false,
+		'gggg' => false,
+		'GG' => false,
+		'GGGG' => false,
+		'W' => false,
+		'Wo' => false,
+		'WW' => false,
+		'w' => false,
+		'wo' => false,
+		'ww' => false,
+	);
+
+	// map of jquery-date format letters to base date-time-segment-type
+	protected static $jquery_format_map = array(
+		// days
+		'd' => 'd',
+		'dd' => 'd',
+		'o' => 'd',
+		'oo' => 'd',
+		'D' => 'd',
+		'DD' => 'd',
+
+		// month
+		'm' => 'm',
+		'mm' => 'm',
+		'M' => 'm',
+		'MM' => 'm',
+
+		// Year
+		'y' => 'Y',
+		'yy' => 'Y',
+
+		// nothing important
+		'@' => false,
+		'!' => false,
+		'-' => false,
+		'/' => false,
+		'.' => false,
+		' ' => false,
+	);
+
 	// list of php-formats used within our plugin that might be customized
 	public static $php_custom_date_formats = array(
 		'D, F jS, Y',
@@ -410,11 +518,12 @@ class QSOT_Date_Formats {
 		'H:i:s',
 	);
 	public static $moment_custom_date_formats = array(
-		'mm-dd-yy',
+		'MM-dd-YY',
 	);
 	public static $moment_custom_time_formats = array(
 	);
 	public static $jqueryui_custom_date_formats = array(
+		'mm-dd-yy',
 	);
 	public static $jqueryui_custom_time_formats = array(
 	);
@@ -429,13 +538,13 @@ class QSOT_Date_Formats {
 	public static function is_24_hour() { return get_option( 'qsot-hour-format', '12-hour' ) == '24-hour'; }
 
 	// load all custom formats from the db
-	protected static function _load_custom_formats() {
+	protected static function _load_custom_formats( $type='php' ) {
 		$formats = array();
 		foreach ( self::$php_custom_date_formats as $format )
-			if ( $value = get_option( 'qsot-custom-php-date-format-' . sanitize_title_with_dashes( $format ), '' ) )
+			if ( $value = get_option( 'qsot-custom-' . $type . '-date-format-' . sanitize_title_with_dashes( $format ), '' ) )
 				$formats[ $format ] = $value;
 		foreach ( self::$php_custom_time_formats as $format )
-			if ( $value = get_option( 'qsot-custom-php-date-format-' . sanitize_title_with_dashes( $format ), '' ) )
+			if ( $value = get_option( 'qsot-custom-' . $type . '-date-format-' . sanitize_title_with_dashes( $format ), '' ) )
 				$formats[ $format ] = $value;
 		return $formats;
 	}
@@ -506,12 +615,132 @@ class QSOT_Date_Formats {
 	}
 
 	// reorder the time format, based on the settings, for a momentjs format
-	public static function moment_date_format( $format='mm-dd-yy' ) {
-		return $format;
+	public static function moment_date_format( $format='MM-dd-YY' ) {
+		static $conversions = false;
+		// load all custom formats from db, the first time this function is called
+		if ( false === $conversions )
+			$conversions = self::_load_custom_formats( 'moment' );
+		// only do this conversion once per input format
+		if ( isset( $conversions[ $format ] ) )
+			return $conversions[ $format ];
+
+		$regex = array();
+		// construct the regex
+		foreach ( self::$moment_format_map as $key => $group )
+			$regex[] = preg_quote( $key, '#' );
+		usort( $regex, array( __CLASS__, 'sort_by_length_r' ) );
+
+		// break the requested format into parts
+		preg_match_all( '#(' . implode( '|', $regex ) . ')#s', $format, $matches, PREG_SET_ORDER );
+
+		$segment = array();
+		$last_segment = '';
+		// cycle through the matches and organize them into segments
+		foreach ( $matches as $match ) {
+			$key = isset( self::$moment_format_map[ $match[1] ] ) ? self::$moment_format_map[ $match[1] ] : false;
+			// if the part is does not have a segment, then skip it
+			if ( ! $key ) {
+				// if the last segment is present, then add this part to it, and continue
+				if ( $last_segment && isset( $segment[ $last_segment ] ) )
+					$segment[ $last_segment ] .= $match[1];
+				continue;
+			}
+
+			// create a segment for this key if it does not exist yet
+			if ( ! isset( $segment[ $key ] ) )
+				$segment[ $key ] = '';
+			$last_segment = $key;
+
+			// add this part to the segment
+			$segment[ $key ] .= $match[1];
+		}
+
+		$date_format_array = explode( '-', self::date_format() );
+		$date_format = '';
+		// reorder the date portion of the format, based on the settings
+		foreach ( $date_format_array as $segment_key )
+			$date_format .= isset( $segment[ $segment_key ] ) ? $segment[ $segment_key ] : '';
+
+		$time_format = '';
+		$is_24_hour = self::is_24_hour();
+		// construct the time format
+		if ( $is_24_hour && isset( $segment['h'] ) )
+			$time_format .= strtoupper( $segment['h'] );
+		elseif ( ! $is_24_hour && isset( $segment['h'] ) )
+			$time_format .= strtolower( $segment['h'] );
+		// adjust for weird 'k' format
+		$time_format = str_replace( 'K', 'k', $time_format );
+		// continue with other time formats
+		if ( isset( $segment['i'] ) )
+			$time_format .= $segment['i'];
+		if ( isset( $segment['s'] ) )
+			$time_format .= $segment['s'];
+		if ( ! $is_24_hour && isset( $segment['a'] ) )
+			$time_format .= $segment['a'];
+		if ( isset( $segment['z'] ) )
+			$time_format .= $segment['z'];
+
+		// glue that shit together, and return
+		$conversion[ $format ] = trim( $date_format . ' ' . $time_format );
+		return $conversion[ $format ];
 	}
 
 	// reorder the time format, based on the settings, for a jquery format
 	public static function jquery_date_format( $format='mm-dd-yy' ) {
-		return $format;
+		static $conversions = false;
+		// load all custom formats from db, the first time this function is called
+		if ( false === $conversions )
+			$conversions = self::_load_custom_formats( 'jquery' );
+		// only do this conversion once per input format
+		if ( isset( $conversions[ $format ] ) )
+			return $conversions[ $format ];
+
+		$regex = array();
+		// construct the regex
+		foreach ( self::$jquery_format_map as $key => $group )
+			$regex[] = preg_quote( $key, '#' );
+		usort( $regex, array( __CLASS__, 'sort_by_length_r' ) );
+
+		// break the requested format into parts
+		preg_match_all( '#(' . implode( '|', $regex ) . ')#s', $format, $matches, PREG_SET_ORDER );
+
+		$segment = array();
+		$last_segment = '';
+		// cycle through the matches and organize them into segments
+		foreach ( $matches as $match ) {
+			$key = isset( self::$jquery_format_map[ $match[1] ] ) ? self::$jquery_format_map[ $match[1] ] : false;
+			// if the part is does not have a segment, then skip it
+			if ( ! $key ) {
+				// if the last segment is present, then add this part to it, and continue
+				if ( $last_segment && isset( $segment[ $last_segment ] ) )
+					$segment[ $last_segment ] .= $match[1];
+				continue;
+			}
+
+			// create a segment for this key if it does not exist yet
+			if ( ! isset( $segment[ $key ] ) )
+				$segment[ $key ] = '';
+			$last_segment = $key;
+
+			// add this part to the segment
+			$segment[ $key ] .= $match[1];
+		}
+
+		$date_format_array = explode( '-', self::date_format() );
+		$date_format = '';
+		// reorder the date portion of the format, based on the settings
+		foreach ( $date_format_array as $segment_key )
+			$date_format .= isset( $segment[ $segment_key ] ) ? $segment[ $segment_key ] : '';
+
+		// NOTE: jquery does not have time formats
+
+		// glue that shit together, and return
+		$conversion[ $format ] = trim( $date_format );
+		return $conversion[ $format ];
+	}
+
+	// sort a list of strings by length, desc
+	public static function sort_by_length_r( $a, $b ) {
+		return strlen( $b ) - strlen( $a );
 	}
 }
