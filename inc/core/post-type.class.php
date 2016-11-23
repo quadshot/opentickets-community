@@ -1436,7 +1436,20 @@ class qsot_post_type {
 		foreach ( $data['_qsot_event_settings'] as $ind => $item )
 			$data['_qsot_event_settings'][ $ind ] = @json_decode( stripslashes( $item ) );
 
+		// patch to prevent simple fields from overwriting child event field data
+		if ( isset( $_POST['simple_fields_nonce'] ) ) {
+			$_POST['_simple_fields_nonce'] = $_POST['simple_fields_nonce'];
+			unset( $_POST['simple_fields_nonce'] );
+		}
+
+		// actually save the sub-events
 		do_action( 'qsot-save-sub-events', $post_id, $post, $data, current_user_can( 'publish_posts' ) );
+
+		// restore simple fields save patch to original state
+		if ( isset( $_POST['_simple_fields_nonce'] ) ) {
+			$_POST['simple_fields_nonce'] = $_POST['_simple_fields_nonce'];
+			unset( $_POST['_simple_fields_nonce'] );
+		}
 	}
 
 	// actually does the saving of sub events

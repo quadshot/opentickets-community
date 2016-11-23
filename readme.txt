@@ -171,6 +171,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.6.1.1 - Nov/23/2016 =
+* [tweak] patch to make the Simple Fields plugin not overwrite child event saved meta, when saving the parent event
+
 = 2.6.1 - Nov/23/2016 =
 * [fix] fixed issue where sometimes the 'event area' would show as '0' during event creation
 * [fix] fixed issue where some time formats were always interpreted as AM when PM would be appropriate
