@@ -1255,6 +1255,9 @@ class qsot_post_type {
 			return $title;
 
 		// otherwise figure out what bits need to be added
+echo '<pre style="font-size:10px;">';
+var_dump( get_post_meta( $post_id, '_start', true ), QSOT_Utils::local_timestamp( get_post_meta( $post_id, '_start', true ) ), strtotime( '2016-12-01 23:46:00' ) );
+echo '</pre>';
 		$start = QSOT_Utils::local_timestamp( get_post_meta( $post_id, '_start', true ) );
 		// bail if the date is invalid
 		if ( 0 == $start )
