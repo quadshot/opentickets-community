@@ -165,6 +165,9 @@ class QSOT_Utils {
 
 		// calculate the appropriate offset based on the current one and the dst flag
 		$offset = self::_dst_adjust( $current_offset, $dst_status );
+echo '<pre style="font-size:10px;">', "tz data\n";
+var_dump( $tz_string, $orig_tz_string, $current_offset, $dst_status, $offset );
+die( '</pre>' );
 
 		// restore the timezone before this calc
 		date_default_timezone_set( $orig_tz_string );
@@ -199,7 +202,7 @@ class QSOT_Utils {
 				$new_hour = intval( $match['hour'] ) + 1;
 				// "spring forward" means the offset is increased by one hour
 				$offset = sprintf(
-					'%s%02s%02s',
+					'%s%02s:%02s',
 					$new_hour < 0 ? '-' : '+',
 					abs( $new_hour ),
 					$match['minute']
