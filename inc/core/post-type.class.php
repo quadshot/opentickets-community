@@ -1476,6 +1476,10 @@ echo '</pre>';
 			// expand the settings
 			$tmp = ! is_scalar( $item ) ? $item : @json_decode( stripslashes( $item ) );
 
+echo '<pre style="font-size:10px;">';
+var_dump( $tmp->start, QSOT_Utils::make_non_dst( $tmp->start ) );
+echo '</pre>';
+die();
 			// update the timestamps to be non-dst for storage
 			$tmp->start = QSOT_Utils::make_non_dst( $tmp->start );
 			$tmp->end = QSOT_Utils::make_non_dst( $tmp->end );
