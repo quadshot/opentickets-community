@@ -753,10 +753,17 @@ class QSOT {
 	// on admin load, check if we need to update all the event timestamps now. if so, do it
 	public static function maybe_update_event_timestamps() {
 		// find out the last time the timestamp updater ran
-		$last_run = get_option( '_last_run_otce_normalize_event_times', '' );
+		$last_run = explode( '|', get_option( '_last_run_otce_normalize_event_times', '' ) );
+
+		$run_now = false;
+		// if the last run is empty, has not been run for this version, or was run for an older version, then run it again
+		if ( ! $last_run )
+			$run_now = true;
+		if ( ! isset( $last_run[1] ) || version_compare( $last_run[1], QSOT_Utils::$normalize_version ) < 0 )
+			$run_now = true;
 
 		// if it never ran, do it now
-		if ( ! $last_run )
+		if ( $run_now )
 			QSOT_Utils::normalize_event_times();
 	}
 

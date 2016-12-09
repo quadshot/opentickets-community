@@ -5,7 +5,7 @@ QS.EventUI = (function($, undefined) {
 			new_post_id = -1;
 
 	// set the default timezone for momentjs
-	moment.tz.setDefault( S.tz );
+	moment.tz.setDefault( '' );
 
 	function frmt( str ) {
 		return ( 'string' == typeof str && qt.is( S.frmts[ str ] ) ) ? S.frmts[ str ] : str;

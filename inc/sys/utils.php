@@ -141,35 +141,50 @@ class QSOT_Utils {
 		$dst_status = date( 'I', $time );
 
 		// restore the timezone before this calc
-		date_default_timezone_set( $orig_tz_string );
+		if ( $tz_string )
+			date_default_timezone_set( $orig_tz_string );
 
 		return apply_filters( 'qsot-is-dst', !! $dst_status, $time );
 	}
 
+	// make a timestamp UTC
+	public static function make_utc( $timestamp ) {
+		return date( 'Y-m-d\TH:i:s', strtotime( $timestamp ) ) . '+00:00';
+	}
+
+	// make a fake datestamp UTC
+	public static function fake_utc_date( $datestamp ) {
+		return self::change_offset( date( 'c', self::local_timestamp( $datestamp ) ), '+00:00' );
+	}
+
+	// change the offset of a timestamp
+	public static function change_offset( $date, $new_offset='+00:00' ) {
+		// get the date and time portion of the stamp
+		preg_match( '#^(?P<stamp>\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2})#', $date, $match );
+
+		// if we have a result, compile the new time
+		if ( isset( $match['stamp'] ) )
+			return $match['stamp'] . $new_offset;
+
+		return $date;
+	}
+
 	// get the non-DST timezone
-	public static function non_dst_tz_offset() {
+	public static function non_dst_tz_offset( $format='%s%02s:%02s' ) {
 		static $offset = null;
 		// do this once per page load
 		if ( null !== $offset )
 			return $offset;
 
-		// update to the site timezone
-		$tz_string = get_option( 'timezone_string', 'UTC' );
-		$orig_tz_string = date_default_timezone_get();
-		if ( $tz_string )
-			date_default_timezone_set( $tz_string );
+		// get the numeric offset from the db
+		$offset = get_option( 'gmt_offset', 0 );
 
-		// get the current offset and dst status
-		$current_offset = date( 'P' );
-		$dst_status = date( 'I' );
-
-		// calculate the appropriate offset based on the current one and the dst flag
-		$offset = self::_dst_adjust( $current_offset, $dst_status );
-
-		// restore the timezone before this calc
-		date_default_timezone_set( $orig_tz_string );
-
-		return $offset;
+		return sprintf(
+			$format,
+			$offset < 0 ? '-' : '+',
+			absint( floor( $offset ) ),
+			$offset - floor( $offset ) > 0 ? '30' : '00'
+		);
 	}
 
 	// accept a mysql or 'c' formatted timestamp, and make it use the current non-dst SITE timezone
@@ -245,8 +260,58 @@ class QSOT_Utils {
 	 *
 	 * @return int a unix-timestamp, adjusted so that it produces accurrate local times for the server
 	 */
-	public static function local_timestamp( $date, $dst_adjust=true ) {
-		return self::gmt_timestamp( self::to_c( $date, $dst_adjust ), 'from' );
+	public static function local_timestamp( $date, $dst_adjust=true, $from_utc=true ) {
+		static $tz_string = false, $offset = false;
+		// get the current system offset values if they have not already been fetched
+		if ( false === $tz_string || false === $offset ) {
+			$tz_string = get_option( 'timezone_string', 'UTC' );
+			$offset = get_option( 'gmt_offset', 0 );
+		}
+
+		// get the gmt unix timestamp of the time
+		$ts = strtotime( $date );
+
+		// adjust the time, based on the offset
+		$ts = $ts + ( $offset * HOUR_IN_SECONDS );
+
+		//$current_dst = self::is_dst( time() );
+		$is_dst = false;
+		// if we want to adjust for dst
+		if ( $dst_adjust ) {
+			// determine if the time is in dst or not
+			$is_dst = self::in_dst( $ts );
+
+			// if it is, adjust the time once more
+			if ( $is_dst )
+				$ts = $ts + HOUR_IN_SECONDS;
+		}
+
+		return $ts;
+	}
+
+	// accept a datestamp, and make it local
+	public static function local_datestamp( $date, $dst_adjust=true, $from_utc=true ) {
+		// timestamp
+		$ts = self::local_timestamp( $date, $dst_adjust, $from_utc );
+
+		// construct an appropriate ISO datestamp representing the calculated date
+		return date( 'Y-m-d\TH:i:s', $ts ) . self::local_time_offset();
+	}
+
+	// get the local time zone adjust for this site
+	public static function local_time_offset( $relative_to=false) {
+		// if no relative time was sent, use now
+		$relative_to = false !== $relative_to ? $relative_to : time();
+
+		$offset_number = get_option( 'gmt_offset', 0 );
+		// if this is dst, adjust the offset number
+		if ( self::in_dst( $relative_to ) )
+			$offset_number += 1;
+
+		// construct the offset
+		$offset = sprintf( '%s%02s:%02s', $offset_number < 0 ? '-' : '+', floor( $offset_number ), $offset_number - floor( $offset_number ) > 0 ? '30' : '00' );
+
+		return $offset;
 	}
 
 	// accept a user input value for a time, and convert it to 24 hour time
@@ -279,6 +344,7 @@ class QSOT_Utils {
 		);
 	}
 
+	public static $normalize_version = '2.0';
 	// code to update all the site event start and end times to the same timezone as the SITE, in non-dst, is currently set to
 	public static function normalize_event_times() {
 		// get current site timeoffset
@@ -312,13 +378,9 @@ class QSOT_Utils {
 				$end = get_post_meta( $event_id, '_end', true );
 				$orig_values = array( 'start' => $start, 'end' => $end );
 
-				// normalize each time so that it does not include an offset
-				$start = preg_replace( '#^(\d{4}-\d{2}-\d{2})(?:T| )(\d{2}:\d{2}:\d{2}).*$#', '\1T\2', $start );
-				$end = preg_replace( '#^(\d{4}-\d{2}-\d{2})(?:T| )(\d{2}:\d{2}:\d{2}).*$#', '\1T\2', $end );
-
-				// update each time to include the correct offset
-				$start .= $offset;
-				$end .= $offset;
+				// normalize the timestamp to UTC
+				$start = date( 'Y-m-d H:i:s', strtotime( $start ) ) . '+00:00';
+				$end = date( 'Y-m-d H:i:s', strtotime( $end ) ) . '+00:00';
 
 				// save both times in the new format
 				update_post_meta( $event_id, '_start', $start );
@@ -329,7 +391,7 @@ class QSOT_Utils {
 		}
 
 		// add a record of the last time this ran
-		update_option( '_last_run_otce_normalize_event_times', time() );
+		update_option( '_last_run_otce_normalize_event_times', time() . '|' . self::$normalize_version );
 	}
 }
 
@@ -550,7 +612,7 @@ class QSOT_Date_Formats {
 	}
 
 	// reorder a time format, based on the settings
-	public static function php_date_format( $format='m-d-Y' ) {
+	public static function php_date_format( $format='m-d-Y', $sep=' ' ) {
 		static $conversions = false;
 		// load all custom formats from db, the first time this function is called
 		if ( false === $conversions )
@@ -610,12 +672,12 @@ class QSOT_Date_Formats {
 			$time_format .= $segment['z'];
 
 		// glue that shit together, and return
-		$conversion[ $format ] = trim( $date_format . ' ' . $time_format );
+		$conversion[ $format ] = trim( $date_format . $sep . $time_format );
 		return $conversion[ $format ];
 	}
 
 	// reorder the time format, based on the settings, for a momentjs format
-	public static function moment_date_format( $format='MM-dd-YY' ) {
+	public static function moment_date_format( $format='MM-dd-YY', $sep=' ' ) {
 		static $conversions = false;
 		// load all custom formats from db, the first time this function is called
 		if ( false === $conversions )
@@ -681,7 +743,7 @@ class QSOT_Date_Formats {
 			$time_format .= $segment['z'];
 
 		// glue that shit together, and return
-		$conversion[ $format ] = trim( $date_format . ' ' . $time_format );
+		$conversion[ $format ] = trim( $date_format . $sep . $time_format );
 		return $conversion[ $format ];
 	}
 

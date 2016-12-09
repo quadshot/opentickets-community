@@ -514,8 +514,8 @@ class qsot_frontend_calendar {
 			'description' => '', //apply_filters( 'the_content', empty( $event->post_content ) ? $par->post_content : $event->post_parent ),
 			'short_description' => self::_short_description( $event, $par ),
 			// add the start and end dates
-			'start' => isset( $meta[ $keys['start'] ] ) ? current( $meta[ $keys['start'] ] ) : '',
-			'end' => isset( $meta[ $keys['end'] ] ) ? current( $meta[ $keys['end'] ] ) : '',
+			'start' => isset( $meta[ $keys['start'] ] ) ? QSOT_Utils::local_datestamp( current( $meta[ $keys['start'] ] ) ) : '',
+			'end' => isset( $meta[ $keys['end'] ] ) ? QSOT_Utils::local_datestamp( current( $meta[ $keys['end'] ] ) ) : '',
 			// add the link to the event
 			'url' => get_permalink( $event->ID ),
 			// add the event image

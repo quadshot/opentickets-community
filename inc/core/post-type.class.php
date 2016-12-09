@@ -1091,7 +1091,8 @@ class qsot_post_type {
 				'MM-dd-yyyy' => __( 'MM-dd-yyyy', 'opentickets-community-edition' ),
 				'ddd MM-dd-yyyy' => __( 'ddd MM-dd-yyyy', 'opentickets-community-edition' ),
 			),
-			'tz' => get_option('timezone_string'),
+			//'tz_offset' => QSOT_Utils::non_dst_tz_offset( '%s%02s:%02s' ),
+			//'tz' => get_option('timezone_string'),
 			'str' => array(
 				'New Event Date' => __( 'New Event Date', 'opentickets-community-edition' ),
 			),
@@ -1160,12 +1161,12 @@ class qsot_post_type {
 			$start = isset( $meta[ self::$o->{'meta_key.start'} ] )
 					? $meta[ self::$o->{'meta_key.start'} ]
 					: date( 'Y-m-d H:i:s', strtotime( preg_replace( '#(\d{4}-\d{2}-\d{2})_(\d{1,2})-(\d{2})((a|p)m)#', '\1 \2:\3\4', $event->post_name ) ) );
-			$start = QSOT_Utils::to_c( $start, false, false );
+			$start = QSOT_Utils::change_offset( date( 'c', QSOT_Utils::local_timestamp( $start ) ), '+00:00' );
 			$earliest = min( strtotime( $start ), $earliest );
 			$end = isset( $meta[ self::$o->{'meta_key.end'} ] )
 					? $meta[ self::$o->{'meta_key.end'} ]
 					: date( 'Y-m-d H:i:s', strtotime( '+1 hour', $start ) );
-			$end = QSOT_Utils::to_c( $end, false, false );
+			$end = QSOT_Utils::change_offset( date( 'c', QSOT_Utils::local_timestamp( $end ) ), '+00:00' );
 
 			// add an item to the list, by transposing the loaded settings for this sub event over the list of default settings, and then allowing sub/external plugins to modify them
 			// to add their own settings for the interface.
@@ -1354,8 +1355,8 @@ class qsot_post_type {
 
 			// construct date time stamps
 			$offset = QSOT_Utils::non_dst_tz_offset();
-			$start = preg_replace( '#^(\d{4}-\d{2}-\d{2})(?:T| )(\d{2}:\d{2}:\d{2}).*$#', '\1T\2', $dt['start_date'] . ' ' . $start_time ) . $offset;
-			$end = preg_replace( '#^(\d{4}-\d{2}-\d{2})(?:T| )(\d{2}:\d{2}:\d{2}).*$#', '\1T\2', $dt['end_date'] . ' ' . $end_time ) . $offset;
+			$start = QSOT_Utils::make_utc( preg_replace( '#^(\d{4}-\d{2}-\d{2})(?:T| )(\d{2}:\d{2}:\d{2}).*$#', '\1T\2', $dt['start_date'] . ' ' . $start_time ) . $offset );
+			$end = QSOT_Utils::make_utc( preg_replace( '#^(\d{4}-\d{2}-\d{2})(?:T| )(\d{2}:\d{2}:\d{2}).*$#', '\1T\2', $dt['end_date'] . ' ' . $end_time ) . $offset );
 
 			// if the times are in the correct format, then save them
 			if ( preg_match( '#^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\+|-)\d{2}:\d{2}$#', $start ) && preg_match( '#^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\+|-)\d{2}:\d{2}$#', $end ) ) {
@@ -1367,7 +1368,7 @@ class qsot_post_type {
 					// update the post_name
 					$post_arr = array(
 						'ID' => $post_id,
-						'post_name' => date( QSOT_Date_Formats::php_date_format( 'Y-m-d_gia' ), QSOT_Utils::local_timestamp( $start ) ),
+						'post_name' => date( QSOT_Date_Formats::php_date_format( 'Y-m-d_gia', '' ), QSOT_Utils::local_timestamp( $start ) ),
 					);
 					wp_update_post( $post_arr );
 				}
@@ -1474,8 +1475,8 @@ class qsot_post_type {
 			$tmp = ! is_scalar( $item ) ? $item : @json_decode( stripslashes( $item ) );
 
 			// update the timestamps to be non-dst for storage
-			$tmp->start = QSOT_Utils::make_non_dst( $tmp->start );
-			$tmp->end = QSOT_Utils::make_non_dst( $tmp->end );
+			$tmp->start = QSOT_Utils::make_utc( $tmp->start );
+			$tmp->end = QSOT_Utils::make_utc( $tmp->end );
 
 			// if the settings are a valid set of settings, then continue with this item
 			if ( is_object( $tmp ) ) {
@@ -1847,13 +1848,13 @@ class qsot_post_type {
 	public static function mb_single_event_settings( $post, $mb ) {
 		// load actual start/end datetime
 		$start = get_post_meta( $post->ID, '_start', true );
-		$start_c = QSOT_Utils::to_c( $start );
+		$start_c = QSOT_Utils::fake_utc_date( $start );
 		$end = get_post_meta( $post->ID, '_end', true );
-		$end_c = QSOT_Utils::to_c( $end );
+		$end_c = QSOT_Utils::fake_utc_date( $end );
 
 		// get just the date and time portions
-		$start_time = date( QSOT_Date_Formats::php_date_format( 'g:ia' ), QSOT_Utils::gmt_timestamp( $start_c, 'from', 'g:ia' ) );
-		$end_time = date( QSOT_Date_Formats::php_date_format( 'g:ia' ), QSOT_Utils::gmt_timestamp( $end_c, 'from', 'g:ia' ) );
+		$start_time = date( QSOT_Date_Formats::php_date_format( 'g:ia' ), QSOT_Utils::gmt_timestamp( $start, 'from', 'g:ia' ) );
+		$end_time = date( QSOT_Date_Formats::php_date_format( 'g:ia' ), QSOT_Utils::gmt_timestamp( $end, 'from', 'g:ia' ) );
 
 		// render the settings box
 		?>

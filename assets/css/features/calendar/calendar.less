@@ -11,6 +11,7 @@
 */
 
 body .fc { position:relative; /* NOTE:added so that the loading overlay will work */ }
+body .fc table { margin-bottom: 0; }
 
 /* default look for background events */
 body .fc-bgevent { background:@calendar_item_bg; opacity:.3; filter:alpha(opacity=30); /* for IE */ color:@calendar_item_text; border-color:@calendar_item_border; }
@@ -40,7 +41,7 @@ body .fc-event-container .fc-event:hover {
 /* ADDED:status styling */
 body .fc-event-container .fc-event.status-hidden { border:1px dashed rgb(33, 78, 99); opacity:0.5; filter:alpha(opacity=50); }
 body .fc-event-container .fc-event.status-private { border:1px dashed rgb(255, 255, 255); font-style:italic; color:#c0c0c0; }
-body .fc-event .event-item { padding:0.2em 0 0.2em 0.2em; }
+body .fc-event .event-item { padding:0.2em; }
 
 body .fc-event.in-the-past,
 body .fc-event.in-the-past:hover,
@@ -117,7 +118,7 @@ body .fc-unthemed td,
 body .fc-unthemed th,
 body .fc-unthemed thead { border-color:#ccc; }
 
-body .fc .fc-day-grid-event { margin:0 3px 3px; }
+body .fc .fc-day-grid-event { margin:0 3px 3px; overflow: hidden; }
 body .fc tr:first-child > td > .fc-day-grid-event { margin-top:3px; }
 body .fc .fc-row { padding-bottom:7px; }
 body .fc .fc-head .fc-row { padding-bottom:0; }
