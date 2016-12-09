@@ -379,8 +379,8 @@ class QSOT_Utils {
 				$orig_values = array( 'start' => $start, 'end' => $end );
 
 				// normalize the timestamp to UTC
-				$start = date( 'Y-m-d H:i:s', strtotime( $start ) ) . '+00:00';
-				$end = date( 'Y-m-d H:i:s', strtotime( $end ) ) . '+00:00';
+				$start = date( 'Y-m-d\TH:i:s', strtotime( $start ) ) . '+00:00';
+				$end = date( 'Y-m-d\TH:i:s', strtotime( $end ) ) . '+00:00';
 
 				// save both times in the new format
 				update_post_meta( $event_id, '_start', $start );
