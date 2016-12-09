@@ -1321,7 +1321,7 @@ class qsot_post_type {
 
 		// if there were settings for the sub events sent, then process those settings, on the next action
 		// on next action because apparently recursive calls to save_post action causes the outermost loop to skip everything after the function that caused the recursion
-		if ( isset( $_POST['_qsot_event_settings'], $_POST['_qsot_event_settings'] ) )
+		if ( isset( $_POST['_qsot_event_settings'] ) )
 			add_action( 'wp_insert_post', array( __CLASS__, 'save_sub_events' ), 100, 3 );
 
 		// if the 'show date' and 'show time' settings are present, update them as needed, on the next action
@@ -1432,6 +1432,7 @@ class qsot_post_type {
 		remove_action( 'wp_insert_post', array( __CLASS__, 'save_sub_events' ), 100 );
 		$data = $_POST;
 
+		unset( $data['_qsot_event_settings']['count'] );
 		// expand the json data
 		foreach ( $data['_qsot_event_settings'] as $ind => $item )
 			$data['_qsot_event_settings'][ $ind ] = @json_decode( stripslashes( $item ) );

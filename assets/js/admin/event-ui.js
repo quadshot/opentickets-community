@@ -807,6 +807,10 @@ QS.EventUI = (function($, undefined) {
 					};
 			this.callback( 'before-submit-defaults', [ defaults ] );
 
+			// record the total events sent. prevents empty _qsot_event_settings array on submit
+			$( '<input type="hidden" name="_qsot_event_settings[count]" value="" />' ).val( events.length + '' ).appendTo( form );
+
+			// cycle through all the events and save each settings group individually
 			for (var i = 0; i < events.length; i++) {
 				var ev = {
 					_id: events[i]._id,
