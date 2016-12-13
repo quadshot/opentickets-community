@@ -309,7 +309,7 @@ class QSOT_Utils {
 			$offset_number += 1;
 
 		// construct the offset
-		$offset = sprintf( '%s%02s:%02s', $offset_number < 0 ? '-' : '+', floor( $offset_number ), $offset_number - floor( $offset_number ) > 0 ? '30' : '00' );
+		$offset = sprintf( '%s%02s:%02s', $offset_number < 0 ? '-' : '+', floor( abs( $offset_number ) ), 0 != abs( $offset_number ) - floor( abs( $offset_number ) ) ? '30' : '00' );
 
 		return $offset;
 	}
