@@ -23,8 +23,8 @@ class qsot_Settings_Frontend extends QSOT_Settings_Page {
 
 		$this->_setup_settings_page_hooks();
 
-		if ( ( $styles = WC_Frontend_Scripts::get_styles() ) && array_key_exists( 'woocommerce-general', $styles ) )
-			add_action( 'woocommerce_admin_field_qsot_frontend_styles', array( $this, 'frontend_styles_setting' ) );
+		//if ( ( $styles = WC_Frontend_Scripts::get_styles() ) && array_key_exists( 'woocommerce-general', $styles ) )
+		add_action( 'woocommerce_admin_field_qsot_frontend_styles', array( $this, 'frontend_styles_setting' ) );
 
 		add_action( 'woocommerce_admin_field_qsot-image-ids', array( $this, 'image_ids_setting' ), 1000, 1 );
 	}
