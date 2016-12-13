@@ -178,6 +178,7 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 * [tweak] updated jquery date and momentjs date reformatting, based on settings
 * [tweak] adjusted some of the visual of the calendar for some themes
 * [fix] fixed issue where removing all child events in from a parent event, caused none of the children to get deleted
+* [fix] fixed edge case calendar issue where event times were changing per event
 
 = 2.6.1 - Nov/23/2016 =
 * [fix] fixed issue where sometimes the 'event area' would show as '0' during event creation
