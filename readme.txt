@@ -3,7 +3,7 @@ Contributors: quadshot, loushou, coolmann
 Donate link: http://opentickets.com/
 Tags: event tickets, tickets, ticketing, event ticketing, ticket sales, events, event management, ecommerce
 Requires at least: 4.0
-Tested up to: 4.6.1
+Tested up to: 4.7.0
 Stable tag: trunk
 Copyright: Copyright (C) 2009-2016 Quadshot Software LLC
 License: GNU General Public License, version 3 (GPL-3.0)
@@ -171,7 +171,7 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
-= 2.6.1.3-timestamps - Dec/09/2016 =
+= 2.6.2 - Dec/14/2016 =
 * [tweak] changed how start and end times are stored in db
 * [tweak] changed calculation of proper local time, given invalid timezones that WP lets you select in settings
 * [tweak] patch to make the Simple Fields plugin not overwrite child event saved meta, when saving the parent event
