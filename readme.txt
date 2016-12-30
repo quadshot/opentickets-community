@@ -171,6 +171,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.6.3 - Dec/30/2016 =
+* [fix] fixing issue in admin where subsequent saves of a parent event, sometimes changed the start times of the child events
+
 = 2.6.2 - Dec/14/2016 =
 * [tweak] changed how start and end times are stored in db
 * [tweak] changed calculation of proper local time, given invalid timezones that WP lets you select in settings
