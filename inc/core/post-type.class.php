@@ -1476,6 +1476,7 @@ class qsot_post_type {
 			$tmp = ! is_scalar( $item ) ? $item : @json_decode( stripslashes( $item ) );
 
 			// update the timestamps to be non-dst for storage
+			// handles situation where site is in EST and local computer setting up event is in PST
 			$tmp->start = QSOT_Utils::make_utc( $tmp->start );
 			$tmp->end = QSOT_Utils::make_utc( $tmp->end );
 

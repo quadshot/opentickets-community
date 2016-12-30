@@ -149,7 +149,41 @@ class QSOT_Utils {
 
 	// make a timestamp UTC
 	public static function make_utc( $timestamp ) {
-		return date( 'Y-m-d\TH:i:s', strtotime( $timestamp ) ) . '+00:00';
+		$diff = QSOT_Utils::tz_diff( $timestamp );
+		return date( 'c', strtotime( $timestamp ) - $diff );
+	}
+
+	// determine the difference in timezone for the specified timestamp and the site settings, in seconds
+	public static function tz_diff( $timestamp, $zero_if_utc=false ) {
+		static $site = false;
+		// site settings
+		if ( false === $site )
+			$site = self::tz_to_number( self::non_dst_tz_offset() );
+
+		// timestamp tz
+		$tz = preg_replace( '#\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2}#', '', $timestamp );
+		if ( $tz == $timestamp || ! strlen( $tz ) )
+			return 0;
+
+		// flatten tz to number
+		$tz = self::tz_to_number( $tz );
+
+		// return the difference in seconds
+		return $zero_if_utc && 0 == $tz ? 0 : ( $site - $tz ) * HOUR_IN_SECONDS;
+	}
+
+	// convert a timezone string to a numeric value
+	// input must be in format: [+-]\d{2}:\d{2}
+	public static function tz_to_number( $string ) {
+		$sign = substr( $string, 0, 1 );
+		// break hours and minutes
+		list( $hours, $minutes ) = explode( ':', substr( $string, 1 ) );
+
+		// make a number from hours and minutes
+		$number = absint( $hours ) + ( absint( $minutes ) > 0 ? 0.5 : 0 );
+
+		// return with sign
+		return $sign . $number;
 	}
 
 	// make a fake datestamp UTC
@@ -179,7 +213,7 @@ class QSOT_Utils {
 		// get the numeric offset from the db
 		$offset = get_option( 'gmt_offset', 0 );
 
-		return sprintf(
+		return $offset = sprintf(
 			$format,
 			$offset < 0 ? '-' : '+',
 			absint( floor( $offset ) ),
