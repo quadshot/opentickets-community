@@ -294,7 +294,7 @@ QS.adminTicketSelection = ( function( $, qs, qt ) {
 		// setup the basic events
 		function _setup_basic_events() {
 			me.e.scope.on( 'click', '[rel="add-tickets-btn"]', me.add_ticket_ui );
-			me.e.scope.on( 'click', '.change-ticket', me.change_ticket_ui );
+			me.e.order_items.on( 'click', '.change-ticket', me.change_ticket_ui );
 
 			qs.cbs.trigger( 'setup-events', [ me, S ] );
 		}
@@ -475,6 +475,7 @@ QS.adminTicketSelection = ( function( $, qs, qt ) {
 
 		// start the UI with the mindset of 'changing' an existing reservation
 		me.change_ticket_ui = function( e ) {
+			console.log( 'fucing click' );
 			e.preventDefault();
 
 			// flag the internal state of the UI
