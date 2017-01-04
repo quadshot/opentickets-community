@@ -171,6 +171,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.6.3.1- Jan/4/2017 =
+* [tweak] made a javascript change that works around the new WC change that prevents the 'change seat' button from working in the admin
+
 = 2.6.3 - Jan/3/2017 =
 * [fix] fixing issue in admin where subsequent saves of a parent event, sometimes changed the start times of the child events
 
