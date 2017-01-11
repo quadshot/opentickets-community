@@ -67,7 +67,7 @@ class QSOT_Utils {
 			return false;
 
 		// adjust the raw time we got above, to achieve the GMT time
-		return $raw + ( ( 'to' == $method ? -1 : 1 ) * ( get_option( 'gmt_offset', 0 ) * HOUR_IN_SECONDS ) );
+		return $raw + ( ( 'to' == $method ? -1 : 1 ) * ( ( get_option( 'gmt_offset', 0 ) + ( self::in_dst( $date ) ? '1' : 0 ) ) * HOUR_IN_SECONDS ) );
 	}
 
 	/**
@@ -137,6 +137,7 @@ class QSOT_Utils {
 			date_default_timezone_set( $tz_string );
 
 		$time = null === $time ? time() : $time;
+		$time = ! is_numeric( $time ) ? strtotime( $time ) : $time;
 		// get the current dst status
 		$dst_status = date( 'I', $time );
 
@@ -149,8 +150,27 @@ class QSOT_Utils {
 
 	// make a timestamp UTC
 	public static function make_utc( $timestamp ) {
-		$diff = QSOT_Utils::tz_diff( $timestamp );
-		return date( 'c', strtotime( $timestamp ) - $diff );
+		static $site = false;
+		// site settings
+		if ( false === $site )
+			$site = self::site_offset();
+
+		// return an adjusted time, by accepting the hour/minute and date from the frontend, changing the tz to the site tz, and converting to utc
+		return date( 'c', strtotime( self::change_offset( $timestamp, self::number_to_tz( $site[ self::in_dst( $timestamp ) ? 'dst' : 'non' ] ) ) ) );
+	}
+
+	// get the site's offset informatino
+	public static function site_offset() {
+		static $site = false;
+		// site settings
+		if ( false === $site ) {
+			$site = array(
+				'non' => self::tz_to_number( self::non_dst_tz_offset() ),
+				'dst' => self::tz_to_number( self::dst_tz_offset() ),
+				'in_dst' => self::in_dst(),
+			);
+		}
+		return $site;
 	}
 
 	// determine the difference in timezone for the specified timestamp and the site settings, in seconds
@@ -158,18 +178,18 @@ class QSOT_Utils {
 		static $site = false;
 		// site settings
 		if ( false === $site )
-			$site = self::tz_to_number( self::non_dst_tz_offset() );
+			$site = self::site_offset();
 
 		// timestamp tz
-		$tz = preg_replace( '#\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2}#', '', $timestamp );
+		$tz = preg_replace( '#(\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2})#', '', $timestamp );
 		if ( $tz == $timestamp || ! strlen( $tz ) )
 			return 0;
 
 		// flatten tz to number
-		$tz = self::tz_to_number( $tz );
+		$tz = self::tz_to_number( $tz ) - ( $site['in_dst'] ? 1 : 0 );
 
 		// return the difference in seconds
-		return $zero_if_utc && 0 == $tz ? 0 : ( $site - $tz ) * HOUR_IN_SECONDS;
+		return $zero_if_utc && 0 == $tz ? 0 : ( $site[ self::in_dst( $timestamp ) ? 'dst' : 'non' ] - $tz ) * HOUR_IN_SECONDS;
 	}
 
 	// convert a timezone string to a numeric value
@@ -184,6 +204,16 @@ class QSOT_Utils {
 
 		// return with sign
 		return $sign . $number;
+	}
+
+	// number to timezone
+	public static function number_to_tz( $number ) {
+		return sprintf(
+			'%s%02s:%02s',
+			$number < 0 ? '-' : '+',
+			absint( floor( $number ) ),
+			$number - floor( $number ) > 0 ? '30' : '00'
+		);
 	}
 
 	// make a fake datestamp UTC
@@ -213,12 +243,20 @@ class QSOT_Utils {
 		// get the numeric offset from the db
 		$offset = get_option( 'gmt_offset', 0 );
 
-		return $offset = sprintf(
-			$format,
-			$offset < 0 ? '-' : '+',
-			absint( floor( $offset ) ),
-			$offset - floor( $offset ) > 0 ? '30' : '00'
-		);
+		return $offset = self::number_to_tz( $offset );
+	}
+
+	// get the DST timezone
+	public static function dst_tz_offset( $format='%s%02s:%02s' ) {
+		static $offset = null;
+		// do this once per page load
+		if ( null !== $offset )
+			return $offset;
+
+		// get the numeric offset from the db
+		$offset = get_option( 'gmt_offset', 0 ) + 1;
+
+		return $offset = self::number_to_tz( $offset );
 	}
 
 	// accept a mysql or 'c' formatted timestamp, and make it use the current non-dst SITE timezone
