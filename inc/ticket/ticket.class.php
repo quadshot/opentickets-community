@@ -199,13 +199,13 @@ class QSOT_tickets {
 		$final = '';
 		// if we ARE using a permalink struct, then return a pretty permalink
 		if ( ! empty( $wp_rewrite->permalink_structure ) ) {
-			$final = site_url( '/ticket/' . $code . '/' );
+			$final = home_url( '/ticket/' . $code . '/' );
 		// otherwise, return an ugly permalink
 		} else {
 			$final = add_query_arg( array(
 				'qsot-ticket' => 1,
 				'qsot-ticket-id' => $code,
-			), site_url() );
+			), home_url() );
 		}
 
 		return $final;
@@ -223,13 +223,13 @@ class QSOT_tickets {
 		$final = '';
 		// if we ARE using a permalink struct, then return a pretty permalink
 		if ( ! empty( $wp_rewrite->permalink_structure ) ) {
-			$final = site_url( '/order-tickets/' . $order->order_key . '/' );
+			$final = home_url( '/order-tickets/' . $order->order_key . '/' );
 		// otherwise, return an ugly permalink
 		} else {
 			$final = add_query_arg( array(
 				'qsot-order-tickets' => 1,
 				'qsot-order-ticket-id' => $order->order_key,
-			), site_url() );
+			), home_url() );
 		}
 
 		return $final;
