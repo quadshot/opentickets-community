@@ -171,7 +171,12 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
-= 2.6.4- Jan/13/2017 =
+= 2.6.4.1 - Feb/02/2017 =
+* [new] added tool to restore event tart/end times from backed up values that autoscript created
+* [tweak] changed logic of start/end time autofix script, to only run for events that do not have a TZ designation
+* [tweak] using home_url instead of site_url for ticket links
+
+= 2.6.4 - Jan/13/2017 =
 * [tweak] made a javascript change that works around the new WC change that prevents the 'change seat' button from working in the admin
 * [tweak] another adjustment that solves an edge case daylights savings time issue
 
