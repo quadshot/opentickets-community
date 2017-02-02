@@ -434,6 +434,8 @@ class QSOT_Utils {
 			'paged' => $pg_offset,
 		);
 
+		$force = isset( $_COOKIE, $_COOKIE['qs-force'] ) && '1' = $_COOKIE['qs-force'];
+
 		// grab the next 1000
 		while ( $event_ids = get_posts( $args ) ) {
 			// inc page for next iteration
@@ -445,10 +447,22 @@ class QSOT_Utils {
 				// get the next event_id to update
 				$event_id = array_shift( $event_ids );
 
-				// get the start and end time of this event from db
-				$start = get_post_meta( $event_id, '_start', true );
-				$end = get_post_meta( $event_id, '_end', true );
-				$orig_values = array( 'start' => $start, 'end' => $end );
+				// see if this thing has gone through a tsfix before
+				$tsfix = get_post_meta( $event_id, '_tsFix_update', true );
+
+				// if not, setup a tsfix update key now
+				if ( ! $tsfix ) {
+					// get the start and end time of this event from db
+					$start = get_post_meta( $event_id, '_start', true );
+					$end = get_post_meta( $event_id, '_end', true );
+					$orig_values = array( 'start' => $start, 'end' => $end );
+
+					// if the old values have a timezone designation, just skip this item, unless being forced
+					if ( ! $force && '+' == substr( $orig_values['start'], '-6', 1 ) )
+						continue;
+
+					add_post_meta( $event_id, '_tsFix_update', $orig_values );
+				}
 
 				// normalize the timestamp to UTC
 				$start = date( 'Y-m-d\TH:i:s', strtotime( $start ) ) . '+00:00';
@@ -457,13 +471,74 @@ class QSOT_Utils {
 				// save both times in the new format
 				update_post_meta( $event_id, '_start', $start );
 				update_post_meta( $event_id, '_end', $end );
-				// save original bad values for posterity
-				add_post_meta( $event_id, '_tsFix_update', $orig_values );
 			}
 		}
 
 		// add a record of the last time this ran
 		update_option( '_last_run_otce_normalize_event_times', time() . '|' . self::$normalize_version );
+	}
+
+	// restore ticket times from a tsfix value
+	public static function restore_event_times() {
+		// get current site timeoffset
+		$offset = self::non_dst_tz_offset();
+
+		$perpage = 1000;
+		$pg_offset = 1;
+		// get a list of all the event ids to update. throttle at 1000 per cycle
+		$args = array(
+			'post_type' => 'qsot-event',
+			'post_status' => array( 'any', 'trash' ),
+			'post_parent__not_in' => array( 0 ),
+			'fields' => 'ids',
+			'posts_per_page' => $perpage,
+			'paged' => $pg_offset,
+		);
+
+		$force = isset( $_COOKIE, $_COOKIE['qs-force'] ) && '1' = $_COOKIE['qs-force'];
+
+		// grab the next 1000
+		while ( $event_ids = get_posts( $args ) ) {
+			// inc page for next iteration
+			$pg_offset++;
+			$args['paged'] = $pg_offset;
+
+			// cycle through all results
+			while ( is_array( $event_ids ) && count( $event_ids ) ) {
+				// get the next event_id to update
+				$event_id = array_shift( $event_ids );
+
+				// see if this thing has gone through a tsfix before
+				$tsfix = get_post_meta( $event_id, '_tsFix_update', true );
+
+				// if it hasnt, bail
+				if ( ! is_array( $tsfix ) || ! isset( $tsfix['start'], $tsfix['end'] ) )
+					continue;
+
+				// save the current, potentially munged values, incase we have to restore a restore
+				add_post_meta( $event_id, '_resTsFix_update', array( 'start' => get_post_meta( $event_id, '_start', true ), 'end' => get_post_meta( $event_id, '_end', true ) ) );
+
+				$start = $end = '';
+				// if the original dates have a timezone... then they are effect up and need to be adjusted to assume the timezone is wrong
+				if ( '+' == substr( $orig_values['start'], '-6', 1 ) ) {
+					$start = explode( '+', $orig_values['start'] );
+					$start = current( $start );
+					$end = explode( '+', $orig_values['end'] );
+					$end = current( $end );
+				// otherwise, assume the dates were for the site timezone, and update the ts
+				} else {
+					$start = str_replace( 'T', ' ', $orig_values['start'] );
+					$end = str_replace( 'T', ' ', $orig_values['end'] );
+				}
+
+				// save both times in the new format
+				update_post_meta( $event_id, '_start', $start );
+				update_post_meta( $event_id, '_end', $end );
+			}
+		}
+
+		// add a record of the last time this ran
+		update_option( '_last_run_otce_restore_event_times', time() . '|' . self::$normalize_version );
 	}
 }
 

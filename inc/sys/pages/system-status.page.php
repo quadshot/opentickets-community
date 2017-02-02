@@ -128,6 +128,17 @@ class QSOT_system_status_page extends QSOT_base_page {
 				),
 			)
 		);
+		$this->register_tool(
+			'resTsFix',
+			array(
+				'name' => __( 'Attempt Repair of start and end times (very rare)', 'opentickets-community-edition' ),
+				'description' => __( 'If you have an issue where all your event times changed after updating, you might need to run this tool. Contact support though.', 'opentickets-community-edition' ),
+				'function' => array( &$this, 'tool_resTsFix' ),
+				'messages' => array(
+					'updated-restses' => $this->_updatedw( __( 'Restored all the start and end times for all events, to their original values.', 'opentickets-community-edition' ) ),
+				),
+			)
+		);
 	}
 
 	// generic wrappers for admin messages
@@ -942,6 +953,21 @@ class QSOT_system_status_page extends QSOT_base_page {
 
 		// update and return the results data
 		$result[1]['performed'] = 'updated-tses';
+		$result[0] = true;
+		return $result;
+	}
+
+	// cycle through all events, and update the timezone of the start and end times to match the site timezone, using the original ts values instead
+	public function tool_resTsFix( $result, $args ) {
+		// check that the repair can run
+		if ( ! $this->_verify_action_nonce( 'resTsFix' ) )
+			return $result;
+
+		// update all the event times to use the same tz as the site (non-dst)
+		QSOT_Utils::restore_event_times();
+
+		// update and return the results data
+		$result[1]['performed'] = 'updated-restses';
 		$result[0] = true;
 		return $result;
 	}

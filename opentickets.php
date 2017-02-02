@@ -752,6 +752,8 @@ class QSOT {
 
 	// on admin load, check if we need to update all the event timestamps now. if so, do it
 	public static function maybe_update_event_timestamps() {
+		return;
+		/* NO LONGER DO THIS ON UPDATE. CAN MUNGE DATA
 		// find out the last time the timestamp updater ran
 		$last_run = explode( '|', get_option( '_last_run_otce_normalize_event_times', '' ) );
 
@@ -765,6 +767,7 @@ class QSOT {
 		// if it never ran, do it now
 		if ( $run_now )
 			QSOT_Utils::normalize_event_times();
+		*/
 	}
 
 	// do magic 
