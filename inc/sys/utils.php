@@ -434,7 +434,7 @@ class QSOT_Utils {
 			'paged' => $pg_offset,
 		);
 
-		$force = isset( $_COOKIE, $_COOKIE['qs-force'] ) && '1' = $_COOKIE['qs-force'];
+		$force = isset( $_COOKIE, $_COOKIE['qs-force'] ) && '1' == $_COOKIE['qs-force'];
 
 		// grab the next 1000
 		while ( $event_ids = get_posts( $args ) ) {
@@ -495,7 +495,7 @@ class QSOT_Utils {
 			'paged' => $pg_offset,
 		);
 
-		$force = isset( $_COOKIE, $_COOKIE['qs-force'] ) && '1' = $_COOKIE['qs-force'];
+		$force = isset( $_COOKIE, $_COOKIE['qs-force'] ) && '1' == $_COOKIE['qs-force'];
 
 		// grab the next 1000
 		while ( $event_ids = get_posts( $args ) ) {
@@ -520,20 +520,20 @@ class QSOT_Utils {
 
 				$start = $end = '';
 				// if the original dates have a timezone... then they are effect up and need to be adjusted to assume the timezone is wrong
-				if ( '+' == substr( $orig_values['start'], '-6', 1 ) ) {
-					$start = explode( '+', $orig_values['start'] );
+				if ( '+' == substr( $tsfix['start'], '-6', 1 ) ) {
+					$start = explode( '+', $tsfix['start'] );
 					$start = current( $start );
-					$end = explode( '+', $orig_values['end'] );
+					$end = explode( '+', $tsfix['end'] );
 					$end = current( $end );
 				// otherwise, assume the dates were for the site timezone, and update the ts
 				} else {
-					$start = str_replace( 'T', ' ', $orig_values['start'] );
-					$end = str_replace( 'T', ' ', $orig_values['end'] );
+					$start = str_replace( 'T', ' ', $tsfix['start'] );
+					$end = str_replace( 'T', ' ', $tsfix['end'] );
 				}
 
 				// save both times in the new format
-				update_post_meta( $event_id, '_start', $start );
-				update_post_meta( $event_id, '_end', $end );
+				update_post_meta( $event_id, '_start', $start . $offset );
+				update_post_meta( $event_id, '_end', $end . $offset );
 			}
 		}
 
