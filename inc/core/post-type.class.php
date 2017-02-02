@@ -863,7 +863,7 @@ class qsot_post_type {
 	public static function cascade_thumbnail($html, $post_id, $post_thumbnail_id, $size, $attr) {
 		if (empty($html) || empty($post_thumbnail_id)) {
 			$post = get_post($post_id);
-			if (is_object($post) && isset($post->post_type) && $post->post_type == self::$o->core_post_type && !empty($post->post_parent)) {
+			if (is_object($post) && isset($post->post_type) && $post->post_type == self::$o->core_post_type && !empty($post->post_parent) && $post->post_parent != $post->ID) {
 				$html = get_the_post_thumbnail($post->post_parent, $size, $attr);
 			}
 		}
@@ -895,7 +895,7 @@ class qsot_post_type {
 		}
 
 		// if the supplied object is an event, and it is not a parent event, then...
-		if ( $map[ $object_id . '' ] == self::$o->core_post_type && $key == '_thumbnail_id' && $parent_id = wp_get_post_parent_id( $object_id ) ) {
+		if ( $map[ $object_id . '' ] == self::$o->core_post_type && $key == '_thumbnail_id' && ( $parent_id = wp_get_post_parent_id( $object_id ) ) && $parent_id != $object_id ) {
 			// prevent weird recursion
 			remove_filter( 'get_post_metadata', array( __CLASS__, 'cascade_thumbnail_id' ), 10 );
 
