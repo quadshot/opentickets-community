@@ -493,9 +493,15 @@ class QSOT_Post_Type_Event_Area {
 	public function get_event_area( $current, $event_area_id ) {
 		// get the event area object
 		$event_area = get_post( $event_area_id );
+		if ( ! ( $event_area instanceof WP_Post ) )
+			return $current;
+
+		// add the meta
 		$event_area->meta = get_post_meta( $event_area->ID );
 		foreach ( $event_area->meta as $k => $v )
 			$event_area->meta[ $k ] = current( $v );
+
+		// add the area type
 		$event_area->area_type = $this->event_area_type_from_event_area( $event_area );
 
 		return $event_area;
