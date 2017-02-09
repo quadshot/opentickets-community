@@ -215,6 +215,7 @@ class QSOT_Extensions_Updater {
 		// if the last fetch is not expired, and this is not a force request, then bail
 		if ( ! $is_force && time() < $expires )
 			return array();
+		update_option( 'qsot-extensions-updater-last-expires', time() + ( 12 * HOUR_IN_SECONDS ) );
 
 		// otherwise, run our update fetch request
 		// first, aggregate a list of plugin data we need to check for updates on
