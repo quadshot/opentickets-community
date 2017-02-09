@@ -53,7 +53,7 @@ class opentickets_community_launcher {
 			'pre' => 'qsot-',
 			'fctm' => 'fc',
 			'always_reserve' => 0,
-			'version' => '2.6.4.2',
+			'version' => '2.6.5',
 			'min_wc_version' => '2.6.1',
 			'core_post_type' => 'qsot-event',
 			'core_post_rewrite_slug' => 'event',

@@ -177,6 +177,7 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 * [tweak] using home_url instead of site_url for ticket links
 * [tweak] added code to prevent php warning in some confirmation emails
 * [fix] fixed conflict with cart addons woo plugin
+* [fix] repaired an issue where updates were being checked too many times throughout the day, in some case
 
 = 2.6.4 - Jan/13/2017 =
 * [tweak] made a javascript change that works around the new WC change that prevents the 'change seat' button from working in the admin
