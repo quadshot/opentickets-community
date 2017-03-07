@@ -171,8 +171,11 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
-= 2.6.5.1 - Mar/o7/2017 =
+= 2.6.5.2 - Mar/07/2017 =
 * [tweak] added code to account for PHP warnings caused by other plugins mangling internal wordpress data
+* [tweak] changed qr code signing so that it no longer relies on site salts
+* [tweak] removed 'stats' update code
+* [fix] repaired remove from cart bug when using some extensions
 
 = 2.6.5 - Feb/06/2017 =
 * [new] added tool to restore event tart/end times from backed up values that autoscript created
