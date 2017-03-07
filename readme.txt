@@ -171,6 +171,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.6.5.1 - Mar/o7/2017 =
+* [tweak] added code to account for PHP warnings caused by other plugins mangling internal wordpress data
+
 = 2.6.5 - Feb/06/2017 =
 * [new] added tool to restore event tart/end times from backed up values that autoscript created
 * [tweak] changed logic of start/end time autofix script, to only run for events that do not have a TZ designation
