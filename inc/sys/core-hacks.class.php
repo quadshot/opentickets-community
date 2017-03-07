@@ -609,7 +609,9 @@ class qsot_core_hacks {
 
 	public static function page_template_default($template) {
 		$post = get_queried_object();
-		if ($post->post_type != 'page') return $template;
+		// if this is not a page, bail
+		if ( ! is_object( $post ) || ! isset( $post->post_type ) || $post->post_type != 'page' )
+			return $template;
 
 		$page_template = get_page_template_slug();
 
