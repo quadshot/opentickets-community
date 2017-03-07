@@ -366,9 +366,6 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		if ( isset( $WC->cart->removed_cart_contents[ $item_key ] ) ) {
 			// grab the item from the removed contents table
 			$item = $WC->cart->removed_cart_contents[ $item_key ];
-
-			// remove the item from the remove contents table, so that it cannot be 'restored'. we do this because restoring could happen after the available ticket has been purchased elsewhere
-			unset( $WC->cart->removed_cart_contents[ $item_key ] );
 		// if it is not in the removed items, checked the current items
 		} else if ( isset( $WC->cart->cart_contents[ $item_key ] ) ) {
 			$item = $WC->cart->cart_contents[ $item_key ];
@@ -395,13 +392,18 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		$stati = $zoner->get_stati();
 
 		// remove the reservation
-		$zoner->remove( false, array(
+		$res = $zoner->remove( false, array(
 			'event_id' => $item['event_id'],
 			'ticket_type_id' => $item['product_id'],
 			'customer_id' => $zoner->current_user(),
 			'quantity' => $item['quantity'],
 			'state' => $stati['r'][0],
 		) );
+		//die(var_dump( $res ));
+
+		// remove the item from the remove contents table, so that it cannot be 'restored'. we do this because restoring could happen after the available ticket has been purchased elsewhere
+		// do this last so that it is not removed before other area types have a chance to test it
+		unset( $WC->cart->removed_cart_contents[ $item_key ] );
 	}
 
 	// determine if the supplied post could be of this area type
