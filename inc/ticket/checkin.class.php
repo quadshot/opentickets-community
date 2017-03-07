@@ -387,10 +387,10 @@ class QSOT_checkin {
 		// load salt and key
 		if ( false === $salt ) {
 			$salt = get_option( '_qsot_qr_salt', '' );
-			$key= get_option( '_qsot_qr_key', '' );
+			$key = get_option( '_qsot_qr_key', '' );
 		}
 
-		return substr( md5( $salt . $data . $key), 10, 12 );
+		return apply_filters( 'qsot-qr-signature', substr( md5( $salt . $data . $key), 10, 12 ), $data, $salt, $key );
 	}
 
 	// create the packed that is used in the checkin process. this is a stringified version of all the information needed to check a user in
