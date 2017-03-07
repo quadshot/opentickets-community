@@ -56,8 +56,6 @@ class qsot_admin_menu {
 			add_action( 'admin_init', array( __CLASS__, 'refresh_permalinks_on_save_page_refresh' ), 1 );
 
 			if (is_admin()) {
-				add_action('admin_enqueue_scripts', array(__CLASS__, 'nag_stats'), 1000);
-				add_action('wp_ajax_qsot-nag', array(__CLASS__, 'handle_nag_ajax'), 1000);
 				self::_check_cron();
 			}
 		}
@@ -279,157 +277,10 @@ class qsot_admin_menu {
 		return apply_filters( 'qsot_reports_charts', $charts );
 	}
 
-	public static function nag_stats() {
-		$can = current_user_can('manage_options');
-		$allowed_already = self::$options->{'qsot-allow-stats'} == 'yes';
-		$dismissed = get_user_option('_qsot_info_nag');
-		if ($dismissed || $allowed_already || !$can) return;
-
-		wp_enqueue_script('qsot-nag');
-		wp_localize_script('qsot-nag', '_qsot_nag_settings', array(
-			'title' => __('Allow OpenTickets Stats?','opentickets-community-edition'),
-			'question' => __('OpenTickets is always being improved, thanks to users like you. To help us improve this product, would you allow us collect some basic information about your installation, like many others already have? We will not track any of your users\' information, so your security and privacy is still safe. The information we will be tracking is purely about your WordPress installation, and will be used to help us understand which plugins and themes we need to be compatible with.','opentickets-community-edition'),
-			'answers' => array(
-				array(
-					'type' => 'button',
-					'label' => esc_attr(__('Yes','opentickets-community-edition')),
-					'location' => 'right',
-					'action' => 'allow',
-					'class' => 'button-primary',
-				),
-				array(
-					'type' => 'link',
-					'label' => esc_attr(__('Dismiss','opentickets-community-edition')),
-					'location' => 'left',
-					'action' => 'dismiss',
-				),
-			),
-			'layout' => '<div class="qsot-nag-box" rel="qsot-nag"><div class="nag-box-inner">'
-					.'<div class="nag-title" rel="title"></div>'
-					.'<div class="nag-content" rel="content"></div><div class="clear"></div>'
-					.'<div class="nag-answers" rel="answers">'
-						.'<div class="left" rel="left"></div>'
-						.'<div class="right" rel="right"></div>'
-					.'</div>'
-					.'<div class="clear"></div>'
-				.'</div></div>',
-		));
-	}
-
-	public static function handle_nag_ajax() {
-		if (!is_user_logged_in() || !current_user_can('manage_options')) return;
-		if (empty($_POST)) return;
-
-		$u = wp_get_current_user();
-		$post = wp_parse_args($_POST, array(
-			'sa' => 'nothing',
-		));
-		$sa = $post['sa'];
-		$out = array();
-
-		switch ($sa) {
-			case 'dismiss':
-				update_user_option($u->ID, '_qsot_info_nag', '1');
-				$out['msg'] = __('Fair enough. Thanks anyways.','opentickets-community-edition');
-			break;
-
-			case 'allow':
-				update_user_option($u->ID, '_qsot_info_nag', '1');
-				self::$options->{'qsot-allow-stats'} = 'yes';
-				$out['msg'] = __('Thanks a bunch.','opentickets-community-edition');
-				self::send_all_stats();
-			break;
-		}
-
-		echo @json_encode($out);
-		exit;
-	}
-
-	public static function daily_stats() {
-		if (self::$options->{'qsot-allow-stats'} == 'yes') self::send_out();
-	}
-
-	public static function incremental_stats() {
-		if (self::$options->{'qsot-allow-stats'} == 'yes') self::send_all_stats();
-	}
-
-	public static function send_all_stats() {
-		$fields = array(
-			'Title',
-			'Author',
-			'Author Name',
-			'Author URI',
-			'Description',
-			'Version',
-			'Status',
-			'Template',
-			'Stylesheet',
-			'Template Files',
-			'Stylesheet Files',
-			'Template Dir',
-			'Stylesheet Dir',
-			'Screenshot',
-			'Tags',
-			'Theme Root',
-			'Theme Root URI',
-			'Parent Theme'
-		);
-		$only_keys = array(
-			'Template Files' => 1,
-			'Stylesheet Files' => 1
-		);
-		$current_theme = wp_get_theme();
-		$current_theme_title = $current_theme->offsetGet('Title');
-		$raw_themes = wp_get_themes();
-		$themes = array();
-		// get all theme data for all themes
-		foreach ( $raw_themes as $theme ) {
-			$trecord = array();
-			// cycle through the fields we want to capture
-			foreach ( $fields as $field ) {
-				// find this theme's value or the given field
-				$theme_offset = $theme->offsetGet( $field );
-
-				// normalize that value into something meaningful
-				$trecord[$field] = isset( $only_keys[ $field ] ) && is_array( $theme_offset ) ? array_keys( $theme_offset ) : $theme_offset;
-			}
-			$trecord['!!ACTIVE!!'] = (int)($theme->offsetGet('Title') == $current_theme_title);
-			$themes[$trecord['Title']] = $trecord;
-		}
-
-		$headers = array(
-			'qsot-wp' => self::vit(self::$o->{'wp_version'}),
-			'qsot-v' => self::vit(self::$o->{'version'}),
-			'qsot-wc' => self::$o->{'wc_version'},
-			'qsot-php' => self::$o->{'php_version'},
-		);
-
-		self::send_out($headers, array('p' => @json_encode(get_option('active_plugins')), 't' => @json_encode($themes)));
-	}
-
-	public static function send_out($headers=array(), $post=array()) {
-		$headers = is_array($headers) ? $headers : array();
-		$headers['qsot-site-url'] = site_url();
-
-		$post = is_array($post) ? $post : array();
-		$post['i'] = apply_filters('qsot-count-tickets', 0, array('state' => 'confirmed'));
-
-		$res = wp_remote_post(
-			'http://opentickets.com/tr/',
-			array(
-				'timeout' => 0.1,
-				'httpversion' => '1.1',
-				'blocking' => false,
-				'headers' => $headers,
-				'body' => $post,
-			)
-		);
-	}
-
 	protected static function _check_cron() {
 		$ts = wp_next_scheduled('qsot_daily_stats');
-		if ($ts === false)
-			wp_schedule_event(strtotime('tomorrow'), 'daily', 'qsot_daily_stats');
+		if ( $ts )
+			wp_unschedule_event( $ts, 'qsot_daily_stats' );
 	}
 
 	protected static function _register_post_type($slug, $pt) {
