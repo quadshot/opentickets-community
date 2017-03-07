@@ -23,6 +23,10 @@ class QSOT_checkin {
 			self::_setup_admin_options();
 		}
 
+		// check for the unique site code used for qrs new format
+		if ( is_admin() )
+			self::_check_qr_salt_key();
+
 		// add qr to ticket
 		add_filter('qsot-compile-ticket-info', array(__CLASS__, 'add_qr_code'), 3000, 3);
 
@@ -200,6 +204,7 @@ class QSOT_checkin {
 		) );
 
 		$ticket->qr_code = null;
+		$ticket->qr_data_debugs = $codes;
 
 		for ( $i = 0; $i < count( $codes ); $i++ ) {
 			// get the url, width and height to use for the image tag
@@ -367,6 +372,27 @@ class QSOT_checkin {
 		return $img_data;
 	}
 
+	// setup/check qr code salt key pair
+	protected static function _check_qr_salt_key() {
+		// make sure we have a unique salt and key for our codes
+		if ( ! get_option( '_qsot_qr_salt', '' ) )
+			update_option( '_qsot_qr_salt', wp_generate_password( 40, 1, 0 ) );
+		if ( ! get_option( '_qsot_qr_key', '' ) )
+			update_option( '_qsot_qr_key', wp_generate_password( 40, 1, 0 ) );
+	}
+
+	// function to sign data
+	public static function qr_sign( $data ) {
+		static $salt = false, $key = false;
+		// load salt and key
+		if ( false === $salt ) {
+			$salt = get_option( '_qsot_qr_salt', '' );
+			$key= get_option( '_qsot_qr_key', '' );
+		}
+
+		return substr( md5( $salt . $data . $key), 10, 12 );
+	}
+
 	// create the packed that is used in the checkin process. this is a stringified version of all the information needed to check a user in
 	protected static function _create_checkin_packet( $data ) {
 		// if there is no data, then return nothing
@@ -390,7 +416,7 @@ class QSOT_checkin {
 			);
 
 		// sign it for security
-		$pack .= '|' . sha1( $pack . AUTH_SALT );
+		$pack .= '|' . self::qr_sign( $pack );
 
 		// need string replace because some characters are not urlencode/decode friendly or query param friendly
 		return str_replace( array( '+', '=', '/' ), array( '-', '_', '~' ), @base64_encode( strrev( $pack ) ) );
@@ -411,7 +437,13 @@ class QSOT_checkin {
 		$pack = explode( '|', strrev( $packet ), 2 );
 		$hash = strrev( array_shift( $pack ) );
 		$pack = strrev( implode( '|', $pack ) );
-		if ( ! $pack || ! $hash || sha1( $pack . AUTH_SALT ) != $hash ) return $data;
+		if ( 40 == strlen( $hash ) ) {
+			if ( ! $pack || ! $hash || sha1( $pack . AUTH_SALT ) != $hash )
+				return $data;
+		} else {
+			if ( ! $pack || ! $hash || self::qr_sign( $pack ) != $hash )
+				return $data;
+		}
 
 		$data = null;
 		// allow other plugins to interpret the packet on their own; for instance, if they have custom packet logic above at filter 'qsot-create-checkin-packet'
