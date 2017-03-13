@@ -741,8 +741,14 @@ class QSOT_Date_Formats {
 	public static function use_dst() { return get_option( 'qsot-use-dst', 'yes' ) == 'yes'; }
 
 	// report date and time format settings
-	public static function date_format() { return get_option( 'qsot-date-format', 'm-d-Y' ); }
-	public static function hour_format() { return get_option( 'qsot-hour-format', '12-hour' ); }
+	public static function maybe_translate( $string ) {
+		static $trans_func = null;
+		if ( null === $trans_func )
+			$trans_func = function_exists( 'qtranxf_useCurrentLanguageIfNotFoundUseDefaultLanguage' ) ? 'qtranxf_useCurrentLanguageIfNotFoundUseDefaultLanguage' : false;
+		return ! $trans_func ? $string : call_user_func( $trans_func, $string );
+	}
+	public static function date_format() { return self::maybe_translate( get_option( 'qsot-date-format', 'm-d-Y' ) ); }
+	public static function hour_format() { return self::maybe_translate( get_option( 'qsot-hour-format', '12-hour' ) ); }
 	public static function is_12_hour() { return get_option( 'qsot-hour-format', '12-hour' ) == '12-hour'; }
 	public static function is_24_hour() { return get_option( 'qsot-hour-format', '12-hour' ) == '24-hour'; }
 
@@ -751,10 +757,10 @@ class QSOT_Date_Formats {
 		$formats = array();
 		foreach ( self::$php_custom_date_formats as $format )
 			if ( $value = get_option( 'qsot-custom-' . $type . '-date-format-' . sanitize_title_with_dashes( $format ), '' ) )
-				$formats[ $format ] = $value;
+				$formats[ $format ] = self::maybe_translate( $value );
 		foreach ( self::$php_custom_time_formats as $format )
 			if ( $value = get_option( 'qsot-custom-' . $type . '-date-format-' . sanitize_title_with_dashes( $format ), '' ) )
-				$formats[ $format ] = $value;
+				$formats[ $format ] = self::maybe_translate( $value );
 		return $formats;
 	}
 
