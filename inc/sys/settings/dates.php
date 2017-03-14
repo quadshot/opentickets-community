@@ -1,5 +1,4 @@
 <?php if ( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) die( header( 'Location: /') );
-setlocale( LC_TIME, 'de_DE' );
 
 // page to handle settings for date-time formatting within our plugin
 if ( ! class_exists( 'QSOT_Date_Settings_Page' ) ):
@@ -198,18 +197,19 @@ class QSOT_Date_Settings_Page extends QSOT_Settings_Page {
 		);
 
 		// PHP date name translations
-		$custom_formats[] = array(
-			'order' => 101,
-			'id' => 'qsot-custom-php-date-format-locale',
-			'type' => 'text',
-			'title' => get_locale(),
-			'class' => 'i18n-multilingual',
-			'default' => '',
-			'desc' => __( 'When using qtranslate-x, this field tells PHP what language to use for full and abreeviated month names.', 'opentickets-community-edition' ),
-			'page' => 'dates',
-			'section' => 'php-custom',
-		);
-
+		if ( function_exists( 'qtranxf_useCurrentLanguageIfNotFoundUseDefaultLanguage' ) ) {
+			$custom_formats[] = array(
+				'order' => 101,
+				'id' => 'qsot-custom-php-date-format-locale',
+				'type' => 'text',
+				'title' => get_locale(),
+				'class' => 'i18n-multilingual',
+				'default' => '',
+				'desc' => __( 'When using qtranslate-x, this field tells PHP what language to use for full and abreeviated month names.', 'opentickets-community-edition' ),
+				'page' => 'dates',
+				'section' => 'php-custom',
+			);
+		}
 
 		foreach ( QSOT_Date_Formats::$php_custom_date_formats as $format ) {
 			$custom_formats[] = array(
