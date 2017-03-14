@@ -171,8 +171,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
-= 2.6.5.3 - Mar/07/2017 =
+= 2.6.5.3 - Mar/14/2017 =
 * [new] added ability to use qtranslate-x on date format fields in settings
+* [tweak] update that condenses reservation updates fo order_id and status into a single step. eliminates potential dupes due to plugin conflicts
 * [tweak] added code to account for PHP warnings caused by other plugins mangling internal wordpress data
 * [tweak] changed qr code signing so that it no longer relies on site salts
 * [tweak] removed 'stats' update code
