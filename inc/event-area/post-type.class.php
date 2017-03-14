@@ -104,11 +104,11 @@ class QSOT_Post_Type_Event_Area {
 		add_action( 'qsot-clear-zone-locks', array( &$this, 'clear_zone_locks' ), 10, 1 );
 
 		// during transitions of order status (and order creation), we need to perform certain operations. we may need to confirm tickets, or cancel them, depending on the transition
-		add_action( 'woocommerce_checkout_order_processed', array( &$this, 'update_order_id' ), 100, 2 );
+		add_action( 'woocommerce_checkout_order_processed', array( &$this, 'update_order_id_and_status' ), 100, 2 );
 		add_action( 'woocommerce_order_status_changed', array( &$this, 'order_status_changed' ), 100, 3 );
 		//add_action( 'woocommerce_order_status_changed', array( &$this, 'order_status_changed_pending' ), 101, 3 );
 		add_action( 'woocommerce_order_status_changed', array( &$this, 'order_status_changed_cancel' ), 102, 3 );
-		add_action( 'woocommerce_checkout_order_processed', array( &$this, 'order_has_been_created' ), 10000, 2 );
+		//add_action( 'woocommerce_checkout_order_processed', array( &$this, 'order_has_been_created' ), 10000, 2 );
 		add_action( 'woocommerce_resume_order', array( &$this, 'on_resume_order_disassociate' ), 10, 1 );
 
 		// solve order again conundrum
@@ -1042,8 +1042,47 @@ class QSOT_Post_Type_Event_Area {
 		}
 	}
 
+	// once the order has been created, make all the attached tickets confirmed
+	public function order_has_been_created( $order_id, $posted_data ) {
+		// load the order
+		$order = wc_get_order( $order_id );
+		
+		// cycle through the order items, and update all the ticket items to confirmed
+		foreach ( $order->get_items() as $item_id => $item ) {
+			// only do this for order items that are tickets
+			if ( ! apply_filters( 'qsot-item-is-ticket', false, $item ) ) {
+				var_dump( 'NOT A TICKET', $item );
+				continue;
+			}
+
+			// get the event, area_type and zoner for this item
+			$event = get_post( $item['event_id'] );
+			$event_area = apply_filters( 'qsot-event-area-for-event', false, $event );
+			$area_type = is_object( $event_area ) ? $event_area->area_type : null;
+
+			// if any of the data is missing, the skip this item
+			if ( ! is_object( $event ) || ! is_object( $event_area ) || ! is_object( $area_type ) ) {
+				if ( ! is_object( $event ) )
+					var_dump( 'NOT AN EVENT', $event );
+				if ( ! is_object( $event_area ) )
+					var_dump( 'NOT EVENT AREA', $event_area );
+				if ( ! is_object( $area_type ) )
+					var_dump( 'NOT AREA TYPE', $area_type );
+				continue;
+			}
+
+			// have the event_area determine how to update the order item info in the ticket table
+			$result = $area_type->confirm_tickets( $item, $item_id, $order, $event, $event_area );
+			var_dump( 'RESULT', $result );
+
+			// notify externals of the change
+			do_action( 'qsot-confirmed-ticket', $order, $item, $item_id, $result );
+		}
+		die( var_dump( 'done' ));
+	}
+
 	// when creating a new order, we need to update the related ticket rows with the new order id
-	public function update_order_id( $order_id, $posted ) {
+	public function update_order_id_and_status( $order_id, $posted ) {
 		// load the order
 		$order = wc_get_order( $order_id );
 		
@@ -1065,9 +1104,11 @@ class QSOT_Post_Type_Event_Area {
 			// have the event_area determine how to update the order item info in the ticket table
 			//$result = $area_type->confirm_tickets( $item, $item_id, $order, $event, $event_area );
 			$result = $this->_update_order_id( $order, $item, $item_id, $event, $event_area, $area_type );
+			$result_status = $area_type->confirm_tickets( $item, $item_id, $order, $event, $event_area );
 
 			// notify externals of the change
 			do_action( 'qsot-updated-order-id', $order, $item, $item_id, $result );
+			do_action( 'qsot-confirmed-ticket', $order, $item, $item_id, $result_status );
 		}
 	}
 
@@ -1216,34 +1257,6 @@ class QSOT_Post_Type_Event_Area {
 					$event->ID
 				), $event, $item ) );
 			}
-		}
-	}
-
-	// once the order has been created, make all the attached tickets confirmed
-	public function order_has_been_created( $order_id, $posted_data ) {
-		// load the order
-		$order = wc_get_order( $order_id );
-		
-		// cycle through the order items, and update all the ticket items to confirmed
-		foreach ( $order->get_items() as $item_id => $item ) {
-			// only do this for order items that are tickets
-			if ( ! apply_filters( 'qsot-item-is-ticket', false, $item ) )
-				continue;
-
-			// get the event, area_type and zoner for this item
-			$event = get_post( $item['event_id'] );
-			$event_area = apply_filters( 'qsot-event-area-for-event', false, $event );
-			$area_type = is_object( $event_area ) ? $event_area->area_type : null;
-
-			// if any of the data is missing, the skip this item
-			if ( ! is_object( $event ) || ! is_object( $event_area ) || ! is_object( $area_type ) )
-				continue;
-
-			// have the event_area determine how to update the order item info in the ticket table
-			$result = $area_type->confirm_tickets( $item, $item_id, $order, $event, $event_area );
-
-			// notify externals of the change
-			do_action( 'qsot-confirmed-ticket', $order, $item, $item_id, $result );
 		}
 	}
 
