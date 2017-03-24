@@ -816,6 +816,7 @@ QS.EventUI = (function($, undefined) {
 					_id: events[i]._id,
 					start: (moment(events[i].start)).format(),
 					end: qt.isO( events[i].end ) && ( events[i].end instanceof Date || events[i].end._isAMomentObject ) ? (moment(events[i].end)).format() : events[i].end,
+					moment: 1,
 					title: events[i].title,
 					post_id: events[i].post_id,
 					status: events[i].status,

@@ -1477,8 +1477,16 @@ class qsot_post_type {
 
 			// update the timestamps to be non-dst for storage
 			// handles situation where site is in EST and local computer setting up event is in PST
-			$tmp->start = QSOT_Utils::make_utc( $tmp->start );
-			$tmp->end = QSOT_Utils::make_utc( $tmp->end );
+			// when times come from the admin, they are mangled versions of the event time. they are represented by the original event time and date, but as if the event were in the UTC tz.
+			// we need to account for this, by adjusting the tz of the timestamp appropriately to compensate.
+			if ( isset( $tmp->moment ) && $tmp->moment ) {
+				$tmp->start = QSOT_Utils::make_utc( $tmp->start );
+				$tmp->end = QSOT_Utils::make_utc( $tmp->end );
+			// other submissions to this function, like from event managers plugin, should be submitting proper UTC timestamps
+			} else {
+				$tmp->start = date( 'c', strtotime( $tmp->start ) );
+				$tmp->end = date( 'c', strtotime( $tmp->end ) );
+			}
 
 			// if the settings are a valid set of settings, then continue with this item
 			if ( is_object( $tmp ) ) {

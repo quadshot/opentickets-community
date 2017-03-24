@@ -159,14 +159,21 @@ class QSOT_Utils {
 		return date( 'c', strtotime( self::change_offset( $timestamp, self::number_to_tz( $site[ self::in_dst( $timestamp ) ? 'dst' : 'non' ] ) ) ) );
 	}
 
+	// get the timestamp adjusted for the site timezone
+	public static function site_time( $timestamp=false ) {
+		$timestamp = false === $timestamp ? time() : $timestamp;
+		$off = self::site_offset();
+		return $timestamp + ( $off[ $off['in_dst'] ? 'dst' : 'non' ] * HOUR_IN_SECONDS );
+	}
+
 	// get the site's offset informatino
 	public static function site_offset() {
 		static $site = false;
 		// site settings
 		if ( false === $site ) {
 			$site = array(
-				'non' => self::tz_to_number( self::non_dst_tz_offset() ),
-				'dst' => self::tz_to_number( self::dst_tz_offset() ),
+				'non' => get_option( 'gmt_offset', 0 ), //self::tz_to_number( self::non_dst_tz_offset() ),
+				'dst' => get_option( 'gmt_offset', 0 ), //self::tz_to_number( self::dst_tz_offset() ),
 				'in_dst' => self::in_dst(),
 			);
 		}
@@ -186,7 +193,7 @@ class QSOT_Utils {
 			return 0;
 
 		// flatten tz to number
-		$tz = self::tz_to_number( $tz ) - ( $site['in_dst'] ? 1 : 0 );
+		$tz = self::tz_to_number( $tz ) + ( $site['in_dst'] ? 1 : 0 );
 
 		// return the difference in seconds
 		return $zero_if_utc && 0 == $tz ? 0 : ( $site[ self::in_dst( $timestamp ) ? 'dst' : 'non' ] - $tz ) * HOUR_IN_SECONDS;
@@ -333,30 +340,19 @@ class QSOT_Utils {
 	 * @return int a unix-timestamp, adjusted so that it produces accurrate local times for the server
 	 */
 	public static function local_timestamp( $date, $dst_adjust=true, $from_utc=true ) {
-		static $tz_string = false, $offset = false;
+		static $tz_string = false, $offset = false, $site = false;
 		// get the current system offset values if they have not already been fetched
-		if ( false === $tz_string || false === $offset ) {
+		if ( false === $tz_string || false === $offset || false === $site ) {
 			$tz_string = get_option( 'timezone_string', 'UTC' );
 			$offset = get_option( 'gmt_offset', 0 );
+			$site = self::site_offset();
 		}
 
 		// get the gmt unix timestamp of the time
 		$ts = strtotime( $date );
 
 		// adjust the time, based on the offset
-		$ts = $ts + ( $offset * HOUR_IN_SECONDS );
-
-		//$current_dst = self::is_dst( time() );
-		$is_dst = false;
-		// if we want to adjust for dst
-		if ( $dst_adjust ) {
-			// determine if the time is in dst or not
-			$is_dst = self::in_dst( $ts );
-
-			// if it is, adjust the time once more
-			if ( $is_dst )
-				$ts = $ts + HOUR_IN_SECONDS;
-		}
+		$ts = $ts + ( ( $dst_adjust && $site['in_dst'] ? $site['dst'] : $site['non'] ) * HOUR_IN_SECONDS );
 
 		return $ts;
 	}
