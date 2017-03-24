@@ -171,7 +171,11 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
-= 2.6.5.3 - Mar/14/2017 =
+= 2.7.0.1 - Mar/24/2017 =
+* [tweak] changing how dates are calculated for DST
+* [tweak] adjusted event save functions to calculate the proper UTC version of the start time, under certain circumstances
+
+= 2.7.0 - Mar/14/2017 =
 * [new] added ability to use qtranslate-x on date format fields in settings
 * [tweak] update that condenses reservation updates fo order_id and status into a single step. eliminates potential dupes due to plugin conflicts
 * [tweak] added code to account for PHP warnings caused by other plugins mangling internal wordpress data
