@@ -376,13 +376,11 @@ class qsot_post_type {
 
 		// determine if now() + time offset, is still less than the beginning of the show
 		$stime = strtotime( $start );
-		$time = current_time('timestamp');
-		$adjust_time = strtotime( $formula, $time );
-		if ( false == $adjust_time )
-			$adjust_time = $time;
+		$offset = strtotime( $formula, 0 );
+		$time = time();
 
 		// are we past it or not?
-		return $adjust_time < $stime;
+		return $time < $stime - $offset;
 	}
 
 	// check to see if we are past the hardstop date for sales on this event
