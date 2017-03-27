@@ -171,9 +171,10 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
-= 2.7.0.1 - Mar/24/2017 =
+= 2.7.0.1 - Mar/27/2017 =
 * [tweak] changing how dates are calculated for DST
 * [tweak] adjusted event save functions to calculate the proper UTC version of the start time, under certain circumstances
+* [fix] repaired 'event sales stop time' calculation
 
 = 2.7.0 - Mar/14/2017 =
 * [new] added ability to use qtranslate-x on date format fields in settings
