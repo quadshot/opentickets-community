@@ -158,15 +158,31 @@ class QSOT_Extensions {
 			if ( isset( $last_update->response ) && is_array( $last_update->response ) )
 				foreach ( $last_update->response as $file => $data )
 					if ( isset( $data->slug ) )
-						$this->slug_map[ $data->slug ] = array( 'file' => $file, 'version' => $data->new_version, 'link' => $data->package );
+						$this->slug_map[ $data->slug ] = array( 'file' => $file, 'version' => $this->_norm_version( $file, $last_update, $data ), 'link' => isset( $data->package ) ? $data->package : 'javascript:;' );
 
 			if ( isset( $last_update->no_update ) && is_array( $last_update->no_update ) )
 				foreach ( $last_update->no_update as $file => $data )
 					if ( isset( $data->slug ) )
-						$this->slug_map[ $data->slug ] = array( 'file' => $file, 'version' => $data->new_version, 'link' => $data->package );
+						$this->slug_map[ $data->slug ] = array( 'file' => $file, 'version' => $this->_norm_version( $file, $last_update, $data ), 'link' => isset( $data->package ) ? $data->package : 'javascript:;' );
 		}
 
 		return $this->slug_map;
+	}
+
+	// normalize the version number of a plugin
+	protected function _norm_version( $file, $last_update, $data ) {
+		// default, ultra fallback
+		$version = '0.0.0';
+
+		// first see if the data contains it
+		if ( is_object( $data ) && isset( $data->new_version ) )
+			$version = $data->new_version;
+
+		// if we still dont have it, try the 'checked' array
+		if ( 0 == version_compare( $version, '0.0.0' ) && isset( $last_update, $last_update->checked, $last_update->checked[ $file ] ) )
+			$version = $last_update->checked[ $file ];
+
+		return $version;
 	}
 
 	// get a file based slug map
