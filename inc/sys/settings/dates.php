@@ -73,7 +73,7 @@ class QSOT_Date_Settings_Page extends QSOT_Settings_Page {
 	}
 	
 	// get all the settings for a given section of this page
-	public function settings_for_page_section( $current, $page, $section ) {
+	public function settings_for_page_section( $current, $page='', $section='' ) {
 		// if not this page, skip
 		if ( $page !== $this->id )
 			return $current;
