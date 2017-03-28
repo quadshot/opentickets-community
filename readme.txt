@@ -176,6 +176,7 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 * [tweak] adjusted event save functions to calculate the proper UTC version of the start time, under certain circumstances
 * [fix] repaired 'event sales stop time' calculation
 * [fix] corrected a php warning on some settings pages
+* [fix] solved warnings on edge case issues for 'view details' button on premium extensions, via plugin page
 
 = 2.7.0 - Mar/14/2017 =
 * [new] added ability to use qtranslate-x on date format fields in settings
