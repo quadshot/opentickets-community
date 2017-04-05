@@ -217,7 +217,7 @@ class QSOT_tickets {
 			$order = wc_get_order( $order_id );
 			if ( $order instanceof WC_Order ) {
 				$item = $order->get_item( $item_id );
-				$item = QSOT::order_item( $item );
+				$item = QSOT_WC3()->order_item( $item );
 				$code = self::_generate_ticket_code_for_item( $item_id, $item, '', $order_id );
 			}
 
@@ -282,7 +282,7 @@ class QSOT_tickets {
 		$at_least_one = false;
 		// if there are no tickets on the order then bail
 		foreach ( $order->get_items() as $item_id => $item ) {
-			$item = QSOT::order_item( $item );
+			$item = QSOT_WC3()->order_item( $item );
 			if ( apply_filters( 'qsot-item-is-ticket', false, $item ) ) {
 				$at_least_one = true;
 				break;
@@ -309,7 +309,7 @@ class QSOT_tickets {
 		$at_least_one = false;
 		// if there are no tickets on the order then bail
 		foreach ( $order->get_items() as $item_id => $item ) {
-			$item = QSOT::order_item( $item );
+			$item = QSOT_WC3()->order_item( $item );
 			if ( apply_filters( 'qsot-item-is-ticket', false, $item ) ) {
 				$at_least_one = true;
 				break;
@@ -320,7 +320,7 @@ class QSOT_tickets {
 
 		// create the link
 		$link = add_query_arg(
-			array( 'n' => apply_filters( 'qsot-email-link-auth', '', $order->id ) ),
+			array( 'n' => apply_filters( 'qsot-email-link-auth', '', QSOT_WC3()->order_id( $order ) ) ),
 			apply_filters( 'qsot-get-order-tickets-link', '', $order )
 		);
 
@@ -383,7 +383,7 @@ class QSOT_tickets {
 		$order = wc_get_order( $order_id );
 		if ( is_object( $order ) ) {
 			foreach ( $order->get_items() as $oiid => $item ) {
-				$item = QSOT::order_item( $item );
+				$item = QSOT_WC3()->order_item( $item );
 				$values = $item;
 				unset( $item['item_meta'] );
 				self::add_ticket_code_for_order_item( $oiid, $values, '', $order_id );
@@ -547,7 +547,7 @@ class QSOT_tickets {
 		$tickets = array();
 		// cycle through the order items. find any tickets in the order. foreach ticket, add it to our ticket list
 		foreach ( $order->get_items() as $item_id => $item ) {
-			$item = QSOT::order_item( $item );
+			$item = QSOT_WC3()->order_item( $item );
 			// if the item is not a ticket, then bail
 			if ( ! apply_filters( 'qsot-item-is-ticket', false, $item ) )
 				continue;
@@ -825,13 +825,13 @@ class QSOT_tickets {
 	public static function compile_ticket_info( $current, $oiid, $order_id ) {
 		// load the order
 		$order = wc_get_order($order_id);
-		if ( ! isset( $order, $order->id ) )
+		if ( ! isset( $order ) || ! ( $order instanceof WC_Order ) )
 			return new WP_Error( 'missing_data', __( 'Could not laod the order that this ticket belongs to.', 'opentickets-community-edition' ), array( 'order_id' => $order_id ) );
 
 		// load the order item that was specified by oiid
 		$order_items = $order->get_items();
 		$order_item = isset( $order_items[ $oiid ] ) ? $order_items[ $oiid ] : false;
-		$order_item = QSOT::order_item( $order_item );
+		$order_item = QSOT_WC3()->order_item( $order_item );
 		// if the order item could not be loaded, then fail
 		if ( empty( $order_item ) || ! isset( $order_item['product_id'], $order_item['event_id'] ) )
 			return new WP_Error( 'missing_data', __( 'Could not load the order item associated with this ticket.', 'opentickets-community-edition' ), array( 'oiid' => $oiid, 'items' => $order_items ) );
@@ -920,7 +920,7 @@ class QSOT_tickets {
 		$guest_checkout = strtolower( get_option( 'woocommerce_enable_guest_checkout', 'no' ) ) == 'yes';
 
 		// figure out the owner of the order, if that is stored
-		$customer_user_id = get_post_meta( $order->id, '_customer_user', true );
+		$customer_user_id = get_post_meta( QSOT_WC3()->order_id( $order ), '_customer_user', true );
 
 		// determine the current logged in user, so we can compare it to the known required data
 		$u = wp_get_current_user();
@@ -931,14 +931,14 @@ class QSOT_tickets {
 					( current_user_can( 'edit_shop_orders' ) ) || // if the current user is an admin of some sort
 					( $customer_user_id && current_user_can( 'edit_user', $customer_user_id ) ) || // or they can edit the profile of the user who the order is for
 					( $u->ID && $customer_user_id == $u->ID ) || // or they are the user that the order is for (not the same as above)
-					( $guest_checkout && apply_filters( 'qsot-ticket-verification-form-check', false, $order->id ) ) // or they passed the guest checkout ticket verification form
+					( $guest_checkout && apply_filters( 'qsot-ticket-verification-form-check', false, QSOT_WC3()->order_id( $order ) ) ) // or they passed the guest checkout ticket verification form
 			) {
 				$can = true; // then they can view the ticket
 			// otherwise, if guest checkout is enabled, and the form was not submitted, pop the guest checkout verification form
 			} else if ( $guest_checkout && ! isset( $_POST['verification_form'] ) ) {
 				self::_guest_verification_form();
 			// if guest checkout is enabled, and the user submitted the guect verification form, but that submission did not pass, then hard fail
-			} else if ( $guest_checkout && ! apply_filters( 'qsot-ticket-verification-form-check', false, $order->id ) ) {
+			} else if ( $guest_checkout && ! apply_filters( 'qsot-ticket-verification-form-check', false, QSOT_WC3()->order_id( $order ) ) ) {
 				self::_no_access(__('The information you supplied does not match our record.','opentickets-community-edition'));
 			// if guest checkout is not enabled, then pop the login form
 			} else if ( ! $guest_checkout ) {

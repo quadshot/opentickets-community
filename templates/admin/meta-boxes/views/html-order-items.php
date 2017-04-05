@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 global $wpdb;
 
-$post = isset( $post ) && is_object( $post ) ? $post : get_post( $order->id );
+$post = isset( $post ) && is_object( $post ) ? $post : get_post( QSOT_WC3()->order_id( $order ) );
 // Get the payment gateway
 $payment_gateway = wc_get_payment_gateway_by_order( $order );
 
@@ -94,7 +94,7 @@ if ( wc_tax_enabled() ) {
 
 				do_action( 'woocommerce_order_item_' . $item['type'] . '_html', $item_id, $item, $order );
 			}
-			do_action( 'woocommerce_admin_order_items_after_line_items', $order->id );
+			do_action( 'woocommerce_admin_order_items_after_line_items', QSOT_WC3()->order_id( $order ) );
 		?>
 		</tbody>
 		<tbody id="order_shipping_line_items">
@@ -106,7 +106,7 @@ if ( wc_tax_enabled() ) {
 				if ( $template = QSOT_Templates::locate_woo_template( 'meta-boxes/views/html-order-shipping.php', 'admin' ) )
 					include( $template );
 			}
-			do_action( 'woocommerce_admin_order_items_after_shipping', $order->id );
+			do_action( 'woocommerce_admin_order_items_after_shipping', QSOT_WC3()->order_id( $order ) );
 		?>
 		</tbody>
 		<tbody id="order_fee_line_items">
@@ -117,7 +117,7 @@ if ( wc_tax_enabled() ) {
 				if ( $template = QSOT_Templates::locate_woo_template( 'meta-boxes/views/html-order-fee.php', 'admin' ) )
 					include( $template );
 			}
-			do_action( 'woocommerce_admin_order_items_after_fees', $order->id );
+			do_action( 'woocommerce_admin_order_items_after_fees', QSOT_WC3()->order_id( $order ) );
 		?>
 		</tbody>
 		<tbody id="order_refunds">
@@ -129,7 +129,7 @@ if ( wc_tax_enabled() ) {
 					if ( $template = QSOT_Templates::locate_woo_template( 'meta-boxes/views/html-order-refund.php', 'admin' ) )
 						include( $template );
 				}
-				do_action( 'woocommerce_admin_order_items_after_refunds', $order->id );
+				do_action( 'woocommerce_admin_order_items_after_refunds', QSOT_WC3()->order_id( $order ) );
 			}
 		?>
 		</tbody>
@@ -164,7 +164,7 @@ if ( wc_tax_enabled() ) {
 			<td width="1%"></td>
 		</tr>
 
-		<?php do_action( 'woocommerce_admin_order_totals_after_discount', $order->id ); ?>
+		<?php do_action( 'woocommerce_admin_order_totals_after_discount', QSOT_WC3()->order_id( $order ) ); ?>
 
 		<tr>
 			<td class="label"><?php echo wc_help_tip( __( 'This is the shipping and handling total costs for the order.', 'woocommerce' ) ); ?> <?php _e( 'Shipping', 'woocommerce' ); ?>:</td>
@@ -180,7 +180,7 @@ if ( wc_tax_enabled() ) {
 			<td width="1%"></td>
 		</tr>
 
-		<?php do_action( 'woocommerce_admin_order_totals_after_shipping', $order->id ); ?>
+		<?php do_action( 'woocommerce_admin_order_totals_after_shipping', QSOT_WC3()->order_id( $order ) ); ?>
 
 		<?php if ( wc_tax_enabled() ) : ?>
 			<?php foreach ( $order->get_tax_totals() as $code => $tax ) : ?>
@@ -198,7 +198,7 @@ if ( wc_tax_enabled() ) {
 			<?php endforeach; ?>
 		<?php endif; ?>
 
-		<?php do_action( 'woocommerce_admin_order_totals_after_tax', $order->id ); ?>
+		<?php do_action( 'woocommerce_admin_order_totals_after_tax', QSOT_WC3()->order_id( $order ) ); ?>
 
 		<tr>
 			<td class="label"><?php _e( 'Order Total', 'woocommerce' ); ?>:</td>
@@ -218,7 +218,7 @@ if ( wc_tax_enabled() ) {
 			</td>
 		</tr>
 
-		<?php do_action( 'woocommerce_admin_order_totals_after_total', $order->id ); ?>
+		<?php do_action( 'woocommerce_admin_order_totals_after_total', QSOT_WC3()->order_id( $order ) ); ?>
 
 		<tr>
 			<td class="label refunded-total"><?php _e( 'Refunded', 'woocommerce' ); ?>:</td>
@@ -226,7 +226,7 @@ if ( wc_tax_enabled() ) {
 			<td width="1%"></td>
 		</tr>
 
-		<?php do_action( 'woocommerce_admin_order_totals_after_refunded', $order->id ); ?>
+		<?php do_action( 'woocommerce_admin_order_totals_after_refunded', QSOT_WC3()->order_id( $order ) ); ?>
 
 	</table>
 	<div class="clear"></div>

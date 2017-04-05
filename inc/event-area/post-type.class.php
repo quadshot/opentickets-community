@@ -805,7 +805,7 @@ class QSOT_Post_Type_Event_Area {
 		$event_ids = array();
 		// cycle through the order items
 		foreach ( $order->get_items( 'line_item' ) as $oiid => $item ) {
-			$item = QSOT::order_item( $item );
+			$item = QSOT_WC3()->order_item( $item );
 			// if this item is not on the list of edited items, then skip
 			if ( ! in_array( $oiid, $items['order_item_id'] ) )
 				continue;
@@ -1050,7 +1050,7 @@ class QSOT_Post_Type_Event_Area {
 		
 		// cycle through the order items, and update all the ticket items to confirmed
 		foreach ( $order->get_items() as $item_id => $item ) {
-			$item = QSOT::order_item( $item );
+			$item = QSOT_WC3()->order_item( $item );
 			// only do this for order items that are tickets
 			if ( ! apply_filters( 'qsot-item-is-ticket', false, $item ) ) {
 				var_dump( 'NOT A TICKET', $item );
@@ -1090,7 +1090,7 @@ class QSOT_Post_Type_Event_Area {
 		
 		// cycle through the order items, and update all the ticket items to confirmed
 		foreach ( $order->get_items() as $item_id => $item ) {
-			$item = QSOT::order_item( $item );
+			$item = QSOT_WC3()->order_item( $item );
 			// only do this for order items that are tickets
 			if ( ! apply_filters( 'qsot-item-is-ticket', false, $item ) )
 				continue;
@@ -1121,10 +1121,10 @@ class QSOT_Post_Type_Event_Area {
 		$cuids = array();
 
 		// figure out the list of session ids to use for the lookup
-		if ( ( $ocuid = get_post_meta( $order->id, '_customer_user', true ) ) )
+		if ( ( $ocuid = get_post_meta( QSOT_WC3()->order_id( $order ), '_customer_user', true ) ) )
 			$cuids[] = $ocuid;
 		$cuids[] = QSOT::current_user();
-		$cuids[] = md5( $order->id . ':' . site_url() );
+		$cuids[] = md5( QSOT_WC3()->order_id( $order ) . ':' . site_url() );
 		$cuids = array_filter( $cuids );
 
 		// get the zoner and stati that are valid
@@ -1137,14 +1137,14 @@ class QSOT_Post_Type_Event_Area {
 			'event_id' => $item['event_id'],
 			'quantity' => $item['qty'],
 			'state' => array( $stati['r'][0], $stati['c'][0] ),
-			'order_id' => array( 0, $order->id ),
+			'order_id' => array( 0, QSOT_WC3()->order_id( $order ) ),
 			'order_item_id' => array( 0, $item_id ),
 			'ticket_type_id' => $item['product_id'],
 			'where__extra' => array(
 				$wpdb->prepare( 'and ( order_item_id = %d or ( order_item_id = 0 and session_customer_id in(\'' . implode( "','", array_map( 'esc_sql', $cuids ) ) . '\') ) )', $item_id )
 			),
 		), array(
-			'order_id' => $order->id,
+			'order_id' => QSOT_WC3()->order_id( $order ),
 			'order_item_id' => $item_id,
 			'session_customer_id' => current( $cuids ),
 		) );
@@ -1162,7 +1162,7 @@ class QSOT_Post_Type_Event_Area {
 			
 			// cycle through the order items, and update all the ticket items to confirmed
 			foreach ( $order->get_items() as $item_id => $item ) {
-				$item = QSOT::order_item( $item );
+				$item = QSOT_WC3()->order_item( $item );
 				// only do this for order items that are tickets
 				if ( ! apply_filters( 'qsot-item-is-ticket', false, $item ) )
 					continue;
@@ -1187,7 +1187,7 @@ class QSOT_Post_Type_Event_Area {
 			
 			// cycle through the order items, and update all the ticket items to confirmed
 			foreach ( $order->get_items() as $item_id => $item ) {
-				$item = QSOT::order_item( $item );
+				$item = QSOT_WC3()->order_item( $item );
 				// only do this for order items that are tickets
 				if ( ! apply_filters( 'qsot-item-is-ticket', false, $item ) )
 					continue;
@@ -1220,7 +1220,7 @@ class QSOT_Post_Type_Event_Area {
 			
 			// cycle through the order items, and update all the ticket items to confirmed
 			foreach ( $order->get_items() as $item_id => $item ) {
-				$item = QSOT::order_item( $item );
+				$item = QSOT_WC3()->order_item( $item );
 				// only do this for order items that are tickets
 				if ( ! apply_filters( 'qsot-item-is-ticket', false, $item ) )
 					continue;
@@ -1514,7 +1514,7 @@ class QSOT_Post_Type_Event_Area {
 			return;
 		$items = $order->get_items();
 		$item = isset( $items[ $item_id ] ) ? $items[ $item_id ] : false;
-		$item = QSOT::order_item( $item );
+		$item = QSOT_WC3()->order_item( $item );
 		if ( empty( $item ) )
 			return;
 

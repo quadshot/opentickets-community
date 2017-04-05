@@ -242,11 +242,11 @@ class qsot_order_admin {
 			$address_fields = array_merge( WC()->countries->get_address_fields(), WC()->countries->get_address_fields( '', 'shipping_' ) );
 
 			// see if the order already has values for this field in it's meta. if so, use that
-			if ( $meta = get_post_meta( $order->id, $key, true ) )
+			if ( $meta = get_post_meta( QSOT_WC3()->order_id( $order ), $key, true ) )
 				return $meta;
 
 			// if the user for the order is set, then try to use their personal data if it exists
-			if ( $user_id = get_post_meta( $order->id, '_customer_user', true ) ) {
+			if ( $user_id = get_post_meta( QSOT_WC3()->order_id( $order ), '_customer_user', true ) ) {
 				if ( $meta = get_user_meta( $user_id, $k, true ) )
 					return $meta;
 
@@ -290,7 +290,8 @@ class qsot_order_admin {
 
 		// load the order
 		$order = wc_get_order( $post_id );
-		if ( ! is_object( $order ) || ! isset( $order->id ) ) return;
+		$order_id = isset( $order ) && is_object( $order ) ? QSOT_WC3()->order_id( $order ) : null;
+		if ( ! $order_id ) return;
 
 		// do not perform this check on cancelled orders, because they are irrelevant checks at that point
 		if ( 'cancelled' == $order->get_status() ) return;
@@ -610,7 +611,7 @@ class qsot_order_admin {
 		$has = false;
 
 		foreach ($order->get_items() as $item) {
-			$item = QSOT::order_item( $item );
+			$item = QSOT_WC3()->order_item( $item );
 			$product = $order->get_product_from_item($item);
 			if ($product->ticket == 'yes') {
 				$has = true;
@@ -668,7 +669,7 @@ class qsot_order_admin {
 			$items = $order->get_items(array('line_item', 'fee'));
 			if (isset($items[$id])) {
 				$item = $items[ $id ];
-				$item = QSOT::order_item( $item );
+				$item = QSOT_WC3()->order_item( $item );
 				$res = $item;
 				$res['__order_id'] = $order_id;
 				$res['__order_item_id'] = $id;

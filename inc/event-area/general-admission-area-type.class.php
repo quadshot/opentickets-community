@@ -834,10 +834,10 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		$cuids = array();
 
 		// figure out the list of session ids to use for the lookup
-		if ( ( $ocuid = get_post_meta( $order->id, '_customer_user', true ) ) )
+		if ( ( $ocuid = get_post_meta( QSOT_WC3()->order_id( $order ), '_customer_user', true ) ) )
 			$cuids[] = $ocuid;
 		$cuids[] = QSOT::current_user();
-		$cuids[] = md5( $order->id . ':' . site_url() );
+		$cuids[] = md5( QSOT_WC3()->order_id( $order ) . ':' . site_url() );
 		$cuids = array_filter( $cuids );
 
 		// get the zoner and stati that are valid
@@ -850,7 +850,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 			'event_id' => $item['event_id'],
 			'quantity' => $item['qty'],
 			'state' => array( $stati['r'][0], $stati['c'][0] ),
-			'order_id' => array( 0, $order->id ),
+			'order_id' => array( 0, QSOT_WC3()->order_id( $order ) ),
 			'order_item_id' => array( 0, $item_id ),
 			'ticket_type_id' => $item['product_id'],
 			'where__extra' => array(
@@ -858,7 +858,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 			),
 		), array(
 			'state' => $stati['c'][0],
-			'order_id' => $order->id,
+			'order_id' => QSOT_WC3()->order_id( $order ),
 			'order_item_id' => $item_id,
 			'session_customer_id' => current( $cuids ),
 		) );
@@ -869,10 +869,10 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		$cuids = array();
 
 		// figure out the list of session ids to use for the lookup
-		if ( ( $ocuid = get_post_meta( $order->id, '_customer_user', true ) ) )
+		if ( ( $ocuid = get_post_meta( QSOT_WC3()->order_id( $order ), '_customer_user', true ) ) )
 			$cuids[] = $ocuid;
 		$cuids[] = QSOT::current_user();
-		$cuids[] = md5( $order->id . ':' . site_url() );
+		$cuids[] = md5( QSOT_WC3()->order_id( $order ) . ':' . site_url() );
 		$cuids = array_filter( $cuids );
 
 		// get the zoner and stati that are valid
@@ -885,7 +885,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 			'event_id' => $item['event_id'],
 			'quantity' => $item['qty'],
 			'state' => array( $stati['r'][0], $stati['c'][0] ),
-			'order_id' => array( 0, $order->id ),
+			'order_id' => array( 0, QSOT_WC3()->order_id( $order ) ),
 			'order_item_id' => array( 0, $item_id ),
 			'ticket_type_id' => $item['product_id'],
 			'where__extra' => array(
@@ -893,7 +893,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 			),
 		), array(
 			'state' => $stati['r'][0],
-			'order_id' => $order->id,
+			'order_id' => QSOT_WC3()->order_id( $order ),
 			'order_item_id' => $item_id,
 			'session_customer_id' => current( $cuids ),
 			'since' => current_time( 'mysql' ),
@@ -905,10 +905,10 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		$cuids = array();
 
 		// figure out the list of session ids to use for the lookup
-		if ( ( $ocuid = get_post_meta( $order->id, '_customer_user', true ) ) )
+		if ( ( $ocuid = get_post_meta( QSOT_WC3()->order_id( $order ), '_customer_user', true ) ) )
 			$cuids[] = $ocuid;
 		$cuids[] = QSOT::current_user();
-		$cuids[] = md5( $order->id . ':' . site_url() );
+		$cuids[] = md5( QSOT_WC3()->order_id( $order ) . ':' . site_url() );
 		$cuids = array_filter( $cuids );
 
 		// get the zoner and stati that are valid
@@ -921,7 +921,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 			'event_id' => $item['event_id'],
 			'quantity' => $item['qty'],
 			'state' => array( $stati['r'][0], $stati['c'][0] ),
-			'order_id' => array( 0, $order->id ),
+			'order_id' => array( 0, QSOT_WC3()->order_id( $order ) ),
 			'order_item_id' => array( 0, $item_id ),
 			'ticket_type_id' => $item['product_id'],
 			'where__extra' => array(
@@ -996,8 +996,8 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 			);
 
 			// determine how many tickets are owned by this order, and update our data accordingly
-			$owns = is_object( $zoner ) ? $zoner->find( array( 'fields' => 'total', 'order_id' => $order->id, 'event_id' => $event->ID ) ) : 0;
-			$owns_int = is_object( $zoner ) ? $zoner->find( array( 'state' => $stati['i'][0], 'fields' => 'total', 'order_id' => $order->id, 'event_id' => $event->ID ) ) : 0;
+			$owns = is_object( $zoner ) ? $zoner->find( array( 'fields' => 'total', 'order_id' => QSOT_WC3()->order_id( $order ), 'event_id' => $event->ID ) ) : 0;
+			$owns_int = is_object( $zoner ) ? $zoner->find( array( 'state' => $stati['i'][0], 'fields' => 'total', 'order_id' => QSOT_WC3()->order_id( $order ), 'event_id' => $event->ID ) ) : 0;
 
 			// if the order owns tickets, then update values
 			if ( $owns > 0 ) {
@@ -1054,16 +1054,16 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		$ticket_type_id = $product->id;
 
 		// figure out the appropriate customer id
-		$customer_id = 'order:' . $order->id;
+		$customer_id = 'order:' . QSOT_WC3()->order_id( $order );
 		if ( isset( $_POST['customer_user'] ) && ! empty( $_POST['customer_user'] ) )
 			$customer_id = $_POST['customer_user'];
-		elseif ( ( $order_customer_id = get_post_meta( $order->id, '_customer_user', true ) ) )
+		elseif ( ( $order_customer_id = get_post_meta( QSOT_WC3()->order_id( $order ), '_customer_user', true ) ) )
 			$customer_id = $order_customer_id;
 
 		// actually add the ticket
 		$res = $zoner->reserve( false, array(
 			'event_id' => $event->ID,
-			'order_id' => $order->id,
+			'order_id' => QSOT_WC3()->order_id( $order ),
 			'quantity' => $quantity,
 			'customer_id' => $customer_id,
 			'ticket_type_id' => $ticket_type_id,
@@ -1081,7 +1081,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 			$new_state = $stati['c'][0];
 			$zoner->update( false, array(
 				'event_id' => $event->ID,
-				'order_id' => $order->id,
+				'order_id' => QSOT_WC3()->order_id( $order ),
 				'quantity' => $res,
 				'customer_id' => $customer_id,
 				'ticket_type_id' => $ticket_type_id,
@@ -1109,7 +1109,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		$found = 0;
 		// cycle through the order items and find the first matching order item for this event and product combo
 		foreach ( $order->get_items( 'line_item' ) as $oiid => $item ) {
-			$item = QSOT::order_item( $item );
+			$item = QSOT_WC3()->order_item( $item );
 			// if there is no product_id on this item, skip it
 			if ( ! isset( $item['product_id'] ) || $item['product_id'] != $product->id )
 				continue;
@@ -1171,7 +1171,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		// get the order items, and if the requested one does not exist, then bail
 		$items = $order->get_items();
 		foreach ( $items as $ind => $item )
-			$items[ $ind ] = QSOT::order_item( $item );
+			$items[ $ind ] = QSOT_WC3()->order_item( $item );
 		if ( ! isset( $_POST['oiid'] ) || ! is_numeric( $_POST['oiid'] ) || ! isset( $items[ (int) $_POST['oiid'] ] ) ) {
 			$resp['e'][] = __( 'The order item does not appear to be valid.', 'opentickets-community-edition' );
 			return $resp;
@@ -1183,7 +1183,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		$res = $zoner->update( false, array(
 			'ticket_type_id' => $item['product_id'],
 			'quantity' => $item['qty'],
-			'order_id' => $order->id,
+			'order_id' => QSOT_WC3()->order_id( $order ),
 			'order_item_id' => $oiid,
 			'event_id' => $item['event_id'],
 			'state' => array( $stati['r'][0], $stati['c'][0] ),

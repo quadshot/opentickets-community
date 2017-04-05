@@ -51,7 +51,7 @@ class qsot_my_account_takeover {
 		$shows = array();
 
 		foreach ($order->get_items() as $item) {
-			$item = QSOT::order_item( $item );
+			$item = QSOT_WC3()->order_item( $item );
 			unset($item['item_meta']);
 			if (is_array($item) && isset($item['event_id'])) {
 				$event = apply_filters('qsot-get-event', false, $item['event_id']);
