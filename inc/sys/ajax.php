@@ -67,7 +67,7 @@ class QSOT_Ajax {
 		$bypass_nonce = false;
 		// are there any actions for this sa that do not require an nonce
 		foreach ( $this->by_sa[ $sa ] as $order => $action_data ) {
-			if ( ! $action_data['requires_nonce'] ) {
+			if ( isset( $action_data['requires_nonce'] ) && ! $action_data['requires_nonce'] ) {
 				$bypass_nonce = true;
 				break;
 			}

@@ -20,6 +20,7 @@ class QSOT_WC3_Sigh {
 	public function order_item( $item ) {
 		// if the item is in the new format, translate it to the old format
 		if ( $this->is_wc3() && $item instanceof WC_Data ) {
+			$item_class = get_class( $item );
 			// get the data
 			$data = $item->get_data();
 
@@ -31,8 +32,9 @@ class QSOT_WC3_Sigh {
 				}
 			}
 
-			// map qty to quantity
+			// map legacy keys
 			$data['qty'] = $data['quantity'];
+			$data['type'] = strtolower( preg_replace( '#^wc_order_item_(.*?)$#i', '$1', $item_class ) );
 
 			$item = $data;
 		}

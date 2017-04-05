@@ -226,14 +226,15 @@ class QSOT_Ticket_Product {
 
 		// cycle through the items that should be displayed, and display them
 		foreach ( $order->get_items( array( 'line_item', 'fee', 'shipping', 'tax' ) ) as $item_id => $item ) {
-			$item = QSOT_WC3()->order_item( $item );
+			//$item = QSOT_WC3()->order_item( $item );
 			// determine the classes to add to the line item tr element
 			$class = apply_filters( 'woocommerce_admin_order_items_class', 'new_row', $item, $order );
 
 			// do something different for each item type
 			switch ($item['type']) {
 				// products
-				case 'line_item' :
+				case 'product':
+				case 'line_item':
 					$_product = $order->get_product_from_item($item);
 					$template = QSOT_Templates::locate_woo_template( 'meta-boxes/views/html-order-item.php', 'admin' );
 					if ( $template )
@@ -241,21 +242,21 @@ class QSOT_Ticket_Product {
 				break;
 
 				// fees
-				case 'fee' :
+				case 'fee':
 					$template = QSOT_Templates::locate_woo_template( 'meta-boxes/views/html-order-fee.php', 'admin' );
 					if ( $template )
 						include( $template );
 				break;
 
 				// shipping charges
-				case 'shipping' :
+				case 'shipping':
 					$template = QSOT_Templates::locate_woo_template( 'meta-boxes/views/html-order-shipping.php', 'admin' );
 					if ( $template )
 						include( $template );
 				break;
 
 				// taxes
-				case 'tax' :
+				case 'tax':
 					$template = QSOT_Templates::locate_woo_template( 'meta-boxes/views/html-order-tax.php', 'admin' );
 					if ( $template )
 						include( $template );
