@@ -55,8 +55,6 @@ class qsot_venue_post_type {
 			self::_setup_admin_options();
 		}
 
-		add_action( 'admin_footer', function() { echo '<pre style="padding-left:170px">';var_dump( $GLOBALS['wp_styles'] ); echo '</pre>'; }, PHP_INT_MAX );
-
 		// load different assets depending on the page that we are on in the admin
 		add_action( 'qsot-admin-load-assets-' . self::$o->core_post_type, array( __CLASS__, 'load_event_venue_assets' ), 10, 2 );
 		add_action( 'qsot-admin-load-assets-' . self::$o->{'venue.post_type'}, array( __CLASS__, 'load_venue_admin_assets' ), 10, 2 );
@@ -504,7 +502,8 @@ class qsot_venue_post_type {
 
 	public static function mb_venue_information($post, $mb) {
 		$info = apply_filters('qsot-get-venue-meta', array(), $post->ID, 'info');
-		$country = isset( $info['country'] ) && $info['country'] ? $info['country'] : WC()->countries->get_base_country();
+		$state = $info['state'] = isset( $info['state'] ) && $info['state'] ? $info['state'] : WC()->countries->get_base_state();
+		$country = $info['country'] = isset( $info['country'] ) && $info['country'] ? $info['country'] : WC()->countries->get_base_country();
 		?>
 			<style>
 				table.venue-information-table { width:100%; margin:0; }
@@ -542,8 +541,9 @@ class qsot_venue_post_type {
 					<tr>
 						<th><?php _e('Country:','opentickets-community-edition') ?></th>
 						<td>
+							<?php $countries = WC()->countries->get_countries(); ?>
 							<select name="venue[info][country]" class="widefat js_field-country">
-								<?php $countries = WC()->countries->get_countries(); foreach ( $countries as $abbr => $name ): ?>
+								<?php foreach ( $countries as $abbr => $name ): ?>
 									<option value="<?php echo esc_attr( $abbr ) ?>" <?php selected( $abbr, $info['country'] ) ?>><?php echo force_balance_tags( $name ) ?></option>
 								<?php endforeach; ?>
 							</select>
