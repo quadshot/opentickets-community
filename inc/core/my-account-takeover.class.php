@@ -120,19 +120,15 @@ class qsot_my_account_takeover {
 			return;
 		}
 
-		if ( !current_user_can('delete_users') && $order->user_id != $user_id ) {
+		if ( !current_user_can('delete_users') && $order->get_customer_id() != $user_id ) {
 			echo '<div class="woocommerce-error">' . __( 'Invalid order.', 'woocommerce' ) . ' <a href="'.get_permalink( wc_get_page_id('myaccount') ).'">'. __( 'My Account &rarr;','opentickets-community-edition') .'</a>' . '</div>';
 			return;
 		}
 
-		if (is_callable(array(&$order, 'get_status'))) {
-			$status = $order->get_status();
-		} else {
-			$status = get_term_by('slug', $order->status, 'shop_order_status');
-		}
+		$status = $order->get_status();
 
 		echo '<p class="order-info">'
-		. sprintf( __('Order <mark class="order-number">%s</mark> made on <mark class="order-date">%s</mark>','opentickets-community-edition'), $order->get_order_number(), date_i18n( get_option( 'date_format' ), strtotime( $order->order_date ) ) )
+		. sprintf( __('Order <mark class="order-number">%s</mark> made on <mark class="order-date">%s</mark>','opentickets-community-edition'), $order->get_id(), date_i18n( get_option( 'date_format' ), strtotime( $order->get_date_created() ) ) )
 		. '. ' . sprintf( __('Order status: <mark class="order-status">%s</mark>','opentickets-community-edition'), __($status->name,'opentickets-community-edition') )
 		. '.</p>';
 

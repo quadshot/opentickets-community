@@ -447,11 +447,21 @@ class QSOT_system_status_page extends QSOT_base_page {
 				) );
 				$order_ids = array_unique( array_merge( $by_id, $by_name, $by_meta ) );
 
+				$WC3 = QSOT_WC3();
 				$results = array( $none );
 				// construct the results array
 				foreach ( $order_ids as $order_id ) {
 					$order = wc_get_order( $order_id );
-					$results[] = array( 'id' => $order_id, 'text' => sprintf( __( 'Order #%d (%s %s, %s)', 'opentickets-community-edition' ), $order_id, $order->billing_first_name, $order->billing_last_name, $order->billing_email ) );
+					$results[] = array(
+						'id' => $order_id,
+						'text' => sprintf(
+							__( 'Order #%d (%s %s, %s)', 'opentickets-community-edition' ),
+							$order_id,
+							$WC3->order_data( $order, 'billing_first_name' ),
+							$WC3->order_data( $order, 'billing_last_name' ),
+							$WC3->order_data( $order, 'billing_email' )
+						)
+					);
 				}
 
 				// render response

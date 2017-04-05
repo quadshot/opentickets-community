@@ -115,9 +115,7 @@ class QSOT_tickets {
 	// add the ticket information to the order item line item output for the user, both on emails and thankyou page
 	public static function add_view_ticket_link_to_emails( $item_id, $item, $order ) {
 		// get the order status
-		$status = is_callable( array( &$order, 'get_status' ) )
-				? $order->get_status()
-				: $order->status;
+		$status = $order->get_status();
 
 		// is the order in a valid status that should show a link?
 		if ( ! in_array( $status, apply_filters( 'qsot-ticket-link-allow-by-order-status', array( 'completed' ) ) ) )
@@ -261,12 +259,12 @@ class QSOT_tickets {
 		$final = '';
 		// if we ARE using a permalink struct, then return a pretty permalink
 		if ( ! empty( $wp_rewrite->permalink_structure ) ) {
-			$final = home_url( '/order-tickets/' . $order->order_key . '/' );
+			$final = home_url( '/order-tickets/' . $order->get_order_key() . '/' );
 		// otherwise, return an ugly permalink
 		} else {
 			$final = add_query_arg( array(
 				'qsot-order-tickets' => 1,
-				'qsot-order-ticket-id' => $order->order_key,
+				'qsot-order-ticket-id' => $order->get_order_key(),
 			), home_url() );
 		}
 
@@ -897,7 +895,7 @@ class QSOT_tickets {
 		}
 
 		// if the names are still empty, try to pull any information from the user the order is assigned to, if it exists
-		if ( empty( $current->names ) && ( $uid = $order->customer_user ) ) {
+		if ( empty( $current->names ) && ( $uid = $order->get_customer_id() ) ) {
 			$user = get_user_by( 'id', $uid );
 			if ( is_object( $user ) && isset( $user->user_login ) ) {
 				if ( $user->display_name )
