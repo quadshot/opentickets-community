@@ -1233,7 +1233,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		$owns = $query->find( array(
 			'event_id' => $ticket->event->ID,
 			'ticket_type_id' => $ticket->order_item['product_id'],
-			'order_id' => $ticket->order->id,
+			'order_id' => QSOT_WC3()->order_id( $ticket->order ),
 			'order_item_id' => $ticket->order_item_id,
 		) );
 

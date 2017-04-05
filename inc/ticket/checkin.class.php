@@ -183,7 +183,7 @@ class QSOT_checkin {
 		if ( ! is_object( $ticket ) || is_wp_error( $ticket ) ) return $ticket;
 
 		// verify that the order was loaded
-		if ( ! isset( $ticket->order, $ticket->order->id ) )
+		if ( ! isset( $ticket->order ) || ! ( $ticket->order instanceof WC_Order ) )
 			return new WP_Error( 'missing_data', __( 'Could not laod the order that this ticket belongs to.', 'opentickets-community-edition' ), array( 'order_id' => $order_id ) );
 		$order = $ticket->order;
 
@@ -197,7 +197,7 @@ class QSOT_checkin {
 
 		// find all the codes that are to be encoded in the qr codes
 		$codes = apply_filters( 'qsot-get-ticket-qr-data', array(), array(
-			'order_id' => $ticket->order->id,
+			'order_id' => QSOT_WC3()->order_id( $ticket->order ),
 			'event_id' => $ticket->event->ID,
 			'order_item_id' => $order_item_id,
 			'product' => $ticket->product,

@@ -44,6 +44,65 @@ class QSOT_WC3_Sigh {
 
 		return $order->id;
 	}
+
+	// get a piece of order data
+	public function order_data( $order, $key ) {
+		// legacy
+		if ( ! $this->is_wc3() )
+			return $order->$key;
+
+		// new methods
+		$key = '_' !== $key{0} ? $key : substr( $key, 1 );
+		if ( 'completed_date' === $key ) {
+			return $order->get_date_completed() ? gmdate( 'Y-m-d H:i:s', $order->get_date_completed()->getOffsetTimestamp() ) : '';
+		} elseif ( 'paid_date' === $key ) {
+			return $order->get_date_paid() ? gmdate( 'Y-m-d H:i:s', $order->get_date_paid()->getOffsetTimestamp() ) : '';
+		} elseif ( 'modified_date' === $key ) {
+			return $order->get_date_modified() ? gmdate( 'Y-m-d H:i:s', $order->get_date_modified()->getOffsetTimestamp() ) : '';
+		} elseif ( 'order_date' === $key ) {
+			return $order->get_date_created() ? gmdate( 'Y-m-d H:i:s', $order->get_date_created()->getOffsetTimestamp() ) : '';
+		} elseif ( 'id' === $key ) {
+			return $order->get_id();
+		} elseif ( 'post' === $key ) {
+			return get_post( $order->get_id() );
+		} elseif ( 'status' === $key ) {
+			return $order->get_status();
+		} elseif ( 'post_status' === $key ) {
+			return get_post_status( $order->get_id() );
+		} elseif ( 'customer_message' === $key || 'customer_note' === $key ) {
+			return $order->get_customer_note();
+		} elseif ( in_array( $key, array( 'user_id', 'customer_user' ) ) ) {
+			return $order->get_customer_id();
+		} elseif ( 'tax_display_cart' === $key ) {
+			return get_option( 'woocommerce_tax_display_cart' );
+		} elseif ( 'display_totals_ex_tax' === $key ) {
+			return 'excl' === get_option( 'woocommerce_tax_display_cart' );
+		} elseif ( 'display_cart_ex_tax' === $key ) {
+			return 'excl' === get_option( 'woocommerce_tax_display_cart' );
+		} elseif ( 'cart_discount' === $key ) {
+			return $order->get_total_discount();
+		} elseif ( 'cart_discount_tax' === $key ) {
+			return $order->get_discount_tax();
+		} elseif ( 'order_tax' === $key ) {
+			return $order->get_cart_tax();
+		} elseif ( 'order_shipping_tax' === $key ) {
+			return $order->get_shipping_tax();
+		} elseif ( 'order_shipping' === $key ) {
+			return $order->get_shipping_total();
+		} elseif ( 'order_total' === $key ) {
+			return $order->get_total();
+		} elseif ( 'order_type' === $key ) {
+			return $order->get_type();
+		} elseif ( 'order_currency' === $key ) {
+			return $order->get_currency();
+		} elseif ( 'order_version' === $key ) {
+			return $order->get_version();
+	 	} elseif ( is_callable( array( $order, "get_{$key}" ) ) ) {
+			return $order->{"get_{$key}"}();
+		} else {
+			return get_post_meta( $order->get_id(), '_' . $key, true );
+		}
+	}
 }
 
 // public access function

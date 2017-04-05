@@ -543,6 +543,7 @@ class QSOT_tickets {
 			exit;
 		}
 
+		$WC3 = QSOT_WC3();
 		$errors = array();
 		$tickets = array();
 		// cycle through the order items. find any tickets in the order. foreach ticket, add it to our ticket list
@@ -567,8 +568,9 @@ class QSOT_tickets {
 			}
 
 			$eparts = array();
+			$order_id = $WC3->order_id( $ticket->order );
 			// find out if any of the needed data is missing, or if any of it is in a format that is un expected, and generate a list of errors to report
-			if ( ! isset( $ticket->order, $ticket->order->id ) )
+			if ( ! isset( $ticket->order ) && $order_id )
 				$eparts[] = __( 'the order', 'opentickets-community-edition' );
 			if ( ! isset( $ticket->product, $ticket->product->id ) )
 				$eparts[] = __( 'the ticket product information', 'opentickets-community-edition' );
@@ -671,8 +673,9 @@ class QSOT_tickets {
 		}
 
 		$errors = array();
+		$order_id = QSOT_WC3()->order_id( $ticket->order );
 		// find out if any of the needed data is missing, or if any of it is in a format that is un expected, and generate a list of errors to report
-		if ( ! isset( $ticket->order, $ticket->order->id ) )
+		if ( ! isset( $ticket->order ) && $order_id )
 			$errors[] = __( 'the order', 'opentickets-community-edition' );
 		if ( ! isset( $ticket->product, $ticket->product->id ) )
 			$errors[] = __( 'the ticket product information', 'opentickets-community-edition' );
@@ -872,12 +875,13 @@ class QSOT_tickets {
 		$current->event->image_id = get_post_thumbnail_id( $current->event->ID );
 		$current->event->image_id = empty( $current->event->image_id ) ? get_post_thumbnail_id( $current->event->post_parent ) : $current->event->image_id;
 
+		$WC3 = QSOT_WC3();
 		// if the options say use the shipping name, then attempt to use it
 		if ( self::$options->{'qsot-ticket-purchaser-info'} == 'shipping' ) {
 			$k = 'shipping';
 			foreach ( array( 'first_name', 'last_name' ) as $_k ) {
 				$key = $k . '_' . $_k;
-				if ( $name = $order->$key )
+				if ( $name = $WC3->order_data( $order, $key ) )
 					$current->names[] = $name;
 			}
 		}
@@ -887,7 +891,7 @@ class QSOT_tickets {
 			$k = 'billing';
 			foreach ( array( 'first_name', 'last_name' ) as $_k ) {
 				$key = $k . '_' . $_k;
-				if ( $name = $order->$key )
+				if ( $name = $WC3->order_data( $order, $key ) )
 					$current->names[] = $name;
 			}
 		}

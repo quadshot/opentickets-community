@@ -2,7 +2,7 @@
 <ul>
 
 	<?php if ( $ticket->show_order_number ): ?>
-		<li><?php echo sprintf( __( 'Order #%d', 'opentickets-community-edition' ), $ticket->order->id ) ?></li>
+		<li><?php echo sprintf( __( 'Order #%d', 'opentickets-community-edition' ), QSOT_WC3()->order_id( $ticket->order ) ) ?></li>
 	<?php endif; ?>
 
 	<li><?php echo ucwords( implode( ' ', $ticket->names ) ) ?></li>
