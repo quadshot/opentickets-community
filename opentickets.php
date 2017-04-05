@@ -211,8 +211,8 @@ class QSOT {
 		wp_register_script( 'qsot-backbone-modal', self::$o->core_url . 'assets/js/utils/backbone-modal.js', array( 'underscore', 'backbone', 'qsot-core-tools' ), '0.1.0-beta', 1 );
 
 		// select2 lib, since WC cannot seem to decide on a select overtake lib
-		wp_register_script( 'select2', self::$o->core_url . 'assets/js/libs/select2/select2.js', array( 'jquery' ), '3.5.4' );
-		wp_register_style( 'select2', self::$o->core_url . 'assets/js/libs/select2/select2.css', array(), '3.5.4' );
+		wp_register_script( 'select2', self::$o->core_url . 'assets/js/libs/select2/select2.full.min.js', array( 'jquery' ), '4.0.x' );
+		wp_register_style( 'select2', self::$o->core_url . 'assets/css/select2.css', array(), '4.0.x' );
 
 		// tablesorter plugin
 		wp_register_script( 'tablesorter', self::$o->core_url . 'assets/js/libs/jquery-tablesorter/jquery.tablesorter' . $suffix . '.js', array( 'jquery' ), '2.0.3' );

@@ -55,6 +55,8 @@ class qsot_venue_post_type {
 			self::_setup_admin_options();
 		}
 
+		add_action( 'admin_footer', function() { echo '<pre style="padding-left:170px">';var_dump( $GLOBALS['wp_styles'] ); echo '</pre>'; }, PHP_INT_MAX );
+
 		// load different assets depending on the page that we are on in the admin
 		add_action( 'qsot-admin-load-assets-' . self::$o->core_post_type, array( __CLASS__, 'load_event_venue_assets' ), 10, 2 );
 		add_action( 'qsot-admin-load-assets-' . self::$o->{'venue.post_type'}, array( __CLASS__, 'load_venue_admin_assets' ), 10, 2 );
@@ -336,12 +338,13 @@ class qsot_venue_post_type {
 		wp_enqueue_script( 'qsot-tools' );
 
 		// copied from class-wc-admin-assets.php. used for handling country-state switching
-		wp_enqueue_script( 'wc-users', WC()->plugin_url() . '/assets/js/admin/users' . $suffix . '.js', array( 'jquery', 'wc-enhanced-select' ), WC_VERSION, true );
+		wp_register_script( 'wc-users', WC()->plugin_url() . '/assets/js/admin/users' . $suffix . '.js', array( 'jquery', 'wc-enhanced-select' ), WC_VERSION, true );
+		wp_enqueue_script( 'wc-users' );
 		wp_localize_script(
 			'wc-users',
 			'wc_users_params',
 			array(
-				'countries' => json_encode( array_merge( WC()->countries->get_allowed_country_states(), WC()->countries->get_shipping_country_states() ) ),
+				'countries'              => json_encode( array_merge( WC()->countries->get_allowed_country_states(), WC()->countries->get_shipping_country_states() ) ),
 				'i18n_select_state_text' => esc_attr__( 'Select an option&hellip;', 'woocommerce' ),
 			)
 		);
