@@ -805,6 +805,7 @@ class QSOT_Post_Type_Event_Area {
 		$event_ids = array();
 		// cycle through the order items
 		foreach ( $order->get_items( 'line_item' ) as $oiid => $item ) {
+			$item = QSOT::order_item( $item );
 			// if this item is not on the list of edited items, then skip
 			if ( ! in_array( $oiid, $items['order_item_id'] ) )
 				continue;
@@ -1049,6 +1050,7 @@ class QSOT_Post_Type_Event_Area {
 		
 		// cycle through the order items, and update all the ticket items to confirmed
 		foreach ( $order->get_items() as $item_id => $item ) {
+			$item = QSOT::order_item( $item );
 			// only do this for order items that are tickets
 			if ( ! apply_filters( 'qsot-item-is-ticket', false, $item ) ) {
 				var_dump( 'NOT A TICKET', $item );
@@ -1088,6 +1090,7 @@ class QSOT_Post_Type_Event_Area {
 		
 		// cycle through the order items, and update all the ticket items to confirmed
 		foreach ( $order->get_items() as $item_id => $item ) {
+			$item = QSOT::order_item( $item );
 			// only do this for order items that are tickets
 			if ( ! apply_filters( 'qsot-item-is-ticket', false, $item ) )
 				continue;
@@ -1159,6 +1162,7 @@ class QSOT_Post_Type_Event_Area {
 			
 			// cycle through the order items, and update all the ticket items to confirmed
 			foreach ( $order->get_items() as $item_id => $item ) {
+				$item = QSOT::order_item( $item );
 				// only do this for order items that are tickets
 				if ( ! apply_filters( 'qsot-item-is-ticket', false, $item ) )
 					continue;
@@ -1183,6 +1187,7 @@ class QSOT_Post_Type_Event_Area {
 			
 			// cycle through the order items, and update all the ticket items to confirmed
 			foreach ( $order->get_items() as $item_id => $item ) {
+				$item = QSOT::order_item( $item );
 				// only do this for order items that are tickets
 				if ( ! apply_filters( 'qsot-item-is-ticket', false, $item ) )
 					continue;
@@ -1215,6 +1220,7 @@ class QSOT_Post_Type_Event_Area {
 			
 			// cycle through the order items, and update all the ticket items to confirmed
 			foreach ( $order->get_items() as $item_id => $item ) {
+				$item = QSOT::order_item( $item );
 				// only do this for order items that are tickets
 				if ( ! apply_filters( 'qsot-item-is-ticket', false, $item ) )
 					continue;
@@ -1508,6 +1514,7 @@ class QSOT_Post_Type_Event_Area {
 			return;
 		$items = $order->get_items();
 		$item = isset( $items[ $item_id ] ) ? $items[ $item_id ] : false;
+		$item = QSOT::order_item( $item );
 		if ( empty( $item ) )
 			return;
 

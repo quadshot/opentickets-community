@@ -610,6 +610,7 @@ class qsot_order_admin {
 		$has = false;
 
 		foreach ($order->get_items() as $item) {
+			$item = QSOT::order_item( $item );
 			$product = $order->get_product_from_item($item);
 			if ($product->ticket == 'yes') {
 				$has = true;
@@ -666,7 +667,9 @@ class qsot_order_admin {
 			$order = new WC_Order($order_id);
 			$items = $order->get_items(array('line_item', 'fee'));
 			if (isset($items[$id])) {
-				$res = $items[$id];
+				$item = $items[ $id ];
+				$item = QSOT::order_item( $item );
+				$res = $item;
 				$res['__order_id'] = $order_id;
 				$res['__order_item_id'] = $id;
 			}

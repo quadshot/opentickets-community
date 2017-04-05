@@ -112,14 +112,23 @@ class QSOT_tickets {
 		}
 	}
 
-	public static function add_view_ticket_link_to_emails($item_id, $item, $order) {
-		$status = is_callable(array(&$order, 'get_status')) ? $order->get_status() : $order->status;
-		if (!in_array($status, apply_filters('qsot-ticket-link-allow-by-order-status', array('completed')))) return;
+	// add the ticket information to the order item line item output for the user, both on emails and thankyou page
+	public static function add_view_ticket_link_to_emails( $item_id, $item, $order ) {
+		// get the order status
+		$status = is_callable( array( &$order, 'get_status' ) )
+				? $order->get_status()
+				: $order->status;
 
-		$auth = apply_filters('qsot-email-link-auth', '', $order->id);
-		$link = apply_filters('qsot-get-ticket-link', '', $item_id);
-		$link = $link ? add_query_arg(array('n' => $auth), $link) : $link;
-		if (empty($link)) return;
+		// is the order in a valid status that should show a link?
+		if ( ! in_array( $status, apply_filters( 'qsot-ticket-link-allow-by-order-status', array( 'completed' ) ) ) )
+			return;
+
+		// construct the link for the ticket, so that users who click it from their email, do not need to relog or supply a password
+		$auth = apply_filters( 'qsot-email-link-auth', '', $order->get_id() );
+		$link = apply_filters( 'qsot-get-ticket-link', '', $item_id );
+		$link = $link ? add_query_arg( array( 'n' => $auth ), $link ) : $link;
+		if ( empty( $link ) )
+			return;
 
 		$label = __( 'Ticket', 'opentickets-community-edition' );
 		$title = __( 'View your ticket', 'opentickets-community-edition' );
@@ -155,12 +164,28 @@ class QSOT_tickets {
 		?><a target="_blank" href="<?php echo esc_attr($url) ?>" title="<?php echo esc_attr(__($title)) ?>"><?php echo __($display) ?></a><?php
 	}
 
-	protected static function _order_item_order_status( $item_id ) {
-		global $wpdb;
+	// figure out the order number that a given order_item is attached to
+	protected static function _order_item_id_to_order_id( $item_id ) {
+		$cache_key = 'oii2oi_' . $item_id;
+		// leverage internal cache to prevent load problems
+		$cache = wp_cache_get( $cache_key );
 
-		$q = $wpdb->prepare( 'select order_id from ' . $wpdb->prefix . 'woocommerce_order_items where order_item_id = %d', $item_id );
-		$order_id = (int) $wpdb->get_var($q);
-		if ( $order_id <= 0 ) return 'does-not-exist';
+		// if no cache, create it
+		if ( false === $cache ) {
+			global $wpdb;
+			$q = $wpdb->prepare( 'select order_id from ' . $wpdb->prefix . 'woocommerce_order_items where order_item_id = %d', $item_id );
+			$cache = $wpdb->get_var( $q );
+			wp_cache_set( $cache_key, $cache, 1 * YEAR_IN_SECONDS );
+		}
+
+		return (int)$cache;
+	}
+
+	// figure out the order_status of an order that a given item is attached to
+	protected static function _order_item_order_status( $item_id ) {
+		$order_id = self::_order_item_id_to_order_id( $item_id );
+		if ( $order_id <= 0 )
+			return 'does-not-exist';
 
 		if ( QSOT::is_wc_latest() ) {
 			$status = preg_replace( '#^wc-#', '', get_post_status( $order_id ) );
@@ -178,15 +203,28 @@ class QSOT_tickets {
 
 		// figure out the order status for this item, and only allow completed orders to pass this check
 		$order_status = self::_order_item_order_status( $item_id );
-		if ( ! in_array( $order_status, array( 'completed' ) ) ) return '';
+		if ( ! in_array( $order_status, array( 'completed' ) ) )
+			return '';
 
 		// get the ticket code from this order item
 		$q = $wpdb->prepare( 'select ticket_code from ' . $wpdb->qsot_ticket_codes . ' where order_item_id = %d', $item_id );
 		$code = $wpdb->get_var( $q );
 
 		// if there is no code, then bail
-		if ( empty( $code ) )
-			return $current;
+		if ( empty( $code ) ) {
+			// try to create the code
+			$order_id = self::_order_item_id_to_order_id( $item_id );
+			$order = wc_get_order( $order_id );
+			if ( $order instanceof WC_Order ) {
+				$item = $order->get_item( $item_id );
+				$item = QSOT::order_item( $item );
+				$code = self::_generate_ticket_code_for_item( $item_id, $item, '', $order_id );
+			}
+
+			// if we still dont have a code, bail
+			if ( ! $code )
+				return $current;
+		}
 
 		// otherwise, return the appropriate ticket link
 		return apply_filters( 'qsot-get-ticket-link-from-code', $current, $code );
@@ -244,6 +282,7 @@ class QSOT_tickets {
 		$at_least_one = false;
 		// if there are no tickets on the order then bail
 		foreach ( $order->get_items() as $item_id => $item ) {
+			$item = QSOT::order_item( $item );
 			if ( apply_filters( 'qsot-item-is-ticket', false, $item ) ) {
 				$at_least_one = true;
 				break;
@@ -270,6 +309,7 @@ class QSOT_tickets {
 		$at_least_one = false;
 		// if there are no tickets on the order then bail
 		foreach ( $order->get_items() as $item_id => $item ) {
+			$item = QSOT::order_item( $item );
 			if ( apply_filters( 'qsot-item-is-ticket', false, $item ) ) {
 				$at_least_one = true;
 				break;
@@ -300,12 +340,23 @@ class QSOT_tickets {
 		self::$order_id = $order_id;
 	}
 
-	public static function add_ticket_code_for_order_item( $item_id, $values, $key='', $order_id=0 ) {
-		if ( empty( $order_id ) && isset( self::$order_id ) ) $order_id = self::$order_id;
-		if ( empty( $order_id ) && isset( WC()->session ) && ( $cur_order_id = WC()->session->order_awaiting_payment ) ) $order_id = $cur_order_id;
+	// during order completion, create the ticket code
+	public static function add_ticket_code_for_order_item( $item_id, $item_data, $key='', $order_id=0 ) {
+		self::_generate_ticket_code_for_item( $item_id, $item_data, $key, $order_id );
+	}
+
+	// generate a ticket code for an item, and store it in the database linked to that item
+	protected static function _generate_ticket_code_for_item( $item_id, $values, $key='', $order_id=0 ) {
+		$values = ( $values instanceof WC_Data ) ? $values->get_data() : $values;
+		// try to populate the order id if not supplied
+		if ( empty( $order_id ) && isset( self::$order_id ) )
+			$order_id = self::$order_id;
+		if ( empty( $order_id ) && isset( WC()->session ) && ( $cur_order_id = WC()->session->order_awaiting_payment ) )
+			$order_id = $cur_order_id;
 
 		global $wpdb;
 
+		// normalize the args used to gen the code
 		$code_args = array_merge(
 			$values,
 			array(
@@ -313,20 +364,26 @@ class QSOT_tickets {
 				'order_item_id' => $item_id,
 			)
 		);
-		$code = apply_filters('qsot-generate-ticket-code', '', $code_args);
+		// create the code
+		$code = apply_filters( 'qsot-generate-ticket-code', '', $code_args );
 		
+		// insert the db record
 		$q = $wpdb->prepare(
 			'insert into '.$wpdb->qsot_ticket_codes.' (order_item_id, ticket_code) values (%d, %s) on duplicate key update ticket_code = values(ticket_code)',
 			$item_id,
 			$code
 		);
-		$wpdb->query($q);
+		$wpdb->query( $q );
+
+		// return the final code
+		return $code;
 	}
 
 	public static function on_complete_update_tickets( $order_id ) {
 		$order = wc_get_order( $order_id );
 		if ( is_object( $order ) ) {
 			foreach ( $order->get_items() as $oiid => $item ) {
+				$item = QSOT::order_item( $item );
 				$values = $item;
 				unset( $item['item_meta'] );
 				self::add_ticket_code_for_order_item( $oiid, $values, '', $order_id );
@@ -334,20 +391,25 @@ class QSOT_tickets {
 		}
 	}
 
-	public static function generate_ticket_code($current, $args='') {
-		$args = wp_parse_args($args, array(
+	// use an order item's data to create a ticket code
+	public static function generate_ticket_code( $current, $args='' ) {
+		// normalize the args
+		$args = wp_parse_args( $args, array(
 			'event_id' => 0,
 			'order_id' => 0,
 			'order_item_id' => 0,
-		));
-		$args = apply_filters('qsot-generate-ticket-code-args', $args);
-		if (empty($args['order_id']) || empty($args['order_item_id']) || empty($args['event_id'])) return $current;
+		) );
+		$args = apply_filters( 'qsot-generate-ticket-code-args', $args );
+		// validate we have the requierd args
+		if ( empty( $args['order_id'] ) || empty( $args['order_item_id'] ) || empty( $args['event_id'] ) )
+			return $current;
 
+		// format the data into a code
 		$format = '%s.%s.%s';
-		$key = apply_filters('qsot-generate-ticket-code-code', sprintf($format, $args['event_id'], $args['order_id'], $args['order_item_id']), $format, $args);
-		$key .= '~'.sha1($key.AUTH_KEY);
-		$key = str_pad('', 3 - (strlen($key) % 3), '|').$key;
-		$ekey = str_replace(array('/', '+'), array('-', '_'), base64_encode($key));
+		$key = apply_filters( 'qsot-generate-ticket-code-code', sprintf( $format, $args['event_id'], $args['order_id'], $args['order_item_id'] ), $format, $args );
+		$key .= '~' . sha1( $key . AUTH_KEY );
+		$key = str_pad( '', 3 - ( strlen( $key ) % 3 ), '|' ) . $key;
+		$ekey = str_replace( array( '/', '+' ), array( '-', '_' ), base64_encode( $key ) );
 
 		return $ekey;
 	}
@@ -485,6 +547,7 @@ class QSOT_tickets {
 		$tickets = array();
 		// cycle through the order items. find any tickets in the order. foreach ticket, add it to our ticket list
 		foreach ( $order->get_items() as $item_id => $item ) {
+			$item = QSOT::order_item( $item );
 			// if the item is not a ticket, then bail
 			if ( ! apply_filters( 'qsot-item-is-ticket', false, $item ) )
 				continue;
@@ -768,6 +831,7 @@ class QSOT_tickets {
 		// load the order item that was specified by oiid
 		$order_items = $order->get_items();
 		$order_item = isset( $order_items[ $oiid ] ) ? $order_items[ $oiid ] : false;
+		$order_item = QSOT::order_item( $order_item );
 		// if the order item could not be loaded, then fail
 		if ( empty( $order_item ) || ! isset( $order_item['product_id'], $order_item['event_id'] ) )
 			return new WP_Error( 'missing_data', __( 'Could not load the order item associated with this ticket.', 'opentickets-community-edition' ), array( 'oiid' => $oiid, 'items' => $order_items ) );

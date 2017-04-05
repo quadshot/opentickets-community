@@ -750,6 +750,27 @@ class QSOT {
 		self::activation();
 	}
 
+	// emergency override, to translate new order_item format into something coherent we can use for legacy code
+	public static function order_item( $item ) {
+		// if the item is in the new format, translate it to the old format
+		if ( version_compare( '3.0.0', WC_VERSION ) <= 0 && $item instanceof WC_Data ) {
+			// get the data
+			$data = $item->get_data();
+
+			// transform all the data
+			foreach ( $data['meta_data'] as $meta ) {
+				$key = '_' == $meta->key{0} ? substr( $meta->key, 1 ) : $meta->key;
+				if ( ! isset( $data[ $key ] ) ) {
+					$data[ $key ] = $meta->value;
+				}
+			}
+
+			$item = $data;
+		}
+
+		return $item;
+	}
+
 	// on admin load, check if we need to update all the event timestamps now. if so, do it
 	public static function maybe_update_event_timestamps() {
 		return;

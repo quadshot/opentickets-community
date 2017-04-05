@@ -224,6 +224,7 @@ class QSOT_Ticket_Product {
 
 		// cycle through the items that should be displayed, and display them
 		foreach ( $order->get_items( array( 'line_item', 'fee', 'shipping', 'tax' ) ) as $item_id => $item ) {
+			$item = QSOT::order_item( $item );
 			// determine the classes to add to the line item tr element
 			$class = apply_filters( 'woocommerce_admin_order_items_class', 'new_row', $item, $order );
 

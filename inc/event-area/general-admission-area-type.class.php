@@ -1109,6 +1109,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		$found = 0;
 		// cycle through the order items and find the first matching order item for this event and product combo
 		foreach ( $order->get_items( 'line_item' ) as $oiid => $item ) {
+			$item = QSOT::order_item( $item );
 			// if there is no product_id on this item, skip it
 			if ( ! isset( $item['product_id'] ) || $item['product_id'] != $product->id )
 				continue;
@@ -1169,6 +1170,8 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 
 		// get the order items, and if the requested one does not exist, then bail
 		$items = $order->get_items();
+		foreach ( $items as $ind => $item )
+			$items[ $ind ] = QSOT::order_item( $item );
 		if ( ! isset( $_POST['oiid'] ) || ! is_numeric( $_POST['oiid'] ) || ! isset( $items[ (int) $_POST['oiid'] ] ) ) {
 			$resp['e'][] = __( 'The order item does not appear to be valid.', 'opentickets-community-edition' );
 			return $resp;
@@ -1218,6 +1221,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		// fetch the order item based on the order_item_id and order_id
 		$ois = $ticket->order->get_items();
 		$oi = isset( $ois[ $oiid ] ) ? $ois[ $oiid ] : null;
+		$oi = ( $oi instanceof WC_Data ) ? $oi->get_data() : $oi;
 		if ( empty( $oi ) )
 			return $ticket;
 

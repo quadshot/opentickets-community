@@ -82,6 +82,7 @@ class QSOT_checkin {
 			$order = wc_get_order( $data['order_id'] );
 			$order_items = $order->get_items();
 			$order_item = isset( $order_items[ $data['order_item_id'] ] ) ? $order_items[ $data['order_item_id'] ] : false;
+			$order_item = QSOT::order_item( $order_item );
 
 			// if there is no order item then bail
 			if ( ! $order_item ) {
