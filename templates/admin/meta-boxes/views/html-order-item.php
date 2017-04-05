@@ -154,7 +154,7 @@ $thumbnail    = $product ? apply_filters( 'woocommerce_admin_order_item_thumbnai
 		}
 	?>
 
-	<?php do_action( 'woocommerce_admin_after_order_item_values', $_product, $item, absint( $item_id ) ); /*@@@@LOUSHOU - add columns at the end of the values list */ ?>
+	<?php do_action( 'woocommerce_admin_after_order_item_values', $product, $item, absint( $item_id ) ); /*@@@@LOUSHOU - add columns at the end of the values list */ ?>
 
 	<td class="wc-order-edit-line-item" width="1%">
 		<div class="wc-order-edit-line-item-actions">
