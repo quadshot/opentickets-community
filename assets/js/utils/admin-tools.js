@@ -23,9 +23,14 @@ var QS = QS || { Tools:{} };
 							minimumInputLength: 0
 						};
 				// if the matcher was set, the use that too
-				if ( S.matcher_func && qt.isF( S.matcher_func ) )
-					args.matcher = S.matcher_func( me );
-				me.select2( args );
+				if ( S.matcher_func && qt.isF( S.matcher_func ) ) {
+					$.fn.select2.amd.require( [ 'select2/compat/matcher' ], function( oldMatcher ) {
+						args.matcher = oldMatcher( S.matcher_func( me ) );
+						me.select2( args );
+					} );
+				} else {
+					me.select2( args );
+				}
 			} else {
 				me.select2( {
 					ajax: {
@@ -59,10 +64,6 @@ var QS = QS || { Tools:{} };
 							return { results:data.r };
 						},
 						cache: true
-					},  
-					initSelection: function( ele, callback ) { 
-						var val = $( ele ).data( 'init-value' );
-						$( ele ).select2( 'data', qt.isO( val ) ? val : { id:0, text:$( ele ).data( 'init-placeholder' ) || QS._str( 'Select One' ) } );
 					},  
 					minimumInputLength: minlen
 				} );

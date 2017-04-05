@@ -468,8 +468,11 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 
 				<div class="field edit-field area-ticket-wrap" rel="field">
 					<label for="gaea-ticket"><?php _e( 'Ticket Price', 'opentickets-community-edition' ) ?></label>
-					<input type="hidden" class="widefat ticket use-select2" rel="ticket" name="gaea-ticket" id="gaea-ticket" value=""
-							data-sa="find-product" data-init-value="<?php echo esc_attr( @json_encode( array( 'id' => $options['ticket'], 'text' => $ticket_name ) ) ) ?>" data-minchar="2" />
+					<select class="widefat ticket use-select2" rel="ticket" name="gaea-ticket" id="gaea-ticket" style="width:100%;display:none;" data-sa="find-product" data-minchar="2">
+						<?php if ( ! empty( $options['ticket'] ) && ! empty( $ticket_name ) ): ?>
+							<option value="<?php echo esc_attr( $options['ticket'] ) ?>" selected="selected"><?php echo $ticket_name ?></option>
+						<?php endif; ?>
+					</select>
 				</div>
 
 				<div class="field edit-field area-capacity-wrap" rel="field">
