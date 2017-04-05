@@ -119,7 +119,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		$ticket = $this->get_ticket_type( array( 'event_area' => $event->event_area ) );
 
 		// if there is not a valid ticket for this event, then bail
-		if ( ! is_object( $ticket ) || is_wp_error( $ticket ) || ! isset( $ticket->id ) )
+		if ( ! is_object( $ticket ) || is_wp_error( $ticket ) || ! ( $ticket instanceof WC_Product ) )
 			return;
 
 		// get the zoner for this area type
@@ -157,7 +157,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 				'sold-out' => array( 'msg' => __( 'We are sorry. This event is sold out!', 'opentickets-community-edition' ), 'type' => 'error' ),
 				'one-moment' => array( 'msg' => __( '<h1>One Moment Please...</h1>', 'opentickets-community-edition' ), 'type' => 'msg' ),
 			),
-			'owns' => $zoner->find( array( 'fields' => 'total', 'state' => $stati['r'][0], 'event_id' => $event->ID, 'ticket_type_id' => $ticket->id, 'customer_id' => $zoner->current_user() ) ),
+			'owns' => $zoner->find( array( 'fields' => 'total', 'state' => $stati['r'][0], 'event_id' => $event->ID, 'ticket_type_id' => $ticket->get_id(), 'customer_id' => $zoner->current_user() ) ),
 		), $event ) );
 	}
 
@@ -612,11 +612,12 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		$result = wc_get_product( $data['event_area']->meta['_pricing_options'] );
 		if ( is_wp_error( $result ) )
 			return $result;
-		if ( ! is_object( $result ) || ! isset( $result->id ) )
+		if ( ! is_object( $result ) || ! ( $result instanceof WC_Product ) )
 			return new WP_Error( 'invalid_ticket_type', __( 'Could not find the price for this event.', 'opentickets-community-edition' ) );
 
+		$product_post = get_post( $result->get_id() );
 		// if the current user canread this ticket, return it, otherwise fail
-		if ( 'private' == $result->post->post_status && ! current_user_can( 'read', $result->id ) )
+		if ( 'private' == $product_post->post_status && ! current_user_can( 'read', $product_post->ID ) )
 			return new WP_Error( 'access_denied', __( 'Cannot find the price for this event.', 'opentickets-community-edition' ) );
 
 		return $result;

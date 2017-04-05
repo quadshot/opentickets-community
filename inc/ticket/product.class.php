@@ -134,6 +134,8 @@ class QSOT_Ticket_Product {
 			if ( ! is_object( $ticket ) || is_wp_error( $ticket ) )
 				continue;
 
+			// must do this because wc3 hates us
+			$ticket->post = get_post( $id );
 			// add some of the basic meta for pricing
 			$ticket->post->meta = array();
 			$ticket->post->meta['price_raw'] = $ticket->price;
