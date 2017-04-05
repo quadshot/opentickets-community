@@ -31,6 +31,9 @@ class QSOT_WC3_Sigh {
 				}
 			}
 
+			// map qty to quantity
+			$data['qty'] = $data['quantity'];
+
 			$item = $data;
 		}
 

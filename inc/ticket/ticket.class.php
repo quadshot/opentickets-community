@@ -347,7 +347,7 @@ class QSOT_tickets {
 
 	// generate a ticket code for an item, and store it in the database linked to that item
 	protected static function _generate_ticket_code_for_item( $item_id, $values, $key='', $order_id=0 ) {
-		$values = ( $values instanceof WC_Data ) ? $values->get_data() : $values;
+		$values = QSOT_WC3()->order_item( $values );
 		// try to populate the order id if not supplied
 		if ( empty( $order_id ) && isset( self::$order_id ) )
 			$order_id = self::$order_id;

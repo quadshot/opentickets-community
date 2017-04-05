@@ -1221,7 +1221,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 		// fetch the order item based on the order_item_id and order_id
 		$ois = $ticket->order->get_items();
 		$oi = isset( $ois[ $oiid ] ) ? $ois[ $oiid ] : null;
-		$oi = ( $oi instanceof WC_Data ) ? $oi->get_data() : $oi;
+		$oi = QSOT_WC3()->order_item( $oi );
 		if ( empty( $oi ) )
 			return $ticket;
 
