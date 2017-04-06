@@ -55,7 +55,7 @@ class opentickets_community_launcher {
 			'fctm' => 'fc',
 			'always_reserve' => 0,
 			'version' => '2.7.5',
-			'min_wc_version' => '3.0.0',
+			'min_wc_version' => '2.6.14',
 			'core_post_type' => 'qsot-event',
 			'core_post_rewrite_slug' => 'event',
 			'core_file' => __FILE__,
