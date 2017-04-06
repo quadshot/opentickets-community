@@ -46,10 +46,10 @@ class qsot_admin_menu {
 			add_action('admin_menu', array(__CLASS__, 'create_menu_items'), 11);
 			add_action('admin_menu', array(__CLASS__, 'repair_menu_order'), PHP_INT_MAX);
 			add_action( 'admin_menu', array( __CLASS__, 'external_links' ), PHP_INT_MAX );
-			add_action('qsot_daily_stats', array(__CLASS__, 'daily_stats'), 1000);
-			add_action('activate_plugin', array(__CLASS__, 'incremental_stats'), 1000, 2);
-			add_action('deactivate_plugin', array(__CLASS__, 'incremental_stats'), 1000, 2);
-			add_action('switch_theme', array(__CLASS__, 'incremental_stats'), 1000, 2);
+			//add_action('qsot_daily_stats', array(__CLASS__, 'daily_stats'), 1000);
+			//add_action('activate_plugin', array(__CLASS__, 'incremental_stats'), 1000, 2);
+			//add_action('deactivate_plugin', array(__CLASS__, 'incremental_stats'), 1000, 2);
+			//add_action('switch_theme', array(__CLASS__, 'incremental_stats'), 1000, 2);
 
 			// when saving settings, we could have updated the /qsot-event/ url slug... so we need to updating the permalinks on page refresh
 			add_action( 'qsot-settings-save-redirect', array( __CLASS__, 'refresh_permalinks_on_save_uri' ), 10, 2 );
