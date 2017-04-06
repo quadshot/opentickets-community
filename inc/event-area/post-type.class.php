@@ -848,12 +848,10 @@ class QSOT_Post_Type_Event_Area {
 		$event_id = isset( $item['event_id'] ) && $item['event_id'] > 0 ? $item['event_id'] : false;
 		?>
 			<div class="meta-list ticket-info" rel="ticket-info">
-				<?php if ( $edit ): ?>
-					<div><a href="#" class="button change-ticket"
+					<div class="change-button-wrap"><a href="#" class="button change-ticket"
 						item-id="<?php echo esc_attr( $item_id ) ?>"
 						event-id="<?php echo esc_attr( $event_id ) ?>"
 						qty="<?php echo esc_attr( $item['qty'] ) ?>"><?php _e( 'Change', 'opentickets-community-edition' ) ?></a></div>
-				<?php endif; ?>
 
 				<?php if ( $event_id ): ?>
 					<?php
