@@ -1107,10 +1107,11 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 
 	// add a new item or update an existing item for this reservation request
 	protected function _add_or_update_order_item( $order, $product, $qty, $args ) {
-		$found = 0;
+		$found_id = 0;
+		$found = null;
 		// cycle through the order items and find the first matching order item for this event and product combo
-		foreach ( $order->get_items( 'line_item' ) as $oiid => $item ) {
-			$item = QSOT_WC3()->order_item( $item );
+		foreach ( $order->get_items( 'line_item' ) as $oiid => $raw_item ) {
+			$item = QSOT_WC3()->order_item( $raw_item );
 			// if there is no product_id on this item, skip it
 			if ( ! isset( $item['product_id'] ) || $item['product_id'] != $product->id )
 				continue;
@@ -1126,21 +1127,59 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 
 			// if all the fields match, then use this order item
 			if ( $matched ) {
-				$found = $oiid;
+				$found_id = $oiid;
+				$found = QSOT_WC3()->is_wc3() ? $raw_item : $item;
 				break;
 			}
 		}
 
 		$item_id = 0;
 		// if the product-event combo was found in an existing order item, then simply update the quantity of that order item
-		if ( $found > 0 ) {
-			$order->update_product( $found, $product, array( 'qty' => $qty ) );
-			$item_id = $found;
+		if ( $found_id > 0 ) {
+			if ( is_array( $found ) ) {
+				$order->update_product( $found, $product, array( 'qty' => $qty ) );
+			} else if ( $found instanceof WC_Order_Item_Product ) {
+				$found->set_quantity( $qty );
+				$found->set_props( array(
+					'quantity' => $qty,
+					'subtotal' => wc_get_price_excluding_tax( $product, array( 'qty' => $qty ) ),
+					'total' => wc_get_price_excluding_tax( $product, array( 'qty' => $qty ) ),
+				) );
+				$found = apply_filters( 'qsot-wc3-update-order-item', $found, $product, $qty );
+				if ( $found instanceof WC_Order_Item_Product )
+					$found->save();
+			}
+			$item_id = $found_id;
 		// otherwise add a new order item for this seleciton
 		} else {
 			$item_id = $order->add_product( $product, $qty );
 			foreach ( $args as $k => $v )
 				wc_add_order_item_meta( $item_id, '_' . $k, $v );
+
+			$item                       = new WC_Order_Item_Product();
+			$item->legacy_values        = $values; // @deprecated For legacy actions.
+			$item->legacy_cart_item_key = $cart_item_key; // @deprecated For legacy actions.
+			$item->set_props( array(
+				'quantity'     => isset( $args['qty'] ) ? $args['qty'] : ( isset( $args['quantity'] ) ? $args['quantity'] : 1 ),
+				'variation'    => isset( $args['variation'] ) ? $args['variation'] : '',
+				'subtotal'     => isset( $args['line_subtotal'] ) ? $args['line_subtotal'] : 0,
+				'total'        => isset( $args['line_total'] ) ? $args['line_total'] : 0,
+				'subtotal_tax' => isset( $args['line_subtotal_tax'] ) ? $args['line_subtotal_tax'] : 0,
+				'total_tax'    => isset( $args['line_tax'] ) ? $args['line_tax'] : 0,
+				'taxes'        => isset( $args['line_tax_data'] ) ? $args['line_tax_data'] : array(),
+			) );
+			if ( $product ) {
+				$item->set_props( array(
+					'name'         => $product->get_name(),
+					'tax_class'    => $product->get_tax_class(),
+					'product_id'   => $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id(),
+					'variation_id' => $product->is_type( 'variation' ) ? $product->get_id() : 0,
+				) );
+			}
+			$item->set_backorder_meta();
+
+			// Add item to order and save.
+			$order->add_item( $item );
 		}
 
 		return $item_id;

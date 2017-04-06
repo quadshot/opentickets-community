@@ -246,6 +246,7 @@ QS.adminTicketSelection = ( function( $, qs, qt ) {
 				order_items: $( element ).find( '#order_line_items' )
 			};
 			me.e.order_items = me.e.order_items.length ? me.e.order_items : $( '#order_line_items' );
+			me.e.order_items_mb = $( '#woocommerce-order-items' );
 
 			// setup our basic elements and events
 			_setup_basic_elements();
@@ -294,7 +295,7 @@ QS.adminTicketSelection = ( function( $, qs, qt ) {
 		// setup the basic events
 		function _setup_basic_events() {
 			me.e.scope.on( 'click', '[rel="add-tickets-btn"]', me.add_ticket_ui );
-			me.e.order_items.on( 'click', '.change-ticket', me.change_ticket_ui );
+			me.e.order_items_mb.on( 'click', '.change-ticket', me.change_ticket_ui );
 
 			qs.cbs.trigger( 'setup-events', [ me, S ] );
 		}
@@ -515,7 +516,7 @@ QS.adminTicketSelection = ( function( $, qs, qt ) {
 			var on_complete = on_complete || function() {};
 
 			// pop a loading overlay on top of the order items
-			me.e.order_items.qsBlock( { css:{ zIndex:9999 }, msgcss:{ zIndex:10000 } } );
+			me.e.order_items_mb.qsBlock( { css:{ zIndex:9999 }, msgcss:{ zIndex:10000 } } );
 
 			// run the ajax that updates the list
 			me.aj( 'update-order-items', {}, function( r ) {
@@ -528,16 +529,16 @@ QS.adminTicketSelection = ( function( $, qs, qt ) {
 				} else if ( ! r.i.length ) {
 				// otherwise, update the list
 				} else {
-					me.e.order_items.empty();
+					me.e.order_items_mb.find( '#order_line_items' ).empty();
 					for ( var i=0; i < r.i.length; i++ )
-						$( r.i[ i ] ).appendTo( me.e.order_items );
+						$( r.i[ i ] ).appendTo( me.e.order_items_mb.find( '#order_line_items' ) );
 					me.dialog_msgs( [ qs._str( 'Tickets have been added.', S ) ], 'msg' );
 				}
 
-				me.e.order_items.qsUnblock();
+				me.e.order_items_mb.qsUnblock();
 				on_complete( true, r );
 			}, function() {
-				me.e.order_items.qsUnblock();
+				me.e.order_items_mb.qsUnblock();
 				on_complete( false );
 			} );
 		};
