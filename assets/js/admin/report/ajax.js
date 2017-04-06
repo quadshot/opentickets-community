@@ -5,7 +5,7 @@ var QS = QS || { Tools:{} };
 	// add the select2 thing to use-select2 within context
 	function _add_select2( context ) {
 		// store the default matcher function for later use
-		var default_matcher = $.fn.select2.defaults.matcher, context = context || 'body';
+		var default_matcher = $.fn.select2.defaults.defaults.matcher, context = context || 'body';
 
 		// add the select2 to elements that need it
 		QS.add_select2( $( context ).find( '.use-select2' ), {

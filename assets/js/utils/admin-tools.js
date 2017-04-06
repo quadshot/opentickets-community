@@ -14,11 +14,7 @@ var QS = QS || { Tools:{} };
 			if ( array_data ) {
 				var data_func = qt.isF( S.data_func_func ) ? S.data_func_func( me, array_data ) : function() { return { results:array_data }; },
 						args = {
-							data: data_func,
-							initSelection: function( ele, callback ) {
-								var val = $( ele ).data( 'init-value' );
-								$( ele ).select2( 'data', qt.isO( val ) ? val : { id:0, text:$( ele ).data( 'init-placeholder' ) || QS._str( 'Select One' ) } );
-							},  
+							data: array_data, //data_func,
 							multiple: multiple,
 							minimumInputLength: 0
 						};
