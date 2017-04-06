@@ -171,6 +171,18 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.7.5 - Apr/06/2017 =
+* [tweak] reworked all admin fancy select boxes to use new version of select2, instead of previous version
+* [tweak] reworked ALL handling of order item meta/data to match new WC formats
+* [tweak] reworked order creation flow to match new WC
+* [tweak] reworked ticket creation flow to match new WC
+* [tweak] reworked admin ticket selection process to work with new WC
+* [tweak] reworked admin order save process to work with new WC
+* [tweak] reworked core plugin reports screen to work with new WC backend code and frontend js code
+* [tweak] reworked how order data is grabbed from the order objects to match new WC flow
+* [tweak] updated all admin metabox overrides to use new WC format for order items
+* [tweak] cleaned up all warnings and notices caused by new WC update
+
 = 2.7.1 - Mar/27/2017 =
 * [tweak] changing how dates are calculated for DST
 * [tweak] adjusted event save functions to calculate the proper UTC version of the start time, under certain circumstances
