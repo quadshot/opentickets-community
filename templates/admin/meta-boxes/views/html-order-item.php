@@ -8,35 +8,36 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-$product      = $item->get_product();
-$product_link = $product ? admin_url( 'post.php?post=' . $item->get_product_id() . '&action=edit' ) : '';
+global $QSOT_WC3;
+$product      = $QSOT_WC3->order_item_data( $item, 'product' );
+$product_link = $product ? admin_url( 'post.php?post=' . $QSOT_WC3->order_item_data( $item, 'product_id' ) . '&action=edit' ) : '';
 $thumbnail    = $product ? apply_filters( 'woocommerce_admin_order_item_thumbnail', $product->get_image( 'thumbnail', array( 'title' => '' ), false ), $item_id, $item ) : '';
 ?>
 <tr class="item <?php echo apply_filters( 'woocommerce_admin_html_order_item_class', ( ! empty( $class ) ? $class : '' ), $item, $order ); ?>" data-order_item_id="<?php echo esc_attr( $item_id ); ?>">
 	<td class="thumb">
 		<?php echo '<div class="wc-order-item-thumbnail">' . wp_kses_post( $thumbnail ) . '</div>'; ?>
 	</td>
-	<td class="name" data-sort-value="<?php echo esc_attr( $item->get_name() ); ?>">
+	<td class="name" data-sort-value="<?php echo esc_attr( $QSOT_WC3->order_item_data( $item, 'name' ) ); ?>">
 		<?php
-			echo $product_link ? '<a href="' . esc_url( $product_link ) . '" class="wc-order-item-name">' . esc_html( $item->get_name() ) . '</a>' : '<div class="class="wc-order-item-name"">' . esc_html( $item->get_name() ) . '</div>';
+			echo $product_link ? '<a href="' . esc_url( $product_link ) . '" class="wc-order-item-name">' . esc_html( $QSOT_WC3->order_item_data( $item, 'name' ) ) . '</a>' : '<div class="class="wc-order-item-name"">' . esc_html( $QSOT_WC3->order_item_data( $item, 'name' ) ) . '</div>';
 
 			if ( $product && $product->get_sku() ) {
 				echo '<div class="wc-order-item-sku"><strong>' . __( 'SKU:', 'woocommerce' ) . '</strong> ' . esc_html( $product->get_sku() ) . '</div>';
 			}
 
-			if ( $item->get_variation_id() ) {
+			if ( $QSOT_WC3->order_item_data( $item, 'variation_id' ) ) {
 				echo '<div class="wc-order-item-variation"><strong>' . __( 'Variation ID:', 'woocommerce' ) . '</strong> ';
-				if ( 'product_variation' === get_post_type( $item->get_variation_id() ) ) {
-					echo esc_html( $item->get_variation_id() );
+				if ( 'product_variation' === get_post_type( $QSOT_WC3->order_item_data( $item, 'variation_id' ) ) ) {
+					echo esc_html( $QSOT_WC3->order_item_data( $item, 'variation_id' ) );
 				} else {
 					/* translators: %s: variation id */
-					printf( esc_html__( '%s (No longer exists)', 'woocommerce' ), $item->get_variation_id() );
+					printf( esc_html__( '%s (No longer exists)', 'woocommerce' ), $QSOT_WC3->order_item_data( $item, 'variation_id' ) );
 				}
 				echo '</div>';
 			}
 		?>
 		<input type="hidden" class="order_item_id" name="order_item_id[]" value="<?php echo esc_attr( $item_id ); ?>" />
-		<input type="hidden" name="order_item_tax_class[<?php echo absint( $item_id ); ?>]" value="<?php echo esc_attr( $item->get_tax_class() ); ?>" />
+		<input type="hidden" name="order_item_tax_class[<?php echo absint( $item_id ); ?>]" value="<?php echo esc_attr( $QSOT_WC3->order_item_data( $item, 'tax_class' ) ); ?>" />
 
 		<?php do_action( 'woocommerce_before_order_itemmeta', $item_id, $item, $product ) ?>
 		<?php include( 'html-order-item-meta.php' ); ?>
@@ -48,10 +49,10 @@ $thumbnail    = $product ? apply_filters( 'woocommerce_admin_order_item_thumbnai
 	<td class="item_cost" width="1%" data-sort-value="<?php echo esc_attr( $order->get_item_subtotal( $item, false, true ) ); ?>">
 		<div class="view">
 			<?php
-				echo wc_price( $order->get_item_total( $item, false, true ), array( 'currency' => $order->get_currency() ) );
+				echo wc_price( $order->get_item_total( $item, false, true ), array( 'currency' => $QSOT_WC3->order_data( $order, 'currency' ) ) );
 
-				if ( $item->get_subtotal() !== $item->get_total() ) {
-					echo '<span class="wc-order-item-discount">-' . wc_price( wc_format_decimal( $order->get_item_subtotal( $item, false, false ) - $order->get_item_total( $item, false, false ), '' ), array( 'currency' => $order->get_currency() ) ) . '</span>';
+				if ( $QSOT_WC3->order_item_data( $item, 'subtotal' ) !== $QSOT_WC3->order_item_data( $item, 'total' ) ) {
+					echo '<span class="wc-order-item-discount">-' . wc_price( wc_format_decimal( $order->get_item_subtotal( $item, false, false ) - $order->get_item_total( $item, false, false ), '' ), array( 'currency' => $QSOT_WC3->order_data( $order, 'currency' ) ) ) . '</span>';
 				}
 			?>
 		</div>
@@ -59,7 +60,7 @@ $thumbnail    = $product ? apply_filters( 'woocommerce_admin_order_item_thumbnai
 	<td class="quantity" width="1%">
 		<div class="view">
 			<?php
-				echo '<small class="times">&times;</small> ' . esc_html( $item->get_quantity() );
+				echo '<small class="times">&times;</small> ' . esc_html( $QSOT_WC3->order_item_data( $item, 'quantity' ) );
 
 				if ( $refunded_qty = $order->get_qty_refunded_for_item( $item_id ) ) {
 					echo '<small class="refunded">' . ( $refunded_qty * -1 ) . '</small>';
@@ -67,23 +68,23 @@ $thumbnail    = $product ? apply_filters( 'woocommerce_admin_order_item_thumbnai
 			?>
 		</div>
 		<div class="edit" style="display: none;">
-			<input type="number" step="<?php echo apply_filters( 'woocommerce_quantity_input_step', '1', $product ); ?>" min="0" autocomplete="off" name="order_item_qty[<?php echo absint( $item_id ); ?>]" placeholder="0" value="<?php echo esc_attr( $item->get_quantity() ); ?>" data-qty="<?php echo esc_attr( $item->get_quantity() ); ?>" size="4" class="quantity" />
+			<input type="number" step="<?php echo apply_filters( 'woocommerce_quantity_input_step', '1', $product ); ?>" min="0" autocomplete="off" name="order_item_qty[<?php echo absint( $item_id ); ?>]" placeholder="0" value="<?php echo esc_attr( $QSOT_WC3->order_item_data( $item, 'quantity' ) ); ?>" data-qty="<?php echo esc_attr( $QSOT_WC3->order_item_data( $item, 'quantity' ) ); ?>" size="4" class="quantity" />
 		</div>
 		<div class="refund" style="display: none;">
-			<input type="number" step="<?php echo apply_filters( 'woocommerce_quantity_input_step', '1', $product ); ?>" min="0" max="<?php echo $item->get_quantity(); ?>" autocomplete="off" name="refund_order_item_qty[<?php echo absint( $item_id ); ?>]" placeholder="0" size="4" class="refund_order_item_qty" />
+			<input type="number" step="<?php echo apply_filters( 'woocommerce_quantity_input_step', '1', $product ); ?>" min="0" max="<?php echo $QSOT_WC3->order_item_data( $item, 'quantity' ); ?>" autocomplete="off" name="refund_order_item_qty[<?php echo absint( $item_id ); ?>]" placeholder="0" size="4" class="refund_order_item_qty" />
 		</div>
 	</td>
-	<td class="line_cost" width="1%" data-sort-value="<?php echo esc_attr( $item->get_total() ); ?>">
+	<td class="line_cost" width="1%" data-sort-value="<?php echo esc_attr( $QSOT_WC3->order_item_data( $item, 'total' ) ); ?>">
 		<div class="view">
 			<?php
-				echo wc_price( $item->get_total(), array( 'currency' => $order->get_currency() ) );
+				echo wc_price( $QSOT_WC3->order_item_data( $item, 'total' ), array( 'currency' => $QSOT_WC3->order_data( $order, 'currency' ) ) );
 
-				if ( $item->get_subtotal() !== $item->get_total() ) {
-					echo '<span class="wc-order-item-discount">-' . wc_price( wc_format_decimal( $item->get_subtotal() - $item->get_total(), '' ), array( 'currency' => $order->get_currency() ) ) . '</span>';
+				if ( $QSOT_WC3->order_item_data( $item, 'subtotal' ) !== $QSOT_WC3->order_item_data( $item, 'total' ) ) {
+					echo '<span class="wc-order-item-discount">-' . wc_price( wc_format_decimal( $QSOT_WC3->order_item_data( $item, 'subtotal' ) - $QSOT_WC3->order_item_data( $item, 'total' ), '' ), array( 'currency' => $QSOT_WC3->order_data( $order, 'currency' ) ) ) . '</span>';
 				}
 
 				if ( $refunded = $order->get_total_refunded_for_item( $item_id ) ) {
-					echo '<small class="refunded">' . wc_price( $refunded, array( 'currency' => $order->get_currency() ) ) . '</small>';
+					echo '<small class="refunded">' . wc_price( $refunded, array( 'currency' => $QSOT_WC3->order_data( $order, 'currency' ) ) ) . '</small>';
 				}
 			?>
 		</div>
@@ -91,11 +92,11 @@ $thumbnail    = $product ? apply_filters( 'woocommerce_admin_order_item_thumbnai
 			<div class="split-input">
 				<div class="input">
 					<label><?php esc_attr_e( 'Pre-discount:', 'woocommerce' ); ?></label>
-					<input type="text" name="line_subtotal[<?php echo absint( $item_id ); ?>]" placeholder="<?php echo wc_format_localized_price( 0 ); ?>" value="<?php echo esc_attr( wc_format_localized_price( $item->get_subtotal() ) ); ?>" class="line_subtotal wc_input_price" data-subtotal="<?php echo esc_attr( wc_format_localized_price( $item->get_subtotal() ) ); ?>" />
+					<input type="text" name="line_subtotal[<?php echo absint( $item_id ); ?>]" placeholder="<?php echo wc_format_localized_price( 0 ); ?>" value="<?php echo esc_attr( wc_format_localized_price( $QSOT_WC3->order_item_data( $item, 'subtotal' ) ) ); ?>" class="line_subtotal wc_input_price" data-subtotal="<?php echo esc_attr( wc_format_localized_price( $QSOT_WC3->order_item_data( $item, 'subtotal' ) ) ); ?>" />
 				</div>
 				<div class="input">
 					<label><?php esc_attr_e( 'Total:', 'woocommerce' ); ?></label>
-					<input type="text" name="line_total[<?php echo absint( $item_id ); ?>]" placeholder="<?php echo wc_format_localized_price( 0 ); ?>" value="<?php echo esc_attr( wc_format_localized_price( $item->get_total() ) ); ?>" class="line_total wc_input_price" data-tip="<?php esc_attr_e( 'After pre-tax discounts.', 'woocommerce' ); ?>" data-total="<?php echo esc_attr( wc_format_localized_price( $item->get_total() ) ); ?>" />
+					<input type="text" name="line_total[<?php echo absint( $item_id ); ?>]" placeholder="<?php echo wc_format_localized_price( 0 ); ?>" value="<?php echo esc_attr( wc_format_localized_price( $QSOT_WC3->order_item_data( $item, 'total' ) ) ); ?>" class="line_total wc_input_price" data-tip="<?php esc_attr_e( 'After pre-tax discounts.', 'woocommerce' ); ?>" data-total="<?php echo esc_attr( wc_format_localized_price( $QSOT_WC3->order_item_data( $item, 'total' ) ) ); ?>" />
 				</div>
 			</div>
 		</div>
@@ -105,7 +106,7 @@ $thumbnail    = $product ? apply_filters( 'woocommerce_admin_order_item_thumbnai
 	</td>
 
 	<?php
-		if ( ( $tax_data = $item->get_taxes() ) && wc_tax_enabled() ) {
+		if ( ( $tax_data = $QSOT_WC3->order_item_data( $item, 'taxes' ) ) && wc_tax_enabled() ) {
 			foreach ( $order_taxes as $tax_item ) {
 				$tax_item_id       = $tax_item->get_rate_id();
 				$tax_item_total    = isset( $tax_data['total'][ $tax_item_id ] ) ? $tax_data['total'][ $tax_item_id ] : '';
@@ -115,21 +116,21 @@ $thumbnail    = $product ? apply_filters( 'woocommerce_admin_order_item_thumbnai
 					<div class="view">
 						<?php
 							if ( '' != $tax_item_total ) {
-								echo wc_price( wc_round_tax_total( $tax_item_total ), array( 'currency' => $order->get_currency() ) );
+								echo wc_price( wc_round_tax_total( $tax_item_total ), array( 'currency' => $QSOT_WC3->order_data( $order, 'currency' ) ) );
 							} else {
 								echo '&ndash;';
 							}
 
-							if ( $item->get_subtotal() !== $item->get_total() ) {
+							if ( $QSOT_WC3->order_item_data( $item, 'subtotal' ) !== $QSOT_WC3->order_item_data( $item, 'total' ) ) {
 								if ( '' === $tax_item_total ) {
 									echo '<span class="wc-order-item-discount">&ndash;</span>';
 								} else {
-									echo '<span class="wc-order-item-discount">-' . wc_price( wc_round_tax_total( $tax_item_subtotal - $tax_item_total ), array( 'currency' => $order->get_currency() ) ) . '</span>';
+									echo '<span class="wc-order-item-discount">-' . wc_price( wc_round_tax_total( $tax_item_subtotal - $tax_item_total ), array( 'currency' => $QSOT_WC3->order_data( $order, 'currency' ) ) ) . '</span>';
 								}
 							}
 
 							if ( $refunded = $order->get_tax_refunded_for_item( $item_id, $tax_item_id ) ) {
-								echo '<small class="refunded">' . wc_price( $refunded, array( 'currency' => $order->get_currency() ) ) . '</small>';
+								echo '<small class="refunded">' . wc_price( $refunded, array( 'currency' => $QSOT_WC3->order_data( $order, 'currency' ) ) ) . '</small>';
 							}
 						?>
 					</div>

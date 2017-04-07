@@ -1,4 +1,5 @@
 <?php
+global $QSOT_WC3;
 $hidden_order_itemmeta = apply_filters( 'woocommerce_hidden_order_itemmeta', array(
 	'_qty',
 	'_tax_class',
@@ -13,7 +14,7 @@ $hidden_order_itemmeta = apply_filters( 'woocommerce_hidden_order_itemmeta', arr
 ) );
 ?><div class="view">
 	<?php do_action('woocommerce_before_view_order_itemmeta', $item_id, $item, $product) /*@@@@LOUSHOU - filter for customizing meta */ ?>
-	<?php if ( $meta_data = $item->get_formatted_meta_data( '' ) ) : ?>
+	<?php if ( $meta_data = $QSOT_WC3->order_item_formatted_meta_data( $item, '_' ) ) : ?>
 		<table cellspacing="0" class="display_meta">
 			<?php foreach ( $meta_data as $meta_id => $meta ) :
 				if ( in_array( $meta->key, $hidden_order_itemmeta ) ) {
@@ -33,7 +34,7 @@ $hidden_order_itemmeta = apply_filters( 'woocommerce_hidden_order_itemmeta', arr
 	<?php do_action('woocommerce_before_edit_order_itemmeta', $item_id, $item, $product, $order) /*@@@@LOUSHOU - filter for customizing meta */ ?>
 	<table class="meta" cellspacing="0">
 		<tbody class="meta_items">
-			<?php if ( $meta_data = $item->get_formatted_meta_data( '' ) ) : ?>
+			<?php if ( $meta_data = $QSOT_WC3->order_item_formatted_meta_data( $item, '_' ) ) : ?>
 				<?php foreach ( $meta_data as $meta_id => $meta ) :
 					if ( in_array( $meta->key, $hidden_order_itemmeta ) ) {
 						continue;
