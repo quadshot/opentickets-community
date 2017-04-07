@@ -332,6 +332,7 @@ class qsot_venue_post_type {
 
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
+		wp_enqueue_style( 'select2' );
 		// load our plugin tools
 		wp_enqueue_script( 'qsot-tools' );
 

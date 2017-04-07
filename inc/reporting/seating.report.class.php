@@ -230,7 +230,7 @@ class QSOT_New_Seating_Report extends QSOT_Admin_Report {
 				</select>
 
 				<label for="parent_event_id"><?php _e( 'Event:', 'opentickets-community-edition' ) ?></label>
-				<div style="width:100%; max-width:450px; display:inline-block !important"><select class="use-select2" style="width:100%; display:none;" name="parent_event_id" id="parent_event_id" data-minchar="0" 
+				<div style="vertical-align:middle; width:100%; max-width:450px; display:inline-block !important"><select class="use-select2" style="width:100%; display:none;" name="parent_event_id" id="parent_event_id" data-minchar="0" 
 						data-init-placeholder="<?php echo esc_attr( __( 'Select an Event', 'opentickets-community-edition' ) ) ?>" data-filter-by="#year" data-array="<?php echo esc_attr( @json_encode( $parent_data ) ) ?>">
 					<?php if ( is_array( $selected_parent ) && isset( $selected_parent['id'] ) ): ?>
 						<option value="<?php echo esc_attr( $selected_parent['id'] ) ?>"><?php echo force_balance_tags( $selected_parent['text'] ) ?></option>

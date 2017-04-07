@@ -62,6 +62,7 @@ class qsot_reporting {
 
 	// tell wordpress to load the assets we previously registered
 	public static function load_assets() {
+		wp_enqueue_style( 'select2' );
 		wp_enqueue_script( 'qsot-report-ajax' );
 		wp_localize_script( 'qsot-report-ajax', '_qsot_report_ajax', array(
 			'_n' => wp_create_nonce( 'do-qsot-admin-report-ajax' ),
