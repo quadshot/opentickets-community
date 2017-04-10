@@ -114,7 +114,7 @@ class qsot_core_hacks {
 	}
 
 	public static function do_not_process_product($is, $product, $order_id) {
-		if (get_post_meta($product->id, '_no_processing', true) == 'yes') $is = false;
+		if (get_post_meta( QSOT_WC3()->product_data( $product, 'id' ), '_no_processing', true) == 'yes') $is = false;
 		return $is;
 	}
 

@@ -200,7 +200,7 @@ class QSOT_Ticket_Product {
 
 	// when tickets are purchased, they do not need to be 'processing'. thus, if the order is for only tickets, the order should go straight to completed after payment is received
 	public static function tickets_dont_need_processing( $needs, $product, $order_id ) {
-		if ( get_post_meta( $product->id, '_ticket', true ) == 'yes' )
+		if ( get_post_meta( QSOT_WC3()->product_data( $product, 'id' ), '_ticket', true ) == 'yes' )
 			$needs = false;
 		return $needs;
 	}

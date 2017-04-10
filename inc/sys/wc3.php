@@ -209,7 +209,7 @@ class QSOT_WC3_Sigh {
 	public function product_data( $product, $key ) {
 		// if is wc3, use the function
 		if ( $this->is_wc3() ) {
-			return call_user_func( array( &$this, 'get_' . $key ) );
+			return call_user_func( array( &$product, 'get_' . $key ) );
 		}
 
 		// otherwise figure out the correct response
