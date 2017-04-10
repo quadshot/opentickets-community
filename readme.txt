@@ -182,6 +182,7 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 * [tweak] reworked how order data is grabbed from the order objects to match new WC flow
 * [tweak] updated all admin metabox overrides to use new WC format for order items
 * [tweak] cleaned up all warnings and notices caused by new WC update
+* [tweak] improved compatibility otce and both WC3 & WC2
 
 = 2.7.1 - Mar/27/2017 =
 * [tweak] changing how dates are calculated for DST
