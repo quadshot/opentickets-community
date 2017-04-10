@@ -171,6 +171,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.8.1 - Apr/10/2017 =
+* [tweak] more changes to resolve WC3 compatibility issues, when OTCE is used with extensions
+
 = 2.8.0 - Apr/10/2017 =
 * [tweak] reworked all admin fancy select boxes to use new version of select2, instead of previous version
 * [tweak] reworked ALL handling of order item meta/data to match new WC formats
