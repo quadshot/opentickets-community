@@ -304,7 +304,7 @@ class qsot_post_type {
 
 		$fields = array();
 		$join = array();
-		$where = array();
+		$where = array( 'and pm.meta_value != "" and pm.meta_value != 0' );
 		$fmt = 'Y-m-d H:i:s';
 
 		if ($year__only) {
@@ -1861,8 +1861,8 @@ class qsot_post_type {
 		$end_c = QSOT_Utils::fake_utc_date( $end );
 
 		// get just the date and time portions
-		$start_time = date( QSOT_Date_Formats::php_date_format( 'g:ia' ), QSOT_Utils::gmt_timestamp( $start, 'from', 'g:ia' ) );
-		$end_time = date( QSOT_Date_Formats::php_date_format( 'g:ia' ), QSOT_Utils::gmt_timestamp( $end, 'from', 'g:ia' ) );
+		$start_time = date( QSOT_Date_Formats::php_date_format( 'g:ia' ), QSOT_Utils::local_timestamp( $start ) );
+		$end_time = date( QSOT_Date_Formats::php_date_format( 'g:ia' ), QSOT_Utils::local_timestamp( $end ) );
 
 		// render the settings box
 		?>

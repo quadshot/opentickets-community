@@ -171,7 +171,7 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
-= 2.8.1 - Apr/10/2017 =
+= 2.8.2 - Apr/10/2017 =
 * [tweak] more changes to resolve WC3 compatibility issues, when OTCE is used with extensions
 
 = 2.8.0 - Apr/10/2017 =

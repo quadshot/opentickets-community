@@ -95,6 +95,7 @@ class QSOT_Ticket_Product {
 
 	// fetch a list of all ticket products, and add their various pricing metas to the result
 	public static function get_all_ticket_products( $list, $format='objects' ) {
+		global $QSOT_WC3;
 		// args used in the get_post() method to find all ticket products
 		$args = array(
 			'post_type' => 'product',
@@ -138,15 +139,15 @@ class QSOT_Ticket_Product {
 			$ticket->post = get_post( $id );
 			// add some of the basic meta for pricing
 			$ticket->post->meta = array();
-			$ticket->post->meta['price_raw'] = $ticket->price;
-			$ticket->post->meta['price_html'] = wc_price($ticket->post->meta['price_raw']);
-			$ticket->post->meta['price'] = apply_filters('qsot-price-formatted', $ticket->post->meta['price_raw']);
+			$ticket->post->meta['price_raw'] = $QSOT_WC3->product_data( $ticket, 'price' );
+			$ticket->post->meta['price_html'] = wc_price( $ticket->post->meta['price_raw'] );
+			$ticket->post->meta['price'] = apply_filters( 'qsot-price-formatted', $ticket->post->meta['price_raw'] );
 
 			// shorthand the propername of the ticket, so we dont have to keep doing it
-			$ticket->post->proper_name = apply_filters( 'the_title', $ticket->get_title(), $ticket->id );
+			$ticket->post->proper_name = apply_filters( 'the_title', $ticket->get_title(), $id );
 
 			// add the ticket to the indexed return list
-			$tickets[ '' . $ticket->post->ID ] = $ticket;
+			$tickets[ '' . $id ] = $ticket;
 		}
 
 		return $tickets;
