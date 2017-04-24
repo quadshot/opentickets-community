@@ -842,7 +842,7 @@ class QSOT_Post_Type_Event_Area {
 	// add the relevant ticket information and meta to each order item that needs it, along with a change button for event swaps
 	protected function _draw_item_ticket_info( $item_id, $item, $product, $edit=false ) {
 		// if the product is not a ticket, then never display event meta
-		if ( get_post_meta( $product->get_id(), '_ticket', true ) != 'yes' )
+		if ( ! is_object( $product ) || get_post_meta( $product->get_id(), '_ticket', true ) != 'yes' )
 			return;
 
 		$event_id = isset( $item['event_id'] ) && $item['event_id'] > 0 ? $item['event_id'] : false;
