@@ -1,9 +1,29 @@
 if (typeof jQuery != 'undefined') (function($, undefined) {
 	var d = $(document); /// THIS.... is dumb
 	var settings = _qsot_new_user || {};
+	var qt = QS.Tools;
 
 	if (typeof settings.templates != 'object') return;
 	var form = undefined;
+
+	// dumb we have to do this with select2 v4
+	function _select2_update_data( control, data, select_value ) {
+		// empty the select element
+		control.find( 'option' ).remove();
+
+		data = qt.isO( data ) && qt.is( data.results ) ? data.results : data;
+		// add a new item to the element for each possible value
+		$.each( data, function( k, row ) {
+			$( '<option></option>' ).html( row.text ).attr( 'value', row.id ).appendTo( control );
+		} );
+
+		// if the select value is set, use it
+		if ( select_value )
+			control.val( select_value );
+
+		// refresh the select2 element
+		control.trigger( 'change' );
+	}
 		
 	function load_customer_billing_information() {
 		// Get user ID to load data for
@@ -79,7 +99,7 @@ if (typeof jQuery != 'undefined') (function($, undefined) {
 	});
 
 	$(function() {
-		d.on('select2-selecting data-updated', '#customer_user', function() { 
+		d.on('select2:selecting data-updated', '#customer_user', function() { 
 			if ($(this).val() != '') {
 				$('._billing_first_name_field').closest('.order_data_column').find('a.edit_address').click();//.closest('.order_data_column').find('button.load_customer_billing').click();
 				load_customer_billing_information();
@@ -110,7 +130,8 @@ if (typeof jQuery != 'undefined') (function($, undefined) {
 					function ajsuccess(r) {
 						dia.unblock();
 						if (r.s) {
-							$( '#customer_user' ).select2( 'data', $.extend( {}, r.c ) ).trigger( 'data-updated' );
+							_select2_update_data( $( '#customer_user' ), [r.c], r.c.id );
+							$( '#customer_user' ).trigger( 'data-updated' );
 							form.dialog('close');
 							form.find('input').val('');
 							form.find('[rel=messages]').empty();
