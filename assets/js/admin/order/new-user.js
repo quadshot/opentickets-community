@@ -63,6 +63,18 @@ if (typeof jQuery != 'undefined') (function($, undefined) {
 					$('input#_billing.state').val( info.billing.state );
 					$('input#_billing.email').val( info.billing.email );
 					$('input#_billing.phone').val( info.billing.phone );
+				} else if ( info && info.billing_first_name ) {
+					$('input#_billing_first_name').val( info.billing_first_name );
+					$('input#_billing_last_name').val( info.billing_last_name );
+					$('input#_billing_company').val( info.billing_company );
+					$('input#_billing_address_1').val( info.billing_address_1 );
+					$('input#_billing_address_2').val( info.billing_address_2 );
+					$('input#_billing_city').val( info.billing_city );
+					$('input#_billing_postcode').val( info.billing_postcode );
+					$('#_billing_country').val( info.billing_country );
+					$('input#_billing_state').val( info.billing_state );
+					$('input#_billing_email').val( info.billing_email );
+					$('input#_billing_phone').val( info.billing_phone );
 				}
 
 				$('.edit_address').unblock();
