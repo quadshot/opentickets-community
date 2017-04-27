@@ -49,19 +49,20 @@ if (typeof jQuery != 'undefined') (function($, undefined) {
 			type: 'POST',
 			success: function( response ) {
 				var info = response;
+				console.log( 'loaded billing', info );
 
-				if (info) {
-					$('input#_billing_first_name').val( info.billing_first_name );
-					$('input#_billing_last_name').val( info.billing_last_name );
-					$('input#_billing_company').val( info.billing_company );
-					$('input#_billing_address_1').val( info.billing_address_1 );
-					$('input#_billing_address_2').val( info.billing_address_2 );
-					$('input#_billing_city').val( info.billing_city );
-					$('input#_billing_postcode').val( info.billing_postcode );
-					$('#_billing_country').val( info.billing_country );
-					$('input#_billing_state').val( info.billing_state );
-					$('input#_billing_email').val( info.billing_email );
-					$('input#_billing_phone').val( info.billing_phone );
+				if (info && info.billing) {
+					$('input#_billing.first_name').val( info.billing.first_name );
+					$('input#_billing.last_name').val( info.billing.last_name );
+					$('input#_billing.company').val( info.billing.company );
+					$('input#_billing.address_1').val( info.billing.address_1 );
+					$('input#_billing.address_2').val( info.billing.address_2 );
+					$('input#_billing.city').val( info.billing.city );
+					$('input#_billing.postcode').val( info.billing.postcode );
+					$('#_billing.country').val( info.billing.country );
+					$('input#_billing.state').val( info.billing.state );
+					$('input#_billing.email').val( info.billing.email );
+					$('input#_billing.phone').val( info.billing.phone );
 				}
 
 				$('.edit_address').unblock();
