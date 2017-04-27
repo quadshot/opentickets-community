@@ -14,6 +14,9 @@ class QSOT_Extensions_Updater {
 		// run our update checker during the initial stages of the wp.org checker
 		add_filter( 'pre_http_request', array( __CLASS__, 'check_for_updates' ), 10000, 3 );
 
+		// allow a force update check
+		add_action( 'qsot-force-update-check', array( __CLASS__, 'force_update_check' ), 10000, 1 );
+
 		// infuse our last extension update check response into the list of plugin updates for the site
 		//add_filter( 'pre_set_site_transient_update_plugins', array( __CLASS__, 'add_extension_updates_to_plugin_updates' ), 10000, 1 );
 		add_filter( 'site_transient_update_plugins', array( __CLASS__, 'add_extension_updates_to_plugin_updates' ), 10000, 1 );
@@ -42,8 +45,13 @@ class QSOT_Extensions_Updater {
 		if ( ! in_array( $url, self::$core_wp_update_api_urls ) )
 			return $response;
 
+		return self::force_update_check( false, $response );
+	}
+
+	// force an update check for our plugins
+	public static function force_update_check( $force_update=false, $response=null ) {
 		// maybe trigger our additional updater logic
-		$extra = self::_maybe_extension_updates();
+		$extra = self::_maybe_extension_updates( $force_update );
 
 		// if there are no extra updates to add to the list, or if there are any errors, then bail right here
 		if ( empty( $extra ) || ! is_array( $extra ) || ( isset( $extra['errors'] ) && ! empty( $extra['errors'] ) ) )
@@ -51,6 +59,12 @@ class QSOT_Extensions_Updater {
 
 		// store the result for later use
 		update_option( self::$ns . 'updater-response', @base64_encode( @json_encode( $extra ) ), 'no' );
+
+		// if we are forcing an update of plugins list, do that now
+		if ( $force_update ) {
+			$current = get_site_transient( 'update_plugins' );
+			set_site_transient( 'update_plugins', $current );
+		}
 
 		return $response;
 	}
@@ -207,10 +221,10 @@ class QSOT_Extensions_Updater {
 	}
 
 	// maybe trigger our manual extensions updates, if we are being forced to or if the timer has expired
-	protected static function _maybe_extension_updates() {
+	protected static function _maybe_extension_updates( $force=false ) {
 		// figure out the expiration of our last fetch, and if this is a force request
 		$expires = get_option( 'qsot-extensions-updater-last-expires', 0 );
-		$is_force = isset( $_GET['force-check'] ) && 1 == $_GET['force-check'];
+		$is_force = $force || ( isset( $_GET['force-check'] ) && 1 == $_GET['force-check'] );
 
 		// if the last fetch is not expired, and this is not a force request, then bail
 		if ( ! $is_force && time() < $expires )

@@ -239,6 +239,7 @@ class QSOT_Settings_Licenses extends QSOT_Settings_Page {
 		// if there are no items in our list, then clear our the settings, and bail
 		if ( empty( $list ) ) {
 			update_option( 'qsot-licenses', array(), 'no' );
+			do_action( 'qsot-force-update-check', true );
 			return;
 		}
 
@@ -259,8 +260,10 @@ class QSOT_Settings_Licenses extends QSOT_Settings_Page {
 		}
 
 		// if there are no licenses that are trying to be activated, then just bail
-		if ( empty( $request ) )
+		if ( empty( $request ) ) {
+			do_action( 'qsot-force-update-check', true );
 			return;
+		}
 
 		// get the api response for activation
 		$api = QSOT_Extensions_API::instance();
@@ -274,6 +277,7 @@ class QSOT_Settings_Licenses extends QSOT_Settings_Page {
 			// make an array from the wp_error response
 			$errors = $this->_array_from_error( $response );
 			update_option( 'qsot-licenses-error', $errors, 'no' );
+			do_action( 'qsot-force-update-check', true );
 			return;
 		}
 
@@ -296,6 +300,7 @@ class QSOT_Settings_Licenses extends QSOT_Settings_Page {
 
 		// finally, update our option containing the option status for each item
 		QSOT_Extensions::instance()->save_licenses( $list );
+		do_action( 'qsot-force-update-check', true );
 	}
 
 	// display any global activation errors
