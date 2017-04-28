@@ -171,7 +171,7 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
-= 2.8.1.2 - Apr/27/2017 =
+= 2.8.2 - Apr/28/2017 =
 * [fix] fixing new user button issue on edit-order admin screen
 * [fix] fixing license key removal issue
 * [fix] fixing extension update detection issue by making update checks more aggressive and vastly more numerous
