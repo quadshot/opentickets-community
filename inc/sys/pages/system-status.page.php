@@ -335,7 +335,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 				<form class="qsot-ajax-form" id="load-event-ticket-info" data-action="qsot-adv-tools" data-sa="load-event" data-target="#results">
 					<div class="field">
 						<label><?php _e( 'Select an Event', 'opentickets-community-edition' ) ?></label>
-						<input type="hidden" name="event_id" value="" class="use-select2" data-action="qsot-adv-tools" data-sa="find-events" />
+						<select name="event_id" value="" class="use-select2" data-action="qsot-adv-tools" data-sa="find-events"></select>
 					</div>
 
 					<div class="field actions right">
