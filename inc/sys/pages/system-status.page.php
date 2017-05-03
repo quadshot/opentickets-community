@@ -362,7 +362,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 		switch ( $sa ) {
 			case 'find-events':
 				// if there is no query, return no results
-				if ( ! isset( $_POST['q'] ) || empty( $_POST['q'] ) )
+				if ( ! isset( $_POST['q'], $_POST['q']['term'] ) || empty( $_POST['q']['term'] ) )
 					wp_send_json( array( 's' => true, 'r' => array() ) );
 
 				// find all child ids that match
@@ -373,7 +373,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 					'posts_per_page' => -1,
 					'paged' => $_POST['page'],
 					'fields' => 'ids',
-					's' => $_POST['q'],
+					's' => $_POST['q']['term'],
 					'meta_key' => '_start',
 					'order' => 'asc',
 					'orderby' => 'meta_value',
@@ -400,10 +400,10 @@ class QSOT_system_status_page extends QSOT_base_page {
 			case 'find-orders':
 				$none = array( 'id' => 0, 'text' => __( '(none)', 'opentickets-community-edition' ) );
 				// if there is no query, return no results
-				if ( ! isset( $_POST['q'] ) || empty( $_POST['q'] ) )
+				if ( ! isset( $_POST['q'], $_POST['q']['term'] ) || empty( $_POST['q']['term'] ) )
 					wp_send_json( array( 's' => true, 'r' => array() ) );
 
-				$qs = preg_split( '#\s+#', $_POST['q'] );
+				$qs = preg_split( '#\s+#', $_POST['q']['term'] );
 				$by_id = $by_name = $by_meta = array();
 				$ids = array_filter( array_map( 'absint', $qs ) );
 				// find posts that match
@@ -474,10 +474,10 @@ class QSOT_system_status_page extends QSOT_base_page {
 			case 'find-order-items':
 				$none = array( 'id' => 0, 'text' => __( '(none)', 'opentickets-community-edition' ) );
 				// if there is no query, return no results
-				if ( ! isset( $_POST['q'] ) || empty( $_POST['q'] ) )
+				if ( ! isset( $_POST['q'], $_POST['q']['term'] ) || empty( $_POST['q']['term'] ) )
 					wp_send_json( array( 's' => true, 'r' => array() ) );
 
-				$qs = preg_split( '#\s+#', $_POST['q'] );
+				$qs = preg_split( '#\s+#', $_POST['q']['term'] );
 				// setup the base query parts
 				global $wpdb;
 				$fields = array( 'oi.*' );
