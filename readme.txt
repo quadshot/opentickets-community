@@ -171,7 +171,7 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
-= 2.8.2.2 - May/2/2017 =
+= 2.8.3 - May/5/2017 =
 * [fix] repairing advanced tools event search
 
 = 2.8.2 - Apr/28/2017 =
