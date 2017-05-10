@@ -180,7 +180,7 @@ class QSOT_Ticket_Product {
 
 		// all ticket products should be hidden from the frontend shop. they should only be purchaseable via the ticket selection UI, because otherwise no event will be associated with it
 		if ( $is_ticket == 'yes' ) {
-			if ( version_compare( '3.0.0', WC_VERSION ) >= 0 ) {
+			if ( version_compare( '3.0.0', WC_VERSION ) <= 0 ) {
 				wp_set_object_terms( $post_id, array( 'exclude-from-search', 'exclude-from-catalog' ), 'product_visibility', false );
 			} else {
 				update_post_meta( $post_id, '_visibility', 'hidden' );
