@@ -208,18 +208,28 @@ abstract class QSOT_Admin_Report {
 
 	// verify that we should be running the report right now, based on the submitted data
 	protected function _verify_run_report( $only_orig=false ) {
+		$run = true;
 		// if the nonce or report name is not set, bail
 		if ( ! isset( $_REQUEST['_n'], $_REQUEST['sa'] ) )
-			return false;
+			$run = false;
 
 		// if the report name does not match this report, bail
 		if ( $_REQUEST['sa'] !== $this->slug )
-			return false;
+			$run = false;
 
 		// if the nonce does not match, then bail
 		if ( ! wp_verify_nonce( $_REQUEST['_n'], 'do-qsot-admin-report-ajax' ) )
-			return false;
+			$run = false;
 
+		// if the extra function is false, then fail to run
+		if ( ! $this->_extra_verify_run_report( $only_orig ) )
+			$run = false;
+
+		return apply_filters( 'qsot-user-can-run-report-' . $this->group_slug, $run, $only_orig, $this );;
+	}
+
+	// extra logic to see if the user can run the report
+	protected function _extra_verify_run_report( $only_orig=false ) {
 		return true;
 	}
 
