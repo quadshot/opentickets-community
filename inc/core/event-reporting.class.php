@@ -214,11 +214,11 @@ abstract class QSOT_Admin_Report {
 			$run = false;
 
 		// if the report name does not match this report, bail
-		if ( $_REQUEST['sa'] !== $this->slug )
+		if ( isset( $_REQUEST['sa'] ) && $_REQUEST['sa'] !== $this->slug )
 			$run = false;
 
 		// if the nonce does not match, then bail
-		if ( ! wp_verify_nonce( $_REQUEST['_n'], 'do-qsot-admin-report-ajax' ) )
+		if ( isset( $_REQUEST['_n'] ) && ! wp_verify_nonce( $_REQUEST['_n'], 'do-qsot-admin-report-ajax' ) )
 			$run = false;
 
 		// if the extra function is false, then fail to run
