@@ -257,14 +257,15 @@ class QSOT_Ajax {
 	// generic ajax method to find products based on a search string
 	public function aj_find_product( $resp ) {
 		// get the search string
-		$search = isset( $_REQUEST['q'] ) ? $_REQUEST['q'] : '';
+		$search = isset( $_REQUEST['q'], $_REQUEST['q']['term'] ) ? $_REQUEST['q']['term'] : '';
 
 		// setup serch args
 		$args1 = array(
 			'post_type' => 'product',
  			'post_status' => array( 'publish' ),
 			'perm' => 'readable',
-			'posts_per_page' -1,
+			'posts_per_page' => -1,
+			'offset' => 0,
 			'meta_query' => array(
 				array( 'key' => '_sku', 'value' => $search, 'compare' => 'LIKE' ),
 			),
@@ -284,7 +285,8 @@ class QSOT_Ajax {
 			'post_type' => 'product',
 			'post_status' => array( 'publish' ),
 			'perm' => 'readable',
-			'posts_per_page' -1,
+			'posts_per_page' => -1,
+			'offset' => 0,
 			's' => $search,
 			'fields' => 'ids',
 		);
