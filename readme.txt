@@ -171,7 +171,7 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
-= 2.8. - May/18/2017 =
+= 2.8.4 - May/18/2017 =
 * [new] added filter to run function checking if a report can run
 * [fix] solved issue where ticket products were not being hidden from shop. must resave each product to resolve
 * [fix] resolving order notes issue
