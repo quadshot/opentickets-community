@@ -51,78 +51,43 @@ class QSOT_order_admin_ajax {
 	public static function add_order_item() {
 		check_ajax_referer( 'order-item', 'security' );
 
-		$item_to_add = sanitize_text_field( $_POST['item_to_add'] );
-		$order_id    = absint( $_POST['order_id'] );
-
-		// Find the item
-		if ( ! is_numeric( $item_to_add ) ) {
-			die();
+		if ( ! current_user_can( 'edit_shop_orders' ) ) {
+			wp_die( -1 );
 		}
 
-		$post = get_post( $item_to_add );
+		try {
+			$order_id     = absint( $_POST['order_id'] );
+			$order        = wc_get_order( $order_id );
+			$items_to_add = wp_parse_id_list( is_array( $_POST['item_to_add'] ) ? $_POST['item_to_add'] : array( $_POST['item_to_add'] ) );
 
-		if ( ! $post || ( 'product' !== $post->post_type && 'product_variation' !== $post->post_type ) ) {
-			die();
-		}
-
-		$_product    = wc_get_product( $post->ID );
-		$order       = wc_get_order( $order_id );
-		$order_taxes = $order->get_taxes();
-		$class       = 'new_row';
-
-		// Set values
-		$item = array();
-
-		$item['product_id']        = $_product->id;
-		$item['variation_id']      = isset( $_product->variation_id ) ? $_product->variation_id : '';
-		$item['variation_data']    = isset( $_product->variation_data ) ? $_product->variation_data : '';
-		$item['name']              = $_product->get_title();
-		$item['tax_class']         = $_product->get_tax_class();
-		$item['qty']               = 1;
-		$item['line_subtotal']     = wc_format_decimal( $_product->get_price_excluding_tax() );
-		$item['line_subtotal_tax'] = '';
-		$item['line_total']        = wc_format_decimal( $_product->get_price_excluding_tax() );
-		$item['line_tax']          = '';
-
-		// Add line item
-		$item_id = wc_add_order_item( $order_id, array(
-			'order_item_name' 		=> $item['name'],
-			'order_item_type' 		=> 'line_item'
-		) );
-
-		// Add line item meta
-		if ( $item_id ) {
-			wc_add_order_item_meta( $item_id, '_qty', $item['qty'] );
-			wc_add_order_item_meta( $item_id, '_tax_class', $item['tax_class'] );
-			wc_add_order_item_meta( $item_id, '_product_id', $item['product_id'] );
-			wc_add_order_item_meta( $item_id, '_variation_id', $item['variation_id'] );
-			wc_add_order_item_meta( $item_id, '_line_subtotal', $item['line_subtotal'] );
-			wc_add_order_item_meta( $item_id, '_line_subtotal_tax', $item['line_subtotal_tax'] );
-			wc_add_order_item_meta( $item_id, '_line_total', $item['line_total'] );
-			wc_add_order_item_meta( $item_id, '_line_tax', $item['line_tax'] );
-
-			// Since 2.2
-			wc_add_order_item_meta( $item_id, '_line_tax_data', array( 'total' => array(), 'subtotal' => array() ) );
-
-			// Store variation data in meta
-			if ( $item['variation_data'] && is_array( $item['variation_data'] ) ) {
-				foreach ( $item['variation_data'] as $key => $value ) {
-					wc_add_order_item_meta( $item_id, str_replace( 'attribute_', '', $key ), $value );
-				}
+			if ( ! $order ) {
+				throw new Exception( __( 'Invalid order', 'woocommerce' ) );
 			}
 
-			do_action( 'woocommerce_ajax_add_order_item_meta', $item_id, $item );
+			ob_start();
+
+			foreach ( $items_to_add as $item_to_add ) {
+				if ( ! in_array( get_post_type( $item_to_add ), array( 'product', 'product_variation' ) ) ) {
+					continue;
+				}
+				$item_id     = $order->add_product( wc_get_product( $item_to_add ) );
+				$item        = apply_filters( 'woocommerce_ajax_order_item', $order->get_item( $item_id ), $item_id );
+				$order_taxes = $order->get_taxes();
+				$class       = 'new_row';
+
+				do_action( 'woocommerce_ajax_add_order_item_meta', $item_id, $item );
+				//include( 'admin/meta-boxes/views/html-order-item.php' );
+				//@@@@LOUSHOU - allow overtake of template
+				if ( $template = QSOT_Templates::locate_woo_template( 'meta-boxes/views/html-order-item.php', 'admin' ) )
+					include( $template );
+			}
+
+			wp_send_json_success( array(
+				'html' => ob_get_clean(),
+			) );
+		} catch ( Exception $e ) {
+			wp_send_json_error( array( 'error' => $e->getMessage() ) );
 		}
-
-		$item          = apply_filters( 'woocommerce_ajax_order_item', $item, $item_id );
-
-		//include( 'admin/meta-boxes/views/html-order-item.php' );
-		//@@@@LOUSHOU - allow overtake of template
-		if ( $template = QSOT_Templates::locate_woo_template( 'meta-boxes/views/html-order-item.php', 'admin' ) )
-			include( $template );
-
-		// Quit out
-		die();
 	}
 
 	/**
