@@ -88,6 +88,7 @@ class QSOT_order_admin_ajax {
 		} catch ( Exception $e ) {
 			wp_send_json_error( array( 'error' => $e->getMessage() ) );
 		}
+
 	}
 
 	/**
@@ -97,7 +98,11 @@ class QSOT_order_admin_ajax {
 	public static function save_order_items() {
 		check_ajax_referer( 'order-item', 'security' );
 
-		if ( isset( $_POST['order_id'] ) && isset( $_POST['items'] ) ) {
+		if ( ! current_user_can( 'edit_shop_orders' ) ) {
+			wp_die( -1 );
+		}
+
+		if ( isset( $_POST['order_id'], $_POST['items'] ) ) {
 			$order_id = absint( $_POST['order_id'] );
 
 			// Parse the jQuery serialized items
@@ -109,15 +114,12 @@ class QSOT_order_admin_ajax {
 
 			// Return HTML items
 			$order = wc_get_order( $order_id );
-			$data  = get_post_meta( $order_id );
-
 			//include( 'admin/meta-boxes/views/html-order-items.php' );
 			//@@@@LOUSHOU - allow overtake of template
 			if ( $template = QSOT_Templates::locate_woo_template( 'meta-boxes/views/html-order-items.php', 'admin' ) )
 				include( $template );
 		}
-
-		die();
+		wp_die();
 	}
 
 	/**
@@ -127,17 +129,18 @@ class QSOT_order_admin_ajax {
 	public static function load_order_items() {
 		check_ajax_referer( 'order-item', 'security' );
 
+		if ( ! current_user_can( 'edit_shop_orders' ) ) {
+			wp_die( -1 );
+		}
+
 		// Return HTML items
 		$order_id = absint( $_POST['order_id'] );
-		$order    = new WC_Order( $order_id );
-		$data     = get_post_meta( $order_id );
-
+		$order    = wc_get_order( $order_id );
 		//include( 'admin/meta-boxes/views/html-order-items.php' );
 		//@@@@LOUSHOU - allow overtake of template
 		if ( $template = QSOT_Templates::locate_woo_template( 'meta-boxes/views/html-order-items.php', 'admin' ) )
 			include( $template );
-
-		die();
+		wp_die();
 	}
 
 	/**
@@ -145,31 +148,32 @@ class QSOT_order_admin_ajax {
 	 * exact copy from /wp-content/plugins/woocommerce/includes/class-wc-ajax.php, with change to template selection
 	 */
 	public static function add_order_fee() {
-
 		check_ajax_referer( 'order-item', 'security' );
 
-		$order_id      = absint( $_POST['order_id'] );
-		$order         = wc_get_order( $order_id );
-		$order_taxes   = $order->get_taxes();
-		$item          = array();
+		if ( ! current_user_can( 'edit_shop_orders' ) ) {
+			wp_die( -1 );
+		}
 
-		// Add new fee
-		$fee            = new stdClass();
-		$fee->name      = '';
-		$fee->tax_class = '';
-		$fee->taxable   = $fee->tax_class !== '0';
-		$fee->amount    = '';
-		$fee->tax       = '';
-		$fee->tax_data  = array();
-		$item_id        = $order->add_fee( $fee );
+		try {
+			$order_id    = absint( $_POST['order_id'] );
+			$order       = wc_get_order( $order_id );
+			$order_taxes = $order->get_taxes();
+			$item        = new WC_Order_Item_Fee();
+			$item->set_order_id( $order_id );
+			$item_id     = $item->save();
 
-		//include( 'admin/meta-boxes/views/html-order-fee.php' );
-		//@@@@LOUSHOU - allow overtake of template
-		if ( $template = QSOT_Templates::locate_woo_template( 'meta-boxes/views/html-order-fee.php', 'admin' ) )
-			include( $template );
+			ob_start();
+			//include( 'admin/meta-boxes/views/html-order-fee.php' );
+			//@@@@LOUSHOU - allow overtake of template
+			if ( $template = QSOT_Templates::locate_woo_template( 'meta-boxes/views/html-order-fee.php', 'admin' ) )
+				include( $template );
 
-		// Quit out
-		die();
+			wp_send_json_success( array(
+				'html' => ob_get_clean(),
+			) );
+		} catch ( Exception $e ) {
+			wp_send_json_error( array( 'error' => $e->getMessage() ) );
+		}
 	}
 
 	/**
@@ -177,30 +181,36 @@ class QSOT_order_admin_ajax {
 	 * exact copy from /wp-content/plugins/woocommerce/includes/class-wc-ajax.php, with change to template selection
 	 */
 	public static function add_order_shipping() {
-
 		check_ajax_referer( 'order-item', 'security' );
 
-		$order_id         = absint( $_POST['order_id'] );
-		$order            = wc_get_order( $order_id );
-		$order_taxes      = $order->get_taxes();
-		$shipping_methods = WC()->shipping() ? WC()->shipping->load_shipping_methods() : array();
-		$item             = array();
+		if ( ! current_user_can( 'edit_shop_orders' ) ) {
+			wp_die( -1 );
+		}
 
-		// Add new shipping
-		$shipping        = new stdClass();
-		$shipping->label = '';
-		$shipping->id    = '';
-		$shipping->cost  = '';
-		$shipping->taxes = array();
-		$item_id         = $order->add_shipping( $shipping );
+		try {
+			$order_id         = absint( $_POST['order_id'] );
+			$order            = wc_get_order( $order_id );
+			$order_taxes      = $order->get_taxes();
+			$shipping_methods = WC()->shipping() ? WC()->shipping->load_shipping_methods() : array();
 
-		//include( 'admin/meta-boxes/views/html-order-shipping.php' );
-		//@@@@LOUSHOU - allow overtake of template
-		if ( $template = QSOT_Templates::locate_woo_template( 'meta-boxes/views/html-order-shipping.php', 'admin' ) )
-			include( $template );
+			// Add new shipping
+			$item = new WC_Order_Item_Shipping();
+			$item->set_shipping_rate( new WC_Shipping_Rate() );
+			$item->set_order_id( $order_id );
+			$item_id = $item->save();
 
-		// Quit out
-		die();
+			ob_start();
+			//include( 'admin/meta-boxes/views/html-order-shipping.php' );
+			//@@@@LOUSHOU - allow overtake of template
+			if ( $template = QSOT_Templates::locate_woo_template( 'meta-boxes/views/html-order-shipping.php', 'admin' ) )
+				include( $template );
+
+			wp_send_json_success( array(
+				'html' => ob_get_clean(),
+			) );
+		} catch ( Exception $e ) {
+			wp_send_json_error( array( 'error' => $e->getMessage() ) );
+		}
 	}
 }
 
