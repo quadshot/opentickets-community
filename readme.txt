@@ -175,6 +175,7 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 * [fix] fixing new user button issue on edit-order admin screen
 * [fix] fixing license key removal issue
 * [fix] fixing extension update detection issue by making update checks more aggressive and vastly more numerous
+* [fix] fixing add product, add fee and add shipping buttons
 
 = 2.8.1 - Apr/25/2017 =
 * [tweak] more changes to resolve WC3 compatibility issues, when OTCE is used with extensions
