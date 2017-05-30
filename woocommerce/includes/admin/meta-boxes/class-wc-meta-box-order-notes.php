@@ -25,8 +25,10 @@ class WC_Meta_Box_Order_Notes extends _WooCommerce_Core_WC_Meta_Box_Order_Notes 
 
 		$args = array(
 			'post_id'   => $post->ID,
+			'orderby'   => 'comment_ID',
+			'order'     => 'DESC',
 			'approve'   => 'approve',
-			'type'      => 'order_note'
+			'type'      => 'order_note',
 		);
 
 		remove_filter( 'comments_clauses', array( 'WC_Comments', 'exclude_order_comments' ), 10, 1 );
@@ -39,24 +41,30 @@ class WC_Meta_Box_Order_Notes extends _WooCommerce_Core_WC_Meta_Box_Order_Notes 
 
 		if ( $notes ) {
 
-			foreach( $notes as $note ) {
+			foreach ( $notes as $note ) {
 
-				$note_classes = get_comment_meta( $note->comment_ID, 'is_customer_note', true ) ? array( 'customer-note', 'note' ) : array( 'note' );
-
+				$note_classes   = array( 'note' );
+				$note_classes[] = get_comment_meta( $note->comment_ID, 'is_customer_note', true ) ? 'customer-note' : '';
+				$note_classes[] = ( __( 'WooCommerce', 'woocommerce' ) === $note->comment_author ) ? 'system-note' : '';
+				$note_classes   = apply_filters( 'woocommerce_order_note_class', array_filter( $note_classes ), $note );
 				?>
-				<li rel="<?php echo absint( $note->comment_ID ) ; ?>" class="<?php echo implode( ' ', $note_classes ); ?>">
+				<li rel="<?php echo absint( $note->comment_ID ); ?>" class="<?php echo esc_attr( implode( ' ', $note_classes ) ); ?>">
 					<div class="note_content">
 						<?php echo wpautop( wptexturize( wp_kses_post( $note->comment_content ) ) ); ?>
 					</div>
 					<p class="meta">
 						<abbr class="exact-date" title="<?php echo $note->comment_date; ?>"><?php printf( __( 'added on %1$s at %2$s', 'woocommerce' ), date_i18n( wc_date_format(), strtotime( $note->comment_date ) ), date_i18n( wc_time_format(), strtotime( $note->comment_date ) ) ); ?></abbr>
-						<?php if ( $note->comment_author !== __( 'WooCommerce', 'woocommerce' ) ) printf( ' ' . __( 'by %s', 'woocommerce' ), $note->comment_author ); ?>
-						<a href="#" class="delete_note"><?php _e( 'Delete note', 'woocommerce' ); ?></a>
+						<?php
+						if ( __( 'WooCommerce', 'woocommerce' ) !== $note->comment_author ) :
+							/* translators: %s: note author */
+							printf( ' ' . __( 'by %s', 'woocommerce' ), $note->comment_author );
+						endif;
+						?>
+						<a href="#" class="delete_note" role="button"><?php _e( 'Delete note', 'woocommerce' ); ?></a>
 					</p>
 				</li>
 				<?php
 			}
-
 		} else {
 			echo '<li>' . __( 'There are no notes yet.', 'woocommerce' ) . '</li>';
 		}
@@ -64,11 +72,12 @@ class WC_Meta_Box_Order_Notes extends _WooCommerce_Core_WC_Meta_Box_Order_Notes 
 		echo '</ul>';
 		?>
 		<div class="add_note">
-			<h4><?php _e( 'Add note', 'woocommerce' ); ?> <?php echo wc_help_tip( __( 'Add a note for your reference, or add a customer note (the user will be notified).', 'woocommerce' ) ); ?></h4>
 			<p>
+				<label for="add_order_note"><?php _e( 'Add note', 'woocommerce' ); ?> <?php echo wc_help_tip( __( 'Add a note for your reference, or add a customer note (the user will be notified).', 'woocommerce' ) ); ?></label>
 				<textarea type="text" name="order_note" id="add_order_note" class="input-text" cols="20" rows="5"></textarea>
 			</p>
 			<p>
+				<label for="order_note_type" class="screen-reader-text"><?php _e( 'Note type', 'woocommerce' ); ?></label>
 				<?php
 					$note_types = apply_filters( 'woocommerce_order_note_types', array(
 						'customer' => __( 'Note to customer', 'woocommerce' ),
@@ -80,7 +89,7 @@ class WC_Meta_Box_Order_Notes extends _WooCommerce_Core_WC_Meta_Box_Order_Notes 
 						<option value="<?php echo esc_attr( $val ) ?>"><?php echo $label ?></option>
 					<?php endforeach; ?>
 				</select>
-				<a href="#" class="add_note button"><?php _e( 'Add', 'woocommerce' ); ?></a>
+				<button type="button" class="add_note button"><?php _e( 'Add', 'woocommerce' ); ?></button>
 			</p>
 		</div>
 		<?php

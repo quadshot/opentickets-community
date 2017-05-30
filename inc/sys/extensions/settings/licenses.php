@@ -34,7 +34,10 @@ class QSOT_Settings_Licenses extends QSOT_Settings_Page {
 
 		// add a hook that runs on loading of this page, which checks if there are any onetime requests, like deactivating a license
 		@list( $uri, $hook ) = apply_filters( 'qsot-get-menu-page-uri', '', 'settings' );
-		add_action( 'load-' . $hook, array( &$this, 'maybe_one_time_requests' ), 1 );
+		if ( did_action( 'load-' . $hook ) )
+			$this->maybe_one_time_requests();
+		else
+			add_action( 'load-' . $hook, array( &$this, 'maybe_one_time_requests' ), 1 );
 	}
 
 	// output the page itself, which displays a list of all the installed softwares, and their respective registered license information

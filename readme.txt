@@ -171,11 +171,20 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
-= 2.8.1.2 - Apr/27/2017 =
+= 2.8.4 - May/18/2017 =
+* [new] added filter to run function checking if a report can run
+* [fix] solved issue where ticket products were not being hidden from shop. must resave each product to resolve
+* [fix] resolving order notes issue
+* [fix] fixing product search for event ticket setup
+* [fix] fixing add product, add fee and add shipping buttons
+
+= 2.8.3 - May/5/2017 =
+* [fix] repairing advanced tools event search
+
+= 2.8.2 - Apr/28/2017 =
 * [fix] fixing new user button issue on edit-order admin screen
 * [fix] fixing license key removal issue
 * [fix] fixing extension update detection issue by making update checks more aggressive and vastly more numerous
-* [fix] fixing add product, add fee and add shipping buttons
 
 = 2.8.1 - Apr/25/2017 =
 * [tweak] more changes to resolve WC3 compatibility issues, when OTCE is used with extensions
