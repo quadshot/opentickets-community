@@ -171,8 +171,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
-= 2.8.4.1 - May/25/2017 =
+= 2.8.5 - May/30/2017 =
 * [fix] solved issue with adding regular products to order in admin
+* [fix] fixing add product, add fee and add shipping buttons
 
 = 2.8.4 - May/18/2017 =
 * [new] added filter to run function checking if a report can run
