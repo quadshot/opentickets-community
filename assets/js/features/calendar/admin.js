@@ -1,14 +1,5 @@
 // qsot-calendar.php
-(function($) {
-	$(document).on('change', '#page_template', function(e) {
-		var me = $(this), par = me.closest('.postbox'), mb = par.siblings('#qsot-calendar-settings-box');
-		if (me.val() == 'qsot-calendar.php') {
-			mb.addClass('show');
-		} else {
-			mb.removeClass('show');
-		}
-	});
-
+(function($) {	
 	$(document).on('change', '.qsot-cal-meth:checked', function(e) {
 		var me = $(this), par = me.closest('.postbox');
 		par.find('.extra-box').hide();
@@ -16,7 +7,16 @@
 	});
 
 	$(function() {
-		$('#page_template').trigger('change');
+		
+		$(document).on('change', '#page_template', function(e) {
+			var me = $(this), par = me.closest('.postbox'), mb = par.siblings('#qsot-calendar-settings-box');
+			if (me.val() == 'qsot-calendar.php') {
+				mb.addClass('show');
+			} else {
+				mb.removeClass('show');
+			}
+		});
+		
 		$('.qsot-cal-meth:checked').trigger('change');
 		$('.use-datepicker').each( function() {
 			var me = $( this ), args = { dateFormat:'yy-mm-dd', onSelect:function() { $( this ).trigger( 'change' ); } }, real = me.attr( 'real' ), scope = me.attr( 'scope' ), frmt = me.attr( 'frmt' );
