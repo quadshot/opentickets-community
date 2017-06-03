@@ -4,7 +4,7 @@ Checkin Page: Check-In Failure
 */
 //get_header();
 
-$owner = $ticket->order->billing_first_name . ' ' . $ticket->order->billing_last_name . ' (' . $ticket->order->billing_email . ')';
+$owner = $ticket->order->get_billing_first_name() . ' ' . $ticket->order->get_billing_last_name() . ' (' . $ticket->order->get_billing_email() . ')';
 $index = '[' . $ticket->owns['occupied'] . ' / ' . array_sum( array_values( $ticket->owns ) ) . ']';
 $msg = __('Check-In FAILED!','opentickets-community-edition') . ( isset( $extra_msg ) && $extra_msg ? ' ' . $extra_msg : '' );
 ?><html><head><title><?php echo $msg.' - '.get_bloginfo('name') ?></title>

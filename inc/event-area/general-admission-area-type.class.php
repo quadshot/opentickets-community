@@ -144,13 +144,13 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 				'available' => array(
 					'msg' => ( $show_qty )
 							? __( 'There are currently <span class="available"></span> <span rel="tt"></span> available.', 'opentickets-community-edition' )
-							: str_replace( '<span class="available"></span> ', '', __( 'There are currently <span class="available"></span> <span rel="tt"></span> available.', 'opentickets-community-edition' ) ),
+							: str_replace( '<span class="available"></span>', '', __( 'There are currently <span class="available"></span> <span rel="tt"></span> available.', 'opentickets-community-edition' ) ),
 					'type' => 'msg'
 				),
 				'more-available' => array(
 					'msg' => ( $show_qty )
 							? __( 'There are currently <span class="available"></span> more <span rel="tt"></span> available.', 'opentickets-community-edition' )
-							: str_replace( '<span class="available"></span> ', '', __( 'There are currently <span class="available"></span> <span rel="tt"></span> available.', 'opentickets-community-edition' ) ),
+							: str_replace( '<span class="available"></span>', '', __( 'There are currently <span class="available"></span> <span rel="tt"></span> available.', 'opentickets-community-edition' ) ),
 					'type' => 'msg'
 				),
 				'not-available' => array( 'msg' => __( 'We\'re sorry. There are currently no tickets available.', 'opentickets-community-edition' ), 'type' => 'error' ),

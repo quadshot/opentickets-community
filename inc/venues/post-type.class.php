@@ -248,12 +248,12 @@ class qsot_venue_post_type {
 		$string = implode(',', $d);
 
 		$url = sprintf(
-			'http://maps.google.com/maps?q=%s',
+			'//maps.google.com/maps?q=%s',
 			htmlentities2(urlencode($string))
 		);
 
 		// build the map url
-		$map_uri = esc_url( 'http://maps.googleapis.com/maps/api/staticmap?' . sprintf(
+		$map_uri = esc_url( '//maps.googleapis.com/maps/api/staticmap?' . sprintf(
 			'key=%s&center=%s&zoom=%s&size=%sx%s&maptype=roadmap&markers=%s&sensor=false&format=jpg',
 			urlencode( $api_key ),
 			urlencode( $string ),

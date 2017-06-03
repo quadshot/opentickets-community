@@ -4,7 +4,7 @@ Checkin Page: Previously Checked In
 */
 //get_header();
 
-$owner = $ticket->order->billing_first_name . ' ' . $ticket->order->billing_last_name . ' (' . $ticket->order->billing_email . ')';
+$owner = $ticket->order->get_billing_first_name() . ' ' . $ticket->order->get_billing_last_name() . ' (' . $ticket->order->get_billing_email() . ')';
 $index = '[' . $ticket->owns['occupied'] . ' / ' . array_sum( array_values( $ticket->owns ) ) . ']';
 $msg = __('Ticket has PREVIOUSLY checked in!','opentickets-community-edition');
 ?><html><head><title><?php echo $msg.' - '.get_bloginfo('name') ?></title>
