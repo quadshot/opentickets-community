@@ -476,7 +476,6 @@ QS.adminTicketSelection = ( function( $, qs, qt ) {
 
 		// start the UI with the mindset of 'changing' an existing reservation
 		me.change_ticket_ui = function( e ) {
-			console.log( 'fucing click' );
 			e.preventDefault();
 
 			// flag the internal state of the UI

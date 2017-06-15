@@ -4,7 +4,8 @@ Checkin Page: Check-In Success
 */
 //get_header();
 
-$owner = $ticket->order->billing_first_name . ' ' . $ticket->order->billing_last_name . ' (' . $ticket->order->billing_email . ')';
+$WC3 = QSOT_WC3();
+$owner = $WC3->order_data( $ticket->order, 'billing_first_name' ) . ' ' . $WC3->order_data( $ticket->order, 'billing_last_name' ) . ' (' . $WC3->order_data( $ticket->order, 'billing_email' ) . ')';
 $index = '[' . $ticket->owns['occupied'] . ' / ' . array_sum( array_values( $ticket->owns ) ) . ']';
 $msg = __('Check-In SUCCESSFUL','opentickets-community-edition');
 ?><html><head><title><?php echo $msg.' - '.get_bloginfo('name') ?></title>
