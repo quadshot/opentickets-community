@@ -921,6 +921,9 @@ class QSOT_Post_Type_Event_Area {
 			$indexed[ $row->event_id ][ $row->state ][ $row->ticket_type_id ][] = $row;
 		}
 
+		// allow re-organization of index, to prevent problems with things like family tickets
+		$indexed = apply_filters( 'qsot-sync-cart-tickets-indexed-list', $indexed );
+
 		// cycle through the cart items, and remove any that do not have a matched indexed item
 		foreach ( $WC->cart->get_cart() as $key => $item ) {
 			// if this is not an item linked to an event, then bail
