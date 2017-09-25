@@ -1103,7 +1103,7 @@ class QSOT_Post_Type_Event_Area {
 
 			// have the event_area determine how to update the order item info in the ticket table
 			//$result = $area_type->confirm_tickets( $item, $item_id, $order, $event, $event_area );
-			$result = $this->_update_order_id( $order, $item, $item_id, $event, $event_area, $area_type );
+			//$result = $this->_update_order_id( $order, $item, $item_id, $event, $event_area, $area_type );
 			$result_status = $area_type->confirm_tickets( $item, $item_id, $order, $event, $event_area );
 
 			// notify externals of the change
