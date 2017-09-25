@@ -171,6 +171,10 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.7.1.1 - Sept/25/2017 =
+* [FORK] this is a fork of an older version of OTCE. extremely experimental
+* [fix] patch to handle the dupe ticket issue
+
 = 2.7.1 - Mar/27/2017 =
 * [tweak] changing how dates are calculated for DST
 * [tweak] adjusted event save functions to calculate the proper UTC version of the start time, under certain circumstances
