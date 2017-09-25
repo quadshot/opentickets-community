@@ -989,8 +989,9 @@ class QSOT_Post_Type_Event_Area {
 			return;
 
 		global $wpdb;
-		// start constructing the query
-		$q = 'delete from ' . $wpdb->qsot_event_zone_to_order . ' where ';
+    // find all the rows to delete first
+    // @NOTE - if a lock is associated to an order, never delete it
+    $q = 'select * from ' . $wpdb->qsot_event_zone_to_order . ' where order_id > 0 and ';
 
 		// construct the stati part of the query
 		$stati_q = array();
@@ -1006,7 +1007,39 @@ class QSOT_Post_Type_Event_Area {
 		if ( '' !== $args['customer_id'] && null !== $args['customer_id'] )
 			$q .= $wpdb->prepare( ' and session_customer_id = %s', $args['customer_id'] );
 
-		$wpdb->query( $q );
+    // get all the rows
+    $locks = $wpdb->get_results( $q );
+
+    // if there are no locks to remove, then skip this item
+    if ( empty( $locks ) )
+      return;
+
+    // tell everyone that the locks are going away
+    do_action( 'qsot-removing-zone-locks', $locks, $state[0], $event_id, $customer_id );
+
+    // delete the locks we said we would delete in the above action.
+    // this is done in this manner, because we need to only delete the ones we told others about.
+    // technically, if the above action call takes too long, other locks could have expired by the time we get to delete them.
+    // thus we need to explicitly delete ONLY the ones we told everyone we were deleting, so that none are removed without the others being notified.
+    $q = 'delete from ' . $wpdb->qsot_event_zone_to_order . ' where '; // base query
+    $wheres = array(); // holder for queries defining each specific row to delete
+
+    // cycle through all the locks we said we would delete
+    foreach ( $locks as $lock ) {
+      // aggregate a partial where statement, that specifically identifies this row, using all fields for positive id
+      $fields = array();
+      foreach ( $lock as $k => $v )
+        $fields[] = $wpdb->prepare( $k.' = %s', $v );
+      if ( ! empty( $fields ) )
+        $wheres[] = implode( ' and ', $fields );
+    }
+
+    // if we have where statements for at least one row to remove
+    if ( ! empty( $wheres ) ) {
+      // glue the query together, and run it to delete the rows
+      $q .= '(' . implode( ') or (', $wheres ) . ')';
+      $wpdb->query( $q );
+    }
 	}
 
 	// when resuming an order, we need to disassociate all order_item_ids from previous records, because the order items are about to get removed and recreated by core WC.
@@ -1107,11 +1140,11 @@ class QSOT_Post_Type_Event_Area {
 
 			// have the event_area determine how to update the order item info in the ticket table
 			//$result = $area_type->confirm_tickets( $item, $item_id, $order, $event, $event_area );
-			$result = $this->_update_order_id( $order, $item, $item_id, $event, $event_area, $area_type );
+			//$result = $this->_update_order_id( $order, $item, $item_id, $event, $event_area, $area_type );
 			$result_status = $area_type->confirm_tickets( $item, $item_id, $order, $event, $event_area );
 
 			// notify externals of the change
-			do_action( 'qsot-updated-order-id', $order, $item, $item_id, $result );
+			//do_action( 'qsot-updated-order-id', $order, $item, $item_id, $result );
 			do_action( 'qsot-confirmed-ticket', $order, $item, $item_id, $result_status );
 		}
 	}
