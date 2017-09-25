@@ -171,6 +171,10 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.7.0.0.1 - Sept/25/2017 =
+* [FORK] - fork of an older version
+* [tweak] - adjusted code to avoid dupe tickets
+
 = 2.6.5.3 - Mar/14/2017 =
 * [new] added ability to use qtranslate-x on date format fields in settings
 * [tweak] update that condenses reservation updates fo order_id and status into a single step. eliminates potential dupes due to plugin conflicts
