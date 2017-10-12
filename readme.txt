@@ -171,8 +171,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
-= 2.8.5.1 - Jun/15/2017 =
+= 2.8.6 - Oct/12/2017 =
 * [tweak] adding new hooks for new plugins to interrupt js flow
+* [tweak] changes for the family tickets plugin to work
 * [fix] possible solution to seating issues
 * [fix] updating a template to use new WC3 fetching of order information
 
