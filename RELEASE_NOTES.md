@@ -1,5 +1,5 @@
 ## Change Log 2.0 ##
-[1.0 Change Log](release_notes_1.x)
+[1.0 Change Log](release_notes_1.x.md)
 
 # 2.8.6 - Oct/12/2017 #
 * [tweak] adding new hooks for new plugins to interrupt js flow
