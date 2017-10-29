@@ -14,6 +14,8 @@ Tested up to: WordPress 4.7.0
 
 **Donate link:** http://opentickets.com/  
 
+**Contributing:** Patches Welcome. Are you developer? Want to contribute to the source code? Check us out on the [OpenTickets Community Edition GitHub Repository](https://github.com/quadshot/opentickets-community).
+
 ## Special Thanks ##
 **Contributors:** quadshot, loushou, coolmann  
 
@@ -64,18 +66,7 @@ Some features available as extensions:
 
 Need help creating your first ticket and setting up your first event? Visit the [OpenTickets Community Edition Basic Help](http://opentickets.com/community-edition/#your-first-event) and follow the steps under _Creating your first Event, Start to Finish_.
 
- Watch some of our Instructional Videos to learn how to install OpenTickets and setup an event!
-
-1. [Installation](http://youtu.be/7syX3-oXDLg "Basic Installation Video")
-1. [Setting up your First Event](http://youtu.be/Y4Sr9hPcbwY "Step-by-step instructions for setting up your First Event")
-1. [Using the Event Calendar](http://youtu.be/sq-sPkFxobc "Demonstrates the power of the calendar")
-1. For a full list of our Instructional Videos, visit [our website's videos page](http://opentickets.com/videos "OpenTickets.com Videos Page")
-
-## Get Involved ##
-
-Are you developer? Want to contribute to the source code? Check us out on the [OpenTickets Community Edition GitHub Repository](https://github.com/quadshot/opentickets-community).
-
-# Instructional Videos #
+## Instructional Videos ##
 
 If you are more of a 'just give me a video to show me how to do it' type person, then we have a few new videos that can help show you how to Install and Setup OpenTickets.
 
@@ -84,9 +75,9 @@ If you are more of a 'just give me a video to show me how to do it' type person,
 1. [Using the Event Calendar](http://youtu.be/sq-sPkFxobc "Demonstrates the power of the calendar")
 1. For a full list of our Instructional Videos, visit [our website's videos page](http://opentickets.com/videos "OpenTickets.com Videos Page")
 
-# Basic Installation #
+# Installing the WordPress Plugin #
 
-These instructions are pretty universal, standard methods employed when you install any plugin. If you have ever installed one for your WordPress installation, you can probably skip this part.
+These instructions are pretty universal methods of installing any plugin. If you have ever installed one for your WordPress installation, you can probably skip this part.
 
 ## The below instructions assume that you have: ##
 
@@ -121,6 +112,16 @@ These instructions are pretty universal, standard methods employed when you inst
 1. Start using OpenTickets Community Edition.
 
 # Start using it #
+
+## Concepts ##
+
+The software has three key concepts that must be defined before you can create an event. These concepts provide the context for your 'Event', as well as the ticketing product that you will sell for your event.
+
+First you need a 'Venue', which in general terms, is just a location that has areas which can be used to host events. A good example of a Venue would be a Hotel. Hotels, generally speaking, have multiple conference rooms available for rental. Ergo, on any given day, during any given time, any number of these several conference rooms could be occupied with a different event.
+
+Then you need an 'Event Area'. In general, an event area is meant to represent a sub-location of the Venue; for instance, a conference room inside the aforementioned Hotel. Each room may have it's own configurations of seats, it's own stage position, it's own entrances and exits, and it's own pricing. There are scenarios in which this does not entirely hold up as an example, but in general, try to think of it this way.
+
+With this information, we can now piece together an event. An event is hosted by a 'Venue' and has pricing and a layout designated in the 'Event Area'.
 
 ## Setup a 'ticket product': ##
 
@@ -175,13 +176,3 @@ These instructions are pretty universal, standard methods employed when you inst
     1. Venue - the "Venue" in which the showing is taking place.
     1. Area / Price - the "Event Area" and accompanying ticket price for the event
 1. Click the blue 'Publish' button in the upper right metabox
-
-# Concepts #
-
-The software has three key concepts that must be defined before you can create an event. These concepts provide the context for your 'Event', as well as the ticketing product that you will sell for your event.
-
-First you need a 'Venue', which in general terms, is just a location that has areas which can be used to host events. A good example of a Venue would be a Hotel. Hotels, generally speaking, have multiple conference rooms available for rental. Ergo, on any given day, during any given time, any number of these several conference rooms could be occupied with a different event.
-
-Then you need an 'Event Area'. In general, an event area is meant to represent a sub-location of the Venue; for instance, a conference room inside the aforementioned Hotel. Each room may have it's own configurations of seats, it's own stage position, it's own entrances and exits, and it's own pricing. There are scenarios in which this does not entirely hold up as an example, but in general, try to think of it this way.
-
-With this information, we can now piece together an event. An event is hosted by a 'Venue' and has pricing and a layout designated in the 'Event Area'.
