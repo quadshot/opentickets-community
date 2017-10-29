@@ -1,4 +1,4 @@
-** Description **
+# OpenTickets Community Edition #
 An event management and online ticket sales platform, built on top of WooCommerce. The most complete WordPress Ticketing system.
 
 **Keywords:** event tickets, tickets, ticketing, event ticketing, ticket sales, events, event management, ecommerce, wordpress  
@@ -27,7 +27,7 @@ Tested up to: WordPress 4.7.0
 
 The FAQ's for OpenTickets Community Edition is currently located on [our website's FAQs Page](http://opentickets.com/faq).
 
-# OpenTickets Community Edition #
+# Introduction #
 
 [OpenTickets Community Edition](http://opentickets.com/community-edition "Event management and online ticket sales platform") ("OTCE") is a free, open source WordPress plugin that allows you to publish events and sell event tickets online. OTCE was created to allow people with WordPress websites to easily setup and sell tickets to their events.
 
@@ -47,13 +47,12 @@ The OTCE plugin empowers you with tools to:
 * Checkin People to your Events with a QR Reader
 * Event Ticket Reporting
 
-**Enterprise Premium Extensions**
-This is a core plugin, but you can add even more functionality withe licensed premium extensions.
+## Enterprise Premium Extensions ##
+This is a core plugin, but you can add even more functionality with licensed premium extensions.
 
-See the complete list of the [available Extensions at opentickets.com]((http://opentickets.com/extensions/).
+See the complete list of the [available extensions at http://opentickets.com/extensions](http://opentickets.com/extensions).
 
 Some features available as extensions:
-
 * Seating Charts
 * Box Office
 * Coupons & Passes
