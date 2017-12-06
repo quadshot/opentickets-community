@@ -171,6 +171,9 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
+= 2.8.6.1 - Dec/6/2017 =
+* [fix] repairing the zone-lock clearing mechanism, so that expired reservations, actually expire again
+
 = 2.8.6 - Oct/12/2017 =
 * [tweak] adding new hooks for new plugins to interrupt js flow
 * [tweak] changes for the family tickets plugin to work
