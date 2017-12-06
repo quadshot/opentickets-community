@@ -991,7 +991,7 @@ class QSOT_Post_Type_Event_Area {
 		global $wpdb;
     // find all the rows to delete first
     // @NOTE - if a lock is associated to an order, never delete it
-    $q = 'select * from ' . $wpdb->qsot_event_zone_to_order . ' where order_id > 0 and ';
+    $q = 'select * from ' . $wpdb->qsot_event_zone_to_order . ' where order_id = 0 and ';
 
 		// construct the stati part of the query
 		$stati_q = array();
@@ -1015,7 +1015,7 @@ class QSOT_Post_Type_Event_Area {
       return;
 
     // tell everyone that the locks are going away
-    do_action( 'qsot-removing-zone-locks', $locks, $state[0], $event_id, $customer_id );
+    do_action( 'qsot-removing-zone-locks', $locks, 'deprecated', $args['event_id'], $args['customer_id'], $args );
 
     // delete the locks we said we would delete in the above action.
     // this is done in this manner, because we need to only delete the ones we told others about.
