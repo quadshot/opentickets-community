@@ -2,16 +2,18 @@
 Contributors: quadshot, loushou, coolmann
 Donate link: http://opentickets.com/
 Tags: event tickets, tickets, ticketing, event ticketing, ticket sales, events, event management, ecommerce
-Requires at least: 4.0
-Tested up to: 4.7.0
+Requires at least: 4.7.0
+Tested up to: 4.9.1
 Stable tag: trunk
-Copyright: Copyright (C) 2009-2016 Quadshot Software LLC
+Copyright: Copyright (C) 2009-2017 Quadshot Software LLC
 License: GNU General Public License, version 3 (GPL-3.0)
 License URI: http://www.gnu.org/copyleft/gpl.html
 
 An event management and online ticket sales platform, built on top of WooCommerce. The most complete WordPress Ticketing system.
 
 == Description ==
+
+= Last update was in December 2017 =
 
 = OpenTickets Community Edition =
 
