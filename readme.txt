@@ -171,7 +171,7 @@ The FAQ's for OpenTickets Community Edition is currently located on [our website
 
 == Changelog ==
 
-= 2.8.6.1 - Dec/6/2017 =
+= 2.8.7 - Dec/7/2017 =
 * [fix] repairing the zone-lock clearing mechanism, so that expired reservations, actually expire again
 
 = 2.8.6 - Oct/12/2017 =
