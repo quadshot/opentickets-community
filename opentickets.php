@@ -6,7 +6,7 @@ class QSOT {
 	protected static $o = null; // holder for all options of the events plugin
 	protected static $ajax = false;
 	protected static $memory_error = '';
-	protected static $wc_latest = '2.2.0';
+	protected static $wc_latest = '3.2.0';
 	protected static $wc_back_one = '2.1.0';
 
 	protected static $me = '';

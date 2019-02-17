@@ -2,8 +2,8 @@
 Contributors: quadshot, loushou, coolmann
 Donate link: http://opentickets.com/
 Tags: event tickets, tickets, ticketing, event ticketing, ticket sales, events, event management, ecommerce
-Requires at least: 4.7.0
-Tested up to: 4.9.1
+Requires at least: 4.9.0
+Tested up to: 4.9.9
 Stable tag: trunk
 Copyright: Copyright (C) 2009-2017 Quadshot Software LLC
 License: GNU General Public License, version 3 (GPL-3.0)
@@ -13,7 +13,9 @@ An event management and online ticket sales platform, built on top of WooCommerc
 
 == Description ==
 
-= Last update was in December 2017 =
+= Last update - Feb 17th, 2019 =
+
+*GUTENBERG USERS* - currently our plugin, like many other plugins not by us, does not work with the Gutenberg interface. There are many, many breaking changes that come with Gutenberg which conflict with existing code. Eventually, we will be able to update this plugin to work with Gutenberg; however, as of right now, before you can use this plugin, you must be using the old WYSIWYG to gain access to all functionality.
 
 = OpenTickets Community Edition =
 
@@ -172,6 +174,10 @@ Setup an 'Event':
 The FAQ's for OpenTickets Community Edition is currently located on [our website's FAQs Page](http://opentickets.com/faq).
 
 == Changelog ==
+
+= 2.9.0 - Feb/17/2019 =
+* [fix] repairs the auto-release functionality that happens on every page load, which releases tickets that were never finalized
+* [compatibility] updated code to be more compatible with WP 4.9.9
 
 = 2.8.7 - Dec/7/2017 =
 * [fix] repairing the zone-lock clearing mechanism, so that expired reservations, actually expire again
