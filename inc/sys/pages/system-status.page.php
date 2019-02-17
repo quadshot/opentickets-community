@@ -649,8 +649,11 @@ class QSOT_system_status_page extends QSOT_base_page {
 			return new WP_Error( 'unknown_event', __( 'The event id was invalid.', 'opentickets-community-edition' ) );
 		if ( $parsed['quantity'] <= 0 )
 			return new WP_Error( 'unknown_quantity', __( 'The quantity was invalid.', 'opentickets-community-edition' ) );
+		// product_id can be empty for interest rows. need a better check for this... or to just keep it commented out
+		/*
 		if ( empty( $parsed['product_id'] ) )
 			return new WP_Error( 'unknown_product', __( 'The product id was invalid.', 'opentickets-community-edition' ) );
+		*/
 		if ( '' == $parsed['session_id'] )
 			return new WP_Error( 'unknown_session', __( 'The session id was invalid.', 'opentickets-community-edition' ) );
 

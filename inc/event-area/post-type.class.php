@@ -1004,8 +1004,11 @@ class QSOT_Post_Type_Event_Area {
 			$q .= $wpdb->prepare( ' and event_id = %d', $args['event_id'] );
 
 		// if the customer_id was specified, then use it
+		// @NOTE - always delete all expired records for this event. filtering by user is causing issues
+		/*
 		if ( '' !== $args['customer_id'] && null !== $args['customer_id'] )
 			$q .= $wpdb->prepare( ' and session_customer_id = %s', $args['customer_id'] );
+		*/
 
     // get all the rows
     $locks = $wpdb->get_results( $q );
