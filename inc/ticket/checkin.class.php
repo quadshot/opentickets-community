@@ -205,6 +205,9 @@ class QSOT_checkin {
 		) );
 
 		$ticket->qr_code = null;
+		$ticket->qr_codes = array();
+		$ticket->qr_code_data = current($codes);
+		$ticket->qr_codes_data = $codes;
 		$ticket->qr_data_debugs = $codes;
 
 		for ( $i = 0; $i < count( $codes ); $i++ ) {

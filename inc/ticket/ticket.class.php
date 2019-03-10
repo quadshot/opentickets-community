@@ -616,6 +616,7 @@ class QSOT_tickets {
 
 		// get the html for the ticket itself
 		$out = self::_get_ticket_html( self::_display_ticket_args( array(
+			'plugin_url' => self::$o->core_url,
 			'tickets' => $tickets,
 			'template' => $template,
 			'stylesheet' => $stylesheet,
@@ -626,6 +627,7 @@ class QSOT_tickets {
 		// do something different depending on the requested format
 		switch ( $_GET['frmt'] ) {
 			default: echo apply_filters( 'qsot-display-order-tickets-output-' . $_GET['frmt'] . '-format', $out, $order_key, array(
+				'plugin_url' => self::$o->core_url,
 				'tickets' => $tickets,
 				'template' => $template,
 				'stylesheet' => $stylesheet,
@@ -719,6 +721,7 @@ class QSOT_tickets {
 
 		// get the html for the ticket itself
 		$out = self::_get_ticket_html( self::_display_ticket_args( array(
+			'plugin_url' => self::$o->core_url,
 			'ticket' => $ticket,
 			'template' => $template,
 			'stylesheet' => $stylesheet,
@@ -730,6 +733,7 @@ class QSOT_tickets {
 		// do something different depending on the requested format
 		switch ( $_GET['frmt'] ) {
 			default: echo apply_filters( 'qsot-display-ticket-output-' . $_GET['frmt'] . '-format', $out, $code, array(
+				'plugin_url' => self::$o->core_url,
 				'ticket' => $ticket,
 				'template' => $template,
 				'stylesheet' => $stylesheet,
@@ -806,7 +810,7 @@ class QSOT_tickets {
 				case 'product':
 					$product = wc_get_product( wc_get_order_item_meta( $oiid, '_product_id', true ) );
 					if ( is_object( $product ) )
-						$current->{$key} = get_post_thumbnail_id( $product->id );
+						$current->{$key} = get_post_thumbnail_id( $product->get_id() );
 				break;
 
 				case 'venue':

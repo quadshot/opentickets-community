@@ -987,7 +987,7 @@ class qsot_post_type {
 	// again for users that it does not apply to. since we want anyone with the read_private_pages to be able to see it, but anyone without to not see it, we need it there by default (so we don't
 	// have to modify core WP) and then filter it out for anyone cannot see it. to do this we need to assert specific conditions are true, and if they do not pass, we need to filter out
 	// the status from the query.
-	public static function hide_hidden_posts_where($where, &$query) {
+	public static function hide_hidden_posts_where($where, $query) {
 		// first, before thinking about making changes to the query, make sure that we are actually querying for our event post type. there are two cases where our event post type could be
 		// being queried for, but we are only concerned with one. i'll explain both. the one we are not concerned with: if the where clause does not specifically filter for post_type, then
 		// we could technically get an event post in the result. we are not concerned with this, because, except for some rare outlier situations and intentional circumventing of this rule,

@@ -220,6 +220,9 @@ class QSOT {
 		// admin specific tools
 		wp_register_script( 'qsot-admin-tools', self::$o->core_url . 'assets/js/utils/admin-tools.js', array( 'qsot-backbone-modal', 'select2' ), self::$o->version );
 
+		// qrcodejs -- not versioned. lives at https://github.com/davidshimjs/qrcodejs
+		wp_register_script( 'qsot-qrcodejs', self::$o->core_url . 'libs/qrcodejs/qrcode.min.js', array(), self::$o->version );
+
 		// create the generic qsot-tools bucket
 		$requirements = array( 'qsot-core-tools' );
 		if ( is_admin() ) $requirements[] = 'qsot-admin-tools';
