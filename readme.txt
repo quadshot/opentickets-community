@@ -3,7 +3,7 @@ Contributors: quadshot, loushou, coolmann
 Donate link: http://opentickets.com/
 Tags: event tickets, tickets, ticketing, event ticketing, ticket sales, events, event management, ecommerce
 Requires at least: 4.9.0
-Tested up to: 4.9.9
+Tested up to: 5.1.0
 Stable tag: trunk
 Copyright: Copyright (C) 2009-2017 Quadshot Software LLC
 License: GNU General Public License, version 3 (GPL-3.0)
@@ -15,7 +15,7 @@ An event management and online ticket sales platform, built on top of WooCommerc
 
 = Last update - Feb 17th, 2019 =
 
-*GUTENBERG USERS* - currently our plugin, like many other plugins not by us, does not work with the Gutenberg interface. There are many, many breaking changes that come with Gutenberg which conflict with existing code. Eventually, we will be able to update this plugin to work with Gutenberg; however, as of right now, before you can use this plugin, you must be using the old WYSIWYG to gain access to all functionality.
+*GUTENBERG USERS* - While it can be used with WP v5.1+, currently our plugin, like many other plugins not by us, does not work with the Gutenberg interface. There are many, many breaking changes that come with Gutenberg which conflict with existing code. Eventually, we will be able to update this plugin to work with Gutenberg; however, as of right now, before you can use this plugin, you must be using the old WYSIWYG to gain access to all functionality. For now, if you disable the Gutenberg editor, and use the old WYSIWYG (typically reverted via a separate plugin), then you can make use of all the features in this plugin.
 
 = OpenTickets Community Edition =
 
@@ -174,6 +174,9 @@ Setup an 'Event':
 The FAQ's for OpenTickets Community Edition is currently located on [our website's FAQs Page](http://opentickets.com/faq).
 
 == Changelog ==
+
+= 2.10.0 - March/11/2019 =
+* [new] switched to using the qrcodejs library, because google image charts api is going away in 3 days (possible breaking change for custom ticket formats)
 
 = 2.9.0 - Feb/17/2019 =
 * [fix] repairs the auto-release functionality that happens on every page load, which releases tickets that were never finalized
