@@ -19,7 +19,6 @@ $venues = array();
 <html <?php echo ( $pdf ) ? 'class="pdf"' : '' ?>>
 	<head>
 		<title><?php echo $page_title ?></title>
-		<script src="<?php echo $plugin_url ?>libs/qrcodejs/qrcode.min.js"></script>
 		<?php wp_print_styles() ?>
 	</head>
 

@@ -721,7 +721,6 @@ class QSOT_tickets {
 
 		// get the html for the ticket itself
 		$out = self::_get_ticket_html( self::_display_ticket_args( array(
-			'plugin_url' => self::$o->core_url,
 			'ticket' => $ticket,
 			'template' => $template,
 			'stylesheet' => $stylesheet,
@@ -733,7 +732,6 @@ class QSOT_tickets {
 		// do something different depending on the requested format
 		switch ( $_GET['frmt'] ) {
 			default: echo apply_filters( 'qsot-display-ticket-output-' . $_GET['frmt'] . '-format', $out, $code, array(
-				'plugin_url' => self::$o->core_url,
 				'ticket' => $ticket,
 				'template' => $template,
 				'stylesheet' => $stylesheet,
@@ -763,6 +761,11 @@ class QSOT_tickets {
 		) );
 	}
 
+	public static function print_qr_lib_script() {
+		$plugin_url = self::$o->core_url;
+		?><script src="<?php echo $plugin_url ?>libs/qrcodejs/qrcode.min.js" id="qr-lib"></script><?php
+	}
+
 	// generate the HTML for the ticket, and return it. do this because it may be output directly
 	protected static function _get_ticket_html( $args ) {
 		// extract the template name and stylesheet
@@ -772,6 +775,7 @@ class QSOT_tickets {
 
 		// enqueue our ticket styling
 		wp_enqueue_style('qsot-ticket-style', $stylesheet, array(), self::$o->version);
+		add_action('wp_print_styles', array(__CLASS__, 'print_qr_lib_script'), 1000);
 
 		// start the capture buffer
 		ob_start();

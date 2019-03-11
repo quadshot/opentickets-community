@@ -211,20 +211,8 @@ class QSOT_checkin {
 		$ticket->qr_data_debugs = $codes;
 
 		for ( $i = 0; $i < count( $codes ); $i++ ) {
-			// get the url, width and height to use for the image tag
-			@list( $url, $width, $height ) = self::qr_img_url( $codes[ $i ] );
-
-			// create the image url
-			$atts = array( 'src' => $url, 'alt' => $ticket->product->get_title() . ' (' . $ticket->product->get_price() . ')' );
-			if ( null !== $width )
-				$atts['width'] = $width;
-			if ( null !== $height )
-				$atts['height'] = $height;
-			// compile the img atts
-			$atts_arr = array();
-			foreach ( $atts as $k => $v )
-				$atts_arr[] = sprintf( '%s="%s"', $k, esc_attr( $v ) );
-			$ticket->qr_codes[ $i ] = '<img ' . implode( ' ', $atts_arr ) . ' />';
+			$block = self::qr_js_block($codes[$i]);
+			$ticket->qr_codes[ $i ] = $block;
 
 			// make sure that the first code is added as the primary code. eventually this will be deprecated
 			if ( null == $ticket->qr_code )
@@ -239,45 +227,23 @@ class QSOT_checkin {
 		return $ticket;
 	}
 
-	// get the qr image url
-	public static function qr_img_url( $code ) {
-		static $su = false;
-		// cache the site url, used for qr code validation in phpqrcode lib
-		if ( false === $su )
-			$su = site_url();
-
-		$url = '';
-		$width = null;
-		$height = null;
-		$using_phpqrcode = defined( 'QSOT_USE_PHPQRCODE' ) && QSOT_USE_PHPQRCODE;
-
-		// PHPQRCODE lib section. obsolete in favor of google charts. still configurable for use with constant.... for now
-		if ( $using_phpqrcode ) {
-			// pack the data into something we can pass to the lib
-			$data = array( 'd' => $code, 'p' => $su );
-			ksort( $data );
-			$data['sig'] = sha1( NONCE_KEY . @json_encode( $data ) . NONCE_SALT );
-			$data = @json_encode( $data );
-
-			// create the url
-			$url = add_query_arg( array( 'd' => str_replace( array( '+', '=', '/' ), array( '-', '_', '~' ), base64_encode( strrev( $data ) ) ) ), self::$o->core_url . 'libs/phpqrcode/index.php' );
-		// default is to use google apis
-		} else {
-			$width = $height = 185;
-			$data = array(
-				'cht' => 'qr',
-				'chld' => 'L|1',
-				'choe' => 'UTF-8',
-				'chs' => $width . 'x' . $height,
-				'chl' => rawurlencode( $code ),
-			);
-			$url = add_query_arg( $data, 'https://chart.googleapis.com/chart' );
-		}
-
-		// add a filter for modification of url (like base64 encodeing or external domain or something
-		$url = apply_filters( 'qsot-qr-img-url', $url, $code, $data, $using_phpqrcode );
-
-		return array( $url, $width, $height );
+	// build qrcodejs code block
+	public static function qr_js_block($code) {
+		$size = 175;
+		$div_name = uniqid('qrcode-');
+		$block = <<<QRCODE
+<div style="height:${size}px; width:${size}px;" id="$div_name"></div>
+<script type="text/javascript">new QRCode(
+	document.getElementById("$div_name"),
+	{
+		text: "$code",
+		width: $size,
+		height: $size,
+		correctLevel: QRCode.CorrectLevel.L
+	}
+);</script>
+QRCODE;
+		return $block;
 	}
 
 	// create all the codes that are encoded inside the QR Codes
