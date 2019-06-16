@@ -1402,7 +1402,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 		if ( $wpdb->is_mysql ) {
 			$items['MySQL Version'] = $this->_new_item( $wpdb->db_version() );
 		}
-		$items['WP Acitve Plugins'] = $this->_new_item( count( get_option( 'active_plugins' ) ) );
+		$items['WP Acative Plugins'] = $this->_new_item( count( get_option( 'active_plugins' ) ) );
 
 		$mem = ini_get( 'memory_limit' );
 		$mem_b = QSOT::xb2b( $mem );
@@ -1468,7 +1468,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 		list( $html, $text ) = self::_get_plugin_list();
 		$items['Active Plugins'] = $this->_new_item( implode( ', <br/>', $html ), 'neutral', '', "\n   + " . implode( ",\n   + ", $text ) );
 		list( $html, $text ) = self::_get_theme_list();
-		$items['Acitve Theme'] = $this->_new_item( implode( ', <br/>', $html ), 'neutral', '', "\n   + " . implode( ",\n   + ", $text ) );
+		$items['Active Theme'] = $this->_new_item( implode( ', <br/>', $html ), 'neutral', '', "\n   + " . implode( ",\n   + ", $text ) );
 
 		$group['.items'] = $items;
 		$groups[] = $group;
