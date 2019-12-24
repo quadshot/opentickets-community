@@ -194,7 +194,7 @@ $available = is_object( $zoner ) ? $zoner->get_availability( $event, $area ) : '
 					</div>
 
 					<div class="qsot-form-actions actions">
-						<a href="<?php echo esc_attr(WC()->cart->get_cart_url()) ?>" class="button"><?php echo apply_filters( 'qsot-get-option-value', __( 'Proceed to Cart', 'opentickets-community-edition' ), 'qsot-proceed-button-text' ) ?></a>
+						<a href="<?php echo esc_attr(wc_get_cart_url()) ?>" class="button"><?php echo apply_filters( 'qsot-get-option-value', __( 'Proceed to Cart', 'opentickets-community-edition' ), 'qsot-proceed-button-text' ) ?></a>
 					</div>
 				</div>
 
