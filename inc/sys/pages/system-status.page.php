@@ -1604,7 +1604,7 @@ class QSOT_system_status_page extends QSOT_base_page {
 			// format the known plugin information
 			$pl_txt = $plugin['Name'];
 			$pl_url = isset( $plugin['PluginURI'] ) ? $plugin['PluginURI'] : '';
-			$pl_link = ! empty( $pl_url ) ? sprintf( '<a href="%s">%s</a>', esc_attr( $pl_url ), $plugin['Name'] ) : $pl_link;
+			$pl_link = ! empty( $pl_url ) ? sprintf( '<a href="%s">%s</a>', esc_attr( $pl_url ), $plugin['Name'] ) : '';
 
 			// format the two different versions of the information
 			$html[] = sprintf(

@@ -357,9 +357,9 @@ class QSOT_Post_Type_Event_Area {
 		$q = 'select state, sum(quantity) tot from ' . $wpdb->qsot_event_zone_to_order . ' where 1=1';
 		// if the event_id was specified, then add it to the query
 		if ( !empty( $args['event_id'] ) ) {
-			$event_ids = array_filter( wp_parse_id_list( $arsg['event_id'] ) );
+			$event_ids = array_filter( wp_parse_id_list( $args['event_id'] ) );
 			if ( ! empty( $event_ids ) )
-				$q .= ' and event_id in (' . implode( ',', $ids ) . ')';
+				$q .= ' and event_id in (' . implode( ',', $event_ids ) . ')';
 		}
 		// make the results grouped by the state, which we can then filter by later
 		$q .= ' group by state';

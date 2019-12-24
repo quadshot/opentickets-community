@@ -190,7 +190,7 @@ class qsot_admin_menu {
 			'view_woocommerce_reports',
 			self::$menu_slugs['main'],
 			array( __CLASS__, 'ap_reports_page' ),
-			false,
+			'none',
 			21
 		);
 
@@ -202,8 +202,7 @@ class qsot_admin_menu {
 			'view_woocommerce_reports',
 			self::$menu_slugs['main'],
 			array( __CLASS__, 'ap_reports_page' ),
-			false,
-			21
+			1
 		);
 
 		// settings menu item
@@ -213,7 +212,8 @@ class qsot_admin_menu {
 			__( 'Settings', 'opentickets-community-edition' ),
 			'manage_options',
 			self::$menu_slugs['settings'],
-			array( __CLASS__, 'ap_settings_page' )
+			array( __CLASS__, 'ap_settings_page' ),
+			2
 		);
 
 		// generic function to call some page load logic

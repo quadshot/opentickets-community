@@ -138,9 +138,13 @@ class QSOT_Templates {
 	}
 
 	public static function wc_locate_template($current, $template_name, $template_path) {
-		$name = $template_name;
-		$found = self::locate_woo_template( $name );
-		return $found ? $found : $current;
+		// only get woocommerce templates 
+		if (strstr($template_path, 'woocommerce')) {
+			$name = $template_name;
+			$found = self::locate_woo_template( $name );
+			return $found ? $found : $current;
+		}
+		return $current;
 	}
 
 	// created to track down a specific theme issue
