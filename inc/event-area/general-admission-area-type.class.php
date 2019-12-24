@@ -50,7 +50,7 @@ class QSOT_General_Admission_Area_Type extends QSOT_Base_Event_Area_Type {
 
 		// actions to help sync the cart with the actions we take in the event ticket UI
 		add_filter( 'qsot-gaea-zoner-reserve-results', array( &$this, 'add_tickets_to_cart' ), 10, 2 );
-		add_action( 'woocommerce_before_cart_item_quantity_zero', array( &$this, 'delete_ticket_from_cart' ), 10, 1 );
+		add_action( 'woocommerce_remove_cart_item', array( &$this, 'delete_ticket_from_cart' ), 10, 1 );
 		add_action( 'woocommerce_cart_item_removed', array( &$this, 'delete_ticket_from_cart' ), 10, 1 );
 		add_action( 'woocommerce_after_cart_item_quantity_update', array( &$this, 'update_reservations_on_cart_update' ), 10, 3 );
 
